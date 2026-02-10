@@ -1,7 +1,9 @@
 {
   "processed": [
     "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-    "book-of-mormon-2011/vulture--scott-brown.json"
+    "book-of-mormon-2011/vulture--scott-brown.json",
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
@@ -41,7 +43,15 @@
     "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
     "hells-kitchen-2024/ew--joey-nolfi.json",
     "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json"
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/cleveland-jewish-news--sheri-gross.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,14 +61,17 @@
       "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json"
+    ],
     "archive": [
       "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-      "book-of-mormon-2011/vulture--scott-brown.json"
+      "book-of-mormon-2011/vulture--scott-brown.json",
+      "wicked-2003/ew--alice-king.json"
     ]
   },
   "startTime": "2026-02-10T03:47:34.062Z",
-  "lastProcessed": "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "wicked-2003/ew--alice-king.json",
   "log": [
     {
       "t": "2026-02-10T03:49:25.628Z",
