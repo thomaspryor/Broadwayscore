@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T16:53:55.069Z",
-  "processed": 3,
-  "failed": 47,
-  "successRate": "6.0%",
+  "updatedAt": "2026-02-10T16:56:33.425Z",
+  "processed": 5,
+  "failed": 35,
+  "successRate": "12.5%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 1,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 2
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:25:08.547Z",
+      "t": "2026-02-10T16:36:32.781Z",
       "event": "bb-session",
-      "session": "bfc4eaec",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
+      "session": "d8e99ba4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T16:27:36.773Z",
+      "t": "2026-02-10T16:37:00.483Z",
       "event": "bb-session",
-      "session": "eba412aa",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+      "session": "d0fe3df5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-10T16:27:38.905Z",
+      "t": "2026-02-10T16:39:10.310Z",
+      "event": "bb-session",
+      "session": "e3b19f72",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-10T16:39:12.716Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:30:59.740Z",
+      "t": "2026-02-10T16:41:00.754Z",
       "event": "bb-session",
-      "session": "5fe890c1",
-      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+      "session": "fb10e3d0",
+      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
     },
     {
-      "t": "2026-02-10T16:31:19.556Z",
-      "event": "bb-session",
-      "session": "4410908f",
-      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+      "t": "2026-02-10T16:41:02.474Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-10T16:32:05.351Z",
+      "t": "2026-02-10T16:41:55.288Z",
       "event": "bb-session",
-      "session": "098ca00e",
-      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
+      "session": "df69650a",
+      "url": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234"
     }
   ]
 }
