@@ -15,6 +15,7 @@ const path = require('path');
 const https = require('https');
 
 const FOLLOWERS_PATH = path.join(__dirname, '..', 'data', 'followers.json');
+const SUBSCRIBERS_PATH = path.join(__dirname, '..', 'data', 'subscribers.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 function loadFollowers() {
@@ -100,43 +101,82 @@ async function main() {
       url += `&since=${encodeURIComponent(data._meta.lastSynced)}`;
     }
 
+    let result;
     try {
-      const result = await fetchJSON(url, {
+      result = await fetchJSON(url, {
         'Authorization': `Bearer ${token}`,
       });
-
-      const submissions = result.submissions || result;
-      if (!Array.isArray(submissions) || submissions.length === 0) break;
-
-      allSubmissions = allSubmissions.concat(submissions);
-      console.log(`  Fetched ${submissions.length} submissions (offset ${offset})`);
-
-      if (submissions.length < limit) break;
-      offset += limit;
     } catch (err) {
       console.error(`  Error fetching submissions: ${err.message}`);
       if (offset === 0) {
         console.log('No submissions could be fetched. If this is the first run, this is normal.');
         process.exit(0);
       }
+      // Partial fetch failure: abort and retain previous data (Pre-Mortem P0 guard)
+      console.error('  Aborting pagination — retaining previous data to prevent partial overwrites');
       break;
     }
+
+    const submissions = result.submissions || result;
+    if (!Array.isArray(submissions) || submissions.length === 0) break;
+
+    allSubmissions = allSubmissions.concat(submissions);
+    console.log(`  Fetched ${submissions.length} submissions (offset ${offset})`);
+
+    if (submissions.length < limit) break;
+    offset += limit;
   }
 
   console.log(`\nTotal new submissions: ${allSubmissions.length}`);
 
-  // Process submissions
+  // Process submissions — handle general subscribers AND per-show follows
   let added = 0;
   let removed = 0;
   let skippedDuplicate = 0;
   let skippedInvalid = 0;
+  let subscribersAdded = 0;
+  let subscribersRemoved = 0;
+
+  // Load existing subscribers (if any)
+  const generalSubscribers = new Set();
+  try {
+    const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
+    if (existing.subscribers) {
+      for (const e of existing.subscribers) generalSubscribers.add(e);
+    }
+  } catch { /* no existing file — start fresh */ }
 
   for (const sub of allSubmissions) {
     const email = (sub.email || sub._replyto || '').toLowerCase().trim();
     const showId = sub.showId;
     const action = (sub.action || 'follow').toLowerCase();
 
-    if (!showId || !isValidEmail(email)) {
+    if (!isValidEmail(email)) {
+      skippedInvalid++;
+      continue;
+    }
+
+    // Handle general subscriber actions (no showId needed)
+    if (action === 'subscribe') {
+      if (!generalSubscribers.has(email)) {
+        generalSubscribers.add(email);
+        subscribersAdded++;
+        console.log(`  + subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+      }
+      continue;
+    }
+
+    if (action === 'unsubscribe') {
+      if (generalSubscribers.has(email)) {
+        generalSubscribers.delete(email);
+        subscribersRemoved++;
+        console.log(`  - subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unsubscribed)`);
+      }
+      continue;
+    }
+
+    // Per-show actions require showId
+    if (!showId) {
       skippedInvalid++;
       continue;
     }
@@ -172,14 +212,29 @@ async function main() {
     console.log(`  + ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
   }
 
-  console.log(`\nResults: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates skipped, ${skippedInvalid} invalid skipped`);
+  console.log(`\nFollow results: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates, ${skippedInvalid} invalid`);
+  console.log(`Subscriber results: ${subscribersAdded} subscribed, ${subscribersRemoved} unsubscribed, ${generalSubscribers.size} total`);
 
   if (!DRY_RUN && (added > 0 || removed > 0)) {
     saveFollowers(data);
-  } else if (DRY_RUN) {
-    console.log('(Dry run — no changes saved)');
+  } else if (added === 0 && removed === 0) {
+    console.log('No follow changes to save');
+  }
+
+  // Write subscribers.json (sorted for stable retry offset)
+  if (!DRY_RUN) {
+    const subscribersList = Array.from(generalSubscribers).sort();
+    const subscribersData = {
+      _meta: {
+        lastSynced: new Date().toISOString(),
+        totalSubscribers: subscribersList.length,
+      },
+      subscribers: subscribersList,
+    };
+    fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(subscribersData, null, 2));
+    console.log(`Saved ${subscribersList.length} subscribers to ${SUBSCRIBERS_PATH}`);
   } else {
-    console.log('No changes to save');
+    console.log(`(Dry run — would save ${generalSubscribers.size} subscribers)`);
   }
 }
 
