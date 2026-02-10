@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10308,
-      "skippedNoScore": 9150,
+      "totalReviews": 10305,
+      "skippedNoScore": 9148,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 287,
+      "skippedDuplicateUrl": 288,
       "skippedCrossOutletDuplicateUrl": 41,
-      "skippedDuplicateText": 379,
+      "skippedDuplicateText": 382,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -19,15 +19,15 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1073,
-        "llmScore": 4644,
+        "originalScore-priority0": 1072,
+        "llmScore": 4642,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4334,
+        "llmScore-lowconf": 4335,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 181
+        "thumb": 180
       }
     }
   },
@@ -23360,23 +23360,6 @@
     },
     {
       "showId": "american-psycho-2016",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 40,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jesse Oxfeld",
-      "url": "https://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes",
-      "publishDate": "April 22, 2016",
-      "originalRating": 40,
-      "pullQuote": "The show is slick and stylish, with a strong lead performance from Benjamin Walker, but it never quite finds its footing between satire and sincerity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "american-psycho-2016",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 81,
@@ -23473,23 +23456,6 @@
       "publishDate": "April 21, 2016",
       "originalRating": null,
       "pullQuote": "'American Psycho' creates another sub-genre - ersatz horror - an odd variation that fails to tingle your spine.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "american-psycho-2016",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 69,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Robert Hofler",
-      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-bret-easton-ellis-duncan-sheik/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Goold and his book writer sometimes scrape the bottom.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -37248,23 +37214,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "bernhardthamlet-2018",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html",
-      "publishDate": "September 25, 2018",
-      "originalRating": null,
-      "pullQuote": "\"Rebeck’s new play is so clever it uplifts, so timely it hurts...As Bernhardt locates the heart of Hamlet, Ms. McTeer the comedian becomes a riveting Shakespearean...But in the second act, after the big decision, the play loses some of its internal logic...",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
     },
     {
       "showId": "bernhardthamlet-2018",
@@ -61297,7 +61246,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -61307,7 +61256,7 @@
       "pullQuote": "Away is a musical about kindness, and it practices what it preaches.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "come-from-away-2017",

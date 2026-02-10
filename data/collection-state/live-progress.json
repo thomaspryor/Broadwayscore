@@ -1,22 +1,56 @@
 {
-  "updatedAt": "2026-02-10T17:09:29.107Z",
-  "processed": 5,
-  "failed": 19,
-  "successRate": "20.8%",
+  "updatedAt": "2026-02-10T17:12:36.959Z",
+  "processed": 9,
+  "failed": 111,
+  "successRate": "7.5%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 3
+    "browserbase": 1,
+    "scrapingbee": 2,
+    "brightdata": 2,
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:53:43.861Z",
+      "t": "2026-02-10T16:03:42.024Z",
       "event": "bb-session",
-      "session": "0f9d63ba",
-      "url": "https://www.indiewire.com/2018/04/harry-potter-cursed-child-broadway-review-1201"
+      "session": "f6778ba3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
+    },
+    {
+      "t": "2026-02-10T16:06:13.246Z",
+      "event": "bb-session",
+      "session": "a189a56b",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T16:06:15.355Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:11:04.666Z",
+      "event": "bb-session",
+      "session": "f09d6861",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+    },
+    {
+      "t": "2026-02-10T16:11:07.038Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:14:11.954Z",
+      "event": "bb-session",
+      "session": "ada19023",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T16:14:42.223Z",
+      "event": "bb-session",
+      "session": "749349aa",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
