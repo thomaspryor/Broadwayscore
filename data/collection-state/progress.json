@@ -1,91 +1,122 @@
 {
   "processed": [
-    "book-of-mormon-2011/stagezine--scott-harrah.json"
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ajc--wendell-brock.json"
   ],
   "failed": [
-    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
-    "book-of-mormon-2011/newyorker--hilton-als.json",
-    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/vulture--scott-brown.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/cititour--lesley-alexander.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/chicagotribune--chris-jones.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/latimes--charles-mcnulty.json",
-    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/stu-on-broadway--stu-brown.json",
-    "book-of-mormon-2011/the-independent-uk--peter-marks.json",
-    "book-of-mormon-2011/theatre-is-easy--dan-dinero.json",
-    "book-of-mormon-2011/village-voice--michael-musto.json",
-    "book-of-mormon-2011/washpost--.json",
-    "book-of-mormon-2011/washpost--unknown.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/cleveland-jewish-news--sheri-gross.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/theatermania--david-gordon.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/about-entertainment--chris-caggiano.json",
+    "wicked-2003/austincom--dani-dudek.json",
+    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
+    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
+    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
+    "wicked-2003/collider-therese-lacson--therese-lacson.json",
+    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/financialtimes--danny-leigh.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
+    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
+    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
+    "wicked-2003/latimes--amy-nicholson.json",
+    "wicked-2003/mamas-geeky-tessa-smith--tessa-smith.json",
+    "wicked-2003/mashable-kristy-puchko--kristy-puchko.json",
+    "wicked-2003/radio-times-james-mottram--james-mottram.json",
+    "wicked-2003/riverfront-times--tina-farmer.json",
+    "wicked-2003/rollingstone--david-fear.json",
+    "wicked-2003/scmp-james-mottram--james-mottram.json",
+    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
+    "wicked-2003/sfchronicle--lily-janiak.json",
+    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
+    "wicked-2003/solzy-at-the-movies-danielle-solzman--danielle-solzman.json",
+    "wicked-2003/the-chronicle--howard-gollop.json",
+    "wicked-2003/the-times--kevin-maher.json",
+    "wicked-2003/trib-live--alexis-papalia.json",
+    "wicked-2003/village-voice--michael-feingold.json",
+    "wicked-2003/we-are-green-bay--warren-gerds.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "book-of-mormon-2011/stagezine--scott-harrah.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wicked-2003/variety--peter-debruge.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "book-of-mormon-2011/vulture--scott-brown.json"
+      "wicked-2003/ajc--wendell-brock.json"
     ],
-    "archive": []
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
-  "startTime": "2026-02-10T16:06:46.262Z",
-  "lastProcessed": "book-of-mormon-2011/washpost--unknown.json",
+  "startTime": "2026-02-10T16:06:28.916Z",
+  "lastProcessed": "wicked-2003/we-are-green-bay--warren-gerds.json",
   "log": [
     {
-      "t": "2026-02-10T16:08:57.216Z",
+      "t": "2026-02-10T16:06:30.128Z",
       "event": "bb-session",
-      "session": "f53fd280",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "577c37c9",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
     },
     {
-      "t": "2026-02-10T16:08:59.366Z",
+      "t": "2026-02-10T16:08:38.581Z",
+      "event": "bb-session",
+      "session": "064df0fa",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-10T16:08:41.043Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:17:31.355Z",
+      "t": "2026-02-10T16:09:26.315Z",
       "event": "bb-session",
-      "session": "31bd529d",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "faf3f50a",
+      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
     },
     {
-      "t": "2026-02-10T16:18:23.771Z",
+      "t": "2026-02-10T16:10:55.158Z",
+      "event": "bb-session",
+      "session": "ec66e7ee",
+      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+    },
+    {
+      "t": "2026-02-10T16:11:48.750Z",
+      "event": "bb-session",
+      "session": "cb331d83",
+      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
+    },
+    {
+      "t": "2026-02-10T16:13:14.251Z",
+      "event": "bb-session",
+      "session": "00da9959",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-10T16:14:00.330Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T16:18:49.822Z",
-      "event": "bb-session",
-      "session": "05b19c41",
-      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
-    },
-    {
-      "t": "2026-02-10T16:18:51.846Z",
-      "event": "bb-login-uncertain",
-      "domain": "nymag.com"
-    },
-    {
-      "t": "2026-02-10T16:21:04.339Z",
-      "event": "bb-session",
-      "session": "92f57f0f",
-      "url": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-p"
-    },
-    {
-      "t": "2026-02-10T16:22:21.331Z",
-      "event": "bb-session",
-      "session": "0cd3293a",
-      "url": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in"
     }
   ]
 }
