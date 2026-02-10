@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T09:10:16.054Z",
+  "runDate": "2026-02-10T11:10:32.982Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,116 +12,94 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 16,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 51,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 6,
-    "tier3Success": 1,
-    "tier4Attempts": 14,
-    "tier4Success": 5,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 31,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 12,
+    "tier4Success": 4,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 7,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-lion-king-1997/new-york--john-simon.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/medium--christian-lewis.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
   "failuresByOutlet": {
-    "IndieWire": {
+    "The New Yorker": {
       "count": 1,
-      "domain": "indiewire.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New York Times": {
-      "count": 10,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "BUY TICKETS": {
+    "Columbus Dispatch": {
       "count": 1,
-      "domain": "us.atgtickets.com",
+      "domain": "jasonraize.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "Denver Post": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "jasonraize.net",
       "hasCredentials": false,
-      "isPaywalled": true,
+      "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Hollywood Reporter": {
+    "Milwaukee Journal Sentinel": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "jasonraize.net",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    }
+  ]
 }
