@@ -1,57 +1,51 @@
 {
-  "updatedAt": "2026-02-10T18:15:24.530Z",
-  "processed": 14,
-  "failed": 186,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-10T18:24:38.524Z",
+  "processed": 10,
+  "failed": 170,
+  "successRate": "5.6%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 3,
-    "scrapingbee": 5,
-    "brightdata": 1,
-    "archive": 5
+    "playwright": 1,
+    "browserbase": 1,
+    "scrapingbee": 2,
+    "brightdata": 3,
+    "archive": 4
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:06:13.076Z",
+      "t": "2026-02-10T16:25:08.547Z",
       "event": "bb-session",
-      "session": "a70e4864",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "bfc4eaec",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
     },
     {
-      "t": "2026-02-10T16:06:15.388Z",
+      "t": "2026-02-10T16:27:36.773Z",
+      "event": "bb-session",
+      "session": "eba412aa",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T16:27:38.905Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:06:58.349Z",
+      "t": "2026-02-10T16:30:59.740Z",
       "event": "bb-session",
-      "session": "f1a63114",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+      "session": "5fe890c1",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
     },
     {
-      "t": "2026-02-10T16:08:14.478Z",
+      "t": "2026-02-10T16:31:19.556Z",
       "event": "bb-session",
-      "session": "31952850",
-      "url": "https://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-"
+      "session": "4410908f",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
     },
     {
-      "t": "2026-02-10T16:09:02.404Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    16 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770739708967\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAZQHEekDhGCgALPhWIg==&cid=dT9zDbDYW6r8pCALqIpknjoocW~MDVYCHpM_mgRJHZyrh2ahLzo7lrEAvNO_3BKzm1SERuAocTaEIpCx4GbnL3~3cw~qvy1d~sI_b7mm2r_LDvCFVQ6feaTsGQ~1gDnX&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770739708967\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-02-10T16:11:33.453Z",
+      "t": "2026-02-10T16:32:05.351Z",
       "event": "bb-session",
-      "session": "76029a18",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
-    },
-    {
-      "t": "2026-02-10T16:13:05.075Z",
-      "event": "bb-session",
-      "session": "8056bc74",
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway"
+      "session": "098ca00e",
+      "url": "https://www.theatermania.com/broadway/reviews/hells-kitchen_96263"
     }
   ]
 }
