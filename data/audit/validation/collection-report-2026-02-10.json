@@ -21,7 +21,7 @@
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 12,
@@ -70,7 +70,46 @@
       "hadestown-2019/medium--christian-lewis.json"
     ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Columbus Dispatch": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Denver Post": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Milwaukee Journal Sentinel": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
   },
   "failuresByOutlet": {
     "The New Yorker": {
