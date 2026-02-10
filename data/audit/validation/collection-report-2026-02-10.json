@@ -1,71 +1,94 @@
 {
-  "runDate": "2026-02-10T14:28:01.532Z",
+  "runDate": "2026-02-10T14:32:17.287Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 3,
+    "processed": 1,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 3,
+    "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 5,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 3,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "tier2Attempts": 7,
+    "tier2Success": 4,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 61,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/ajc--wendell-brock.json"
+    "hadestown-2019/medium--christian-lewis.json"
   ],
   "failed": [
-    "moulin-rouge-2019/vulture--sara-holdren.json",
-    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hadestown-2019/guardian--adrian-horton.json",
+    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
+    "hadestown-2019/buy-tickets--unknown.json",
+    "hadestown-2019/caroleditosti--carole-di-tosti.json",
+    "hadestown-2019/curtainup--elyse-sommer.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
+    "hadestown-2019/njcom--christopher-kelly.json",
+    "hadestown-2019/rollingstone--will-hermes.json",
+    "hadestown-2019/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
-      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json",
-      "data/review-texts/wicked-2003/variety--peter-debruge.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [
-      "wicked-2003/ajc--wendell-brock.json"
+      "hadestown-2019/medium--christian-lewis.json"
     ],
     "brightdata": [],
-    "archive": [
-      "wicked-2003/ew--alice-king.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "BUY TICKETS": {
+      "count": 1,
+      "domain": "us.atgtickets.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 1,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
