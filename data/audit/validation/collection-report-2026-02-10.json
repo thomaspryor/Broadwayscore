@@ -1,69 +1,106 @@
 {
-  "runDate": "2026-02-10T10:59:29.468Z",
+  "runDate": "2026-02-10T11:01:10.250Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 12,
+    "processed": 1,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 5,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 23,
+    "tier3Success": 0,
+    "tier4Attempts": 11,
+    "tier4Success": 2,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 6,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "urlDiscoveryAttempts": 6,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+  ],
   "failed": [
-    "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
-    "moulin-rouge-2019/nytg--mark-shenton.json",
-    "moulin-rouge-2019/nytg--tom-millward.json",
-    "moulin-rouge-2019/vulture--sara-holdren.json",
-    "moulin-rouge-2019/vulture--sarah-holdren.json",
-    "moulin-rouge-2019/broadwaynews--charles-isherwood.json",
-    "moulin-rouge-2019/newsday--barbara-schuler.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json"
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-lion-king-1997/new-york--john-simon.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Columbus Dispatch": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Denver Post": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Milwaukee Journal Sentinel": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
