@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T20:35:08.604Z",
+  "runDate": "2026-02-10T20:46:31.850Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 5,
+    "batchSize": 3,
+    "maxReviews": 3,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,51 +12,61 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 5,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "5.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 21,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 1,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-outsiders-2024/culturesauce--thom-geier.json"
+  ],
   "failed": [
-    "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--christian-lewis.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/guardian--adrian-horton.json"
+    "cabaret-2024/newyorker--naomi-fry.json",
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/vulture--helen-shaw.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-outsiders-2024/culturesauce--thom-geier.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
