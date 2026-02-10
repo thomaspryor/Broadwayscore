@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T21:36:37.918Z",
+  "updatedAt": "2026-02-10T21:44:29.147Z",
   "processed": 68,
-  "failed": 412,
-  "successRate": "14.2%",
+  "failed": 402,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 5,
-    "browserbase": 3,
-    "scrapingbee": 22,
-    "brightdata": 13,
-    "archive": 28
+    "playwright": 13,
+    "browserbase": 2,
+    "scrapingbee": 32,
+    "brightdata": 6,
+    "archive": 18
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:34:53.114Z",
+      "t": "2026-02-10T16:51:29.916Z",
       "event": "bb-session",
-      "session": "384a5177",
-      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+      "session": "c87c2ca1",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
     },
     {
-      "t": "2026-02-10T16:35:12.212Z",
-      "event": "bb-session",
-      "session": "baa0924c",
-      "url": "https://observer.com/2022/11/review-the-excruciating-juliet-fails-on-every-level"
-    },
-    {
-      "t": "2026-02-10T16:35:26.412Z",
-      "event": "bb-session",
-      "session": "6d871bab",
-      "url": "https://www.theatermania.com/broadway/news/review-and-juliet-musical-broadway_94"
-    },
-    {
-      "t": "2026-02-10T16:35:54.873Z",
-      "event": "bb-session",
-      "session": "cb221408",
-      "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
-    },
-    {
-      "t": "2026-02-10T16:37:29.512Z",
-      "event": "bb-session",
-      "session": "7f5222ad",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
-    },
-    {
-      "t": "2026-02-10T16:38:15.726Z",
+      "t": "2026-02-10T16:52:21.641Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:53:08.548Z",
+      "event": "bb-session",
+      "session": "c0475aff",
+      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
+    },
+    {
+      "t": "2026-02-10T16:55:07.383Z",
+      "event": "bb-session",
+      "session": "de415b71",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-10T16:55:58.108Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:59:13.225Z",
+      "event": "bb-session",
+      "session": "898021f3",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-10T16:59:51.520Z",
+      "event": "bb-session",
+      "session": "2609f94c",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-951987?utm_source=twitter"
     }
   ]
 }
