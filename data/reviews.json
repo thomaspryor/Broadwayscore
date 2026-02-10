@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10465,
-      "skippedNoScore": 8901,
+      "totalReviews": 10466,
+      "skippedNoScore": 8899,
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 342,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 409,
+      "skippedDuplicateText": 410,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -19,10 +19,10 @@
         "explicit-slash": 8,
         "explicit-letterGrade": 1,
         "human-review": 56,
-        "originalScore-priority0": 1075,
+        "originalScore-priority0": 1077,
         "llmScore": 4639,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4499,
+        "llmScore-lowconf": 4498,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -82848,7 +82848,7 @@
       "pullQuote": "This rich and wrenching revival seems blissfully unaware of any such problem.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "follies-2011",
@@ -93031,7 +93031,7 @@
       "pullQuote": "The production combines an exhilarating fast-talking swagger with both Odets' real and overwrought lyricism.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "golden-boy-2012",
@@ -113938,7 +113938,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
@@ -113948,7 +113948,7 @@
       "pullQuote": "Laughter certainly makes \"Kimberly Akimbo\" sweeter, but the story fully embraces its bitter notes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "kimberly-akimbo-2022",
@@ -127641,6 +127641,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "motown-the-musical-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Unknown",
+      "url": "https://www.timeout.com/newyork/theater/motownthe-musical",
+      "publishDate": null,
+      "originalRating": "3/5",
+      "pullQuote": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "moulin-rouge-2019",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -131261,7 +131278,7 @@
       "pullQuote": "James Franco and Chris O'Dowd bring star power to John Steinbeck's Depression-era tale, but the production feels more like a celebrity showcase than a fully realized theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "of-mice-and-men-2014",
@@ -156777,23 +156794,6 @@
     },
     {
       "showId": "the-audience-2015",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2015/mar/09/the-audience-review-helen-mirren-queen-broadway-gerald-schoenfeld-theater",
-      "publishDate": "March 9, 2015",
-      "originalRating": null,
-      "pullQuote": "Mirren's Elizabeth II is a marvel of controlled authority and private vulnerability, even if the play itself feels like a series of brilliant sketches rather than a fully formed drama.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-audience-2015",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 76,
@@ -156842,6 +156842,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-audience-2015",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Cote",
+      "url": "https://www.timeout.com/newyork/theater/the-audience",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "Exuding perfect regal frostiness while letting us glimpse the lonely person underneath, Mirren transforms brilliantly (helped by lightning-fast costume changes) from the grandmotherly 69-year-old comforting an insecure John Major (Dylan Baker) to the 25-year-old heir apparent nervously schooled by Winston Churchill (Dakin Matthews).",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-audience-2015",
