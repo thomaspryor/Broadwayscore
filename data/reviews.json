@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10376,
-      "skippedNoScore": 9022,
+      "totalReviews": 10375,
+      "skippedNoScore": 9012,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 328,
+      "skippedDuplicateUrl": 338,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 396,
+      "skippedDuplicateText": 397,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -20,7 +20,7 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1071,
-        "llmScore": 4640,
+        "llmScore": 4639,
         "thumb-override-llm": 2,
         "llmScore-lowconf": 4410,
         "llmScore-review": 2,
@@ -880,7 +880,7 @@
       "pullQuote": "There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -41079,7 +41079,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 46,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Michael Sommers",
@@ -41089,7 +41089,7 @@
       "pullQuote": "The show occasionally jolts but it generally fails to electrify viewers or inspire much pity for its hard-luck protagonists.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "bonnie-and-clyde-2011",
@@ -65540,7 +65540,7 @@
       "pullQuote": "...how did Holmes and a bushel of theater talents, including director Jack O'Brien, take a wrong turn into this slim screech of a sitcom, a scattershot slice of stereotypical life with characters as unbelievable as they are unlikeable? Written on commission by a theater in Rebeck's hometown of Cincinnati, the script pretends to embrace Midwest o...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "dead-accounts-2012",
@@ -172750,7 +172750,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2013/11/15/theater/reviews/twelfth-night-with-anne-hathaway-opens-on-broadway.html",
+      "url": "https://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
       "publishDate": "November 14, 2013",
       "originalRating": null,
       "pullQuote": "Ms. Hathaway brings a fierce intelligence and a welcome lack of vanity to Viola",
@@ -173856,7 +173856,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Thom Geier",
-      "url": "https://culturesauce.com/2025/09/28/keanu-reeves-alex-winter-waiting-for-godot-broadway-review/",
+      "url": "https://culturesauce.com/2023/11/14/waiting-for-godot-michael-shannon-off-broadway-review/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Keanu Reeves’ Estragon recalls his slack-jawed hero from The Matrix series if Neo had refused both the red pills and the blue pills — one to see the world as it really is, and the other to live in blissful ignorance of the truth.",
@@ -173890,7 +173890,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Shania Russell",
-      "url": "https://ew.com/waiting-for-godot-review-keanu-reeves-alex-winter-reunite-11818466",
+      "url": "https://ew.com/waiting-for-godot-review-keanu-reeves-alex-winter-reunite-11818466?srsltid=AfmBOorjwcUmO8GIO3lff2fehIfFMPYqlzKCyZuI_zurgKVoq62O2QcY",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
@@ -173975,7 +173975,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2025/09/28/waiting-for-godot-review-keanu-reeves-broadway-debut/",
+      "url": "https://newyorktheater.me/2023/11/14/waiting-for-godot-review-paul-sparks-and-michael-shannono/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Lloyd seems most concerned with how the play looks… Each actor seems left on his own.",
@@ -174145,7 +174145,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/waiting-for-godot-revival-broadway-review-keanu-reeves-alex-winter-jamie-lloyd",
+      "url": "https://www.timeout.com/newyork/theater/no-mans-land-and-waiting-for-godot",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Winter and Reeves’s teamwork is at its best when at its goofiest, and Waiting for Godot, despite its rather bleak reputation, is loaded with dumb humor.",
@@ -174935,23 +174935,6 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
-    },
-    {
-      "showId": "water-for-elephants-2024",
-      "outletId": "theatrely",
-      "outlet": "Theatrely",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Olivia Clement",
-      "url": "https://theatrely.com/review-water-for-elephants-broadway/",
-      "publishDate": "March 21, 2024",
-      "originalRating": null,
-      "pullQuote": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "water-for-elephants-2024",
