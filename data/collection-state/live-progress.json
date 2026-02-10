@@ -1,27 +1,56 @@
 {
-  "updatedAt": "2026-02-10T22:29:23.266Z",
-  "processed": 79,
-  "failed": 471,
-  "successRate": "14.4%",
+  "updatedAt": "2026-02-10T22:33:01.450Z",
+  "processed": 60,
+  "failed": 460,
+  "successRate": "11.5%",
   "tierBreakdown": {
-    "playwright": 6,
-    "browserbase": 0,
-    "scrapingbee": 36,
-    "brightdata": 8,
-    "archive": 29
+    "playwright": 11,
+    "browserbase": 2,
+    "scrapingbee": 17,
+    "brightdata": 12,
+    "archive": 22
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T17:08:06.115Z",
+      "t": "2026-02-10T16:47:15.077Z",
       "event": "bb-session",
-      "session": "f096dd93",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+      "session": "c98d9a57",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
     },
     {
-      "t": "2026-02-10T17:08:08.488Z",
+      "t": "2026-02-10T16:47:16.919Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:48:12.106Z",
+      "event": "bb-session",
+      "session": "d2958a72",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-10T16:49:21.085Z",
+      "event": "bb-session",
+      "session": "14476b5e",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-02-10T16:50:14.649Z",
+      "event": "bb-session",
+      "session": "7f975da2",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-10T16:50:57.876Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:53:16.233Z",
+      "event": "bb-session",
+      "session": "7465df37",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
     }
   ]
 }
