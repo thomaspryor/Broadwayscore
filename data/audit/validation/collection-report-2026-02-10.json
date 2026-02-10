@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T16:51:29.542Z",
+  "runDate": "2026-02-10T16:53:49.720Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "chicago-1996",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,79 +12,70 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 10,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "16.7%"
+    "successRate": "18.2%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 4,
-    "tier1_5Attempts": 3,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 1,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 6,
-    "tier3Success": 3,
-    "tier4Attempts": 7,
-    "tier4Success": 2,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 21,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 2.8,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier4Attempts": 8,
+    "tier4Success": 7,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 11,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json"
+    "chicago-1996/time--.json",
+    "chicago-1996/time--richard-zoglin.json"
   ],
   "failed": [
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/theatermania--david-gordon.json",
-    "the-great-gatsby-2024/timeout--adam-feldman.json",
-    "the-great-gatsby-2024/wsj--charles-isherwood.json",
-    "the-great-gatsby-2024/talkinbroadway--kimberly-ramirez.json",
-    "the-great-gatsby-2024/theater-life--samuel-l-leiter.json",
-    "the-great-gatsby-2024/theater-scene--deirdre-donovan.json",
-    "the-great-gatsby-2024/theater-scene--joseph-pisano.json",
-    "the-great-gatsby-2024/thestage--lane-williamson.json"
+    "chicago-1996/hollywood-reporter--david-rooney.json",
+    "chicago-1996/ew--melissa-rose-bernardo.json",
+    "chicago-1996/nypost--elisabeth-vincentelli.json",
+    "chicago-1996/timeout--unknown.json",
+    "chicago-1996/wsj--terry-teachout.json",
+    "chicago-1996/amny--matt-windman.json",
+    "chicago-1996/ap--mark-kennedy.json",
+    "chicago-1996/chicagotribune--chris-jones.json",
+    "chicago-1996/oocities--richard-zoglin.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-great-gatsby-2024/theater-pizzazz--ron-fassler.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/the-great-gatsby-2024/observer--david-cote.json"
+      "data/review-texts/chicago-1996/hollywood-reporter--david-rooney.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "chicago-1996/time--.json",
+      "chicago-1996/time--richard-zoglin.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Post": {
+    "Associated Press": {
       "count": 1,
-      "domain": "nypost.com",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
