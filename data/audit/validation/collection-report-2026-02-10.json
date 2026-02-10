@@ -1,263 +1,110 @@
 {
-  "runDate": "2026-02-10T16:59:19.510Z",
+  "runDate": "2026-02-10T17:10:32.226Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019,moulin-rouge-2019,and-juliet-2022,aladdin-2014,two-strangers-bway-2025,ragtime-2025,king-kong-2018,shucked-2023,war-paint-2017,oslo-2017,on-your-feet-2015,the-encounter-2016,a-dolls-house-part-2-2017,frozen-2018,network-2018,the-terms-of-my-surrender-2017,head-over-heels-2018,she-loves-me-2016,beetlejuice-2022,dear-evan-hansen-2016,marvins-room-2017,significant-other-2017,be-more-chill-2019,the-children-2017,fun-home-2015,dames-at-sea-2015,gettin-the-band-back-together-2018,some-like-it-hot-2022,china-doll-2015,tammy-faye-2024,here-lies-love-2023,american-psycho-2016,beautiful-the-carole-king-musical-2014,west-side-story-2020,a-strange-loop-2022,aint-no-mo-2022,leopoldstadt-2022,the-color-purple-2005,a-night-with-janis-joplin-2013,les-miserables-1987,the-collaboration-2022,camelot-2023,mrs-doubtfire-2021,the-curious-incident-of-the-dog-in-the-nighttime-2014,clybourne-park-2012,jesus-christ-superstar-2012,race-2009,the-assembled-parties-2013,an-act-of-god-2016,floyd-collins-2025,my-name-is-lucy-barton-2020,rodgers-hammersteins-cinderella-2013,walking-with-ghosts-2022,jagged-little-pill-2019,sister-act-2011,the-picture-of-dorian-gray-2025,a-gentlemans-guide-to-love-and-murder-2013,a-little-night-music-2009,dead-outlaw-2025,home-2024,on-the-town-2014,the-great-society-2019,this-is-our-youth-2014,american-buffalo-2022,clydes-2021,glengarry-glen-ross-2025,oh-hello-on-broadway-2016,rock-n-roll-2007,summer-1976-2023,therese-raquin-2015,a-life-in-the-theatre-2010,betrayal-2019,driving-miss-daisy-2010,how-to-dance-in-ohio-2023,no-mans-land-2013,the-bridges-of-madison-county-2014,to-kill-a-mockingbird-2018,all-the-way-2014,company-2021,jersey-boys-2005,lombardi-2010,spamalot-2023,the-heidi-chronicles-2015,the-realistic-joneses-2014,wit-2012,bloody-bloody-andrew-jackson-2010,elf-2024,gore-vidals-the-best-man-2012,just-for-us-2023,picnic-2013,that-championship-season-2011,the-peewee-herman-show-2010,time-stands-still-2010,a-bronx-tale-the-musical-2016,blithe-spirit-2009,dead-accounts-2012,looped-2010,purlie-victorious-2023,the-cripple-of-inishmaan-2014,a-view-from-the-bridge-2010,cyrano-de-bergerac-2007,fela-2009,illinoise-2024,potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022,the-cherry-orchard-2016,water-for-elephants-2024,harvey-2012,the-columnist-2012,a-chorus-line-2006,august-osage-county-2007,dont-dress-for-dinner-2012,rent-1996,the-lyons-2012,legally-blonde-2007,shrek-the-musical-2008,west-side-story-2009,the-royal-family-2009,high-fidelity-2006,primo-2005,a-tale-of-two-cities-2008,burn-the-floor-2009,lackawanna-blues-2021,the-producers-2001,crybaby-2008,heartbreak-house-2006,souvenir-2005,the-wedding-singer-2006,110-in-the-shade-2007,bridge-and-tunnel-2006,finians-rainbow-2009,irving-berlins-white-christmas-2009,mauritius-2007,the-constant-wife-2005,the-pirate-queen-2007",
+    "showFilter": "the-outsiders-2024",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 93,
+    "processed": 1,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "7.0%"
+    "successRate": "5.6%"
   },
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 1,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 61,
-    "tier1Success": 39,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 47,
-    "tier2Success": 12,
-    "tier3Attempts": 37,
-    "tier3Success": 17,
-    "tier4Attempts": 59,
-    "tier4Success": 18,
-    "totalFailed": 93,
-    "scrapingBeeCreditsUsed": 303,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 13,
-    "urlDiscoverySuccess": 6,
+    "tier1Attempts": 10,
+    "tier1Success": 6,
+    "tier1_5Attempts": 7,
+    "tier1_5Success": 2,
+    "tier2Attempts": 9,
+    "tier2Success": 2,
+    "tier3Attempts": 8,
+    "tier3Success": 3,
+    "tier4Attempts": 12,
+    "tier4Success": 3,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 23,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 4.3,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "moulin-rouge-2019/newsday--barbara-schuler.json",
-    "aladdin-2014/amny--joe-dziemianowicz.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
-    "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+    "the-outsiders-2024/culturesauce--thom-geier.json"
   ],
   "failed": [
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/variety--christian-lewis.json",
-    "hadestown-2019/nyt-theater--jonathan-mandell.json",
-    "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
-    "moulin-rouge-2019/nytg--mark-shenton.json",
-    "moulin-rouge-2019/nytg--tom-millward.json",
-    "ragtime-2025/nyt-theater--jonathan-mandell.json",
-    "ragtime-2025/variety--frank-rizzo.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "moulin-rouge-2019/broadwaynews--charles-isherwood.json",
-    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "two-strangers-bway-2025/this-week-in-new-york--mark-rifkin.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/perez-hilton--perez-hilton.json",
-    "aladdin-2014/thestage--mark-shenton.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "and-juliet-2022/broadway-blog--joey-sims.json",
-    "and-juliet-2022/front-row-center--brittany-crowell.json",
-    "and-juliet-2022/queerty--matthew-wexler.json",
-    "and-juliet-2022/stagebuddy--elyse-trevers.json",
-    "and-juliet-2022/talkinbroadway--howard-miller.json",
-    "and-juliet-2022/theater-life--samuel-l-leiter.json",
-    "and-juliet-2022/theater-pizzazz--carole-di-tosti.json",
-    "and-juliet-2022/theater-scene--victor-gluck.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/buy-tickets--unknown.json",
-    "moulin-rouge-2019/curtainup--charles-wright.json",
-    "moulin-rouge-2019/frontmezzjunkies--steven-ross.json",
-    "moulin-rouge-2019/mashable-erin-strecker--erin-strecker.json",
-    "moulin-rouge-2019/njcom--christoher-kelly.json",
-    "moulin-rouge-2019/ny1--roma-torre.json",
-    "moulin-rouge-2019/nysr--ny1-roma-torre.json",
-    "moulin-rouge-2019/talkinbroadway--howard-miller.json",
-    "moulin-rouge-2019/theatres-leiter-side--samuel-l-leiter.json",
-    "ragtime-2025/talkinbroadway--howard-miller.json",
-    "ragtime-2025/theater-life--samuel-l-leiter.json",
-    "two-strangers-bway-2025/pages-on-stages--mason-pilevsky.json",
-    "two-strangers-bway-2025/talkinbroadway--howard-miller.json",
-    "two-strangers-bway-2025/the-interested-bystander--cary-wong.json",
-    "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
-    "two-strangers-bway-2025/theater-scene--joseph-pisano.json",
-    "a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json",
-    "a-chorus-line-2006/variety--charles-isherwood.json",
-    "a-dolls-house-part-2-2017/hollywood-reporter--david-rooney.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/nyt-theater--jonathan-mandell.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
-    "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
-    "a-little-night-music-2009/variety--david-rooney.json",
-    "a-night-with-janis-joplin-2013/hollywood-reporter--david-rooney.json",
-    "a-night-with-janis-joplin-2013/variety--marilyn-stasio.json",
-    "a-strange-loop-2022/nyt-theater--jonathan-mandell.json",
-    "a-strange-loop-2022/nytg--unknown.json",
-    "a-tale-of-two-cities-2008/variety--david-rooney.json",
-    "a-view-from-the-bridge-2010/hollywood-reporter--frank-scheck.json",
-    "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
-    "a-view-from-the-bridge-2010/variety--david-rooney.json",
-    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-    "aint-no-mo-2022/variety--aramide-tinubu.json",
-    "aint-no-mo-2022/variety--frank-rizzo.json",
-    "aint-no-mo-2022/variety--naveen-kumar.json",
-    "aint-no-mo-2022/variety--peter-marks.json",
-    "all-the-way-2014/hollywood-reporter--david-rooney.json",
-    "all-the-way-2014/nyt-theater--david-nounou.json",
-    "american-buffalo-2022/hollywood-reporter--david-rooney.json",
-    "american-buffalo-2022/nyt-theater--jonathan-mandell.json",
-    "american-psycho-2016/hollywood-reporter--david-rooney.json",
-    "american-psycho-2016/variety--marilyn-stasio.json",
-    "an-act-of-god-2016/hollywood-reporter--frank-scheck.json",
-    "an-act-of-god-2016/nytg--unknown.json",
-    "august-osage-county-2007/hollywood-reporter--unknown.json",
-    "august-osage-county-2007/variety--charles-isherwood.json"
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "the-outsiders-2024/variety--aramide-tinubu.json",
+    "the-outsiders-2024/variety--naveen-kumar.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/theatermania--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/theatrely--juan-a-ramirez.json",
+    "the-outsiders-2024/digital-journal--markos-papadatos.json",
+    "the-outsiders-2024/pages-on-stages--mason-pilevsky.json",
+    "the-outsiders-2024/talkinbroadway--james-wilson.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+    "the-outsiders-2024/the-interested-bystander--cary-wong.json",
+    "the-outsiders-2024/theater-scene--joseph-pisano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hadestown-2019/medium--christian-lewis.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+      "the-outsiders-2024/culturesauce--thom-geier.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "moulin-rouge-2019/newsday--barbara-schuler.json"
+    "browserbase": [
+      "data/review-texts/the-outsiders-2024/variety--aramide-tinubu.json",
+      "data/review-texts/the-outsiders-2024/variety--naveen-kumar.json"
     ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "and-juliet-2022/thewrap--robert-hofler.json",
-      "aladdin-2014/amny--joe-dziemianowicz.json",
-      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
-      "a-little-night-music-2009/hollywood-reporter--frank-scheck.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "Broadway News": {
-      "count": 1,
-      "domain": "broadway.news",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway Voice": {
-      "count": 1,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "This Broadway": {
-      "count": 1,
-      "domain": "thisbroadsway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway Blog": {
-      "count": 1,
-      "domain": "thebroadwayblog.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "BUY TICKETS": {
+    "The Hollywood Reporter": {
       "count": 2,
-      "domain": "us.atgtickets.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
-      "count": 2,
-      "domain": "curtainup.com",
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Talkin' Broadway": {
-      "count": 2,
+      "count": 1,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 2,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
-      "oldUrl": "https://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
-      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
-    },
-    {
-      "reviewId": "a-little-night-music-2009/variety--david-rooney.json",
-      "oldUrl": "https://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&utm_",
-      "newUrl": "https://variety.com/2009/legit/reviews/a-little-night-music-7-1200474242/"
-    },
-    {
-      "reviewId": "a-view-from-the-bridge-2010/variety--david-rooney.json",
-      "oldUrl": "https://www.variety.com/review/VE1117941959.html?categoryid=33&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+variety%2Fheadlines+%28Variety+-+Latest+News%29&utm_content=Google+Reader",
-      "newUrl": "https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941959/"
-    },
-    {
-      "reviewId": "aint-no-mo-2022/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-jordan-e-cooper-1235445436/",
-      "newUrl": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
-    },
-    {
-      "reviewId": "all-the-way-2014/nyt-theater--david-nounou.json",
-      "oldUrl": "https://newyorktheater.me/2014/03/06/all-the-way-broadway-review/",
-      "newUrl": "https://newyorktheater.me/2014/03/06/all-the-way-review-bryan-cranston-as-lbj-breaking-bad-meets-broadway/"
-    },
-    {
-      "reviewId": "an-act-of-god-2016/nytg--unknown.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/actofgod15.htm",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/an-act-of-god-0"
-    }
-  ]
+  "urlDiscoveries": []
 }
