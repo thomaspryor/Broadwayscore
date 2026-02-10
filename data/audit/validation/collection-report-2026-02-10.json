@@ -1,111 +1,114 @@
 {
-  "runDate": "2026-02-10T15:12:17.767Z",
+  "runDate": "2026-02-10T15:16:25.833Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 19,
     "skipped": 0,
-    "successRate": "9.5%"
+    "successRate": "5.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 0
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 4,
-    "tier3Attempts": 9,
-    "tier3Success": 6,
-    "tier4Attempts": 14,
-    "tier4Success": 4,
+    "tier2Attempts": 14,
+    "tier2Success": 3,
+    "tier3Attempts": 11,
+    "tier3Success": 2,
+    "tier4Attempts": 25,
+    "tier4Success": 11,
     "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 57,
+    "scrapingBeeCreditsUsed": 58,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "chicago-1996/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "machinal-2014/chicagotribune--unknown.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "the-columnist-2012/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--unknown.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-ferryman-2018/chicagotribune--chris-jones.json",
+    "the-gershwins-porgy-and-bess-2012/chicagotribune--chris-jones.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
-    ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
-    ],
-    "archive": []
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
+    "Chicago Tribune": {
+      "count": 4,
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
+    },
+    {
+      "reviewId": "chicago-1996/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-first-wives-club-review-20150312-column.html",
+      "newUrl": "http://timeline.chicagotribune.com/chi-theater-guide-chicago-tribune-critics-picks/step/ct-ent-0617-perfect-review-20130614"
+    },
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
+    },
+    {
+      "reviewId": "pippin-2013/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2013/04/26/pippin-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2013/04/25/broadway-review-pippin-pulls-off-a-theatrical-high-wire-act-2/"
+    },
+    {
+      "reviewId": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2014/10/06/review-the-curious-incident-of-the-dog-in-the-night-time/"
     }
   ]
 }
