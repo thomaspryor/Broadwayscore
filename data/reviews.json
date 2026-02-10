@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10373,
-      "skippedNoScore": 9008,
+      "totalReviews": 10368,
+      "skippedNoScore": 9007,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 341,
+      "skippedDuplicateUrl": 345,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 399,
+      "skippedDuplicateText": 400,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 1,
         "human-review": 56,
         "originalScore-priority0": 1072,
-        "llmScore": 4645,
+        "llmScore": 4642,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4401,
+        "llmScore-lowconf": 4399,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -46197,23 +46197,6 @@
     },
     {
       "showId": "bullets-over-broadway-2014",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 52,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Unknown",
-      "url": "http://www.thewrap.com/bullets-broadway-theater-review-zach-braff-guys-dolls-reinvention-susan-stroman",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "'Bullets' on Broadway rarely breaks free of the movie, and fond memories keep taking us back to the original.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "bullets-over-broadway-2014",
       "outletId": "usatoday",
       "outlet": "USA Today",
       "assignedScore": 78,
@@ -51334,7 +51317,7 @@
       "outletId": "bloomberg-news",
       "outlet": "Bloomberg",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jeremy Gerard",
@@ -51344,7 +51327,7 @@
       "pullQuote": "An odd duck... songs that fly by effortlessly without leaving much of an impression.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -52976,7 +52959,7 @@
       "pullQuote": "It's hard to guess how long the musical -- with its excellent stagecraft, but a badly lopsided book and a banal score -- will be around.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "chaplin-2012",
@@ -57838,7 +57821,7 @@
       "pullQuote": "McCraney provides an exhilarating ride through the sexually charged atmosphere of locker rooms and dorm rooms.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "choir-boy-2019",
@@ -69859,7 +69842,7 @@
       "pullQuote": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "doctor-zhivago-2015",
@@ -78687,23 +78670,6 @@
     },
     {
       "showId": "fela-2012",
-      "outletId": "newsday",
-      "outlet": "Newsday",
-      "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Linda Winer",
-      "url": "https://www.newsday.com/entertainment/theater/fela-misses-a-few-storytelling-beats-1.1618457",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "I know I should feel hard-wired to enjoy - no, to love - 'Fela!,'",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "fela-2012",
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 80,
@@ -78915,7 +78881,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Joe Dziemianowicz",
-      "url": "http://www.nydailynews.com/entertainment/music/2010/04/27/2010-04-27_fences.html",
+      "url": "https://www.nydailynews.com/2010/12/26/i-take-it-back-daily-news-critics-reconsider-2010-reviews-for-justin-bieber-fences-greenburg/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Washington never lets you forget you're watching him act.",
@@ -81811,7 +81777,7 @@
       "pullQuote": "The big surprise, though, is just how sturdy and conventional his stage comedy is in an old-fashioned Broadway kind of way.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fish-in-the-dark-2015",
@@ -99024,7 +98990,7 @@
       "outletId": "newsday",
       "outlet": "Newsday",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Linda Winer",
@@ -99034,7 +99000,7 @@
       "pullQuote": "'Hands on a Hardbody' may well be the best musical ever written about 10 people holding onto a parked truck. But if you go into the show wondering why a gifted creative team would want to adapt the 1997 documentary about poor Texans in an endurance contest for a red Nissan pickup, you are likely to leave wondering the same thing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hands-on-a-hardbody-2013",
@@ -100811,7 +100777,7 @@
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Diana Snyder",
@@ -100821,7 +100787,7 @@
       "pullQuote": "\"'Cursed Child' respects the audience’s intelligence as it engulfs them in a world potentially more sinister than a lot of American children's literature...The play has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "harry-potter-2021",
@@ -119719,7 +119685,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -119729,7 +119695,7 @@
       "pullQuote": "Jin Ha and Clive Owen bring fresh intensity to this revival",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "m-butterfly-2017",
@@ -162405,23 +162371,6 @@
     },
     {
       "showId": "the-lifespan-of-a-fact-2018",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2018/10/18/theater/lifespan-of-a-fact-review-daniel-radcliffe-bobby-cannavale.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's what you call a good time.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-lifespan-of-a-fact-2018",
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 41,
@@ -164690,7 +164639,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review.html",
+      "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
       "publishDate": "March 14, 2024",
       "originalRating": null,
       "pullQuote": "Though the show has its moving moments, particularly in its exploration of memory and loss, it too often feels like a Hallmark card come to life, with dialogue that tends toward the saccharine and plotting that hits every expected beat.",
@@ -165278,23 +165227,6 @@
     },
     {
       "showId": "the-outsiders-2024",
-      "outletId": "theatrely",
-      "outlet": "Theatrely",
-      "assignedScore": 93,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Kobi Kassal",
-      "url": "https://www.theatrely.com/post/the-outsiders-finds-greatness-on-broadway-review",
-      "publishDate": "April 11, 2024",
-      "originalRating": null,
-      "pullQuote": "What makes The Outsiders so brilliant is director Danya Taymor at the helm of the ship. Her swift yet intuitive direction is stunning and the team she has surrounded herself with both onstage and behind the curtain is a match made in heaven.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-outsiders-2024",
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 71,
@@ -165394,23 +165326,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-parisian-woman-2017",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Unknown",
-      "url": "https://www.nytimes.com/2017/11/30/theater/the-parisian-woman-uma-thurman-review.html?_r=0",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Nothing in this play — not one line or ginned-up plot turn — feels real.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "the-parisian-woman-2017",
@@ -166492,7 +166407,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/blog/broadway-review-in-the-present-cate-blanchett-does-chekhov-australian-style-010817",
+      "url": "https://www.timeout.com/newyork/theater/the-present",
       "publishDate": "January 9, 2017",
       "originalRating": 60,
       "pullQuote": "The Present is a perfectly decent play that feels oddly beside the point. It's well-acted and handsomely staged, but it never quite justifies its existence as a Broadway production.",
