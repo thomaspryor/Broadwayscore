@@ -79,6 +79,8 @@ jobs:
           NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WASHPOST_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
