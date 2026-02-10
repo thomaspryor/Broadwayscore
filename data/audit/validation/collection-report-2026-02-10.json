@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T08:29:00.332Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "the-lion-king-1997",
     "aggressive": false,
@@ -17,9 +17,9 @@
     "successRate": "6.9%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 4,
     "brightdata": 1,
     "archive": 1
   },
@@ -87,7 +87,7 @@
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "Broadway Voice": {
       "count": 1,
       "domain": "newyorker.com",
       "hasCredentials": true,
