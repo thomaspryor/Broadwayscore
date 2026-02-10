@@ -1,95 +1,176 @@
 {
-  "runDate": "2026-02-10T07:50:07.030Z",
+  "runDate": "2026-02-10T08:28:21.503Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hadestown-2019",
-    "aggressive": false,
+    "showFilter": "hadestown-2019,the-lion-king-1997,bug-2026,oh-mary-2024,all-out-2025,chess-2025,american-psycho-2016,mean-girls-2018,the-waverly-gallery-2018,jagged-little-pill-2019,network-2018,an-american-in-paris-2015,fish-in-the-dark-2015,oslo-2017,some-like-it-hot-2022,a-strange-loop-2022,falsettos-2016,kpop-2022,ohio-state-murders-2022,romeo-juliet-2024,almost-famous-2022,clydes-2021,good-night-oscar-2023,new-york-new-york-2023,skylight-2015,this-is-our-youth-2014,1984-2017,camelot-2023,fun-home-2015,its-only-a-play-2014,m-butterfly-2017,next-to-normal-2009,sweeney-todd-2023,the-encounter-2016,topdog-underdog-2022,after-midnight-2013,big-fish-2013,dana-h-2021,hands-on-a-hardbody-2013,living-on-love-2015,noises-off-2016,sister-act-2011,the-front-page-2016,the-lehman-trilogy-2021,the-sound-inside-2019,a-gentlemans-guide-to-love-and-murder-2013,aint-too-proud-2019,bring-it-on-the-musical-2012,chinglish-2011,frankie-and-johnny-in-the-clair-de-lune-2019,god-of-carnage-2009,holler-if-ya-hear-me-2014,on-the-twentieth-century-2015,skeleton-crew-2022,the-children-2017,the-sign-in-sidney-brusteins-window-2023,uncle-vanya-2024,you-cant-take-it-with-you-2014,an-act-of-god-2016,charlie-and-the-chocolate-factory-2017,death-of-a-salesman-2012,fool-for-love-2015,here-lies-love-2023,magicbird-2012,mother-play-2024,seminar-2011,the-cherry-orchard-2016,the-nance-2013,waiting-for-godot-2013,a-view-from-the-bridge-2010,baby-its-you-2011,bronx-bombers-2014,cirque-du-soleil-paramour-2016,fully-committed-2016,ill-eat-you-last-a-chat-with-sue-mengers-2013,latin-history-for-morons-2017,on-a-clear-day-you-can-see-forever-2011,saint-joan-2018,sunset-boulevard-2017,the-piano-lesson-2022,the-velocity-of-autumn-2014,true-west-2019,a-wonderful-world-the-louis-armstrong-musical-2024,back-to-the-future-2023,doubt-2024,gypsy-2008,in-the-heights-2008,leap-of-faith-2012,mary-stuart-2009,peter-pan-goes-wrong-2023,rodgers-hammersteins-cinderella-2013,spring-awakening-2015,the-39-steps-2008,the-glass-menagerie-2017,the-notebook-2024,the-realistic-joneses-2014,the-year-of-magical-thinking-2007,west-side-story-2009,a-man-for-all-seasons-2008,a-time-to-kill-2013,boeingboeing-2008,constellations-2015,fela-2009,glory-days-2008,irenas-vow-2009,lend-me-a-tenor-2010,macbeth-2008,once-upon-a-mattress-2024,purpose-2025,rock-n-roll-2007,spring-awakening-2006,the-apple-tree-2006,the-motherfucker-with-the-hat-2011,the-phantom-of-the-opera-1988,the-story-of-my-life-2009,110-in-the-shade-2007,an-enemy-of-the-people-2012,clybourne-park-2012,cyrano-de-bergerac-2012,elf-2024,good-night-and-good-luck-2025,high-fidelity-2006,irving-berlins-white-christmas-2009,les-miserables-1987,november-2008,primo-2005,rent-1996,the-coast-of-utopia-2006,the-miracle-worker-2010,the-vertical-hour-2006,waiting-for-godot-2025,young-frankenstein-2007",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 16,
+    "processed": 9,
+    "failed": 91,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "9.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 4,
     "brightdata": 1,
-    "archive": 0
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 6,
+    "tier1Attempts": 39,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 1,
-    "tier3Attempts": 8,
-    "tier3Success": 3,
-    "tier4Attempts": 14,
-    "tier4Success": 4,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 41,
+    "tier2Attempts": 60,
+    "tier2Success": 11,
+    "tier3Attempts": 52,
+    "tier3Success": 13,
+    "tier4Attempts": 137,
+    "tier4Success": 44,
+    "totalFailed": 90,
+    "scrapingBeeCreditsUsed": 263,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 43,
+    "urlDiscoverySuccess": 27,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "oh-mary-2024/theatermania--jesse-green.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "god-of-carnage-2009/nytimes--ben-brantley.json",
+    "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json",
+    "next-to-normal-2009/hollywood-reporter--david-rooney.json",
+    "the-39-steps-2008/nytimes--ben-brantley.json",
+    "west-side-story-2009/nytimes--ben-brantley.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/thewrap--robert-hofler.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
     "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "after-midnight-2013/nyt-theater--david-nounou.json",
+    "almost-famous-2022/hollywood-reporter--angie-han.json",
+    "baby-its-you-2011/nytimes--ben-brantley.json",
+    "boeingboeing-2008/nytimes--ben-brantley.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
+    "clydes-2021/nytimes--jesse-green.json",
+    "clydes-2021/vulture--jesse-green.json",
+    "falsettos-2016/nytimes--ben-brantley.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json",
+    "fun-home-2015/vulture--jesse-green.json",
+    "glory-days-2008/nytimes--charles-isherwood.json",
+    "gypsy-2008/nytimes--ben-brantley.json",
+    "gypsy-2008/vulture--jesse-green.json",
+    "here-lies-love-2023/vulture--helen-shaw.json",
+    "high-fidelity-2006/nytimes--ben-brantley.json",
+    "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
+    "holler-if-ya-hear-me-2014/vulture--jesse-green.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
+    "in-the-heights-2008/nytimes--charles-isherwood.json",
+    "irenas-vow-2009/nytimes--charles-isherwood.json",
+    "irenas-vow-2009/variety--charles-isherwood.json",
+    "jagged-little-pill-2019/vulture--jesse-green.json",
+    "kpop-2022/nytimes--jesse-green.json",
+    "kpop-2022/variety--aramide-tinubu.json",
+    "kpop-2022/vulture--helen-shaw.json",
+    "latin-history-for-morons-2017/vulture--jesse-green.json",
+    "leap-of-faith-2012/nytimes--ben-brantley.json",
+    "m-butterfly-2017/nytimes--ben-brantley.json",
+    "m-butterfly-2017/variety--marilyn-stasio.json",
+    "macbeth-2008/variety--charles-isherwood.json",
+    "magicbird-2012/hollywood-reporter--david-rooney.json",
+    "mean-girls-2018/hollywood-reporter--david-rooney.json",
+    "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+    "mean-girls-2018/nytimes--jesse-green.json",
+    "network-2018/hollywood-reporter--david-rooney.json",
+    "network-2018/variety--marilyn-stasio.json",
+    "network-2018/vulture--jesse-green.json",
+    "new-york-new-york-2023/nytimes--jesse-green.json",
+    "next-to-normal-2009/nytimes--ben-brantley.json",
+    "next-to-normal-2009/variety--charles-isherwood.json",
+    "november-2008/nytimes--ben-brantley.json",
+    "ohio-state-murders-2022/nytimes--jesse-green.json",
+    "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
+    "on-the-twentieth-century-2015/nytimes--ben-brantley.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "once-upon-a-mattress-2024/nytimes--jesse-green.json",
+    "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
+    "primo-2005/nytimes--ben-brantley.json",
+    "rock-n-roll-2007/nytimes--ben-brantley.json",
+    "romeo-juliet-2024/vulture--jackson-mchenry.json",
+    "saint-joan-2018/nytimes--ben-brantley.json",
+    "sister-act-2011/hollywood-reporter--david-rooney.json",
+    "sister-act-2011/vulture--jesse-green.json",
+    "some-like-it-hot-2022/hollywood-reporter--angie-han.json",
+    "some-like-it-hot-2022/nytimes--jesse-green.json",
+    "sweeney-todd-2023/variety--david-rooney.json",
+    "sweeney-todd-2023/vulture--jackson-mchenry.json",
+    "the-apple-tree-2006/nytimes--ben-brantley.json",
+    "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+    "the-encounter-2016/variety--marilyn-stasio.json",
+    "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
+    "the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
+    "the-piano-lesson-2022/variety--charles-isherwood.json",
+    "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json",
+    "the-sound-inside-2019/hollywood-reporter--david-rooney.json",
+    "the-story-of-my-life-2009/nytimes--ben-brantley.json",
+    "the-story-of-my-life-2009/variety--charles-isherwood.json",
+    "the-vertical-hour-2006/variety--charles-isherwood.json",
+    "the-waverly-gallery-2018/hollywood-reporter--david-rooney.json",
+    "the-waverly-gallery-2018/nytimes--jesse-green.json",
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json",
+    "the-year-of-magical-thinking-2007/variety--charles-isherwood.json",
+    "this-is-our-youth-2014/hollywood-reporter--david-rooney.json",
+    "topdog-underdog-2022/hollywood-reporter--david-rooney.json",
+    "topdog-underdog-2022/nytimes--jesse-green.json",
+    "topdog-underdog-2022/vulture--sara-holdren.json",
+    "true-west-2019/nytimes--jesse-green.json",
+    "true-west-2019/vulture--jesse-green.json",
+    "waiting-for-godot-2013/hollywood-reporter--david-rooney.json",
+    "you-cant-take-it-with-you-2014/nytimes--ben-brantley.json",
+    "you-cant-take-it-with-you-2014/variety--marilyn-stasio.json",
+    "1984-2017/nypost--johnny-oleksinski.json",
+    "1984-2017/timeout--adam-feldman.json",
+    "1984-2017/wsj--charles-isherwood.json",
+    "a-man-for-all-seasons-2008/nypost--jeremy-gerard.json",
+    "a-strange-loop-2022/nypost--johnny-oleksinski.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "hadestown-2019/medium--christian-lewis.json"
+    "playwright": [
+      "hadestown-2019/medium--christian-lewis.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
-    "archive": []
+    "browserbase": [],
+    "scrapingbee": [
+      "baby-its-you-2011/nytimes--ben-brantley.json",
+      "next-to-normal-2009/hollywood-reporter--david-rooney.json",
+      "west-side-story-2009/nytimes--ben-brantley.json",
+      "a-gentlemans-guide-to-love-and-murder-2013/thewrap--robert-hofler.json"
+    ],
+    "brightdata": [
+      "oh-mary-2024/theatermania--jesse-green.json"
+    ],
+    "archive": [
+      "god-of-carnage-2009/nytimes--ben-brantley.json",
+      "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json",
+      "the-39-steps-2008/nytimes--ben-brantley.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "Broadway Voice": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "BUY TICKETS": {
-      "count": 1,
-      "domain": "us.atgtickets.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
+      "domain": "bwayvoice.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -100,7 +181,185 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 4,
+      "domain": "vulture.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 6,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 3,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Hollywood Reporter": {
+      "count": 2,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Post": {
+      "count": 2,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "after-midnight-2013/nyt-theater--david-nounou.json",
+      "oldUrl": "https://newyorktheater.me/2013/11/14/after-midnight-review/",
+      "newUrl": "https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/"
+    },
+    {
+      "reviewId": "almost-famous-2022/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-broadway-review-1235246420/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/"
+    },
+    {
+      "reviewId": "baby-its-you-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-with-music-by-burt-bacharach-review.html",
+      "newUrl": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shirelles-review.html"
+    },
+    {
+      "reviewId": "clydes-2021/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html",
+      "newUrl": "https://www.vulture.com/2021/11/theater-review-clydes-on-broadway-in-the-southern-breeze.html"
+    },
+    {
+      "reviewId": "fun-home-2015/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2015/04/theater-review-fun-home.html",
+      "newUrl": "https://www.vulture.com/2015/04/theater-review-fun-home-in-its-new-round-house.html"
+    },
+    {
+      "reviewId": "glory-days-2008/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2008/05/07/theater/reviews/07glor.html",
+      "newUrl": "https://www.nytimes.com/2008/05/07/theater/reviews/07glory.html"
+    },
+    {
+      "reviewId": "god-of-carnage-2009/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2009/03/23/theater/reviews/23carnage.html",
+      "newUrl": "https://www.nytimes.com/2016/01/31/nyregion/review-god-of-carnage-puts-parents-in-a-metaphoric-bull-ring.html"
+    },
+    {
+      "reviewId": "jagged-little-pill-2019/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2019/12/jagged-little-pill-broadway-review.html",
+      "newUrl": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html"
+    },
+    {
+      "reviewId": "kpop-2022/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/kpop-broadway-review-1235420943/",
+      "newUrl": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/"
+    },
+    {
+      "reviewId": "leap-of-faith-2012/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-at-st-james-theater.html",
+      "newUrl": "https://www.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-with-raul-esparza-at-st-james-theater.html"
+    },
+    {
+      "reviewId": "m-butterfly-2017/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-clive-owen-1202593916/",
+      "newUrl": "https://variety.com/2017/legit/reviews/m-butterfly-review-julie-taymor-clive-owen-1202600155/"
+    },
+    {
+      "reviewId": "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+      "oldUrl": "https://newyorktheater.me/2018/04/09/mean-girls-broadway-review/",
+      "newUrl": "https://newyorktheater.me/2018/04/13/mean-girls-review-tina-feys-ill-timed-broadway-musical-about-high-school/"
+    },
+    {
+      "reviewId": "mean-girls-2018/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html",
+      "newUrl": "https://www.nytimes.com/2018/04/08/theater/mean-girls-review-broadway-musical.html"
+    },
+    {
+      "reviewId": "network-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/review/network-theater-review-1162090/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/network-theater-1167200/"
+    },
+    {
+      "reviewId": "new-york-new-york-2023/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2023/04/27/theater/new-york-new-york-review.html",
+      "newUrl": "https://www.nytimes.com/2023/04/26/theater/new-york-new-york-review-broadway.html"
+    },
+    {
+      "reviewId": "next-to-normal-2009/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2009/04/16/theater/reviews/16normal.html",
+      "newUrl": "https://www.nytimes.com/2008/02/14/theater/reviews/14normal.html"
+    },
+    {
+      "reviewId": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/08/13/theater/once-upon-a-mattress-review.html",
+      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "reviewId": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
+      "oldUrl": "https://newyorktheater.me/2023/04/10/peter-pan-goes-wrong-broadway-review/",
+      "newUrl": "https://newyorktheater.me/2023/04/21/peter-pan-goes-wrong-broadway-review/"
+    },
+    {
+      "reviewId": "romeo-juliet-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/romeo-juliet-broadway-review-kit-connor-rachel-zegler.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html"
+    },
+    {
+      "reviewId": "saint-joan-2018/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/04/25/theater/saint-joan-review-condola-rashad.html",
+      "newUrl": "https://www.nytimes.com/2018/04/25/theater/review-condola-rashad-george-bernard-shaw-saint-joan-broadway.html"
+    },
+    {
+      "reviewId": "sister-act-2011/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-broadway-review-179058/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-180739/"
+    },
+    {
+      "reviewId": "sister-act-2011/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2011/04/theater_review_sister_act.html",
+      "newUrl": "https://www.vulture.com/2011/04/theater_review_sister_acts_cha.html"
+    },
+    {
+      "reviewId": "sweeney-todd-2023/variety--david-rooney.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/sweeney-todd-review-broadway-josh-groban-annaleigh-ashford-1235541046/",
+      "newUrl": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/"
+    },
+    {
+      "reviewId": "the-apple-tree-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/12/20/theater/reviews/20appl.html",
+      "newUrl": "https://www.nytimes.com/2006/12/15/theater/reviews/15appl.html"
+    },
+    {
+      "reviewId": "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2006/11/28/theater/reviews/28voya.html",
+      "newUrl": "https://www.nytimes.com/2006/12/22/theater/reviews/22ship.html"
+    },
+    {
+      "reviewId": "the-waverly-gallery-2018/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/culture-news/waverly-gallery-theater-review-1152572/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/waverly-gallery-theater-1155139/"
+    },
+    {
+      "reviewId": "true-west-2019/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2019/01/25/theater/true-west-review-ethan-hawke-paul-dano.html",
+      "newUrl": "https://www.nytimes.com/2019/01/24/theater/true-west-review-ethan-hawke-paul-dano.html"
+    }
+  ]
 }
