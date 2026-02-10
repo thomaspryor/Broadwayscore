@@ -1,69 +1,106 @@
 {
-  "runDate": "2026-02-10T10:59:29.468Z",
+  "runDate": "2026-02-10T11:02:06.445Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 12,
+    "processed": 1,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "5.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 12,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 8,
     "tier2Success": 2,
-    "tier3Attempts": 2,
+    "tier3Attempts": 7,
     "tier3Success": 2,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 23,
+    "tier4Attempts": 13,
+    "tier4Success": 5,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 41,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "hadestown-2019/medium--christian-lewis.json"
+  ],
   "failed": [
-    "moulin-rouge-2019/nyt-theater--jonathan-mandell.json",
-    "moulin-rouge-2019/nytg--mark-shenton.json",
-    "moulin-rouge-2019/nytg--tom-millward.json",
-    "moulin-rouge-2019/vulture--sara-holdren.json",
-    "moulin-rouge-2019/vulture--sarah-holdren.json",
-    "moulin-rouge-2019/broadwaynews--charles-isherwood.json",
-    "moulin-rouge-2019/newsday--barbara-schuler.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json"
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/guardian--adrian-horton.json",
+    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
+    "hadestown-2019/buy-tickets--unknown.json",
+    "hadestown-2019/caroleditosti--carole-di-tosti.json",
+    "hadestown-2019/curtainup--elyse-sommer.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
+    "hadestown-2019/njcom--christopher-kelly.json",
+    "hadestown-2019/rollingstone--will-hermes.json",
+    "hadestown-2019/talkinbroadway--howard-miller.json",
+    "hadestown-2019/talkinbroadway--matthew-murray.json",
+    "hadestown-2019/towleroad--naveen-kumar.json",
+    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
+    "hadestown-2019/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hadestown-2019/medium--christian-lewis.json"
+    ],
     "brightdata": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "BUY TICKETS": {
+      "count": 1,
+      "domain": "us.atgtickets.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 1,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
