@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T11:33:17.321Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "hells-kitchen-2024",
     "aggressive": false,
@@ -19,9 +19,9 @@
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 0
+    "scrapingbee": 18,
+    "brightdata": 34,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 12,
@@ -75,15 +75,53 @@
     "brightdata": [
       "hells-kitchen-2024/theatermania--david-gordon.json"
     ],
-    "archive": []
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json",
+      "mj-2022/theatermania--jesse-green.json",
+      "oh-mary-2024/theatermania--jesse-green.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/theatermania--adam-feldman.json",
+      "a-dolls-house-2023/theatermania--jesse-green.json",
+      "a-night-with-janis-joplin-2013/theatermania--charles-isherwood.json",
+      "a-view-from-the-bridge-2010/theatermania--andy-propst.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon.json",
+      "after-midnight-2013/theatermania--charles-isherwood.json",
+      "almost-famous-2022/theatermania--kenji-fujishima.json",
+      "an-enemy-of-the-people-2024/theatermania--adam-feldman.json",
+      "bengal-tiger-at-the-baghdad-zoo-2011/theatermania--david-finkle.json",
+      "between-riverside-and-crazy-2022/theatermania--jesse-green.json",
+      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+      "bob-fosses-dancin-2023/theatermania--charles-isherwood.json",
+      "born-yesterday-2011/theatermania--andy-propst.json",
+      "bring-it-on-the-musical-2012/theatermania--charles-isherwood.json",
+      "clybourne-park-2012/theatermania--charles-isherwood.json",
+      "cost-of-living-2022/theatermania--adam-feldman.json",
+      "cost-of-living-2022/theatermania--jesse-green.json",
+      "cyrano-de-bergerac-2012/theatermania--david-finkle.json",
+      "death-of-a-salesman-2012/theatermania--david-finkle.json",
+      "disgraced-2014/theatermania--charles-isherwood.json",
+      "elf-2012/theatermania--charles-isherwood.json",
+      "end-of-the-rainbow-2012/theatermania--adam-feldman.json",
+      "end-of-the-rainbow-2012/theatermania--david-rooney.json",
+      "evita-2012/theatermania--david-finkle.json",
+      "finding-neverland-2015/theatermania--jesse-green.json",
+      "glengarry-glen-ross-2012/theatermania--charles-isherwood.json",
+      "golden-boy-2012/theatermania--charles-isherwood.json",
+      "gutenberg-2023/theatermania--jesse-green.json",
+      "gypsy-2024/theatermania--jesse-green.json",
+      "hand-to-god-2015/theatermania--adam-feldman.json",
+      "harvey-2012/theatermania--david-finkle.json"
+    ],
+    "archive": [
+      "disaster-2016/theatermania--david-gordon.json",
+      "hangmen-2022/theatermania--jesse-green.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "frozen-2018/theatermania--adam-feldman.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/frozen_81114.html",
+      "newUrl": "https://www.theatermania.com/news/review-a-frozen-wonderland-takes-the-stage-at-the-gateway-playhouse-on-long-island_1767530/"
     },
     "Rolling Stone": {
       "count": 1,
