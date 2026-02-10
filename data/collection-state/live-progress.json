@@ -1,15 +1,61 @@
 {
-  "updatedAt": "2026-02-10T21:32:11.164Z",
-  "processed": 6,
-  "failed": 15,
-  "successRate": "28.6%",
+  "updatedAt": "2026-02-10T21:41:24.775Z",
+  "processed": 69,
+  "failed": 431,
+  "successRate": "13.8%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 4
+    "playwright": 4,
+    "browserbase": 1,
+    "scrapingbee": 37,
+    "brightdata": 6,
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T15:56:20.521Z",
+      "event": "bb-session",
+      "session": "f88f9e39",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-10T15:56:22.473Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T15:58:57.823Z",
+      "event": "bb-session",
+      "session": "5da89040",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-10T15:59:00.266Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:02:06.899Z",
+      "event": "bb-session",
+      "session": "071cbef5",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-10T16:02:58.366Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:06:13.601Z",
+      "event": "bb-session",
+      "session": "e3e5d82f",
+      "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-10T16:06:39.994Z",
+      "event": "bb-session",
+      "session": "757c446b",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+    }
+  ]
 }
