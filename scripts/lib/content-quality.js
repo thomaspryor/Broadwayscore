@@ -445,6 +445,23 @@ function validateShowMentioned(text, showTitle, showId) {
 }
 
 /**
+ * Common-word show titles that appear naturally in theater criticism.
+ * These match frequently in review text without indicating wrong-page scraping.
+ * Mirrors the curated set in excerpt-validation.js.
+ */
+const COMMON_WORD_SHOW_TITLES = new Set([
+  'company', 'doubt', 'network', 'proof', 'sweat', 'closer', 'home', 'nine',
+  'cats', 'rent', 'once', 'hair', 'big', 'grease', 'chicago', 'fame',
+  'oliver', 'pippin', 'annie', 'carousel', 'contact', 'curtains', 'follies',
+  'gypsy', 'tommy', 'ragtime', 'purlie', 'ruined', 'eclipse', 'wings', 'bent',
+  'betrayal', 'hero', 'power', 'appropriate', 'beautiful', 'holiday', 'parade',
+  'passion', 'spring', 'summer', 'stomp', 'sunset', 'cabaret', 'harvey',
+  'the audience', 'master class', 'the performers', 'the present', 'the price',
+  'the real thing', 'all the way', 'liberation', 'slave play',
+  'bug', 'juno', 'fela', 'fun', 'leap', 'loot',
+]);
+
+/**
  * Detect if text contains references to multiple different Broadway shows
  * This indicates a 404/index page or navigation junk, not a single review
  *
@@ -464,8 +481,11 @@ function detectMultiShowContent(text, expectedShowId) {
     ? expectedShowId.replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
     : [];
 
-  // Find which shows are mentioned
+  // Find which shows are mentioned, excluding common-word titles
   const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
+    // Skip common English words that happen to be show titles
+    if (COMMON_WORD_SHOW_TITLES.has(show)) return false;
+
     // Skip if this is the expected show
     const showWords = show.split(/\s+/);
     const isExpectedShow = expectedWords.some(ew => showWords.some(sw => sw.includes(ew) || ew.includes(sw)));
@@ -476,8 +496,12 @@ function detectMultiShowContent(text, expectedShowId) {
 
   // Scale threshold by text length — critics routinely reference other shows for comparison
   // Short text (< 1000 chars) with 3+ shows = likely junk page
-  // Long reviews (2000+ chars) can naturally mention 5+ shows
-  const threshold = text.length < 1000 ? 3 : text.length < 3000 ? 5 : 7;
+  // Long reviews (5000+ chars) are substantial articles where many references are normal
+  const threshold = text.length < 1000 ? 3
+    : text.length < 3000 ? 5
+    : text.length < 5000 ? 7
+    : text.length < 8000 ? 10
+    : 15;
   if (foundShows.length >= threshold) {
     return {
       detected: true,
@@ -731,8 +755,14 @@ function assessTextQuality(text, showId, showTitle) {
   }
 
   // Check for multi-show content (indicates 404/index page)
+  // But first: if the expected show IS mentioned, multi-show refs are likely
+  // legitimate critic comparisons, not junk. Only flag if show is NOT mentioned.
+  const showToCheck = showTitle || showId;
+  const showMentionedEarly = showToCheck && text.length >= 200
+    ? validateShowMentioned(text, showTitle, showId)
+    : { valid: true };
   const multiShowCheck = detectMultiShowContent(text, showId);
-  if (multiShowCheck.detected) {
+  if (multiShowCheck.detected && !showMentionedEarly.valid) {
     return {
       quality: 'garbage',
       confidence: 'high',
