@@ -5,6 +5,7 @@ import { track } from '@vercel/analytics';
 
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const FORM_ID = process.env.NEXT_PUBLIC_LOOPS_FORM_ID || '';
+const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
 
 export type LoopsStatus = 'idle' | 'submitting' | 'success' | 'error' | 'already_subscribed';
 
@@ -74,6 +75,22 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
           setStatus('already_subscribed');
         } else {
           setStatus('success');
+        }
+        // Dual-write general subscribers to Formspree (queryable for broadcast emails)
+        if (options.userGroup === 'main-site-subscriber' && FORMSPREE_FOLLOW_FORM_ID) {
+          try {
+            await fetch(`https://formspree.io/f/${FORMSPREE_FOLLOW_FORM_ID}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: email.toLowerCase().trim(),
+                action: 'subscribe',
+                source: options.source,
+              }),
+            });
+          } catch (e) {
+            console.error('Formspree dual-write failed:', e);
+          }
         }
         try {
           localStorage.setItem(SUBSCRIBED_KEY, 'true');
