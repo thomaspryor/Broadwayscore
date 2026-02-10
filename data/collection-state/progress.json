@@ -1,91 +1,110 @@
 {
   "processed": [
-    "book-of-mormon-2011/stagezine--scott-harrah.json"
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
-    "book-of-mormon-2011/newyorker--hilton-als.json",
-    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/vulture--scott-brown.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/cititour--lesley-alexander.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/chicagotribune--chris-jones.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/latimes--charles-mcnulty.json",
-    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/stu-on-broadway--stu-brown.json",
-    "book-of-mormon-2011/the-independent-uk--peter-marks.json",
-    "book-of-mormon-2011/theatre-is-easy--dan-dinero.json",
-    "book-of-mormon-2011/village-voice--michael-musto.json",
-    "book-of-mormon-2011/washpost--.json",
-    "book-of-mormon-2011/washpost--unknown.json"
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "marjorie-prime-2025/nydailynews--chris-jones.json",
+    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/wsj--charles-isherwood.json",
+    "bug-2026/cititour--brian-scott-lipton.json",
+    "bug-2026/4-columns-david-cote--david-cote.json",
+    "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
+    "bug-2026/oneminutecritic--matthew-wexler.json",
+    "bug-2026/talkinbroadway--howard-miller.json",
+    "bug-2026/the-interested-bystander--cary-wong.json",
+    "bug-2026/theater-scene--darryl-reilly.json",
+    "bug-2026/theater-scene--victor-gluck.json",
+    "marjorie-prime-2025/the-interested-bystander--cary-wong.json",
+    "marjorie-prime-2025/theater-scene--joseph-pisano.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "a-bronx-tale-2007/nytimes--charles-isherwood.json",
+    "a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/variety--charles-isherwood.json",
+    "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
+    "a-steady-rain-2009/hollywood-reporter--david-rooney.json",
+    "a-steady-rain-2009/nytimes--ben-brantley.json",
+    "a-steady-rain-2009/variety--.json",
+    "a-steady-rain-2009/variety--david-rooney.json",
+    "after-miss-julie-2009/nytimes--ben-brantley.json",
+    "american-psycho-2016/hollywood-reporter--david-rooney.json",
+    "american-psycho-2016/nytimes--ben-brantley.json",
+    "american-psycho-2016/nytimes--unknown.json",
+    "american-psycho-2016/variety--marilyn-stasio.json",
+    "american-psycho-2016/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "book-of-mormon-2011/stagezine--scott-harrah.json"
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [
-      "book-of-mormon-2011/vulture--scott-brown.json"
-    ],
-    "archive": []
+    "brightdata": [],
+    "archive": [
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
+    ]
   },
-  "startTime": "2026-02-10T16:06:46.262Z",
-  "lastProcessed": "book-of-mormon-2011/washpost--unknown.json",
+  "startTime": "2026-02-10T16:10:51.159Z",
+  "lastProcessed": "american-psycho-2016/vulture--jesse-green.json",
   "log": [
     {
-      "t": "2026-02-10T16:08:57.216Z",
+      "t": "2026-02-10T16:11:57.505Z",
       "event": "bb-session",
-      "session": "f53fd280",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+      "session": "ec39d8c7",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
     },
     {
-      "t": "2026-02-10T16:08:59.366Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T16:17:31.355Z",
-      "event": "bb-session",
-      "session": "31bd529d",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-02-10T16:18:23.771Z",
+      "t": "2026-02-10T16:12:41.360Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:18:49.822Z",
+      "t": "2026-02-10T16:13:33.910Z",
       "event": "bb-session",
-      "session": "05b19c41",
-      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+      "session": "f8fef17f",
+      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
     },
     {
-      "t": "2026-02-10T16:18:51.846Z",
-      "event": "bb-login-uncertain",
-      "domain": "nymag.com"
+      "t": "2026-02-10T16:15:41.696Z",
+      "event": "bb-session",
+      "session": "ffc30147",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
     },
     {
-      "t": "2026-02-10T16:21:04.339Z",
-      "event": "bb-session",
-      "session": "92f57f0f",
-      "url": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-p"
+      "t": "2026-02-10T16:16:24.931Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:22:21.331Z",
+      "t": "2026-02-10T16:21:30.044Z",
       "event": "bb-session",
-      "session": "0cd3293a",
-      "url": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in"
+      "session": "173876c5",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-10T16:23:54.373Z",
+      "event": "bb-session",
+      "session": "e6377a6d",
+      "url": "https://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html"
+    },
+    {
+      "t": "2026-02-10T16:24:37.699Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    27 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770740644498\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAKFsqxcp2gBgALPhWIg==&cid=0Ws8~esu6FyVsBiTHp7os1Pjg1Fydegm1IXpqu9gH6~KrXGDwsRT8sEzlbkJinLWnVstgnxIrxAvtA9~IXaO0IPQTnQ8DK~jd1yGXrXBTdC6qiNroESyi9Y9MJdCEj3k&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770740644498\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     }
   ]
 }
