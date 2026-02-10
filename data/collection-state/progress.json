@@ -1,43 +1,47 @@
 {
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "oedipus-2025/wsj--charles-isherwood.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "all-my-sons-2019/nyt-theater--raven-snook.json",
+    "all-my-sons-2019/nytimes--ben-brantley.json",
+    "all-my-sons-2019/nytimes--jesse-green.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "hells-kitchen-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--david-cote.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "aladdin-2014/amny--joe-dziemianowicz.json",
+    "oedipus-2025/washpost--melissa-rose-bernardo.json",
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+    "1776-2022/variety--peter-marks.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "cirque-du-soleil-paramour-2016/vulture--jesse-green.json",
+    "clydes-2021/nytimes--jesse-green.json",
+    "clydes-2021/vulture--jesse-green.json",
+    "deuce-2007/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "all-my-sons-2019/nyt-theater--raven-snook.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
-    ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
-    ],
-    "archive": []
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "oedipus-2025/wsj--charles-isherwood.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+      "all-my-sons-2019/nytimes--ben-brantley.json",
+      "all-my-sons-2019/nytimes--jesse-green.json"
+    ]
   },
-  "startTime": "2026-02-10T12:02:22.159Z",
-  "lastProcessed": "hells-kitchen-2024/washpost--peter-marks.json",
+  "startTime": "2026-02-10T12:14:39.524Z",
+  "lastProcessed": "deuce-2007/nytimes--ben-brantley.json",
   "log": []
 }
