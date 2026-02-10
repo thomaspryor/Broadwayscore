@@ -1,61 +1,51 @@
 {
-  "updatedAt": "2026-02-10T04:18:15.608Z",
+  "updatedAt": "2026-02-10T04:21:25.766Z",
   "processed": 10,
-  "failed": 60,
-  "successRate": "14.3%",
+  "failed": 50,
+  "successRate": "16.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 8
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T03:48:40.262Z",
+      "t": "2026-02-10T03:48:47.942Z",
       "event": "bb-session",
-      "session": "b078d66c",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+      "session": "034c9d13",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maybe-happy-ending-broadway-rev"
     },
     {
-      "t": "2026-02-10T03:48:42.481Z",
+      "t": "2026-02-10T03:51:12.283Z",
+      "event": "bb-session",
+      "session": "46dc508d",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+    },
+    {
+      "t": "2026-02-10T03:51:14.553Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T03:50:02.154Z",
+      "t": "2026-02-10T03:52:04.116Z",
       "event": "bb-session",
-      "session": "bfdb7d51",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+      "session": "c05f22de",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123621"
     },
     {
-      "t": "2026-02-10T03:50:47.659Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-10T03:52:30.456Z",
+      "t": "2026-02-10T03:52:56.537Z",
       "event": "bb-session",
-      "session": "b4964ce5",
-      "url": "https://www.theatermania.com/news/hamhistory-review-8-years-of-hamilton-via-lin-"
+      "session": "d08c26a0",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-broadway-123622"
     },
     {
-      "t": "2026-02-10T04:08:40.072Z",
+      "t": "2026-02-10T03:53:50.365Z",
       "event": "bb-session",
-      "session": "d2844d0e",
-      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
-    },
-    {
-      "t": "2026-02-10T04:16:14.431Z",
-      "event": "bb-session",
-      "session": "316ad7ef",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-02-10T04:16:16.312Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "session": "731f69d2",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/aladdin_70661.html"
     }
   ]
 }
