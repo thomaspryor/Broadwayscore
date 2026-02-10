@@ -1,56 +1,15 @@
 {
-  "updatedAt": "2026-02-10T05:10:13.346Z",
-  "processed": 3,
-  "failed": 41,
-  "successRate": "6.8%",
+  "updatedAt": "2026-02-10T05:10:23.401Z",
+  "processed": 17,
+  "failed": 83,
+  "successRate": "17.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
-    "scrapingbee": 2,
+    "playwright": 5,
+    "browserbase": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archive": 1
+    "archive": 9
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-10T04:49:15.328Z",
-      "event": "bb-session",
-      "session": "c8e1b53c",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
-    },
-    {
-      "t": "2026-02-10T04:51:26.293Z",
-      "event": "bb-session",
-      "session": "5986add2",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
-    },
-    {
-      "t": "2026-02-10T04:51:28.166Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-10T04:52:11.221Z",
-      "event": "bb-session",
-      "session": "ce1df312",
-      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
-    },
-    {
-      "t": "2026-02-10T04:53:22.263Z",
-      "event": "bb-session",
-      "session": "c48a090c",
-      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
-    },
-    {
-      "t": "2026-02-10T04:56:35.705Z",
-      "event": "bb-session",
-      "session": "5b92f3bb",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-02-10T04:57:22.451Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
