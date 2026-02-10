@@ -1,15 +1,44 @@
 {
-  "updatedAt": "2026-02-10T04:59:13.582Z",
-  "processed": 10,
-  "failed": 80,
-  "successRate": "11.1%",
+  "updatedAt": "2026-02-10T05:03:41.033Z",
+  "processed": 1,
+  "failed": 29,
+  "successRate": "3.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 7
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T04:51:11.914Z",
+      "event": "bb-session",
+      "session": "7361793e",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+    },
+    {
+      "t": "2026-02-10T04:51:14.143Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T04:55:35.958Z",
+      "event": "bb-session",
+      "session": "a5f96526",
+      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
+    },
+    {
+      "t": "2026-02-10T05:03:07.892Z",
+      "event": "bb-session",
+      "session": "9f63a64f",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-10T05:03:10.194Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
