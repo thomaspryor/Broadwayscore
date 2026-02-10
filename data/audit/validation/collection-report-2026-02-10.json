@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-10T11:08:34.028Z",
+  "runDate": "2026-02-10T11:12:45.937Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,84 +12,72 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 32,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "4.2%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 25,
-    "tier1Success": 18,
+    "tier1Attempts": 13,
+    "tier1Success": 8,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 17,
-    "tier2Success": 8,
-    "tier3Attempts": 9,
-    "tier3Success": 3,
-    "tier4Attempts": 14,
-    "tier4Success": 4,
-    "totalFailed": 32,
-    "scrapingBeeCreditsUsed": 317,
+    "tier2Attempts": 12,
+    "tier2Success": 6,
+    "tier3Attempts": 10,
+    "tier3Success": 7,
+    "tier4Attempts": 15,
+    "tier4Success": 3,
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 77,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/ajc--wendell-brock.json"
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json"
   ],
   "failed": [
-    "wicked-2003/hollywood-reporter--david-rooney.json",
-    "wicked-2003/newyorker--.json",
-    "wicked-2003/newyorker--john-lahr.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/variety--peter-debruge.json",
-    "wicked-2003/vulture--bilge-eberi.json",
-    "wicked-2003/bbc-caryn-james--caryn-james.json",
-    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
-    "wicked-2003/guardian--peter-bradshaw.json",
-    "wicked-2003/indiewire--kate-erbland.json",
-    "wicked-2003/newsweek--billie-melissa.json",
-    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/about-entertainment--chris-caggiano.json",
-    "wicked-2003/austincom--dani-dudek.json",
-    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
-    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
-    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
-    "wicked-2003/collider-therese-lacson--therese-lacson.json",
-    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/den-of-geek-david-crow--david-crow.json",
-    "wicked-2003/empire-john-nugent--john-nugent.json",
-    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
-    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
-    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
-    "wicked-2003/latimes--amy-nicholson.json",
-    "wicked-2003/njcom--michael-sommers.json"
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
+    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
+    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "wicked-2003/ajc--wendell-brock.json"
+    "scrapingbee": [
+      "hells-kitchen-2024/thewrap--steve-pond.json"
     ],
-    "archive": [
-      "wicked-2003/ew--alice-king.json"
-    ]
+    "brightdata": [
+      "hells-kitchen-2024/theatermania--david-gordon.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {
     "The New Yorker": {
@@ -99,40 +87,26 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "The Wall Street Journal": {
+    "Rolling Stone": {
       "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "about-entertainment": {
-      "count": 1,
-      "domain": "theater.about.com",
+      "domain": "rollingstone.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "Huron Daily (Jake Coyle)": {
-      "count": 1,
-      "domain": "michigansthumb.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
     }
   ]
 }
