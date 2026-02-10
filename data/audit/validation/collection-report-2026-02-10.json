@@ -14,14 +14,14 @@
     "processed": 0,
     "failed": 3,
     "skipped": 0,
-    "successRate": "9.5%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 0
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -43,8 +43,8 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json"
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ajc--wendell-brock.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -54,15 +54,17 @@
   "tierDetails": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
+      "data/review-texts/wicked-2003/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json",
+      "data/review-texts/wicked-2003/variety--peter-debruge.json"
     ],
     "scrapingbee": [
-      "hells-kitchen-2024/thewrap--steve-pond.json"
+      "wicked-2003/ajc--wendell-brock.json"
     ],
-    "brightdata": [
-      "hells-kitchen-2024/theatermania--david-gordon.json"
-    ],
-    "archive": []
+    "brightdata": [],
+    "archive": [
+      "wicked-2003/ew--alice-king.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
