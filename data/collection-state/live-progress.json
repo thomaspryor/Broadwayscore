@@ -1,15 +1,50 @@
 {
-  "updatedAt": "2026-02-10T16:18:15.887Z",
-  "processed": 4,
-  "failed": 36,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-10T16:22:02.448Z",
+  "processed": 0,
+  "failed": 20,
+  "successRate": "0%",
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:11:57.505Z",
+      "event": "bb-session",
+      "session": "ec39d8c7",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-10T16:12:41.360Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:13:33.910Z",
+      "event": "bb-session",
+      "session": "f8fef17f",
+      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
+    },
+    {
+      "t": "2026-02-10T16:15:41.696Z",
+      "event": "bb-session",
+      "session": "ffc30147",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-10T16:16:24.931Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:21:30.044Z",
+      "event": "bb-session",
+      "session": "173876c5",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    }
+  ]
 }
