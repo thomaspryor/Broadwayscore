@@ -1,88 +1,91 @@
 {
-  "runDate": "2026-02-10T16:25:53.727Z",
+  "runDate": "2026-02-10T16:30:46.397Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mj-2022",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 18,
+    "processed": 2,
+    "failed": 26,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "7.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 2,
-    "scrapingbee": 0,
+    "playwright": 0,
+    "browserbase": 1,
+    "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 9,
-    "tier1_5Attempts": 9,
+    "tier1Attempts": 20,
+    "tier1Success": 13,
+    "tier1_5Attempts": 7,
     "tier1_5Success": 1,
-    "tier2Attempts": 12,
-    "tier2Success": 2,
-    "tier3Attempts": 11,
-    "tier3Success": 4,
-    "tier4Attempts": 16,
-    "tier4Success": 3,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 55,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 4.7,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 3,
+    "tier2Attempts": 14,
+    "tier2Success": 5,
+    "tier3Attempts": 12,
+    "tier3Success": 7,
+    "tier4Attempts": 17,
+    "tier4Success": 2,
+    "totalFailed": 26,
+    "scrapingBeeCreditsUsed": 78,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 2,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "mj-2022/theater-life--patrick-christiano.json"
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/thewrap--steve-pond.json"
   ],
   "failed": [
-    "mj-2022/hollywood-reporter--angie-han.json",
-    "mj-2022/newyorker--naomi-fry.json",
-    "mj-2022/vulture--jackson-mchenry.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "mj-2022/thewrap--steve-pond.json",
-    "mj-2022/timeout--adam-feldman.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/exeunt-magazine--juliet-hindell.json",
-    "mj-2022/front-row-center--brittany-crowell.json",
-    "mj-2022/slantmagazine--dan-rubins.json",
-    "mj-2022/talkinbroadway--howard-miller.json",
-    "mj-2022/theater-life--samuel-l-leiter.json",
-    "mj-2022/theater-pizzazz--cooper-lawrence.json",
-    "mj-2022/theater-scene--joel-benjamin.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "mj-2022/usatoday--elysa-gardner.json"
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/vulture--sara-holdren.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
+    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
+    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/theater-life--david-sheward.json",
+    "hells-kitchen-2024/theater-life--samuel-l-leiter.json",
+    "hells-kitchen-2024/theater-scene--deirdre-donovan.json",
+    "hells-kitchen-2024/theater-scene--victor-gluck.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "mj-2022/theater-life--patrick-christiano.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/mj-2022/hollywood-reporter--lovia-gayarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gayarkye.json"
+      "data/review-texts/hells-kitchen-2024/observer--david-cote.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hells-kitchen-2024/thewrap--steve-pond.json"
+    ],
     "brightdata": [
-      "mj-2022/talkinbroadway--matthew-murray.json"
+      "hells-kitchen-2024/theatermania--david-gordon.json"
     ],
-    "archive": [
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "The Hollywood Reporter": {
@@ -99,43 +102,26 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "TheaterMania": {
+    "Rolling Stone": {
       "count": 1,
-      "domain": "theatermania.com",
+      "domain": "rollingstone.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
-    "TheWrap": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "thewrap.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "mj-2022/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html",
-      "newUrl": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html"
-    },
-    {
-      "reviewId": "mj-2022/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234937478/",
-      "newUrl": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-1234922944/"
-    },
-    {
-      "reviewId": "mj-2022/usatoday--elysa-gardner.json",
-      "oldUrl": "https://www.usatoday.com/story/entertainment/theater/2022/02/02/mj-musical-broadway-review-michael-jackson/9309958002/",
-      "newUrl": "https://collegesportswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-review-michael-jackson-show-opens-broadway/9287724002/"
+      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
     }
   ]
 }
