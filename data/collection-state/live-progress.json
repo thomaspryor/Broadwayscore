@@ -1,27 +1,51 @@
 {
-  "updatedAt": "2026-02-10T18:27:01.953Z",
-  "processed": 9,
-  "failed": 121,
-  "successRate": "6.9%",
+  "updatedAt": "2026-02-10T18:30:26.123Z",
+  "processed": 22,
+  "failed": 258,
+  "successRate": "7.9%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 6,
+    "browserbase": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
-    "archive": 7
+    "archive": 13
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T17:08:06.115Z",
+      "t": "2026-02-10T16:15:10.796Z",
       "event": "bb-session",
-      "session": "f096dd93",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+      "session": "20c36c5c",
+      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
     },
     {
-      "t": "2026-02-10T17:08:08.488Z",
+      "t": "2026-02-10T16:15:15.966Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:15:42.938Z",
+      "event": "bb-session",
+      "session": "7cd83478",
+      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
+    },
+    {
+      "t": "2026-02-10T16:16:49.584Z",
+      "event": "bb-session",
+      "session": "a4bc6df0",
+      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+    },
+    {
+      "t": "2026-02-10T16:17:21.460Z",
+      "event": "bb-session",
+      "session": "0727ea8a",
+      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
+    },
+    {
+      "t": "2026-02-10T16:19:40.450Z",
+      "event": "bb-session",
+      "session": "3d37ab6a",
+      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
     }
   ]
 }
