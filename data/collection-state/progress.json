@@ -1,6 +1,7 @@
 {
   "processed": [
-    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "bug-2026/theatre-reviews-limited--david-roberts.json",
@@ -31,11 +32,22 @@
     "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
     "a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
     "all-the-way-2014/hollywood-reporter--david-rooney.json",
-    "all-the-way-2014/nyt-theater--david-nounou.json"
+    "all-the-way-2014/nyt-theater--david-nounou.json",
+    "all-the-way-2014/nytimes--ben-brantley.json",
+    "all-the-way-2014/nytimes--charles-isherwood.json",
+    "all-the-way-2014/vulture--jesse-green.json",
+    "american-psycho-2016/hollywood-reporter--david-rooney.json",
+    "american-psycho-2016/nytimes--ben-brantley.json",
+    "american-psycho-2016/nytimes--unknown.json",
+    "american-psycho-2016/variety--marilyn-stasio.json",
+    "american-psycho-2016/vulture--jesse-green.json",
+    "avenue-q-2003/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
       "data/review-texts/a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json"
@@ -47,7 +59,7 @@
     ]
   },
   "startTime": "2026-02-10T16:50:34.054Z",
-  "lastProcessed": "all-the-way-2014/nyt-theater--david-nounou.json",
+  "lastProcessed": "avenue-q-2003/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-10T16:51:29.916Z",
