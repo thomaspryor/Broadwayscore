@@ -1,15 +1,61 @@
 {
-  "updatedAt": "2026-02-10T16:24:17.581Z",
-  "processed": 0,
-  "failed": 100,
-  "successRate": "0%",
+  "updatedAt": "2026-02-10T16:27:31.112Z",
+  "processed": 1,
+  "failed": 23,
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T16:08:57.216Z",
+      "event": "bb-session",
+      "session": "f53fd280",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+    },
+    {
+      "t": "2026-02-10T16:08:59.366Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-10T16:17:31.355Z",
+      "event": "bb-session",
+      "session": "31bd529d",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-10T16:18:23.771Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:18:49.822Z",
+      "event": "bb-session",
+      "session": "05b19c41",
+      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+    },
+    {
+      "t": "2026-02-10T16:18:51.846Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-10T16:21:04.339Z",
+      "event": "bb-session",
+      "session": "92f57f0f",
+      "url": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-p"
+    },
+    {
+      "t": "2026-02-10T16:22:21.331Z",
+      "event": "bb-session",
+      "session": "0cd3293a",
+      "url": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in"
+    }
+  ]
 }
