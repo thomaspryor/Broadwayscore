@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-10T18:47:55.351Z",
+  "runDate": "2026-02-10T19:07:29.715Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,41 +11,40 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 15,
+    "processed": 5,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "23.8%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 3
   },
   "statistics": {
     "tier1Attempts": 16,
-    "tier1Success": 7,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 3,
-    "tier3Attempts": 9,
-    "tier3Success": 5,
-    "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 52,
+    "tier2Attempts": 9,
+    "tier2Success": 5,
+    "tier3Attempts": 5,
+    "tier3Success": 1,
+    "tier4Attempts": 22,
+    "tier4Success": 6,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 75,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
     "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
     "harry-potter-2021/buy-tickets--unknown.json",
     "harry-potter-2021/melindas-malarky--melinda-pressler.json",
     "harry-potter-2021/the-times--ann-treneman.json"
@@ -58,6 +57,7 @@
     "harry-potter-2021/forward--matthew-murphy.json",
     "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
     "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
     "harry-potter-2021/curtainup--elyse-sommer.json",
     "harry-potter-2021/exeunt-magazine--kev-berry.json",
     "harry-potter-2021/financial-times-uk--charles-isherwood.json",
@@ -69,24 +69,25 @@
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
       "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "browserbase": [],
     "scrapingbee": [
       "harry-potter-2021/buy-tickets--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "harry-potter-2021/broadwayworld--michael-dale.json"
+    ],
     "archive": [
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
       "harry-potter-2021/the-times--ann-treneman.json"
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
+    "IndieWire": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "indiewire.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
@@ -117,7 +118,7 @@
     {
       "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
       "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
-      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOooEtSIXVrVy3IIGj-YhX1Qx_rWkihis7Ha6aT2FYeaVR0NXyydA"
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorcxlvitNYIgWYkDlXwFisHzoe7UsGUj26sguQK-Bv770a917oX"
     },
     {
       "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
