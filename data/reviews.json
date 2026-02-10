@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10466,
-      "skippedNoScore": 8899,
+      "totalReviews": 10464,
+      "skippedNoScore": 8896,
       "skippedDuplicate": 44,
-      "skippedDuplicateUrl": 342,
+      "skippedDuplicateUrl": 341,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 410,
+      "skippedDuplicateText": 413,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
-      "recoveredFromGarbage": 129,
+      "recoveredFromGarbage": 128,
       "scoreSources": {
         "explicit-stars": 5,
         "explicit-outOf": 2,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1077,
         "llmScore": 4639,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4498,
+        "llmScore-lowconf": 4496,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -880,7 +880,7 @@
       "pullQuote": "There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "1776-2022",
@@ -2043,7 +2043,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Brittani Samuel",
@@ -2053,7 +2053,7 @@
       "pullQuote": "'A Beautiful Noise' is a bio-musical that has forgotten the first half of its form...this lackluster pseudo-memoir wagers on nostalgia and a charming frontman to keep the good times feeling good.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -105198,7 +105198,7 @@
       "outletId": "bloomberg-news",
       "outlet": "Bloomberg",
       "assignedScore": 17,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Jeremy Gerard",
@@ -105208,7 +105208,7 @@
       "pullQuote": "'High' plays more like an early workshop than a polished Broadway production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "high-2011",
@@ -106568,7 +106568,7 @@
       "pullQuote": "They’re all back, looking better than ever – and that includes the play itself.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "how-i-learned-to-drive-2022",
@@ -108013,7 +108013,7 @@
       "pullQuote": "In this intelligent, surprising, altogether original new musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "ifthen-2014",
@@ -155944,6 +155944,23 @@
     },
     {
       "showId": "tammy-faye-2024",
+      "outletId": "thewrap",
+      "outlet": "TheWrap",
+      "assignedScore": 15,
+      "scoreSource": "llmScore",
+      "bucket": "Pan",
+      "thumb": "Down",
+      "criticName": "Unknown",
+      "url": "https://www.thewrap.com/tammy-faye-broadway-review-elton-john/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "That ghastly waking nightmare will give you some idea of what it's like to sit through the new musical 'Tammy Faye.'",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "tammy-faye-2024",
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 77,
@@ -159157,6 +159174,23 @@
     },
     {
       "showId": "the-country-girl-2008",
+      "outletId": "newsday",
+      "outlet": "Newsday",
+      "assignedScore": 0,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Pan",
+      "thumb": "Down",
+      "criticName": "Linda Winer",
+      "url": "https://www.newsday.com/entertainment/theater/the-country-house-review-banter-in-the-berkshires-1.9455486",
+      "publishDate": null,
+      "originalRating": "0/5",
+      "pullQuote": "It is easy to understand why playwrights, especially those fascinated by the layers of human relationships, are drawn to the work of Anton Chekhov...Except for the fine cast led by the formidably elegant Blythe Danner, however, there is little else that feels right enough about \"The Country House.\" ...",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-country-girl-2008",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 53,
@@ -159174,40 +159208,6 @@
     },
     {
       "showId": "the-country-house-2014",
-      "outletId": "nydailynews",
-      "outlet": "New York Daily News",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Joe Dziemianowicz",
-      "url": "http://www.nydailynews.com/entertainment/blythe-danner-home-country-house-article-1.1959709",
-      "publishDate": "October 1, 2014",
-      "originalRating": null,
-      "pullQuote": "The play is a thoughtful, well-acted meditation on family, career and creativity that feels both timeless and timely.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-country-house-2014",
-      "outletId": "newsday",
-      "outlet": "Newsday",
-      "assignedScore": 0,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": "Linda Winer",
-      "url": "http://www.newsday.com/entertainment/theater/the-country-house-review-banter-in-the-berkshires-1.9455486",
-      "publishDate": null,
-      "originalRating": "0/5",
-      "pullQuote": "It is easy to understand why playwrights, especially those fascinated by the layers of human relationships, are drawn to the work of Anton Chekhov...Except for the fine cast led by the formidably elegant Blythe Danner, however, there is little else that feels right enough about 'The Country House.' Margulies...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-country-house-2014",
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 46,
@@ -159219,23 +159219,6 @@
       "publishDate": "October 7, 2014",
       "originalRating": null,
       "pullQuote": "The Country House is a play that works better in theory than in practice, despite boasting a stellar cast and the reliable direction of Daniel Sullivan.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "the-country-house-2014",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 53,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Robert Hofler",
-      "url": "http://www.thewrap.com/the-country-house-theater-review-blythe-danner-plays-a-mommie-chilliest/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "'The Country House' is actually two plays: the sentimental drama of the second act, and the sitcom comedy of the first act.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -159357,7 +159340,8 @@
       "pullQuote": "This gorgeously realized production has the wisdom to let us laugh until it hurts.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "the-cripple-of-inishmaan-2014",
@@ -160120,23 +160104,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "But how I wish I could say that Florian Zeller's play lived up to the depths of its worthy ambition — much less to Langella's silken heartbreak of a performance.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-father-2016",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Alexis Soloski",
-      "url": "https://www.theguardian.com/stage/2016/apr/14/the-father-review-frank-langella-devastates-study-dementia",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "\"Langella responds to this dislocation with petulance, confusion, cruelty and anger...With the exception of a few unnecessary soliloquies, the dialogue is often powerful in its simplicity and Zeller effectively communicates a sense of existential horror lurking just below everyday chatter...Parts of the play can feel somewhat too pat...",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
