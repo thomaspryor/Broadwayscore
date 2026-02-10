@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T11:33:43.361Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "wicked-2003",
     "aggressive": false,
@@ -87,13 +87,12 @@
       "wicked-2003/ew--alice-king.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "frozen-2018/theatermania--adam-feldman.json",
+      "oldUrl": "https://www.theatermania.com/broadway/news/frozen_81114.html",
+      "newUrl": "https://www.theatermania.com/news/review-a-frozen-wonderland-takes-the-stage-at-the-gateway-playhouse-on-long-island_1767530/"
     },
     "Nexus Point News (Demet Koc)": {
       "count": 1,
@@ -116,6 +115,5 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
