@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T19:01:50.381Z",
-  "processed": 10,
-  "failed": 190,
-  "successRate": "5.0%",
+  "updatedAt": "2026-02-10T19:04:38.665Z",
+  "processed": 69,
+  "failed": 301,
+  "successRate": "18.6%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 1,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 4
+    "playwright": 7,
+    "browserbase": 2,
+    "scrapingbee": 14,
+    "brightdata": 7,
+    "archive": 41
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:57:17.255Z",
+      "t": "2026-02-10T15:57:22.741Z",
       "event": "bb-session",
-      "session": "2aa4daf9",
-      "url": "https://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als"
+      "session": "f193a2b8",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
     },
     {
-      "t": "2026-02-10T16:57:19.583Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "t": "2026-02-10T15:58:06.045Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:57:46.584Z",
+      "t": "2026-02-10T15:58:52.346Z",
       "event": "bb-session",
-      "session": "72da2df5",
-      "url": "https://www.variety.com/review/VE1117942352.html?categoryId=33&cs=1"
+      "session": "6cee588a",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
     },
     {
-      "t": "2026-02-10T16:58:38.204Z",
-      "event": "bb-session",
-      "session": "93bc2987",
-      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+      "t": "2026-02-10T15:59:36.228Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-10T16:59:02.860Z",
+      "t": "2026-02-10T16:01:48.775Z",
       "event": "bb-session",
-      "session": "33a99592",
-      "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
+      "session": "7a6e7625",
+      "url": "https://www.indiewire.com/2018/04/harry-potter-cursed-child-broadway-review-1201"
     },
     {
-      "t": "2026-02-10T17:00:02.137Z",
+      "t": "2026-02-10T16:18:14.260Z",
       "event": "bb-session",
-      "session": "83598a2b",
-      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
+      "session": "819f6e63",
+      "url": "https://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-10T16:18:45.398Z",
+      "event": "bb-session",
+      "session": "81d02834",
+      "url": "https://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-656"
     }
   ]
 }
