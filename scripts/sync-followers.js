@@ -2,12 +2,15 @@
 /**
  * sync-followers.js
  *
- * Fetches Formspree submissions for the Follow Show form and builds/updates
- * data/followers.json with deduplicated follower lists per show.
+ * Fetches Formspree submissions from two separate forms:
+ *   1. Follow form (FORMSPREE_FOLLOW_FORM_ID) — per-show follow/unfollow
+ *   2. Subscriber form (FORMSPREE_SUBSCRIBER_FORM_ID) — general subscribe/unsubscribe
+ *
+ * Builds/updates data/followers.json and data/subscribers.json.
  *
  * Usage: node scripts/sync-followers.js [--dry-run]
  *
- * Env: FORMSPREE_TOKEN, FORMSPREE_FOLLOW_FORM_ID
+ * Env: FORMSPREE_TOKEN, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID
  */
 
 const fs = require('fs');
@@ -73,71 +76,120 @@ function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+async function fetchAllSubmissions(formId, token, sinceDate) {
+  const submissions = [];
+  let offset = 0;
+  const limit = 100;
+
+  while (true) {
+    let url = `https://formspree.io/api/0/forms/${formId}/submissions?limit=${limit}&offset=${offset}`;
+    if (sinceDate) {
+      url += `&since=${encodeURIComponent(sinceDate)}`;
+    }
+
+    let result;
+    try {
+      result = await fetchJSON(url, { 'Authorization': `Bearer ${token}` });
+    } catch (err) {
+      console.error(`  Error fetching from ${formId}: ${err.message}`);
+      if (offset === 0) return null; // Total failure
+      console.error('  Aborting pagination — retaining partial results');
+      break;
+    }
+
+    const items = result.submissions || result;
+    if (!Array.isArray(items) || items.length === 0) break;
+
+    submissions.push(...items);
+    console.log(`  Fetched ${items.length} submissions (offset ${offset})`);
+
+    if (items.length < limit) break;
+    offset += limit;
+  }
+
+  return submissions;
+}
+
 async function main() {
   const token = process.env.FORMSPREE_FOLLOW_API_KEY || process.env.FORMSPREE_TOKEN;
-  const formId = process.env.FORMSPREE_FOLLOW_FORM_ID;
+  const followFormId = process.env.FORMSPREE_FOLLOW_FORM_ID;
+  const subscriberFormId = process.env.FORMSPREE_SUBSCRIBER_FORM_ID;
 
-  if (!token || !formId) {
-    console.log('Missing FORMSPREE_FOLLOW_API_KEY/FORMSPREE_TOKEN or FORMSPREE_FOLLOW_FORM_ID — skipping sync');
+  if (!token) {
+    console.log('Missing FORMSPREE_FOLLOW_API_KEY/FORMSPREE_TOKEN — skipping sync');
     process.exit(0);
   }
 
-  console.log(`Syncing followers from Formspree form ${formId}...`);
+  if (!followFormId && !subscriberFormId) {
+    console.log('Missing both FORMSPREE_FOLLOW_FORM_ID and FORMSPREE_SUBSCRIBER_FORM_ID — skipping sync');
+    process.exit(0);
+  }
+
   if (DRY_RUN) console.log('(DRY RUN — no files will be written)\n');
 
   const data = loadFollowers();
   const existingCount = Object.values(data.followers).reduce((sum, arr) => sum + arr.length, 0);
   console.log(`Existing: ${existingCount} follow entries across ${Object.keys(data.followers).length} shows`);
 
-  // Fetch all submissions (paginated)
-  let allSubmissions = [];
-  let offset = 0;
-  const limit = 100;
-
-  while (true) {
-    let url = `https://formspree.io/api/0/forms/${formId}/submissions?limit=${limit}&offset=${offset}`;
-    // Only fetch new submissions if we have a lastSynced date
-    if (data._meta.lastSynced) {
-      url += `&since=${encodeURIComponent(data._meta.lastSynced)}`;
-    }
-
-    let result;
-    try {
-      result = await fetchJSON(url, {
-        'Authorization': `Bearer ${token}`,
-      });
-    } catch (err) {
-      console.error(`  Error fetching submissions: ${err.message}`);
-      if (offset === 0) {
-        console.log('No submissions could be fetched. If this is the first run, this is normal.');
-        process.exit(0);
-      }
-      // Partial fetch failure: abort and retain previous data (Pre-Mortem P0 guard)
-      console.error('  Aborting pagination — retaining previous data to prevent partial overwrites');
-      break;
-    }
-
-    const submissions = result.submissions || result;
-    if (!Array.isArray(submissions) || submissions.length === 0) break;
-
-    allSubmissions = allSubmissions.concat(submissions);
-    console.log(`  Fetched ${submissions.length} submissions (offset ${offset})`);
-
-    if (submissions.length < limit) break;
-    offset += limit;
-  }
-
-  console.log(`\nTotal new submissions: ${allSubmissions.length}`);
-
-  // Process submissions — handle general subscribers AND per-show follows
+  // --- 1. Fetch per-show follows from Follow form ---
   let added = 0;
   let removed = 0;
   let skippedDuplicate = 0;
   let skippedInvalid = 0;
-  let subscribersAdded = 0;
-  let subscribersRemoved = 0;
 
-  // Load existing subscribers (if any)
+  if (followFormId) {
+    console.log(`\nSyncing follows from form ${followFormId}...`);
+    const followSubs = await fetchAllSubmissions(followFormId, token, data._meta.lastSynced);
+
+    if (followSubs === null) {
+      console.log('Could not fetch follow form. If this is the first run, this is normal.');
+    } else {
+      console.log(`Follow submissions: ${followSubs.length}`);
+
+      for (const sub of followSubs) {
+        const email = (sub.email || sub._replyto || '').toLowerCase().trim();
+        const showId = sub.showId;
+        const action = (sub.action || 'follow').toLowerCase();
+
+        if (!isValidEmail(email) || !showId) {
+          skippedInvalid++;
+          continue;
+        }
+
+        if (action === 'unfollow') {
+          if (data.followers[showId]) {
+            const idx = data.followers[showId].indexOf(email);
+            if (idx !== -1) {
+              data.followers[showId].splice(idx, 1);
+              removed++;
+              console.log(`  - ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unfollowed)`);
+              if (data.followers[showId].length === 0) delete data.followers[showId];
+            }
+          }
+          continue;
+        }
+
+        if (!data.followers[showId]) data.followers[showId] = [];
+        if (data.followers[showId].includes(email)) {
+          skippedDuplicate++;
+          continue;
+        }
+        data.followers[showId].push(email);
+        added++;
+        console.log(`  + ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+      }
+    }
+  }
+
+  console.log(`\nFollow results: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates, ${skippedInvalid} invalid`);
+
+  if (!DRY_RUN && (added > 0 || removed > 0)) {
+    saveFollowers(data);
+  } else if (added === 0 && removed === 0) {
+    console.log('No follow changes to save');
+  }
+
+  // --- 2. Fetch general subscribers from Subscriber form ---
   const generalSubscribers = new Set();
   try {
     const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
@@ -146,82 +198,51 @@ async function main() {
     }
   } catch { /* no existing file — start fresh */ }
 
-  for (const sub of allSubmissions) {
-    const email = (sub.email || sub._replyto || '').toLowerCase().trim();
-    const showId = sub.showId;
-    const action = (sub.action || 'follow').toLowerCase();
+  let subscribersAdded = 0;
+  let subscribersRemoved = 0;
 
-    if (!isValidEmail(email)) {
-      skippedInvalid++;
-      continue;
-    }
+  if (subscriberFormId) {
+    console.log(`\nSyncing subscribers from form ${subscriberFormId}...`);
 
-    // Handle general subscriber actions (no showId needed)
-    if (action === 'subscribe') {
-      if (!generalSubscribers.has(email)) {
-        generalSubscribers.add(email);
-        subscribersAdded++;
-        console.log(`  + subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
-      }
-      continue;
-    }
+    // Load subscriber-specific lastSynced (separate from follower sync)
+    let subscriberLastSynced = null;
+    try {
+      const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
+      subscriberLastSynced = existing._meta?.lastSynced || null;
+    } catch { /* first run */ }
 
-    if (action === 'unsubscribe') {
-      if (generalSubscribers.has(email)) {
-        generalSubscribers.delete(email);
-        subscribersRemoved++;
-        console.log(`  - subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unsubscribed)`);
-      }
-      continue;
-    }
+    const subSubs = await fetchAllSubmissions(subscriberFormId, token, subscriberLastSynced);
 
-    // Per-show actions require showId
-    if (!showId) {
-      skippedInvalid++;
-      continue;
-    }
+    if (subSubs === null) {
+      console.log('Could not fetch subscriber form. If this is the first run, this is normal.');
+    } else {
+      console.log(`Subscriber submissions: ${subSubs.length}`);
 
-    // Handle unfollow
-    if (action === 'unfollow') {
-      if (data.followers[showId]) {
-        const idx = data.followers[showId].indexOf(email);
-        if (idx !== -1) {
-          data.followers[showId].splice(idx, 1);
-          removed++;
-          console.log(`  - ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unfollowed)`);
-          if (data.followers[showId].length === 0) {
-            delete data.followers[showId];
+      for (const sub of subSubs) {
+        const email = (sub.email || sub._replyto || '').toLowerCase().trim();
+        const action = (sub.action || 'subscribe').toLowerCase();
+
+        if (!isValidEmail(email)) continue;
+
+        if (action === 'unsubscribe') {
+          if (generalSubscribers.has(email)) {
+            generalSubscribers.delete(email);
+            subscribersRemoved++;
+            console.log(`  - subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unsubscribed)`);
+          }
+        } else {
+          if (!generalSubscribers.has(email)) {
+            generalSubscribers.add(email);
+            subscribersAdded++;
+            console.log(`  + subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
           }
         }
       }
-      continue;
     }
-
-    // Handle follow
-    if (!data.followers[showId]) {
-      data.followers[showId] = [];
-    }
-
-    if (data.followers[showId].includes(email)) {
-      skippedDuplicate++;
-      continue;
-    }
-
-    data.followers[showId].push(email);
-    added++;
-    console.log(`  + ${showId}: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
   }
 
-  console.log(`\nFollow results: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates, ${skippedInvalid} invalid`);
-  console.log(`Subscriber results: ${subscribersAdded} subscribed, ${subscribersRemoved} unsubscribed, ${generalSubscribers.size} total`);
+  console.log(`\nSubscriber results: ${subscribersAdded} subscribed, ${subscribersRemoved} unsubscribed, ${generalSubscribers.size} total`);
 
-  if (!DRY_RUN && (added > 0 || removed > 0)) {
-    saveFollowers(data);
-  } else if (added === 0 && removed === 0) {
-    console.log('No follow changes to save');
-  }
-
-  // Write subscribers.json (sorted for stable retry offset)
   if (!DRY_RUN) {
     const subscribersList = Array.from(generalSubscribers).sort();
     const subscribersData = {

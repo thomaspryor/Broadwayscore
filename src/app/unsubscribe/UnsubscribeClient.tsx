@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
+const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 
 export default function UnsubscribeClient() {
   const searchParams = useSearchParams();
@@ -27,7 +27,7 @@ export default function UnsubscribeClient() {
   const handleUnsubscribe = async () => {
     setStatus('submitting');
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_FOLLOW_FORM_ID}`, {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_SUBSCRIBER_FORM_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
