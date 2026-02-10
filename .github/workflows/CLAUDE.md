@@ -21,6 +21,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `scrape-bww-reviews.yml` | ✅ | ✅ | Weekly BWW /reviews/ pages + roundups, rebuilds after scrape |
 | `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
 | `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (audit → parallel gather → scrape PV/NYC → rebuild) |
+| `opening-night-broadcast.yml` | ✅ | ✅ | 2x daily, discovers reviews via SERP + aggregators, rebuilds, sends broadcast email |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -56,6 +57,20 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Guards:** Checks if gather-reviews is already running before triggering
 - **No secrets needed** beyond `GITHUB_TOKEN`
 - **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
+
+## `opening-night-broadcast.yml`
+- **Runs:** Daily at 4 AM UTC (~11 PM ET) and 5 AM UTC (~midnight ET), or manually
+- **Does:** Full opening-night pipeline: discovers reviews via SERP, gathers from aggregators, rebuilds/scores, generates consensus, sends broadcast email to all subscribers via Resend
+- **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → generate consensus → send broadcast → commit
+- **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
+- **Readiness gate:** 12+ scored reviews required before sending
+- **Budget gate:** Cap at 95 sends per run (Resend 100/day limit, leaves headroom for per-show follows)
+- **Multi-show coalescing:** If 2+ shows open same night, sends single email with multiple score cards
+- **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored). If interrupted, next cron run picks up where it left off.
+- **Scripts:** `scripts/discover-opening-night-reviews.js`, `scripts/send-opening-night-broadcast.js`
+- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_TOKEN, FORMSPREE_FOLLOW_FORM_ID
+- **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
+- **Related:** `opening-night-reviews.yml` (older, simpler — just triggers gather-reviews). The broadcast workflow is a superset that includes review discovery + scoring + email sending.
 
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
