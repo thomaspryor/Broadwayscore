@@ -1,51 +1,56 @@
 {
-  "updatedAt": "2026-02-10T20:20:53.540Z",
-  "processed": 29,
-  "failed": 301,
-  "successRate": "8.8%",
+  "updatedAt": "2026-02-10T20:24:54.881Z",
+  "processed": 18,
+  "failed": 392,
+  "successRate": "4.4%",
   "tierBreakdown": {
     "playwright": 2,
     "browserbase": 3,
-    "scrapingbee": 6,
-    "brightdata": 5,
-    "archive": 16
+    "scrapingbee": 1,
+    "brightdata": 6,
+    "archive": 8
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-10T16:34:53.114Z",
+      "t": "2026-02-10T16:01:32.940Z",
       "event": "bb-session",
-      "session": "384a5177",
-      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+      "session": "bc708c3c",
+      "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-"
     },
     {
-      "t": "2026-02-10T16:35:12.212Z",
+      "t": "2026-02-10T16:02:01.495Z",
       "event": "bb-session",
-      "session": "baa0924c",
-      "url": "https://observer.com/2022/11/review-the-excruciating-juliet-fails-on-every-level"
+      "session": "26143792",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-10T16:35:26.412Z",
+      "t": "2026-02-10T16:02:29.882Z",
       "event": "bb-session",
-      "session": "6d871bab",
-      "url": "https://www.theatermania.com/broadway/news/review-and-juliet-musical-broadway_94"
+      "session": "6c5fb15c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-10T16:35:54.873Z",
+      "t": "2026-02-10T16:04:42.466Z",
       "event": "bb-session",
-      "session": "cb221408",
-      "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
+      "session": "a4ac3830",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
     },
     {
-      "t": "2026-02-10T16:37:29.512Z",
-      "event": "bb-session",
-      "session": "7f5222ad",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "t": "2026-02-10T16:04:44.422Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-10T16:38:15.726Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-10T16:06:45.438Z",
+      "event": "bb-session",
+      "session": "26228a00",
+      "url": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html"
+    },
+    {
+      "t": "2026-02-10T16:06:47.341Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     }
   ]
 }
