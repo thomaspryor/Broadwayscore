@@ -1,307 +1,161 @@
 {
-  "runDate": "2026-02-10T13:49:58.240Z",
+  "runDate": "2026-02-10T13:55:36.207Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024,book-of-mormon-2011,and-juliet-2022,aladdin-2014,two-strangers-bway-2025,ragtime-2025,king-kong-2018,shucked-2023,war-paint-2017,oslo-2017,on-your-feet-2015,the-encounter-2016,a-dolls-house-part-2-2017,frozen-2018,network-2018,the-terms-of-my-surrender-2017,head-over-heels-2018,she-loves-me-2016,beetlejuice-2022,dear-evan-hansen-2016,marvins-room-2017,significant-other-2017,be-more-chill-2019,the-children-2017,fun-home-2015,dames-at-sea-2015,gettin-the-band-back-together-2018,some-like-it-hot-2022,china-doll-2015,tammy-faye-2024,here-lies-love-2023,waitress-2021,the-normal-heart-2011,paradise-square-2022,the-music-man-2022,kpop-2022,the-audience-2015,ohio-state-murders-2022,the-king-and-i-2015,purpose-2025,all-my-sons-2008,betrayal-2013,kimberly-akimbo-2022,stephen-sondheims-old-friends-2025,cabaret-2014,hedwig-and-the-angry-inch-2014,pippin-2013,swept-away-2024,a-soldiers-play-2020,enron-2010,master-class-2011,present-laughter-2010,walking-with-ghosts-2022,newsies-the-musical-2012,the-addams-family-2010,the-shark-is-broken-2023,a-gentlemans-guide-to-love-and-murder-2013,a-little-night-music-2009,dead-outlaw-2025,home-2024,oh-hello-on-broadway-2016,relatively-speaking-2011,the-trip-to-bountiful-2013,a-streetcar-named-desire-2012,blackbird-2016,flying-over-sunset-2021,lucky-guy-2013,prima-facie-2023,suffs-2024,the-scottsboro-boys-2010,9-to-5-2009,an-enemy-of-the-people-2024,cabaret-2024,how-i-learned-to-drive-2022,nice-work-if-you-can-get-it-2012,stereophonic-2024,time-and-the-conways-2017,a-wonderful-world-the-louis-armstrong-musical-2024,cirque-du-soleil-paramour-2016,jajas-african-hair-braiding-2023,lend-me-a-tenor-2010,romeo-and-juliet-2013,the-gershwins-porgy-and-bess-2012,the-present-2017,waiting-for-godot-2025,birthday-candles-2022,doctor-zhivago-2015,ghetto-klown-2011,jekyll-and-hyde-2013,other-desert-cities-2011,soul-doctor-2013,the-lifespan-of-a-fact-2018,the-whos-tommy-2024,a-behanding-in-spokane-2010,back-to-the-future-2023,days-of-wine-and-roses-2024,is-this-a-room-2021,prayer-for-the-french-republic-2024,the-country-house-2014,a-moon-for-the-misbegotten-2007,chaplin-2012,equus-2008,high-2011,pirates-the-penzance-musical-2025,sunset-boulevard-2017,water-for-elephants-2024,les-miserables-2014,the-columnist-2012,a-chorus-line-2006,august-osage-county-2007,dont-dress-for-dinner-2012,rent-1996,the-lyons-2012,legally-blonde-2007,shrek-the-musical-2008,west-side-story-2009,the-royal-family-2009,high-fidelity-2006,primo-2005,a-tale-of-two-cities-2008,burn-the-floor-2009,lackawanna-blues-2021,the-producers-2001,crybaby-2008,heartbreak-house-2006,souvenir-2005,the-wedding-singer-2006,110-in-the-shade-2007,bridge-and-tunnel-2006,finians-rainbow-2009,irving-berlins-white-christmas-2009,mauritius-2007,the-constant-wife-2005,the-pirate-queen-2007",
+    "showFilter": "",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 92,
+    "processed": 1,
+    "failed": 36,
     "skipped": 0,
-    "successRate": "8.0%"
+    "successRate": "2.7%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 2,
-    "archive": 2
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 42,
-    "tier1Success": 21,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 61,
-    "tier2Success": 14,
-    "tier3Attempts": 50,
-    "tier3Success": 29,
-    "tier4Attempts": 66,
-    "tier4Success": 17,
-    "totalFailed": 92,
-    "scrapingBeeCreditsUsed": 407,
+    "tier2Attempts": 36,
+    "tier2Success": 9,
+    "tier3Attempts": 27,
+    "tier3Success": 14,
+    "tier4Attempts": 27,
+    "tier4Success": 6,
+    "totalFailed": 36,
+    "scrapingBeeCreditsUsed": 255,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 27,
-    "urlDiscoverySuccess": 13,
+    "urlDiscoveryAttempts": 15,
+    "urlDiscoverySuccess": 11,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "book-of-mormon-2011/stagezine--scott-harrah.json",
-    "betrayal-2013/hollywood-reporter--david-rooney.json",
-    "betrayal-2013/nyt-theater--jonathan-mandell.json",
-    "blackbird-2016/hollywood-reporter--david-rooney.json",
-    "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json",
-    "mauritius-2007/variety--david-rooney.json"
+    "this-is-our-youth-2014/deadline--jeremy-gerard.json"
   ],
   "failed": [
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
-    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "ragtime-2025/variety--frank-rizzo.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "hells-kitchen-2024/thewrap--steve-pond.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "two-strangers-bway-2025/this-week-in-new-york--mark-rifkin.json",
-    "book-of-mormon-2011/cititour--lesley-alexander.json",
-    "aladdin-2014/amny--joe-dziemianowicz.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/perez-hilton--perez-hilton.json",
-    "aladdin-2014/thestage--mark-shenton.json",
-    "and-juliet-2022/broadway-blog--joey-sims.json",
-    "and-juliet-2022/front-row-center--brittany-crowell.json",
-    "and-juliet-2022/talkinbroadway--howard-miller.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
-    "book-of-mormon-2011/latimes--charles-mcnulty.json",
-    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/stu-on-broadway--stu-brown.json",
-    "book-of-mormon-2011/the-independent-uk--peter-marks.json",
-    "book-of-mormon-2011/theatre-is-easy--dan-dinero.json",
-    "book-of-mormon-2011/village-voice--michael-musto.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/rollingstone--brittani-samuel.json",
-    "hells-kitchen-2024/showbiz411-roger-friedman--roger-friedman.json",
-    "hells-kitchen-2024/slantmagazine--dan-rubins.json",
-    "hells-kitchen-2024/talkinbroadway--howard-miller.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
-    "hells-kitchen-2024/usatoday--david-oliver.json",
-    "ragtime-2025/talkinbroadway--howard-miller.json",
-    "ragtime-2025/theater-life--samuel-l-leiter.json",
-    "two-strangers-bway-2025/pages-on-stages--mason-pilevsky.json",
-    "two-strangers-bway-2025/talkinbroadway--howard-miller.json",
-    "9-to-5-2009/hollywood-reporter--unknown.json",
-    "a-behanding-in-spokane-2010/variety--david-rooney.json",
-    "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-    "a-little-night-music-2009/variety--david-rooney.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
-    "august-osage-county-2007/hollywood-reporter--unknown.json",
-    "august-osage-county-2007/variety--charles-isherwood.json",
-    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-    "be-more-chill-2019/hollywood-reporter--frank-scheck.json",
-    "bridge-and-tunnel-2006/variety--charles-isherwood.json",
-    "cabaret-2014/hollywood-reporter--david-rooney.json",
-    "cabaret-2014/variety--marilyn-stasio.json",
-    "cabaret-2024/variety--aramide-tinubu.json",
-    "dames-at-sea-2015/hollywood-reporter--david-rooney.json",
-    "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
-    "dont-dress-for-dinner-2012/hollywood-reporter--david-rooney.json",
-    "dont-dress-for-dinner-2012/variety--marilyn-stasio.json",
-    "enron-2010/variety--marilyn-stasio.json",
-    "fun-home-2015/hollywood-reporter--david-rooney.json",
-    "fun-home-2015/hollywood-reporter--unknown.json",
-    "fun-home-2015/nytg--tulis-mccall.json",
-    "gettin-the-band-back-together-2018/hollywood-reporter--frank-scheck.json",
-    "ghetto-klown-2011/hollywood-reporter--david-rooney.json",
-    "ghetto-klown-2011/variety--marilyn-stasio.json",
-    "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
-    "irving-berlins-white-christmas-2009/variety--david-rooney.json",
-    "jekyll-and-hyde-2013/hollywood-reporter--frank-scheck.json",
-    "kimberly-akimbo-2022/variety--charles-isherwood.json",
-    "king-kong-2018/hollywood-reporter--david-rooney.json",
-    "king-kong-2018/nyt-theater--jonathan-mandell.json",
-    "king-kong-2018/variety--frank-rizzo.json",
-    "king-kong-2018/variety--marilyn-stasio.json",
-    "kpop-2022/nyt-theater--adam-feldman.json",
-    "kpop-2022/variety--aramide-tinubu.json",
-    "legally-blonde-2007/variety--david-rooney.json",
-    "les-miserables-2014/hollywood-reporter--david-rooney.json",
-    "lucky-guy-2013/hollywood-reporter--david-rooney.json",
-    "lucky-guy-2013/variety--marilyn-stasio.json",
-    "marvins-room-2017/act-three-the-reviews--doug-marino.json",
-    "marvins-room-2017/hollywood-reporter--david-rooney.json",
-    "marvins-room-2017/nyt-theater--jonathan-mandell.json",
-    "master-class-2011/hollywood-reporter--david-rooney.json",
-    "network-2018/hollywood-reporter--david-rooney.json",
-    "network-2018/variety--marilyn-stasio.json",
-    "newsies-the-musical-2012/variety--marilyn-stasio.json",
-    "nice-work-if-you-can-get-it-2012/hollywood-reporter--david-rooney.json",
-    "nice-work-if-you-can-get-it-2012/variety--steven-suskin.json"
+    "mj-2022/deadline--pete-hammond.json",
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "1776-2022/deadline--pete-hammond.json",
+    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
+    "a-christmas-carol-2019/deadline--greg-evans.json",
+    "a-delicate-balance-2014/deadline--jeremy-gerard.json",
+    "a-dolls-house-2023/deadline--greg-evans.json",
+    "almost-famous-2022/deadline--pete-hammond.json",
+    "macbeth-2022/deadline--pete-hammond.json",
+    "mean-girls-2018/deadline--pete-hammond.json",
+    "network-2018/deadline--pete-hammond.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "suffs-2024/deadline--pete-hammond.json",
+    "summer-2018/deadline--pete-hammond.json",
+    "the-ferryman-2018/deadline--pete-hammond.json",
+    "the-hills-of-california-2024/deadline--pete-hammond.json",
+    "the-minutes-2022/deadline--pete-hammond.json",
+    "the-music-man-2022/deadline--pete-hammond.json",
+    "the-parisian-woman-2017/deadline--pete-hammond.json",
+    "three-tall-women-2018/deadline--greg-evans.json",
+    "time-and-the-conways-2017/deadline--jeremy-gerard.json",
+    "time-and-the-conways-2017/deadline--pete-hammond.json",
+    "tina-2019/deadline--greg-evans.json",
+    "to-kill-a-mockingbird-2018/deadline--greg-evans.json",
+    "tootsie-2019/deadline--greg-evans.json",
+    "tootsie-2019/deadline--pete-hammond.json",
+    "travesties-2018/deadline--greg-evans.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "true-west-2019/deadline--greg-evans.json",
+    "tuck-everlasting-2016/deadline--jeremy-gerard.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "war-paint-2017/deadline--jeremy-gerard.json",
+    "west-side-story-2020/deadline--greg-evans.json",
+    "yellow-face-2024/deadline--greg-evans.json",
+    "you-cant-take-it-with-you-2014/deadline--jeremy-gerard.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "book-of-mormon-2011/stagezine--scott-harrah.json",
-      "betrayal-2013/nyt-theater--jonathan-mandell.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "and-juliet-2022/thewrap--robert-hofler.json",
-      "mauritius-2007/variety--david-rooney.json"
+      "this-is-our-youth-2014/deadline--jeremy-gerard.json"
     ],
-    "brightdata": [
-      "betrayal-2013/hollywood-reporter--david-rooney.json",
-      "blackbird-2016/hollywood-reporter--david-rooney.json"
-    ],
-    "archive": [
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-      "lend-me-a-tenor-2010/hollywood-reporter--frank-scheck.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
   "failuresByOutlet": {
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Broadway Voice": {
+    "Deadline": {
       "count": 2,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Perez Hilton": {
-      "count": 1,
-      "domain": "perezhilton.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway Blog": {
-      "count": 1,
-      "domain": "thebroadwayblog.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NorthJersey.com": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Village Voice": {
-      "count": 1,
-      "domain": "villagevoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
+      "domain": "deadline.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "Hollywood Reporter": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hells-kitchen-2024/nytg--david-gordon.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+      "reviewId": "mj-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/02/mj-the-musical-review-broadway-michael-jackson-1234937478/",
+      "newUrl": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-1234922944/"
     },
     {
-      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
-      "oldUrl": "https://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
-      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
+      "reviewId": "1776-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-american-airlines-theatre-1235149772/",
+      "newUrl": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
     },
     {
-      "reviewId": "a-little-night-music-2009/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/a-little-night-music-theater-review-1004107085.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/night-music-theater-review-93806/"
+      "reviewId": "macbeth-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/04/macbeth-review-daniel-craig-ruth-negga-broadway-1235005582/",
+      "newUrl": "https://deadline.com/2022/04/macbeth-broadway-review-daniel-craig-ruth-negga-1235011369/"
     },
     {
-      "reviewId": "a-little-night-music-2009/variety--david-rooney.json",
-      "oldUrl": "https://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&utm_",
-      "newUrl": "https://variety.com/2009/legit/reviews/a-little-night-music-7-1200474242/"
+      "reviewId": "mean-girls-2018/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-august-wilson-theatre-1202366025/",
+      "newUrl": "https://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-honor-roll-1202359804/"
     },
     {
-      "reviewId": "cabaret-2014/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2014/legit/reviews/cabaret-review-1201154402/",
-      "newUrl": "https://variety.com/2014/legit/reviews/broadway-review-emma-stone-in-cabaret-1201372234/"
+      "reviewId": "network-2018/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2018/12/network-review-bryan-cranston-broadway-1202509978/",
+      "newUrl": "https://deadline.com/2018/12/network-broadway-review-bryan-cranston-ivo-van-hove-mad-prophet-1202514424/"
     },
     {
-      "reviewId": "fun-home-2015/nytg--tulis-mccall.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/funhome13.htm",
-      "newUrl": "https://www.newyorktheatreguide.com/reviews/fun-home-0"
+      "reviewId": "the-ferryman-2018/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2018/10/the-ferryman-review-broadway-jez-butterworth-1202487068/",
+      "newUrl": "https://deadline.com/2018/10/the-ferryman-broadway-review-jez-butterworth-sam-mendes-paddy-considine-1202486601/"
     },
     {
-      "reviewId": "king-kong-2018/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/review/king-kong-theater-review-1162233/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/king-kong-theater-1159078/"
+      "reviewId": "the-hills-of-california-2024/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2024/09/the-hills-of-california-review-broadway-jez-butterworth-laura-donnelly-1236089506/",
+      "newUrl": "https://deadline.com/2024/09/hills-of-california-broadway-review-1236100364/"
     },
     {
-      "reviewId": "kpop-2022/nyt-theater--adam-feldman.json",
-      "oldUrl": "https://newyorktheater.me/2022/11/28/kpop-review-circle-in-the-square/",
-      "newUrl": "https://newyorktheater.me/2022/11/27/kpop-on-broadway-review/"
+      "reviewId": "the-music-man-2022/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2022/02/the-music-man-broadway-review-hugh-jackman-sutton-foster-1234941016/",
+      "newUrl": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/"
     },
     {
-      "reviewId": "kpop-2022/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2022/legit/reviews/kpop-broadway-review-1235420943/",
-      "newUrl": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/"
+      "reviewId": "the-parisian-woman-2017/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2017/11/the-parisian-woman-broadway-review-uma-thurman-1202207344/",
+      "newUrl": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/"
     },
     {
-      "reviewId": "lucky-guy-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/lucky-guy-theater-review-tom-437039/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/lucky-guy-theater-review-432116/"
+      "reviewId": "time-and-the-conways-2017/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2017/10/time-and-the-conways-review-elizabeth-mcgovern-anna-camp-broadway-1202186534/",
+      "newUrl": "https://deadline.com/2017/10/time-and-the-conways-elizabeth-mcgovern-measure-for-measure-review-1202185137/"
     },
     {
-      "reviewId": "lucky-guy-2013/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2013/legit/reviews/lucky-guy-1200334441/",
-      "newUrl": "https://variety.com/2013/legit/reviews/legit-review-lucky-guy-1200331512/"
-    },
-    {
-      "reviewId": "master-class-2011/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/master-class-broadway-review-267974/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/master-class-theater-review-208970/"
-    },
-    {
-      "reviewId": "newsies-the-musical-2012/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2012/legit/reviews/newsies-the-musical-1117948174/",
-      "newUrl": "https://variety.com/2012/legit/reviews/newsies-the-musical-2-1117947318/"
+      "reviewId": "tootsie-2019/deadline--pete-hammond.json",
+      "oldUrl": "https://deadline.com/2019/04/tootsie-broadway-review-santino-fontana-1202598844/",
+      "newUrl": "https://deadline.com/2019/04/tootsie-broadway-review-santino-tontana-dorothy-michaels-1202600316/"
     }
   ]
 }
