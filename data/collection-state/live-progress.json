@@ -1,52 +1,15 @@
 {
-  "updatedAt": "2026-02-10T16:48:23.396Z",
-  "processed": 7,
-  "failed": 93,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-10T16:48:53.330Z",
+  "processed": 11,
+  "failed": 89,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 3,
-    "scrapingbee": 0,
+    "playwright": 2,
+    "browserbase": 0,
+    "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 3
+    "archive": 7
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-10T15:55:10.358Z",
-      "event": "bb-session",
-      "session": "f213317b",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-10T15:55:52.357Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770738919228\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA2IJ4BI_D-ocALPe1oA==&cid=RiieTcsfswbH3EGrzAjH4g95b2uhT6EKPeyIjnWKZhfm8Ep_u0K2WFsDJGs0hsRJSJqttMilTULwy8xOYjOEjkFXdIVW2OzBcjKGjuzdyh8F2sYwi5LlRzW7eoR0B3ax&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770738919228\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-10T15:56:22.002Z",
-      "event": "bb-session",
-      "session": "5af7bfc9",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
-    },
-    {
-      "t": "2026-02-10T15:56:49.033Z",
-      "event": "bb-session",
-      "session": "7bb9cdf4",
-      "url": "https://www.theatermania.com/news/review-the-25th-annual-putnam-county-spelling-"
-    },
-    {
-      "t": "2026-02-10T16:00:49.330Z",
-      "event": "bb-session",
-      "session": "80ced39d",
-      "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word"
-    },
-    {
-      "t": "2026-02-10T16:10:45.893Z",
-      "event": "bb-session",
-      "session": "22745d17",
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
