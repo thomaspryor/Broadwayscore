@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-10",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10370,
-      "skippedNoScore": 9005,
+      "totalReviews": 10369,
+      "skippedNoScore": 9003,
       "skippedDuplicate": 44,
       "skippedDuplicateUrl": 345,
       "skippedCrossOutletDuplicateUrl": 39,
-      "skippedDuplicateText": 400,
+      "skippedDuplicateText": 401,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 774,
       "recoveredFromGarbage": 129,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1074,
         "llmScore": 4642,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 4399,
+        "llmScore-lowconf": 4398,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -52640,23 +52640,6 @@
     },
     {
       "showId": "cats-2016",
-      "outletId": "newsday",
-      "outlet": "Newsday",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Linda Winer",
-      "url": "http://www.newsday.com/entertainment/theater/cats-review-beloved-broadway-musical-leaps-back-onstage-1.12111517",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Best of all is the refreshed choreography by Tony winner Andy Blankenbuehler who has replaced Gillian Lynne's compilation of stock moves with variety and invention.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "cats-2016",
       "outletId": "northjerseycom",
       "outlet": "NorthJersey.com",
       "assignedScore": 82,
@@ -64383,7 +64366,7 @@
       "pullQuote": "It's not fun to feel superior to such material; it's numbing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "dames-at-sea-2015",
@@ -71764,7 +71747,7 @@
       "pullQuote": "Oscar winner Nyong'o impresses not only with her monologues of despair but with those moments of extended silence and joy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "eclipsed-2016",
@@ -72729,7 +72712,7 @@
       "criticName": "Michael Sommers",
       "url": "https://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "It's trash. Pulp rubbish by playwright Peter Quilter.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -82865,7 +82848,7 @@
       "pullQuote": "This rich and wrenching revival seems blissfully unaware of any such problem.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "follies-2011",
@@ -129636,17 +129619,17 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/news/of-mice-and-men_71192.html",
+      "url": "https://www.theatermania.com/news/preview-james-franco-and-chris-odowd-in-the-live-broadcast-of-of-mice-and-men_70529/",
       "publishDate": "April 17, 2014",
       "originalRating": null,
       "pullQuote": "James Franco and Chris O'Dowd bring star power to John Steinbeck's Depression-era tale, but the production feels more like a celebrity showcase than a fully realized theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "of-mice-and-men-2014",
@@ -160490,7 +160473,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Dalton Ross",
-      "url": "https://ew.com/the-hills-of-california-review-broadway-8720070",
+      "url": "https://ew.com/the-hills-of-california-review-broadway-8720070?srsltid=AfmBOooxcZaZ1QKQS7T_HUy0AyAeQXggaibGcSydE7pR3ewfSuk2MlgL",
       "publishDate": "September 29, 2024",
       "originalRating": null,
       "pullQuote": "The Hills of California does not necessarily venture to any places that dysfunctional family drama has not tread before, but the switching-back-and-forth-between-decades structure — coupled with a commanding and versatile centerpiece performance by Donnelly — still make these hills worth climbing.",
@@ -160660,7 +160643,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Gordon",
-      "url": "https://www.theatermania.com/news/review-four-sisters-and-the-secret-that-destroyed-a-family-in-the-hills-of-california_1751568/",
+      "url": "https://www.theatermania.com/news/review-jez-butterworths-grief-stricken-family-epic-the-hills-of-california-debuts-in-london_1730867/",
       "publishDate": "September 29, 2024",
       "originalRating": null,
       "pullQuote": "You can tell that 10 of the actors (including the four adult sisters and their younger counterparts) have been doing the play for six months already, and their performances are now detailed and lived-in.",
@@ -160711,7 +160694,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/the-hills-of-california-broadway-review-jez-butterworth-laura-donnelly",
+      "url": "https://www.timeout.com/london/theatre/the-hills-of-california-review",
       "publishDate": "September 29, 2024",
       "originalRating": null,
       "pullQuote": "While the play is an ensemble effort, it is also an extraordinary showcase for Donnelly. The present here is haunted by the past, and the two collide powerfully in the wreckage and reckoning of the play’s third act. (Butterworth has rewritten it for the better from the version that played in London.",
@@ -163183,7 +163166,7 @@
       "pullQuote": "And they’re a family that you will really, really want to spend time with. Honestly.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-lyons-2012",
