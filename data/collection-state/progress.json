@@ -1,70 +1,73 @@
 {
-  "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
-  ],
+  "processed": [],
   "failed": [
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/nyt-theater--jonathan-mandell.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--christian-lewis.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/new-york-sun--elysa-gardner.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "just-in-time-2025/advertisement--chris-jones.json",
-    "just-in-time-2025/front-row-center--unknown.json",
-    "just-in-time-2025/theater-scene--joel-benjamin.json",
-    "maybe-happy-ending-2024/culturesauce--thom-geier.json",
-    "maybe-happy-ending-2024/pages-on-stages--mason-pilevsky.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
-    "maybe-happy-ending-2024/theater-scene--victor-gluck.json",
-    "oh-mary-2024/front-row-center--david-walters.json",
-    "oh-mary-2024/njcom--christopher-kelly.json",
-    "oh-mary-2024/nysr--david-finkle.json",
-    "oh-mary-2024/nysr--steven-suskin.json",
-    "oh-mary-2024/talkinbroadway--matthew-murray.json",
-    "operation-mincemeat-2025/theater-scene--victor-gluck.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/boston-herald-jed-gottlieb--jed-gottlieb.json",
-    "six-2021/edge-media-network-robert-nesti--robert-nesti.json",
-    "six-2021/pages-on-stages--mason-pilevsky.json",
-    "six-2021/talkinbroadway--matthew-murray.json",
-    "six-2021/the-boston-globe-terry-byrne--terry-byrne.json",
-    "the-great-gatsby-2024/talkinbroadway--kimberly-ramirez.json",
-    "the-great-gatsby-2024/theater-life--samuel-l-leiter.json"
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "marjorie-prime-2025/nydailynews--chris-jones.json",
+    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/wsj--charles-isherwood.json",
+    "bug-2026/cititour--brian-scott-lipton.json",
+    "bug-2026/4-columns-david-cote--david-cote.json",
+    "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
+    "bug-2026/oneminutecritic--matthew-wexler.json",
+    "bug-2026/talkinbroadway--howard-miller.json",
+    "bug-2026/the-interested-bystander--cary-wong.json",
+    "bug-2026/theater-scene--darryl-reilly.json",
+    "bug-2026/theater-scene--victor-gluck.json",
+    "marjorie-prime-2025/the-interested-bystander--cary-wong.json",
+    "marjorie-prime-2025/theater-scene--joseph-pisano.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "hadestown-2019/medium--christian-lewis.json",
-      "a-gentlemans-guide-to-love-and-murder-2013/thewrap--robert-hofler.json",
-      "a-soldiers-play-2020/thewrap--thom-geier.json",
-      "a-strange-loop-2022/thewrap--robert-hofler.json"
-    ],
-    "brightdata": [
-      "a-view-from-the-bridge-2010/theatermania--andy-propst.json"
-    ],
-    "archive": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
-    ]
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": []
   },
-  "startTime": "2026-02-10T15:54:35.404Z",
-  "lastProcessed": "the-great-gatsby-2024/theater-life--samuel-l-leiter.json",
-  "log": []
+  "startTime": "2026-02-10T16:10:51.159Z",
+  "lastProcessed": "a-bronx-tale-2007/nytg--jeff-myhre.json",
+  "log": [
+    {
+      "t": "2026-02-10T16:11:57.505Z",
+      "event": "bb-session",
+      "session": "ec39d8c7",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-10T16:12:41.360Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:13:33.910Z",
+      "event": "bb-session",
+      "session": "f8fef17f",
+      "url": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-ni"
+    },
+    {
+      "t": "2026-02-10T16:15:41.696Z",
+      "event": "bb-session",
+      "session": "ffc30147",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-10T16:16:24.931Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T16:21:30.044Z",
+      "event": "bb-session",
+      "session": "173876c5",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    }
+  ]
 }
