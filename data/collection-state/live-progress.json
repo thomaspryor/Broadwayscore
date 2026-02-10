@@ -1,27 +1,15 @@
 {
-  "updatedAt": "2026-02-10T14:32:15.254Z",
+  "updatedAt": "2026-02-10T14:35:07.431Z",
   "processed": 1,
-  "failed": 11,
-  "successRate": "8.3%",
+  "failed": 9,
+  "successRate": "10.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 1,
-  "recentActivity": [
-    {
-      "t": "2026-02-10T14:22:37.460Z",
-      "event": "bb-session",
-      "session": "1b60ad9f",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
-    },
-    {
-      "t": "2026-02-10T14:22:39.465Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
