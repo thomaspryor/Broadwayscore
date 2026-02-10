@@ -1,85 +1,70 @@
 {
-  "runDate": "2026-02-10T18:11:43.816Z",
+  "runDate": "2026-02-10T18:15:49.916Z",
   "config": {
     "batchSize": 20,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mj-2022",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 18,
+    "processed": 1,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 9,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 4,
-    "tier3Attempts": 10,
-    "tier3Success": 3,
-    "tier4Attempts": 15,
-    "tier4Success": 2,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 150,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
+    "tier3Attempts": 5,
+    "tier3Success": 1,
+    "tier4Attempts": 9,
+    "tier4Success": 5,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 23,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "mj-2022/theater-life--patrick-christiano.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
   ],
   "failed": [
-    "mj-2022/hollywood-reporter--angie-han.json",
-    "mj-2022/newyorker--naomi-fry.json",
-    "mj-2022/vulture--jackson-mchenry.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "mj-2022/thewrap--steve-pond.json",
-    "mj-2022/timeout--adam-feldman.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/exeunt-magazine--juliet-hindell.json",
-    "mj-2022/front-row-center--brittany-crowell.json",
-    "mj-2022/slantmagazine--dan-rubins.json",
-    "mj-2022/talkinbroadway--howard-miller.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "mj-2022/theater-life--samuel-l-leiter.json",
-    "mj-2022/theater-pizzazz--cooper-lawrence.json",
-    "mj-2022/theater-scene--joel-benjamin.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "mj-2022/usatoday--elysa-gardner.json"
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "the-lion-king-1997/new-york--john-simon.json",
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/patch--nancy-sasso-janis.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/unknown--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "mj-2022/theater-life--patrick-christiano.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "mj-2022/hollywood-reporter--lovia-gayarkye.json",
-      "mj-2022/theatermania--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
     ]
   },
   "failuresByOutlet": {
@@ -90,23 +75,16 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
     "Talkin' Broadway": {
       "count": 1,
       "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "unknown": {
+      "count": 1,
+      "domain": "streetdirectory.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -114,14 +92,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "mj-2022/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/2022/02/mj-the-musical-broadway-review.html",
-      "newUrl": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html"
-    },
-    {
-      "reviewId": "mj-2022/usatoday--elysa-gardner.json",
-      "oldUrl": "https://www.usatoday.com/story/entertainment/theater/2022/02/02/mj-musical-broadway-review-michael-jackson/9309958002/",
-      "newUrl": "https://collegesportswire.usatoday.com/story/entertainment/arts/2022/02/02/mj-musical-review-michael-jackson-show-opens-broadway/9287724002/"
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
     }
   ]
 }
