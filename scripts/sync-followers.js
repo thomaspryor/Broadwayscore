@@ -144,6 +144,8 @@ async function main() {
     if (followSubs === null) {
       console.log('Could not fetch follow form. If this is the first run, this is normal.');
     } else {
+      // Formspree returns newest-first — reverse to process chronologically
+      followSubs.reverse();
       console.log(`Follow submissions: ${followSubs.length}`);
 
       for (const sub of followSubs) {
@@ -216,6 +218,8 @@ async function main() {
     if (subSubs === null) {
       console.log('Could not fetch subscriber form. If this is the first run, this is normal.');
     } else {
+      // Formspree returns newest-first — reverse to process chronologically
+      subSubs.reverse();
       console.log(`Subscriber submissions: ${subSubs.length}`);
 
       for (const sub of subSubs) {
