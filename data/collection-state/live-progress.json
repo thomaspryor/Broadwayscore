@@ -1,15 +1,57 @@
 {
-  "updatedAt": "2026-02-10T04:59:13.582Z",
-  "processed": 10,
-  "failed": 80,
-  "successRate": "11.1%",
+  "updatedAt": "2026-02-10T07:53:48.306Z",
+  "processed": 35,
+  "failed": 305,
+  "successRate": "10.3%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 7
+    "playwright": 4,
+    "browserbase": 4,
+    "scrapingbee": 9,
+    "brightdata": 12,
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-10T03:45:35.396Z",
+      "event": "bb-session",
+      "session": "d1e523eb",
+      "url": "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-th"
+    },
+    {
+      "t": "2026-02-10T03:45:57.432Z",
+      "event": "bb-session",
+      "session": "d74aa89e",
+      "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-b"
+    },
+    {
+      "t": "2026-02-10T03:46:38.950Z",
+      "event": "bb-session",
+      "session": "212a3aae",
+      "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is"
+    },
+    {
+      "t": "2026-02-10T03:51:32.783Z",
+      "event": "bb-session",
+      "session": "1966a2cb",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
+    },
+    {
+      "t": "2026-02-10T03:52:14.184Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-10T04:10:05.879Z",
+      "event": "bb-session",
+      "session": "ee28d067",
+      "url": "https://www.nytimes.com/2007/05/10/theater/reviews/10shade.html"
+    },
+    {
+      "t": "2026-02-10T04:10:48.276Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770696615130\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAOPwowGyDe00ANCKmrw==&cid=KdgvlFFPa5dHc_q49zN~~6gkIvLj9Y__O8LB_spLrCvN1x981VUOZfP8kTPgF9lcGwcx7L0petryJ5MtCQVNSeK0Qv1PmoABT4ZsRp1ZNoviL7mUKcfT43yoJbkJtPGC&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770696615130\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    }
+  ]
 }
