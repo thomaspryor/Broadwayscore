@@ -1,145 +1,115 @@
 {
-  "runDate": "2026-02-10T11:02:06.445Z",
+  "runDate": "2026-02-10T11:08:41.447Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hadestown-2019",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
     "processed": 1,
-    "failed": 16,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "4.2%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 6,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
-    "tier2Success": 2,
-    "tier3Attempts": 7,
-    "tier3Success": 2,
-    "tier4Attempts": 13,
-    "tier4Success": 5,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 41,
+    "tier2Attempts": 17,
+    "tier2Success": 5,
+    "tier3Attempts": 12,
+    "tier3Success": 0,
+    "tier4Attempts": 27,
+    "tier4Success": 10,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 78,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "and-juliet-2022/nydailynews--chris-jones.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/chicagotribune--chris-jones.json",
+    "chicago-1996/chicagotribune--chris-jones.json",
+    "stranger-things-2024/chicagotribune--chris-jones.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-bronx-tale-the-musical-2016/chicagotribune--chris-jones.json",
+    "machinal-2014/chicagotribune--unknown.json",
+    "pippin-2013/chicagotribune--chris-jones.json",
+    "the-columnist-2012/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--chris-jones.json",
+    "the-crucible-2016/chicagotribune--unknown.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+    "the-ferryman-2018/chicagotribune--chris-jones.json",
+    "the-gershwins-porgy-and-bess-2012/chicagotribune--chris-jones.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-humans-2016/chicagotribune--chris-jones.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "this-is-our-youth-2014/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "hadestown-2019/medium--christian-lewis.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
     "Chicago Tribune": {
-      "count": 1,
+      "count": 8,
       "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Columbus Dispatch": {
+    "The Chicago Tribune": {
       "count": 1,
-      "domain": "jasonraize.net",
+      "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Denver Post": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Milwaukee Journal Sentinel": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     }
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+  "urlDiscoveries": [
+    {
+      "reviewId": "book-of-mormon-2011/chicagotribune--.json",
+      "oldUrl": "https://www.chicagotribune.com/2011/03/01/book-of-mormon-broadway-review-south-park/",
+      "newUrl": "https://www.chicagotribune.com/2012/12/20/review-getting-religion-by-the-neck-in-a-hilarious-book-of-mormon/"
     },
-    "BUY TICKETS": {
-      "count": 1,
-      "domain": "us.atgtickets.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+      "oldUrl": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadway/",
+      "newUrl": "https://www.chicagotribune.com/2019/07/18/the-lion-king-review-i-cannot-feel-the-love-tonight/"
     },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "machinal-2014/chicagotribune--unknown.json",
+      "oldUrl": "https://www.chicagotribune.com/sns-201401162200reedbusivarietyn1201060746-20140116,0,6157713.story",
+      "newUrl": "https://www.chicagotribune.com/2014/01/16/broadway-review-machinal-starring-rebecca-hall/"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
