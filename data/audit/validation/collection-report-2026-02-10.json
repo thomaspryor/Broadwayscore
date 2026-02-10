@@ -2,7 +2,7 @@
   "runDate": "2026-02-10T09:10:16.054Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "hadestown-2019",
     "aggressive": false,
@@ -24,8 +24,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 51,
+    "tier1Success": 5,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 6,
@@ -73,10 +73,17 @@
     "archive": []
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "IndieWire": {
       "count": 1,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
+      "domain": "indiewire.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New York Times": {
+      "count": 10,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
       "isPaywalled": true,
       "isKnownBlocked": false
     },
@@ -91,15 +98,29 @@
       "count": 1,
       "domain": "curtainup.com",
       "hasCredentials": false,
-      "isPaywalled": false,
+      "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
