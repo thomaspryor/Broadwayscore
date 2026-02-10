@@ -1,77 +1,94 @@
 {
-  "runDate": "2026-02-10T11:02:06.445Z",
+  "runDate": "2026-02-10T11:08:34.028Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 16,
+    "processed": 2,
+    "failed": 32,
     "skipped": 0,
     "successRate": "5.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingbee": 0,
+    "brightdata": 1,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 6,
+    "tier1Attempts": 25,
+    "tier1Success": 18,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
-    "tier2Success": 2,
-    "tier3Attempts": 7,
-    "tier3Success": 2,
-    "tier4Attempts": 13,
-    "tier4Success": 5,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 41,
+    "tier2Attempts": 17,
+    "tier2Success": 8,
+    "tier3Attempts": 9,
+    "tier3Success": 3,
+    "tier4Attempts": 14,
+    "tier4Success": 4,
+    "totalFailed": 32,
+    "scrapingBeeCreditsUsed": 317,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/medium--christian-lewis.json"
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ajc--wendell-brock.json"
   ],
   "failed": [
-    "hadestown-2019/newyorker--hilton-als.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/guardian--adrian-horton.json",
-    "hadestown-2019/broadway-and-me--janice-c-simpson.json",
-    "hadestown-2019/buy-tickets--unknown.json",
-    "hadestown-2019/caroleditosti--carole-di-tosti.json",
-    "hadestown-2019/curtainup--elyse-sommer.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/gotham-playgoer--elizabeth-wollman.json",
-    "hadestown-2019/njcom--christopher-kelly.json",
-    "hadestown-2019/rollingstone--will-hermes.json",
-    "hadestown-2019/talkinbroadway--howard-miller.json",
-    "hadestown-2019/talkinbroadway--matthew-murray.json",
-    "hadestown-2019/towleroad--naveen-kumar.json",
-    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "wicked-2003/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "wicked-2003/vulture--bilge-eberi.json",
+    "wicked-2003/bbc-caryn-james--caryn-james.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/guardian--peter-bradshaw.json",
+    "wicked-2003/indiewire--kate-erbland.json",
+    "wicked-2003/newsweek--billie-melissa.json",
+    "wicked-2003/nexus-point-news-demet-koc--demet-koc.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/about-entertainment--chris-caggiano.json",
+    "wicked-2003/austincom--dani-dudek.json",
+    "wicked-2003/av-club-jesse-hassenger--jesse-hassenger.json",
+    "wicked-2003/awards-watch-sophia-ciminello--sophia-ciminello.json",
+    "wicked-2003/cbr-caralynn-matassa--caralynn-matassa.json",
+    "wicked-2003/collider-therese-lacson--therese-lacson.json",
+    "wicked-2003/consequence-liz-shannon-miller--liz-shannon-miller.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/den-of-geek-david-crow--david-crow.json",
+    "wicked-2003/empire-john-nugent--john-nugent.json",
+    "wicked-2003/fresh-fiction-courtney-howard--courtney-howard.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/huron-daily-jake-coyle--jake-coyle.json",
+    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
+    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
+    "wicked-2003/latimes--amy-nicholson.json",
+    "wicked-2003/njcom--michael-sommers.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "hadestown-2019/medium--christian-lewis.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "wicked-2003/ajc--wendell-brock.json"
     ],
-    "brightdata": [],
     "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   },
   "failuresByOutlet": {
@@ -82,46 +99,16 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Chicago Tribune": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "chicagotribune.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Columbus Dispatch": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Denver Post": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Milwaukee Journal Sentinel": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 1,
-      "domain": "newyorker.com",
+      "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     },
-    "BUY TICKETS": {
+    "about-entertainment": {
       "count": 1,
-      "domain": "us.atgtickets.com",
+      "domain": "theater.about.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -133,9 +120,16 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "Huron Daily (Jake Coyle)": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "michigansthumb.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NJ.com": {
+      "count": 1,
+      "domain": "wickedthemusical.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
