@@ -1292,9 +1292,23 @@ showDirs.forEach(showId => {
       }
 
       // Reclassify contentTier as safety net (in case collect-review-texts missed it)
-      if (data.fullText) {
+      // Also write back to source file if tier changed (prevents stale classifications)
+      {
         const tierResult = classifyContentTier(data);
+        const oldTier = data.contentTier;
         data.contentTier = tierResult.contentTier;
+        if (oldTier && oldTier !== tierResult.contentTier) {
+          try {
+            const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            sourceData.contentTier = tierResult.contentTier;
+            sourceData.contentTierReason = tierResult.tierReason;
+            sourceData.wordCount = tierResult.wordCount;
+            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+            stats.reclassifiedTiers = (stats.reclassifiedTiers || 0) + 1;
+          } catch (writeErr) {
+            // Non-fatal: source file write failure doesn't block rebuild
+          }
+        }
       }
 
       // Skip files flagged as duplicates by cleanup-review-sources.js
