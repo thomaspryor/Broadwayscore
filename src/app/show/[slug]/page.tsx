@@ -14,7 +14,7 @@ import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import type { ComputedShow } from '@/lib/data-types';
-import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -39,14 +39,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
+  const synopsisSnippet = show.synopsis
+    ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
+    : '';
   const description = score
-    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${show.synopsis?.slice(0, 100) || ''}`
-    : `Reviews and scores for ${show.title} on Broadway. ${show.synopsis?.slice(0, 100) || ''}`;
+    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
+    : `Reviews and scores for ${show.title} on Broadway. ${synopsisSnippet}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
   // Use show's hero/poster image for OG, or fallback to homepage OG
-  const ogImageUrl = show.images?.hero || show.images?.poster || `${BASE_URL}/og/home.png`;
+  const ogImageUrl = show.images?.hero
+    ? toAbsoluteUrl(show.images.hero)
+    : show.images?.poster
+      ? toAbsoluteUrl(show.images.poster)
+      : `${BASE_URL}/og/home.png`;
 
   return {
     title: `${show.title} - Critic Score & Reviews`,

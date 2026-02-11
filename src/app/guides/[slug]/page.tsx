@@ -19,6 +19,7 @@ import {
   generateItemListSchema,
   generateBrowseFAQSchema,
   BASE_URL,
+  toAbsoluteUrl,
 } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig } from '@/config/browse-pages';
@@ -44,7 +45,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   // Top show poster for OG image
   const topPoster = shows[0]?.images?.hero || shows[0]?.images?.poster;
-  const ogImageUrl = topPoster || `${BASE_URL}/og/home.png`;
+  const ogImageUrl = topPoster ? toAbsoluteUrl(topPoster) : `${BASE_URL}/og/home.png`;
 
   // Noindex year pages older than 3 years
   const currentYear = new Date().getFullYear();

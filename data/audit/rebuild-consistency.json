@@ -1,6 +1,14 @@
 {
-  "generatedAt": "2026-02-11T04:16:05.851Z",
+  "generatedAt": "2026-02-11T06:20:49.658Z",
   "issues": [
+    {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "wicked-2003",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "Critics_Choice but score=20 (source: originalScore-priority0)"
+    },
     {
       "type": "score-clustering",
       "severity": "low",
@@ -40,6 +48,18 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "hedwig-and-the-angry-inch-2014",
+      "detail": "8/18 reviews (44%) scored exactly 82"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "hello-dolly-2017",
+      "detail": "14/38 reviews (37%) scored exactly 82"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "home-2024",
       "detail": "8/17 reviews (47%) scored exactly 82"
     },
@@ -47,7 +67,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "job-2024",
-      "detail": "6/16 reviews (38%) scored exactly 82"
+      "detail": "6/17 reviews (35%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -107,7 +127,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "waiting-for-godot-2025",
-      "detail": "14/23 reviews (61%) scored exactly 60"
+      "detail": "13/23 reviews (57%) scored exactly 60"
     }
   ]
 }

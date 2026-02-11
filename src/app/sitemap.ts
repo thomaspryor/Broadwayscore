@@ -146,6 +146,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/biz`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
     // Lottery and Rush pages - high value for discount ticket seekers
     {
       url: `${BASE_URL}/lotteries`,
