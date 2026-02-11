@@ -4,6 +4,13 @@ import { ComputedShow } from './engine';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+// Ensure image URLs are absolute for OG tags and JSON-LD
+export function toAbsoluteUrl(url: string): string {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+}
+
 // Convert 0-100 score to 1-5 star scale for schema.org
 // Google prefers 1-5 scale for rich snippet star display
 function toFiveStarScale(score: number): number {
@@ -17,7 +24,7 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Broadway Scorecard',
     url: BASE_URL,
-    logo: `${BASE_URL}/logo.png`,
+    logo: `${BASE_URL}/favicon.svg`,
     description: 'Aggregated Broadway show ratings from professional critics',
     inLanguage: 'en',
     sameAs: [
@@ -109,7 +116,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     },
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
-    ...(show.images?.hero && { image: show.images.hero }),
+    ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
     ...(lastUpdated && { dateModified: lastUpdated }),
     eventStatus: show.status === 'closed' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -221,7 +228,7 @@ export function generateItemListSchema(items: {
         '@type': 'TheaterEvent',
         name: item.name,
         url: item.url,
-        ...(item.image && { image: item.image }),
+        ...(item.image && { image: toAbsoluteUrl(item.image) }),
         ...(item.description && { description: item.description }),
       };
 
