@@ -23,6 +23,11 @@ on:
         required: false
         type: boolean
         default: true
+      exclude_domains:
+        description: 'Comma-separated domains to exclude (e.g., nytimes.com,wsj.com)'
+        required: false
+        default: ''
+        type: string
       max_rounds:
         description: 'Max self-chaining rounds (0 = no chaining)'
         required: false
@@ -199,6 +204,7 @@ jobs:
           BROWSERBASE_ENABLED: 'false'
           SHOW_FILTER: ${{ matrix.shows }}
           CONTENT_TIER_FILTER: truncated
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_per_job }}
           RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
@@ -332,6 +338,7 @@ jobs:
               -f parallel_jobs=${{ inputs.parallel_jobs }} \
               -f max_per_job=${{ inputs.max_per_job }} \
               -f retry_failed=true \
+              -f exclude_domains="${{ inputs.exclude_domains }}" \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
             echo "chained=true" >> $GITHUB_OUTPUT

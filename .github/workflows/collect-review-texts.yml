@@ -164,9 +164,11 @@ jobs:
         continue-on-error: true
 
       - name: Check for large files
+        if: always()
         uses: ./.github/actions/check-file-sizes
 
       - name: Final commit and push
+        if: always()
         id: push
         run: |
           git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
@@ -455,10 +457,12 @@ jobs:
           node scripts/collect-review-texts.js $ARGS
 
       - name: Validate data before commit
+        if: always()
         run: node scripts/validate-data.js
         continue-on-error: true
 
       - name: Commit and push changes for ${{ matrix.outlet_tier }}
+        if: always()
         run: |
           git add data/review-texts/ data/archives/reviews/
           if git diff --staged --quiet; then
