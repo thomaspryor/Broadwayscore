@@ -14,7 +14,10 @@ const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
 
+const { execSync } = require('child_process');
+
 const DB_PATH = path.join(__dirname, '..', 'data', 'broadway.db');
+const DATA_DIR = path.join(__dirname, '..', 'data');
 
 const sql = process.argv.slice(2).join(' ').trim();
 
@@ -28,9 +31,27 @@ if (!sql) {
   process.exit(1);
 }
 
-if (!fs.existsSync(DB_PATH)) {
-  console.error('Error: data/broadway.db not found. Run: npm run db:build');
-  process.exit(1);
+// Auto-rebuild if DB is missing or stale (older than source JSON files)
+function needsRebuild() {
+  if (!fs.existsSync(DB_PATH)) return true;
+  const dbMtime = fs.statSync(DB_PATH).mtimeMs;
+  const sources = ['shows.json', 'reviews.json', 'commercial.json', 'grosses.json', 'audience-buzz.json', 'critic-registry.json'];
+  for (const src of sources) {
+    const srcPath = path.join(DATA_DIR, src);
+    if (fs.existsSync(srcPath) && fs.statSync(srcPath).mtimeMs > dbMtime) return true;
+  }
+  return false;
+}
+
+if (needsRebuild()) {
+  console.error('Database is stale or missing — rebuilding...');
+  try {
+    execSync('node scripts/build-sqlite.js', { cwd: path.join(__dirname, '..'), stdio: ['ignore', 'ignore', 'inherit'] });
+    console.error('Rebuild complete.\n');
+  } catch (err) {
+    console.error('Error: Auto-rebuild failed. Run manually: npm run db:build');
+    process.exit(1);
+  }
 }
 
 let db;
