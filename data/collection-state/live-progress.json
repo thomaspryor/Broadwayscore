@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-11T09:58:01.528Z",
-  "processed": 2,
-  "failed": 98,
-  "successRate": "2.0%",
+  "updatedAt": "2026-02-11T10:03:25.461Z",
+  "processed": 473,
+  "failed": 157,
+  "successRate": "75.1%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "playwright": 107,
+    "browserbase": 8,
+    "scrapingbee": 111,
+    "brightdata": 101,
+    "archive": 150
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-11T04:47:06.912Z",
+      "event": "bb-session",
+      "session": "236fe31b",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-11T04:47:26.116Z",
+      "event": "bb-session",
+      "session": "1b8eaed0",
+      "url": "https://variety.com/2003/legit/reviews/wicked-7-1200538236/"
+    },
+    {
+      "t": "2026-02-11T04:52:46.409Z",
+      "event": "bb-session",
+      "session": "01898142",
+      "url": "https://www.amny.com/urbanite-1.812039/theatre-review-chinglish-3-stars-1.327902"
+    },
+    {
+      "t": "2026-02-11T05:18:44.844Z",
+      "event": "bb-session",
+      "session": "58613ef3",
+      "url": "https://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-125627"
+    },
+    {
+      "t": "2026-02-11T05:18:59.016Z",
+      "event": "bb-session",
+      "session": "659a4ca5",
+      "url": "https://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
+    }
+  ]
 }
