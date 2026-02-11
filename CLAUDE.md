@@ -47,7 +47,8 @@ Broadway review aggregator. Next.js 14, TypeScript, Tailwind, static export, Ver
 | `BRIGHTDATA_TOKEN` | Scraping primary |
 | `SCRAPINGBEE_API_KEY` | Scraping fallback |
 | `BROWSERBASE_API_KEY`/`_PROJECT_ID` | Browser cloud |
-| `FORMSPREE_FOLLOW_API_KEY`/`_FORM_ID` | Subscribers |
+| `FORMSPREE_FOLLOW_API_KEY`/`_FORM_ID` | Follow form sync |
+| `FORMSPREE_SUBSCRIBER_API_KEY`/`_FORM_ID` | Subscriber form sync |
 | `RESEND_API_KEY` | Email |
 | `DISCORD_WEBHOOK_ALERTS` | Alerts |
 | `MEZZANINE_APP_ID`/`_SESSION_TOKEN` | Mezzanine |
