@@ -2,10 +2,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
-import { generateBreadcrumbSchema, generateTheaterSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
@@ -30,6 +28,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
       url: canonicalUrl,
       type: 'website',
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: `${theater.name} - Broadway Theater` }],
     },
     twitter: {
       card: 'summary',
