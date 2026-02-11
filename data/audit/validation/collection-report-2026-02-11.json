@@ -1,4 +1,47 @@
 {
+  "runDate": "2026-02-11T01:07:38.069Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 11,
+    "failed": 89,
+    "skipped": 0,
+    "successRate": "11.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 11
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 100,
+    "tier2Success": 45,
+    "tier3Attempts": 100,
+    "tier3Success": 94,
+    "tier4Attempts": 97,
+    "tier4Success": 42,
+    "totalFailed": 89,
+    "scrapingBeeCreditsUsed": 454,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "american-idiot-2010/observer--jesse-oxfeld.json",
     "august-osage-county-2007/observer--unknown.json",
@@ -103,8 +146,7 @@
     "how-i-learned-to-drive-2022/observer--david-cote.json",
     "how-to-dance-in-ohio-2023/observer--jesse-green.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
@@ -123,7 +165,14 @@
       "high-2011/observer--jesse-oxfeld.json"
     ]
   },
-  "startTime": "2026-02-10T23:53:19.219Z",
-  "lastProcessed": "how-to-dance-in-ohio-2023/observer--jesse-green.json",
-  "log": []
+  "failuresByOutlet": {
+    "Observer": {
+      "count": 4,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": []
 }
