@@ -102,7 +102,7 @@ jobs:
         if: steps.check.outputs.pending_shows != ''
         env:
           FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
-          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
           FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
           FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
         run: node scripts/sync-followers.js
