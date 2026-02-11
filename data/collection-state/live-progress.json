@@ -1,133 +1,15 @@
 {
-  "updatedAt": "2026-02-11T19:52:42.902Z",
-  "processed": 79,
-  "failed": 71,
-  "successRate": "52.7%",
+  "updatedAt": "2026-02-11T19:55:35.841Z",
+  "processed": 31,
+  "failed": 19,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 40,
-    "browserbase": 16,
+    "playwright": 11,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 12,
-    "archive": 26
+    "brightdata": 0,
+    "archive": 20
   },
-  "browserbaseSessions": 20,
-  "recentActivity": [
-    {
-      "t": "2026-02-11T18:18:21.311Z",
-      "event": "bb-session",
-      "session": "e9132115",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-02-11T18:19:11.071Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-11T18:24:45.446Z",
-      "event": "bb-session",
-      "session": "be05758d",
-      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
-    },
-    {
-      "t": "2026-02-11T18:27:27.211Z",
-      "event": "bb-session",
-      "session": "45805118",
-      "url": "https://www.nytimes.com/2016/12/01/theater/a-bronx-tale-review.html"
-    },
-    {
-      "t": "2026-02-11T18:28:15.184Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834461702\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsuDc9HpsuNUALPe1oA==&cid=nNmhbBebS~j9SZjz4WqSQm4fufR0cUz0QzCRY67CGzpENXl3LS_T65JKAvwvK1j3JBmTMULDKXOhONr9sBrdaX4C~DnsJ1G9H0Pv1VYOrwPbe615PFuWEt~~QsX6~2N4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770834461702\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834461702\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsuDc9HpsuNUALPe1oA==&cid=nNmhbBebS~j9SZjz4WqSQm4fufR0cUz0QzCRY67CGzpENXl3LS_T65JKAvwvK1j3JBmTMULDKXOhONr9sBrdaX4C~DnsJ1G9H0Pv1VYOrwPbe615PFuWEt~~QsX6~2N4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770834461702\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834461702\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsuDc9HpsuNUALPe1oA==&cid=nNmhbBebS~j9SZjz4WqSQm4fufR0cUz0QzCRY67CGzpENXl3LS_T65JKAvwvK1j3JBmTMULDKXOhONr9sBrdaX4C~DnsJ1G9H0Pv1VYOrwPbe615PFuWEt~~QsX6~2N4&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770834461702\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
-    },
-    {
-      "t": "2026-02-11T18:30:05.144Z",
-      "event": "bb-session",
-      "session": "34e866bd",
-      "url": "https://variety.com/2023/legit/reviews/sunset-boulevard-review-nicole-scherzinge"
-    },
-    {
-      "t": "2026-02-11T18:31:39.797Z",
-      "event": "bb-session",
-      "session": "a536d432",
-      "url": "https://deadline.com/2016/12/a-bronx-tale-robert-de-niro-review-1201863369/"
-    },
-    {
-      "t": "2026-02-11T18:33:11.358Z",
-      "event": "bb-session",
-      "session": "a460b943",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs"
-    },
-    {
-      "t": "2026-02-11T18:33:56.386Z",
-      "event": "bb-session",
-      "session": "5b2ded1e",
-      "url": "https://observer.com/2016/12/a-bronx-tale-the-musical-review/"
-    },
-    {
-      "t": "2026-02-11T18:34:19.427Z",
-      "event": "bb-session",
-      "session": "450fe6ac",
-      "url": "https://www.theatermania.com/broadway/reviews/a-bronx-tale-the-musical-broadway_"
-    },
-    {
-      "t": "2026-02-11T18:37:10.726Z",
-      "event": "bb-session",
-      "session": "a0ce7e7b",
-      "url": "https://www.theatermania.com/broadway/reviews/amazing-grace_72446.html"
-    },
-    {
-      "t": "2026-02-11T18:37:27.125Z",
-      "event": "bb-session",
-      "session": "2c3b778b",
-      "url": "https://www.theatermania.com/broadway/reviews/amazing-grace_73568.html"
-    },
-    {
-      "t": "2026-02-11T18:42:33.866Z",
-      "event": "bb-session",
-      "session": "bb975ecb",
-      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
-    },
-    {
-      "t": "2026-02-11T18:43:24.264Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-11T18:46:54.199Z",
-      "event": "bb-session",
-      "session": "5db22b71",
-      "url": "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-"
-    },
-    {
-      "t": "2026-02-11T18:47:45.414Z",
-      "event": "bb-session",
-      "session": "0a8d43df",
-      "url": "https://www.wsj.com/arts-culture/theater/sunset-boulevard-broadway-review-nicole"
-    },
-    {
-      "t": "2026-02-11T18:48:35.475Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-11T19:08:01.312Z",
-      "event": "bb-session",
-      "session": "4cb49f72",
-      "url": "https://www.amny.com/entertainment/amazing-grace-theater-review-2-stars-1.106508"
-    },
-    {
-      "t": "2026-02-11T19:08:32.015Z",
-      "event": "bb-session",
-      "session": "4042f3f8",
-      "url": "https://www.amny.com/entertainment/amazing-grace-theater-review-2-stars-1.106508"
-    },
-    {
-      "t": "2026-02-11T19:50:44.058Z",
-      "event": "bb-session",
-      "session": "0e98a8af",
-      "url": "https://www.amny.com/entertainment/sunset-boulevard-review-glenn-close-shines-in"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
