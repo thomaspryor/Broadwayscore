@@ -61,6 +61,7 @@ function main() {
   db.pragma('journal_mode = WAL');
   db.pragma('synchronous = OFF');  // Safe since we rebuild from scratch
   db.pragma('cache_size = -64000'); // 64MB
+  db.pragma('foreign_keys = OFF');  // Ephemeral DB — skip FK enforcement during build
 
   // Create all tables, indexes, views
   db.exec(schema);
@@ -168,7 +169,7 @@ function main() {
           const contentTier = (ct && typeof ct === 'object') ? ct.contentTier : (ct || null);
           const tierReason = r.tierReason || (ct && typeof ct === 'object' ? ct.tierReason : null) || null;
 
-          insert.run(
+          const params = [
             r.showId || dir.name,
             r.outletId || null,
             r.outlet || null,
@@ -181,7 +182,7 @@ function main() {
             contentTier,
             tierReason,
             r.textQuality || null,
-            r.source || null,
+            Array.isArray(r.source) ? r.source.join(',') : (r.source || null),
             r.sources ? JSON.stringify(r.sources) : null,
             r.assignedScore ?? null,
             r.originalScore || null,
@@ -201,8 +202,15 @@ function main() {
             r.garbageReason || null,
             r.fetchMethod || null,
             r.fetchTier ?? null,
-            relativePath
-          );
+            relativePath,
+          ];
+          try {
+            insert.run(params);
+          } catch (err) {
+            console.warn(`[db:build] WARNING: ${err.message} for ${relativePath}, skipping`);
+            skipped++;
+            continue;
+          }
           totalFiles++;
         }
       }
