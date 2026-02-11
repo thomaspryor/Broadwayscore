@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-11T06:15:58.887Z",
-  "processed": 3,
-  "failed": 97,
-  "successRate": "3.0%",
+  "updatedAt": "2026-02-11T06:19:31.593Z",
+  "processed": 150,
+  "failed": 70,
+  "successRate": "68.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "playwright": 49,
+    "browserbase": 3,
+    "scrapingbee": 16,
+    "brightdata": 47,
+    "archive": 37
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-11T04:48:09.176Z",
+      "event": "bb-session",
+      "session": "e3402cd6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-02-11T04:49:03.344Z",
+      "event": "bb-session",
+      "session": "ef950b7d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-02-11T04:49:35.351Z",
+      "event": "bb-session",
+      "session": "9c4315b8",
+      "url": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-123"
+    },
+    {
+      "t": "2026-02-11T04:53:41.648Z",
+      "event": "bb-session",
+      "session": "d43aed3e",
+      "url": "https://nypost.com/2024/04/25/entertainment/the-great-gatsby-broadway-review/"
+    },
+    {
+      "t": "2026-02-11T05:08:07.433Z",
+      "event": "bb-session",
+      "session": "14a68220",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    }
+  ]
 }
