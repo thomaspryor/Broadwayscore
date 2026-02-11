@@ -7,14 +7,15 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 
 export const metadata: Metadata = {
-  title: 'Broadway Show Comparisons | Which Show Should You See?',
+  title: 'Broadway Show Comparisons - Which Show Should You See?',
   description: 'Compare Broadway shows side by side. Hamilton vs Wicked, Lion King vs Aladdin, and more. See critic scores, runtime, ticket prices to help you decide.',
   alternates: { canonical: `${BASE_URL}/compare` },
   openGraph: {
-    title: 'Broadway Show Comparisons | Which Show Should You See?',
+    title: 'Broadway Show Comparisons - Which Show Should You See?',
     description: 'Compare Broadway shows side by side. Hamilton vs Wicked, Lion King vs Aladdin, and more.',
     url: `${BASE_URL}/compare`,
     type: 'website',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Show Comparisons' }],
   },
 };
 

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     description: 'Browse all Broadway rankings: by audience, genre, discount tickets, timing, and data scorecards.',
     url: `${BASE_URL}/rankings`,
     type: 'article',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',

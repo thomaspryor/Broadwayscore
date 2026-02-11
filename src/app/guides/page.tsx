@@ -5,14 +5,15 @@ import { getGuideList } from '@/lib/data-guides';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Broadway Guides | Expert-Curated Show Recommendations',
+  title: 'Broadway Guides - Expert-Curated Show Recommendations',
   description: 'Expert guides to Broadway shows: best musicals, plays, family-friendly picks, discount tickets, and more. Updated monthly with critic scores and editorial insights.',
   alternates: { canonical: `${BASE_URL}/guides` },
   openGraph: {
-    title: 'Broadway Guides | Expert-Curated Show Recommendations',
+    title: 'Broadway Guides - Expert-Curated Show Recommendations',
     description: 'Expert guides to Broadway shows: best musicals, plays, family-friendly picks, discount tickets, and more.',
     url: `${BASE_URL}/guides`,
     type: 'website',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Guides' }],
   },
 };
 
