@@ -3,11 +3,9 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories } from '@/lib/data-core';
 import type { BestOfCategory } from '@/lib/data-types';
-import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import Breadcrumb from '@/components/Breadcrumb';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
@@ -30,6 +28,7 @@ export function generateMetadata({ params }: { params: { category: string } }): 
       description: list.description,
       url: canonicalUrl,
       type: 'article',
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: list.title }],
     },
     twitter: {
       card: 'summary_large_image',
