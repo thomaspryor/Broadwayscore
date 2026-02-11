@@ -47,6 +47,11 @@ on:
         required: false
         default: ''
         type: string
+      exclude_domains:
+        description: 'Comma-separated domains to exclude (e.g., nytimes.com,wsj.com)'
+        required: false
+        default: ''
+        type: string
       aggressive:
         description: 'Skip Playwright for known-blocked sites (faster, uses API tiers directly)'
         required: false
@@ -244,6 +249,7 @@ jobs:
           RETRY_FAILED: ${{ inputs.retry_failed }}
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -437,6 +443,7 @@ jobs:
             -f retry_failed=${{ inputs.retry_failed }} \
             -f archive_first=${{ inputs.archive_first }} \
             -f content_tier="${{ inputs.content_tier }}" \
+            -f exclude_domains="${{ inputs.exclude_domains }}" \
             -f aggressive=${{ inputs.aggressive }} \
             -f test_mode=false \
             -f max_rounds="$MAX_ROUNDS" \
