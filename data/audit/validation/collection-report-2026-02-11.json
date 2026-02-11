@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-11T10:13:08.346Z",
+  "runDate": "2026-02-11T10:16:59.166Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,93 +11,94 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 11,
+    "processed": 2,
+    "failed": 41,
     "skipped": 0,
-    "successRate": "52.2%"
+    "successRate": "4.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 10
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 3,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 23,
-    "tier4Success": 17,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 32,
+    "tier2Attempts": 27,
+    "tier2Success": 6,
+    "tier3Attempts": 22,
+    "tier3Success": 22,
+    "tier4Attempts": 17,
+    "tier4Success": 15,
+    "totalFailed": 41,
+    "scrapingBeeCreditsUsed": 265,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "book-of-mormon-2011/chicagotribune--.json",
-    "chess-2025/chicagotribune--chris-jones.json",
-    "death-becomes-her-2024/chicagotribune--chris-jones.json",
-    "stranger-things-2024/chicagotribune--chris-jones.json",
-    "beautiful-the-carole-king-musical-2014/chicagotribune--chris-jones.json",
-    "bright-star-2016/chicagotribune--chris-jones.json",
-    "bright-star-2016/chicagotribune--unknown.json",
-    "mean-girls-2018/chicagotribune--chris-jones.json",
-    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
-    "on-your-feet-2015/chicagotribune--unknown.json",
-    "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
-    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
+    "sweat-2017/deadline--jeremy-gerard.json",
+    "sweat-2017/deadline--matt-windman.json"
   ],
   "failed": [
-    "and-juliet-2022/nydailynews--chris-jones.json",
-    "gutenberg-2023/nydailynews--chris-jones.json",
-    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
-    "act-one-2014/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "disaster-2016/chicagotribune--chris-jones.json",
-    "grey-house-2023/chicagotribune--chris-jones.json",
-    "la-bete-2010/chicagotribune--.json",
-    "la-bete-2010/chicagotribune--chris-jones.json",
-    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
-    "the-price-2017/chicagotribune--chris-jones.json"
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
+    "a-soldiers-play-2020/deadline--greg-evans.json",
+    "almost-famous-2022/deadline--pete-hammond.json",
+    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/deadline--pete-hammond.json",
+    "bad-cinderella-2023/deadline--greg-evans.json",
+    "cabaret-2014/deadline--greg-evans.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
+    "falsettos-2016/deadline--jeremy-gerard.json",
+    "fully-committed-2016/deadline--jeremy-gerard.json",
+    "gypsy-2024/deadline--pete-hammond.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "it-shoulda-been-you-2015/deadline--jeremy-gerard.json",
+    "kiss-me-kate-2019/deadline--greg-evans.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "lempicka-2024/deadline--greg-evans.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "old-times-2015/deadline--jeremy-gerard.json",
+    "once-on-this-island-2017/deadline--jeremy-gerard.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "present-laughter-2017/deadline--jeremy-gerard.json",
+    "prince-of-broadway-2017/deadline--jeremy-gerard.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
+    "slave-play-2021/deadline--greg-evans.json",
+    "something-rotten-2015/deadline--jeremy-gerard.json",
+    "stereophonic-2024/deadline--greg-evans.json",
+    "suffs-2024/deadline--pete-hammond.json",
+    "the-last-five-years-2025/deadline--greg-evans.json",
+    "the-parisian-woman-2017/deadline--jeremy-gerard.json",
+    "the-parisian-woman-2017/deadline--pete-hammond.json",
+    "the-rose-tattoo-2019/deadline--pete-hammond.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "tuck-everlasting-2016/deadline--jeremy-gerard.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "you-cant-take-it-with-you-2014/deadline--jeremy-gerard.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "book-of-mormon-2011/chicagotribune--.json",
-      "beautiful-the-carole-king-musical-2014/chicagotribune--chris-jones.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "sweat-2017/deadline--jeremy-gerard.json",
+      "sweat-2017/deadline--matt-windman.json"
     ],
-    "brightdata": [],
-    "archive": [
-      "chess-2025/chicagotribune--chris-jones.json",
-      "death-becomes-her-2024/chicagotribune--chris-jones.json",
-      "stranger-things-2024/chicagotribune--chris-jones.json",
-      "bright-star-2016/chicagotribune--chris-jones.json",
-      "bright-star-2016/chicagotribune--unknown.json",
-      "mean-girls-2018/chicagotribune--chris-jones.json",
-      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
-      "on-your-feet-2015/chicagotribune--unknown.json",
-      "pretty-woman-the-musical-2018/chicagotribune--chris-jones.json",
-      "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Chicago Tribune": {
-      "count": 2,
-      "domain": "chicagotribune.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
