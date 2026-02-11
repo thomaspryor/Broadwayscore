@@ -111,14 +111,10 @@ async function fetchAllSubmissions(formId, token, sinceDate) {
 }
 
 async function main() {
-  const token = process.env.FORMSPREE_FOLLOW_API_KEY || process.env.FORMSPREE_TOKEN;
   const followFormId = process.env.FORMSPREE_FOLLOW_FORM_ID;
   const subscriberFormId = process.env.FORMSPREE_SUBSCRIBER_FORM_ID;
-
-  if (!token) {
-    console.log('Missing FORMSPREE_FOLLOW_API_KEY/FORMSPREE_TOKEN — skipping sync');
-    process.exit(0);
-  }
+  const followToken = process.env.FORMSPREE_FOLLOW_API_KEY || process.env.FORMSPREE_TOKEN;
+  const subscriberToken = process.env.FORMSPREE_SUBSCRIBER_API_KEY || process.env.FORMSPREE_TOKEN;
 
   if (!followFormId && !subscriberFormId) {
     console.log('Missing both FORMSPREE_FOLLOW_FORM_ID and FORMSPREE_SUBSCRIBER_FORM_ID — skipping sync');
@@ -137,9 +133,9 @@ async function main() {
   let skippedDuplicate = 0;
   let skippedInvalid = 0;
 
-  if (followFormId) {
+  if (followFormId && followToken) {
     console.log(`\nSyncing follows from form ${followFormId}...`);
-    const followSubs = await fetchAllSubmissions(followFormId, token, data._meta.lastSynced);
+    const followSubs = await fetchAllSubmissions(followFormId, followToken, data._meta.lastSynced);
 
     if (followSubs === null) {
       console.log('Could not fetch follow form. If this is the first run, this is normal.');
@@ -203,7 +199,7 @@ async function main() {
   let subscribersAdded = 0;
   let subscribersRemoved = 0;
 
-  if (subscriberFormId) {
+  if (subscriberFormId && subscriberToken) {
     console.log(`\nSyncing subscribers from form ${subscriberFormId}...`);
 
     // Load subscriber-specific lastSynced (separate from follower sync)
@@ -213,7 +209,7 @@ async function main() {
       subscriberLastSynced = existing._meta?.lastSynced || null;
     } catch { /* first run */ }
 
-    const subSubs = await fetchAllSubmissions(subscriberFormId, token, subscriberLastSynced);
+    const subSubs = await fetchAllSubmissions(subscriberFormId, subscriberToken, subscriberLastSynced);
 
     if (subSubs === null) {
       console.log('Could not fetch subscriber form. If this is the first run, this is normal.');

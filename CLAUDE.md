@@ -8,7 +8,7 @@
 4. **Automate everything.** Dynamic dates, no hardcoded years. Zero manual intervention.
 5. **NEVER guess or fake data.**
 6. **NEVER extract metadata from URLs.** URLs are inconsistent (2021 URL can have 2024 review). Use publish date + text.
-7. **Batch scripts MUST checkpoint** every ~25 items. `if: always()` on commit steps. 5-retry push with `--rebase -X theirs`.
+7. **Batch scripts MUST checkpoint** every ~25 items. **EVERY commit/push step in EVERY workflow MUST have `if: always()`** — without it, timeouts lose all data. 5-retry push with `--rebase -X theirs`. Before creating or modifying ANY workflow, grep for `commit` steps missing `if: always()` and fix them.
 8. **Run `validate-data.js` before pushing.**
 9. **Secrets MUST be in `env:` blocks** in workflows (NOT auto-available).
 10. **Recoupment:** NEVER mark `recouped: true` without trade press citation.
@@ -47,7 +47,8 @@ Broadway review aggregator. Next.js 14, TypeScript, Tailwind, static export, Ver
 | `BRIGHTDATA_TOKEN` | Scraping primary |
 | `SCRAPINGBEE_API_KEY` | Scraping fallback |
 | `BROWSERBASE_API_KEY`/`_PROJECT_ID` | Browser cloud |
-| `FORMSPREE_FOLLOW_API_KEY`/`_FORM_ID` | Subscribers |
+| `FORMSPREE_FOLLOW_API_KEY`/`_FORM_ID` | Follow form sync |
+| `FORMSPREE_SUBSCRIBER_API_KEY`/`_FORM_ID` | Subscriber form sync |
 | `RESEND_API_KEY` | Email |
 | `DISCORD_WEBHOOK_ALERTS` | Alerts |
 | `MEZZANINE_APP_ID`/`_SESSION_TOKEN` | Mezzanine |
