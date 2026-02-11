@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-11T01:07:38.069Z",
+  "runDate": "2026-02-11T02:18:14.611Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 89,
+    "processed": 2,
+    "failed": 98,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "2.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 11
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -29,31 +29,22 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 100,
-    "tier2Success": 45,
+    "tier2Success": 49,
     "tier3Attempts": 100,
-    "tier3Success": 94,
-    "tier4Attempts": 97,
-    "tier4Success": 42,
-    "totalFailed": 89,
-    "scrapingBeeCreditsUsed": 454,
+    "tier3Success": 97,
+    "tier4Attempts": 99,
+    "tier4Success": 38,
+    "totalFailed": 98,
+    "scrapingBeeCreditsUsed": 500,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "american-idiot-2010/observer--jesse-oxfeld.json",
-    "august-osage-county-2007/observer--unknown.json",
-    "brief-encounter-2010/observer--jesse-oxfeld.json",
-    "driving-miss-daisy-2010/observer--jesse-oxfeld.json",
-    "enron-2010/ny-observer--jesse-oxfeld.json",
-    "enron-2010/observer--jesse-oxfeld.json",
-    "fences-2010/observer--jesse-oxfeld.json",
-    "fully-committed-2016/observer--rex-reed.json",
-    "god-of-carnage-2009/observer--john-heilpern.json",
-    "hand-to-god-2015/observer--unknown.json",
-    "high-2011/observer--jesse-oxfeld.json"
+    "allegiance-2015/observer--rex-reed.json",
+    "how-to-succeed-in-business-without-really-trying-2011/observer--jesse-oxfeld.json"
   ],
   "failed": [
     "and-juliet-2022/observer--rex-reed.json",
@@ -80,8 +71,6 @@
     "airline-highway-2015/observer--rex-reed.json",
     "all-my-sons-2019/observer--rex-reed.json",
     "all-the-way-2014/observer--rex-reed.json",
-    "allegiance-2015/observer--rex-reed.json",
-    "american-buffalo-2022/observer--jesse-green.json",
     "american-psycho-2016/observer--rex-reed.json",
     "american-son-2018/observer--jesse-green.json",
     "american-son-2018/observer--rex-reed.json",
@@ -90,6 +79,7 @@
     "angels-in-america-2018/observer--rex-reed.json",
     "appropriate-2023/observer--rex-reed.json",
     "art-2025/observer--david-cote.json",
+    "august-osage-county-2007/observer--unknown.json",
     "back-to-the-future-2023/observer--david-cote.json",
     "bad-cinderella-2023/observer--david-cote.json",
     "beetlejuice-2019/observer--rex-reed.json",
@@ -113,7 +103,6 @@
     "dana-h-2021/observer--david-cote.json",
     "dead-outlaw-2025/observer--david-cote.json",
     "dear-evan-hansen-2016/observer--rex-reed.json",
-    "death-of-a-salesman-2022/observer--jesse-green.json",
     "diana-the-musical-2021/observer--david-cote.json",
     "disaster-2016/observer--rex-reed.json",
     "disgraced-2014/observer--rex-reed.json",
@@ -125,8 +114,6 @@
     "evita-2012/observer--rex-reed.json",
     "faith-healer-2006/observer--david-cote.json",
     "falsettos-2016/observer--rex-reed.json",
-    "farinelli-and-the-king-2017/observer--rex-reed.json",
-    "fat-ham-2023/observer--jesse-green.json",
     "fish-in-the-dark-2015/observer--rex-reed.json",
     "follies-2011/observer--rex-reed.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/observer--david-cote.json",
@@ -138,13 +125,26 @@
     "good-night-oscar-2023/observer--rex-reed.json",
     "gypsy-2024/observer--david-cote.json",
     "hamlet-2009/observer--david-cote.json",
+    "hand-to-god-2015/observer--unknown.json",
     "hangmen-2022/observer--david-cote.json",
     "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
     "hello-dolly-2017/observer--rex-reed.json",
     "here-lies-love-2023/observer--jesse-green.json",
+    "high-2011/observer--jesse-oxfeld.json",
     "home-2024/observer--david-cote.json",
     "how-i-learned-to-drive-2022/observer--david-cote.json",
-    "how-to-dance-in-ohio-2023/observer--jesse-green.json"
+    "how-to-dance-in-ohio-2023/observer--jesse-green.json",
+    "how-to-succeed-in-business-without-really-trying-2011/observer--rex-reed.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/observer--rex-reed.json",
+    "indecent-2017/observer--rex-reed.json",
+    "ink-2019/observer--david-cote.json",
+    "into-the-woods-2022/observer--david-cote.json",
+    "into-the-woods-2022/observer--jesse-green.json",
+    "into-the-woods-2022/observer--rex-reed.json",
+    "is-this-a-room-2021/observer--david-cote.json",
+    "jagged-little-pill-2019/observer--david-cote.json",
+    "jitney-2017/observer--rex-reed.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -152,22 +152,13 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "american-idiot-2010/observer--jesse-oxfeld.json",
-      "august-osage-county-2007/observer--unknown.json",
-      "brief-encounter-2010/observer--jesse-oxfeld.json",
-      "driving-miss-daisy-2010/observer--jesse-oxfeld.json",
-      "enron-2010/ny-observer--jesse-oxfeld.json",
-      "enron-2010/observer--jesse-oxfeld.json",
-      "fences-2010/observer--jesse-oxfeld.json",
-      "fully-committed-2016/observer--rex-reed.json",
-      "god-of-carnage-2009/observer--john-heilpern.json",
-      "hand-to-god-2015/observer--unknown.json",
-      "high-2011/observer--jesse-oxfeld.json"
+      "allegiance-2015/observer--rex-reed.json",
+      "how-to-succeed-in-business-without-really-trying-2011/observer--jesse-oxfeld.json"
     ]
   },
   "failuresByOutlet": {
     "Observer": {
-      "count": 4,
+      "count": 1,
       "domain": "observer.com",
       "hasCredentials": false,
       "isPaywalled": false,
