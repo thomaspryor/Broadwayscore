@@ -1,15 +1,34 @@
 {
-  "updatedAt": "2026-02-11T04:51:38.463Z",
-  "processed": 0,
-  "failed": 100,
-  "successRate": "0%",
+  "updatedAt": "2026-02-11T05:00:26.259Z",
+  "processed": 13,
+  "failed": 7,
+  "successRate": "65.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "playwright": 4,
+    "browserbase": 4,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-11T04:47:06.912Z",
+      "event": "bb-session",
+      "session": "236fe31b",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-11T04:47:26.116Z",
+      "event": "bb-session",
+      "session": "1b8eaed0",
+      "url": "https://variety.com/2003/legit/reviews/wicked-7-1200538236/"
+    },
+    {
+      "t": "2026-02-11T04:52:46.409Z",
+      "event": "bb-session",
+      "session": "01898142",
+      "url": "https://www.amny.com/urbanite-1.812039/theatre-review-chinglish-3-stars-1.327902"
+    }
+  ]
 }
