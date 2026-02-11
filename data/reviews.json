@@ -4,8 +4,8 @@
     "lastUpdated": "2026-02-11",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 10960,
-      "skippedNoScore": 8101,
+      "totalReviews": 10961,
+      "skippedNoScore": 8100,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 297,
       "skippedCrossOutletDuplicateUrl": 38,
@@ -19,10 +19,10 @@
         "explicit-slash": 11,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1162,
-        "llmScore": 5581,
+        "originalScore-priority0": 1165,
+        "llmScore": 5582,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3966,
+        "llmScore-lowconf": 3963,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -65938,7 +65938,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Regina Weinreich",
@@ -65948,7 +65948,7 @@
       "pullQuote": "\"An exuberant, fresh, musical…The play gives a clear image of how humans can occupy center stage, even in a fast-changing and not altogether truth-speaking virtual world…The number that everyone will be humming is the show’s anthem, ‘You Will Be Found.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dear-evan-hansen-2016",
@@ -66312,7 +66312,7 @@
       "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Shenton",
@@ -66322,7 +66322,7 @@
       "pullQuote": "Dear Evan Hansen adds to New York's impressive musical slate.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dear-evan-hansen-2016",
@@ -87376,18 +87376,18 @@
       "showId": "funny-girl-2022",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "assignedScore": 83,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Leah Greenblatt",
       "url": "https://ew.com/theater/theater-reviews/funny-girl-broadway-beanie-feldstein/",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "B",
       "pullQuote": "\"Fierstein's version of the story spends so little time building dramatic tension in its central relationship, or on the stakes of Fanny's brash feints and mistakes, that it often feels like a friction-free CliffNotes of the original; all the razzle-dazzle, none of the pesky realities.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "funny-girl-2022",
@@ -117382,7 +117382,7 @@
       "pullQuote": "August Wilson's Joe Turner's Come and Gone is receiving a revival that honors both the playwright's memory and his work with a staging that captures the right mixture of earthiness and spirituality that makes this particular play so moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "joe-turners-come-and-gone-2009",
@@ -136299,7 +136299,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Sommers",
@@ -136309,7 +136309,7 @@
       "pullQuote": "Not greatly altered since its New Jersey stint, this Disney Theatrical Production stage version of a cult movie is a cheerfully old-fashioned mix of a stirring story with a catchy score. And did I mention that the dancing by a terrific ensemble is mighty awesome? And then some!",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -183832,18 +183832,18 @@
       "showId": "waiting-for-godot-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 83,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Shania Russell",
       "url": "https://ew.com/waiting-for-godot-review-keanu-reeves-alex-winter-reunite-11818466?srsltid=AfmBOorjwcUmO8GIO3lff2fehIfFMPYqlzKCyZuI_zurgKVoq62O2QcY",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "B",
       "pullQuote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -184354,6 +184354,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "war-horse-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Thom Geier",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20482199,00.html",
+      "publishDate": "April 14, 2011",
+      "originalRating": "D",
+      "pullQuote": "Theater can be like magic. You can take an assemblage of wire, wood, and mesh — and convince people without a shred of doubt that it is a horse. And not just any horse, but Joey, the beloved half thoroughbred who is the heart and soul of the imaginative, moving new Broadway drama War Horse.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "war-horse-2011",
