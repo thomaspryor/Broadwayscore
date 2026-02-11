@@ -1,15 +1,132 @@
 {
-  "updatedAt": "2026-02-11T18:01:43.161Z",
-  "processed": 29,
-  "failed": 21,
-  "successRate": "58.0%",
+  "updatedAt": "2026-02-11T18:48:01.230Z",
+  "processed": 31,
+  "failed": 29,
+  "successRate": "51.7%",
   "tierBreakdown": {
-    "playwright": 10,
-    "browserbase": 0,
+    "playwright": 6,
+    "browserbase": 11,
     "scrapingbee": 0,
-    "brightdata": 11,
-    "archive": 8
+    "brightdata": 12,
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-11T18:22:01.501Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-11T18:26:16.201Z",
+      "event": "bb-session",
+      "session": "a92267a5",
+      "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.h"
+    },
+    {
+      "t": "2026-02-11T18:26:18.044Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-11T18:26:36.679Z",
+      "event": "bb-session",
+      "session": "e6d36853",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
+    },
+    {
+      "t": "2026-02-11T18:28:11.140Z",
+      "event": "bb-session",
+      "session": "3e6fb775",
+      "url": "https://observer.com/2018/04/theater-review-jack-obriens-new-carousel-should-run"
+    },
+    {
+      "t": "2026-02-11T18:28:31.790Z",
+      "event": "bb-session",
+      "session": "bcfd1645",
+      "url": "https://www.theatermania.com/broadway/news/rodgers-and-hammerstein-carousel-broa"
+    },
+    {
+      "t": "2026-02-11T18:31:14.671Z",
+      "event": "bb-session",
+      "session": "829639d2",
+      "url": "https://www.newsday.com/entertainment/theater/come-from-away-review-finding-a-bi"
+    },
+    {
+      "t": "2026-02-11T18:31:43.999Z",
+      "event": "bb-session",
+      "session": "bb21721c",
+      "url": "https://www.theatermania.com/broadway/reviews/come-from-away_79089.html"
+    },
+    {
+      "t": "2026-02-11T18:31:58.721Z",
+      "event": "bb-session",
+      "session": "a0b09382",
+      "url": "https://www.theatermania.com/broadway/reviews/come-from-away_80331.html"
+    },
+    {
+      "t": "2026-02-11T18:32:33.249Z",
+      "event": "bb-session",
+      "session": "28a34b12",
+      "url": "https://www.wsj.com/articles/come-from-away-review-wrongheaded-9-11-lovefest-148"
+    },
+    {
+      "t": "2026-02-11T18:33:13.104Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834762411\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA-xgqJTB3RUAANA1qtA==&cid=YdgdSePafF0_xwhNTqw5K~HjEB_hxvzsMeEeEcsm7E8L8cQWJ2INH0UOzXcw316DmGnLl3MtM6bNXVz7HJwiF57NA9Nt9D5EFNutNUOdzs0nKjd8zBSAqU3vkSOqWI8U&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770834762411\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834762411\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA-xgqJTB3RUAANA1qtA==&cid=YdgdSePafF0_xwhNTqw5K~HjEB_hxvzsMeEeEcsm7E8L8cQWJ2INH0UOzXcw316DmGnLl3MtM6bNXVz7HJwiF57NA9Nt9D5EFNutNUOdzs0nKjd8zBSAqU3vkSOqWI8U&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770834762411\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    29 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770834762411\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA-xgqJTB3RUAANA1qtA==&cid=YdgdSePafF0_xwhNTqw5K~HjEB_hxvzsMeEeEcsm7E8L8cQWJ2INH0UOzXcw316DmGnLl3MtM6bNXVz7HJwiF57NA9Nt9D5EFNutNUOdzs0nKjd8zBSAqU3vkSOqWI8U&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770834762411\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-11T18:33:36.081Z",
+      "event": "bb-session",
+      "session": "b3329f8e",
+      "url": "https://deadline.com/2016/12/dear-evan-hansen-ben-platt-broadway-review-12018636"
+    },
+    {
+      "t": "2026-02-11T18:33:49.486Z",
+      "event": "bb-session",
+      "session": "4866fea5",
+      "url": "https://www.newsday.com/entertainment/theater/dear-evan-hansen-review-endearingl"
+    },
+    {
+      "t": "2026-02-11T18:35:04.312Z",
+      "event": "bb-session",
+      "session": "473c94c4",
+      "url": "https://www.theatermania.com/broadway/reviews/dear-evan-hansen_78367.html"
+    },
+    {
+      "t": "2026-02-11T18:35:20.997Z",
+      "event": "bb-session",
+      "session": "6b0c0e8e",
+      "url": "https://www.theatermania.com/broadway/reviews/dear-evan-hansen-music-box-theatre"
+    },
+    {
+      "t": "2026-02-11T18:35:39.401Z",
+      "event": "bb-session",
+      "session": "64309b31",
+      "url": "https://www.wsj.com/articles/dear-evan-hansen-review-an-anxious-teens-tale-14816"
+    },
+    {
+      "t": "2026-02-11T18:36:21.864Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-11T18:37:03.710Z",
+      "event": "bb-session",
+      "session": "4928db28",
+      "url": "https://nypost.com/2008/03/28/gypsy-gets-a-brilliant-revival/"
+    },
+    {
+      "t": "2026-02-11T18:37:54.573Z",
+      "event": "bb-session",
+      "session": "995b4d76",
+      "url": "https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528"
+    },
+    {
+      "t": "2026-02-11T18:38:37.449Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
