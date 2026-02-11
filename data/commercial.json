@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-02-04",
+    "lastUpdated": "2026-02-11",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "notes": "recoupedWeeks is DEPRECATED - now calculated from openingDate + recoupedDate in the data layer. Only recoupedDate is required for recouped shows.",
     "designations": {
@@ -194,7 +194,7 @@
       "recoupedDate": "2022-11",
       "recoupedWeeks": 173,
       "recoupedSource": "Producer Carmen Pavlovic (confirmed mid-2023)",
-      "notes": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption insurance settlement during COVID shutdown. Weekly operating nut ~$1.0-1.1M. $3M NY theater tax credit received (among first to qualify). Lavish production design at the Al Hirschfeld Theatre. Multiple international productions. Generating investor profits since Nov 2022 recoupment.",
+      "notes": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption insurance. Closing July 26, 2026 after 7 years and 2,265 performances (36th longest-running show in Broadway history).",
       "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
@@ -799,8 +799,8 @@
         80,
         100
       ],
-      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis post states 'recoup=80-100%' for Just In Time",
-      "estimatedRecoupmentDate": "2026-02-04",
+      "estimatedRecoupmentSource": "Section C: Grosses Analysis Post shows 80-100% recoupment and Section D comment 'Just in Time HAS to be so close to recoupment!'",
+      "estimatedRecoupmentDate": "2026-02-11",
       "isEstimate": {
         "weeklyRunningCost": false
       },
@@ -831,8 +831,8 @@
         0,
         0
       ],
-      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis post states 'recoup=0-0%' for Two Strangers",
-      "estimatedRecoupmentDate": "2026-02-04",
+      "estimatedRecoupmentSource": "Section C: Grosses Analysis Post confirms 0-0% recoupment with show 'hovering around breakeven'",
+      "estimatedRecoupmentDate": "2026-02-11",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -863,8 +863,8 @@
         10,
         20
       ],
-      "estimatedRecoupmentSource": "Reddit Grosses Analysis / Accio blog",
-      "estimatedRecoupmentDate": "2026-01-28",
+      "estimatedRecoupmentSource": "Section C: Grosses Analysis Post confirms 10-20% recoupment estimate",
+      "estimatedRecoupmentDate": "2026-02-11",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -917,8 +917,8 @@
         20,
         40
       ],
-      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 20-40%",
-      "estimatedRecoupmentDate": "2026-01-28",
+      "estimatedRecoupmentSource": "Section C: Grosses Analysis Post confirms 20-40% recoupment estimate",
+      "estimatedRecoupmentDate": "2026-02-11",
       "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs. Struggled financially early but has been selling out consistently.",
       "isEstimate": {
         "weeklyRunningCost": true
@@ -1005,7 +1005,7 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Grosses hovered near $937K/week, roughly breakeven. Limited run ended Feb 2026 without recouping. Investors likely lost capital.",
+      "notes": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross. Limited run closed Feb 9, 2026.",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
@@ -1253,7 +1253,7 @@
       "recoupedDate": "2025-11",
       "recoupedWeeks": 8,
       "recoupedSource": "Variety",
-      "notes": "Keanu Reeves and Alex Winter revival. Opened Sep 2025, recouped $7.5M investment by week ending Nov 19, 2025 (~8 weeks). Jamie Lloyd directed.",
+      "notes": "Keanu Reeves and Alex Winter revival. Opened Sep 2025, recouped $7.5M investment in 8 weeks (confirmed by Variety). Jamie Lloyd directed. Hot ticket pairing of 'Bill & Ted' stars.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
