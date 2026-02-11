@@ -252,9 +252,11 @@ jobs:
           node scripts/collect-review-texts.js $ARGS
 
       - name: Check for large files
+        if: always()
         uses: ./.github/actions/check-file-sizes
 
       - name: Final commit and push
+        if: always()
         run: |
           git add data/review-texts/ data/archives/reviews/ data/collection-state/ || true
           if git diff --staged --quiet; then
