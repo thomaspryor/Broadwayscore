@@ -27,8 +27,7 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import DesignationLegend from '@/components/biz/DesignationLegend';
 import GatedDownloadButtons from '@/components/biz/GatedDownloadButtons';
 import BizPageTracker from '@/components/biz/BizPageTracker';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Broadway Investment Tracker',
@@ -41,6 +40,7 @@ export const metadata: Metadata = {
     title: 'Broadway Investment Tracker',
     description: 'Recoupment data and investment metrics for industry insiders',
     url: `${BASE_URL}/biz`,
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
   },
   twitter: {
     card: 'summary_large_image',
