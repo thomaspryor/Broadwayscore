@@ -1,48 +1,85 @@
 {
   "processed": [
-    "chicago-1996/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "and-juliet-2022/stagebuddy--elyse-trevers.json",
+    "and-juliet-2022/talkinbroadway--howard-miller.json",
+    "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
+    "mj-2022/exeunt-magazine--juliet-hindell.json",
+    "mj-2022/front-row-center--brittany-crowell.json",
+    "mj-2022/slantmagazine--dan-rubins.json",
+    "mj-2022/talkinbroadway--howard-miller.json",
+    "mj-2022/theater-life--patrick-christiano.json",
+    "mj-2022/theater-life--samuel-l-leiter.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/boston-herald-jed-gottlieb--jed-gottlieb.json",
+    "wicked-2003/ajc--wendell-brock.json",
+    "wicked-2003/austincom--dani-dudek.json",
+    "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
+    "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
+    "wicked-2003/latimes--amy-nicholson.json",
+    "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
+    "wicked-2003/sfchronicle--lily-janiak.json",
+    "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/nytg--david-gordon.json",
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "chicago-1996/nypost--elisabeth-vincentelli.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "chicago-1996/amny--matt-windman.json",
-    "chicago-1996/ap--mark-kennedy.json"
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "and-juliet-2022/broadway-blog--joey-sims.json",
+    "and-juliet-2022/theater-life--samuel-l-leiter.json",
+    "and-juliet-2022/theater-pizzazz--carole-di-tosti.json",
+    "and-juliet-2022/theater-scene--victor-gluck.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/theater-scene--joel-benjamin.json",
+    "six-2021/edge-media-network-robert-nesti--robert-nesti.json",
+    "six-2021/pages-on-stages--mason-pilevsky.json",
+    "six-2021/talkinbroadway--matthew-murray.json",
+    "six-2021/the-boston-globe-terry-byrne--terry-byrne.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/radio-times-james-mottram--james-mottram.json",
+    "wicked-2003/scmp-james-mottram--james-mottram.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "hells-kitchen-2024/guardian--adrian-horton.json",
-      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "and-juliet-2022/stagebuddy--elyse-trevers.json",
+      "mj-2022/exeunt-magazine--juliet-hindell.json",
+      "mj-2022/front-row-center--brittany-crowell.json",
+      "mj-2022/slantmagazine--dan-rubins.json",
+      "mj-2022/theater-life--patrick-christiano.json",
+      "mj-2022/theater-life--samuel-l-leiter.json",
+      "wicked-2003/austincom--dani-dudek.json",
+      "wicked-2003/inverse-lyvie-scott--lyvie-scott.json",
+      "wicked-2003/joysauce-siddhant-adlakha--siddhant-adlakha.json",
+      "wicked-2003/screen-daily-tim-grierson--tim-grierson.json",
+      "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "chicago-1996/hollywood-reporter--david-rooney.json"
+      "six-2021/boston-herald-jed-gottlieb--jed-gottlieb.json",
+      "wicked-2003/ajc--wendell-brock.json",
+      "wicked-2003/sfchronicle--lily-janiak.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "wicked-2003/variety--peter-debruge.json",
+      "and-juliet-2022/talkinbroadway--howard-miller.json",
+      "mj-2022/talkinbroadway--howard-miller.json"
+    ],
     "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "wicked-2003/variety--charles-isherwood.json",
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
+      "six-2021/amny--matt-windman.json",
+      "wicked-2003/latimes--amy-nicholson.json"
     ]
   },
-  "startTime": "2026-02-11T04:21:09.962Z",
-  "lastProcessed": "chicago-1996/ap--mark-kennedy.json",
+  "startTime": "2026-02-11T04:20:49.678Z",
+  "lastProcessed": "wicked-2003/showbiz-411-roger-friedman--roger-friedman.json",
   "log": []
 }
