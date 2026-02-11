@@ -1,56 +1,15 @@
 {
-  "updatedAt": "2026-02-11T18:24:39.058Z",
-  "processed": 10,
-  "failed": 10,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-11T18:26:52.188Z",
+  "processed": 50,
+  "failed": 40,
+  "successRate": "55.6%",
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 4,
+    "playwright": 14,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 36
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-11T18:14:29.381Z",
-      "event": "bb-session",
-      "session": "6f38d64a",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
-    },
-    {
-      "t": "2026-02-11T18:14:54.011Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-11T18:16:45.982Z",
-      "event": "bb-session",
-      "session": "083fcb38",
-      "url": "http://variety.com/2003/legit/reviews/wicked-7-1200538236/"
-    },
-    {
-      "t": "2026-02-11T18:17:04.745Z",
-      "event": "bb-session",
-      "session": "92fcae86",
-      "url": "https://variety.com/2003/legit/reviews/wicked-7-1200538236/"
-    },
-    {
-      "t": "2026-02-11T18:17:40.779Z",
-      "event": "bb-session",
-      "session": "05ee1092",
-      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
-    },
-    {
-      "t": "2026-02-11T18:18:21.311Z",
-      "event": "bb-session",
-      "session": "e9132115",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-02-11T18:19:11.071Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
