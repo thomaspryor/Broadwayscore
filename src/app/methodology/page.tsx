@@ -57,7 +57,7 @@ const articleSchema = {
     },
   },
   datePublished: '2024-01-01',
-  dateModified: '2026-02-02',
+  dateModified: '2026-02-07',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `${BASE_URL}/methodology`,
@@ -111,7 +111,7 @@ const faqSchema = {
       name: 'What is Audience Buzz?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into letter grades from A+ (93-100) through F (below 48). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception. Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight, ensuring larger sample sizes have more influence while preventing any one platform from dominating.',
+        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is AI-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
       },
     },
     {
@@ -235,7 +235,7 @@ export default function MethodologyPage() {
                 <span className="text-gray-400 text-sm">Weight: 0.75×</span>
               </div>
               <p className="text-gray-300 text-sm">
-                NY Post, NY Daily News, TheaterMania, Entertainment Weekly, Deadline, The Wrap, IndieWire, Observer, Slant, Chicago Tribune, USA Today, NY Stage Review, NY Theatre Guide
+                Regional papers, entertainment trades, and theater-specific publications (30+ outlets)
               </p>
             </div>
 
@@ -245,7 +245,7 @@ export default function MethodologyPage() {
                 <span className="text-gray-400 text-sm">Weight: 0.45×</span>
               </div>
               <p className="text-gray-300 text-sm">
-                BroadwayWorld, amNewYork, Front Mezz Junkies, Culture Sauce, and other smaller outlets/blogs
+                Smaller outlets, blogs, and niche theater sites
               </p>
             </div>
           </div>
@@ -285,51 +285,14 @@ export default function MethodologyPage() {
           </div>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Letter Grades</h3>
-          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-              <div>
-                <div className="text-gray-500 mb-1">A Range</div>
-                <div className="text-gray-300">A+ = 97</div>
-                <div className="text-gray-300">A = 93</div>
-                <div className="text-gray-300">A- = 90</div>
-              </div>
-              <div>
-                <div className="text-gray-500 mb-1">B Range</div>
-                <div className="text-gray-300">B+ = 87</div>
-                <div className="text-gray-300">B = 83</div>
-                <div className="text-gray-300">B- = 78</div>
-              </div>
-              <div>
-                <div className="text-gray-500 mb-1">C Range</div>
-                <div className="text-gray-300">C+ = 72</div>
-                <div className="text-gray-300">C = 65</div>
-                <div className="text-gray-300">C- = 58</div>
-              </div>
-              <div>
-                <div className="text-gray-500 mb-1">D/F Range</div>
-                <div className="text-gray-300">D+ = 40</div>
-                <div className="text-gray-300">D = 35</div>
-                <div className="text-gray-300">D- = 30</div>
-                <div className="text-gray-300">F = 20</div>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="text-base font-semibold text-white mt-6 mb-3">Sentiment Buckets</h3>
-          <p className="text-gray-300 text-sm mb-3">
-            When a review has no explicit rating &mdash; which is most Broadway reviews &mdash; we use multiple leading AI models to analyze the full review text and classify its sentiment. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency, and each review is scored into one of these buckets:
+          <p className="text-gray-300 text-sm">
+            Letter grades from outlets like Entertainment Weekly are converted using a standard academic mapping (A+ at the top, F at the bottom), calibrated to align with our 0&ndash;100 scale.
           </p>
-          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-gray-400">Rave</div><div className="text-score-high">90</div>
-              <div className="text-gray-400">Positive</div><div className="text-score-high">82</div>
-              <div className="text-gray-400">Mixed-Positive</div><div className="text-score-high">72</div>
-              <div className="text-gray-400">Mixed / Neutral</div><div className="text-score-medium">65</div>
-              <div className="text-gray-400">Mixed-Negative</div><div className="text-score-medium">58</div>
-              <div className="text-gray-400">Negative</div><div className="text-score-low">48</div>
-              <div className="text-gray-400">Pan</div><div className="text-score-low">30</div>
-            </div>
-          </div>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">AI Sentiment Analysis</h3>
+          <p className="text-gray-300 text-sm">
+            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading AI models to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
+          </p>
         </section>
 
         {/* Audience Buzz */}
@@ -401,7 +364,7 @@ export default function MethodologyPage() {
                 <span className="text-white font-medium">Reddit (r/Broadway)</span>
               </div>
               <p className="text-gray-300 text-sm">
-                Sentiment analysis of discussions and reviews from the Broadway subreddit
+                AI-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
               </p>
             </div>
           </div>
