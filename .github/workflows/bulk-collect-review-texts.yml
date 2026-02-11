@@ -48,9 +48,9 @@ on:
         default: ''
         type: string
       exclude_domains:
-        description: 'Comma-separated domains to exclude (e.g., nytimes.com,wsj.com)'
+        description: 'Comma-separated domains to exclude (paywall domains handled by dedicated streams)'
         required: false
-        default: ''
+        default: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk,theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com'
         type: string
       aggressive:
         description: 'Skip Playwright for known-blocked sites (faster, uses API tiers directly)'
