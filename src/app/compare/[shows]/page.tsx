@@ -34,6 +34,7 @@ export function generateMetadata({ params }: { params: { shows: string } }): Met
       description,
       url: `${BASE_URL}/compare/${params.shows}`,
       type: 'article',
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: title }],
     },
   };
 }
