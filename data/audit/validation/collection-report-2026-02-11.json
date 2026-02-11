@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-11T09:58:02.663Z",
+  "runDate": "2026-02-11T11:05:01.126Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 98,
+    "processed": 0,
+    "failed": 100,
     "skipped": 0,
-    "successRate": "2.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -29,23 +29,20 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 100,
-    "tier2Success": 49,
+    "tier2Success": 58,
     "tier3Attempts": 100,
     "tier3Success": 100,
-    "tier4Attempts": 99,
-    "tier4Success": 43,
-    "totalFailed": 98,
-    "scrapingBeeCreditsUsed": 500,
+    "tier4Attempts": 100,
+    "tier4Success": 45,
+    "totalFailed": 100,
+    "scrapingBeeCreditsUsed": 580,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "dear-evan-hansen-2016/observer--rex-reed.json",
-    "high-2011/observer--jesse-oxfeld.json"
-  ],
+  "processed": [],
   "failed": [
     "and-juliet-2022/observer--rex-reed.json",
     "hadestown-2019/observer--david-cote.json",
@@ -122,6 +119,7 @@
     "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
     "hello-dolly-2017/observer--rex-reed.json",
     "here-lies-love-2023/observer--jesse-green.json",
+    "high-2011/observer--jesse-oxfeld.json",
     "home-2024/observer--david-cote.json",
     "how-i-learned-to-drive-2022/observer--david-cote.json",
     "how-to-dance-in-ohio-2023/observer--jesse-green.json",
@@ -144,17 +142,15 @@
     "king-kong-2018/observer--rex-reed.json",
     "kiss-me-kate-2019/observer--david-cote.json",
     "kiss-me-kate-2019/observer--rex-reed.json",
-    "lackawanna-blues-2021/observer--david-cote.json"
+    "lackawanna-blues-2021/observer--david-cote.json",
+    "lady-day-at-emersons-bar-and-grill-2014/observer--rex-reed.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "dear-evan-hansen-2016/observer--rex-reed.json",
-      "high-2011/observer--jesse-oxfeld.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
