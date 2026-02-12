@@ -346,7 +346,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reviews.json data/critic-registry.json data/audit/
+          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
           git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
 
           git commit -m "data: Auto-rebuild reviews.json after bulk collection (round ${{ inputs.current_round }})"
