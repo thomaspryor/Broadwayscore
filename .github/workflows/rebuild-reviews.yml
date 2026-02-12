@@ -96,7 +96,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/reviews.json
+          git add data/reviews.json data/review-texts/
           git add data/critic-registry.json data/audit/critic-outlet-affinity.json 2>/dev/null || true
 
           BEFORE=${{ steps.before.outputs.count }}
