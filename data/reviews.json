@@ -4,7 +4,7 @@
     "lastUpdated": "2026-02-12",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11400,
+      "totalReviews": 11399,
       "skippedNoScore": 7610,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
@@ -16,13 +16,13 @@
       "scoreSources": {
         "explicit-stars": 6,
         "explicit-outOf": 2,
-        "explicit-slash": 10,
+        "explicit-slash": 11,
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1168,
-        "llmScore": 6031,
+        "llmScore": 6028,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3967,
+        "llmScore-lowconf": 3968,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -17933,7 +17933,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -75511,7 +75511,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Sommers",
@@ -75521,7 +75521,7 @@
       "pullQuote": "A petite dynamo from Buenos Aires making a brilliant Broadway debut, Elena Roger sympathetically portrays Eva.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "evita-2012",
@@ -120890,9 +120890,9 @@
       "showId": "kinky-boots-2013",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 100,
+      "scoreSource": "explicit-slash",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "David Rooney",
       "url": "https://www.hollywoodreporter.com/review/kinky-boots-theater-review-433052",
@@ -172891,23 +172891,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "the-country-house-2014",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/review/country-house-theater-review-737702",
-      "publishDate": "October 5, 2014",
-      "originalRating": null,
-      "pullQuote": "While it may be churlish to complain about a play that amuses and entertains with such efficiency, The Country House is disappointingly toothless, even bland.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "the-country-house-2014",
