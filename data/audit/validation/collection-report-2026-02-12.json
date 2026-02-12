@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-12T11:12:20.442Z",
+  "runDate": "2026-02-12T14:19:52.080Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,30 +11,30 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 5,
+    "processed": 5,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "55.6%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 3,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier3Attempts": 6,
+    "tier3Success": 6,
     "tier4Attempts": 9,
-    "tier4Success": 7,
-    "totalFailed": 5,
+    "tier4Success": 3,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,13 +43,13 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "and-juliet-2022/nydailynews--chris-jones.json",
     "bright-star-2016/chicagotribune--chris-jones.json",
     "bright-star-2016/chicagotribune--unknown.json",
     "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
     "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "and-juliet-2022/nydailynews--chris-jones.json",
     "gutenberg-2023/nydailynews--chris-jones.json",
     "dead-outlaw-2025/chicagotribune--chris-jones.json",
     "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
@@ -59,10 +59,12 @@
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
+    "brightdata": [
+      "and-juliet-2022/nydailynews--chris-jones.json",
       "bright-star-2016/chicagotribune--chris-jones.json",
-      "bright-star-2016/chicagotribune--unknown.json",
+      "bright-star-2016/chicagotribune--unknown.json"
+    ],
+    "archive": [
       "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
       "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
     ]
