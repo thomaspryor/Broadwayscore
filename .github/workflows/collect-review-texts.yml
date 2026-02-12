@@ -203,7 +203,7 @@ jobs:
       - name: Commit rebuilt reviews.json
         if: steps.push.outputs.has_changes == 'true'
         run: |
-          git add data/reviews.json data/critic-registry.json data/audit/
+          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else
