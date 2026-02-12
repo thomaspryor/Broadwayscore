@@ -502,7 +502,7 @@ jobs:
 
       - name: Commit rebuild
         run: |
-          git add data/reviews.json data/audit/
+          git add data/reviews.json data/audit/ data/review-texts/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
