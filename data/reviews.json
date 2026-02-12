@@ -4,7 +4,7 @@
     "lastUpdated": "2026-02-12",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11399,
+      "totalReviews": 11401,
       "skippedNoScore": 7610,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
@@ -12,7 +12,7 @@
       "skippedDuplicateText": 654,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 852,
-      "recoveredFromGarbage": 122,
+      "recoveredFromGarbage": 123,
       "scoreSources": {
         "explicit-stars": 6,
         "explicit-outOf": 2,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1169,
-        "llmScore": 6027,
+        "llmScore": 6028,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3967,
+        "llmScore-lowconf": 3969,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -9132,7 +9132,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -127913,7 +127913,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 41,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Michael Sommers",
@@ -127923,7 +127923,7 @@
       "pullQuote": "Other than providing a tour-de-force challenge for an actor, however, the point of this production escapes me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "macbeth-2013",
@@ -163725,7 +163725,7 @@
       "pullQuote": "Check your preconceptions at the door and enjoy the ride.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "spongebob-squarepants-2017",
