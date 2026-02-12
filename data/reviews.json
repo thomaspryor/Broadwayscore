@@ -1,11 +1,11 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-11",
+    "lastUpdated": "2026-02-12",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11085,
-      "skippedNoScore": 7959,
+      "totalReviews": 11087,
+      "skippedNoScore": 7957,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
       "skippedCrossOutletDuplicateUrl": 38,
@@ -19,7 +19,7 @@
         "explicit-slash": 11,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1166,
+        "originalScore-priority0": 1168,
         "llmScore": 5706,
         "thumb-override-llm": 2,
         "llmScore-lowconf": 3962,
@@ -123485,7 +123485,7 @@
       "pullQuote": "Lennon is a show that works best when it stops trying to be a traditional musical and becomes what it really wants to be: a concert celebrating the music of John Lennon and The Beatles.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "lennon-2005",
@@ -126512,7 +126512,7 @@
       "pullQuote": "At the end of the night, she will descend into madness, nearly four hours after the play began.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "long-days-journey-into-night-2016",
@@ -131598,7 +131598,7 @@
       "pullQuote": "If you loved the movie, then you will also love this musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "mean-girls-2018",
@@ -186488,6 +186488,23 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
+      "criticName": "Lisa Schwarzbaum",
+      "url": "https://www.ew.com/ew/article/0,,20483133_20518674,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Spielberg, attuned to the power of that equine eloquence, gives Joey and his human costars exactly what they need to run free. This is a beautifully built, classically framed movie, shot with the unshowy natural expressiveness of a John Ford Western by Spielberg's great cinematographer, Janusz Kaminski.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "war-horse-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Thom Geier",
       "url": "https://www.ew.com/ew/article/0,,20364394_20482199,00.html",
       "publishDate": "April 14, 2011",
@@ -187943,6 +187960,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "wit-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20564957,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Wit is about so much more than one woman's disease. It's about knowledge, ignorance, humanity, love; 'the play is about simplicity and complications,' schoolteacher Edson has said...Fearless doesn't even begin to describe Nixon's performance.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "wit-2012",
