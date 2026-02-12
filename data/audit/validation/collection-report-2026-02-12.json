@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-12T08:32:24.426Z",
+  "runDate": "2026-02-12T08:36:15.415Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,61 +11,88 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 5,
+    "processed": 1,
+    "failed": 38,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "2.6%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 24,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 9,
-    "tier4Success": 6,
-    "totalFailed": 5,
+    "tier3Attempts": 24,
+    "tier3Success": 24,
+    "tier4Attempts": 16,
+    "tier4Success": 15,
+    "totalFailed": 38,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bright-star-2016/chicagotribune--chris-jones.json",
-    "bright-star-2016/chicagotribune--unknown.json",
-    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
-    "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
+    "sweat-2017/deadline--jeremy-gerard.json"
   ],
   "failed": [
-    "and-juliet-2022/nydailynews--chris-jones.json",
-    "gutenberg-2023/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
-    "the-price-2017/chicagotribune--chris-jones.json"
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
+    "a-soldiers-play-2020/deadline--greg-evans.json",
+    "almost-famous-2022/deadline--pete-hammond.json",
+    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/deadline--pete-hammond.json",
+    "cabaret-2014/deadline--greg-evans.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
+    "falsettos-2016/deadline--jeremy-gerard.json",
+    "fully-committed-2016/deadline--jeremy-gerard.json",
+    "gypsy-2024/deadline--pete-hammond.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "it-shoulda-been-you-2015/deadline--jeremy-gerard.json",
+    "kiss-me-kate-2019/deadline--greg-evans.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "lempicka-2024/deadline--greg-evans.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "old-times-2015/deadline--jeremy-gerard.json",
+    "once-on-this-island-2017/deadline--jeremy-gerard.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "present-laughter-2017/deadline--jeremy-gerard.json",
+    "prince-of-broadway-2017/deadline--jeremy-gerard.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
+    "slave-play-2021/deadline--greg-evans.json",
+    "something-rotten-2015/deadline--jeremy-gerard.json",
+    "suffs-2024/deadline--pete-hammond.json",
+    "the-last-five-years-2025/deadline--greg-evans.json",
+    "the-parisian-woman-2017/deadline--jeremy-gerard.json",
+    "the-parisian-woman-2017/deadline--pete-hammond.json",
+    "the-rose-tattoo-2019/deadline--pete-hammond.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "tuck-everlasting-2016/deadline--jeremy-gerard.json",
+    "uncle-vanya-2024/deadline--greg-evans.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
-      "bright-star-2016/chicagotribune--chris-jones.json",
-      "bright-star-2016/chicagotribune--unknown.json",
-      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
-      "the-mystery-of-edwin-drood-2012/chicagotribune--chris-jones.json"
-    ]
+    "brightdata": [
+      "sweat-2017/deadline--jeremy-gerard.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
