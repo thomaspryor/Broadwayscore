@@ -100,8 +100,6 @@ export function generateReviewSchema(review: {
 
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
-  const reviews = show.criticScore?.reviews || [];
-
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -139,17 +137,10 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     };
   }
 
-  // Add individual reviews
-  if (reviews.length > 0) {
-    schema.review = reviews.slice(0, 10).map(review => generateReviewSchema({
-      outlet: review.outlet,
-      criticName: review.criticName,
-      score: review.assignedScore,
-      url: review.url,
-      publishDate: review.publishDate,
-      excerpt: review.quote,
-    }));
-  }
+  // Note: Individual review snippets are NOT valid on TheaterEvent per Google's
+  // structured data spec. Only aggregateRating is supported for Event types.
+  // Individual reviews were causing "Invalid object type for field '<parent_node>'"
+  // errors in Google Search Console.
 
   // Add ticket offers
   if (show.ticketLinks && show.ticketLinks.length > 0) {
