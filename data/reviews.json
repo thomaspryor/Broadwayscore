@@ -4,7 +4,7 @@
     "lastUpdated": "2026-02-12",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11399,
+      "totalReviews": 11401,
       "skippedNoScore": 7610,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
@@ -12,17 +12,17 @@
       "skippedDuplicateText": 654,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 852,
-      "recoveredFromGarbage": 122,
+      "recoveredFromGarbage": 123,
       "scoreSources": {
         "explicit-stars": 6,
         "explicit-outOf": 2,
-        "explicit-slash": 11,
+        "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1169,
-        "llmScore": 6027,
+        "llmScore": 6029,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3967,
+        "llmScore-lowconf": 3969,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -9132,7 +9132,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -17933,7 +17933,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -56598,23 +56598,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "chinglish-2011",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 64,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The problem is that not everything in David Henry Hwang’s mildly entertaining comedy is as fluid or dynamic as the scene changes.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "chinglish-2011",
@@ -120907,9 +120890,9 @@
       "showId": "kinky-boots-2013",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
-      "assignedScore": 100,
-      "scoreSource": "explicit-slash",
-      "bucket": "Rave",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
       "url": "https://www.hollywoodreporter.com/review/kinky-boots-theater-review-433052",
@@ -124508,6 +124491,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "les-miserables-2014",
+      "outletId": "hollywood-reporter",
+      "outlet": "The Hollywood Reporter",
+      "assignedScore": 77,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Rooney",
+      "url": "https://www.hollywoodreporter.com/review/les-miserables-theater-review-690474",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "This propulsive touring production breathes urgent dramatic life into the core arc of persecution and obsession that drives the story.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
       "showId": "lestat-2006",
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
@@ -127913,7 +127913,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 41,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Michael Sommers",
@@ -127923,7 +127923,7 @@
       "pullQuote": "Other than providing a tour-de-force challenge for an actor, however, the point of this production escapes me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "macbeth-2013",
@@ -163725,7 +163725,7 @@
       "pullQuote": "Check your preconceptions at the door and enjoy the ride.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "spongebob-squarepants-2017",
