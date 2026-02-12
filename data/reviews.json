@@ -4,25 +4,25 @@
     "lastUpdated": "2026-02-12",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11243,
+      "totalReviews": 11241,
       "skippedNoScore": 7793,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
       "skippedCrossOutletDuplicateUrl": 38,
-      "skippedDuplicateText": 652,
+      "skippedDuplicateText": 653,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 837,
       "recoveredFromGarbage": 122,
       "scoreSources": {
         "explicit-stars": 6,
         "explicit-outOf": 2,
-        "explicit-slash": 11,
+        "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1169,
-        "llmScore": 5872,
+        "llmScore": 5870,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3962,
+        "llmScore-lowconf": 3963,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -17916,7 +17916,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -28226,7 +28226,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 93,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -28236,7 +28236,7 @@
       "pullQuote": "The revival of Tony Kushner's epic two-part masterwork is a triumph of theatrical storytelling that feels both timeless and urgently contemporary.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "angels-in-america-2018",
@@ -120856,9 +120856,9 @@
       "showId": "kinky-boots-2013",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
-      "assignedScore": 100,
-      "scoreSource": "explicit-slash",
-      "bucket": "Rave",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
       "url": "https://www.hollywoodreporter.com/review/kinky-boots-theater-review-433052",
@@ -120935,7 +120935,7 @@
       "pullQuote": "Harvey Fierstein's book stays true to the story's feel-good formula while deepening the friendship between the two unlikely partners.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "kiss-me-kate-2019",
@@ -166366,23 +166366,6 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/review/sunday-park-george-941158",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Jeanine Tesori has pulled together an exceptional company of top talents to find the humor and humanity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 90,
@@ -167839,23 +167822,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Ashford plays the title character in AR Gurney's Sylvia, a comedy as predictable as it is indestructible...But if you have ever loved a pet, it is almost impossible not to feel moved by the interspecies romance of Greg and Sylvia...The schtick of the play is that Greg and Kate, like all pet owners, anthropomorphise their animal...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "sylvia-2015",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "http://www.hollywoodreporter.com/review/matthew-broderick-annaleigh-ashford-sylvia-834684",
-      "publishDate": "October 28, 2015",
-      "originalRating": null,
-      "pullQuote": "The play remains a charming trifle, elevated by three terrific performances that mine both the comedy and the genuine emotion.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -176002,7 +175968,7 @@
       "pullQuote": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-king-and-i-2015",
@@ -176393,7 +176359,7 @@
       "pullQuote": "Sting's musical about shipbuilders in his native England has strong moments but feels more like a work in progress than a polished Broadway show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-last-ship-2014",
