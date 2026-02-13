@@ -29,7 +29,7 @@ const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normali
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
-const { excerptMentionsWrongShow, isTourReviewExcerpt } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -1398,6 +1398,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews rejected by LLM ensemble Step 0 (wrong_show, wrong_production, not_a_review, garbage)
+      if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) {
+        stats.skippedLlmRejected = (stats.skippedLlmRejected || 0) + 1;
+        return;
+      }
+
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
       const reasoning = data.llmScore?.reasoning || '';
       if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
@@ -1517,6 +1523,33 @@ showDirs.forEach(showId => {
             return;
           }
           seenFingerprintsByOutlet.set(fpKey, file);
+        }
+      }
+
+      // CONTAMINATION SAFETY NET: Check fullText for tour/film signals on reviews
+      // that haven't been through the LLM ensemble's Step 0 rejection check.
+      // Only checks reviews with text fetched after our 2026-02-13 corpus audit
+      // to avoid flooding the queue with legitimate reviews that mention tours/films.
+      // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
+      // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
+      const CONTAMINATION_AUDIT_CUTOFF = process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z';
+      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
+        const introText = data.fullText.slice(0, 600);
+
+        // Tour detection (skip tour-stop shows where touring is expected)
+        if (showStatusMap[showId] !== 'tour-stop') {
+          const tourCheck = isTourReviewExcerpt(introText);
+          if (tourCheck.isTourReview) {
+            flagForHumanReview(data, 'possible-tour-fulltext',
+              `Tour signal in fullText intro: ${tourCheck.signal}`);
+          }
+        }
+
+        // Film/TV detection (2+ film/streaming keywords, 0 theater keywords)
+        const filmCheck = isFilmTvReview(introText);
+        if (filmCheck.isFilmTv) {
+          flagForHumanReview(data, 'possible-film-tv-fulltext',
+            `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
         }
       }
 
