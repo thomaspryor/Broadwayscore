@@ -4,23 +4,19 @@ Everything below is copy-paste ready. No coding, no terminal commands. Just copy
 
 ---
 
-## BEFORE YOU START: The Warm-Up (Weeks 1-3)
+## BEFORE YOU START: Quick Warm-Up (Optional, 1 Week)
 
-**Why:** A brand-new Reddit account posting data analyses with links gets auto-flagged as spam. You need a comment history first.
+**Your Reddit account (u/thomaspryor):** 9 years old, verified email, active in r/Broadway. You don't need the 3-week warmup that a new account would. Old accounts with real history don't get spam-flagged.
 
-**What to do:** For 3 weeks before your first post, spend ~10 minutes a day on r/Broadway:
-- Reply to "what should I see?" threads with genuine opinions
-- React to Tony news, show closings, casting announcements
-- Upvote and comment on other people's posts
-- **Never** mention broadwayscorecard.com during this period
+**Optional but recommended:** Before your first data post, drop 3-5 genuine comments on r/Broadway over a few days — react to a casting announcement, answer a "what should I see?" thread, etc. This puts recent activity on the account so the data post doesn't look like it came out of nowhere.
 
-**While you warm up,** I'll handle Phase 1 (backlinks) by submitting to directories and sending the university emails.
+**While you do that,** send the Phase 1 backlink emails below.
 
 ---
 
-## PHASE 1: QUIET BACKLINKS (Weeks 1-3, While Warming Up Reddit)
+## PHASE 1: QUIET BACKLINKS (Week 1, While Warming Up Reddit)
 
-These go out before any Reddit posts. I can send many of these for you via GitHub Actions or you can copy-paste from your phone.
+These go out before any Reddit posts. Copy-paste from your phone.
 
 ### Email 1: NYU Tisch School of the Arts
 
@@ -85,7 +81,7 @@ Tom Pryor
 
 ---
 
-## PHASE 2: REDDIT POSTS (Weeks 4-12)
+## PHASE 2: REDDIT POSTS (Weeks 2-10)
 
 Post one every 5-7 days. Each post below is complete — just copy the title and body into Reddit.
 
@@ -542,7 +538,7 @@ Brantley era?
 
 ---
 
-## PHASE 3: OUTREACH EMAILS (Start Week 6, After 2+ Posts Land Well)
+## PHASE 3: OUTREACH EMAILS (Start Week 4, After 2+ Posts Land Well)
 
 Only send these after at least 2 Reddit posts have gotten positive reception (30+ upvotes, no mod removal). Include a link to your best-performing post as social proof.
 
@@ -722,16 +718,16 @@ Create a Google Sheet with two tabs:
 
 | Week | Reddit | Outreach | Notes |
 |------|--------|----------|-------|
-| 1-3 | Comment on r/Broadway daily (no links, no posts) | Send university emails + Broadway.org | Building credibility |
-| 4 | **Post #1** (Season rankings) | Create Twitter @BwayScorecard | First real post |
-| 5 | **Post #2** (Outlet rankings) | — | Let posts breathe |
-| 6 | **Post #3** (Polarizing shows) | Send Howard Sherman + Ken Davenport emails | Start outreach |
-| 7 | **Post #4** (Critic vs audience) | Send Broadway Briefing + Chris Peterson | |
-| 8 | **Post #5** (Plays vs musicals) | Follow up on unanswered emails | |
-| 9 | **Post #6** (Best-reviewed) | — | |
-| 10 | **Post #7** (Worst-reviewed) | Pitch podcast appearance | |
-| 11 | **Post #8** (NYT evolution) | — | |
-| 12+ | New analyses from future topics list | Continue as needed | |
+| 1 | Drop 3-5 genuine comments on r/Broadway | Send university emails + Broadway.org | Light warm-up |
+| 2 | **Post #1** (Season rankings) | Create Twitter @BwayScorecard | First real post |
+| 3 | **Post #2** (Outlet rankings) | — | Let posts breathe |
+| 4 | **Post #3** (Polarizing shows) | Send Howard Sherman + Ken Davenport emails | Start outreach |
+| 5 | **Post #4** (Critic vs audience) | Send Broadway Briefing + Chris Peterson | |
+| 6 | **Post #5** (Plays vs musicals) | Follow up on unanswered emails | |
+| 7 | **Post #6** (Best-reviewed) | — | |
+| 8 | **Post #7** (Worst-reviewed) | Pitch podcast appearance | |
+| 9 | **Post #8** (NYT evolution) | — | |
+| 10+ | New analyses + your own reviews on /reviews | Continue as needed | Blog gives you fresh content |
 
 ---
 
