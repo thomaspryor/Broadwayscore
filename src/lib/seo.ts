@@ -24,10 +24,26 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Broadway Scorecard',
     url: BASE_URL,
-    logo: `${BASE_URL}/favicon.svg`,
+    logo: `${BASE_URL}/og/home.png`,
     description: 'Aggregated Broadway show ratings from professional critics',
     inLanguage: 'en',
   };
+}
+
+// Parse address string like "226 W 46th St, New York, NY 10036" into PostalAddress
+function toPostalAddress(address: string) {
+  const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
+  if (match) {
+    return {
+      '@type': 'PostalAddress',
+      streetAddress: match[1],
+      addressLocality: match[2],
+      addressRegion: match[3],
+      postalCode: match[4],
+      addressCountry: 'US',
+    };
+  }
+  return address;
 }
 
 // WebSite Schema - For sitelinks search box
@@ -107,7 +123,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     location: {
       '@type': 'PerformingArtsTheater',
       name: show.venue,
-      address: show.theaterAddress || show.venue,
+      address: toPostalAddress(show.theaterAddress || show.venue),
     },
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
@@ -177,7 +193,7 @@ export function generateTheaterSchema(theater: {
     '@type': 'PerformingArtsTheater',
     name: theater.name,
     url: `${BASE_URL}/theater/${theater.slug}`,
-    ...(theater.address && { address: theater.address }),
+    ...(theater.address && { address: toPostalAddress(theater.address) }),
     event: theater.currentShow ? {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
