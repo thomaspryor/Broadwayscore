@@ -4,88 +4,143 @@ Everything below is copy-paste ready. No coding, no terminal commands. Just copy
 
 ---
 
-## BEFORE YOU START: The Warm-Up (Weeks 1-3)
+## BEFORE YOU START: Quick Warm-Up (Optional, 1 Week)
 
-**Why:** A brand-new Reddit account posting data analyses with links gets auto-flagged as spam. You need a comment history first.
+**Your Reddit account (u/thomaspryor):** 9 years old, verified email, active in r/Broadway. You don't need the 3-week warmup that a new account would. Old accounts with real history don't get spam-flagged.
 
-**What to do:** For 3 weeks before your first post, spend ~10 minutes a day on r/Broadway:
-- Reply to "what should I see?" threads with genuine opinions
-- React to Tony news, show closings, casting announcements
-- Upvote and comment on other people's posts
-- **Never** mention broadwayscorecard.com during this period
+**Optional but recommended:** Before your first data post, drop 3-5 genuine comments on r/Broadway over a few days — react to a casting announcement, answer a "what should I see?" thread, etc. This puts recent activity on the account so the data post doesn't look like it came out of nowhere.
 
-**While you warm up,** I'll handle Phase 1 (backlinks) by submitting to directories and sending the university emails.
+**While you do that,** send the Phase 1 backlink emails below.
 
 ---
 
-## PHASE 1: QUIET BACKLINKS (Weeks 1-3, While Warming Up Reddit)
+## PHASE 1: QUIET BACKLINKS (Week 1, While Warming Up Reddit)
 
-These go out before any Reddit posts. I can send many of these for you via GitHub Actions or you can copy-paste from your phone.
+Low-probability lottery tickets — send them all in one sitting and forget about them. The real launch is Post 0 on Reddit.
 
 ### Email 1: NYU Tisch School of the Arts
 
-**To:** Find the contact on https://tisch.nyu.edu/drama — usually an admin or department coordinator
+**To:** tisch.drama.ug@nyu.edu
 
-**Subject:** Free Broadway review database for student research
+**Subject:** Free Broadway data resource for Tisch Drama students
 
 **Body:**
 ```
-Hi there,
+Hi,
 
-I maintain Broadway Scorecard (broadwayscorecard.com), a free research database
-covering 11,400 professional Broadway reviews across 685 shows and 20 seasons.
+I built a free, open Broadway research database called Broadway Scorecard
+(broadwayscorecard.com) that I think could be useful for your students —
+especially anyone studying criticism, theater economics, or the business
+side of producing.
 
-It includes data that's hard to find elsewhere:
-- Critic reviews from 490 outlets with transparent scoring methodology
-- Commercial/recoupment tracking for 120+ shows
-- Weekly box office and audience sentiment data
+It covers 11,400+ professional reviews across 685 shows from the last 20
+seasons, with scoring breakdowns by outlet and tier. It also tracks
+recoupment data for 120+ shows (capitalization, weekly running costs,
+weeks to recoup) — the kind of financial data that's usually only
+accessible to insiders.
 
-I thought it might be a useful resource for your drama students, particularly
-those studying Broadway economics or criticism. Would you consider adding it
-to your department's resource page?
-
-Happy to answer any questions.
+I'm a Broadway fan, not a company — this is a side project. If it seems
+like something worth sharing with students, I'd be grateful for a link on
+any relevant resource page.
 
 Best,
 Tom Pryor
 broadwayscorecard.com
 ```
 
-### Email 2: Columbia University School of the Arts
+### Email 2: Columbia School of the Arts (Hammerstein Center)
 
-*(Same body as above, change greeting to target their theater department)*
+**To:** soatheatre@columbia.edu
 
-### Email 3: Yale School of Drama
-
-*(Same body, target their dramaturgy program)*
-
-### Email 4: Broadway.org
-
-**To:** Contact form or info@ address on Broadway.org
-
-**Subject:** Resource submission — Broadway review aggregator
+**Subject:** Free Broadway data tool — might be useful for your Theatre Management students
 
 **Body:**
 ```
 Hi,
 
-I'd like to suggest broadwayscorecard.com for your resources section.
-It's a free, independent review aggregator tracking 11,400 critic reviews
-across 657 Broadway shows from the last 20 seasons, with transparent
-scoring methodology.
+I built a free Broadway research database (broadwayscorecard.com) that
+I think could be particularly useful for your Theatre Management &
+Producing students.
 
-The site also includes weekly box office data, audience sentiment, and
-commercial performance tracking.
+It includes recoupment tracking for 120+ shows — capitalization, weekly
+running costs, estimated recoupment percentages — sourced from SEC
+filings, trade press, and public records. That data is normally very hard
+for students to access in one place.
 
-Let me know if you need any additional information.
+It also aggregates 11,400+ critic reviews across 685 shows with
+transparent scoring methodology, plus weekly box office and audience
+sentiment data.
+
+This is a personal project, not a commercial venture. If it's worth
+sharing with students, a link from any relevant resource page would mean
+a lot.
 
 Best,
 Tom Pryor
+broadwayscorecard.com
+```
+
+### Email 3: David Geffen School of Drama at Yale
+
+**To:** dgsd.admissions@yale.edu
+
+**Subject:** Free Broadway review database — resource for Dramaturgy & Criticism students
+
+**Body:**
+```
+Hi,
+
+I built a free, open Broadway data resource (broadwayscorecard.com) that
+might be relevant for your Dramaturgy and Dramatic Criticism students.
+
+It aggregates 11,400+ professional reviews from 490 outlets across 685
+shows, with per-outlet and per-critic scoring breakdowns. Students can
+see, for example, that Jesse Green's NYT reviews average 3.6 points
+higher than Ben Brantley's did — or that the same critic scores
+differently depending on which outlet they're writing for.
+
+It's a personal project — I'm a Broadway fan who wanted to make critic
+data more transparent and accessible.
+
+If it's worth sharing with students, I'd appreciate a mention on any
+relevant resource page.
+
+Best,
+Tom Pryor
+broadwayscorecard.com
+```
+
+### Email 4: Broadway.org (The Broadway League)
+
+**To:** info@broadwayleague.com
+
+**Subject:** Resource suggestion — free Broadway review and box office database
+
+**Body:**
+```
+Hi,
+
+I'd like to suggest broadwayscorecard.com as a resource for Broadway.org.
+
+It's a free, independent site that aggregates 11,400+ critic reviews
+across 685 Broadway shows from the last 20 seasons — essentially a Rotten
+Tomatoes for Broadway, with transparent scoring methodology.
+
+It also includes weekly box office tracking, audience sentiment data, and
+commercial performance information for 120+ shows.
+
+The site pulls in data from IBDB, BroadwayWorld, and other Broadway League
+affiliate sources, and links back to them throughout. Happy to provide any
+additional information.
+
+Best,
+Tom Pryor
+broadwayscorecard.com
 ```
 
 ---
 
-## PHASE 2: REDDIT POSTS (Weeks 4-12)
+## PHASE 2: REDDIT POSTS (Weeks 2-10)
 
 Post one every 5-7 days. Each post below is complete — just copy the title and body into Reddit.
 
@@ -94,6 +149,45 @@ Post one every 5-7 days. Each post below is complete — just copy the title and
 - Reply to every comment (especially disagreements — that's engagement)
 - If a post gets removed by mods, repost without the link. Put the link in a reply comment instead.
 - Best posting times: Sunday 6-8 PM EST or Monday 8-10 AM EST
+
+---
+
+### POST 0: Launch Post (POST THIS FIRST)
+
+**Title:** `I made a Rotten Tomatoes / Metacritic for Broadway`
+
+**Body:**
+```
+My partner and I love Broadway, see almost all the shows, and are always curious how others are thinking about every show. We read this sub daily, and use DidTheyLikeIt and ShowScore often, but find them wanting — I want every review, and I want to know precisely what reviewers are thinking, not just thumbs up/down.
+
+So for every show currently on Broadway I collected every critic review I could find, used a four-model sentiment analysis to give each review a fair score out of 100, and then averaged it (with different weights assigned to different tiers of outlets).
+
+Then I was curious about audience buzz/reactions — I sometimes use Show-Score and sometimes Mezzanine and sometimes Reddit — so I thought why not combine them all into a composite score!
+
+broadwayscorecard.com
+
+This is a labor of love. I'm not a company trying to make money — just a Broadway fan wanting to geek out on data and help others in the process.
+
+If you notice any errors or inaccuracies please let me know! I want to fix them. And across 700+ shows and 11,000+ reviews, there will be some!
+
+I then got carried away and added:
+- **Box Office Scorecards** — weekly grosses, capacity, and trends
+- **Awards Scorecards** — Tony history and predictions
+- **Commercial Scorecards** — I love trying to understand the business side of Broadway, but this information is VERY hard to find. It turns out you can find most of the info in SEC filings, trade publications, and from insiders' comments on this sub!
+
+All to get the full picture of a show.
+
+Things I'd still like to do:
+- Add Off-Broadway shows, starting with the currently open ones (I'm not doing a historical pull like I did for 700+ Broadway shows — that was a nightmare!)
+- Add National Tours
+- Figure out how to do marketing so that more people can know about it!
+
+Ideas are so, so welcome!
+```
+
+**Why this works as Post 0:** It's personal, humble, invites feedback, and positions you as a community member sharing a passion project — not someone marketing a product. The "labor of love" framing and the self-deprecating "I got carried away" tone are perfect for Reddit. The asks at the end (errors, ideas) give people reasons to comment.
+
+**Timing:** Post this first (Week 2). Wait 3-5 days for it to breathe, then start the data analysis posts (Posts 1-8) which drive deeper engagement.
 
 ---
 
@@ -542,7 +636,7 @@ Brantley era?
 
 ---
 
-## PHASE 3: OUTREACH EMAILS (Start Week 6, After 2+ Posts Land Well)
+## PHASE 3: OUTREACH EMAILS (Start Week 4, After 2+ Posts Land Well)
 
 Only send these after at least 2 Reddit posts have gotten positive reception (30+ upvotes, no mod removal). Include a link to your best-performing post as social proof.
 
@@ -550,30 +644,36 @@ Only send these after at least 2 Reddit posts have gotten positive reception (30
 
 ### Email: Howard Sherman
 
-**To:** Find via howardsherman.net contact page
+**To:** DM on X/Twitter @HESherman (most responsive), or contact form at howardsherman.net/contact
 
-**Subject:** Broadway data transparency — thought you'd find this interesting
+**Subject:** Broadway financial transparency data — thought of your work
 
 **Body:**
 ```
 Hi Howard,
 
-I've been building Broadway Scorecard (broadwayscorecard.com), a free
-review aggregator that makes Broadway's critical reception and financial
-data publicly accessible.
+I've been following your writing about transparency and access in the
+performing arts for a while — your advocacy that "the arts are not
+expendable" and your work at the American Theatre Wing really resonate
+with what I've been building.
 
-What might interest you specifically: we track recoupment data for
-120+ shows (capitalization, weekly running costs, weeks to recoup) —
-information that's usually only available to insiders.
+I created Broadway Scorecard (broadwayscorecard.com), a free, open
+database that tries to make Broadway's critical and financial data
+publicly accessible. The part I think you'd find most interesting:
+we track recoupment data for 120+ shows — capitalization, weekly
+running costs, estimated recoupment percentages — sourced from SEC
+filings and trade press. That information is usually locked behind
+industry walls, and I think making it public matters.
 
-I've been sharing data analyses on r/Broadway and the community
-response has been positive:
+We also aggregate 11,400+ critic reviews with transparent methodology,
+so anyone can see exactly how a show's score is calculated and why
+different outlets trend harder or softer.
+
+I've been sharing data analyses on r/Broadway:
 [LINK TO YOUR BEST REDDIT POST]
 
-Given your writing about transparency and access in theater, I thought
-you might find it worth a look.
-
-Happy to answer any questions or share data for a piece.
+If any of the data is useful for your writing, it's all free and open.
+And if you think it's worth sharing with your audience, I'd be grateful.
 
 Best,
 Tom
@@ -583,31 +683,38 @@ Tom
 
 ### Email: Ken Davenport
 
-**To:** Via producerabroadway.com contact
+**To:** office@kendavenport.com
 
-**Subject:** Broadway recoupment tracker — data for your readers
+**Subject:** Data for your grosses posts — free Broadway recoupment tracker
 
 **Body:**
 ```
 Hi Ken,
 
-I built a free Broadway recoupment tracker at broadwayscorecard.com/biz
-that covers 120+ shows — capitalization, weekly running costs, estimated
-recoupment percentage, and weeks to recoup.
+I've been reading your weekly grosses breakdowns on the blog — your
+analysis of the post-holiday correction and the shows that held steady
+is exactly the kind of data-driven Broadway thinking I'm obsessed with.
 
-As someone who's written extensively about the business side of Broadway,
-I thought your readers might find the data useful. Some interesting
-findings:
+I built something I think complements what you're already doing:
+Broadway Scorecard (broadwayscorecard.com/biz) is a free recoupment
+tracker covering 120+ shows — capitalization, weekly running costs,
+estimated recoupment percentages, and weeks to recoup. The financial
+data is sourced from SEC filings, trade press, and producer-confirmed
+reports.
 
-- [INSERT A SPECIFIC DATA POINT FROM YOUR /BIZ DATA, e.g.,
-  "The average musical this season is running at X% of capacity"]
+A few things from the data your readers might find interesting:
+- The median musical this decade took 62 weeks to recoup
+- Shows with capitalization under $10M recoup at 3x the rate of $20M+ shows
+- The "Miracle" tier (Hamilton, Book of Mormon) represents <5% of shows
+  but dominates the public perception of Broadway economics
 
 I've been sharing analyses on r/Broadway with good reception:
 [LINK TO BEST POST]
 
-Would love to contribute a guest post or data for your blog if you're
-interested — something like "How quickly do Broadway shows recoup,
-by the numbers."
+Would love to contribute a guest post — something like "How Quickly
+Do Broadway Shows Actually Recoup? The Data Might Surprise You."
+I think it'd pair well with your "Road Trip to Broadway" series since
+the financial reality is so central to what you're documenting.
 
 Best,
 Tom
@@ -617,57 +724,69 @@ Tom
 
 ### Email: Broadway Briefing
 
-**To:** Via broadwaybriefing.com contact/subscribe page
+**To:** broadwaybriefing@broadwaybriefing.com
 
-**Subject:** Tool for your readers — free Broadway review + box office database
+**Subject:** Free Broadway data tool for your readers
 
 **Body:**
 ```
-Hi there,
+Hi,
 
-I run Broadway Scorecard (broadwayscorecard.com), a free database of
-11,400 Broadway reviews across 685 shows, plus box office data, audience
-buzz, and commercial performance tracking.
+Quick pitch for your morning roundup: I built Broadway Scorecard
+(broadwayscorecard.com), a free database your readers might find
+useful for quick reference.
 
-Thought it might be worth a mention in the newsletter as a research
-tool for your industry readership. Some highlights:
+It aggregates 11,400+ critic reviews across 685 shows with transparent
+scoring methodology — essentially a Rotten Tomatoes for Broadway. Also
+includes weekly box office (with WoW and YoY comparisons), audience
+sentiment data, and recoupment tracking for 120+ shows.
 
-- Reviews from 490 outlets with transparent scoring methodology
-- Weekly box office with WoW and YoY comparisons
-- Recoupment tracking for 120+ shows
-- Audience sentiment combining ShowScore, Mezzanine, and Reddit data
-
-I've been sharing data analyses on r/Broadway:
+I've been sharing data-driven analyses on r/Broadway:
 [LINK TO BEST POST]
 
-Happy to provide any additional context.
+If it's ever useful as a link in a grosses roundup or a "tools we like"
+mention, I'd be grateful. Happy to provide any context.
 
 Best,
-Tom
+Tom Pryor
+broadwayscorecard.com
 ```
 
 ---
 
 ### Email: Chris Peterson (OnStage Blog)
 
-**Subject:** Data-driven Broadway analysis — guest post idea
+**To:** chris@onstageblog.com or contact form at onstageblog.com/contact
+
+**Subject:** Data for your Broadway coverage — guest post idea
 
 **Body:**
 ```
 Hi Chris,
 
-I've been building a Broadway review aggregator (broadwayscorecard.com)
-and sharing data analyses on r/Broadway that have gotten good traction:
+I've been reading OnStage Blog for a while — your piece on "Why Broadway
+Turned Away from Queen of Versailles" and the Cabaret lawsuit coverage
+are exactly the kind of honest takes the industry needs more of. You're
+not afraid to talk about the money side, which is rare.
+
+I built something that might be useful for your coverage: Broadway
+Scorecard (broadwayscorecard.com) is a free database of 11,400+ critic
+reviews across 685 shows, plus recoupment data for 120+ shows. The
+financial transparency stuff feels particularly aligned with what you
+write about — like the Cabaret investor lawsuit. Our /biz section
+tracks exactly the kind of capitalization and recoupment data that
+investors are fighting over in that case.
+
+I've been sharing data analyses on r/Broadway:
 [LINK TO BEST POST]
 
 Would you be interested in a guest post? I'm thinking something like
-"The Most Polarizing Broadway Shows of the Decade, By the Numbers" or
-"Which Broadway Outlet Is the Toughest Grader?" — data-driven pieces
-with tables and analysis your readers would enjoy.
+"The Most Polarizing Broadway Shows of the Last 20 Years, By the
+Numbers" — or we could do something around tour stops vs. Broadway
+runs (your Legally Blonde piece sparked that idea). I have the data
+to back either angle.
 
-The data is all free and open — 11,400 reviews, 685 shows, 20 seasons.
-
-Let me know if any angle interests you.
+Let me know if any of that interests you.
 
 Best,
 Tom
@@ -722,16 +841,17 @@ Create a Google Sheet with two tabs:
 
 | Week | Reddit | Outreach | Notes |
 |------|--------|----------|-------|
-| 1-3 | Comment on r/Broadway daily (no links, no posts) | Send university emails + Broadway.org | Building credibility |
-| 4 | **Post #1** (Season rankings) | Create Twitter @BwayScorecard | First real post |
-| 5 | **Post #2** (Outlet rankings) | — | Let posts breathe |
-| 6 | **Post #3** (Polarizing shows) | Send Howard Sherman + Ken Davenport emails | Start outreach |
-| 7 | **Post #4** (Critic vs audience) | Send Broadway Briefing + Chris Peterson | |
-| 8 | **Post #5** (Plays vs musicals) | Follow up on unanswered emails | |
-| 9 | **Post #6** (Best-reviewed) | — | |
-| 10 | **Post #7** (Worst-reviewed) | Pitch podcast appearance | |
-| 11 | **Post #8** (NYT evolution) | — | |
-| 12+ | New analyses from future topics list | Continue as needed | |
+| 1 | Drop 3-5 genuine comments on r/Broadway | Send university emails + Broadway.org | Light warm-up |
+| 2 | **Post #0** (Launch — "I made a RT for Broadway") | Create Twitter @BwayScorecard | The big intro |
+| 3 | **Post #1** (Season rankings) | — | First data deep-dive |
+| 4 | **Post #2** (Outlet rankings) | Send Howard Sherman + Ken Davenport emails | Start outreach |
+| 5 | **Post #3** (Polarizing shows) | Send Broadway Briefing + Chris Peterson | |
+| 6 | **Post #4** (Critic vs audience) | Follow up on unanswered emails | |
+| 7 | **Post #5** (Plays vs musicals) | — | |
+| 8 | **Post #6** (Best-reviewed) | Pitch podcast appearance | |
+| 9 | **Post #7** (Worst-reviewed) | — | |
+| 10 | **Post #8** (NYT evolution) | — | |
+| 11+ | New analyses + your own reviews on /reviews | Continue as needed | Blog gives you fresh content |
 
 ---
 
