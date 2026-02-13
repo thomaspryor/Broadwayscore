@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-13T22:16:20.566Z",
-  "processed": 0,
-  "failed": 100,
-  "successRate": "0%",
+  "updatedAt": "2026-02-13T22:19:23.302Z",
+  "processed": 82,
+  "failed": 138,
+  "successRate": "37.3%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 29,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 36,
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T21:17:34.803Z",
+      "event": "bb-session",
+      "session": "805afe1c",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-13T21:17:47.647Z",
+      "event": "bb-session",
+      "session": "aef5eb39",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-13T21:22:10.923Z",
+      "event": "bb-session",
+      "session": "85273669",
+      "url": "https://www.amny.com/entertainment/"
+    },
+    {
+      "t": "2026-02-13T21:29:01.704Z",
+      "event": "bb-session",
+      "session": "738158a3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/between-riverside-crazy-broadwa"
+    },
+    {
+      "t": "2026-02-13T21:29:33.170Z",
+      "event": "bb-session",
+      "session": "e31abe13",
+      "url": "https://www.hollywoodreporter.com/news/big-fish-theater-review-634505/"
+    }
+  ]
 }
