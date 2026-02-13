@@ -33,10 +33,10 @@ These go out before any Reddit posts. I can send many of these for you via GitHu
 Hi there,
 
 I maintain Broadway Scorecard (broadwayscorecard.com), a free research database
-covering 5,790 professional Broadway reviews across 657 shows and 20 seasons.
+covering 11,400 professional Broadway reviews across 685 shows and 20 seasons.
 
 It includes data that's hard to find elsewhere:
-- Critic reviews from 257 outlets with transparent scoring methodology
+- Critic reviews from 490 outlets with transparent scoring methodology
 - Commercial/recoupment tracking for 120+ shows
 - Weekly box office and audience sentiment data
 
@@ -70,7 +70,7 @@ broadwayscorecard.com
 Hi,
 
 I'd like to suggest broadwayscorecard.com for your resources section.
-It's a free, independent review aggregator tracking 5,790 critic reviews
+It's a free, independent review aggregator tracking 11,400 critic reviews
 across 657 Broadway shows from the last 20 seasons, with transparent
 scoring methodology.
 
@@ -99,13 +99,13 @@ Post one every 5-7 days. Each post below is complete — just copy the title and
 
 ### POST 1: Season Rankings
 
-**Title:** `I analyzed 5,790 Broadway reviews from the last 20 seasons. Here's how each season stacks up.`
+**Title:** `I analyzed 11,400 Broadway reviews from the last 20 seasons. Here's how each season stacks up.`
 
 **Body:**
 ```
 I've been building a database of professional Broadway reviews — currently
-5,790 reviews across 657 shows from 257 outlets (NYT, Vulture, Variety,
-Post, TheaterMania, Hollywood Reporter, and dozens more).
+11,400+ reviews across 685 shows from 490 outlets and 924 critics (NYT,
+Vulture, Variety, Post, TheaterMania, Hollywood Reporter, and hundreds more).
 
 I scored each review on a 0-100 scale using a mix of explicit critic ratings
 (star ratings, letter grades) and AI-assisted interpretation of review text
@@ -115,44 +115,51 @@ Here's what the data shows:
 
 | Season | Shows | Reviews | Avg Score |
 |--------|-------|---------|-----------|
-| 2018-2019 | 32 | 312 | 75.1 |
-| 2017-2018 | 31 | 278 | 73.8 |
-| 2016-2017 | 40 | 250 | 73.8 |
-| 2023-2024 | 34 | 926 | 73.3 |
-| 2019-2020 | 16 | 110 | 73.3 |
-| 2021-2022 | 36 | 418 | 72.8 |
-| 2010-2011 | 38 | 149 | 72.8 |
-| 2014-2015 | 36 | 307 | 72.6 |
-| 2024-2025 | 52 | 919 | 72.3 |
-| 2022-2023 | 44 | 922 | 71.5 |
-| 2013-2014 | 38 | 236 | 70.5 |
-| 2011-2012 | 36 | 136 | 70.3 |
-| 2015-2016 | 37 | 251 | 69.7 |
-| 2009-2010 | 34 | 106 | 69.4 |
-| 2012-2013 | 37 | 162 | 67.2 |
-| 2005-2006 | 26 | 47 | 65.8 |
+| 2019-2020 | 17 | 279 | 73.4 |
+| 2016-2017 | 39 | 938 | 72.9 |
+| 2022-2023 | 39 | 982 | 72.7 |
+| 2017-2018 | 31 | 741 | 72.6 |
+| 2024-2025 | 42 | 961 | 71.7 |
+| 2021-2022 | 36 | 691 | 71.5 |
+| 2018-2019 | 34 | 876 | 71.4 |
+| 2015-2016 | 36 | 966 | 71.4 |
+| 2023-2024 | 37 | 1,019 | 71.2 |
+| 2013-2014 | 41 | 580 | 70.7 |
+| 2014-2015 | 35 | 645 | 70.0 |
+| 2007-2008 | 30 | 183 | 69.4 |
+| 2009-2010 | 37 | 360 | 69.0 |
+| 2010-2011 | 38 | 472 | 67.0 |
+| 2008-2009 | 33 | 243 | 66.4 |
+| 2005-2006 | 31 | 74 | 66.1 |
+| 2012-2013 | 39 | 430 | 65.2 |
+| 2011-2012 | 37 | 411 | 64.7 |
 
-**The best-reviewed season of the last 20 years: 2018-2019** (75.1 avg).
-That's the season of Hadestown, Oklahoma! revival, The Ferryman, and
-Network with Bryan Cranston.
+**The best-reviewed season: 2019-2020** (73.4 avg) — and it was cut
+short by COVID. Only 17 shows had time to open, but they were strong:
+The Inheritance, A Soldier's Play, The Sound Inside, Jagged Little Pill,
+and the Moulin Rouge! opening.
 
-**The worst: 2012-2013** (67.2). Jekyll & Hyde, Chaplin, Ghost the Musical,
-and Breakfast at Tiffany's all opened that season.
+**The worst: 2011-2012** (64.7). Relatively Speaking, Lysistrata Jones,
+Ghost the Musical, Leap of Faith, and Magic/Bird all opened that season.
+2012-2013 is close behind at 65.2.
 
-This current season (2024-2025) is landing right in the middle of the pack
-at 72.3 with 52 shows — the most crowded season in recent memory.
+The current season (2024-2025) is sitting at 71.7 with 42 shows —
+comfortably in the top third.
 
 Some interesting patterns:
-- The 1.3-point difference between best and worst isn't huge, but it's
-  consistent — certain seasons cluster better shows
-- 2019-2020 would've ranked higher if COVID hadn't cut it short (only
-  16 shows had time to open)
-- The late 2010s (2016-2019) were genuinely a golden stretch
+- The late 2010s were genuinely a golden stretch: 2016-2017 through
+  2019-2020 are the top 4 seasons
+- 2019-2020 being #1 is partly COVID survivor bias — the weaker spring
+  shows never had a chance to open and drag the average down
+- There's a clear quality cliff around 2010-2013: four of the five
+  worst seasons are consecutive
+- 2022-2023 at #3 surprised me — that's the season of Leopoldstadt,
+  Sweeney Todd revival, and Kimberly Akimbo
 
 Methodology note: scores are aggregated from published reviews. Where
 critics gave explicit ratings (stars, letter grades), those are used
-directly. For reviews without explicit ratings (~70% of the corpus),
-scores are derived from review text using an AI scoring model.
+directly. For reviews without explicit ratings, scores are derived from
+review text using an AI scoring model.
 Full methodology at broadwayscorecard.com/methodology
 
 What surprises you? Does the ranking match your gut feeling about
@@ -163,55 +170,62 @@ which seasons were strongest?
 
 ### POST 2: Outlet Rankings (Toughest vs Most Generous)
 
-**Title:** `Which Broadway outlets are the toughest graders? I looked at 5,790 reviews to find out.`
+**Title:** `Which Broadway outlets are the toughest graders? I looked at 11,400 reviews to find out.`
 
 **Body:**
 ```
-Using the same database of 5,790 Broadway reviews, I looked at which
-outlets consistently grade shows the highest and lowest.
+Using the same database of 11,400+ Broadway reviews from 490 outlets, I
+looked at which outlets consistently grade shows the highest and lowest.
 
 (Important caveat: this doesn't mean "best" or "worst" — harsh outlets
 might just have higher standards, and generous outlets might focus on
-accessible shows.)
+shows their audience will enjoy.)
 
-**The toughest outlets** (30+ reviews minimum):
+**The toughest outlets** (50+ reviews minimum):
 
 | Outlet | Reviews | Avg Score |
 |--------|---------|-----------|
-| TheWrap | 129 | 61.9 |
-| Lighting & Sound America | 63 | 64.9 |
-| New York Post | 253 | 68.2 |
-| Vulture | 270 | 68.7 |
-| The New York Times | 513 | 69.2 |
+| Bloomberg | 62 | 64.0 |
+| amNewYork | 182 | 64.1 |
+| TheWrap | 310 | 65.2 |
+| Lighting & Sound America | 109 | 66.3 |
+| New York Post | 437 | 66.9 |
+| Time Out New York | 439 | 67.3 |
+| Vulture | 371 | 67.6 |
 
 **The most generous outlets:**
 
 | Outlet | Reviews | Avg Score |
 |--------|---------|-----------|
-| Entertainment Weekly | 151 | 77.7 |
-| Deadline | 100 | 77.4 |
-| Theatrely | 73 | 76.4 |
-| TheaterMania | 265 | 74.9 |
-| New York Theatre Guide | 130 | 74.5 |
+| TheaterMania | 319 | 74.6 |
+| New York Stage Review | 438 | 74.1 |
+| Deadline | 274 | 73.9 |
+| USA Today | 190 | 73.3 |
+| Variety | 617 | 72.3 |
 
-**The biggest publications sit in the middle:**
+**The papers of record cluster in between:**
 
 | Outlet | Reviews | Avg Score |
 |--------|---------|-----------|
-| Variety | 496 | 72.6 |
-| Wall Street Journal | 229 | 71.0 |
-| Hollywood Reporter | 174 | 73.6 |
-| Washington Post | 164 | 72.7 |
-| The Guardian | 117 | 71.1 |
+| The Wall Street Journal | 328 | 68.2 |
+| The New York Times | 568 | 69.4 |
+| The Guardian | 210 | 70.3 |
+| The Washington Post | 252 | 70.7 |
+| The Hollywood Reporter | 391 | 70.9 |
 
 Some things that jumped out:
 - The NYT and NY Post are both on the tough end — the two biggest NYC
   papers are also the hardest to please
-- There's a 15.8-point gap between TheWrap (61.9) and Entertainment
-  Weekly (77.7). That's enormous.
-- The "prestige" outlets (NYT, Vulture, New Yorker) cluster tougher.
-  The trade/entertainment outlets (EW, Deadline, THR) cluster more
-  generous.
+- There's a 10.6-point gap between Bloomberg (64.0) and TheaterMania
+  (74.6). That might not sound like much, but it's the difference
+  between a B- and a C.
+- NYC-based publications (Post, amNewYork, Time Out, Vulture) cluster
+  toughest. Theater specialty outlets (TheaterMania, NYSR, BWW) are
+  the most generous. The big nationals (NYT, WSJ, WaPo) land between.
+- The New Yorker (69.1, 116 reviews) is in the tough camp too — not
+  surprising.
+- Variety (72.3, 617 reviews) is the most generous of the "big name"
+  outlets — and the most prolific.
 
 Methodology: same as my previous post — mix of explicit critic ratings
 and AI-assisted scoring from review text.
@@ -224,7 +238,7 @@ Does this match your experience reading these outlets?
 
 ### POST 3: Most Polarizing Shows
 
-**Title:** `The most polarizing Broadway shows of the last decade — where critics were most split`
+**Title:** `The most polarizing Broadway shows of the last 20 years — where critics were most split`
 
 **Body:**
 ```
@@ -236,29 +250,36 @@ review score for each show (minimum 10 reviews).
 
 | Show | Spread | Low | High | Reviews | Avg |
 |------|--------|-----|------|---------|-----|
-| Water for Elephants | 82 pts | 12 | 94 | 24 | 72.4 |
-| The Cottage | 81 pts | 12 | 93 | 24 | 61.3 |
-| Moulin Rouge! | 80 pts | 20 | 100 | 38 | 72.4 |
-| Once Upon a One More Time | 78 pts | 13 | 91 | 39 | 62.1 |
-| Wicked (original run) | 77 pts | 15 | 92 | 26 | 73.3 |
-| & Juliet | 73 pts | 14 | 87 | 29 | 71.9 |
-| Back to the Future | 70 pts | 21 | 91 | 32 | 61.0 |
-| Boop! The Musical | 66 pts | 20 | 86 | 24 | 70.4 |
+| Just in Time | 95 pts | 0 | 95 | 27 | 75.3 |
+| Gary: A Sequel to Titus Andronicus | 88 pts | 12 | 100 | 46 | 66.4 |
+| Almost Famous | 82 pts | 18 | 100 | 40 | 61.4 |
+| Water for Elephants | 82 pts | 12 | 94 | 21 | 70.3 |
+| Moulin Rouge! | 81 pts | 19 | 100 | 37 | 72.0 |
+| The Lion King | 80 pts | 20 | 100 | 21 | 79.0 |
+| Be More Chill | 79 pts | 14 | 93 | 47 | 66.4 |
+| Carousel (2018 revival) | 79 pts | 21 | 100 | 61 | 71.5 |
+| Wicked | 77 pts | 15 | 92 | 27 | 71.3 |
 
-For comparison, Hamilton had a 28-point spread (77-100, avg 90.5) — near
-universal praise.
+For comparison, Hamilton had a 38-point spread (62-100, avg 89.5) — even
+the harshest critic still gave it a B-.
 
 What stands out:
-- **Spectacle musicals dominate this list.** Moulin Rouge, Water for
-  Elephants, Back to the Future — critics either love the spectacle
-  or find it hollow
-- **Wicked being here is wild.** It's a beloved cultural phenomenon
-  with a 73.3 average, but some critics absolutely hated it (15/100)
-  while others were ecstatic (92/100)
-- **Moulin Rouge** is the most "love it or hate it" — a 100 AND a 20
-  from different critics, with a perfectly respectable 72.4 average
+- **Just in Time** is currently the most polarizing show on Broadway.
+  One critic gave it a literal zero. Others gave it a 95. That's as
+  split as it gets.
+- **Gary** (Nathan Lane, 2019) had both a perfect 100 and a 12 — across
+  46 reviews. Critics could not agree on this one at all.
+- **Spectacle musicals dominate.** Moulin Rouge, Water for Elephants,
+  Almost Famous — critics either love the spectacle or find it hollow.
+- **Wicked** at 77-point spread is wild. It's a beloved cultural
+  phenomenon, but some critics absolutely hated it (15/100) while
+  others were ecstatic (92/100).
+- **The Lion King** has a bigger spread than Wicked — a 100 AND a 20.
+  But the average (79) shows most critics loved it.
+- **Be More Chill** is the internet fandom effect in data form: 47
+  reviews, massive range, below-average score.
 
-Data from broadwayscorecard.com — 5,790 reviews across 657 shows.
+Data from broadwayscorecard.com — 11,400+ reviews across 685 shows.
 
 What show's polarization surprises you the most?
 ```
@@ -279,34 +300,40 @@ the most.
 
 | Show | Critic Avg | Audience Score | Gap |
 |------|-----------|----------------|-----|
-| Meteor Shower | 46 | 76 | +30 |
-| American Psycho | 51 | 80 | +29 |
-| Fish in the Dark | 53 | 78 | +25 |
-| The Parisian Woman | 47 | 72 | +25 |
-| Holiday Inn | 57 | 82 | +25 |
-| Allegiance | 62 | 86 | +24 |
-| Diana, The Musical | 40 | 64 | +24 |
+| Godspell (2011) | 58 | 84 | +26 |
+| Porgy and Bess (2012) | 60 | 85 | +25 |
+| A Night with Janis Joplin | 66 | 89 | +23 |
+| The Kite Runner | 59 | 82 | +23 |
+| Motown the Musical | 63 | 85 | +22 |
+| Wicked | 71 | 93 | +22 |
+| The Parisian Woman | 48 | 70 | +22 |
+| The Addams Family | 49 | 70 | +22 |
 
 **Shows critics love more than audiences:**
 
 | Show | Critic Avg | Audience Score | Gap |
 |------|-----------|----------------|-----|
-| Old Times | 73 | 44 | -29 |
-| John Lithgow: Stories By Heart | 73 | 47 | -26 |
-| Million Dollar Quartet | 77 | 58 | -19 |
-| Tootsie | 75 | 58 | -17 |
-| An American in Paris | 84 | 67 | -17 |
+| The Assembled Parties | 77 | 61 | -16 |
+| Old Times | 71 | 60 | -11 |
+| The Encounter | 80 | 72 | -8 |
+| Yellow Face | 82 | 74 | -8 |
+| The Band's Visit | 90 | 82 | -8 |
 
-Patterns:
-- **Star vehicles top the "audiences love" list.** Meteor Shower (Steve
-  Martin), Fish in the Dark (Larry David), Diana (the brand). Audiences
-  show up for the star or the IP. Critics judge the writing.
-- **Artsy/cerebral shows top the "critics love" list.** Old Times (Pinter),
-  American in Paris (dance-heavy), Tootsie (clever but maybe too inside-
-  baseball for casual theatergoers).
-- **The Band's Visit** (critics 92, audience 78) is interesting — critics
-  gave it the 2nd highest score of the last 20 years, but audiences just
-  thought it was "good."
+The asymmetry here is the real story:
+- **Audiences disagree with critics WAY more when they love a show.**
+  The biggest "audience loves it" gap is +26 points. The biggest
+  "critics love it" gap is only -16 points. Audiences are much more
+  likely to embrace a show critics dismiss than vice versa.
+- **IP and nostalgia drive the biggest gaps.** Motown, Godspell, The
+  Kite Runner, The Addams Family — audiences show up for the brand.
+  Critics judge the adaptation.
+- **Wicked** is fascinating: critics gave it a 71 (solid but not
+  spectacular) while audiences gave it a 93 based on 33,000+ ratings.
+  That 22-point gap across that volume of audience data is remarkable.
+- **The Band's Visit** is the inverse: critics gave it the highest
+  score in the database (tied with Hamilton at 89.5) but audiences
+  just thought it was "good" at 82. Still positive, just not the
+  rapture critics felt.
 
 Critic scores from broadwayscorecard.com. Audience scores from ShowScore
 + Mezzanine + Reddit sentiment combined.
@@ -318,38 +345,49 @@ Which side do you usually agree with — critics or audiences?
 
 ### POST 5: Plays vs Musicals
 
-**Title:** `Do Broadway critics grade plays and musicals differently? Here's what 5,790 reviews say.`
+**Title:** `Do Broadway critics grade plays and musicals differently? Here's what 11,400 reviews say.`
 
 **Body:**
 ```
 Quick one. I was curious whether critics are systematically tougher or
 easier on one form vs the other.
 
-**Plays:** 72.9 average (2,665 reviews across 374 shows)
-**Musicals:** 71.6 average (3,125 reviews across 283 shows)
+**Plays:** 71.4 average (5,809 reviews across 393 shows)
+**Musicals:** 70.2 average (5,637 reviews across 292 shows)
 
-So plays edge out musicals by 1.3 points. Not a huge gap. But the
+So plays edge out musicals by 1.2 points. Not a huge gap. But the
 interesting difference is in the **extremes:**
 
 **Highest-scoring musicals:**
-- Hamilton (90.5), The Band's Visit (91.8), A Strange Loop (88.9)
+- Hamilton (89.5), The Band's Visit (89.5), She Loves Me (85.8),
+  Maybe Happy Ending (85.5)
 
 **Lowest-scoring musicals:**
-- Jekyll & Hyde (40.2), Diana (40.3), Doctor Zhivago (40.5)
+- Doctor Zhivago (42.5), Diana (43.6), Bad Cinderella (44.3),
+  Scandalous (45.1)
 
 **Highest-scoring plays:**
-- Angels in America (92.0), The Lehman Trilogy (90.4), The Normal Heart (89.8)
+- What the Constitution Means to Me (87.0), The Ferryman (86.3),
+  Three Tall Women (86.3), Jitney (86.1)
 
 **Lowest-scoring plays:**
-- Breakfast at Tiffany's (40.8), China Doll (41.6), The Parisian Woman (46.8)
+- Relatively Speaking (42.0), High (42.4), Breakfast at Tiffany's
+  (44.9), Dead Accounts (46.4)
 
-Musicals have a wider range — they produce the biggest hits AND the biggest
-flops. Plays cluster more tightly around the average.
+The floors are almost identical (42.0 vs 42.5), but the ceilings are
+different: the best musicals hit 89.5, while the best plays top out
+around 87. Counterintuitive — you'd expect plays to win on artistry.
 
-My theory: musicals are bigger financial bets (higher capitalization,
-longer development) so producers take bigger swings. Some land, some
-crash spectacularly. Plays are smaller and more author-driven, so the
-quality floor is higher.
+My theory: the best musicals (Hamilton, Band's Visit) achieve a kind of
+unanimous enthusiasm that's hard to replicate in straight plays. When a
+musical truly works on every level — book, score, staging, performance
+— even the toughest critics can't resist. Plays inspire more
+"I appreciate this but it's not for me" reactions.
+
+The bottom end tells a different story: the worst musicals (Doctor
+Zhivago, Diana, Bad Cinderella) are all IP adaptations or jukebox
+concepts. The worst plays are star vehicles that didn't work (Al Pacino
+in China Doll, Uma Thurman in The Parisian Woman).
 
 Data: broadwayscorecard.com
 
@@ -365,35 +403,39 @@ scale?
 
 **Body:**
 ```
-Based on 5,790 reviews from 257 outlets. Minimum 5 reviews per show.
+Based on 11,400+ reviews from 490 outlets. Minimum 8 reviews per show.
 
 | Rank | Show | Year | Type | Avg Score | Reviews |
 |------|------|------|------|-----------|---------|
-| 1 | Angels in America | 2018 | Play | 92.0 | 7 |
-| 2 | The Band's Visit | 2017 | Musical | 91.8 | 10 |
-| 3 | Hamilton | 2015 | Musical | 90.5 | 45 |
-| 4 | The Lehman Trilogy | 2021 | Play | 90.4 | 5 |
-| 5 | The Normal Heart | 2011 | Play | 89.8 | 5 |
-| 6 | Three Tall Women | 2018 | Play | 89.2 | 5 |
-| 7 | A Strange Loop | 2022 | Musical | 88.9 | 17 |
-| 8 | Hello, Dolly! | 2017 | Musical | 88.4 | 9 |
-| 9 | Jitney | 2017 | Play | 87.8 | 8 |
-| 10 | She Loves Me | 2016 | Musical | 87.3 | 9 |
-| 11 | Hills of California | 2024 | Play | 87.3 | 6 |
-| 12 | The Sound Inside | 2019 | Play | 87.0 | 5 |
-| 13 | A View from the Bridge | 2015 | Play | 86.9 | 8 |
-| 14 | A Raisin in the Sun | 2014 | Play | 86.7 | 7 |
-| 15 | Anything Goes | 2011 | Musical | 86.0 | 9 |
+| 1 | Hamilton | 2015 | Musical | 89.5 | 44 |
+| 1 | The Band's Visit | 2017 | Musical | 89.5 | 22 |
+| 3 | What the Constitution Means to Me | 2019 | Play | 87.0 | 8 |
+| 4 | The Ferryman | 2018 | Play | 86.3 | 17 |
+| 5 | Three Tall Women | 2018 | Play | 86.3 | 9 |
+| 6 | Jitney | 2017 | Play | 86.1 | 18 |
+| 7 | Sunday in the Park with George | 2017 | Musical | 86.0 | 8 |
+| 8 | She Loves Me | 2016 | Musical | 85.8 | 20 |
+| 9 | Maybe Happy Ending | 2024 | Musical | 85.5 | 25 |
+| 10 | The Humans | 2016 | Play | 85.5 | 14 |
+| 11 | The Color Purple | 2015 | Musical | 85.4 | 17 |
+| 12 | Angels in America | 2018 | Play | 84.8 | 69 |
+| 13 | A Strange Loop | 2022 | Musical | 84.7 | 33 |
+| 14 | Kimberly Akimbo | 2022 | Musical | 84.5 | 28 |
+| 15 | Merrily We Roll Along | 2023 | Musical | 84.0 | 30 |
 
 Things that stand out:
-- **Revivals dominate.** Angels in America, Hello Dolly, She Loves Me,
-  A View from the Bridge, A Raisin in the Sun, Anything Goes — all
-  revivals. 6 of the top 15 are revivals.
-- **Hamilton is "only" #3.** It has by far the most reviews (45) and
-  still averaged 90.5. That's insanely consistent across that many critics.
-- **Plays outnumber musicals** in the top 15 (9 plays vs 6 musicals).
-- **2017-2018 was stacked.** The Band's Visit, Hello Dolly, Jitney, and
-  Angels in America all opened within a year of each other.
+- **Hamilton and The Band's Visit are tied at #1** (89.5). Hamilton has
+  TWICE as many reviews (44 vs 22) and still matches Band's Visit's
+  average. That consistency across that many critics is remarkable.
+- **Maybe Happy Ending (2024) at #9.** The newest show on the list,
+  still running. 25 critics, 85.5 average. That's a strong debut.
+- **Angels in America has the most reviews of any top-15 show** (69!)
+  and still averaged 84.8. When you have that many critics agreeing,
+  the signal is very strong.
+- **2016-2018 dominates.** 7 of the top 15 opened in that window:
+  She Loves Me, The Humans, Jitney, The Band's Visit, The Ferryman,
+  Three Tall Women, Angels in America.
+- **Plays and musicals are evenly split** — 7 plays, 8 musicals.
 
 Full data at broadwayscorecard.com
 
@@ -408,37 +450,40 @@ What would be on YOUR top 15 that critics missed?
 
 **Body:**
 ```
-The flip side of my best-reviewed post. Minimum 5 reviews per show.
+The flip side of my best-reviewed post. Minimum 8 reviews per show.
 
 | Rank | Show | Year | Type | Avg Score | Reviews |
 |------|------|------|------|-----------|---------|
-| 1 | Jekyll & Hyde | 2013 | Musical | 40.2 | 5 |
-| 2 | Diana, The Musical | 2021 | Musical | 40.3 | 16 |
-| 3 | Doctor Zhivago | 2015 | Musical | 40.5 | 8 |
-| 4 | Breakfast at Tiffany's | 2013 | Play | 40.8 | 5 |
-| 5 | China Doll | 2015 | Play | 41.6 | 8 |
-| 6 | Bad Cinderella | 2023 | Musical | 41.9 | 18 |
-| 7 | Meteor Shower | 2017 | Play | 46.0 | 6 |
-| 8 | Bronx Bombers | 2014 | Play | 46.4 | 8 |
-| 9 | The Parisian Woman | 2017 | Play | 46.8 | 5 |
-| 10 | A Time to Kill | 2013 | Play | 48.3 | 6 |
-| 11 | Ghost The Musical | 2012 | Musical | 48.7 | 6 |
-| 12 | Holler If Ya Hear Me | 2014 | Musical | 48.7 | 7 |
-| 13 | Junk | 2017 | Play | 49.5 | 6 |
-| 14 | Cirque du Soleil Paramour | 2016 | Musical | 50.5 | 6 |
-| 15 | American Psycho | 2016 | Musical | 50.6 | 11 |
+| 1 | Relatively Speaking | 2011 | Play | 42.0 | 9 |
+| 2 | High | 2011 | Play | 42.4 | 12 |
+| 3 | Doctor Zhivago | 2015 | Musical | 42.5 | 22 |
+| 4 | Diana, The Musical | 2021 | Musical | 43.6 | 26 |
+| 5 | Bad Cinderella | 2023 | Musical | 44.3 | 28 |
+| 6 | Breakfast at Tiffany's | 2013 | Play | 44.9 | 18 |
+| 7 | Scandalous | 2012 | Musical | 45.1 | 8 |
+| 8 | Dead Accounts | 2012 | Play | 46.4 | 14 |
+| 9 | Bronx Bombers | 2014 | Play | 46.5 | 13 |
+| 10 | China Doll | 2015 | Play | 47.4 | 39 |
+| 11 | The Parisian Woman | 2017 | Play | 47.9 | 16 |
+| 12 | Baby It's You! | 2011 | Musical | 48.5 | 16 |
+| 13 | The Addams Family | 2010 | Musical | 48.5 | 11 |
+| 14 | Macbeth (2022) | 2022 | Play | 49.1 | 16 |
+| 15 | The Queen of Versailles | 2025 | Musical | 52.0 | 25 |
 
 Observations:
-- **Diana and Bad Cinderella** are the only ones with 15+ reviews AND
-  still under 42. That means a LOT of critics all independently said "nope."
-- **2013 was brutal.** Jekyll & Hyde, Breakfast at Tiffany's, and A Time
-  to Kill all from one season. (2012-2013 was the worst-reviewed season
-  in my dataset.)
-- **IP adaptations struggle.** Doctor Zhivago, Breakfast at Tiffany's,
-  Ghost, American Psycho — beloved source material doesn't guarantee
-  a good musical.
-- **Star power doesn't save you.** China Doll (Al Pacino), Meteor
-  Shower (Steve Martin/Amy Schumer), The Parisian Woman (Uma Thurman).
+- **Diana and Bad Cinderella** have 25+ reviews each and still average
+  under 45. That means a LOT of critics all independently said "nope."
+  Bad Cinderella has the most reviews (28) of any bottom-5 show.
+- **China Doll** (Al Pacino) has 39 reviews at 47.4 — the most-reviewed
+  show on the worst list. Star power creates interest but can't save
+  bad material.
+- **2010-2013 was brutal.** 7 of the bottom 15 opened in that window.
+  That tracks with the season rankings: 2011-2012 and 2012-2013 were
+  the two worst-reviewed seasons overall.
+- **The Sam Gold Macbeth** (Daniel Craig, Ruth Negga) at #14 was one
+  of the most anticipated productions of 2022 and one of the biggest
+  critical disappointments.
+- **Queen of Versailles** is the only current (2025) show on the list.
 
 Data: broadwayscorecard.com
 
@@ -453,29 +498,37 @@ What's missing from this list that you think deserves to be here?
 
 **Body:**
 ```
-The New York Times is the single most influential Broadway outlet — 513
+The New York Times is the single most influential Broadway outlet — 568
 reviews in my database. But the paper's perspective shifted when Jesse
 Green succeeded Ben Brantley as co-chief critic.
 
 **By the numbers:**
-- **Ben Brantley** (NYT): 236 shows reviewed, average score 68.1
-- **Jesse Green** (NYT): 112 shows reviewed, average score 71.5
+- **Ben Brantley** (NYT): 294 reviews, average score 67.9
+- **Jesse Green** (NYT): 122 reviews, average score 71.5
 
-Green's NYT reviews average 3.4 points higher than Brantley's. That
+Green's NYT reviews average 3.6 points higher than Brantley's. That
 might not sound like a lot, but it can mean the difference between a
 show landing in "mixed" vs "positive" territory.
 
-What's interesting is Green's split across outlets:
-- At the NYT: 71.5 avg (112 shows)
-- At Vulture: 68.9 avg (124 shows)
+What's really interesting is Green's split across outlets:
+- At the NYT: 71.5 avg (122 reviews)
+- At Vulture: 68.9 avg (174 reviews)
+- At TheaterMania: 74.2 avg (53 reviews)
 
-His Vulture reviews were notably tougher than his NYT reviews. Same
-critic, different platforms, different scores. Make of that what you will.
+Same critic, three platforms, three different score profiles. His
+Vulture reviews were notably tougher than his NYT reviews. His
+TheaterMania reviews were the most generous of all. The institution
+shapes the critic as much as the critic shapes the institution.
 
 **The institutional question:** When the paper of record's lead critic
-shifts 3+ points in one direction, does that meaningfully change which
-shows succeed? The NYT is the outlet producers fear most. A 3-point
-shift across 100+ shows isn't nothing.
+shifts 3.6 points in one direction, does that meaningfully change which
+shows succeed? The NYT is the outlet producers fear most. A 3.6-point
+shift across 100+ shows — that's the difference between a 69 ("mixed")
+and a 73 ("generally positive") in how the industry reads it.
+
+And if Green scores differently at different outlets, what does
+"objectivity" even mean in criticism? Is he a 68.9 critic (Vulture),
+a 71.5 critic (NYT), or a 74.2 critic (TheaterMania)?
 
 Note: Scores are derived from review text using a mix of explicit
 ratings and AI-assisted interpretation. These are approximations, not
@@ -573,13 +626,13 @@ Tom
 Hi there,
 
 I run Broadway Scorecard (broadwayscorecard.com), a free database of
-5,790 Broadway reviews across 657 shows, plus box office data, audience
+11,400 Broadway reviews across 685 shows, plus box office data, audience
 buzz, and commercial performance tracking.
 
 Thought it might be worth a mention in the newsletter as a research
 tool for your industry readership. Some highlights:
 
-- Reviews from 257 outlets with transparent scoring methodology
+- Reviews from 490 outlets with transparent scoring methodology
 - Weekly box office with WoW and YoY comparisons
 - Recoupment tracking for 120+ shows
 - Audience sentiment combining ShowScore, Mezzanine, and Reddit data
@@ -612,7 +665,7 @@ Would you be interested in a guest post? I'm thinking something like
 "Which Broadway Outlet Is the Toughest Grader?" — data-driven pieces
 with tables and analysis your readers would enjoy.
 
-The data is all free and open — 5,790 reviews, 657 shows, 20 seasons.
+The data is all free and open — 11,400 reviews, 685 shows, 20 seasons.
 
 Let me know if any angle interests you.
 
