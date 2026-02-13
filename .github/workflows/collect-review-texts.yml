@@ -285,12 +285,28 @@ jobs:
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');
             const base = 'data/review-texts';
-            const dirs = fs.readdirSync(base).filter(d => fs.statSync(path.join(base, d)).isDirectory());
+            // Load global failed-fetches to exclude permanently failed URLs
+            let failedUrls = new Set();
+            const globalFF = path.join(base, 'failed-fetches.json');
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url || e.failureReason === 'garbage_content') return;
+                  const isDead = e.failureReason === 'url_dead_404' || e.failureReason === 'url_dead_410';
+                  if (e.failureCount >= (isDead ? 3 : 5)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
             let n = 0;
             dirs.forEach(d => {
-              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json')).forEach(f => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
                 try {
                   const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (failedUrls.has(r.url)) return;
                   if (r.url && !r.fullText) n++;
                 } catch(e) {}
               });
