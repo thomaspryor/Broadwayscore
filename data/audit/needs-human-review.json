@@ -1,12 +1,91 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-13T22:31:41.327Z",
-    "totalFlagged": 3,
+    "generatedAt": "2026-02-13T23:17:27.594Z",
+    "totalFlagged": 20,
     "reasons": {
-      "originalScore-llm-conflict": 3
+      "possible-tour-fulltext": 12,
+      "originalScore-llm-conflict": 8
     }
   },
   "reviews": [
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "clevelands-star-102",
+      "criticName": "Glenn Anderson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.052Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "houston-chronicle",
+      "criticName": "Joey Guerra",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.072Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "revue",
+      "criticName": "Marin Heinritz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.104Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-minnesota-star-tribune",
+      "criticName": "Rohan Preston",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
+      "llmScore": 40,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.116Z"
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:01.802Z"
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Maerz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:01.917Z"
+    },
     {
       "showId": "aint-no-mo-2022",
       "outletId": "nysr",
@@ -18,7 +97,72 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:31:16.395Z"
+      "flaggedAt": "2026-02-13T23:17:02.504Z"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "outletId": "stagebuddy",
+      "criticName": "Elyse Trevers",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:03.224Z"
+    },
+    {
+      "showId": "bye-bye-birdie-2009",
+      "outletId": "theatermania",
+      "criticName": "Keith Loria",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:05.872Z"
+    },
+    {
+      "showId": "collected-stories-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 75 (bucket=positive, conf=medium)",
+      "llmScore": 75,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:07.007Z"
+    },
+    {
+      "showId": "follies-2011",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:09.077Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "washpost",
+      "criticName": "Peter Marks",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:09.719Z"
     },
     {
       "showId": "girl-from-the-north-country-2022",
@@ -31,7 +175,85 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:31:23.542Z"
+      "flaggedAt": "2026-02-13T23:17:09.723Z"
+    },
+    {
+      "showId": "golden-boy-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=high)",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:09.906Z"
+    },
+    {
+      "showId": "miss-saigon-2017",
+      "outletId": "broadstreetreview",
+      "criticName": "Cameron Kelsall",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:15.713Z"
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "outletId": "cititour",
+      "criticName": "Brian Scott Lipton",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:16.008Z"
+    },
+    {
+      "showId": "newsies-the-musical-2012",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=medium)",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:16.551Z"
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:16.600Z"
+    },
+    {
+      "showId": "ragtime-2025",
+      "outletId": "theater-life",
+      "criticName": "Samuel L. Leiter",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T23:17:19.019Z"
     },
     {
       "showId": "wicked-2003",
@@ -44,7 +266,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:31:40.955Z"
+      "flaggedAt": "2026-02-13T23:17:27.221Z"
     }
   ]
 }
