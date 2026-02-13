@@ -1,8 +1,115 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-13T19:13:38.583Z",
-    "totalFlagged": 0,
-    "reasons": {}
+    "generatedAt": "2026-02-13T20:07:37.517Z",
+    "totalFlagged": 8,
+    "reasons": {
+      "originalScore-llm-conflict": 8
+    }
   },
-  "reviews": []
+  "reviews": [
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:12.521Z"
+    },
+    {
+      "showId": "collected-stories-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 75 (bucket=positive, conf=medium)",
+      "llmScore": 75,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:17.511Z"
+    },
+    {
+      "showId": "golden-boy-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=high)",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:20.354Z"
+    },
+    {
+      "showId": "newsies-the-musical-2012",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=medium)",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:26.846Z"
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:26.897Z"
+    },
+    {
+      "showId": "the-trip-to-bountiful-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:35.394Z"
+    },
+    {
+      "showId": "time-stands-still-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 90 (bucket=positive, conf=medium)",
+      "llmScore": 90,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:35.889Z"
+    },
+    {
+      "showId": "wicked-2003",
+      "outletId": "timeout",
+      "criticName": "David Cote",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:37.172Z"
+    }
+  ]
 }
