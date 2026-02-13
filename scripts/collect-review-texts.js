@@ -228,7 +228,7 @@ const CONFIG = {
   // Timeouts
   loginTimeout: 90000,    // 90s for slow logins
   pageTimeout: 60000,     // 60s for page load
-  apiTimeout: 60000,      // 60s for API calls
+  apiTimeout: 20000,      // 20s for API calls (Archive.org/scrapers respond fast or not at all)
   reviewTimeout: 180000,  // 3 min hard timeout per review (kills hung Playwright)
 
   // Retry settings
@@ -236,7 +236,7 @@ const CONFIG = {
   retryDelays: [2000, 4000, 8000], // Exponential backoff
 
   // Request delays
-  requestDelay: 2000,
+  requestDelay: 500,      // 500ms between reviews (polite but not wasteful)
 
   // Outlet-to-domain mapping for URL discovery via Google SERP
   outletDomains: {
@@ -1736,7 +1736,7 @@ async function fetchFromArchiveCDX(url) {
   console.log(`    → CDX found ${snapshots.length} snapshots (oldest: ${snapshots[0][1]}, newest: ${snapshots[snapshots.length - 1][1]})`);
 
   // Try more snapshots for paywalled sites (pre-paywall snapshots are gold)
-  const maxAttempts = Math.min(snapshots.length, isPaywalledSite ? 8 : 5);
+  const maxAttempts = Math.min(snapshots.length, isPaywalledSite ? 5 : 3);
   let lastError = null;
 
   for (let i = 0; i < maxAttempts; i++) {

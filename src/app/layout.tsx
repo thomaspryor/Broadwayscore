@@ -130,10 +130,15 @@ export default function RootLayout({
         <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <Link href="/" className="flex items-center group">
-                <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
-              </Link>
+              <div className="flex items-center gap-6">
+                <Link href="/" className="flex items-center group">
+                  <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
+                  <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
+                </Link>
+                <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  Reviews
+                </Link>
+              </div>
               <div className="flex items-center gap-3">
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
@@ -188,6 +193,7 @@ export default function RootLayout({
                   <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
+                  <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
                   <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
                   <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>
                   <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>
