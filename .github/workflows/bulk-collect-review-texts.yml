@@ -250,6 +250,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
+          CLOSED_SHOW_MODE: 'true'
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
