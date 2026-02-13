@@ -196,11 +196,15 @@ function isNotBroadway(title) {
     lower.includes('london') ||
     lower.includes('national tour') ||
     lower.includes('touring production') ||
+    lower.includes('touring cast') ||
+    lower.includes('touring company') ||
     lower.includes('in chicago') ||
     lower.includes('world premiere') ||
     lower.includes('on screen') ||
     lower.includes('on film') ||
     lower.includes('movie') ||
+    lower.includes('film review') ||
+    lower.includes('film adaptation') ||
     lower.includes('filmed version') ||
     // Specific venue mentions that indicate non-Broadway
     lower.includes('playhouse theatre') ||
