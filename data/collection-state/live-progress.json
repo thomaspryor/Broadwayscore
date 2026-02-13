@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-13T19:28:06.730Z",
-  "processed": 3,
-  "failed": 27,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-13T19:31:36.295Z",
+  "processed": 68,
+  "failed": 92,
+  "successRate": "42.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 21,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 1
+    "brightdata": 38,
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T18:34:56.206Z",
+      "event": "bb-session",
+      "session": "29ff747f",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-13T18:35:33.953Z",
+      "event": "bb-session",
+      "session": "8b4c1167",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-02-13T18:38:46.889Z",
+      "event": "bb-session",
+      "session": "a238fd71",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-13T18:40:21.371Z",
+      "event": "bb-session",
+      "session": "94acf58f",
+      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
+    },
+    {
+      "t": "2026-02-13T18:40:56.777Z",
+      "event": "bb-session",
+      "session": "a3d16072",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    }
+  ]
 }
