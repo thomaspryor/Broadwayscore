@@ -4,25 +4,25 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11459,
-      "skippedNoScore": 7469,
+      "totalReviews": 11457,
+      "skippedNoScore": 7465,
       "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 223,
-      "skippedCrossOutletDuplicateUrl": 37,
-      "skippedDuplicateText": 793,
+      "skippedDuplicateUrl": 216,
+      "skippedCrossOutletDuplicateUrl": 36,
+      "skippedDuplicateText": 806,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 859,
       "recoveredFromGarbage": 122,
       "scoreSources": {
         "explicit-stars": 6,
-        "explicit-outOf": 2,
+        "explicit-outOf": 3,
         "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1172,
-        "llmScore": 6228,
+        "originalScore-priority0": 1174,
+        "llmScore": 6231,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3841,
+        "llmScore-lowconf": 3819,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -935,7 +935,7 @@
     },
     {
       "showId": "1984-2017",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 80,
       "scoreSource": "llmScore-lowconf",
@@ -1377,7 +1377,7 @@
     },
     {
       "showId": "33-variations-2009",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 75,
       "scoreSource": "llmScore-lowconf",
@@ -1407,7 +1407,7 @@
       "pullQuote": "Kaufman makes a convincing case for the genius of emotional variation in each of us, whether we're Beethoven or not.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "33-variations-2009",
@@ -2431,7 +2431,7 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "sfchronicle",
+      "outletId": "sfgate",
       "outlet": "SFGate",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -2822,7 +2822,7 @@
     },
     {
       "showId": "a-behanding-in-spokane-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -2839,7 +2839,7 @@
     },
     {
       "showId": "a-behanding-in-spokane-2010",
-      "outletId": "broadwayworldcom",
+      "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 72,
       "scoreSource": "llmScore-lowconf",
@@ -2886,7 +2886,7 @@
       "pullQuote": "There is something delightfully, wickedly off about all four characters in Behanding, including Rockwell's Mervyn.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-behanding-in-spokane-2010",
@@ -3281,7 +3281,7 @@
     },
     {
       "showId": "a-bronx-tale-2007",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -3349,7 +3349,7 @@
     },
     {
       "showId": "a-bronx-tale-2007",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
@@ -3672,7 +3672,7 @@
     },
     {
       "showId": "a-bronx-tale-2007",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -3740,8 +3740,8 @@
     },
     {
       "showId": "a-bronx-tale-2007",
-      "outletId": "the-record-bergen",
-      "outlet": "The Record Bergen",
+      "outletId": "bergen-record",
+      "outlet": "The Record (Bergen)",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
@@ -3757,7 +3757,7 @@
     },
     {
       "showId": "a-bronx-tale-2007",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
@@ -4233,7 +4233,7 @@
     },
     {
       "showId": "a-bronx-tale-the-musical-2016",
-      "outletId": "the-record",
+      "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
@@ -4454,7 +4454,7 @@
     },
     {
       "showId": "a-chorus-line-2006",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 77,
       "scoreSource": "llmScore-lowconf",
@@ -4471,7 +4471,7 @@
     },
     {
       "showId": "a-chorus-line-2006",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -5695,7 +5695,7 @@
     },
     {
       "showId": "a-christmas-story-the-musical-2012",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -6800,7 +6800,7 @@
     },
     {
       "showId": "a-dolls-house-part-2-2017",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -6868,7 +6868,7 @@
     },
     {
       "showId": "a-dolls-house-part-2-2017",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 61,
       "scoreSource": "llmScore",
@@ -7378,7 +7378,7 @@
     },
     {
       "showId": "a-dolls-house-part-2-2017",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 87,
       "scoreSource": "llmScore-lowconf",
@@ -7684,7 +7684,7 @@
     },
     {
       "showId": "a-free-man-of-color-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 80,
       "scoreSource": "llmScore-lowconf",
@@ -8755,7 +8755,7 @@
     },
     {
       "showId": "a-little-night-music-2009",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 80,
       "scoreSource": "llmScore",
@@ -9282,7 +9282,7 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-2007",
-      "outletId": "the-independent-uk",
+      "outletId": "the-independent",
       "outlet": "The Independent",
       "assignedScore": 79,
       "scoreSource": "llmScore-lowconf",
@@ -9316,7 +9316,7 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-2007",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -9333,7 +9333,7 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-2007",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 80,
       "scoreSource": "llmScore",
@@ -9350,7 +9350,7 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-2007",
-      "outletId": "the-times-uk",
+      "outletId": "the-times",
       "outlet": "The Times",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -9516,7 +9516,7 @@
       "pullQuote": "It's a shame, then, that this musical doesn't give Davies much to work with other than her phenomenal voice.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -9571,7 +9571,7 @@
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "new-york-theatre",
+      "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 59,
       "scoreSource": "llmScore",
@@ -9690,7 +9690,7 @@
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -9707,7 +9707,7 @@
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 77,
       "scoreSource": "llmScore",
@@ -9724,7 +9724,7 @@
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "the-times-uk",
+      "outletId": "the-times",
       "outlet": "The Times",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
@@ -9907,7 +9907,7 @@
       "pullQuote": "Washington's charisma is a great boost for ticket sales, his vitality contradicts just how precarious the dreams of Walter, written as a younger, weaker black man, really are.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-raisin-in-the-sun-2014",
@@ -10710,6 +10710,23 @@
     },
     {
       "showId": "a-steady-rain-2009",
+      "outletId": "new-jersey-newsroom",
+      "outlet": "New Jersey Newsroom",
+      "assignedScore": 80,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Michael Sommers",
+      "url": "https://www.newjerseynewsroom.com/movies/stars-brighten-a-dark-cop-drama-in-a-steady-rain",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "You may be grabbing tickets for \"A Steady Rain\" simply to bask in the movie-starry presence of Daniel (\"007\") Craig and Hugh (\"Wolverine\") Jackman on Broadway. But skip the celebrity angle and prepare to be ensnared by some sharp acting and an absorbing story as Keith Huff's two-character drama relentlessly darkens over the next 90 minutes.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-steady-rain-2009",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 45,
@@ -10721,23 +10738,6 @@
       "publishDate": "September 30, 2009",
       "originalRating": null,
       "pullQuote": "The two stars work hard to make their characters compelling, but they're hampered by Keith Huff's overly schematic play that feels more like a writing exercise than a fully realized drama.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-steady-rain-2009",
-      "outletId": "newjerseynewsroomcom",
-      "outlet": "Newjerseynewsroom.com",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Michael Sommers",
-      "url": "https://www.newjerseynewsroom.com/movies/stars-brighten-a-dark-cop-drama-in-a-steady-rain",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "You may be grabbing tickets for \"A Steady Rain\" simply to bask in the movie-starry presence of Daniel (\"007\") Craig and Hugh (\"Wolverine\") Jackman on Broadway. But skip the celebrity angle and prepare to be ensnared by some sharp acting and an absorbing story as Keith Huff's two-character drama relentlessly darkens over the next 90 minutes.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -10849,7 +10849,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": null,
@@ -10859,24 +10859,7 @@
       "pullQuote": "Pair that with John Crowley's taut production, not to mention actors with the charisma and command of Daniel Craig and Hugh Jackman, and you get riveting theater.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-steady-rain-2009",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.variety.com/review/VE1117941264.html?categoryid=33&cs=1&nid=2562",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But playwright Keith Huff recharges those familiar elements by approaching events usually outlined in action terms with the probing eye",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -11526,6 +11509,23 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 63,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jonathan Mandell",
+      "url": "https://www.thefastertimes.com/newyorktheater/2012/04/22/a-streetcar-named-desire-review-on-broadway-with-a-black-blanche/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "She is only partially successful in the second.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
       "outletId": "latimes",
       "outlet": "Los Angeles Times",
       "assignedScore": 91,
@@ -11577,23 +11577,6 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Mandell",
-      "url": "https://www.thefastertimes.com/newyorktheater/2012/04/22/a-streetcar-named-desire-review-on-broadway-with-a-black-blanche/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "She is only partially successful in the second.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-streetcar-named-desire-2012",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 42,
@@ -11628,7 +11611,7 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
-      "outletId": "the-record",
+      "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
@@ -12308,7 +12291,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2010",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 75,
       "scoreSource": "llmScore",
@@ -12376,7 +12359,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
-      "outletId": "britishtheatrecom",
+      "outletId": "british-theatre",
       "outlet": "British Theatre",
       "assignedScore": 95,
       "scoreSource": "llmScore-lowconf",
@@ -12631,7 +12614,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -13005,7 +12988,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -13039,7 +13022,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
-      "outletId": "the-independent-uk",
+      "outletId": "the-independent",
       "outlet": "The Independent",
       "assignedScore": 91,
       "scoreSource": "llmScore-lowconf",
@@ -14276,7 +14259,7 @@
       "pullQuote": "After Midnight is a show that's as light on its feet as its very talented ensemble.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "after-midnight-2013",
@@ -14671,7 +14654,7 @@
     },
     {
       "showId": "aint-no-mo-2022",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -15164,7 +15147,7 @@
     },
     {
       "showId": "aint-too-proud-2019",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -15997,6 +15980,23 @@
     },
     {
       "showId": "airline-highway-2015",
+      "outletId": "njcom",
+      "outlet": "NJ.com",
+      "assignedScore": 76,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ronni Reich",
+      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_airline_highway_opens_on_broadway.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "D'Amour's writing unsparingly, unabashedly gets at fundamental aspects of the human condition.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "airline-highway-2015",
       "outletId": "ny1",
       "outlet": "NY1",
       "assignedScore": 73,
@@ -16059,23 +16059,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Airline Highway couldn't be more interesting to see or more derivative to hear.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "airline-highway-2015",
-      "outletId": "star-ledger",
-      "outlet": "Star Ledger",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ronni Reich",
-      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_airline_highway_opens_on_broadway.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "D'Amour's writing unsparingly, unabashedly gets at fundamental aspects of the human condition.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -16435,7 +16418,7 @@
       "pullQuote": "This is one of the better Disney stage musicals, complete with several eye-popping production numbers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aladdin-2014",
@@ -16946,7 +16929,7 @@
       "pullQuote": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete",
+      "contentTier": "truncated",
       "designation": "Critics_Choice"
     },
     {
@@ -16964,7 +16947,7 @@
       "pullQuote": "A fun treat for the kids for sure, and even the adults who loathe Disney's theatrical presence will find themselves enjoying the show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aladdin-2014",
@@ -17933,7 +17916,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -20045,7 +20028,7 @@
     },
     {
       "showId": "almost-famous-2022",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -20942,7 +20925,7 @@
       "pullQuote": "While by no means unpleasant, Smith's songs are lifeless and forgettable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "amazing-grace-2015",
@@ -21949,7 +21932,7 @@
     },
     {
       "showId": "american-buffalo-2008",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -22578,7 +22561,7 @@
     },
     {
       "showId": "american-idiot-2010",
-      "outletId": "associated-press",
+      "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -22612,7 +22595,7 @@
     },
     {
       "showId": "american-idiot-2010",
-      "outletId": "broadwayworldcom",
+      "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 78,
       "scoreSource": "llmScore-lowconf",
@@ -22646,7 +22629,7 @@
     },
     {
       "showId": "american-idiot-2010",
-      "outletId": "entertainment-weekly",
+      "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 63,
       "scoreSource": "llmScore",
@@ -24006,7 +23989,7 @@
     },
     {
       "showId": "american-son-2018",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -24414,7 +24397,7 @@
     },
     {
       "showId": "an-act-of-god-2016",
-      "outletId": "the-star-ledger",
+      "outletId": "njcom",
       "outlet": "NJ.com",
       "assignedScore": 40,
       "scoreSource": "llmScore-lowconf",
@@ -24567,7 +24550,7 @@
     },
     {
       "showId": "an-act-of-god-2016",
-      "outletId": "the-record",
+      "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -24890,7 +24873,7 @@
     },
     {
       "showId": "an-american-in-paris-2015",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 83,
       "scoreSource": "llmScore-lowconf",
@@ -25264,7 +25247,7 @@
     },
     {
       "showId": "an-american-in-paris-2015",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -26879,7 +26862,7 @@
     },
     {
       "showId": "and-juliet-2022",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 85,
       "scoreSource": "llmScore",
@@ -27287,40 +27270,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "angels-in-america",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Elysa Gardner",
-      "url": "https://nystagereview.com/2018/03/25/angels-in-america-arriving-via-london-this-angel-soars/",
-      "publishDate": "2018-03-25T21:30:17",
-      "originalRating": "5/5 stars",
-      "pullQuote": "As this majestic America reminds us, it is worth striving towards, even now. Especially now.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "angels-in-america",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Steven Suskin",
-      "url": "https://nystagereview.com/2018/03/25/angels-in-america-a-fantasia-for-all-seasons/",
-      "publishDate": "2018-03-25T21:30:55",
-      "originalRating": "5/5 stars",
-      "pullQuote": "Her work on Angels is equally stunning.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
       "showId": "angels-in-america-2018",
       "outletId": "4columns",
       "outlet": "4Columns",
@@ -27492,7 +27441,7 @@
     },
     {
       "showId": "angels-in-america-2018",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -27594,7 +27543,7 @@
     },
     {
       "showId": "angels-in-america-2018",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -28971,7 +28920,7 @@
     },
     {
       "showId": "anything-goes-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 41,
       "scoreSource": "llmScore-lowconf",
@@ -28990,18 +28939,18 @@
       "showId": "anything-goes-2011",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Lisa Schwarzbaum",
       "url": "https://www.ew.com/ew/article/0,,20364394_20480196,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "What the audience doesn't know is that British theater regular Adam Godley will steal his crucial bit of the show and utterly delight the cheering house with his brilliant comic timing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "anything-goes-2011",
@@ -29311,7 +29260,7 @@
     },
     {
       "showId": "appropriate-2023",
-      "outletId": "amny-matt-windman",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 78,
       "scoreSource": "llmScore",
@@ -29686,7 +29635,7 @@
     },
     {
       "showId": "appropriate-2023",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 64,
       "scoreSource": "llmScore-lowconf",
@@ -30383,7 +30332,7 @@
     },
     {
       "showId": "art-2025",
-      "outletId": "newyorktheater",
+      "outletId": "nyt-theater",
       "outlet": "New York Theater",
       "assignedScore": 25,
       "scoreSource": "llmScore-lowconf",
@@ -30434,7 +30383,7 @@
     },
     {
       "showId": "art-2025",
-      "outletId": "1minutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
@@ -30498,7 +30447,7 @@
       "pullQuote": "Corden is superb, a perfectly calibrated level of hysterical, sincere and crisp.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "art-2025",
@@ -31709,7 +31658,7 @@
     },
     {
       "showId": "bad-cinderella-2023",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 18,
       "scoreSource": "llmScore",
@@ -32168,7 +32117,7 @@
     },
     {
       "showId": "bandstand-2017",
-      "outletId": "britishtheatrecom",
+      "outletId": "british-theatre",
       "outlet": "British Theatre",
       "assignedScore": 95,
       "scoreSource": "llmScore-lowconf",
@@ -32355,7 +32304,7 @@
     },
     {
       "showId": "bandstand-2017",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -32950,7 +32899,7 @@
     },
     {
       "showId": "bandstand-2017",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 83,
       "scoreSource": "llmScore-lowconf",
@@ -33324,7 +33273,7 @@
     },
     {
       "showId": "be-more-chill-2019",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -36180,7 +36129,7 @@
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -36350,7 +36299,7 @@
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 75,
       "scoreSource": "llmScore",
@@ -36401,7 +36350,7 @@
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
@@ -36418,7 +36367,7 @@
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 89,
       "scoreSource": "llmScore",
@@ -37132,7 +37081,7 @@
     },
     {
       "showId": "bernhardthamlet-2018",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -37451,7 +37400,7 @@
       "pullQuote": "Tom Hiddleston, Charlie Cox, and Zawe Ashton command a smart, stripped down 'Betrayal'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "betrayal-2013",
@@ -38186,8 +38135,8 @@
     },
     {
       "showId": "betrayal-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -38764,7 +38713,7 @@
     },
     {
       "showId": "big-fish-2013",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -39121,7 +39070,7 @@
     },
     {
       "showId": "billy-elliot-the-musical-2008",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 87,
       "scoreSource": "llmScore-lowconf",
@@ -39138,7 +39087,7 @@
     },
     {
       "showId": "billy-elliot-the-musical-2008",
-      "outletId": "broadwayworldcom",
+      "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -40192,7 +40141,7 @@
     },
     {
       "showId": "bloody-bloody-andrew-jackson-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 45,
       "scoreSource": "llmScore-lowconf",
@@ -40940,7 +40889,7 @@
     },
     {
       "showId": "bonnie-and-clyde-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 79,
       "scoreSource": "llmScore-lowconf",
@@ -41246,7 +41195,7 @@
     },
     {
       "showId": "book-of-mormon-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -42199,7 +42148,7 @@
     },
     {
       "showId": "born-yesterday-2011",
-      "outletId": "amnycom",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -42250,7 +42199,7 @@
     },
     {
       "showId": "born-yesterday-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 80,
       "scoreSource": "llmScore-lowconf",
@@ -42281,6 +42230,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "born-yesterday-2011",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 69,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jonathan Mandell",
+      "url": "https://thefastertimes.com/newyorktheater/2011/04/24/born-yesterday-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Still, 'Born Yesterday,' at 65, need not be retired. It still works when there is the right chemistry among the three principal actors.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "born-yesterday-2011",
@@ -42414,23 +42380,6 @@
       "publishDate": "April 25, 2011",
       "originalRating": null,
       "pullQuote": "The revival of Garson Kanin's Born Yesterday that opened tonight at the Cort Theatre is a disappointment that fails to capture the spark and intelligence that made the original such a success.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "born-yesterday-2011",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Mandell",
-      "url": "https://thefastertimes.com/newyorktheater/2011/04/24/born-yesterday-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Still, 'Born Yesterday,' at 65, need not be retired. It still works when there is the right chemistry among the three principal actors.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -42896,7 +42845,7 @@
     },
     {
       "showId": "breakfast-at-tiffanys-2013",
-      "outletId": "vulturecom",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 53,
       "scoreSource": "llmScore",
@@ -42982,7 +42931,7 @@
     },
     {
       "showId": "brief-encounter-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 30,
       "scoreSource": "llmScore-lowconf",
@@ -43458,7 +43407,7 @@
     },
     {
       "showId": "bright-star-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -44410,6 +44359,23 @@
     },
     {
       "showId": "bring-it-on-the-musical-2012",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 59,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jonathan Mandell",
+      "url": "https://www.thefastertimes.com/newyorktheater/2012/08/01/bring-it-on-broadway-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Questions of audience aside, was it a mistake for these young theatrical talents to collaborate on such a trifle?",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "bring-it-on-the-musical-2012",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 73,
@@ -44475,23 +44441,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "bring-it-on-the-musical-2012",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 59,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Mandell",
-      "url": "https://www.thefastertimes.com/newyorktheater/2012/08/01/bring-it-on-broadway-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Questions of audience aside, was it a mistake for these young theatrical talents to collaborate on such a trifle?",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -44733,7 +44682,7 @@
     },
     {
       "showId": "bronx-bombers-2014",
-      "outletId": "new-york-1",
+      "outletId": "ny1",
       "outlet": "NY1",
       "assignedScore": 43,
       "scoreSource": "llmScore",
@@ -44937,7 +44886,7 @@
     },
     {
       "showId": "buena-vista-social-club-2025",
-      "outletId": "new-york-theatre-guide-gillian-russo",
+      "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 79,
       "scoreSource": "llmScore",
@@ -44971,7 +44920,7 @@
     },
     {
       "showId": "buena-vista-social-club-2025",
-      "outletId": "observer-david-cote",
+      "outletId": "observer",
       "outlet": "Observer",
       "assignedScore": 77,
       "scoreSource": "llmScore",
@@ -45468,7 +45417,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Howard Miller",
@@ -45478,7 +45427,7 @@
       "pullQuote": "As the world upends and utter madness engulfs, we truly don't know if we are witnessing Peter's implosion or Agnes's crack cocaine-fueled breakdown, or some combination of both.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bug-2026",
@@ -46759,7 +46708,7 @@
     },
     {
       "showId": "burn-this-2019",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
@@ -46861,7 +46810,7 @@
     },
     {
       "showId": "burn-this-2019",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 79,
       "scoreSource": "llmScore-lowconf",
@@ -47161,23 +47110,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "And the result couldn't be more joyful.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "butley-2006",
-      "outletId": "the-record-bergen",
-      "outlet": "The Record Bergen",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Robert Feldberg",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "With 'Bullets Over Broadway,' she's gotten a perfect match.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -48374,7 +48306,7 @@
     },
     {
       "showId": "camelot-2023",
-      "outletId": "am-ny-matt-windman",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -48867,7 +48799,7 @@
     },
     {
       "showId": "caroline-or-change-2021",
-      "outletId": "am-ny-matt-windman",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -49462,7 +49394,7 @@
     },
     {
       "showId": "carousel-2018",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -49972,7 +49904,7 @@
     },
     {
       "showId": "carousel-2018",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -50516,6 +50448,23 @@
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2008",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 73,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jonathan Mandell",
+      "url": null,
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "There are two main aesthetic reasons I can think of to justify Mann’s reinterpretation of “A Streetcar Named Desire” through multi-racial casting – – to have the audience look at a classic work in a fresh light, thereby adding to our understanding of it; and to give us the chance to see great actors...",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2008",
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 74,
@@ -50564,23 +50513,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "cat-on-a-hot-tin-roof-2008",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonathan Mandell",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "There are two main aesthetic reasons I can think of to justify Mann’s reinterpretation of “A Streetcar Named Desire” through multi-racial casting – – to have the audience look at a classic work in a fresh light, thereby adding to our understanding of it; and to give us the chance to see great actors...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2008",
@@ -51060,7 +50992,7 @@
     },
     {
       "showId": "catch-me-if-you-can-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -51108,6 +51040,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 64,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jonathan Mandell",
+      "url": "https://thefastertimes.com/newyorktheater/2011/04/10/catch-me-if-you-can-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Yet for all its many charms, 'Catch Me If You Can' is not the thorough thrill that one might have hoped.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -51207,23 +51156,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "There's so much that works about Catch Me if You Can that it's easy to overlook what doesn't.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "catch-me-if-you-can-2011",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Mandell",
-      "url": "https://thefastertimes.com/newyorktheater/2011/04/10/catch-me-if-you-can-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Yet for all its many charms, 'Catch Me If You Can' is not the thorough thrill that one might have hoped.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -51944,7 +51876,7 @@
     },
     {
       "showId": "cats-1982",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 64,
       "scoreSource": "llmScore-lowconf",
@@ -52539,7 +52471,7 @@
     },
     {
       "showId": "chaplin-2012",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
@@ -52793,23 +52725,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "chaplin-2012",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 35,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2012/09/theater-review-chaplin-the-musical.html",
-      "publishDate": "September 11, 2012",
-      "originalRating": null,
-      "pullQuote": "A musical about Charlie Chaplin that fails to be funny is like a meal about food that fails to be nourishing.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
       "showId": "charlie-and-the-chocolate-factory-2017",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -52913,7 +52828,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -53406,7 +53321,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 75,
       "scoreSource": "llmScore-lowconf",
@@ -53508,7 +53423,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 53,
       "scoreSource": "llmScore-lowconf",
@@ -53865,7 +53780,7 @@
     },
     {
       "showId": "chess-2025",
-      "outletId": "1-minute-critic-matthew-wexler",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 81,
       "scoreSource": "llmScore",
@@ -54290,6 +54205,23 @@
     },
     {
       "showId": "chicago-1996",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 82,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jonathan Mandell",
+      "url": null,
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Chinglish captures this comic confusion with considerable clarity, hilarity and élan.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "chicago-1996",
       "outletId": "hello-beautiful",
       "outlet": "Hello Beautiful",
       "assignedScore": 83,
@@ -54372,23 +54304,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "chicago-1996",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonathan Mandell",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Chinglish captures this comic confusion with considerable clarity, hilarity and élan.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "chicago-1996",
@@ -54715,7 +54630,7 @@
     },
     {
       "showId": "chicken-and-biscuits-2021",
-      "outletId": "new-york-theatre",
+      "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 76,
       "scoreSource": "llmScore",
@@ -54953,7 +54868,7 @@
     },
     {
       "showId": "children-of-a-lesser-god-2018",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -56041,7 +55956,7 @@
     },
     {
       "showId": "china-doll-2015",
-      "outletId": "newjerseycom",
+      "outletId": "njcom",
       "outlet": "NJ.com",
       "assignedScore": 55,
       "scoreSource": "llmScore",
@@ -56772,7 +56687,7 @@
     },
     {
       "showId": "choir-boy-2019",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 89,
       "scoreSource": "llmScore-lowconf",
@@ -56823,7 +56738,7 @@
     },
     {
       "showId": "choir-boy-2019",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 77,
       "scoreSource": "llmScore-lowconf",
@@ -57350,7 +57265,7 @@
     },
     {
       "showId": "choir-boy-2019",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 83,
       "scoreSource": "llmScore-lowconf",
@@ -58081,7 +57996,7 @@
     },
     {
       "showId": "clybourne-park-2012",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 64,
       "scoreSource": "llmScore",
@@ -58166,7 +58081,7 @@
     },
     {
       "showId": "clybourne-park-2012",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 77,
       "scoreSource": "llmScore-lowconf",
@@ -58183,7 +58098,7 @@
     },
     {
       "showId": "clybourne-park-2012",
-      "outletId": "the-times-uk",
+      "outletId": "the-times",
       "outlet": "The Times",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -58353,7 +58268,7 @@
     },
     {
       "showId": "clydes-2021",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 92,
       "scoreSource": "llmScore-lowconf",
@@ -59016,7 +58931,7 @@
     },
     {
       "showId": "collected-stories-2010",
-      "outletId": "bloombeg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 41,
       "scoreSource": "llmScore-lowconf",
@@ -59305,7 +59220,7 @@
     },
     {
       "showId": "come-fly-away-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
@@ -59390,7 +59305,7 @@
     },
     {
       "showId": "come-fly-away-2010",
-      "outletId": "ny-post",
+      "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 76,
       "scoreSource": "llmScore-lowconf",
@@ -59832,7 +59747,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 78,
       "scoreSource": "llmScore",
@@ -59900,7 +59815,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 41,
       "scoreSource": "llmScore-lowconf",
@@ -60257,7 +60172,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "outletId": "sfchronicle",
+      "outletId": "sfgate",
       "outlet": "SFGate",
       "assignedScore": 74,
       "scoreSource": "llmScore",
@@ -60495,7 +60410,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "outletId": "the-record",
+      "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -60512,7 +60427,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 100,
       "scoreSource": "originalScore-priority0",
@@ -61426,7 +61341,7 @@
       "pullQuote": "Wilson is brilliant, dramatically altering key moments with the tiniest of inflections, and Gyllenhaal brings psychological depth to Roland.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "constellations-2015",
@@ -63096,7 +63011,7 @@
     },
     {
       "showId": "cyrano-de-bergerac-2012",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 52,
       "scoreSource": "llmScore-lowconf",
@@ -63283,7 +63198,7 @@
     },
     {
       "showId": "dames-at-sea-2015",
-      "outletId": "britishtheatrecom",
+      "outletId": "british-theatre",
       "outlet": "British Theatre",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -63402,7 +63317,7 @@
     },
     {
       "showId": "dames-at-sea-2015",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 73,
       "scoreSource": "llmScore-lowconf",
@@ -63810,7 +63725,7 @@
     },
     {
       "showId": "dames-at-sea-2015",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -64473,7 +64388,7 @@
     },
     {
       "showId": "days-of-wine-and-roses-2024",
-      "outletId": "hollywood-soapbox-john-soltes",
+      "outletId": "hollywood-soapbox",
       "outlet": "Hollywood Soapbox",
       "assignedScore": 94,
       "scoreSource": "llmScore",
@@ -65579,7 +65494,7 @@
     },
     {
       "showId": "dear-evan-hansen-2016",
-      "outletId": "app",
+      "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -65698,7 +65613,7 @@
     },
     {
       "showId": "dear-evan-hansen-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 88,
       "scoreSource": "llmScore",
@@ -65783,7 +65698,7 @@
     },
     {
       "showId": "dear-evan-hansen-2016",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -66973,7 +66888,7 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
-      "outletId": "ny-daily-news",
+      "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -67109,7 +67024,7 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
-      "outletId": "the-record",
+      "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
@@ -67721,23 +67636,6 @@
     },
     {
       "showId": "deuce-2007",
-      "outletId": "bloomberg-news",
-      "outlet": "Bloomberg",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Philip Boroff",
-      "url": "https://www.bloomberg.com/news/2010-12-15/donny-marie-offer-puppy-love-to-besotted-broadway-tourists.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Although the nine-piece band is too loud, the musical selections go down easy.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "deuce-2007",
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 62,
@@ -67840,7 +67738,7 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "outletId": "am-ny-matt-windman",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
@@ -69320,6 +69218,23 @@
     },
     {
       "showId": "doctor-zhivago-2015",
+      "outletId": "njcom",
+      "outlet": "NJ.com",
+      "assignedScore": 76,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ronni Reich",
+      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_doctor_zhivago_opens_on_broadway.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The musical is true to the spirit of its age and presents unabashed emotion too rarely seen on the contemporary stage.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "doctor-zhivago-2015",
       "outletId": "observer",
       "outlet": "Observer",
       "assignedScore": 17,
@@ -69334,23 +69249,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "doctor-zhivago-2015",
-      "outletId": "star-ledger",
-      "outlet": "Star Ledger",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ronni Reich",
-      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_doctor_zhivago_opens_on_broadway.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The musical is true to the spirit of its age and presents unabashed emotion too rarely seen on the contemporary stage.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "doctor-zhivago-2015",
@@ -70222,7 +70120,7 @@
     },
     {
       "showId": "driving-miss-daisy-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 92,
       "scoreSource": "llmScore-lowconf",
@@ -70681,7 +70579,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -70766,7 +70664,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -71174,7 +71072,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 79,
       "scoreSource": "llmScore",
@@ -72296,8 +72194,8 @@
     },
     {
       "showId": "end-of-the-rainbow-2012",
-      "outletId": "new-jersey-news-room",
-      "outlet": "New Jersey News Room",
+      "outletId": "new-jersey-newsroom",
+      "outlet": "New Jersey Newsroom",
       "assignedScore": 23,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Pan",
@@ -72307,23 +72205,6 @@
       "publishDate": null,
       "originalRating": "D",
       "pullQuote": "It's trash. Pulp rubbish by playwright Peter Quilter.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "end-of-the-rainbow-2012",
-      "outletId": "new-jersey-newsroom",
-      "outlet": "New Jersey Newsroom",
-      "assignedScore": 22,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": "Michael Sommers",
-      "url": "https://www.newjerseynewsroom.com/index.php?option=com_content&view=article&id=44663:review-end-of-the-rainbow-reveals-trash&catid=102:new-york-theater&Itemid=166",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's trash. [...] Pulp rubbish by playwright Peter Quilter.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -72891,7 +72772,7 @@
     },
     {
       "showId": "enron-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -72925,7 +72806,7 @@
     },
     {
       "showId": "enron-2010",
-      "outletId": "financial-times",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
@@ -72976,7 +72857,7 @@
     },
     {
       "showId": "enron-2010",
-      "outletId": "la-times",
+      "outletId": "latimes",
       "outlet": "Los Angeles Times",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -73021,23 +72902,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "There's a lot of sizzle, but not a whole lot of steak.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "enron-2010",
-      "outletId": "ny-post",
-      "outlet": "New York Post",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Elisabeth Vincentelli",
-      "url": "https://www.nypost.com/p/entertainment/theater/joy_ride_amid_fast_cash_and_cooked_NQ2MT1kCQRngnL5nqTTTyO?CMP=OTC-rss&FEEDNAME=",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But 'Enron' is a whip-smart, edge-of-your-seat ride that'd rival anything at Six Flags",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -73310,23 +73174,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Spanger and the rest of the cast do their level best to Make Up For the deficiencies of the script and score.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "equus-2008",
-      "outletId": "bloomberg-news",
-      "outlet": "Bloomberg",
-      "assignedScore": 40,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jeremy Gerard",
-      "url": "https://www.bloomberg.com/news/2010-11-15/high-spirited-elf-finds-grumpy-pa-first-love-in-new-york-jeremy-gerard.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The songs are by Matthew Sklar (music) and Chad Beguelin (lyrics), the team behind the awful 'The Wedding Singer,' and they hardly do better here.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -73690,7 +73537,7 @@
     },
     {
       "showId": "escape-to-margaritaville-2018",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 80,
       "scoreSource": "llmScore-lowconf",
@@ -74234,7 +74081,7 @@
     },
     {
       "showId": "escape-to-margaritaville-2018",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -75033,7 +74880,7 @@
     },
     {
       "showId": "everyday-rapture-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
@@ -75050,7 +74897,7 @@
     },
     {
       "showId": "everyday-rapture-2010",
-      "outletId": "broadwayworldcom",
+      "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -75067,7 +74914,7 @@
     },
     {
       "showId": "everyday-rapture-2010",
-      "outletId": "entertainment-weekly",
+      "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -75081,6 +74928,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "outletId": "new-jersey-newsroom",
+      "outlet": "New Jersey Newsroom",
+      "assignedScore": 76,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Michael Sommers",
+      "url": "https://www.newjerseynewsroom.com/movies/everyday-rapture-concludes-broadway-season",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Scott's spirits are high, her mildly balmy message is positive and her saga obviously is not the usual stage-struck chatter.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "everyday-rapture-2010",
@@ -75132,23 +74996,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "everyday-rapture-2010",
-      "outletId": "nj-newsroom",
-      "outlet": "Nj Newsroom",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Michael Sommers",
-      "url": "https://www.newjerseynewsroom.com/movies/everyday-rapture-concludes-broadway-season",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Scott's spirits are high, her mildly balmy message is positive and her saga obviously is not the usual stage-struck chatter.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "everyday-rapture-2010",
@@ -75325,7 +75172,7 @@
       "outletId": "elena-roger",
       "outlet": "Elena Roger",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Unknown",
@@ -75335,7 +75182,7 @@
       "pullQuote": "— supported by a barely there Ricky Martin and a sterling Michael Cerveris — this musical combination of history pageant and requiem Mass feels about as warmblooded as a gilded mummy. ... I thought I was fully immune to the show’s signature song, “Don’t Cry for Me Argentina,” from having heard it everywhere (even discos) in my youth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "evita-2012",
@@ -75760,7 +75607,7 @@
       "pullQuote": "The cast is uniformly strong, but this is Rush's show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "exit-the-king-2009",
@@ -75951,7 +75798,7 @@
     },
     {
       "showId": "faith-healer-2006",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -76155,7 +76002,7 @@
     },
     {
       "showId": "falsettos-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 88,
       "scoreSource": "llmScore-lowconf",
@@ -77226,7 +77073,7 @@
     },
     {
       "showId": "fat-ham-2023",
-      "outletId": "chelsea-community-news-michael-musto",
+      "outletId": "chelsea-community-news",
       "outlet": "Chelsea Community News",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -77770,23 +77617,6 @@
     },
     {
       "showId": "fela-2009",
-      "outletId": "bloomberg-news",
-      "outlet": "Bloomberg",
-      "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "John Simon",
-      "url": "https://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "There are Fela's music and Jones's equally matchless dances, uniquely combining earthiness with flight, dynamics with delicacy and drive to equal, if not surpass, Olympian ideals.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "fela-2009",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 35,
@@ -78059,23 +77889,6 @@
     },
     {
       "showId": "fela-2012",
-      "outletId": "bloomberg-news",
-      "outlet": "Bloomberg",
-      "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "John Simon",
-      "url": "https://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But there are Fela's music and Jones's equally matchless dances, uniquely combining earthiness with flight, dynamics with delicacy and drive to equal, if not surpass, Olympian ideals.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "fela-2012",
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 67,
@@ -78212,7 +78025,7 @@
     },
     {
       "showId": "fences-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -78994,7 +78807,7 @@
     },
     {
       "showId": "fiddler-on-the-roof-2015",
-      "outletId": "huffingtion-post",
+      "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
@@ -79453,7 +79266,7 @@
     },
     {
       "showId": "fiddler-on-the-roof-2015",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 88,
       "scoreSource": "llmScore-lowconf",
@@ -79889,23 +79702,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The magic stems not from the special effects, but from the delightful score by Gary Barlow and Eliot Kennedy; at times one would call it enchanting.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "finding-neverland-2015",
-      "outletId": "star-ledger",
-      "outlet": "Star Ledger",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Ronni Reich",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-FINDING-NEVERLAND-Opens-on-Broadway-Updating-LIVE-20150415",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But the work fails to live up to the story's promise.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -80575,7 +80371,7 @@
     },
     {
       "showId": "fish-in-the-dark-2015",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 75,
       "scoreSource": "llmScore-lowconf",
@@ -80932,7 +80728,7 @@
     },
     {
       "showId": "fish-in-the-dark-2015",
-      "outletId": "the-jewish-daily-forward",
+      "outletId": "forward",
       "outlet": "The Forward",
       "assignedScore": 44,
       "scoreSource": "llmScore",
@@ -81459,7 +81255,7 @@
     },
     {
       "showId": "floyd-collins-2025",
-      "outletId": "oneminutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 46,
       "scoreSource": "llmScore-lowconf",
@@ -81982,7 +81778,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "flying-over-sunset-2021",
@@ -82173,7 +81969,7 @@
     },
     {
       "showId": "follies-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -82564,7 +82360,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "outletId": "britishtheatrecom",
+      "outletId": "british-theatre",
       "outlet": "British Theatre",
       "assignedScore": 92,
       "scoreSource": "llmScore-lowconf",
@@ -82649,7 +82445,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 86,
       "scoreSource": "llmScore-lowconf",
@@ -83176,7 +82972,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "outletId": "theaterscenecom",
+      "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 80,
       "scoreSource": "llmScore-lowconf",
@@ -83397,7 +83193,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "outletId": "vulturecom",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -84417,7 +84213,7 @@
     },
     {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 75,
       "scoreSource": "llmScore-lowconf",
@@ -84641,7 +84437,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Billington",
@@ -84651,7 +84447,7 @@
       "pullQuote": "What emerges is a fascinating study of two men locked in verbal combat",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "frostnixon-2007",
@@ -84910,7 +84706,7 @@
     },
     {
       "showId": "frozen-2018",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
@@ -85913,7 +85709,7 @@
     },
     {
       "showId": "fully-committed-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -87936,7 +87732,7 @@
     },
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -88293,7 +88089,7 @@
     },
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 44,
       "scoreSource": "llmScore",
@@ -88361,7 +88157,7 @@
     },
     {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 46,
       "scoreSource": "llmScore-lowconf",
@@ -89177,7 +88973,7 @@
     },
     {
       "showId": "gettin-the-band-back-together-2018",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 41,
       "scoreSource": "llmScore-lowconf",
@@ -89925,7 +89721,7 @@
     },
     {
       "showId": "ghost-the-musical-2012",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 63,
       "scoreSource": "llmScore",
@@ -89976,7 +89772,7 @@
     },
     {
       "showId": "gigi-2015",
-      "outletId": "blogcriticsorg",
+      "outletId": "blogcritics",
       "outlet": "Blogcritics",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
@@ -90010,7 +89806,7 @@
     },
     {
       "showId": "gigi-2015",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -90163,8 +89959,8 @@
     },
     {
       "showId": "gigi-2015",
-      "outletId": "star-ledger",
-      "outlet": "Star Ledger",
+      "outletId": "njcom",
+      "outlet": "NJ.com",
       "assignedScore": 76,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -90758,7 +90554,7 @@
     },
     {
       "showId": "glengarry-glen-ross-2012",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
@@ -91608,7 +91404,7 @@
     },
     {
       "showId": "god-of-carnage-2009",
-      "outletId": "broadwayworldcom",
+      "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 44,
       "scoreSource": "llmScore-lowconf",
@@ -92203,7 +91999,7 @@
     },
     {
       "showId": "godspell-2011",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 79,
       "scoreSource": "llmScore-lowconf",
@@ -93019,7 +92815,7 @@
     },
     {
       "showId": "good-night-and-good-luck-2025",
-      "outletId": "the-village-voice-michael-musto",
+      "outletId": "village-voice",
       "outlet": "Village Voice",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -93905,18 +93701,18 @@
       "showId": "gore-vidals-the-best-man-2012",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Thom Geier",
       "url": "https://www.ew.com/ew/article/0,,20364394_20583662,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "Vidal's play remains remarkably well-constructed",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "gore-vidals-the-best-man-2012",
@@ -93982,23 +93778,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The stage is filled with stars, but the one who makes the evening go is John Larroquette",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "gore-vidals-the-best-man-2012",
-      "outletId": "the-faster-times",
-      "outlet": "The Faster Times",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonathan Mandell",
-      "url": "https://www.thefastertimes.com/newyorktheater/2012/04/01/gore-vidal%E2%80%99s-the-best-man-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Nearly every role is cast with thespian royalty",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -95688,7 +95467,7 @@
     },
     {
       "showId": "groundhog-day-2017",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 46,
       "scoreSource": "llmScore-lowconf",
@@ -96266,7 +96045,7 @@
     },
     {
       "showId": "groundhog-day-2017",
-      "outletId": "the-independent-uk",
+      "outletId": "the-independent",
       "outlet": "The Independent",
       "assignedScore": 87,
       "scoreSource": "llmScore-lowconf",
@@ -96317,7 +96096,7 @@
     },
     {
       "showId": "groundhog-day-2017",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 93,
       "scoreSource": "llmScore-lowconf",
@@ -97201,7 +96980,7 @@
     },
     {
       "showId": "guys-and-dolls-2009",
-      "outletId": "amnew-york",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 19,
       "scoreSource": "llmScore",
@@ -97252,7 +97031,7 @@
     },
     {
       "showId": "guys-and-dolls-2009",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -97354,8 +97133,8 @@
     },
     {
       "showId": "guys-and-dolls-2009",
-      "outletId": "ny-star-ledger",
-      "outlet": "Ny Star Ledger",
+      "outletId": "njcom",
+      "outlet": "NJ.com",
       "assignedScore": 58,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
@@ -98098,7 +97877,7 @@
       "pullQuote": "Most importantly, [Wolfe] has given us a way of seeing a star who had to be seen in this role.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "gypsy-2024",
@@ -98989,7 +98768,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 91,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -98999,7 +98778,7 @@
       "pullQuote": "Hadestown is a triumph of imagination and artistry that proves musical theatre can still surprise and enchant when creators dare to dream big.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hadestown-2019",
@@ -99430,7 +99209,7 @@
     },
     {
       "showId": "hairspray-2002",
-      "outletId": "londontheatreuk",
+      "outletId": "londontheatre",
       "outlet": "London Theatre",
       "assignedScore": 78,
       "scoreSource": "llmScore-lowconf",
@@ -100603,7 +100382,7 @@
     },
     {
       "showId": "hand-to-god-2015",
-      "outletId": "britishtheatrecom",
+      "outletId": "british-theatre",
       "outlet": "British Theatre",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -100824,6 +100603,23 @@
     },
     {
       "showId": "hand-to-god-2015",
+      "outletId": "njcom",
+      "outlet": "NJ.com",
+      "assignedScore": 82,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ronnie Reich",
+      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_hand_to_god_brings_irreverent_laughs_to_bro.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The story of a teenager who may or may not have a possessed puppet on his arm, Robert Askins' 'Hand to God' is a rare truly communal dramatic experience",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "hand-to-god-2015",
       "outletId": "northjerseycom",
       "outlet": "NorthJersey.com",
       "assignedScore": 62,
@@ -100886,23 +100682,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "This tragicomic masterpiece is unlike anything you've ever seen on the New York stage in years.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "hand-to-god-2015",
-      "outletId": "star-ledger",
-      "outlet": "Star Ledger",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ronnie Reich",
-      "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_hand_to_god_brings_irreverent_laughs_to_bro.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The story of a teenager who may or may not have a possessed puppet on his arm, Robert Askins' 'Hand to God' is a rare truly communal dramatic experience",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -101470,7 +101249,7 @@
     },
     {
       "showId": "hangmen-2022",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 52,
       "scoreSource": "llmScore-lowconf",
@@ -102813,7 +102592,7 @@
     },
     {
       "showId": "harry-potter-2021",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 70,
       "scoreSource": "llmScore",
@@ -104175,7 +103954,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -104600,7 +104379,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 76,
       "scoreSource": "llmScore-lowconf",
@@ -104685,7 +104464,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -104702,7 +104481,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 76,
       "scoreSource": "llmScore",
@@ -104722,7 +104501,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 44,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Terry Teachout",
@@ -104732,7 +104511,7 @@
       "pullQuote": "The result is a show that feels like three different musicals that have been glued together by someone who forgot to read the instruction manual.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "head-over-heels-2018",
@@ -105552,7 +105331,7 @@
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
@@ -106079,7 +105858,7 @@
     },
     {
       "showId": "heisenberg-2016",
-      "outletId": "dcmetro",
+      "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
@@ -106164,7 +105943,7 @@
     },
     {
       "showId": "heisenberg-2016",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
@@ -106538,7 +106317,7 @@
     },
     {
       "showId": "heisenberg-2016",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 73,
       "scoreSource": "llmScore",
@@ -106624,7 +106403,7 @@
     },
     {
       "showId": "heisenberg-2016",
-      "outletId": "the-stage-uk",
+      "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
@@ -107100,7 +106879,7 @@
     },
     {
       "showId": "hello-dolly-2017",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
@@ -107492,7 +107271,7 @@
     },
     {
       "showId": "hello-dolly-2017",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 91,
       "scoreSource": "llmScore",
@@ -109005,7 +108784,7 @@
     },
     {
       "showId": "high-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 17,
       "scoreSource": "llmScore-lowconf",
@@ -109290,7 +109069,7 @@
       "pullQuote": "Metcalf elevates this production with devastating take-downs that will knock the wind out of you.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hillary-and-clinton-2019",
@@ -109413,8 +109192,8 @@
     },
     {
       "showId": "hillary-and-clinton-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -112558,7 +112337,7 @@
     },
     {
       "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
-      "outletId": "vulturecom",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 64,
       "scoreSource": "llmScore",
@@ -115568,25 +115347,8 @@
     },
     {
       "showId": "jagged-little-pill-2019",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Andy Propst",
-      "url": "https://www.theatermania.com/new-york-city-theater/news/jagged-little-pill_88512.html",
-      "publishDate": "December 6, 2019",
-      "originalRating": null,
-      "pullQuote": "It's earnest to a fault, but that earnestness is also part of its charm.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "jagged-little-pill-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -115602,8 +115364,8 @@
     },
     {
       "showId": "jagged-little-pill-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -115613,6 +115375,23 @@
       "publishDate": null,
       "originalRating": "4.6/5",
       "pullQuote": "A dose of Jagged Little Pill, the Alanis Morissette jukebox musical on Broadway about a dysfunctional American family, delivers desirable jolts to the head and heart thanks to vibrant performances and hits like 'Ironic,' 'Head Over Feet' and 'Hand in My Pocket,' songs that have been capably threaded into storylines.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "jagged-little-pill-2019",
+      "outletId": "theatermania",
+      "outlet": "TheaterMania",
+      "assignedScore": 64,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Andy Propst",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/jagged-little-pill_88512.html",
+      "publishDate": "December 6, 2019",
+      "originalRating": null,
+      "pullQuote": "It's earnest to a fault, but that earnestness is also part of its charm.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -117572,7 +117351,7 @@
       "pullQuote": "Under Dan Sullivan’s adroit direction, Lithgow does.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -119667,7 +119446,7 @@
     },
     {
       "showId": "king-charles-iii-2015",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 86,
       "scoreSource": "llmScore",
@@ -119837,7 +119616,7 @@
     },
     {
       "showId": "king-charles-iii-2015",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 79,
       "scoreSource": "llmScore",
@@ -121809,7 +121588,7 @@
     },
     {
       "showId": "la-cage-aux-folles-2010",
-      "outletId": "entertainment-weekly",
+      "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 43,
       "scoreSource": "llmScore",
@@ -121826,7 +121605,7 @@
     },
     {
       "showId": "la-cage-aux-folles-2010",
-      "outletId": "ny-daily-news",
+      "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 80,
       "scoreSource": "llmScore",
@@ -121857,6 +121636,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2010/04/19/theater/reviews/19cage.html",
+      "publishDate": "April 19, 2010",
+      "originalRating": null,
+      "pullQuote": "This deliberately disheveled show delivers the unexpected lesson that in theater, shabby can be not just chic but redemptive.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "la-cage-aux-folles-2010",
@@ -122438,7 +122234,7 @@
     },
     {
       "showId": "leap-of-faith-2012",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 62,
       "scoreSource": "llmScore",
@@ -122455,7 +122251,7 @@
     },
     {
       "showId": "left-on-tenth-2024",
-      "outletId": "chicago-tribute",
+      "outletId": "chicagotribune",
       "outlet": "Chicago Tribune",
       "assignedScore": 63,
       "scoreSource": "llmScore",
@@ -124172,7 +123968,7 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 81,
       "scoreSource": "llmScore",
@@ -125903,7 +125699,7 @@
       "pullQuote": "It's so unfunny as to make the viewer despair of ever laughing again, much as a starving man might despair of ever eating again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "living-on-love-2015",
@@ -126264,7 +126060,7 @@
     },
     {
       "showId": "lombardi-2010",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 49,
       "scoreSource": "llmScore-lowconf",
@@ -131741,7 +131537,7 @@
     },
     {
       "showId": "mean-girls-2018",
-      "outletId": "the-times-uk",
+      "outletId": "the-times",
       "outlet": "The Times",
       "assignedScore": 80,
       "scoreSource": "originalScore-priority0",
@@ -132660,7 +132456,7 @@
     },
     {
       "showId": "meteor-shower-2017",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 61,
       "scoreSource": "llmScore",
@@ -133510,8 +133306,8 @@
     },
     {
       "showId": "miss-saigon-2017",
-      "outletId": "nytheatre-wire",
-      "outlet": "Nytheatre Wire",
+      "outletId": "nytheatre",
+      "outlet": "Nytheatre",
       "assignedScore": 54,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -133799,7 +133595,7 @@
     },
     {
       "showId": "mj-2022",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 46,
       "scoreSource": "llmScore",
@@ -137523,8 +137319,8 @@
     },
     {
       "showId": "network-2018",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -139189,7 +138985,7 @@
     },
     {
       "showId": "oedipus-2025",
-      "outletId": "oneminutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 84,
       "scoreSource": "llmScore",
@@ -140162,7 +139958,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Adrian Horton",
@@ -140172,7 +139968,7 @@
       "pullQuote": "Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-mary-2024",
@@ -140690,7 +140486,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -140700,7 +140496,7 @@
       "pullQuote": "'Ohio State Murders' leaves a lasting imprint—I picture a bloody handprint—on what for lack of a better term I'll call the soul.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "ohio-state-murders-2022",
@@ -142809,7 +142605,7 @@
       "pullQuote": "If this is myth, it is weak stuff, its power and mystery insisted upon but not felt.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "once-on-this-island-2017",
@@ -143085,7 +142881,7 @@
     },
     {
       "showId": "once-upon-a-mattress-2024",
-      "outletId": "new-york-theatre",
+      "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -143340,7 +143136,7 @@
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
-      "outletId": "amny-matt-windman",
+      "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 41,
       "scoreSource": "llmScore",
@@ -145162,7 +144958,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adrian Horton",
@@ -145172,7 +144968,7 @@
       "pullQuote": "The show, instead, belongs to Gyllenhaal, an actor of singular intensity who makes a meal out of Iago’s desperate two-facedness.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "othello-2025",
@@ -148215,6 +148011,23 @@
       "originalRating": null,
       "pullQuote": "Morgan’s work is thinky, at times witty and always distanced from judgment.",
       "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20587320,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Once the entire gang of orphans, pirates, and aristocrats get caught up in a doozy of a sea storm, the show starts to get a little bumpy as well. (Directors Roger Rees and Alex Timbers’ deliberately low-tech staging — think spray bottles, sticks, and wires — is terribly clever and impeccably paced, but that is one looong shipwreck scene.",
+      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -151468,7 +151281,7 @@
     },
     {
       "showId": "priscilla-queen-of-the-desert-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 73,
       "scoreSource": "llmScore",
@@ -151604,7 +151417,7 @@
     },
     {
       "showId": "priscilla-queen-of-the-desert-2011",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 75,
       "scoreSource": "llmScore",
@@ -151791,7 +151604,7 @@
     },
     {
       "showId": "promises-promises-2010",
-      "outletId": "entertainment-weekly",
+      "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 54,
       "scoreSource": "llmScore",
@@ -151808,7 +151621,7 @@
     },
     {
       "showId": "promises-promises-2010",
-      "outletId": "ny-daily-news",
+      "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 61,
       "scoreSource": "llmScore",
@@ -152653,40 +152466,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "A brilliant and profound narrative about legacies, ambition, mental illness and who you may become if you were never allowed to know yourself.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "queen-of-versailles",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Bob Verini",
-      "url": "https://nystagereview.com/2025/11/09/the-queen-of-versailles-chenoweth-is-crowned-as-broadway-royalty/",
-      "publishDate": "2025-11-09T23:59:18",
-      "originalRating": "4/5 stars",
-      "pullQuote": "This lavishly overstuffed, irresistibly entertaining confection is impossible to imagine without her.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "queen-of-versailles",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 40,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "David Finkle",
-      "url": "https://nystagereview.com/2025/11/09/the-queen-of-versailles-kristen-chenoweth-vehicle-breaks-down/",
-      "publishDate": "2025-11-09T23:58:05",
-      "originalRating": "2/5 stars",
-      "pullQuote": "By the act-ending moment when Chenoweth is downstage center declaring with 'This is Not the Way' that the 2008 financial crash that bankrupted David won't stop her, only boredom has set in.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -155127,7 +154906,7 @@
     },
     {
       "showId": "redwood-2025",
-      "outletId": "forward-samuel-eli-shepherd",
+      "outletId": "forward",
       "outlet": "The Forward",
       "assignedScore": 80,
       "scoreSource": "llmScore",
@@ -155377,6 +155156,23 @@
       "publishDate": "February 14, 2025",
       "originalRating": null,
       "pullQuote": "for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "relatively-speaking-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Clark Collis",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20538800,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "The idea of watching three short comedies written by Woody Allen, Elaine May, and Ethan Coen, respectively sounds more than fine on paper. And there are times during Relatively Speaking when you are reminded that the combined credit list of these big-screen deities of drollness includes Annie Hall, Heaven Can Wait, and Fargo.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -155974,7 +155770,7 @@
       "pullQuote": "Rocky delivers edge-of-your-seat thrills that underscore the fact that fans of boxing and live theater share some DNA.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "rocky-2014",
@@ -156297,7 +156093,7 @@
       "pullQuote": "It's just another missed opportunity in this dutiful but rather dull production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "romeo-and-juliet-2013",
@@ -157950,7 +157746,7 @@
     },
     {
       "showId": "she-loves-me-2016",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 79,
       "scoreSource": "llmScore",
@@ -158987,7 +158783,7 @@
     },
     {
       "showId": "shucked-2023",
-      "outletId": "sfchronicle",
+      "outletId": "sfgate",
       "outlet": "SFGate",
       "assignedScore": 80,
       "scoreSource": "thumb",
@@ -160364,7 +160160,7 @@
     },
     {
       "showId": "six-2021",
-      "outletId": "did-they-like-it",
+      "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 93,
       "scoreSource": "llmScore",
@@ -160820,7 +160616,7 @@
       "pullQuote": "A beautifully unsettling Broadway revival…It's aged nearly as well as the 'Cats' quips—far better than you'd expect",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "six-degrees-of-separation-2017",
@@ -161334,7 +161130,7 @@
     },
     {
       "showId": "skylight-2015",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -161351,7 +161147,7 @@
     },
     {
       "showId": "skylight-2015",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 83,
       "scoreSource": "llmScore",
@@ -161538,8 +161334,8 @@
     },
     {
       "showId": "slave-play-2021",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -161810,7 +161606,7 @@
     },
     {
       "showId": "smash-2025",
-      "outletId": "oneminutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 80,
       "scoreSource": "thumb",
@@ -164055,7 +163851,7 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "outletId": "theatre-reviews-limited-joseph-verlezza",
+      "outletId": "theatre-reviews-limited",
       "outlet": "Theatre Reviews Limited",
       "assignedScore": 70,
       "scoreSource": "llmScore",
@@ -164668,7 +164464,7 @@
     },
     {
       "showId": "stick-fly-2011",
-      "outletId": "newyorkmagazine",
+      "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 64,
       "scoreSource": "llmScore",
@@ -164770,7 +164566,7 @@
     },
     {
       "showId": "straight-white-men-2018",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 76,
       "scoreSource": "llmScore",
@@ -165161,7 +164957,7 @@
     },
     {
       "showId": "stranger-things-2024",
-      "outletId": "oneminutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 53,
       "scoreSource": "llmScore",
@@ -168579,7 +168375,7 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "outletId": "new-york-theatre",
+      "outletId": "nytg",
       "outlet": "New York Theatre Guide",
       "assignedScore": 77,
       "scoreSource": "llmScore",
@@ -168953,7 +168749,7 @@
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-2005",
-      "outletId": "oneminutecritic",
+      "outletId": "one-minute-critic",
       "outlet": "One-Minute Critic",
       "assignedScore": 80,
       "scoreSource": "thumb",
@@ -169463,7 +169259,7 @@
     },
     {
       "showId": "the-assembled-parties-2013",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 79,
       "scoreSource": "llmScore",
@@ -169752,7 +169548,7 @@
     },
     {
       "showId": "the-audience-2015",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -170228,7 +170024,7 @@
     },
     {
       "showId": "the-big-knife-2013",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 62,
       "scoreSource": "llmScore",
@@ -171176,7 +170972,7 @@
       "pullQuote": "Yet from the start, the Roundabout Theatre Company's loud, broad revival makes no attempt to find a tragicomic balance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-cherry-orchard-2016",
@@ -172945,7 +172741,7 @@
       "pullQuote": "Thanks to McDonagh's clever writing and the sharply drawn performances by Radcliffe & Co., these seeming stereotypes keep upending our expectations.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-cripple-of-inishmaan-2014",
@@ -173817,7 +173613,7 @@
     },
     {
       "showId": "the-encounter-2016",
-      "outletId": "financial-times-uk",
+      "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 80,
       "scoreSource": "llmScore",
@@ -173868,7 +173664,7 @@
     },
     {
       "showId": "the-encounter-2016",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -176163,7 +175959,7 @@
     },
     {
       "showId": "the-heidi-chronicles-2015",
-      "outletId": "the-jewish-daily-forward",
+      "outletId": "forward",
       "outlet": "The Forward",
       "assignedScore": 82,
       "scoreSource": "llmScore",
@@ -176435,8 +176231,8 @@
     },
     {
       "showId": "the-height-of-the-storm-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -176843,7 +176639,7 @@
     },
     {
       "showId": "the-hills-of-california-2024",
-      "outletId": "the-times-uk",
+      "outletId": "the-times",
       "outlet": "The Times",
       "assignedScore": 80,
       "scoreSource": "originalScore-priority0",
@@ -177013,7 +176809,7 @@
     },
     {
       "showId": "the-homecoming-2007",
-      "outletId": "the-guardian-uk",
+      "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 44,
       "scoreSource": "llmScore",
@@ -177591,7 +177387,7 @@
     },
     {
       "showId": "the-iceman-cometh-2018",
-      "outletId": "the-telegraph-uk",
+      "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 62,
       "scoreSource": "llmScore",
@@ -180499,7 +180295,7 @@
     },
     {
       "showId": "the-mountaintop-2011",
-      "outletId": "bloomberg-news",
+      "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 78,
       "scoreSource": "llmScore",
@@ -182182,8 +181978,8 @@
     },
     {
       "showId": "the-other-place-2013",
-      "outletId": "mbc-new-york",
-      "outlet": "Mbc New York",
+      "outletId": "nbcny",
+      "outlet": "NBC New York",
       "assignedScore": 76,
       "scoreSource": "llmScore",
       "bucket": "Positive",
@@ -184184,7 +183980,7 @@
       "pullQuote": "That Goes Wrong is just right: A ridiculously entertaining disaster.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
@@ -184219,23 +184015,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-play-that-goes-wrong-2017",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html",
-      "publishDate": "April 3, 2017",
-      "originalRating": null,
-      "pullQuote": "The show is a clever and sometimes hilarious theatrical contraption that demonstrates the difference between accidents that happen and accidents that are made to happen with surgical precision.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
@@ -184354,7 +184133,7 @@
       "pullQuote": "This production, on the other hand, feels moribund from the beginning.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-present-2017",
@@ -185341,7 +185120,7 @@
       "pullQuote": "If anyone's ever earned the right to star in a play as a character called-simply-The Man, it is Hugh Jackman. In Jez Butterworth's The River, a mind-bending, occasionally precious, always tense chamber drama, the star wears that moniker proudly...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-river-2014",
@@ -186144,8 +185923,8 @@
     },
     {
       "showId": "the-rose-tattoo-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -186243,23 +186022,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-royal-family-2009",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 85,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2018/07/05/theater/royal-family-of-broadway-barrington-stage-review.html",
-      "publishDate": "October 19, 2009",
-      "originalRating": null,
-      "pullQuote": "This revival has the shimmering, golden patina of a treasured family heirloom that has been lovingly polished and placed in the best possible light.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-royal-family-2009",
@@ -186990,7 +186752,7 @@
       "pullQuote": "Instead of marijuana sales, she retreats to the happy fantasy that the borrowed-upon good times can keep on rolling. Self-obsessed golden boy Duncan (Evan Jonigkeit) has been insulated from the family's financial slide, sent off to Exeter and Princeton in the hope he might make good on the veneer of American aristocracy they've tried to project.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-snow-geese-2013",
@@ -187215,8 +186977,8 @@
     },
     {
       "showId": "the-sound-inside-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
+      "outletId": "theater-news-online",
+      "outlet": "Theater News Online",
       "assignedScore": 92,
       "scoreSource": "originalScore-priority0",
       "bucket": "Rave",
@@ -189319,7 +189081,7 @@
       "pullQuote": "Culkin is sensational as Dennis, a talkative schemer whose occasional stumbles in no way impede his innate sense of self-confidence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "this-is-our-youth-2014",
@@ -189830,7 +189592,8 @@
       "pullQuote": "With Ms. Linney and Mr. d'Arcy James bringing this intelligent, absorbing drama to such tortured life, attending 'Time Stands Still' can feel like eavesdropping on two cherished friends at their most vulnerable and emotionally exposed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "tina-2019",
@@ -190321,23 +190084,6 @@
       "publishDate": "April 23, 2019",
       "originalRating": null,
       "pullQuote": "Tootsie is a big, brassy, old-fashioned musical comedy that knows exactly what it is and delivers it with panache.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "tootsie-2019",
-      "outletId": "theatre-news-online",
-      "outlet": "Theatre News Online",
-      "assignedScore": 92,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Joe Dziemianowicz",
-      "url": "https://www.theaternewsonline.com/NYTheaterReviews/WHATADRAG.cfm",
-      "publishDate": null,
-      "originalRating": "4.6/5",
-      "pullQuote": "The new Broadway musical Tootsie is a story of transformation in which an actor becomes a better man after passing himself off as a woman. Based on a beloved 1982 movie starring Dustin Hoffman, the show by David Yazbek and Robert Horn unleashes more zippy one-liners and corny double entendres than anyone could ever want.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -191143,23 +190889,6 @@
     },
     {
       "showId": "twelfth-night-2013",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
-      "publishDate": "November 14, 2013",
-      "originalRating": null,
-      "pullQuote": "Ms. Hathaway brings a fierce intelligence and a welcome lack of vanity to Viola",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "twelfth-night-2013",
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 62,
@@ -191171,40 +190900,6 @@
       "publishDate": "November 11, 2013",
       "originalRating": null,
       "pullQuote": "The production, directed by Daniel Sullivan, is handsome and well-meaning but oddly tepid, like a luxury hotel that's been decorated to within an inch of its life but somehow lacks a soul.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "two-strangers",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Finkle",
-      "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
-      "publishDate": "2025-11-20T21:59:17",
-      "originalRating": "4/5 stars",
-      "pullQuote": "Dougal and Rainey much more literally carry on their own journey. It’s not just to visit the Statue of Liberty and other must-see New York City landmarks. They don’t get to many of those.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "two-strangers",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Frank Scheck",
-      "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
-      "publishDate": "2025-11-20T22:00:08",
-      "originalRating": "4/5 stars",
-      "pullQuote": "The lead actor, Sam Tutty, is reprising his role on Broadway, and another reason that you should see the show is that you’ll be able to brag about seeing him onstage before he became a big star. This is one of the most impressive New York stage debuts in recent memory.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -191790,7 +191485,7 @@
     },
     {
       "showId": "uncle-vanya-2024",
-      "outletId": "shelby-star-patrick-ryan",
+      "outletId": "shelby-star",
       "outlet": "The Shelby Star",
       "assignedScore": 64,
       "scoreSource": "llmScore",
@@ -192483,7 +192178,7 @@
       "pullQuote": "Lloyd’s take on Beckett is an especially disorienting, purgatorial one – at one point, Gogo and Didi approach a literal blinding light at the end of the tunnel, only to turn back. But it is more coolly strange than spiritually disquieting, seeming to strain for provocation without need.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -192997,8 +192692,8 @@
     },
     {
       "showId": "war-paint-2017",
-      "outletId": "nytheatre-wire",
-      "outlet": "Nytheatre Wire",
+      "outletId": "nytheatre",
+      "outlet": "Nytheatre",
       "assignedScore": 62,
       "scoreSource": "llmScore",
       "bucket": "Mixed",
@@ -194529,23 +194224,6 @@
     },
     {
       "showId": "wonderland-2011",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 29,
-      "scoreSource": "llmScore",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html",
-      "publishDate": "April 18, 2011",
-      "originalRating": null,
-      "pullQuote": "This elaborate musical adaptation of Lewis Carroll's Alice books is a bombastic, overstuffed spectacle that mistakes noise for energy and confusion for creativity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "wonderland-2011",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
@@ -194695,7 +194373,7 @@
       "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "yellow-face-2024",
