@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11448,
+      "totalReviews": 11446,
       "skippedNoScore": 7460,
       "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 216,
+      "skippedDuplicateUrl": 215,
       "skippedCrossOutletDuplicateUrl": 36,
-      "skippedDuplicateText": 809,
+      "skippedDuplicateText": 812,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 859,
       "recoveredFromGarbage": 122,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1170,
-        "llmScore": 6231,
+        "llmScore": 6232,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3814,
+        "llmScore-lowconf": 3811,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -30447,7 +30447,7 @@
       "pullQuote": "Corden is superb, a perfectly calibrated level of hysterical, sincere and crisp.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "art-2025",
@@ -41106,7 +41106,7 @@
       "pullQuote": "No matter how many innocent people they kill, this musical's Bonnie and Clyde remain—like the show itself—not great, but not that bad.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "bonnie-and-clyde-2011",
@@ -84505,7 +84505,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Billington",
@@ -84515,7 +84515,7 @@
       "pullQuote": "What emerges is a fascinating study of two men locked in verbal combat",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "frostnixon-2007",
@@ -125784,7 +125784,7 @@
       "pullQuote": "It's so unfunny as to make the viewer despair of ever laughing again, much as a starving man might despair of ever eating again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "living-on-love-2015",
@@ -140043,7 +140043,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Adrian Horton",
@@ -140053,7 +140053,7 @@
       "pullQuote": "Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-mary-2024",
@@ -145043,7 +145043,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adrian Horton",
@@ -145053,7 +145053,7 @@
       "pullQuote": "The show, instead, belongs to Gyllenhaal, an actor of singular intensity who makes a meal out of Iago’s desperate two-facedness.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "othello-2025",
@@ -192280,7 +192280,7 @@
       "pullQuote": "Lloyd’s take on Beckett is an especially disorienting, purgatorial one – at one point, Gogo and Didi approach a literal blinding light at the end of the tunnel, only to turn back. But it is more coolly strange than spiritually disquieting, seeming to strain for provocation without need.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -194326,23 +194326,6 @@
     },
     {
       "showId": "wonderland-2011",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 29,
-      "scoreSource": "llmScore",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html",
-      "publishDate": "April 18, 2011",
-      "originalRating": null,
-      "pullQuote": "This elaborate musical adaptation of Lewis Carroll's Alice books is a bombastic, overstuffed spectacle that mistakes noise for energy and confusion for creativity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "wonderland-2011",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
@@ -194476,23 +194459,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "yellow-face-2024",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
-      "publishDate": "October 2, 2024",
-      "originalRating": null,
-      "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "yellow-face-2024",
