@@ -401,7 +401,17 @@ const OUTLET_EXTRACTORS = {
   'thewrap': noScoreExtractor,
   'the-wrap': noScoreExtractor,
   'theater-news-online': noScoreExtractor,  // Site-wide 4.6/5, not per-review ratings
+  'theatre-news-online': noScoreExtractor,  // Variant spelling
   'front-row-center': noScoreExtractor,     // Unreliable score extraction
+  'nytg': noScoreExtractor,                 // NYTG hacked/replaced with jewelry spam; "D" is diamond color grade
+  'new-york-theatre-guide': noScoreExtractor,
+  'newyorker': noScoreExtractor,            // New Yorker doesn't publish letter grades
+  'new-yorker': noScoreExtractor,
+  'nbcny': noScoreExtractor,               // Extracted "D" from page template, not a rating
+  'wnbc': noScoreExtractor,
+  'new-jersey-newsroom': noScoreExtractor,  // Extracted "D" from page template
+  'new-jersey-news-room': noScoreExtractor,
+  'cititour': noScoreExtractor,             // 0/5 from empty star widget
 };
 
 /**
