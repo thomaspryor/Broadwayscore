@@ -211,7 +211,8 @@ function isNotBroadway(title) {
     lower.includes('apple tv') || lower.includes('netflix') ||
     lower.includes('hulu') || lower.includes('disney+') ||
     lower.includes('streaming') || lower.includes('amazon prime') ||
-    lower.includes('tv series') || lower.includes('tv show')
+    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv') || lower.includes('fox'))) ||
+    lower.includes('tv review') || lower.includes('tv series') || lower.includes('tv show')
   );
 }
 
