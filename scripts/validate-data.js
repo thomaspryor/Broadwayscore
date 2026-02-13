@@ -1058,6 +1058,117 @@ function validateCommercialJson() {
 }
 
 // ===========================================
+// BLOG REVIEW VALIDATION
+// ===========================================
+
+function validateBlogReviews() {
+  info('Checking blog review markdown files...');
+  const blogDir = path.join(__dirname, '..', 'content', 'reviews');
+
+  if (!fs.existsSync(blogDir)) {
+    info('No content/reviews/ directory found, skipping blog validation');
+    return;
+  }
+
+  const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.startsWith('_'));
+  if (files.length === 0) {
+    info('No blog reviews found');
+    return;
+  }
+
+  let grayMatter;
+  try {
+    grayMatter = require('gray-matter');
+  } catch (e) {
+    info('gray-matter not installed, skipping blog validation');
+    return;
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  const slugs = new Set();
+  let issues = 0;
+
+  // Load shows.json for showSlug validation
+  let showSlugs = new Set();
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    const shows = showsData.shows || showsData;
+    showSlugs = new Set(shows.map(s => s.slug || s.id));
+  } catch (e) {
+    // Can't validate showSlug without shows.json
+  }
+
+  for (const file of files) {
+    const slug = file.replace(/\.md$/, '');
+
+    // Check for duplicate slugs (filenames)
+    if (slugs.has(slug)) {
+      error(`Blog: duplicate slug "${slug}" (multiple files with same name)`);
+      issues++;
+    }
+    slugs.add(slug);
+
+    try {
+      const raw = fs.readFileSync(path.join(blogDir, file), 'utf8');
+      const { data } = grayMatter(raw);
+
+      // Required fields
+      if (!data.title || typeof data.title !== 'string') {
+        error(`Blog ${file}: missing or invalid "title"`);
+        issues++;
+      }
+      if (!data.show || typeof data.show !== 'string') {
+        error(`Blog ${file}: missing or invalid "show"`);
+        issues++;
+      }
+      if (!data.venue || typeof data.venue !== 'string') {
+        error(`Blog ${file}: missing or invalid "venue"`);
+        issues++;
+      }
+      if (data.score === undefined || data.score === null) {
+        error(`Blog ${file}: missing "score"`);
+        issues++;
+      } else {
+        const score = Number(data.score);
+        if (isNaN(score) || score < 0 || score > 100) {
+          error(`Blog ${file}: score must be 0-100, got ${data.score}`);
+          issues++;
+        }
+      }
+      if (!data.publishDate) {
+        error(`Blog ${file}: missing "publishDate"`);
+        issues++;
+      } else if (!dateRegex.test(data.publishDate)) {
+        error(`Blog ${file}: publishDate must be YYYY-MM-DD, got "${data.publishDate}"`);
+        issues++;
+      }
+      if (data.dateAttended && !dateRegex.test(data.dateAttended)) {
+        error(`Blog ${file}: dateAttended must be YYYY-MM-DD, got "${data.dateAttended}"`);
+        issues++;
+      }
+
+      // Optional field validation
+      if (data.showSlug && showSlugs.size > 0 && !showSlugs.has(data.showSlug)) {
+        warn(`Blog ${file}: showSlug "${data.showSlug}" not found in shows.json`);
+      }
+      if (data.heroImage && typeof data.heroImage === 'string' && data.heroImage.length > 0) {
+        const imgPath = path.join(__dirname, '..', 'public', data.heroImage);
+        if (!fs.existsSync(imgPath)) {
+          warn(`Blog ${file}: heroImage "${data.heroImage}" not found in public/`);
+        }
+      }
+    } catch (e) {
+      error(`Blog ${file}: failed to parse frontmatter: ${e.message}`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok(`Blog reviews valid: ${files.length} file(s)`);
+  }
+}
+
+// ===========================================
 // MAIN
 // ===========================================
 
@@ -1113,6 +1224,8 @@ function runValidation() {
   const reviewCount = validateReviewsJson() || 0;
   console.log('');
   validateOutletFragmentation();
+  console.log('');
+  validateBlogReviews();
 
   // Summary
   console.log('');
