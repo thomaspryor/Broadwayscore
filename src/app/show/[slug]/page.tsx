@@ -633,12 +633,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         ) : sentiment && (
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
-                        <a
-                          href="#critic-reviews"
-                          className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
-                        >
-                          Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
-                        </a>
+                        {reviewCount > 0 && (
+                          <a
+                            href="#critic-reviews"
+                            className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
+                          >
+                            Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                          </a>
+                        )}
                       </div>
                     </div>
 
