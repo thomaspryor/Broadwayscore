@@ -107,6 +107,10 @@ function extractOutOfRatingFromText(text) {
   // Sanity check
   if (value > scale || value < 0) return null;
 
+  // Reject computed site metrics (e.g., "7.31 out of 10" from Digital Journal sidebar).
+  // Real critic ratings use whole numbers or .5 increments, never 2+ decimal places.
+  if (value !== Math.floor(value) && value !== Math.floor(value) + 0.5) return null;
+
   return {
     type: `outOf${scale}`,
     raw: match[0],
@@ -201,9 +205,11 @@ function extractExplicitRating(data) {
   const outOfRating = extractOutOfRatingFromText(allText);
   if (outOfRating) return outOfRating;
 
-  // Slash ratings (3/5) - slightly more prone to false positives
-  const slashRating = extractSlashRatingFromText(allText);
-  if (slashRating) return slashRating;
+  // Slash ratings (3/5) - DISABLED: 100% false positive rate across all 10 corpus matches.
+  // Matches dates (4/4/2017), runtimes (3 1/4-hour), music notation (4/4 time),
+  // "Platform 9 3/4". Caused ±58 point errors. Use originalScore for slash ratings instead.
+  // const slashRating = extractSlashRatingFromText(allText);
+  // if (slashRating) return slashRating;
 
   // Letter grades - only with proper context
   const letterGrade = extractLetterGradeFromText(allText);
