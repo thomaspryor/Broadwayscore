@@ -2,6 +2,22 @@
   "generatedAt": "2026-02-13T16:32:31.056Z",
   "issues": [
     {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "american-idiot-2010",
+      "outlet": "ew",
+      "critic": "Leah Greenblatt",
+      "detail": "originalRating \"D\" (=35) vs score 63 (source: llmScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "everyday-rapture-2010",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "originalRating \"D\" (=35) vs score 82 (source: llmScore)"
+    },
+    {
       "type": "designation-score-mismatch",
       "severity": "medium",
       "showId": "wicked-2003",
@@ -43,7 +59,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "hedwig-and-the-angry-inch-2014",
-      "detail": "8/19 reviews (42%) scored exactly 82"
+      "detail": "8/20 reviews (40%) scored exactly 82"
     },
     {
       "type": "score-clustering",
