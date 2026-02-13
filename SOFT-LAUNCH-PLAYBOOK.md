@@ -20,7 +20,7 @@ These go out before any Reddit posts. Copy-paste from your phone.
 
 ### Email 1: NYU Tisch School of the Arts
 
-**To:** Find the contact on https://tisch.nyu.edu/drama — usually an admin or department coordinator
+**To:** tisch.drama.ug@nyu.edu (Drama department, 212-998-1850)
 
 **Subject:** Free Broadway review database for student research
 
@@ -49,15 +49,19 @@ broadwayscorecard.com
 
 ### Email 2: Columbia University School of the Arts
 
-*(Same body as above, change greeting to target their theater department)*
+**To:** soatheatre@columbia.edu (Oscar Hammerstein II Center for Theatre Studies)
 
-### Email 3: Yale School of Drama
+*(Same body as above, change greeting to target their MFA Theatre program)*
+
+### Email 3: David Geffen School of Drama at Yale
+
+**To:** dgsd.admissions@yale.edu (203-432-1507) — or for dramaturgy specifically, target the Dramaturgy & Dramatic Criticism concentration
 
 *(Same body, target their dramaturgy program)*
 
-### Email 4: Broadway.org
+### Email 4: Broadway.org (The Broadway League)
 
-**To:** Contact form or info@ address on Broadway.org
+**To:** info@broadwayleague.com (general inquiries)
 
 **Subject:** Resource submission — Broadway review aggregator
 
@@ -90,6 +94,45 @@ Post one every 5-7 days. Each post below is complete — just copy the title and
 - Reply to every comment (especially disagreements — that's engagement)
 - If a post gets removed by mods, repost without the link. Put the link in a reply comment instead.
 - Best posting times: Sunday 6-8 PM EST or Monday 8-10 AM EST
+
+---
+
+### POST 0: Launch Post (POST THIS FIRST)
+
+**Title:** `I made a Rotten Tomatoes / Metacritic for Broadway`
+
+**Body:**
+```
+My partner and I love Broadway, see almost all the shows, and are always curious how others are thinking about every show. We read this sub daily, and use DidTheyLikeIt and ShowScore often, but find them wanting — I want every review, and I want to know precisely what reviewers are thinking, not just thumbs up/down.
+
+So for every show currently on Broadway I collected every critic review I could find, used a four-model sentiment analysis to give each review a fair score out of 100, and then averaged it (with different weights assigned to different tiers of outlets).
+
+Then I was curious about audience buzz/reactions — I sometimes use Show-Score and sometimes Mezzanine and sometimes Reddit — so I thought why not combine them all into a composite score!
+
+broadwayscorecard.com
+
+This is a labor of love. I'm not a company trying to make money — just a Broadway fan wanting to geek out on data and help others in the process.
+
+If you notice any errors or inaccuracies please let me know! I want to fix them. And across 700+ shows and 11,000+ reviews, there will be some!
+
+I then got carried away and added:
+- **Box Office Scorecards** — weekly grosses, capacity, and trends
+- **Awards Scorecards** — Tony history and predictions
+- **Commercial Scorecards** — I love trying to understand the business side of Broadway, but this information is VERY hard to find. It turns out you can find most of the info in SEC filings, trade publications, and from insiders' comments on this sub!
+
+All to get the full picture of a show.
+
+Things I'd still like to do:
+- Add Off-Broadway shows, starting with the currently open ones (I'm not doing a historical pull like I did for 700+ Broadway shows — that was a nightmare!)
+- Add National Tours
+- Figure out how to do marketing so that more people can know about it!
+
+Ideas are so, so welcome!
+```
+
+**Why this works as Post 0:** It's personal, humble, invites feedback, and positions you as a community member sharing a passion project — not someone marketing a product. The "labor of love" framing and the self-deprecating "I got carried away" tone are perfect for Reddit. The asks at the end (errors, ideas) give people reasons to comment.
+
+**Timing:** Post this first (Week 2). Wait 3-5 days for it to breathe, then start the data analysis posts (Posts 1-8) which drive deeper engagement.
 
 ---
 
@@ -546,7 +589,7 @@ Only send these after at least 2 Reddit posts have gotten positive reception (30
 
 ### Email: Howard Sherman
 
-**To:** Find via howardsherman.net contact page
+**To:** Contact form at howardsherman.net/contact, or DM on X/Twitter @HESherman
 
 **Subject:** Broadway data transparency — thought you'd find this interesting
 
@@ -579,7 +622,7 @@ Tom
 
 ### Email: Ken Davenport
 
-**To:** Via producerabroadway.com contact
+**To:** office@kendavenport.com (general inquiries) or contact form at kendavenport.com/contact
 
 **Subject:** Broadway recoupment tracker — data for your readers
 
@@ -613,7 +656,7 @@ Tom
 
 ### Email: Broadway Briefing
 
-**To:** Via broadwaybriefing.com contact/subscribe page
+**To:** broadwaybriefing@broadwaybriefing.com (or via broadwaybrands.com for ad/partnership inquiries)
 
 **Subject:** Tool for your readers — free Broadway review + box office database
 
@@ -645,6 +688,8 @@ Tom
 ---
 
 ### Email: Chris Peterson (OnStage Blog)
+
+**To:** chris@onstageblog.com or contact form at onstageblog.com/contact
 
 **Subject:** Data-driven Broadway analysis — guest post idea
 
@@ -719,15 +764,16 @@ Create a Google Sheet with two tabs:
 | Week | Reddit | Outreach | Notes |
 |------|--------|----------|-------|
 | 1 | Drop 3-5 genuine comments on r/Broadway | Send university emails + Broadway.org | Light warm-up |
-| 2 | **Post #1** (Season rankings) | Create Twitter @BwayScorecard | First real post |
-| 3 | **Post #2** (Outlet rankings) | — | Let posts breathe |
-| 4 | **Post #3** (Polarizing shows) | Send Howard Sherman + Ken Davenport emails | Start outreach |
-| 5 | **Post #4** (Critic vs audience) | Send Broadway Briefing + Chris Peterson | |
-| 6 | **Post #5** (Plays vs musicals) | Follow up on unanswered emails | |
-| 7 | **Post #6** (Best-reviewed) | — | |
-| 8 | **Post #7** (Worst-reviewed) | Pitch podcast appearance | |
-| 9 | **Post #8** (NYT evolution) | — | |
-| 10+ | New analyses + your own reviews on /reviews | Continue as needed | Blog gives you fresh content |
+| 2 | **Post #0** (Launch — "I made a RT for Broadway") | Create Twitter @BwayScorecard | The big intro |
+| 3 | **Post #1** (Season rankings) | — | First data deep-dive |
+| 4 | **Post #2** (Outlet rankings) | Send Howard Sherman + Ken Davenport emails | Start outreach |
+| 5 | **Post #3** (Polarizing shows) | Send Broadway Briefing + Chris Peterson | |
+| 6 | **Post #4** (Critic vs audience) | Follow up on unanswered emails | |
+| 7 | **Post #5** (Plays vs musicals) | — | |
+| 8 | **Post #6** (Best-reviewed) | Pitch podcast appearance | |
+| 9 | **Post #7** (Worst-reviewed) | — | |
+| 10 | **Post #8** (NYT evolution) | — | |
+| 11+ | New analyses + your own reviews on /reviews | Continue as needed | Blog gives you fresh content |
 
 ---
 
