@@ -1,8 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-13T20:41:28.002Z",
-    "totalFlagged": 0,
-    "reasons": {}
+    "generatedAt": "2026-02-13T20:58:16.693Z",
+    "totalFlagged": 8,
+    "reasons": {
+      "originalScore-llm-conflict": 8
+    }
   },
   "reviews": [
     {
@@ -14,9 +16,9 @@
       "llmScore": 81,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-13T20:11:03.236Z"
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:57:51.600Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -27,9 +29,9 @@
       "llmScore": 75,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
-      "dtliThumb": "Up",
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-13T20:11:12.769Z"
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:57:56.345Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -53,9 +55,9 @@
       "llmScore": 76,
       "llmBucket": "Positive",
       "llmConfidence": "high",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-13T20:11:16.715Z"
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:57:59.233Z"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -68,7 +70,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T20:07:26.846Z"
+      "flaggedAt": "2026-02-13T20:58:05.776Z"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -79,9 +81,48 @@
       "llmScore": 62,
       "llmBucket": "Mixed",
       "llmConfidence": "high",
-      "dtliThumb": "Down",
-      "bwwThumb": "Down",
-      "flaggedAt": "2026-02-13T20:11:16.768Z"
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:58:05.828Z"
+    },
+    {
+      "showId": "the-trip-to-bountiful-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:58:14.498Z"
+    },
+    {
+      "showId": "time-stands-still-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 90 (bucket=positive, conf=medium)",
+      "llmScore": 90,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:58:14.997Z"
+    },
+    {
+      "showId": "wicked-2003",
+      "outletId": "timeout",
+      "criticName": "David Cote",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:58:16.328Z"
     }
   ]
 }
