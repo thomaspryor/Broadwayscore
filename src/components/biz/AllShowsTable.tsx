@@ -90,19 +90,20 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           comparison = getDesignationSortOrder(a.designation) - getDesignationSortOrder(b.designation);
           break;
         case 'capitalization':
-          comparison = (a.capitalization || 0) - (b.capitalization || 0);
+          comparison = (a.capitalization ?? -Infinity) - (b.capitalization ?? -Infinity);
           break;
         case 'gross':
-          comparison = (a.weeklyGross || 0) - (b.weeklyGross || 0);
+          comparison = (a.weeklyGross ?? -Infinity) - (b.weeklyGross ?? -Infinity);
           break;
         case 'totalGross':
-          comparison = (a.totalGross || 0) - (b.totalGross || 0);
+          comparison = (a.totalGross ?? -Infinity) - (b.totalGross ?? -Infinity);
           break;
-        case 'recoupment':
-          const aVal = a.recouped ? 100 : (a.estimatedRecoupmentPct?.[1] || 0);
-          const bVal = b.recouped ? 100 : (b.estimatedRecoupmentPct?.[1] || 0);
+        case 'recoupment': {
+          const aVal = a.recouped ? 100 : (a.estimatedRecoupmentPct?.[1] ?? -Infinity);
+          const bVal = b.recouped ? 100 : (b.estimatedRecoupmentPct?.[1] ?? -Infinity);
           comparison = aVal - bVal;
           break;
+        }
       }
       return sortDirection === 'asc' ? comparison : -comparison;
     });

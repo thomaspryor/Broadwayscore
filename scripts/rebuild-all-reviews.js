@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
@@ -1417,9 +1417,9 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Create deduplication key
-      const outletKey = normalizeOutletId(data.outlet || data.outletId);
-      const criticKey = normalizeOutletId(data.criticName || '');
+      // Create deduplication key — use canonical normalization to catch merged outlets
+      const outletKey = normalizeOutletCanonical(data.outletId || data.outlet);
+      const criticKey = normalizeCriticCanonical(data.criticName || 'unknown');
       const dedupKey = `${outletKey}|${criticKey}`;
 
       // Skip exact duplicates (keep first occurrence)
@@ -1467,8 +1467,8 @@ showDirs.forEach(showId => {
         } catch {
           normalizedUrl = data.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
         }
-        // Use outletId (short consistent form like "wsj") not outlet (display name)
-        const urlOutletKey = normalizeOutletId(data.outletId || data.outlet);
+        // Use canonical outletId for URL dedup
+        const urlOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
         const urlDedupKey = `${urlOutletKey}|${normalizedUrl}`;
         if (seenUrlsByOutlet.has(urlDedupKey)) {
           // Files are sorted so real critic names come before "unknown" — first wins
@@ -1491,7 +1491,7 @@ showDirs.forEach(showId => {
       if (data.fullText && data.fullText.length >= 100) {
         const fingerprint = computeContentFingerprint(data.fullText);
         if (fingerprint) {
-          const outletKey2 = normalizeOutletId(data.outletId || data.outlet);
+          const outletKey2 = normalizeOutletCanonical(data.outletId || data.outlet);
           const fpKey = `${outletKey2}|${fingerprint}`;
           if (seenFingerprintsByOutlet.has(fpKey)) {
             console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${seenFingerprintsByOutlet.get(fpKey)} at ${outletKey2}`);
@@ -1535,11 +1535,12 @@ showDirs.forEach(showId => {
       const { score, source } = scoreResult;
       stats.scoreSources[source]++;
 
-      // Build review object
+      // Build review object — normalize outletId to canonical form
+      const canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
       const review = {
         showId: data.showId || showId,
-        outletId: data.outletId || outletKey.toUpperCase(),
-        outlet: getOutletDisplayName(data.outletId) || data.outlet || data.outletId || 'Unknown',
+        outletId: canonicalOutletId,
+        outlet: getOutletDisplayName(canonicalOutletId) || data.outlet || data.outletId || 'Unknown',
         assignedScore: score,
         scoreSource: source,
         bucket: scoreToBucket(score),

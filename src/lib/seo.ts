@@ -24,13 +24,26 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Broadway Scorecard',
     url: BASE_URL,
-    logo: `${BASE_URL}/favicon.svg`,
+    logo: `${BASE_URL}/og/home.png`,
     description: 'Aggregated Broadway show ratings from professional critics',
     inLanguage: 'en',
-    sameAs: [
-      // Add social profiles when available
-    ],
   };
+}
+
+// Parse address string like "226 W 46th St, New York, NY 10036" into PostalAddress
+function toPostalAddress(address: string) {
+  const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
+  if (match) {
+    return {
+      '@type': 'PostalAddress',
+      streetAddress: match[1],
+      addressLocality: match[2],
+      addressRegion: match[3],
+      postalCode: match[4],
+      addressCountry: 'US',
+    };
+  }
+  return address;
 }
 
 // WebSite Schema - For sitelinks search box
@@ -110,19 +123,14 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     location: {
       '@type': 'PerformingArtsTheater',
       name: show.venue,
-      address: show.theaterAddress || show.venue,
+      address: toPostalAddress(show.theaterAddress || show.venue),
     },
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
     ...(lastUpdated && { dateModified: lastUpdated }),
-    eventStatus: show.status === 'closed' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
+    eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    organizer: {
-      '@type': 'Organization',
-      name: 'Broadway Scorecard',
-      url: BASE_URL,
-    },
   };
 
   // Add aggregate rating if we have scores and reviewCount
@@ -185,7 +193,7 @@ export function generateTheaterSchema(theater: {
     '@type': 'PerformingArtsTheater',
     name: theater.name,
     url: `${BASE_URL}/theater/${theater.slug}`,
-    ...(theater.address && { address: theater.address }),
+    ...(theater.address && { address: toPostalAddress(theater.address) }),
     event: theater.currentShow ? {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
@@ -333,10 +341,21 @@ export function generateShowFAQSchema(show: ComputedShow) {
 
   // Q: How long is it?
   if (show.runtime) {
-    const runtimeMins = parseInt(show.runtime, 10);
-    if (!isNaN(runtimeMins)) {
-      const hours = Math.floor(runtimeMins / 60);
-      const mins = runtimeMins % 60;
+    // Runtime can be "2h 45m" (string) or 135 (number = total minutes)
+    const rt = String(show.runtime);
+    const hMatch = rt.match(/(\d+)\s*h/);
+    const mMatch = rt.match(/(\d+)\s*m/);
+    let hours: number, mins: number;
+    if (hMatch || mMatch) {
+      hours = hMatch ? parseInt(hMatch[1], 10) : 0;
+      mins = mMatch ? parseInt(mMatch[1], 10) : 0;
+    } else {
+      // Plain number = total minutes
+      const totalMins = parseInt(rt, 10);
+      hours = Math.floor(totalMins / 60);
+      mins = totalMins % 60;
+    }
+    if (hours > 0 || mins > 0) {
       const runtimeStr = hours > 0
         ? `${hours} hour${hours > 1 ? 's' : ''}${mins > 0 ? ` and ${mins} minutes` : ''}`
         : `${mins} minutes`;

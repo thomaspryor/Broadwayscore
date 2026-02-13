@@ -279,7 +279,7 @@ function NVPPageInner() {
 
             if (scoreMode === 'audience') {
               const audienceBuzz = getAudienceBuzz(show.id);
-              if (audienceBuzz && show.status !== 'previews') {
+              if (audienceBuzz && audienceBuzz.combinedScore != null && show.status !== 'previews') {
                 const grade = getAudienceGrade(audienceBuzz.combinedScore);
                 audienceGrade = grade;
                 tier = { label: grade.grade, color: grade.color, tooltip: grade.tooltip, range: '', glow: false };
