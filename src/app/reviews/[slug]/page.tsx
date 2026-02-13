@@ -127,7 +127,10 @@ export default function ReviewPage({ params }: { params: { slug: string } }) {
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
               {review.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-sm text-gray-400">
+            <p className="mt-3 text-sm text-gray-400">
+              By <span className="text-gray-200 font-medium">{AUTHOR.name}</span>
+            </p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-gray-400">
               <span className="font-medium text-gray-200">{review.show}</span>
               <span className="text-gray-500">at {review.venue}</span>
             </div>
