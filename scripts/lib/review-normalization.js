@@ -1064,8 +1064,27 @@ function findExistingReviewFile(showDir, outletName, criticName) {
   return null;
 }
 
+/**
+ * Reject outlet names that are scraping artifacts, not real publications.
+ * These slip in when aggregator HTML has ad images with alt text like "advertisement".
+ * Check this BEFORE writing review files.
+ */
+const JUNK_OUTLETS = new Set([
+  'advertisement', 'sponsor', 'sponsored', 'promo', 'promotion',
+  'unknown', 'null', 'undefined', 'n/a', 'na', 'none',
+  'ad', 'ads', 'banner', 'pixel', 'tracking',
+]);
+
+function isJunkOutlet(outletName) {
+  if (!outletName) return true;
+  const normalized = outletName.toLowerCase().trim();
+  if (normalized.length < 2) return true;
+  return JUNK_OUTLETS.has(normalized);
+}
+
 module.exports = {
   normalizeOutlet,
+  isJunkOutlet,
   normalizeCritic,
   normalizePublishDate,
   generateReviewFilename,

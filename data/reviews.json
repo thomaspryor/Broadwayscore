@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11457,
-      "skippedNoScore": 7465,
-      "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 216,
-      "skippedCrossOutletDuplicateUrl": 36,
-      "skippedDuplicateText": 806,
+      "totalReviews": 11440,
+      "skippedNoScore": 7450,
+      "skippedDuplicate": 64,
+      "skippedDuplicateUrl": 231,
+      "skippedCrossOutletDuplicateUrl": 9,
+      "skippedDuplicateText": 811,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 859,
       "recoveredFromGarbage": 122,
@@ -19,15 +19,15 @@
         "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1174,
-        "llmScore": 6231,
+        "originalScore-priority0": 1169,
+        "llmScore": 6235,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3819,
+        "llmScore-lowconf": 3805,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 151
+        "thumb": 149
       }
     }
   },
@@ -2631,7 +2631,7 @@
       "pullQuote": "This smoothly produced show's presentation of his semi-symphonic rock and sentimental balladry failed to convert me.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -17916,7 +17916,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -41757,23 +41757,6 @@
     },
     {
       "showId": "boop-2025",
-      "outletId": "advertisement",
-      "outlet": "advertisement",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
-      "publishDate": "April 7, 2025",
-      "originalRating": null,
-      "pullQuote": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — it's fun.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "boop-2025",
       "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 41,
@@ -41922,6 +41905,23 @@
       "originalRating": "4/5 stars",
       "pullQuote": "You'll have a hell of a good time anyway.",
       "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "boop-2025",
+      "outletId": "nyt-theater",
+      "outlet": "New York Theater",
+      "assignedScore": 75,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jonathan Mandell",
+      "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+      "publishDate": "2025-04-07T20:56:19-04:00",
+      "originalRating": null,
+      "pullQuote": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise – 'Boop!' doesn't have to feel necessary; it's fun.",
+      "dtliThumb": "UP",
       "bwwThumb": "Up",
       "contentTier": "complete"
     },
@@ -47813,23 +47813,6 @@
     },
     {
       "showId": "cabaret-2024",
-      "outletId": "advertisement",
-      "outlet": "advertisement",
-      "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Chris Jones",
-      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
-      "publishDate": "April 21, 2024",
-      "originalRating": null,
-      "pullQuote": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of Bebe Neuwirth’s and Steven Skybell’s Fraulein Schneider and Herr Schultz, it’s not.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "cabaret-2024",
       "outletId": "amny",
       "outlet": "amNewYork",
       "assignedScore": 77,
@@ -47895,6 +47878,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "cabaret-2024",
+      "outletId": "nydailynews",
+      "outlet": "New York Daily News",
+      "assignedScore": 41,
+      "scoreSource": "llmScore",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Chris Jones",
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+      "publishDate": "April 21, 2024",
+      "originalRating": null,
+      "pullQuote": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz, it's not.",
+      "dtliThumb": "Down",
+      "bwwThumb": "Down",
+      "contentTier": "complete"
     },
     {
       "showId": "cabaret-2024",
@@ -81778,7 +81778,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "flying-over-sunset-2021",
@@ -93713,6 +93713,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "gore-vidals-the-best-man-2012",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 76,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jonathan Mandell",
+      "url": "https://www.thefastertimes.com/newyorktheater/2012/04/01/gore-vidal%E2%80%99s-the-best-man-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Nearly every role is cast with thespian royalty",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "gore-vidals-the-best-man-2012",
@@ -125699,7 +125716,7 @@
       "pullQuote": "It's so unfunny as to make the viewer despair of ever laughing again, much as a starving man might despair of ever eating again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "living-on-love-2015",
@@ -152469,23 +152486,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "queen-versailles-2025",
-      "outletId": "advertisement",
-      "outlet": "advertisement",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2025/11/09/queen-of-versailles-broadway-review/",
-      "publishDate": "November 9, 2025",
-      "originalRating": null,
-      "pullQuote": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "queen-versailles-2025",
@@ -188116,23 +188116,6 @@
     },
     {
       "showId": "the-whos-tommy-2024",
-      "outletId": "advertisement",
-      "outlet": "advertisement",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Joe Dziemianowicz",
-      "url": "https://www.newyorktheatreguide.com/reviews/the-whos-tommy-broadway-review",
-      "publishDate": "March 28, 2024",
-      "originalRating": null,
-      "pullQuote": "The great news is that what precedes and follows this moment also stirs and tickles the senses. That’s the way this rock opera rolls, as it spins the story of a boy so deeply damaged by life – first by his parents and later by his abusive uncle and creepy cousin – that he nearly shuts down completely.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-whos-tommy-2024",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 78,
@@ -188281,6 +188264,23 @@
       "originalRating": null,
       "pullQuote": "The Who’s hardcore fans may like these hard-charging spectacles the most in “Tommy.” There are certainly some terrific stage effects.",
       "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Joe Dziemianowicz",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-whos-tommy-broadway-review",
+      "publishDate": "March 28, 2024",
+      "originalRating": null,
+      "pullQuote": "Tommy’s saga delivers a pointed and potent take on trauma, fame, and individuality",
+      "dtliThumb": "UP",
       "bwwThumb": "Up",
       "contentTier": "complete"
     },
@@ -194357,23 +194357,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "yellow-face-2024",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
-      "publishDate": "October 2, 2024",
-      "originalRating": null,
-      "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "yellow-face-2024",
