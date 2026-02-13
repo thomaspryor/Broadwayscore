@@ -337,7 +337,7 @@ jobs:
             gh workflow run "Re-scrape Truncated Reviews" \
               -f parallel_jobs=${{ inputs.parallel_jobs }} \
               -f max_per_job=${{ inputs.max_per_job }} \
-              -f retry_failed=true \
+              -f retry_failed=${{ inputs.retry_failed }} \
               -f exclude_domains="${{ inputs.exclude_domains }}" \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
