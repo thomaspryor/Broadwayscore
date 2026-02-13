@@ -918,9 +918,9 @@ function detectTruncationSignals(text) {
     }
   }
 
-  // Check if text ends with proper punctuation
+  // Check if text ends with proper punctuation (includes EW-style letter grades like B+, A-)
   const trimmed = text.trim();
-  if (trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed)) {
+  if (trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
     signals.push('no_ending_punctuation');
     moderateCount++;
   }
@@ -1062,7 +1062,9 @@ function classifyContentTier(review) {
   const trimmed = fullText.trim();
   const endsWithPunctuation = /[.!?"'"")\]]$/.test(trimmed);
   const endsWithUrl = /\.(com|org|net|co\.uk)\/?$/.test(trimmed);
-  const hasProperEnding = endsWithPunctuation || endsWithUrl;
+  // EW-style letter grades (A+, B-, C, etc.) — require preceding period/sentence to avoid "plan B" false positives
+  const endsWithGrade = /[.!?]\s*[A-DF][+-]?$/.test(trimmed);
+  const hasProperEnding = endsWithPunctuation || endsWithUrl || endsWithGrade;
 
   const isLongEnough = wordCount >= 300 && charCount >= 1500;
   const isVeryLong = wordCount >= 500; // Very long reviews are likely complete

@@ -71,7 +71,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
 
   if (scoreMode === 'audience') {
     const audienceBuzz = getAudienceBuzz(show.id);
-    if (audienceBuzz && show.status !== 'previews') {
+    if (audienceBuzz && audienceBuzz.combinedScore != null && show.status !== 'previews') {
       score = audienceBuzz.combinedScore;  // Used for sorting only
       const grade = getAudienceGrade(audienceBuzz.combinedScore);
       audienceGrade = grade;
