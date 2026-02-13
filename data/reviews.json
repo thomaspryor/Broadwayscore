@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-12",
+    "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11401,
+      "totalReviews": 11400,
       "skippedNoScore": 7608,
       "skippedDuplicate": 42,
       "skippedDuplicateUrl": 298,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1169,
         "llmScore": 6029,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3969,
+        "llmScore-lowconf": 3967,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -47356,7 +47356,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Keith Loria",
@@ -47366,7 +47366,7 @@
       "pullQuote": "Beaming with charisma and spot-on comic timing, Christian Borle is the ideal Albert",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bye-bye-birdie-2009",
@@ -48818,7 +48818,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Gordon",
@@ -48828,7 +48828,7 @@
       "pullQuote": "‘Camelot ’is a love story, after all, and we definitely swoon. But not only that: this production is a very welcome journey into a land of courage and integrity, something that our own world is in very short supply of.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "camelot-2023",
