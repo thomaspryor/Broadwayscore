@@ -186,6 +186,7 @@ const CONFIG = {
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
     'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
+    'newyorker.com',  // Condé Nast switched to OTC-only auth — Playwright login triggers spam OTC emails
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
   ],
 
