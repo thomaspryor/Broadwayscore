@@ -1,0 +1,79 @@
+# Scrape WordPress theater blog reviews via REST API
+name: Scrape WordPress Theater Blogs
+
+on:
+  schedule:
+    - cron: '30 10 * * 0'  # Weekly on Sundays at 10:30 AM UTC (after NYSR at 10:00)
+  workflow_dispatch:
+    inputs:
+      site:
+        description: 'Single site to scrape (e.g. front-row-center, theater-life). Leave empty for all.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-wp-blogs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape WordPress theater blogs
+        run: |
+          SITE_ARG=""
+          if [ -n "${{ inputs.site }}" ]; then
+            SITE_ARG="--site=${{ inputs.site }}"
+          fi
+          echo "Scraping WordPress theater blog reviews..."
+          node scripts/scrape-wp-theater-blogs.js $SITE_ARG
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/review-texts/ data/aggregator-archive/
+          git diff --staged --quiet || git commit -m "chore: Update WordPress theater blog review data"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
