@@ -251,6 +251,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           CLOSED_SHOW_MODE: 'true'
+          COMMIT_EVERY: '25'
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
