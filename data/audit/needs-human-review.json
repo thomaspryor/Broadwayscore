@@ -3,17 +3,17 @@
     "generatedAt": "2026-02-13T20:11:22.540Z",
     "totalFlagged": 5,
     "reasons": {
-      "both-thumbs-disagree-with-llm": 5
+      "originalScore-llm-conflict": 8
     }
   },
   "reviews": [
     {
-      "showId": "chess-2025",
-      "outletId": "variety",
-      "criticName": "Christian Lewis",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=71 (Up), both thumbs=Meh",
-      "llmScore": 71,
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
@@ -21,13 +21,13 @@
       "flaggedAt": "2026-02-13T20:11:03.236Z"
     },
     {
-      "showId": "oedipus-2025",
-      "outletId": "nytg",
-      "criticName": "Kyle Turner",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=65 (Flat), both thumbs=Up",
-      "llmScore": 65,
-      "llmBucket": "Mixed",
+      "showId": "collected-stories-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 75 (bucket=positive, conf=medium)",
+      "llmScore": 75,
+      "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
@@ -60,12 +60,25 @@
       "flaggedAt": "2026-02-13T20:11:16.715Z"
     },
     {
-      "showId": "stranger-things-2024",
-      "outletId": "washpost",
-      "criticName": "Naveen Kumar",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=61 (Flat), both thumbs=Down",
-      "llmScore": 61,
+      "showId": "newsies-the-musical-2012",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=medium)",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-13T20:07:26.846Z"
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
       "llmBucket": "Mixed",
       "llmConfidence": "high",
       "dtliThumb": "Down",
