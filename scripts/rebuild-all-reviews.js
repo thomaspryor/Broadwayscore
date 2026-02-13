@@ -1398,6 +1398,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews rejected by LLM ensemble Step 0 (wrong_show, wrong_production, not_a_review, garbage)
+      if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) {
+        stats.skippedLlmRejected = (stats.skippedLlmRejected || 0) + 1;
+        return;
+      }
+
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
       const reasoning = data.llmScore?.reasoning || '';
       if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
@@ -1526,7 +1532,7 @@ showDirs.forEach(showId => {
       // to avoid flooding the queue with legitimate reviews that mention tours/films.
       // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
       // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
-      const CONTAMINATION_AUDIT_CUTOFF = '2026-02-13T00:00:00Z';
+      const CONTAMINATION_AUDIT_CUTOFF = process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z';
       if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
         const introText = data.fullText.slice(0, 600);
 
