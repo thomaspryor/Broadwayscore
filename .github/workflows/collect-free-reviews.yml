@@ -332,7 +332,9 @@ jobs:
               try {
                 const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
                 (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
-                  if (e.url && e.failureCount >= 3) failedUrls.add(e.url);
+                  if (!e.url || e.failureReason === 'garbage_content') return;
+                  const isDead = e.failureReason === 'url_dead_404' || e.failureReason === 'url_dead_410';
+                  if (e.failureCount >= (isDead ? 3 : 5)) failedUrls.add(e.url);
                 });
               } catch {}
             }
