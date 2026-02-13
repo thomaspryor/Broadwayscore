@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-13T20:01:53.406Z",
-  "processed": 13,
-  "failed": 87,
-  "successRate": "13.0%",
+  "updatedAt": "2026-02-13T20:04:13.617Z",
+  "processed": 134,
+  "failed": 126,
+  "successRate": "51.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 29,
+    "browserbase": 8,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 13
+    "brightdata": 76,
+    "archive": 25
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T18:40:10.585Z",
+      "event": "bb-session",
+      "session": "3bff7545",
+      "url": "http://www.hollywoodreporter.com/review/1984-theater-1015985?utm_source=twitter"
+    },
+    {
+      "t": "2026-02-13T18:40:41.656Z",
+      "event": "bb-session",
+      "session": "69e4ecbf",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-13T18:40:59.476Z",
+      "event": "bb-session",
+      "session": "b4f25482",
+      "url": "https://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
+    },
+    {
+      "t": "2026-02-13T18:41:14.439Z",
+      "event": "bb-session",
+      "session": "9ce3dcfc",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-soldiers-play-theater-1271"
+    },
+    {
+      "t": "2026-02-13T18:41:36.511Z",
+      "event": "bb-session",
+      "session": "2fcce234",
+      "url": "https://www.hollywoodreporter.com/review/act-one-theater-review-697276"
+    }
+  ]
 }
