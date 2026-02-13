@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11457,
-      "skippedNoScore": 7466,
+      "totalReviews": 11458,
+      "skippedNoScore": 7462,
       "skippedDuplicate": 41,
       "skippedDuplicateUrl": 216,
       "skippedCrossOutletDuplicateUrl": 36,
-      "skippedDuplicateText": 806,
+      "skippedDuplicateText": 807,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 859,
       "recoveredFromGarbage": 122,
@@ -19,10 +19,10 @@
         "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1174,
-        "llmScore": 6231,
+        "originalScore-priority0": 1176,
+        "llmScore": 6232,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3819,
+        "llmScore-lowconf": 3817,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -10849,7 +10849,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": null,
@@ -10859,24 +10859,7 @@
       "pullQuote": "Pair that with John Crowley's taut production, not to mention actors with the charisma and command of Daniel Craig and Hugh Jackman, and you get riveting theater.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-steady-rain-2009",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.variety.com/review/VE1117941264.html?categoryid=33&cs=1&nid=2562",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But playwright Keith Huff recharges those familiar elements by approaching events usually outlined in action terms with the probing eye",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -17933,7 +17916,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -81965,7 +81948,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "flying-over-sunset-2021",
@@ -98081,7 +98064,7 @@
       "pullQuote": "Most importantly, [Wolfe] has given us a way of seeing a star who had to be seen in this role.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "gypsy-2024",
@@ -117555,7 +117538,7 @@
       "pullQuote": "Under Dan Sullivan’s adroit direction, Lithgow does.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -148220,6 +148203,23 @@
     },
     {
       "showId": "peter-and-the-starcatcher-2012",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20587320,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "Once the entire gang of orphans, pirates, and aristocrats get caught up in a doozy of a sea storm, the show starts to get a little bumpy as well. (Directors Roger Rees and Alex Timbers’ deliberately low-tech staging — think spray bottles, sticks, and wires — is terribly clever and impeccably paced, but that is one looong shipwreck scene.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 63,
@@ -155377,6 +155377,23 @@
       "publishDate": "February 14, 2025",
       "originalRating": null,
       "pullQuote": "for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "relatively-speaking-2011",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Clark Collis",
+      "url": "https://www.ew.com/ew/article/0,,20364394_20538800,00.html",
+      "publishDate": null,
+      "originalRating": "D",
+      "pullQuote": "The idea of watching three short comedies written by Woody Allen, Elaine May, and Ethan Coen, respectively sounds more than fine on paper. And there are times during Relatively Speaking when you are reminded that the combined credit list of these big-screen deities of drollness includes Annie Hall, Heaven Can Wait, and Fargo.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
