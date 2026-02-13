@@ -45,6 +45,7 @@ const {
   mergeReviews,
   validateCriticOutlet,
   resolveOutletFromUrl,
+  isJunkOutlet,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
@@ -311,8 +312,8 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) 
       let m;
 
       while ((m = outletRegex.exec(tileHtml)) !== null) {
-        // Filter out non-outlet images (avatars, pixel images, etc.)
-        if (!m[1].includes('white-pixel') && !m[1].includes('user-avatar') && m[1].length > 2) {
+        // Filter out non-outlet images (avatars, pixel images, ads, etc.)
+        if (!m[1].includes('white-pixel') && !m[1].includes('user-avatar') && m[1].length > 2 && !isJunkOutlet(m[1])) {
           outlets.push(m[1]);
         }
       }
@@ -1551,6 +1552,12 @@ function createReviewFile(showId, reviewData) {
   const filename = generateReviewFilename(reviewData.outlet || reviewData.outletId, reviewData.criticName);
   const filepath = path.join(showDir, filename);
   const reviewKey = generateReviewKey(reviewData.outlet || reviewData.outletId, reviewData.criticName);
+
+  // JUNK OUTLET GUARD: Reject scraping artifacts (ad images, etc.)
+  if (isJunkOutlet(normalizedOutletId)) {
+    console.log(`    ✗ Skipping ${filename}: junk outlet "${reviewData.outlet || reviewData.outletId}"`);
+    return false;
+  }
 
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
   if (!quickDateCheck(showId, reviewData.url, reviewData.publishDate)) {
