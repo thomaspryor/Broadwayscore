@@ -246,7 +246,7 @@ jobs:
             gh workflow run "Collect Soft-Paywall Reviews" \
               -f domain=${{ inputs.domain }} \
               -f max_reviews=${{ inputs.max_reviews }} \
-              -f retry_failed=true \
+              -f retry_failed=${{ inputs.retry_failed }} \
               -f archive_first=${{ inputs.archive_first }} \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
@@ -535,7 +535,7 @@ jobs:
             gh workflow run "Collect Soft-Paywall Reviews" \
               -f domain=all \
               -f max_reviews=${{ inputs.max_reviews }} \
-              -f retry_failed=true \
+              -f retry_failed=${{ inputs.retry_failed }} \
               -f archive_first=${{ inputs.archive_first }} \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
