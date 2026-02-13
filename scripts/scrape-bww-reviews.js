@@ -208,6 +208,10 @@ function isNotBroadway(title) {
     lower.includes('off-broadway') || lower.includes('off broadway') ||
     lower.includes('west end') || lower.includes('london') ||
     lower.includes('national tour') || lower.includes('touring production') ||
+    lower.includes('touring cast') || lower.includes('touring company') ||
+    lower.includes('film review') || lower.includes('film adaptation') ||
+    lower.includes('movie') || lower.includes('on film') || lower.includes('on screen') ||
+    lower.includes('filmed version') ||
     lower.includes('apple tv') || lower.includes('netflix') ||
     lower.includes('hulu') || lower.includes('disney+') ||
     lower.includes('streaming') || lower.includes('amazon prime') ||

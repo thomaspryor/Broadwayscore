@@ -29,7 +29,7 @@ const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normali
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
-const { excerptMentionsWrongShow, isTourReviewExcerpt } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -1517,6 +1517,33 @@ showDirs.forEach(showId => {
             return;
           }
           seenFingerprintsByOutlet.set(fpKey, file);
+        }
+      }
+
+      // CONTAMINATION SAFETY NET: Check fullText for tour/film signals on reviews
+      // that haven't been through the LLM ensemble's Step 0 rejection check.
+      // Only checks reviews with text fetched after our 2026-02-13 corpus audit
+      // to avoid flooding the queue with legitimate reviews that mention tours/films.
+      // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
+      // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
+      const CONTAMINATION_AUDIT_CUTOFF = '2026-02-13T00:00:00Z';
+      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
+        const introText = data.fullText.slice(0, 600);
+
+        // Tour detection (skip tour-stop shows where touring is expected)
+        if (showStatusMap[showId] !== 'tour-stop') {
+          const tourCheck = isTourReviewExcerpt(introText);
+          if (tourCheck.isTourReview) {
+            flagForHumanReview(data, 'possible-tour-fulltext',
+              `Tour signal in fullText intro: ${tourCheck.signal}`);
+          }
+        }
+
+        // Film/TV detection (2+ film/streaming keywords, 0 theater keywords)
+        const filmCheck = isFilmTvReview(introText);
+        if (filmCheck.isFilmTv) {
+          flagForHumanReview(data, 'possible-film-tv-fulltext',
+            `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
         }
       }
 
