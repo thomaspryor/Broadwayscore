@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-13T16:23:36.520Z",
+  "runDate": "2026-02-13T19:28:07.863Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 28,
+    "processed": 3,
+    "failed": 27,
     "skipped": 0,
-    "successRate": "6.7%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -32,9 +32,9 @@
     "tier2Success": 0,
     "tier3Attempts": 30,
     "tier3Success": 5,
-    "tier4Attempts": 26,
+    "tier4Attempts": 25,
     "tier4Success": 5,
-    "totalFailed": 28,
+    "totalFailed": 27,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -44,7 +44,8 @@
   },
   "processed": [
     "bright-star-2016/chicagotribune--chris-jones.json",
-    "bright-star-2016/chicagotribune--unknown.json"
+    "bright-star-2016/chicagotribune--unknown.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "gutenberg-2023/nydailynews--chris-jones.json",
@@ -67,7 +68,6 @@
     "la-bete-2010/chicagotribune--ben-brantley.json",
     "la-bete-2010/chicagotribune--chris-jones.json",
     "nice-work-if-you-can-get-it-2012/chicagotribune--chris-jones.json",
-    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
     "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
     "red-2010/chicagotribune--chris-jones.json",
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
@@ -84,11 +84,13 @@
       "bright-star-2016/chicagotribune--chris-jones.json",
       "bright-star-2016/chicagotribune--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
+    ]
   },
   "failuresByOutlet": {
     "Chicago Tribune": {
-      "count": 18,
+      "count": 17,
       "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
