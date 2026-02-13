@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-13T13:25:59.509Z",
+  "runDate": "2026-02-13T16:23:36.520Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,30 +11,30 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 30,
+    "processed": 2,
+    "failed": 28,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "6.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 31,
+    "tier2Attempts": 30,
     "tier2Success": 0,
-    "tier3Attempts": 31,
+    "tier3Attempts": 30,
     "tier3Success": 5,
-    "tier4Attempts": 33,
-    "tier4Success": 2,
-    "totalFailed": 30,
+    "tier4Attempts": 26,
+    "tier4Success": 5,
+    "totalFailed": 28,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -44,8 +44,7 @@
   },
   "processed": [
     "bright-star-2016/chicagotribune--chris-jones.json",
-    "bright-star-2016/chicagotribune--unknown.json",
-    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
+    "bright-star-2016/chicagotribune--unknown.json"
   ],
   "failed": [
     "gutenberg-2023/nydailynews--chris-jones.json",
@@ -68,16 +67,14 @@
     "la-bete-2010/chicagotribune--ben-brantley.json",
     "la-bete-2010/chicagotribune--chris-jones.json",
     "nice-work-if-you-can-get-it-2012/chicagotribune--chris-jones.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
     "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json",
     "red-2010/chicagotribune--chris-jones.json",
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
     "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
     "the-miracle-worker-2010/chicagotribune--chris-jones.json",
     "the-price-2017/chicagotribune--chris-jones.json",
-    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
-    "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
-    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
-    "war-horse-2011/chicagotribune--chris-jones.json"
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -87,20 +84,18 @@
       "bright-star-2016/chicagotribune--chris-jones.json",
       "bright-star-2016/chicagotribune--unknown.json"
     ],
-    "archive": [
-      "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "Chicago Tribune": {
-      "count": 23,
+      "count": 18,
       "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
     "The Chicago Tribune": {
-      "count": 3,
+      "count": 2,
       "domain": "chicagotribune.com",
       "hasCredentials": false,
       "isPaywalled": false,
