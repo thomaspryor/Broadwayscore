@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11724,
-      "skippedNoScore": 7665,
-      "skippedDuplicate": 64,
-      "skippedDuplicateUrl": 278,
+      "totalReviews": 11697,
+      "skippedNoScore": 7664,
+      "skippedDuplicate": 63,
+      "skippedDuplicateUrl": 275,
       "skippedCrossOutletDuplicateUrl": 9,
-      "skippedDuplicateText": 814,
+      "skippedDuplicateText": 821,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 870,
       "recoveredFromGarbage": 122,
@@ -19,11 +19,11 @@
         "explicit-slash": 10,
         "explicit-letterGrade": 5,
         "human-review": 63,
-        "originalScore-priority0": 1285,
-        "llmScore": 6420,
+        "originalScore-priority0": 1281,
+        "llmScore": 6422,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3769,
-        "llmScore-review": 12,
+        "llmScore-lowconf": 3752,
+        "llmScore-review": 9,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
@@ -660,23 +660,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "1776-2022",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Adrian Horton",
-      "url": "https://www.theguardian.com/stage/2022/oct/06/1776-american-history-play-new-york-broadway",
-      "publishDate": "September 17, 2022",
-      "originalRating": null,
-      "pullQuote": "This thoughtful revival reimagines the founding fathers as a diverse cast of women, trans and non-binary performers, breathing new life into the 1969 musical",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -3692,7 +3675,7 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Alexis Soloski",
@@ -3702,7 +3685,7 @@
       "pullQuote": "But whereas some shows swing for the fences, this is one doesn't aim much further than second base.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-bronx-tale-2007",
@@ -5851,7 +5834,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Joe Dziemianowicz",
@@ -5861,7 +5844,7 @@
       "pullQuote": "Lithgow, meantime, is riveting every moment he's on stage -- which is a lot -- even when Tobias is silent.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-delicate-balance-2014",
@@ -15660,7 +15643,7 @@
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Robert Hofler",
@@ -15670,7 +15653,7 @@
       "pullQuote": "There are four more musicals to opens this Broadway season, but it's difficult to imagine a performer more energized in any of them than Sykes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -21016,14 +20999,14 @@
       "showId": "amazing-grace-2015",
       "outletId": "chicago-land-theater-reviews",
       "outlet": "Chicago Land Theater Reviews",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Dan Zeff",
       "url": "https://www.chicagolandtheaterreviews.com/BankOfAmericaTheater.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "The show has spirit, spectacle, ambition, and professionalism. I like its chances in the Big Apple.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -23067,7 +23050,7 @@
       "pullQuote": "If 'Spring Awakening' was the birth of genuine rock musicals on Broadway, then 'American Idiot' is its worthy son.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "american-idiot-2010",
@@ -24145,7 +24128,7 @@
       "outletId": "newnownextcom",
       "outlet": "NewNowNext",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Michael Musto",
@@ -24155,7 +24138,7 @@
       "pullQuote": "We need a great play to delve into issues stirred by horrifying police violence against black people, but I don't feel that Christopher Demos-Brown's 'American Son' is it",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "american-son-2018",
@@ -42984,7 +42967,7 @@
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Joe Dziemianowicz",
@@ -42994,7 +42977,7 @@
       "pullQuote": "With the knockout newcomer Nina Arianda center stage, be prepared to fall hard, fast and completely.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "born-yesterday-2011",
@@ -51719,7 +51702,7 @@
       "pullQuote": "What we have not had, at least in my experience, is a sedate Maggie in a tasteful, even timid revival",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
@@ -66051,7 +66034,7 @@
       "pullQuote": "...how did Holmes and a bushel of theater talents, including director Jack O'Brien, take a wrong turn into this slim screech of a sitcom, a scattershot slice of stereotypical life with characters as unbelievable as they are unlikeable? Written on commission by a theater in Rebeck's hometown of Cincinnati, the script pretends to embrace Midwest o...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "dead-accounts-2012",
@@ -86386,7 +86369,7 @@
       "pullQuote": "All the requisites for a major Disney spectacle have been checked off: amazing special effects, eye-popping costumes, incredible performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "frozen-2018",
@@ -93254,7 +93237,7 @@
       "pullQuote": "The nine performers are talented young people who get less cloying in the second act, when they stop trying so hard. They begin in business clothes, talking into cellphones, but soon change into ragtag thrift shop/fairy-tale style.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "godspell-2011",
@@ -107392,7 +107375,7 @@
       "outletId": "edge-new-york",
       "outlet": "Edge New York",
       "assignedScore": 86,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Frank J. Avella",
@@ -107402,7 +107385,7 @@
       "pullQuote": "The play beguiles and captivates because of Stephens' remarkable and lean script, which director Mark Brokaw honors with powerfully understated staging.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "heisenberg-2016",
@@ -115565,7 +115548,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine's mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -170095,15 +170078,15 @@
       "showId": "sunset-boulevard-2024",
       "outletId": "nytg",
       "outlet": "New York Theatre Guide",
-      "assignedScore": 83,
+      "assignedScore": 77,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Frank Scheck",
+      "criticName": "Joe Dziemianowicz",
       "url": "https://www.newyorktheatreguide.com/reviews/sunset-boulevard-broadway-review-nicole-scherzinger",
       "publishDate": "October 20, 2024",
       "originalRating": null,
-      "pullQuote": "Lloyd's bold and wildly entertaining revival of Sunset Boulevard on Broadway",
+      "pullQuote": "Lloyd's Sunset Boulevard pulls you into a theatrical universe all its own.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
