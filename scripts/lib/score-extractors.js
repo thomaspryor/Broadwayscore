@@ -68,10 +68,12 @@ function starsToNumeric(filled, total = 5) {
  */
 function extractTimeOutScore(html, text) {
   // Try JSON-LD structured data first
+  // Note: Reject ratings < 2 — TimeOut retired 1-2 star reviews, so "1/5" from JSON-LD
+  // is typically scraped from a guide/info page, not an actual review.
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/i);
   if (jsonLdMatch) {
     const rating = parseFloat(jsonLdMatch[1]);
-    if (rating <= 5) {
+    if (rating >= 2 && rating <= 5) {
       return {
         originalScore: `${rating}/5`,
         normalizedScore: starsToNumeric(rating, 5),
@@ -398,6 +400,8 @@ const OUTLET_EXTRACTORS = {
   'observer': noScoreExtractor,
   'thewrap': noScoreExtractor,
   'the-wrap': noScoreExtractor,
+  'theater-news-online': noScoreExtractor,  // Site-wide 4.6/5, not per-review ratings
+  'front-row-center': noScoreExtractor,     // Unreliable score extraction
 };
 
 /**

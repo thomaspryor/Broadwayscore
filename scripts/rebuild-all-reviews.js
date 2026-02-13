@@ -967,7 +967,22 @@ function getBestScore(data) {
   if (data.originalScore) {
     const parsed = parseOriginalScore(data.originalScore, data.outletId);
     if (parsed !== null) {
-      return { score: parsed, source: 'originalScore-priority0' };
+      // Direction guard: skip originalScore if it wildly conflicts with LLM consensus.
+      // Catches misextracted grades (e.g., "D" from sidebar when actual review is "B").
+      const llm = data.llmScore && data.llmScore.score;
+      const llmConf = data.llmScore && data.llmScore.confidence;
+      if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
+        const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
+        const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
+        if (parsedBucket !== llmBucket) {
+          console.warn(`  ⚠ originalScore "${data.originalScore}" (=${parsed}) conflicts with LLM score ${llm} — skipping originalScore for ${data.showId}/${data.outletId}`);
+          // Fall through to LLM scoring instead
+        } else {
+          return { score: parsed, source: 'originalScore-priority0' };
+        }
+      } else {
+        return { score: parsed, source: 'originalScore-priority0' };
+      }
     }
   }
 
