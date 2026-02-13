@@ -54,13 +54,14 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
  * Grade scale shifted down 2 points from standard academic.
  * Colors use solid fills matching the critic score badge style.
  */
-export function getAudienceGrade(score: number): {
+export function getAudienceGrade(score: number | null | undefined): {
   grade: string;
   label: string;
   color: string;
   textColor: string;
   tooltip: string;
 } {
+  if (score == null) return { grade: '—', label: 'No Data', color: '#6b7280', textColor: '#ffffff', tooltip: 'No audience data available' };
   if (score >= 93) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
   if (score >= 88) return { grade: 'A', label: 'Loving It', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
   if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };
@@ -77,7 +78,7 @@ export function getAudienceGrade(score: number): {
 /**
  * Get Tailwind classes for an audience grade badge (used in AudienceBuzzCard).
  */
-export function getAudienceGradeClasses(score: number): {
+export function getAudienceGradeClasses(score: number | null | undefined): {
   bgClass: string;
   textClass: string;
   borderClass: string;
