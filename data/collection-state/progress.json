@@ -266,7 +266,15 @@
     "the-minutes-2022/nytimes--unknown.json",
     "the-miracle-worker-2010/nytimes--ben-brantley.json",
     "the-music-man-2022/nytimes--jesse-green.json",
-    "the-music-man-2022/nytimes--unknown.json"
+    "the-music-man-2022/nytimes--unknown.json",
+    "the-mystery-of-edwin-drood-2012/nytimes--charles-isherwood.json",
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-parisian-woman-2017/nytimes--ben-brantley.json",
+    "the-parisian-woman-2017/nytimes--jesse-green.json",
+    "the-parisian-woman-2017/nytimes--unknown.json",
+    "the-phantom-of-the-opera-1988/nytimes--frank-rich.json",
+    "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -381,11 +389,15 @@
     "the-glass-menagerie-2017/nytimes--ben-brantley.json",
     "the-little-foxes-2017/nytimes--alexis-soloski.json",
     "the-little-foxes-2017/nytimes--unknown.json",
-    "the-merchant-of-venice-2010/nytimes--ben-brantley.json"
+    "the-merchant-of-venice-2010/nytimes--ben-brantley.json",
+    "the-norman-conquests-2009/nytimes--ben-brantley.json",
+    "the-odd-couple-2005/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -420,7 +432,8 @@
       "pass-over-2021/nytimes--unknown.json",
       "rock-of-ages-2009/nytimes--charles-isherwood.json",
       "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
-      "side-show-2014/nytimes--charles-isherwood.json"
+      "side-show-2014/nytimes--charles-isherwood.json",
+      "the-mystery-of-edwin-drood-2012/nytimes--charles-isherwood.json"
     ],
     "archive": [
       "wicked-2003/nytimes--charles-isherwood.json",
@@ -657,10 +670,16 @@
       "the-minutes-2022/nytimes--unknown.json",
       "the-miracle-worker-2010/nytimes--ben-brantley.json",
       "the-music-man-2022/nytimes--jesse-green.json",
-      "the-music-man-2022/nytimes--unknown.json"
+      "the-music-man-2022/nytimes--unknown.json",
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-parisian-woman-2017/nytimes--ben-brantley.json",
+      "the-parisian-woman-2017/nytimes--jesse-green.json",
+      "the-parisian-woman-2017/nytimes--unknown.json",
+      "the-phantom-of-the-opera-1988/nytimes--frank-rich.json"
     ]
   },
   "startTime": "2026-02-13T04:17:08.888Z",
-  "lastProcessed": "the-music-man-2022/nytimes--unknown.json",
+  "lastProcessed": "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json",
   "log": []
 }
