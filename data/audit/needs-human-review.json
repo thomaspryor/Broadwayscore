@@ -3,10 +3,63 @@
     "generatedAt": "2026-02-13T23:20:22.910Z",
     "totalFlagged": 8,
     "reasons": {
+      "possible-tour-fulltext": 12,
       "originalScore-llm-conflict": 8
     }
   },
   "reviews": [
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "clevelands-star-102",
+      "criticName": "Glenn Anderson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.052Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "houston-chronicle",
+      "criticName": "Joey Guerra",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.072Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "revue",
+      "criticName": "Marin Heinritz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.104Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-minnesota-star-tribune",
+      "criticName": "Rohan Preston",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
+      "llmScore": 40,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.116Z"
+    },
     {
       "showId": "a-life-in-the-theatre-2010",
       "outletId": "ew",

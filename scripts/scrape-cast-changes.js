@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { isNotBroadway } = require('./lib/content-filters');
 
 // ==================== Configuration ====================
 
@@ -358,38 +359,7 @@ function htmlToText(html) {
     .trim();
 }
 
-/**
- * Filter out tour/regional/non-Broadway content (reuse pattern from playbill verdict scraper)
- */
-function isNotBroadway(text) {
-  const lower = text.toLowerCase();
-  return (
-    lower.includes('off-broadway') ||
-    lower.includes('off broadway') ||
-    lower.includes('west end') ||
-    lower.includes('london') ||
-    lower.includes('national tour') ||
-    lower.includes('north american tour') ||
-    lower.includes('touring production') ||
-    lower.includes('touring company') ||
-    lower.includes('in chicago') ||
-    lower.includes('world premiere') ||
-    lower.includes('on screen') ||
-    lower.includes('on film') ||
-    lower.includes('movie') ||
-    lower.includes('filmed version') ||
-    lower.includes('playhouse theatre') ||
-    lower.includes('chicago shakespeare') ||
-    lower.includes('public theater') || lower.includes('at the public') ||
-    lower.includes('old globe') || lower.includes('la jolla') ||
-    lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
-    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv'))) ||
-    lower.includes('tv series') || lower.includes('tv show') ||
-    lower.includes('apple tv') || lower.includes('netflix') ||
-    lower.includes('hulu') || lower.includes('disney+') ||
-    lower.includes('streaming') || lower.includes('amazon prime')
-  );
-}
+// isNotBroadway() imported from ./lib/content-filters
 
 /**
  * Additional tour-specific text checks for cast articles
