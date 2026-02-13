@@ -3481,9 +3481,12 @@ function findReviewsToProcess() {
     }
   }
 
-  // Sort: open/preview shows first, then by outlet tier priority
+  // Sort: open/preview shows first (unless CLOSED_SHOW_MODE), then by outlet tier priority
+  const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => {
-    if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
+    if (!closedShowMode) {
+      if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
+    }
     return a.priority - b.priority;
   });
 
