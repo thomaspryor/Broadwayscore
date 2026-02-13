@@ -139,7 +139,7 @@ const CONFIG = {
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
   excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
-  archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
+  archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -215,6 +215,11 @@ const CONFIG = {
     'broadwaynews.com',
     // Free outlets with excellent Archive.org coverage (6K+ / 9K+ pages archived)
     'talkinbroadway.com', 'huffpost.com',
+    // Hard-paywall sites — Playwright/ScrapingBee/BrightData can't crack these anyway
+    'usatoday.com', 'northjersey.com',   // Gannett paywall
+    'bloomberg.com',                      // Hard paywall
+    'backstage.com',                      // Paywall + JSP URLs
+    'thestage.co.uk',                     // UK theater paywall
   ],
 
   // Minimum word count for valid review
@@ -390,6 +395,10 @@ let browserbaseUsage = {
   minutesToday: 0,
   history: [],
 };
+
+// Archive.org rate-limit tracking (auto-disables archive-first after 3 consecutive failures)
+let archiveOrgConsecutiveFailures = 0;
+let archiveOrgDisabledForBatch = false;
 
 // Browser and context (reused)
 let browser = null;
@@ -2043,7 +2052,8 @@ function buildTierContext(review) {
   }
 
   const archiveFirstExplicitlyDisabled = process.env.ARCHIVE_FIRST === 'false';
-  const isArchiveFirst = (!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview);
+  const isArchiveFirst = !archiveOrgDisabledForBatch &&
+    ((!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview));
   const hasPaywallCreds = !!getPaywallCredentials(url)?.email;
 
   return {
@@ -2104,7 +2114,7 @@ async function executeForcedTier(tier, url, review) {
  */
 function buildTierChain(ctx, review) {
   return [
-    // TIER 0: Archive.org first (for paywalled sites)
+    // TIER 0: Archive.org first (for paywalled sites + old reviews when archiveFirst default is on)
     {
       id: 'archive-first',
       tierNumber: 0,
@@ -2112,8 +2122,18 @@ function buildTierChain(ctx, review) {
       label: 'Archive.org (paywalled site - trying archive first)',
       shouldRun: () => ctx.isArchiveFirst,
       execute: (url) => fetchFromArchive(url),
-      onSuccess: (review, result) => { ctx._archiveTierRan = true; },
-      onFailure: (error) => { ctx._archiveTierRan = true; },
+      onSuccess: (review, result) => {
+        ctx._archiveTierRan = true;
+        archiveOrgConsecutiveFailures = 0; // Reset on success
+      },
+      onFailure: (error) => {
+        ctx._archiveTierRan = true;
+        archiveOrgConsecutiveFailures++;
+        if (archiveOrgConsecutiveFailures >= 3 && !archiveOrgDisabledForBatch) {
+          archiveOrgDisabledForBatch = true;
+          console.log(`    ⚠ Archive.org rate-limited (${archiveOrgConsecutiveFailures} consecutive failures) — falling back to standard tier order for remainder of batch`);
+        }
+      },
     },
 
     // TIER 0.5: Archive.org CDX multi-snapshot (after Tier 0 fails for archive-first sites)
@@ -2124,7 +2144,10 @@ function buildTierChain(ctx, review) {
       label: 'Archive.org CDX multi-snapshot',
       shouldRun: () => ctx.isArchiveFirst && ctx._archiveTierRan,
       execute: (url) => fetchFromArchiveCDX(url),
-      onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
+      onSuccess: (review, result) => {
+        ctx._archiveCdxRan = true;
+        archiveOrgConsecutiveFailures = 0; // Reset on success
+      },
       onFailure: (error) => { ctx._archiveCdxRan = true; },
     },
 

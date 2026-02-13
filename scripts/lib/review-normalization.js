@@ -170,7 +170,7 @@ const OUTLET_ALIASES = {
   'nytg': [
     'nytg', 'new york theatre guide', 'ny theatre guide', 'nytheatreguide',
     'new-york-theatre-guide', 'new york theater guide', 'new-york-theatre',
-    'new-york-theatre-guide-gillian-russo'
+    'new-york-theatre-guide-gillian-russo', 'newyorktheatreguide'
   ],
   'nyt-theater': [
     'nyt-theater', 'new york theater', 'newyorktheater', 'ny theater',
@@ -279,7 +279,8 @@ const OUTLET_ALIASES = {
     'npr', 'national public radio', 'n.p.r.'
   ],
   'njcom': [
-    'njcom', 'nj.com', 'nj-com', 'nj dot com', 'the-star-ledger', 'star-ledger'
+    'njcom', 'nj.com', 'nj-com', 'nj dot com', 'the-star-ledger', 'star-ledger',
+    'ny-star-ledger', 'ny star ledger', 'star ledger'
   ],
   'dctheatrescene': [
     'dctheatrescene', 'dc theatre scene', 'dc-theatre-scene', 'dc theater scene'
@@ -289,7 +290,8 @@ const OUTLET_ALIASES = {
     'dc metro theatre arts', 'dc-metro-theater-arts', 'dc-metro-theatre-arts'
   ],
   'nbcny': [
-    'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york'
+    'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york',
+    'mbc new york', 'mbc-new-york'
   ],
   'londontheatre': [
     'londontheatre', 'london theatre', 'london-theatre', 'london theater'
@@ -312,6 +314,26 @@ const OUTLET_ALIASES = {
   ],
   'theater-pizzazz': [
     'theater-pizzazz', 'theater pizzazz', 'theaterpizzazz', 'theatre pizzazz'
+  ],
+  // Outlets discovered via Feb 2026 pre-launch fragmentation audit
+  'theater-news-online': [
+    'theater-news-online', 'theater news online', 'theatre news online',
+    'theater new online', 'theatre-news-online', 'theater-new-online'
+  ],
+  'bergen-record': [
+    'bergen-record', 'bergen record', 'the record (bergen)', 'the record bergen',
+    'the-record-bergen', 'the-record', 'record bergen'
+  ],
+  'new-jersey-newsroom': [
+    'new-jersey-newsroom', 'new jersey newsroom', 'new jersey news room',
+    'nj newsroom', 'nj-newsroom', 'newjerseynewsroom.com', 'newjerseynewsroomcom',
+    'new-jersey-news-room'
+  ],
+  'faster-times': [
+    'faster-times', 'faster times', 'the faster times', 'the-faster-times'
+  ],
+  'nytheatre': [
+    'nytheatre', 'nytheatre wire', 'nytheatre-wire', 'nytheatrecom'
   ],
 };
 
@@ -1042,8 +1064,27 @@ function findExistingReviewFile(showDir, outletName, criticName) {
   return null;
 }
 
+/**
+ * Reject outlet names that are scraping artifacts, not real publications.
+ * These slip in when aggregator HTML has ad images with alt text like "advertisement".
+ * Check this BEFORE writing review files.
+ */
+const JUNK_OUTLETS = new Set([
+  'advertisement', 'sponsor', 'sponsored', 'promo', 'promotion',
+  'unknown', 'null', 'undefined', 'n/a', 'na', 'none',
+  'ad', 'ads', 'banner', 'pixel', 'tracking',
+]);
+
+function isJunkOutlet(outletName) {
+  if (!outletName) return true;
+  const normalized = outletName.toLowerCase().trim();
+  if (normalized.length < 2) return true;
+  return JUNK_OUTLETS.has(normalized);
+}
+
 module.exports = {
   normalizeOutlet,
+  isJunkOutlet,
   normalizeCritic,
   normalizePublishDate,
   generateReviewFilename,
