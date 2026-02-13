@@ -244,7 +244,7 @@ jobs:
             gh workflow run "Collect Hard-Paywall Reviews (Archive.org)" \
               -f domain=${{ inputs.domain }} \
               -f max_reviews=${{ inputs.max_reviews }} \
-              -f retry_failed=true \
+              -f retry_failed=${{ inputs.retry_failed }} \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
             echo "chained=true" >> $GITHUB_OUTPUT
@@ -532,7 +532,7 @@ jobs:
             gh workflow run "Collect Hard-Paywall Reviews (Archive.org)" \
               -f domain=all \
               -f max_reviews=${{ inputs.max_reviews }} \
-              -f retry_failed=true \
+              -f retry_failed=${{ inputs.retry_failed }} \
               -f max_rounds=$MAX \
               -f current_round=$NEXT
             echo "chained=true" >> $GITHUB_OUTPUT
