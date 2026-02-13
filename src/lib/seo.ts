@@ -27,9 +27,6 @@ export function generateOrganizationSchema() {
     logo: `${BASE_URL}/favicon.svg`,
     description: 'Aggregated Broadway show ratings from professional critics',
     inLanguage: 'en',
-    sameAs: [
-      // Add social profiles when available
-    ],
   };
 }
 
@@ -116,13 +113,8 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
     ...(lastUpdated && { dateModified: lastUpdated }),
-    eventStatus: show.status === 'closed' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
+    eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    organizer: {
-      '@type': 'Organization',
-      name: 'Broadway Scorecard',
-      url: BASE_URL,
-    },
   };
 
   // Add aggregate rating if we have scores and reviewCount
@@ -333,10 +325,21 @@ export function generateShowFAQSchema(show: ComputedShow) {
 
   // Q: How long is it?
   if (show.runtime) {
-    const runtimeMins = parseInt(show.runtime, 10);
-    if (!isNaN(runtimeMins)) {
-      const hours = Math.floor(runtimeMins / 60);
-      const mins = runtimeMins % 60;
+    // Runtime can be "2h 45m" (string) or 135 (number = total minutes)
+    const rt = String(show.runtime);
+    const hMatch = rt.match(/(\d+)\s*h/);
+    const mMatch = rt.match(/(\d+)\s*m/);
+    let hours: number, mins: number;
+    if (hMatch || mMatch) {
+      hours = hMatch ? parseInt(hMatch[1], 10) : 0;
+      mins = mMatch ? parseInt(mMatch[1], 10) : 0;
+    } else {
+      // Plain number = total minutes
+      const totalMins = parseInt(rt, 10);
+      hours = Math.floor(totalMins / 60);
+      mins = totalMins % 60;
+    }
+    if (hours > 0 || mins > 0) {
       const runtimeStr = hours > 0
         ? `${hours} hour${hours > 1 ? 's' : ''}${mins > 0 ? ` and ${mins} minutes` : ''}`
         : `${mins} minutes`;
