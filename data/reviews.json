@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11394,
-      "skippedNoScore": 7606,
+      "totalReviews": 11384,
+      "skippedNoScore": 7601,
       "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 287,
+      "skippedDuplicateUrl": 265,
       "skippedCrossOutletDuplicateUrl": 38,
-      "skippedDuplicateText": 672,
+      "skippedDuplicateText": 705,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 852,
       "recoveredFromGarbage": 122,
@@ -20,14 +20,14 @@
         "explicit-letterGrade": 3,
         "human-review": 56,
         "originalScore-priority0": 1169,
-        "llmScore": 6075,
+        "llmScore": 6120,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3915,
+        "llmScore-lowconf": 3861,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 153
+        "thumb": 152
       }
     }
   },
@@ -59495,7 +59495,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Terry Teachout",
@@ -59505,7 +59505,7 @@
       "pullQuote": "All that's missing from this recipe for success are a star and a few memorable onstage events.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "come-fly-away-2010",
@@ -69391,7 +69391,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 17,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Terry Teachout",
@@ -69401,7 +69401,7 @@
       "pullQuote": "At least one of the musicals that I see on Broadway each season leaves me shaking my head and muttering 'What were they thinking?' on the way out of the theater.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "doctor-zhivago-2015",
@@ -69680,7 +69680,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Terry Teachout",
@@ -69690,7 +69690,7 @@
       "pullQuote": "John Tillinger, the director, has made the amateurish mistake of encouraging his actors to troll aggressively for laughs",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dont-dress-for-dinner-2012",
@@ -74152,7 +74152,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Terry Teachout",
@@ -74162,7 +74162,7 @@
       "pullQuote": "Rarely are such shows any good, but some have been hits, and hope springs eternal in the cash-hungry hearts of theatrical producers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "escape-to-margaritaville-2018",
@@ -75580,7 +75580,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -75590,7 +75590,7 @@
       "pullQuote": "Despite the inadequacies of its nominal star, Mr. Grandage's 'Evita' is an impressive achievement that should be judged on its own merits, which are legion.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "evita-2012",
@@ -75801,7 +75801,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Terry Teachout",
@@ -75811,7 +75811,7 @@
       "pullQuote": "The decayed flamboyance of his performance as the dying king is the stuff Tonys are made of.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "exit-the-king-2009",
@@ -104637,7 +104637,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
@@ -104647,7 +104647,7 @@
       "pullQuote": "Head Over Heels lacks the courage of its contradictions.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "head-over-heels-2018",
@@ -106575,7 +106575,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 85,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Ben Brantley",
@@ -106585,14 +106585,15 @@
       "pullQuote": "I would never have predicted that it would seem even more vibrant and emotionally charged",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "heisenberg-2016",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -106602,7 +106603,7 @@
       "pullQuote": "I would never have predicted that it would seem even more vibrant and emotionally charged",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "heisenberg-2016",
@@ -107460,7 +107461,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -107470,7 +107471,7 @@
       "pullQuote": "I think it gives this 'Dolly' a fascinating new valence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "hello-dolly-2017",
@@ -110146,7 +110147,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -110156,7 +110157,7 @@
       "pullQuote": "What follows is a moving meditation on family, memory and the places we call home, anchored by performances that feel lived-in and true.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "home-2024",
@@ -116805,14 +116806,15 @@
       "pullQuote": "This sterling revival makes a persuasive case that the play deserves to be regarded as highly as any in the author's celebrated Pittsburgh Cycle.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "jitney-2017",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 87,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -116822,7 +116824,7 @@
       "pullQuote": "Conversation sings and swings, bends and bounces and hits heaven smack in the clouds, in the glorious new production",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "jitney-2017",
@@ -117883,7 +117885,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -117893,7 +117895,7 @@
       "pullQuote": "Taymor's production is entirely sympathetic - to the characters and to the text.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "john-proctor-is-the-villain-2025",
@@ -119821,7 +119823,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 88,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Unknown",
@@ -119831,7 +119833,7 @@
       "pullQuote": "Mike Bartlett's flat-out brilliant portrait of a monarchy in crisis blazed open Sunday.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "king-charles-iii-2015",
@@ -120467,7 +120469,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
@@ -120477,7 +120479,7 @@
       "pullQuote": "Much of what surrounds her in this glittery, haphazard production seems to be working overtime to divert attention from that performance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "king-lear-2019",
@@ -120954,23 +120956,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Unknown",
-      "url": "https://www.nytimes.com/2019/03/14/theater/kiss-me-kate-review.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "That too many other numbers disappoint is a problem not just with the choreography but also with the overall staging.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "kiss-me-kate-2019",
@@ -122161,23 +122146,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "latin-history-for-morons-2017",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Unknown",
-      "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-leguizamo.html?_r=0",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "If only the character at the center of this frenetic one-man show were as convincing.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "latin-history-for-morons-2017",
@@ -152422,7 +152390,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Naveen Kumar",
@@ -152432,7 +152400,7 @@
       "pullQuote": "It’s one of several that the playwright Branden Jacobs-Jenkins deploys to gasps and guffaws...a densely packed and blistering powder keg of a play about (among other things) legacy, faith, corruption and the limits of desire.\"\"",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "purpose-2025",
@@ -157247,7 +157215,7 @@
       "pullQuote": "As with so many shows in this genre, 'School of Rock' suffers from an overload of brand devotedness: it doesn't cover much territory that the movie on which it is piggy-backing already did.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "school-of-rock-the-musical-2015",
@@ -161719,23 +161687,6 @@
       "pullQuote": "It could prove less enticing to audiences who would prefer to see a straightforward musical rather than a meta-musical about putting on a musical.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "smash-2025",
-      "outletId": "washpost",
-      "outlet": "The Washington Post",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Naveen Kumar",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
-      "publishDate": "April 10, 2025",
-      "originalRating": null,
-      "pullQuote": "Unlike Betty’s madcap star vehicle, 'Smash' doesn’t move with verve or purpose.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
       "contentTier": "excerpt"
     },
     {
@@ -171922,7 +171873,7 @@
       "pullQuote": "The new Broadway musical adaptation of 'The Color Purple' is gorgeous but safe, a production that honors Alice Walker's novel and the Steven Spielberg film without taking many risks.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-color-purple-2015",
