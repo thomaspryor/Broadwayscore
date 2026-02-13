@@ -1,46 +1,6 @@
 {
-  "generatedAt": "2026-02-13T20:41:27.882Z",
+  "generatedAt": "2026-02-13T22:35:12.135Z",
   "issues": [
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "a-life-in-the-theatre-2010",
-      "outlet": "ew",
-      "critic": "Tanner Stransky",
-      "detail": "originalRating \"D\" (=35) vs score 81 (source: llmScore-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "collected-stories-2010",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "originalRating \"D\" (=35) vs score 75 (source: llmScore)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "golden-boy-2012",
-      "outlet": "ew",
-      "critic": "Adam Markovitz",
-      "detail": "originalRating \"D\" (=35) vs score 79 (source: llmScore)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "newsies-the-musical-2012",
-      "outlet": "ew",
-      "critic": "Thom Geier",
-      "detail": "originalRating \"D\" (=35) vs score 79 (source: llmScore)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "nice-work-if-you-can-get-it-2012",
-      "outlet": "ew",
-      "critic": "Adam Markovitz",
-      "detail": "originalRating \"D\" (=35) vs score 62 (source: llmScore)"
-    },
     {
       "type": "rating-score-mismatch",
       "severity": "high",
@@ -50,20 +10,12 @@
       "detail": "originalRating \"B\" (=83) vs score 55 (source: human-review)"
     },
     {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "time-stands-still-2010",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "originalRating \"D\" (=35) vs score 90 (source: llmScore-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
+      "type": "designation-score-mismatch",
+      "severity": "medium",
       "showId": "wicked-2003",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 82 (source: llmScore)"
+      "detail": "Critics_Choice but score=20 (source: originalScore-priority0)"
     },
     {
       "type": "score-clustering",
@@ -128,8 +80,14 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "pass-over-2021",
+      "detail": "6/17 reviews (35%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "shucked-2023",
-      "detail": "39/71 reviews (55%) scored exactly 80"
+      "detail": "39/72 reviews (54%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -153,7 +111,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "the-waverly-gallery-2018",
-      "detail": "6/16 reviews (38%) scored exactly 80"
+      "detail": "6/15 reviews (40%) scored exactly 80"
     },
     {
       "type": "score-clustering",
