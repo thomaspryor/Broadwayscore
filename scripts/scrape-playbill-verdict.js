@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { isNotBroadway } = require('./lib/content-filters');
 const cheerio = require('cheerio');
 
 // Paths
@@ -186,41 +187,7 @@ function extractArticlesFromCategoryPage(content) {
 // Filter to Broadway only
 // ---------------------------------------------------------------------------
 
-function isNotBroadway(title) {
-  const lower = title.toLowerCase();
-  return (
-    lower.includes('off-broadway') ||
-    lower.includes('off broadway') ||
-    lower.includes('west end') ||
-    lower.includes('opera') ||
-    lower.includes('london') ||
-    lower.includes('national tour') ||
-    lower.includes('touring production') ||
-    lower.includes('touring cast') ||
-    lower.includes('touring company') ||
-    lower.includes('in chicago') ||
-    lower.includes('world premiere') ||
-    lower.includes('on screen') ||
-    lower.includes('on film') ||
-    lower.includes('movie') ||
-    lower.includes('film review') ||
-    lower.includes('film adaptation') ||
-    lower.includes('filmed version') ||
-    // Specific venue mentions that indicate non-Broadway
-    lower.includes('playhouse theatre') ||
-    lower.includes('chicago shakespeare') ||
-    // Off-Broadway / regional venues
-    lower.includes('public theater') || lower.includes('at the public') ||
-    lower.includes('old globe') || lower.includes('la jolla') ||
-    lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
-    // TV specials and streaming
-    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv') || lower.includes('fox'))) ||
-    lower.includes('tv review') || lower.includes('tv series') || lower.includes('tv show') ||
-    lower.includes('apple tv') || lower.includes('netflix') ||
-    lower.includes('hulu') || lower.includes('disney+') ||
-    lower.includes('streaming') || lower.includes('amazon prime')
-  );
-}
+// isNotBroadway() imported from ./lib/content-filters
 
 // ---------------------------------------------------------------------------
 // Cross-show URL validation
