@@ -4,25 +4,25 @@
     "lastUpdated": "2026-02-13",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11374,
-      "skippedNoScore": 7578,
+      "totalReviews": 11457,
+      "skippedNoScore": 7466,
       "skippedDuplicate": 41,
-      "skippedDuplicateUrl": 226,
-      "skippedCrossOutletDuplicateUrl": 37,
-      "skippedDuplicateText": 776,
+      "skippedDuplicateUrl": 216,
+      "skippedCrossOutletDuplicateUrl": 36,
+      "skippedDuplicateText": 806,
       "skippedFingerprintDedup": 2,
       "skippedWrongProduction": 859,
       "recoveredFromGarbage": 122,
       "scoreSources": {
         "explicit-stars": 6,
-        "explicit-outOf": 2,
+        "explicit-outOf": 3,
         "explicit-slash": 10,
         "explicit-letterGrade": 3,
         "human-review": 56,
-        "originalScore-priority0": 1169,
-        "llmScore": 6132,
+        "originalScore-priority0": 1174,
+        "llmScore": 6231,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 3841,
+        "llmScore-lowconf": 3819,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -13194,23 +13194,6 @@
       "showId": "a-view-from-the-bridge-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/a-view-from-the-bridge",
-      "publishDate": "November 13, 2015",
-      "originalRating": 80,
-      "pullQuote": "Ivo van Hove's staging is a marvel of focused intensity, stripping away everything extraneous to expose the play's elemental power.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
       "assignedScore": 93,
       "scoreSource": "llmScore",
       "bucket": "Rave",
@@ -17950,7 +17933,7 @@
       "pullQuote": "Under the assured direction of Jack O'Brien, this revival crackles with tension and features powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -29007,18 +28990,18 @@
       "showId": "anything-goes-2011",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Lisa Schwarzbaum",
       "url": "https://www.ew.com/ew/article/0,,20364394_20480196,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "What the audience doesn't know is that British theater regular Adam Godley will steal his crucial bit of the show and utterly delight the cheering house with his brilliant comic timing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "anything-goes-2011",
@@ -45485,7 +45468,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Howard Miller",
@@ -45495,7 +45478,7 @@
       "pullQuote": "As the world upends and utter madness engulfs, we truly don't know if we are witnessing Peter's implosion or Agnes's crack cocaine-fueled breakdown, or some combination of both.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bug-2026",
@@ -52805,23 +52788,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "They have come up all thumbs, alas, in the writing and staging departments.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "chaplin-2012",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 35,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2012/09/theater-review-chaplin-the-musical.html",
-      "publishDate": "September 11, 2012",
-      "originalRating": null,
-      "pullQuote": "A musical about Charlie Chaplin that fails to be funny is like a meal about food that fails to be nourishing.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -75342,7 +75308,7 @@
       "outletId": "elena-roger",
       "outlet": "Elena Roger",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Unknown",
@@ -75352,7 +75318,7 @@
       "pullQuote": "— supported by a barely there Ricky Martin and a sterling Michael Cerveris — this musical combination of history pageant and requiem Mass feels about as warmblooded as a gilded mummy. ... I thought I was fully immune to the show’s signature song, “Don’t Cry for Me Argentina,” from having heard it everywhere (even discos) in my youth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "evita-2012",
@@ -93922,18 +93888,18 @@
       "showId": "gore-vidals-the-best-man-2012",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 35,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Thom Geier",
       "url": "https://www.ew.com/ew/article/0,,20364394_20583662,00.html",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "D",
       "pullQuote": "Vidal's play remains remarkably well-constructed",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "gore-vidals-the-best-man-2012",
@@ -99006,7 +98972,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 91,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -99016,7 +98982,7 @@
       "pullQuote": "Hadestown is a triumph of imagination and artistry that proves musical theatre can still surprise and enchant when creators dare to dream big.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hadestown-2019",
@@ -121469,23 +121435,6 @@
     },
     {
       "showId": "kpop-2022",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2022/11/27/theater/kpop-review-broadway.html",
-      "publishDate": "November 28, 2022",
-      "originalRating": null,
-      "pullQuote": "The musical 'KPOP,' which opened on Broadway on Sunday, is more of a multimedia experience than a traditional book musical, and though it has undeniable energy and spectacle, it lacks the emotional depth that might make it more than just a flashy tribute to the Korean pop phenomenon.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "kpop-2022",
       "outletId": "newyorker",
       "outlet": "The New Yorker",
       "assignedScore": 64,
@@ -121891,6 +121840,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2010/04/19/theater/reviews/19cage.html",
+      "publishDate": "April 19, 2010",
+      "originalRating": null,
+      "pullQuote": "This deliberately disheveled show delivers the unexpected lesson that in theater, shabby can be not just chic but redemptive.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "la-cage-aux-folles-2010",
@@ -124189,6 +124155,23 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 46,
+      "scoreSource": "llmScore",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Unknown",
+      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "\"Ms. McTeer and Mr. Schreiber come across as magnificent bulls who have strayed into a Limoges china shop...Directed by Josie Rourke, this latest 'Liaisons' falls into the trap of such broadness early and lies there, gesticulating madly, for more than two and a half hours.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "outletId": "the-telegraph-uk",
       "outlet": "The Telegraph",
       "assignedScore": 81,
@@ -125920,7 +125903,7 @@
       "pullQuote": "It's so unfunny as to make the viewer despair of ever laughing again, much as a starving man might despair of ever eating again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "living-on-love-2015",
@@ -140707,7 +140690,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -140717,7 +140700,7 @@
       "pullQuote": "'Ohio State Murders' leaves a lasting imprint—I picture a bloody handprint—on what for lack of a better term I'll call the soul.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "ohio-state-murders-2022",
@@ -142826,7 +142809,7 @@
       "pullQuote": "If this is myth, it is weak stuff, its power and mystery insisted upon but not felt.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "once-on-this-island-2017",
@@ -148577,23 +148560,6 @@
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
-      "publishDate": "April 20, 2023",
-      "originalRating": null,
-      "pullQuote": "The show's commitment to comic chaos is both its greatest strength and its potential weakness.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "peter-pan-goes-wrong-2023",
       "outletId": "theater-scene",
       "outlet": "Theater Scene",
       "assignedScore": 43,
@@ -151207,23 +151173,6 @@
       "publishDate": "April 24, 2023",
       "originalRating": null,
       "pullQuote": "Comer delivers a masterclass in controlled vulnerability, her performance building from confident legal expertise to devastating personal reckoning with surgical precision.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "prima-facie-2023",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2023/04/23/theater/prima-facie-review-jodie-comer.html",
-      "publishDate": "April 24, 2023",
-      "originalRating": null,
-      "pullQuote": "I won't belabor the compromises of 'Prima Facie.' Especially if, in the long run, it wins its case.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -155972,23 +155921,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "This cheesy exercise in rock nostalgia has already been a hit in Los Angeles and Off-Broadway, and this transfer to the Rialto should prove an equally critic-proof success.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "rock-of-ages-2009",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html",
-      "publishDate": "April 8, 2009",
-      "originalRating": null,
-      "pullQuote": "This exuberantly silly musical about big hair and bigger dreams in the 1980s rock scene doesn't ask to be taken seriously, and you'd be foolish to try.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -172145,7 +172077,8 @@
       "pullQuote": "The result is a musical that feels both more intimate and more universal.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "the-color-purple-2015",
@@ -184289,23 +184222,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html",
-      "publishDate": "April 3, 2017",
-      "originalRating": null,
-      "pullQuote": "The show is a clever and sometimes hilarious theatrical contraption that demonstrates the difference between accidents that happen and accidents that are made to happen with surgical precision.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "the-play-that-goes-wrong-2017",
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 75,
@@ -184421,7 +184337,7 @@
       "pullQuote": "This production, on the other hand, feels moribund from the beginning.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-present-2017",
@@ -186310,23 +186226,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-royal-family-2009",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 85,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2018/07/05/theater/royal-family-of-broadway-barrington-stage-review.html",
-      "publishDate": "October 19, 2009",
-      "originalRating": null,
-      "pullQuote": "This revival has the shimmering, golden patina of a treasured family heirloom that has been lovingly polished and placed in the best possible light.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-royal-family-2009",
@@ -189897,7 +189796,8 @@
       "pullQuote": "With Ms. Linney and Mr. d'Arcy James bringing this intelligent, absorbing drama to such tortured life, attending 'Time Stands Still' can feel like eavesdropping on two cherished friends at their most vulnerable and emotionally exposed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
     },
     {
       "showId": "tina-2019",
@@ -191207,23 +191107,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "twelfth-night-2013",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
-      "publishDate": "November 14, 2013",
-      "originalRating": null,
-      "pullQuote": "Ms. Hathaway brings a fierce intelligence and a welcome lack of vanity to Viola",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "twelfth-night-2013",
@@ -194762,7 +194645,7 @@
       "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "yellow-face-2024",
