@@ -722,6 +722,91 @@ function validateReviewsJson() {
 }
 
 // ===========================================
+// OUTLET FRAGMENTATION DETECTION
+// ===========================================
+
+/**
+ * Detect outlet fragmentation: outlet_ids that SHOULD normalize to the same
+ * canonical outlet but don't, because they're missing from OUTLET_ALIASES.
+ * This catches the root cause of duplicate outlets before they accumulate.
+ */
+function validateOutletFragmentation() {
+  if (!normalizeOutlet) {
+    info('Skipping outlet fragmentation check (normalizeOutlet not available)');
+    return;
+  }
+
+  info('Checking for outlet fragmentation...');
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+  if (!fs.existsSync(reviewsFile)) return;
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+  } catch { return; }
+
+  const reviews = data.reviews || [];
+
+  // Group by outlet_id, tracking display name and review count
+  const outletIndex = {};  // outlet_id -> { displayName, count }
+  for (const r of reviews) {
+    const oid = r.outletId || normalizeOutlet(r.outlet || 'unknown');
+    if (!outletIndex[oid]) {
+      outletIndex[oid] = { displayName: r.outlet || oid, count: 0 };
+    }
+    outletIndex[oid].count++;
+  }
+
+  // Known-bad outlets that are scraping artifacts (not real outlets)
+  const KNOWN_BAD_OUTLETS = ['advertisement'];
+
+  let fragIssues = 0;
+
+  // Check 1: Known bad outlets still present
+  for (const bad of KNOWN_BAD_OUTLETS) {
+    if (outletIndex[bad]) {
+      warn(`Scraping artifact outlet "${bad}" still has ${outletIndex[bad].count} reviews — these need outlet reassignment`);
+      fragIssues++;
+    }
+  }
+
+  // Check 2: Same display name, different outlet_id (exact match)
+  const byDisplayName = {};
+  for (const [oid, info] of Object.entries(outletIndex)) {
+    const display = info.displayName.toLowerCase().trim();
+    if (!byDisplayName[display]) byDisplayName[display] = [];
+    byDisplayName[display].push({ oid, count: info.count });
+  }
+
+  for (const [display, entries] of Object.entries(byDisplayName)) {
+    if (entries.length > 1) {
+      const total = entries.reduce((sum, e) => sum + e.count, 0);
+      const ids = entries.map(e => `${e.oid}(${e.count})`).join(', ');
+      warn(`Outlet fragmentation: "${display}" split across ${entries.length} IDs: ${ids} (${total} total reviews)`);
+      fragIssues++;
+    }
+  }
+
+  // Check 3: outlet_id doesn't survive round-trip normalization
+  // If normalizeOutlet(outlet_id) returns a DIFFERENT id, that means the
+  // outlet_id was created before its alias was added
+  for (const [oid, info] of Object.entries(outletIndex)) {
+    const canonical = normalizeOutlet(oid);
+    if (canonical !== oid && outletIndex[canonical]) {
+      // This outlet_id normalizes to a different existing outlet
+      warn(`Outlet "${oid}" (${info.count} reviews) normalizes to "${canonical}" (${outletIndex[canonical].count} reviews) — will merge on next rebuild`);
+      fragIssues++;
+    }
+  }
+
+  if (fragIssues === 0) {
+    ok('No outlet fragmentation detected');
+  } else {
+    info(`${fragIssues} outlet fragmentation issue(s) found — run rebuild to resolve`);
+  }
+}
+
+// ===========================================
 // COMMERCIAL DATA VALIDATION
 // ===========================================
 
@@ -1016,6 +1101,8 @@ function runValidation() {
   validateReviewData(shows);
   console.log('');
   const reviewCount = validateReviewsJson() || 0;
+  console.log('');
+  validateOutletFragmentation();
 
   // Summary
   console.log('');
