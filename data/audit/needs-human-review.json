@@ -1,16 +1,69 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-13T22:35:12.255Z",
-    "totalFlagged": 9,
+    "generatedAt": "2026-02-13T23:20:22.910Z",
+    "totalFlagged": 8,
     "reasons": {
-      "originalScore-llm-conflict": 9
+      "possible-tour-fulltext": 12,
+      "originalScore-llm-conflict": 8
     }
   },
   "reviews": [
     {
-      "showId": "aint-no-mo-2022",
-      "outletId": "nysr",
-      "criticName": "Bart Greenberg",
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "clevelands-star-102",
+      "criticName": "Glenn Anderson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.052Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "houston-chronicle",
+      "criticName": "Joey Guerra",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.072Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "revue",
+      "criticName": "Marin Heinritz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-13T23:17:01.104Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-minnesota-star-tribune",
+      "criticName": "Rohan Preston",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
+      "llmScore": 40,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-13T23:17:01.116Z"
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
       "reason": "originalScore-llm-conflict",
       "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
       "llmScore": 81,
@@ -18,7 +71,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:34:46.835Z"
+      "flaggedAt": "2026-02-13T23:19:57.916Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -31,20 +84,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:34:51.635Z"
-    },
-    {
-      "showId": "girl-from-the-north-country-2022",
-      "outletId": "cititour",
-      "criticName": "Brian Scott Lipton",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"3/5\" (=60, bucket=mixed) vs LLM 87 (bucket=positive, conf=medium)",
-      "llmScore": 87,
-      "llmBucket": "Rave",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:34:54.350Z"
+      "flaggedAt": "2026-02-13T23:20:02.743Z"
     },
     {
       "showId": "golden-boy-2012",
@@ -57,7 +97,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:34:54.528Z"
+      "flaggedAt": "2026-02-13T23:20:05.602Z"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -70,33 +110,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:35:01.253Z"
+      "flaggedAt": "2026-02-13T23:20:12.119Z"
     },
     {
-      "showId": "girl-from-the-north-country-2022",
-      "outletId": "cititour",
-      "criticName": "Brian Scott Lipton",
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "outletId": "ew",
+      "criticName": "Adam Markovitz",
       "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"3/5\" (=60, bucket=mixed) vs LLM 87 (bucket=positive, conf=medium)",
-      "llmScore": 87,
-      "llmBucket": "Rave",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:31:23.542Z"
-    },
-    {
-      "showId": "wicked-2003",
-      "outletId": "timeout",
-      "criticName": "David Cote",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
-      "llmScore": 82,
-      "llmBucket": "Positive",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:35:01.305Z"
+      "flaggedAt": "2026-02-13T23:20:12.172Z"
     },
     {
       "showId": "the-trip-to-bountiful-2013",
@@ -109,7 +136,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:35:09.999Z"
+      "flaggedAt": "2026-02-13T23:20:20.740Z"
     },
     {
       "showId": "time-stands-still-2010",
@@ -122,7 +149,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:35:10.504Z"
+      "flaggedAt": "2026-02-13T23:20:21.230Z"
     },
     {
       "showId": "wicked-2003",
@@ -135,7 +162,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T22:35:11.863Z"
+      "flaggedAt": "2026-02-13T23:20:22.547Z"
     }
   ]
 }
