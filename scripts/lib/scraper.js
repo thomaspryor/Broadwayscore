@@ -33,14 +33,20 @@ async function fetchWithBrightData(url) {
   }
 
   try {
-    const apiUrl = `https://api.brightdata.com/request?zone=scraping_browser&url=${encodeURIComponent(url)}&format=markdown`;
+    const apiUrl = 'https://api.brightdata.com/request';
+    const body = JSON.stringify({
+      zone: 'scraping_browser',
+      url: url,
+      format: 'markdown'
+    });
 
     const response = await new Promise((resolve, reject) => {
       const options = {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
         }
       };
 
@@ -57,7 +63,7 @@ async function fetchWithBrightData(url) {
       });
 
       req.on('error', reject);
-      req.end();
+      req.end(body);
     });
 
     return {

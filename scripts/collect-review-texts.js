@@ -213,6 +213,8 @@ const CONFIG = {
     'timeout.com',
     // BroadwayNews: WordPress paywall, but Archive.org has excellent coverage (7-8 snapshots per URL)
     'broadwaynews.com',
+    // Free outlets with excellent Archive.org coverage (6K+ / 9K+ pages archived)
+    'talkinbroadway.com', 'huffpost.com',
   ],
 
   // Minimum word count for valid review

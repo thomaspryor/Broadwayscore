@@ -27,7 +27,7 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import DesignationLegend from '@/components/biz/DesignationLegend';
 import GatedDownloadButtons from '@/components/biz/GatedDownloadButtons';
 import BizPageTracker from '@/components/biz/BizPageTracker';
-import { BASE_URL } from '@/lib/seo';
+import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Broadway Investment Tracker',
@@ -151,6 +151,11 @@ export default function BizDashboard() {
   const recentDevelopments = generateRecentDevelopments();
   const lastUpdated = getCommercialLastUpdated();
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Investment Tracker', url: `${BASE_URL}/biz` },
+  ]);
+
   const bizFaqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -178,7 +183,7 @@ export default function BizDashboard() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(bizFaqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, bizFaqSchema]) }}
       />
     <div className="min-h-screen bg-surface">
       {/* Track page views for gating */}
