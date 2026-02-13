@@ -31,6 +31,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
+const { isNotBroadway } = require('./lib/content-filters');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -202,32 +203,8 @@ async function bwwInternalSearch(showTitle) {
 // Production guards (shared with playbill-verdict)
 // ---------------------------------------------------------------------------
 
-function isNotBroadway(title) {
-  const lower = title.toLowerCase();
-  return (
-    lower.includes('off-broadway') || lower.includes('off broadway') ||
-    lower.includes('west end') || lower.includes('london') ||
-    lower.includes('national tour') || lower.includes('touring production') ||
-    lower.includes('apple tv') || lower.includes('netflix') ||
-    lower.includes('hulu') || lower.includes('disney+') ||
-    lower.includes('streaming') || lower.includes('amazon prime') ||
-    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv') || lower.includes('fox'))) ||
-    lower.includes('tv review') || lower.includes('tv series') || lower.includes('tv show')
-  );
-}
-
-function extractUrlYear(url) {
-  if (!url) return null;
-  const match = url.match(/\/((?:19|20)\d{2})\//);
-  return match ? parseInt(match[1]) : null;
-}
-
-function isUrlYearValid(url, showOpeningYear) {
-  if (!showOpeningYear) return true;
-  const urlYear = extractUrlYear(url);
-  if (!urlYear) return true;
-  return urlYear >= showOpeningYear - 3 && urlYear <= showOpeningYear + 2;
-}
+// isNotBroadway() imported from ./lib/content-filters
+// extractUrlYear/isUrlYearValid REMOVED — violates CLAUDE.md Rule 6 (never extract metadata from URLs)
 
 // ---------------------------------------------------------------------------
 // /reviews/ page: URL construction
@@ -869,7 +846,6 @@ async function processShow(show, showId, options = {}) {
     return { reviews: [], roundup: [] };
   }
 
-  const showOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
   const results = { reviews: [], roundup: [] };
 
   // --- /reviews/ page ---
@@ -881,13 +857,6 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from /reviews/ page${aggregateRating ? ` (rating: ${aggregateRating})` : ''}`);
 
       for (const review of reviews) {
-        // URL year validation
-        if (!isUrlYearValid(review.url, showOpeningYear)) {
-          console.log(`    [SKIP] ${review.outlet}: URL year mismatch`);
-          stats.skippedGuards++;
-          continue;
-        }
-
         if (options.verify) {
           results.reviews.push(review);
         } else {
@@ -910,10 +879,6 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (!isUrlYearValid(review.url, showOpeningYear)) {
-          stats.skippedGuards++;
-          continue;
-        }
         if (review.outlet && isNotBroadway(review.outlet)) {
           stats.skippedGuards++;
           continue;
