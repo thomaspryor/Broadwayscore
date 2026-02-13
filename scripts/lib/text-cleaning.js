@@ -143,6 +143,44 @@ const TRAILING_JUNK_PATTERNS = [
 
   // === Generic corporate boilerplate at start of text ===
   /^©\s*\d{4}\s+[A-Z][\w\s,]+(?:LLC|Inc|Corp|Ltd|Media|Entertainment)[^.]*\.\s*All Rights Reserved\.\s*/i,
+
+  // === WSJ: article navigation sidebar content + paywall prompts ===
+  /\s*Article viewed icon.*$/is,
+  /\s*Read\d+\s*hours?\s*ago\s*\|.*$/is,
+  /\s*Recommended\s*Videos?\s*Advertisement.*$/is,
+  /\s*[Cc]ancel your subscription at anytime.*$/is,
+  /\s*[Pp]lease click confirm to resume now.*$/is,
+
+  // === Financial Times: footer terms ===
+  /\s*['']Financial Times[''].*?trademarks.*$/is,
+  /\s*Privacy policy\s*\|\s*Terms\s*\|\s*Copyright.*$/is,
+
+  // === NY Sun: newsletter CTA ===
+  /\s*ILLUMINATE\s+(?:your\s+world|YOUR\s+WORLD).*$/is,
+
+  // === Condé Nast (New Yorker, Vogue, etc.) ===
+  /\s*may not be reproduced.*?Cond[eé] Nast.*$/is,
+
+  // === Blogspot: CSS/HTML remnants ===
+  /\s*mso-[\w-]+:[^}]+\}\s*-*>?\s*$/is,
+  /\s*div\.WordSection\d+\s*\{.*$/is,
+
+  // === Talkin' Broadway: site navigation ===
+  /\s*Broadway show merchandise.*$/is,
+  /\s*Off-Broadway Reviews.*Share:?\s*$/is,
+
+  // === uinterview.com: venue promo ===
+  /\s*[A-Z]{2,}\s+IS\s+NOW\s+PLAYING\s+AT\s+THE\s+.*$/is,
+
+  // === Generic: slideshow promos ===
+  /\s*\d+\s+CELEBRITIES\s+WHO\s+DIED.*$/is,
+
+  // === Timeout: show metadata at end of reviews ===
+  /\s*See complete event information\s*$/is,
+  /\s*\d+hrs?\s+\d+mins?\.\s+(?:One|No)\s+intermission\.?\s*$/is,
+
+  // === Newsday: unrelated article links appended to review text ===
+  /\s*Advertising Opportunities\s*\|\s*FAQ\s*\|\s*Sitemap.*$/is,
 ];
 
 /**

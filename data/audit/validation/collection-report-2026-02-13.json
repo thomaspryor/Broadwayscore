@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-13T12:07:55.709Z",
+  "runDate": "2026-02-13T12:58:29.360Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 99,
+    "processed": 0,
+    "failed": 100,
     "skipped": 0,
-    "successRate": "1.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -31,10 +31,10 @@
     "tier2Attempts": 100,
     "tier2Success": 0,
     "tier3Attempts": 100,
-    "tier3Success": 99,
+    "tier3Success": 100,
     "tier4Attempts": 100,
-    "tier4Success": 42,
-    "totalFailed": 99,
+    "tier4Success": 41,
+    "totalFailed": 100,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -42,9 +42,7 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "high-2011/observer--jesse-oxfeld.json"
-  ],
+  "processed": [],
   "failed": [
     "hadestown-2019/observer--david-cote.json",
     "hells-kitchen-2024/observer--david-cote.json",
@@ -128,6 +126,7 @@
     "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
     "hello-dolly-2017/observer--rex-reed.json",
     "here-lies-love-2023/observer--jesse-green.json",
+    "high-2011/observer--jesse-oxfeld.json",
     "home-2024/observer--david-cote.json",
     "how-i-learned-to-drive-2022/observer--david-cote.json",
     "how-to-dance-in-ohio-2023/observer--jesse-green.json",
@@ -151,18 +150,8 @@
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "high-2011/observer--jesse-oxfeld.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
