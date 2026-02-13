@@ -169,6 +169,67 @@ function isTourReviewExcerpt(excerpt) {
   return { isTourReview: false };
 }
 
+// --- Film/TV Review Detection ---
+
+// Phrases that strongly indicate a film/TV/streaming review (not live theater)
+const FILM_TV_PATTERNS = [
+  /\bstreaming on\b/i,
+  /\bon Netflix\b/i,
+  /\bon Disney\+/i,
+  /\bon Disney Plus\b/i,
+  /\bon HBO\b/i,
+  /\bon Amazon Prime\b/i,
+  /\bon Hulu\b/i,
+  /\bon Apple TV/i,
+  /\bcinematography\b/i,
+  /\bfilmed version\b/i,
+  /\bfilm adaptation\b/i,
+  /\bmovie adaptation\b/i,
+  /\bmovie version\b/i,
+  /\bon the big screen\b/i,
+  /\bin theaters now\b/i,
+  /\bin cinemas\b/i,
+];
+
+// Phrases that confirm live theater context (presence = NOT a film review)
+const THEATER_CONTEXT_PATTERNS = [
+  /\bstage\b/i,
+  /\btheatre?\b/i,
+  /\bBroadway\b/i,
+  /\bcurtain call\b/i,
+  /\bintermission\b/i,
+  /\bopening night\b/i,
+  /\bstanding ovation\b/i,
+  /\bthe musical\b/i,
+  /\borchestra\b/i,
+  /\bmezzanine\b/i,
+];
+
+/**
+ * Check if text appears to be from a film/TV/streaming review rather than live theater.
+ * Requires 2+ film/TV signals AND zero theater signals to flag — high precision.
+ *
+ * @param {string} text - Review text (typically first 600 chars of fullText)
+ * @returns {{ isFilmTv: boolean, signals?: string[], filmCount?: number, theaterCount?: number }}
+ */
+function isFilmTvReview(text) {
+  if (!text || text.length < 100) return { isFilmTv: false };
+
+  const filmMatches = FILM_TV_PATTERNS.filter(p => p.test(text));
+  const theaterMatches = THEATER_CONTEXT_PATTERNS.filter(p => p.test(text));
+
+  if (filmMatches.length >= 2 && theaterMatches.length === 0) {
+    return {
+      isFilmTv: true,
+      signals: filmMatches.map(p => p.source),
+      filmCount: filmMatches.length,
+      theaterCount: 0
+    };
+  }
+
+  return { isFilmTv: false };
+}
+
 /**
  * Reset the title cache (for testing)
  */
@@ -179,6 +240,7 @@ function resetCache() {
 module.exports = {
   excerptMentionsWrongShow,
   isTourReviewExcerpt,
+  isFilmTvReview,
   getMatchableTitles,
   resetCache,
   COMMON_WORD_TITLES,
