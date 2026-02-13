@@ -223059,16 +223059,16 @@
     ]
   },
   {
-    "startedAt": "2026-02-13T16:53:59.368Z",
-    "completedAt": "2026-02-13T19:40:55.662Z",
+    "startedAt": "2026-02-13T16:53:44.853Z",
+    "completedAt": "2026-02-13T19:58:29.471Z",
     "totalReviews": 22435,
-    "processed": 51,
+    "processed": 52,
     "skipped": 15659,
     "errors": 1,
     "tokensUsed": {
       "input": 1156854,
-      "output": 24080,
-      "total": 2711689
+      "output": 23854,
+      "total": 2704015
     },
     "errorDetails": [
       {
@@ -223083,19 +223083,19 @@
       "rmse": 4.3,
       "meanBias": 0.23,
       "stdDev": 4.3,
-      "bucketAccuracy": 97.6,
+      "bucketAccuracy": 97.7,
       "byConfidence": {
         "high": {
-          "count": 5515,
-          "mae": 0.57
+          "count": 5514,
+          "mae": 0.56
         },
         "medium": {
-          "count": 5535,
-          "mae": 0.76
+          "count": 5536,
+          "mae": 0.77
         },
         "low": {
           "count": 103,
-          "mae": 7.84
+          "mae": 7.83
         }
       },
       "byTier": {
@@ -223194,7 +223194,7 @@
         },
         "Entertainment Weekly": {
           "count": 390,
-          "meanBias": 3.305128205128205
+          "meanBias": 3.312820512820513
         },
         "Front Row Center": {
           "count": 75,
@@ -227540,10 +227540,10 @@
       {
         "showId": "into-the-woods-2022",
         "ourDistribution": {
-          "up": 34,
+          "up": 35,
           "flat": 2,
           "down": 0,
-          "total": 36
+          "total": 37
         },
         "hasDisagreement": false
       },
@@ -228119,9 +228119,9 @@
         "showId": "living-on-love-2015",
         "ourDistribution": {
           "up": 2,
-          "flat": 3,
+          "flat": 2,
           "down": 6,
-          "total": 11
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -229143,8 +229143,8 @@
         "showId": "peter-and-the-starcatcher-2012",
         "ourDistribution": {
           "up": 6,
-          "flat": 3,
-          "down": 0,
+          "flat": 2,
+          "down": 1,
           "total": 9
         },
         "hasDisagreement": false
@@ -229499,8 +229499,8 @@
         "ourDistribution": {
           "up": 3,
           "flat": 4,
-          "down": 2,
-          "total": 9
+          "down": 3,
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -229592,10 +229592,10 @@
       {
         "showId": "richard-iii-2013",
         "ourDistribution": {
-          "up": 8,
+          "up": 7,
           "flat": 0,
           "down": 0,
-          "total": 8
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -229834,10 +229834,10 @@
       {
         "showId": "skylight-2015",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 4,
           "down": 0,
-          "total": 16
+          "total": 17
         },
         "hasDisagreement": false
       },
@@ -229908,8 +229908,8 @@
         "showId": "soul-doctor-2013",
         "ourDistribution": {
           "up": 0,
-          "flat": 4,
-          "down": 5,
+          "flat": 5,
+          "down": 4,
           "total": 9
         },
         "hasDisagreement": false
