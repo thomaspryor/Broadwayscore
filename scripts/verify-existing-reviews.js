@@ -216,7 +216,7 @@ async function processVerify(items) {
     }
 
     // Rate limit — 200ms between calls
-    await sleep(200);
+    await sleep(50);
   }
 
   return { flagged, verified, errors, flagDetails };
@@ -309,7 +309,7 @@ async function processRecover(items) {
     }
 
     // Rate limit
-    await sleep(200);
+    await sleep(50);
   }
 
   return { recovered, confirmed, errors, recoveryDetails };
