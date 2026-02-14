@@ -369,6 +369,14 @@ const COOKIE_DOMAIN_MAP = {
   'vulture.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },
   'nymag.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },  // Same Condé Nast auth
   'washingtonpost.com': { envVar: 'WAPO_COOKIES', fileKey: 'wapo' },
+  'ft.com': { envVar: 'FT_COOKIES', fileKey: 'ft' },
+  'timeout.com': { envVar: 'TIMEOUT_COOKIES', fileKey: 'timeout' },
+  'nypost.com': { envVar: 'NYPOST_COOKIES', fileKey: 'nypost' },
+  'nydailynews.com': { envVar: 'NYDAILYNEWS_COOKIES', fileKey: 'nydailynews' },
+  'deadline.com': { envVar: 'DEADLINE_COOKIES', fileKey: 'deadline' },
+  'observer.com': { envVar: 'OBSERVER_COOKIES', fileKey: 'observer' },
+  'hollywoodreporter.com': { envVar: 'THR_COOKIES', fileKey: 'hollywoodreporter' },
+  'ew.com': { envVar: 'EW_COOKIES', fileKey: 'ew' },
 };
 
 // Cache loaded cookies to avoid re-reading files/decoding base64 every time
