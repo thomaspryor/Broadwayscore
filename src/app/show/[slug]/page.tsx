@@ -57,7 +57,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       : `${BASE_URL}/og/home.png`;
 
   return {
-    title: `${show.title} - Critic Score & Reviews`,
+    title: roundedScore
+      ? `${show.title} Reviews — Broadway Scorecard | Critic Score: ${roundedScore} | ${reviewCount} Reviews`
+      : `${show.title} Reviews — Broadway Scorecard`,
     description,
     alternates: {
       canonical: canonicalUrl,
