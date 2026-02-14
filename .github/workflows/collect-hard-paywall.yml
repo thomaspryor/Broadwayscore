@@ -16,6 +16,13 @@ on:
           - newyorker.com
           - ft.com
           - telegraph.co.uk
+          - timeout.com
+          - nypost.com
+          - nydailynews.com
+          - deadline.com
+          - observer.com
+          - hollywoodreporter.com
+          - ew.com
       max_reviews:
         description: 'Maximum reviews to process per domain (0 = all)'
         required: false

@@ -1,13 +1,26 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-14T19:53:42.093Z",
-    "totalFlagged": 41,
+    "generatedAt": "2026-02-14T21:54:31.862Z",
+    "totalFlagged": 73,
     "reasons": {
-      "originalScore-llm-conflict": 14,
+      "originalScore-llm-conflict": 46,
       "possible-tour-fulltext": 27
     }
   },
   "reviews": [
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 42 (bucket=mixed, conf=high)",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:00.066Z"
+    },
     {
       "showId": "a-life-in-the-theatre-2010",
       "outletId": "ew",
@@ -19,7 +32,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:09.826Z"
+      "flaggedAt": "2026-02-14T21:54:00.424Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -32,7 +45,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:09.910Z"
+      "flaggedAt": "2026-02-14T21:54:00.504Z"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -45,7 +58,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:10.307Z"
+      "flaggedAt": "2026-02-14T21:54:00.892Z"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -58,7 +71,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:10.490Z"
+      "flaggedAt": "2026-02-14T21:54:01.072Z"
+    },
+    {
+      "showId": "airline-highway-2015",
+      "outletId": "culturesauce",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"93\" (=93, bucket=positive) vs LLM 61 (bucket=mixed, conf=medium)",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:01.213Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -71,7 +97,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:11.195Z"
+      "flaggedAt": "2026-02-14T21:54:01.756Z"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -84,7 +110,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:11.334Z"
+      "flaggedAt": "2026-02-14T21:54:01.894Z"
     },
     {
       "showId": "american-son-2018",
@@ -97,7 +123,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:11.583Z"
+      "flaggedAt": "2026-02-14T21:54:02.140Z"
     },
     {
       "showId": "bright-star-2016",
@@ -110,7 +136,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:13.944Z"
+      "flaggedAt": "2026-02-14T21:54:04.448Z"
     },
     {
       "showId": "bright-star-2016",
@@ -123,7 +149,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:13.961Z"
+      "flaggedAt": "2026-02-14T21:54:04.464Z"
+    },
+    {
+      "showId": "chinglish-2011",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"90\" (=90, bucket=positive) vs LLM 62 (bucket=mixed, conf=medium)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:05.999Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -136,7 +175,33 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:15.809Z"
+      "flaggedAt": "2026-02-14T21:54:06.258Z"
+    },
+    {
+      "showId": "constellations-2015",
+      "outletId": "ew",
+      "criticName": "Melissa Maerz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"78\" (=78, bucket=positive) vs LLM 44 (bucket=mixed, conf=medium)",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:06.481Z"
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 61 (bucket=mixed, conf=medium)",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:06.682Z"
     },
     {
       "showId": "follies-2011",
@@ -149,7 +214,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:18.312Z"
+      "flaggedAt": "2026-02-14T21:54:08.695Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -162,7 +227,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:18.856Z"
+      "flaggedAt": "2026-02-14T21:54:09.228Z"
+    },
+    {
+      "showId": "funny-girl-2022",
+      "outletId": "deadline",
+      "criticName": "Greg Evans",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"93\" (=93, bucket=positive) vs LLM 63 (bucket=mixed, conf=high)",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:09.245Z"
     },
     {
       "showId": "gigi-2015",
@@ -175,7 +253,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:19.206Z"
+      "flaggedAt": "2026-02-14T21:54:09.557Z"
     },
     {
       "showId": "girl-from-the-north-country-2022",
@@ -188,7 +266,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:19.246Z"
+      "flaggedAt": "2026-02-14T21:54:09.597Z"
+    },
+    {
+      "showId": "glengarry-glen-ross-2012",
+      "outletId": "timeout",
+      "criticName": "David Cote",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 82 (bucket=positive, conf=medium)",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:09.680Z"
     },
     {
       "showId": "godspell-2011",
@@ -201,7 +292,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:19.445Z"
+      "flaggedAt": "2026-02-14T21:54:09.792Z"
     },
     {
       "showId": "golden-boy-2012",
@@ -214,7 +305,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:19.454Z"
+      "flaggedAt": "2026-02-14T21:54:09.800Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -227,7 +318,33 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:19.505Z"
+      "flaggedAt": "2026-02-14T21:54:09.850Z"
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "outletId": "ew",
+      "criticName": "Dalton Ross",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"93\" (=93, bucket=positive) vs LLM 63 (bucket=mixed, conf=medium)",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:09.853Z"
+    },
+    {
+      "showId": "grand-horizons-2020",
+      "outletId": "vulture",
+      "criticName": "Helen Shaw",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"20\" (=20, bucket=negative) vs LLM 80 (bucket=positive, conf=high)",
+      "llmScore": 80,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:10.085Z"
     },
     {
       "showId": "indecent-2017",
@@ -240,7 +357,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:22.735Z"
+      "flaggedAt": "2026-02-14T21:54:12.968Z"
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "outletId": "ew",
+      "criticName": "Tanner Stransky",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 42 (bucket=mixed, conf=medium)",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:15.036Z"
     },
     {
       "showId": "les-miserables-1987",
@@ -253,7 +383,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:25.056Z"
+      "flaggedAt": "2026-02-14T21:54:15.241Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -266,7 +396,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:25.092Z"
+      "flaggedAt": "2026-02-14T21:54:15.277Z"
     },
     {
       "showId": "life-of-pi-2023",
@@ -279,7 +409,59 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-14T19:53:25.245Z"
+      "flaggedAt": "2026-02-14T21:54:15.427Z"
+    },
+    {
+      "showId": "lucky-guy-2013",
+      "outletId": "ew",
+      "criticName": "Lisa Schwarzbaum",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"72\" (=72, bucket=positive) vs LLM 43 (bucket=mixed, conf=high)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:15.885Z"
+    },
+    {
+      "showId": "machinal-2014",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"78\" (=78, bucket=positive) vs LLM 43 (bucket=mixed, conf=medium)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:16.108Z"
+    },
+    {
+      "showId": "man-and-boy-2011",
+      "outletId": "ew",
+      "criticName": "Keith Staskiewicz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 45 (bucket=mixed, conf=medium)",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:16.223Z"
+    },
+    {
+      "showId": "million-dollar-quartet-2010",
+      "outletId": "ew",
+      "criticName": "Clark Collis",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"78\" (=78, bucket=positive) vs LLM 43 (bucket=mixed, conf=medium)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:17.078Z"
     },
     {
       "showId": "miss-saigon-2017",
@@ -292,7 +474,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:27.042Z"
+      "flaggedAt": "2026-02-14T21:54:17.201Z"
+    },
+    {
+      "showId": "motown-the-musical-2013",
+      "outletId": "usatoday",
+      "criticName": "Elysa Gardner",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"50\" (=50, bucket=mixed) vs LLM 77 (bucket=positive, conf=high)",
+      "llmScore": 77,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:17.508Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -305,7 +500,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:27.378Z"
+      "flaggedAt": "2026-02-14T21:54:17.528Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -318,7 +513,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:27.398Z"
+      "flaggedAt": "2026-02-14T21:54:17.548Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -331,7 +526,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:27.699Z"
+      "flaggedAt": "2026-02-14T21:54:17.838Z"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -344,7 +539,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:28.160Z"
+      "flaggedAt": "2026-02-14T21:54:18.287Z"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -357,7 +552,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:28.229Z"
+      "flaggedAt": "2026-02-14T21:54:18.353Z"
     },
     {
       "showId": "noises-off-2016",
@@ -370,7 +565,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:28.271Z"
+      "flaggedAt": "2026-02-14T21:54:18.394Z"
+    },
+    {
+      "showId": "outside-mullingar-2014",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 44 (bucket=mixed, conf=medium)",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:19.850Z"
     },
     {
       "showId": "parade-2023",
@@ -383,7 +591,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-14T19:53:29.842Z"
+      "flaggedAt": "2026-02-14T21:54:19.908Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -396,7 +604,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:30.629Z"
+      "flaggedAt": "2026-02-14T21:54:20.669Z"
     },
     {
       "showId": "pretty-woman-the-musical-2018",
@@ -409,7 +617,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:30.769Z"
+      "flaggedAt": "2026-02-14T21:54:20.804Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -422,7 +630,33 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:30.932Z"
+      "flaggedAt": "2026-02-14T21:54:20.963Z"
+    },
+    {
+      "showId": "priscilla-queen-of-the-desert-2011",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 43 (bucket=mixed, conf=high)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:20.978Z"
+    },
+    {
+      "showId": "promises-promises-2010",
+      "outletId": "entertainment-weekly",
+      "criticName": "Lisa Schwarzbaum",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 54 (bucket=mixed, conf=medium)",
+      "llmScore": 54,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:21.016Z"
     },
     {
       "showId": "ragtime-2025",
@@ -435,7 +669,46 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:31.461Z"
+      "flaggedAt": "2026-02-14T21:54:21.483Z"
+    },
+    {
+      "showId": "rain-2010",
+      "outletId": "ew",
+      "criticName": "Unknown",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"78\" (=78, bucket=positive) vs LLM 43 (bucket=mixed, conf=high)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:21.531Z"
+    },
+    {
+      "showId": "red-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"90\" (=90, bucket=positive) vs LLM 43 (bucket=mixed, conf=medium)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:21.632Z"
+    },
+    {
+      "showId": "scandalous-2012",
+      "outletId": "ew",
+      "criticName": "Keith Staskiewicz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"78\" (=78, bucket=positive) vs LLM 47 (bucket=mixed, conf=medium)",
+      "llmScore": 47,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:22.162Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -448,7 +721,46 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:32.532Z"
+      "flaggedAt": "2026-02-14T21:54:22.513Z"
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 44 (bucket=mixed, conf=high)",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:24.671Z"
+    },
+    {
+      "showId": "the-columnist-2012",
+      "outletId": "ew",
+      "criticName": "Keith Staskiewicz",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 42 (bucket=mixed, conf=high)",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:25.400Z"
+    },
+    {
+      "showId": "the-gershwins-porgy-and-bess-2012",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 42 (bucket=mixed, conf=high)",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:26.131Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -461,7 +773,72 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:36.263Z"
+      "flaggedAt": "2026-02-14T21:54:26.153Z"
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "outletId": "ew",
+      "criticName": "Maya Stanton",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"90\" (=90, bucket=positive) vs LLM 47 (bucket=mixed, conf=medium)",
+      "llmScore": 47,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:26.241Z"
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "outletId": "guardian",
+      "criticName": "Alexis Soloski",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"93\" (=93, bucket=positive) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:26.423Z"
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 46 (bucket=mixed, conf=medium)",
+      "llmScore": 46,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:26.614Z"
+    },
+    {
+      "showId": "the-last-ship-2014",
+      "outletId": "usatoday",
+      "criticName": "Elysa Gardner",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"88\" (=88, bucket=positive) vs LLM 61 (bucket=mixed, conf=high)",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:27.130Z"
+    },
+    {
+      "showId": "the-lyons-2012",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 43 (bucket=mixed, conf=medium)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:27.438Z"
     },
     {
       "showId": "the-new-one-2018",
@@ -474,7 +851,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:37.898Z"
+      "flaggedAt": "2026-02-14T21:54:27.745Z"
+    },
+    {
+      "showId": "the-other-place-2013",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"90\" (=90, bucket=positive) vs LLM 42 (bucket=mixed, conf=high)",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:27.889Z"
     },
     {
       "showId": "the-trip-to-bountiful-2013",
@@ -487,7 +877,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:39.559Z"
+      "flaggedAt": "2026-02-14T21:54:29.378Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -500,7 +890,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:39.729Z"
+      "flaggedAt": "2026-02-14T21:54:29.544Z"
+    },
+    {
+      "showId": "the-winslow-boy-2013",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"83\" (=83, bucket=positive) vs LLM 44 (bucket=mixed, conf=medium)",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:29.669Z"
     },
     {
       "showId": "time-stands-still-2010",
@@ -513,7 +916,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:40.243Z"
+      "flaggedAt": "2026-02-14T21:54:30.046Z"
+    },
+    {
+      "showId": "vanya-and-sonia-and-masha-and-spike-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"87\" (=87, bucket=positive) vs LLM 47 (bucket=mixed, conf=medium)",
+      "llmScore": 47,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T21:54:30.815Z"
     },
     {
       "showId": "war-paint-2017",
@@ -526,7 +942,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:41.363Z"
+      "flaggedAt": "2026-02-14T21:54:31.145Z"
     },
     {
       "showId": "wicked-2003",
@@ -539,7 +955,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T19:53:41.720Z"
+      "flaggedAt": "2026-02-14T21:54:31.494Z"
     }
   ]
 }
