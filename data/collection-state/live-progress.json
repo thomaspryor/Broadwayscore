@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-14T00:29:15.665Z",
-  "processed": 12,
-  "failed": 48,
-  "successRate": "20.0%",
+  "updatedAt": "2026-02-14T00:33:53.018Z",
+  "processed": 196,
+  "failed": 224,
+  "successRate": "46.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 85,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 12
+    "brightdata": 67,
+    "archive": 49
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T21:20:38.107Z",
+      "event": "bb-session",
+      "session": "4d9f01c6",
+      "url": "https://www.amny.com/entertainment/"
+    },
+    {
+      "t": "2026-02-13T21:30:08.067Z",
+      "event": "bb-session",
+      "session": "62fc85fa",
+      "url": "https://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+    },
+    {
+      "t": "2026-02-13T21:30:38.358Z",
+      "event": "bb-session",
+      "session": "2bb0e8b2",
+      "url": "https://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&u"
+    },
+    {
+      "t": "2026-02-13T21:31:03.126Z",
+      "event": "bb-session",
+      "session": "113ceff0",
+      "url": "https://www.hollywoodreporter.com/review/arthur-millers-a-view-bridge-839854"
+    },
+    {
+      "t": "2026-02-13T21:31:16.526Z",
+      "event": "bb-session",
+      "session": "5d7efbde",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-ca"
+    }
+  ]
 }
