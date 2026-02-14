@@ -27,7 +27,11 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
     "a-soldiers-play-2020/broadway-blog--matthew-wexler.json",
-    "a-soldiers-play-2020/theater-life--barry-gordin.json"
+    "a-soldiers-play-2020/theater-life--barry-gordin.json",
+    "a-view-from-the-bridge-2010/broadwayworld--michael-dale.json",
+    "american-buffalo-2008/theater-life--david-sheward.json",
+    "american-buffalo-2008/theater-life--samuel-l-leiter.json",
+    "american-son-2018/artsatlcom--kelundra-smith.json"
   ],
   "failed": [
     "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json",
@@ -61,7 +65,18 @@
     "33-variations-2009/talkinbroadway--matthew-murray.json",
     "33-variations-2009/usatoday--elysa-gardner.json",
     "a-soldiers-play-2020/curtainup--simon-saltzman.json",
-    "a-soldiers-play-2020/talkinbroadway--matthew-murray.json"
+    "a-soldiers-play-2020/talkinbroadway--matthew-murray.json",
+    "a-soldiers-play-2020/theater-scene--joel-benjamin.json",
+    "a-tale-of-two-cities-2008/talkinbroadway--matthew-murray.json",
+    "a-time-to-kill-2013/broadwayworld--michael-dale.json",
+    "a-time-to-kill-2013/huffpost--unknown.json",
+    "a-time-to-kill-2013/northjerseycom--robert-feldberg.json",
+    "a-view-from-the-bridge-2010/ap--michael-kuchwara.json",
+    "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
+    "a-view-from-the-bridge-2010/usatoday--elysa-gardner.json",
+    "american-buffalo-2008/talkinbroadway--matthew-murray.json",
+    "american-buffalo-2008/theater-scene--joseph-pisano.json",
+    "american-son-2018/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -85,31 +100,44 @@
       "the-music-man-2022/broadwaynews--charles-isherwood.json",
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "a-soldiers-play-2020/theater-life--barry-gordin.json"
+      "a-soldiers-play-2020/theater-life--barry-gordin.json",
+      "american-buffalo-2008/theater-life--david-sheward.json",
+      "american-buffalo-2008/theater-life--samuel-l-leiter.json",
+      "american-son-2018/artsatlcom--kelundra-smith.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/american-son-2018/amny--matt-windman.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "hedwig-and-the-angry-inch-2014/guardian--jesse-green.json",
       "hedwig-and-the-angry-inch-2014/the-guardian-uk--alexis-soloski.json",
-      "junk-2017/timeout--christopher-kelly.json"
+      "junk-2017/timeout--christopher-kelly.json",
+      "a-time-to-kill-2013/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "and-juliet-2022/thewrap--robert-hofler.json",
       "groundhog-day-2017/musical-theatre-review--ron-cohen.json",
       "jitney-2017/thewrap--robert-hofler.json",
       "machinal-2014/thewrap--robert-hofler.json",
-      "a-soldiers-play-2020/broadway-blog--matthew-wexler.json"
+      "a-soldiers-play-2020/broadway-blog--matthew-wexler.json",
+      "a-view-from-the-bridge-2010/broadwayworld--michael-dale.json"
     ]
   },
   "startTime": "2026-02-14T03:32:10.854Z",
-  "lastProcessed": "a-soldiers-play-2020/theater-life--barry-gordin.json",
+  "lastProcessed": "american-son-2018/artsatlcom--kelundra-smith.json",
   "log": [
     {
       "t": "2026-02-14T03:50:37.001Z",
       "event": "bb-session",
       "session": "cc6cbdda",
       "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    },
+    {
+      "t": "2026-02-14T04:16:22.186Z",
+      "event": "bb-session",
+      "session": "d024691e",
+      "url": "https://www.amny.com/entertainment/american-son-review-1.22896845/"
     }
   ]
 }
