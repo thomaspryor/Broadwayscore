@@ -144,6 +144,7 @@ jobs:
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: mcp_unlocker
@@ -466,6 +467,7 @@ jobs:
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: mcp_unlocker
