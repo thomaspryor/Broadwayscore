@@ -1,0 +1,533 @@
+#!/usr/bin/env node
+
+/**
+ * Generate LLM-powered related show recommendations
+ *
+ * Hybrid approach: algorithmic pre-filter (top 15) → LLM re-rank (pick 6)
+ * Batches 10 shows per LLM call for cost efficiency (~$0.05-0.10 total)
+ *
+ * Provider chain: GPT-4o-mini (primary) → Gemini Flash (fallback)
+ *
+ * Usage:
+ *   node scripts/generate-related-shows.js              # Full run
+ *   node scripts/generate-related-shows.js --force       # Regenerate all
+ *   node scripts/generate-related-shows.js --show=hamilton  # Single show
+ *   node scripts/generate-related-shows.js --dry-run     # Print without saving
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+const ROOT = path.resolve(__dirname, '..');
+const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
+const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
+const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
+const OUTPUT_FILE = path.join(ROOT, 'data', 'related-shows.json');
+
+// Parse CLI args
+const args = process.argv.slice(2);
+const force = args.includes('--force');
+const dryRun = args.includes('--dry-run');
+const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+
+// Meta tags to strip from LLM input (not useful for recommendations)
+const META_TAGS = new Set(['lottery', 'rush', 'sro', 'tony-winner', 'new', 'classic', 'limited-run', 'upcoming']);
+
+// ─── Comparison pairs (hard constraints) ───
+// Imported inline since this is CJS and comparisons.ts is ESM
+const COMPARISON_PAIRS = [
+  ['hamilton', 'wicked'], ['the-lion-king', 'aladdin'], ['the-lion-king', 'wicked'],
+  ['hamilton', 'the-lion-king'], ['wicked', 'aladdin'], ['hamilton', 'moulin-rouge'],
+  ['chicago', 'moulin-rouge'], ['chicago', 'wicked'], ['chicago', 'hamilton'],
+  ['the-lion-king', 'moulin-rouge'], ['book-of-mormon', 'hamilton'], ['book-of-mormon', 'wicked'],
+  ['hadestown', 'moulin-rouge'], ['hadestown', 'wicked'], ['hadestown', 'hamilton'],
+  ['six', 'hadestown'], ['six', 'and-juliet'], ['mj', 'hadestown'], ['mj', 'moulin-rouge'],
+  ['the-lion-king', 'harry-potter'], ['aladdin', 'the-lion-king'], ['aladdin', 'harry-potter'],
+  ['wicked', 'harry-potter'], ['the-lion-king', 'mj'], ['aladdin', 'mj'],
+  ['the-outsiders', 'water-for-elephants'], ['hells-kitchen', 'the-outsiders'],
+  ['hells-kitchen', 'hadestown'], ['the-great-gatsby', 'moulin-rouge'],
+  ['death-becomes-her', 'chicago'], ['oh-mary', 'cabaret-2024'],
+  ['maybe-happy-ending', 'the-notebook'], ['stranger-things', 'beetlejuice-2019'],
+  ['mj', 'six'], ['and-juliet', 'mj'], ['and-juliet', 'moulin-rouge'],
+  ['harry-potter', 'stranger-things'], ['stereophonic', 'appropriate'],
+  ['death-of-a-salesman', 'oedipus'], ['cabaret-2024', 'chicago'],
+  ['sweeney-todd-2023', 'hadestown'], ['sunset-boulevard-2024', 'chicago'],
+  ['sunset-boulevard-2024', 'cabaret-2024'], ['hamilton', 'harry-potter'],
+  ['wicked', 'stranger-things'], ['the-phantom-of-the-opera-1988', 'les-miserables-2014'],
+  ['rent-1996', 'dear-evan-hansen-2016'], ['come-from-away-2017', 'dear-evan-hansen-2016'],
+  ['jersey-boys-2005', 'mj'], ['mean-girls-2018', 'six'], ['frozen-2018', 'aladdin'],
+  ['beetlejuice-2019', 'mean-girls-2018'],
+];
+
+// Build slug→slug comparison map
+const comparisonMap = new Map();
+for (const [a, b] of COMPARISON_PAIRS) {
+  if (!comparisonMap.has(a)) comparisonMap.set(a, []);
+  if (!comparisonMap.has(b)) comparisonMap.set(b, []);
+  comparisonMap.get(a).push(b);
+  comparisonMap.get(b).push(a);
+}
+
+// ─── Load data ───
+const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+const consensusData = fs.existsSync(CONSENSUS_FILE) ? JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf8')) : { shows: {} };
+const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8'));
+
+// Build lookup maps
+const showById = new Map();
+const showBySlug = new Map();
+const idToSlug = new Map();
+const slugToId = new Map();
+for (const s of showsData.shows) {
+  showById.set(s.id, s);
+  showBySlug.set(s.slug, s);
+  idToSlug.set(s.id, s.slug);
+  slugToId.set(s.slug, s.id);
+}
+
+// Build review count map
+const reviewCountMap = new Map();
+for (const r of reviewsData.reviews) {
+  const count = reviewCountMap.get(r.showId) || 0;
+  reviewCountMap.set(r.showId, count + 1);
+}
+
+// Build score map
+const scoreMap = new Map();
+for (const s of showsData.shows) {
+  // Compute a simple average from reviews
+  const showReviews = reviewsData.reviews.filter(r => r.showId === s.id && r.assignedScore != null);
+  if (showReviews.length >= 5) {
+    const avg = showReviews.reduce((sum, r) => sum + r.assignedScore, 0) / showReviews.length;
+    scoreMap.set(s.id, Math.round(avg));
+  }
+}
+
+// ─── Algorithmic pre-filter (matches data-core.ts logic) ───
+function algorithmicCandidates(show, limit = 15) {
+  const currentCreatives = new Map();
+  for (const m of show.creativeTeam || []) {
+    currentCreatives.set(m.name.toLowerCase(), m.role.toLowerCase());
+  }
+  const currentTags = new Set((show.tags || []).filter(t => !META_TAGS.has(t)));
+  const currentYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 2020;
+  const currentScore = scoreMap.get(show.id) ?? null;
+
+  const getBand = (score) => {
+    if (score === null) return -1;
+    if (score >= 90) return 3;
+    if (score >= 75) return 2;
+    if (score >= 60) return 1;
+    return 0;
+  };
+  const currentBand = getBand(currentScore);
+
+  const thematicTags = new Set(['comedy', 'drama', 'romantic', 'family', 'fantasy', 'thriller', 'biographical']);
+  const structuralTags = new Set(['jukebox', 'immersive', 'one-person-show', 'concert', 'revue']);
+
+  const roleWeight = (role) => {
+    const r = role.toLowerCase();
+    if (r === 'director') return 8;
+    if (['book', 'playwright', 'composer', 'music', 'lyrics', 'lyricist'].includes(r)) return 7;
+    if (r === 'choreographer') return 5;
+    return 2;
+  };
+
+  const scored = showsData.shows
+    .filter(s => s.id !== show.id && (reviewCountMap.get(s.id) || 0) >= 5)
+    .map(candidate => {
+      let score = 0;
+      if (candidate.type === show.type) score += 10;
+      for (const member of candidate.creativeTeam || []) {
+        if (currentCreatives.has(member.name.toLowerCase())) {
+          score += roleWeight(member.role);
+        }
+      }
+      for (const tag of (candidate.tags || []).filter(t => !META_TAGS.has(t))) {
+        if (!currentTags.has(tag)) continue;
+        if (thematicTags.has(tag)) score += 4;
+        else if (structuralTags.has(tag)) score += 2;
+      }
+      const candidateBand = getBand(scoreMap.get(candidate.id) ?? null);
+      if (currentBand >= 0 && candidateBand >= 0) {
+        if (candidateBand === currentBand) score += 3;
+        else if (Math.abs(candidateBand - currentBand) === 1) score += 1;
+      }
+      const candidateYear = candidate.openingDate ? new Date(candidate.openingDate).getFullYear() : 2020;
+      const yearDiff = Math.abs(currentYear - candidateYear);
+      if (yearDiff <= 2) score += 3;
+      else if (yearDiff <= 5) score += 1;
+      if (candidate.status === 'open' || candidate.status === 'previews') score += 3;
+
+      return { show: candidate, score };
+    })
+    .filter(({ score }) => score >= 8)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+
+  return scored.map(s => s.show);
+}
+
+// ─── LLM Providers ───
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function callOpenAI(prompt) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'gpt-4o-mini',
+      temperature: 0.3,
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          const json = JSON.parse(data);
+          resolve(json.choices?.[0]?.message?.content || '');
+        } else {
+          reject(new Error(`OpenAI ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function callGemini(prompt) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 2000 }
+    });
+
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          const json = JSON.parse(data);
+          resolve(json.candidates?.[0]?.content?.parts?.[0]?.text || '');
+        } else {
+          reject(new Error(`Gemini ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+async function callLLM(prompt) {
+  const providers = [];
+  if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
+  if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
+
+  for (const { name, call } of providers) {
+    try {
+      const text = await call(prompt);
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return { parsed, provider: name };
+      }
+      // Try array format
+      const arrayMatch = text.match(/\[[\s\S]*\]/);
+      if (arrayMatch) {
+        return { parsed: JSON.parse(arrayMatch[0]), provider: name };
+      }
+    } catch (e) {
+      console.log(`  ${name} failed: ${e.message}`);
+    }
+  }
+  return null;
+}
+
+// ─── Build show profile for LLM ───
+function buildShowProfile(show) {
+  const score = scoreMap.get(show.id);
+  const consensus = consensusData.shows[show.id]?.text || '';
+  const tags = (show.tags || []).filter(t => !META_TAGS.has(t));
+  const director = (show.creativeTeam || []).find(m => m.role === 'Director')?.name || '';
+  const writers = (show.creativeTeam || [])
+    .filter(m => ['Book', 'Playwright', 'Composer', 'Music', 'Lyrics', 'Lyricist', 'Music & Lyrics'].includes(m.role))
+    .map(m => `${m.name} (${m.role})`)
+    .join(', ');
+
+  return [
+    `TITLE: ${show.title}`,
+    `TYPE: ${show.type} | STATUS: ${show.status} | SCORE: ${score || 'N/A'}/100`,
+    tags.length ? `TAGS: ${tags.join(', ')}` : '',
+    director ? `DIRECTOR: ${director}` : '',
+    writers ? `WRITERS: ${writers}` : '',
+    show.synopsis ? `SYNOPSIS: ${show.synopsis.slice(0, 200)}` : '',
+    consensus ? `CRITICAL CONSENSUS: ${consensus}` : '',
+  ].filter(Boolean).join('\n');
+}
+
+function buildCandidateList(candidates) {
+  return candidates.map(c => {
+    const score = scoreMap.get(c.id);
+    const consensus = consensusData.shows[c.id]?.text || '';
+    const tags = (c.tags || []).filter(t => !META_TAGS.has(t));
+    const director = (c.creativeTeam || []).find(m => m.role === 'Director')?.name || '';
+    const parts = [
+      `ID: ${c.id} | "${c.title}" | ${c.type} | ${c.status} | score:${score || '?'}`,
+    ];
+    if (tags.length) parts.push(`  tags: ${tags.join(', ')}`);
+    if (director) parts.push(`  director: ${director}`);
+    if (consensus) parts.push(`  consensus: ${consensus.slice(0, 150)}`);
+    return parts.join('\n');
+  }).join('\n\n');
+}
+
+// ─── Build batch prompt ───
+function buildBatchPrompt(batch) {
+  // batch = [{ show, candidates, comparisonIds, isOpen }]
+  let prompt = `You are a Broadway recommendation engine. For each show below, pick the 6 best "if you liked this, you'd also like..." recommendations from its candidate list.
+
+RULES:
+- Consider tone, vibe, creative team connections, audience overlap, and genre feel
+- Do NOT just match on type — a dark irreverent comedy fan doesn't want a family musical
+- Never recommend two productions of the same title
+- For OPEN/PREVIEWS shows: at least 4 of 6 picks must be currently open/previews
+- For CLOSED shows: at least 2 of 6 picks must be currently open/previews
+- Some shows have "MUST INCLUDE" IDs — these are editorially curated comparisons that MUST appear in the 6 (fill remaining slots from candidates)
+
+Return a JSON object mapping each show's ID to an array of 6 recommended IDs:
+{
+  "show-id-1": ["rec-1", "rec-2", "rec-3", "rec-4", "rec-5", "rec-6"],
+  "show-id-2": ["rec-1", "rec-2", "rec-3", "rec-4", "rec-5", "rec-6"]
+}
+
+Return ONLY the JSON object, no other text.\n\n`;
+
+  for (const { show, candidates, comparisonIds } of batch) {
+    prompt += `═══ SHOW: ${show.id} ═══\n`;
+    prompt += buildShowProfile(show) + '\n';
+    if (comparisonIds.length > 0) {
+      prompt += `MUST INCLUDE (up to 2): ${comparisonIds.join(', ')}\n`;
+    }
+    prompt += `\nCANDIDATES:\n${buildCandidateList(candidates)}\n\n`;
+  }
+
+  return prompt;
+}
+
+// ─── Multi-production dedup ───
+function deduplicateProductions(ids) {
+  // Extract base title (remove year suffix)
+  const seen = new Map(); // baseTitle → id
+  const result = [];
+  for (const id of ids) {
+    const show = showById.get(id);
+    if (!show) continue;
+    const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '');
+    if (seen.has(baseTitle)) continue;
+    seen.set(baseTitle, id);
+    result.push(id);
+  }
+  return result;
+}
+
+// ─── Main ───
+async function main() {
+  console.log('=== Generate Related Shows (Hybrid LLM) ===');
+  console.log(`Shows: ${showsData.shows.length} | Consensus: ${Object.keys(consensusData.shows).length}`);
+  console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'} | Force: ${force} | Filter: ${showFilter || 'all'}`);
+
+  // Load existing data
+  let existingData = { _meta: {}, shows: {} };
+  if (fs.existsSync(OUTPUT_FILE)) {
+    existingData = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
+  }
+
+  // Filter shows
+  let shows = showsData.shows;
+  if (showFilter) {
+    shows = shows.filter(s => s.slug === showFilter || s.id === showFilter);
+    if (shows.length === 0) {
+      console.error(`Show not found: ${showFilter}`);
+      process.exit(1);
+    }
+  }
+
+  // Filter to shows with enough data for LLM (>= 5 reviews)
+  const eligibleShows = shows.filter(s => (reviewCountMap.get(s.id) || 0) >= 5);
+  console.log(`Eligible shows (5+ reviews): ${eligibleShows.length}`);
+
+  // Skip already-processed unless --force
+  const today = new Date().toISOString().split('T')[0];
+  const showsToProcess = force ? eligibleShows : eligibleShows.filter(s => {
+    const existing = existingData.shows[s.id];
+    if (!existing) return true;
+    // Regenerate if older than 30 days
+    const age = (Date.now() - new Date(existing.lastUpdated).getTime()) / (1000 * 60 * 60 * 24);
+    return age > 30;
+  });
+
+  console.log(`To process: ${showsToProcess.length} (${eligibleShows.length - showsToProcess.length} skipped)`);
+
+  if (showsToProcess.length === 0) {
+    console.log('Nothing to do.');
+    return;
+  }
+
+  // Build batches of 10
+  const BATCH_SIZE = 10;
+  const batches = [];
+  for (let i = 0; i < showsToProcess.length; i += BATCH_SIZE) {
+    batches.push(showsToProcess.slice(i, i + BATCH_SIZE));
+  }
+
+  let processed = 0;
+  let failed = 0;
+  let usedAlgorithmic = 0;
+
+  for (let bi = 0; bi < batches.length; bi++) {
+    const batch = batches[bi];
+    console.log(`\nBatch ${bi + 1}/${batches.length} (${batch.length} shows):`);
+
+    // Pre-filter candidates for each show
+    const batchInput = batch.map(show => {
+      const candidates = algorithmicCandidates(show, 15);
+
+      // Get comparison pair IDs for this show
+      const comparisonSlugs = comparisonMap.get(show.slug) || [];
+      const comparisonIds = comparisonSlugs
+        .map(slug => slugToId.get(slug))
+        .filter(id => id && id !== show.id);
+
+      // Merge comparison pair shows into candidates if not already there
+      const candidateIds = new Set(candidates.map(c => c.id));
+      for (const cId of comparisonIds) {
+        if (!candidateIds.has(cId)) {
+          const cShow = showById.get(cId);
+          if (cShow) candidates.push(cShow);
+        }
+      }
+
+      return { show, candidates, comparisonIds };
+    });
+
+    // Call LLM
+    const prompt = buildBatchPrompt(batchInput);
+    const result = await callLLM(prompt);
+
+    if (result) {
+      console.log(`  LLM responded (${result.provider})`);
+      const recommendations = result.parsed;
+
+      for (const { show, candidates, comparisonIds } of batchInput) {
+        let recs = recommendations[show.id];
+        if (Array.isArray(recs) && recs.length > 0) {
+          // Validate IDs exist
+          recs = recs.filter(id => showById.has(id) && id !== show.id);
+          // Multi-production dedup
+          recs = deduplicateProductions(recs);
+          // Ensure we have 6
+          if (recs.length < 6) {
+            // Fill from algorithmic candidates
+            const recsSet = new Set(recs);
+            for (const c of candidates) {
+              if (recs.length >= 6) break;
+              if (!recsSet.has(c.id)) {
+                recs.push(c.id);
+                recsSet.add(c.id);
+              }
+            }
+          }
+          recs = recs.slice(0, 6);
+
+          existingData.shows[show.id] = {
+            relatedIds: recs,
+            lastUpdated: today,
+          };
+          processed++;
+          if (dryRun) {
+            console.log(`  ${show.title}: ${recs.map(id => showById.get(id)?.title || id).join(', ')}`);
+          }
+        } else {
+          // LLM didn't return recs for this show — use algorithmic
+          const algRecs = candidates.slice(0, 6).map(c => c.id);
+          existingData.shows[show.id] = {
+            relatedIds: algRecs,
+            lastUpdated: today,
+          };
+          usedAlgorithmic++;
+          console.log(`  ${show.title}: ALGORITHMIC FALLBACK`);
+        }
+      }
+    } else {
+      // Entire batch failed — use algorithmic for all
+      console.log('  LLM FAILED — using algorithmic fallback for entire batch');
+      for (const { show, candidates } of batchInput) {
+        const algRecs = candidates.slice(0, 6).map(c => c.id);
+        existingData.shows[show.id] = {
+          relatedIds: algRecs,
+          lastUpdated: today,
+        };
+        usedAlgorithmic++;
+      }
+      failed++;
+    }
+
+    // Checkpoint every 25 shows
+    if (!dryRun && processed > 0 && (processed % 25 < BATCH_SIZE || bi === batches.length - 1)) {
+      existingData._meta = {
+        lastGenerated: today,
+        showCount: Object.keys(existingData.shows).length,
+      };
+      fs.writeFileSync(OUTPUT_FILE, JSON.stringify(existingData, null, 2));
+      console.log(`  [Checkpoint] Saved ${Object.keys(existingData.shows).length} shows`);
+    }
+
+    // Rate limiting between batches
+    if (bi < batches.length - 1) {
+      await sleep(1000);
+    }
+  }
+
+  // Final save
+  if (!dryRun) {
+    existingData._meta = {
+      lastGenerated: today,
+      showCount: Object.keys(existingData.shows).length,
+    };
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(existingData, null, 2));
+  }
+
+  console.log(`\n=== Done ===`);
+  console.log(`LLM processed: ${processed}`);
+  console.log(`Algorithmic fallback: ${usedAlgorithmic}`);
+  console.log(`Failed batches: ${failed}`);
+  console.log(`Total in file: ${Object.keys(existingData.shows).length}`);
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
