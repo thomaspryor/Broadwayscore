@@ -206,8 +206,9 @@ function getProviderChain() {
 }
 
 /**
- * Call LLM with automatic fallback through provider chain
- * @returns {{ text: string, provider: string } | null}
+ * Call LLM with automatic fallback through provider chain.
+ * Parses JSON from response — if response isn't valid JSON, falls back to next provider.
+ * @returns {{ parsed: Object, provider: string } | null}
  */
 async function callWithFallback(prompt) {
   const chain = getProviderChain();
@@ -217,7 +218,21 @@ async function callWithFallback(prompt) {
     const { name, call } = chain[i];
     try {
       const text = await call(prompt);
-      return { text, provider: name };
+
+      // Parse JSON from response — unparseable = try next provider
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        console.log(`    ${name}: no JSON in response, trying next...`);
+        continue;
+      }
+
+      try {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return { parsed, provider: name };
+      } catch (parseErr) {
+        console.log(`    ${name}: invalid JSON (${parseErr.message}), trying next...`);
+        continue;
+      }
     } catch (e) {
       console.log(`    ${name} verify error: ${e.message}`);
       if (i < chain.length - 1) {
@@ -313,34 +328,22 @@ Set isValid=true only if the content is a review of the BROADWAY production and 
   const result = await callWithFallback(prompt);
 
   if (!result) {
-    // No LLM providers available — fall back to heuristics
+    // No LLM providers available (or all returned unparseable JSON) — fall back to heuristics
     return heuristicVerify({ scrapedText, excerpt, showTitle });
   }
 
-  try {
-    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      return {
-        isValid: parsed.isValid ?? true,
-        confidence: parsed.confidence || 'medium',
-        issues: parsed.issues || [],
-        truncated: parsed.truncated || false,
-        wrongArticle: parsed.wrongArticle || false,
-        wrongProduction: parsed.wrongProduction || false,
-        isFilmTv: parsed.isFilmTv || false,
-        reasoning: parsed.reasoning || '',
-        verifiedBy: `llm:${result.provider}`
-      };
-    }
-
-    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-
-  } catch (error) {
-    console.error(`    LLM verify parse error: ${error.message}`);
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-  }
+  const parsed = result.parsed;
+  return {
+    isValid: parsed.isValid ?? true,
+    confidence: parsed.confidence || 'medium',
+    issues: parsed.issues || [],
+    truncated: parsed.truncated || false,
+    wrongArticle: parsed.wrongArticle || false,
+    wrongProduction: parsed.wrongProduction || false,
+    isFilmTv: parsed.isFilmTv || false,
+    reasoning: parsed.reasoning || '',
+    verifiedBy: `llm:${result.provider}`
+  };
 }
 
 // ============================================================
