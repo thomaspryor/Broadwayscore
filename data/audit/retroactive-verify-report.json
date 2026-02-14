@@ -1,26 +1,34 @@
 {
-  "timestamp": "2026-02-14T15:20:16.355Z",
+  "timestamp": "2026-02-14T15:20:26.873Z",
   "dryRun": false,
   "verify": {
-    "processed": 47,
+    "processed": 48,
     "verified": 45,
-    "flagged": 2,
+    "flagged": 3,
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "the-road-to-mecca-2012",
-        "file": "theatermania--david-rooney.json",
+        "showId": "torch-song-2018",
+        "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'not found' page or a page with minimal content, likely unrelated to a review of 'The Road to Mecca'. It also appears to be truncated.",
+        "reasoning": "The scraped content appears to be mostly navigation and unrelated text, indicating it's not a valid review article. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-shark-is-broken-2023",
-        "file": "ap--mark-kennedy.json",
-        "reason": "wrongArticle",
+        "showId": "young-frankenstein-2007",
+        "file": "theater-life--barry-gordin.json",
+        "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The scraped content consists of image captions and social media sharing options, not a review article. The content is also truncated.",
+        "reasoning": "The review explicitly mentions the CM Performing Art Center in Oakdale, Long Island, indicating it is not a Broadway production. The review is therefore of the wrong production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "young-frankenstein-2007",
+        "file": "variety--david-rooney.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content consists of headlines and descriptions of various film and TV shows, not a review of the Broadway production of 'Young Frankenstein'. It is clearly a collection of film/TV reviews.",
         "provider": "llm:gemini"
       }
     ]
