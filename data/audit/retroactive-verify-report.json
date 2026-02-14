@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-02-14T15:23:15.306Z",
+  "timestamp": "2026-02-14T15:23:33.734Z",
   "dryRun": false,
   "verify": {
-    "processed": 49,
-    "verified": 47,
+    "processed": 47,
+    "verified": 45,
     "flagged": 2,
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "the-whos-tommy-2024",
-        "file": "variety--charles-isherwood.json",
-        "reason": "film/TV",
+        "showId": "to-kill-a-mockingbird-2018",
+        "file": "latimes--unknown.json",
+        "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The scraped content is a collection of film and TV news, trailers, and reviews, not a review of the Broadway production of 'The Who's Tommy'. The content is also truncated.",
+        "reasoning": "The review explicitly mentions \"The Broadway touring production, retaining the elegant fluidity of Bartlett Sher’s staging, arrives at the Hollywood Pantages\". This indicates it is not a review of the Broadway production itself. The text also ends mid-sentence, indicating truncation.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "waiting-for-godot-2025",
-        "file": "guardian--adrian-horton.json",
+        "showId": "to-kill-a-mockingbird-2018",
+        "file": "usatoday--david-rooney.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review discusses a production directed by James Macdonald, starring Lucian Msamati and Ben Whishaw. This is a London production, not the Broadway production starring Michael Shannon and Paul Sparks.",
+        "reasoning": "The review is for a touring production in Appleton, Wisconsin, not the Broadway production. The content is also truncated.",
         "provider": "llm:gemini"
       }
     ]
