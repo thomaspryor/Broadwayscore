@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify } from '@/lib/data-core';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz } from '@/lib/data-audience';
@@ -28,6 +28,7 @@ import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
+import RelatedShows from '@/components/RelatedShows';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -500,6 +501,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const castChangesData = getCastChanges(show.id);
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
+  const relatedShows = getRelatedShows(show);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -1047,6 +1049,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             )}
           </dl>
         </div>
+
+        {/* Related Shows */}
+        <RelatedShows shows={relatedShows} />
 
         {/* Footer */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
