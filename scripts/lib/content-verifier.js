@@ -198,7 +198,8 @@ function callClaude(prompt) {
 /** Get available providers in order of preference (cheapest first) */
 function getProviderChain() {
   const providers = [];
-  if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
+  // Kimi (OpenRouter) skipped for verification — consistently returns non-JSON prose.
+  // Re-enable if Kimi improves JSON compliance: if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
   if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
   if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
   if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
