@@ -17,15 +17,15 @@
     "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 13,
     "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 93,
+    "tier1Success": 93,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 89,
@@ -147,7 +147,9 @@
     "cats-2016/wsj--terry-teachout.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -191,5 +193,6 @@
       "isKnownBlocked": true
     }
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
