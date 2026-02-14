@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-13T23:20:22.910Z",
-    "totalFlagged": 8,
+    "generatedAt": "2026-02-14T02:28:41.571Z",
+    "totalFlagged": 23,
     "reasons": {
-      "possible-tour-fulltext": 12,
-      "originalScore-llm-conflict": 8
+      "possible-tour-fulltext": 13,
+      "originalScore-llm-conflict": 10
     }
   },
   "reviews": [
@@ -19,7 +19,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-13T23:17:01.052Z"
+      "flaggedAt": "2026-02-14T02:28:14.443Z"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -32,7 +32,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-13T23:17:01.072Z"
+      "flaggedAt": "2026-02-14T02:28:14.463Z"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -45,7 +45,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-13T23:17:01.104Z"
+      "flaggedAt": "2026-02-14T02:28:14.495Z"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -58,7 +58,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-13T23:17:01.116Z"
+      "flaggedAt": "2026-02-14T02:28:14.507Z"
     },
     {
       "showId": "a-life-in-the-theatre-2010",
@@ -71,7 +71,98 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:19:57.916Z"
+      "flaggedAt": "2026-02-14T02:28:15.203Z"
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Maerz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:15.318Z"
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "outletId": "stagezine",
+      "criticName": "David NouNou",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"0/5\" (=0, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:15.779Z"
+    },
+    {
+      "showId": "aint-no-mo-2022",
+      "outletId": "nysr",
+      "criticName": "Bart Greenberg",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5 stars\" (=100, bucket=positive) vs LLM 63 (bucket=mixed, conf=medium)",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:16.001Z"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "outletId": "stagebuddy",
+      "criticName": "Elyse Trevers",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:16.779Z"
+    },
+    {
+      "showId": "amelie-a-new-musical-2017",
+      "outletId": "haineshisway",
+      "criticName": "Rob Stevens",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bAhmanson\\b",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:16.938Z"
+    },
+    {
+      "showId": "american-son-2018",
+      "outletId": "theater-life",
+      "criticName": "Barry Gordin",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"4.5/5 stars\" (=90, bucket=positive) vs LLM 62 (bucket=mixed, conf=medium)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:17.192Z"
+    },
+    {
+      "showId": "bye-bye-birdie-2009",
+      "outletId": "theatermania",
+      "criticName": "Keith Loria",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:19.764Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -84,7 +175,46 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:02.743Z"
+      "flaggedAt": "2026-02-14T02:28:20.888Z"
+    },
+    {
+      "showId": "follies-2011",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:22.966Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "washpost",
+      "criticName": "Peter Marks",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:23.602Z"
+    },
+    {
+      "showId": "girl-from-the-north-country-2022",
+      "outletId": "cititour",
+      "criticName": "Brian Scott Lipton",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"3/5\" (=60, bucket=mixed) vs LLM 87 (bucket=positive, conf=medium)",
+      "llmScore": 87,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:23.606Z"
     },
     {
       "showId": "golden-boy-2012",
@@ -97,7 +227,33 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:05.602Z"
+      "flaggedAt": "2026-02-14T02:28:23.786Z"
+    },
+    {
+      "showId": "miss-saigon-2017",
+      "outletId": "broadstreetreview",
+      "criticName": "Cameron Kelsall",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:29.586Z"
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "outletId": "cititour",
+      "criticName": "Brian Scott Lipton",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T02:28:29.885Z"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -110,7 +266,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:12.119Z"
+      "flaggedAt": "2026-02-14T02:28:30.433Z"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -123,33 +279,20 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:12.172Z"
+      "flaggedAt": "2026-02-14T02:28:30.482Z"
     },
     {
-      "showId": "the-trip-to-bountiful-2013",
-      "outletId": "ew",
-      "criticName": "Melissa Rose Bernardo",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
-      "llmScore": 81,
+      "showId": "ragtime-2025",
+      "outletId": "theater-life",
+      "criticName": "Samuel L. Leiter",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 82,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:20.740Z"
-    },
-    {
-      "showId": "time-stands-still-2010",
-      "outletId": "ew",
-      "criticName": "Melissa Rose Bernardo",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 90 (bucket=positive, conf=medium)",
-      "llmScore": 90,
-      "llmBucket": "Rave",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:21.230Z"
+      "flaggedAt": "2026-02-14T02:28:32.959Z"
     },
     {
       "showId": "wicked-2003",
@@ -162,7 +305,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-13T23:20:22.547Z"
+      "flaggedAt": "2026-02-14T02:28:41.182Z"
     }
   ]
 }
