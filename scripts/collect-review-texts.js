@@ -2968,7 +2968,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // ========================================
 
   // 1A. Show title mention check (heuristic fallback — skipped when LLM verified)
-  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && cleanedText.length > 500) {
+  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && cleanedText.length > 500) {
     const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
     const showId = data.showId || review.showId || '';
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
@@ -3048,7 +3048,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // 1D. Content-show match verification (heuristic fallback — skipped when LLM verified)
   // Uses weighted signals (title, director, venue, cast) to detect wrong-show content.
   // Only auto-nulls on confident_mismatch (score <= -3) with 2+ independent negative signals.
-  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && cleanedText && cleanedText.length > 500 && data.fullText) {
+  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && cleanedText && cleanedText.length > 500 && data.fullText) {
     const showIdForContent = data.showId || review.showId || '';
     let showMeta = null;
     try {
@@ -3135,7 +3135,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
 
   // 1E. Heuristic fallback: Tour/film/TV contamination check
   // Only runs when LLM verification was not available (no API key, error, etc.)
-  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && data.fullText && data.fullText.length >= 200) {
+  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && data.fullText && data.fullText.length >= 200) {
     const introText = data.fullText.slice(0, 600);
     const showIdForTour = data.showId || review.showId || '';
 
@@ -3904,7 +3904,7 @@ async function processReview(review) {
           venue: showMeta?.venue || null
         });
 
-        const verifier = contentVerification.verifiedBy === 'llm' ? 'LLM' : 'Heuristic';
+        const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
         console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
         if (contentVerification.issues.length > 0) {
           console.log(`  Issues: ${contentVerification.issues.join(', ')}`);
