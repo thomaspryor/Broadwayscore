@@ -4,8 +4,8 @@
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "call-me-izzy-2025",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
@@ -17,15 +17,15 @@
     "successRate": "6.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 4,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 8,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 94,
@@ -147,7 +147,15 @@
     "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
+      "call-me-izzy-2025/nytg--austin-fimmano.json",
+      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
+      "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
+      "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
+      "call-me-izzy-2025/theater-scene--joseph-pisano.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
