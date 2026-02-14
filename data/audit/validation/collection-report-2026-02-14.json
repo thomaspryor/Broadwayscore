@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-14T23:06:52.711Z",
+  "runDate": "2026-02-14T23:09:36.149Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 95,
+    "processed": 4,
+    "failed": 96,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "4.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 4,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -33,8 +33,8 @@
     "tier3Attempts": 95,
     "tier3Success": 8,
     "tier4Attempts": 87,
-    "tier4Success": 1,
-    "totalFailed": 95,
+    "tier4Success": 0,
+    "totalFailed": 96,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,7 +43,6 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
@@ -84,6 +83,7 @@
     "beetlejuice-2019/newyorker--hilton-als.json",
     "bernhardthamlet-2018/newyorker--hilton-als.json",
     "betrayal-2013/newyorker--john-lahr.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "cabaret-2014/newyorker--hilton-als.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
@@ -137,14 +137,14 @@
     "next-to-normal-2009/newyorker--john-lahr.json",
     "of-mice-and-men-2014/newyorker--hilton-als.json",
     "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
-    "side-show-2014/newyorker--hilton-als.json",
-    "something-rotten-2015/newyorker--hilton-als.json",
     "south-pacific-2008/newyorker--hilton-als.json",
     "south-pacific-2008/newyorker--john-lahr.json",
     "suffs-2024/newyorker--naomi-fry.json",
     "sunset-boulevard-2017/newyorker--hilton-als.json",
     "tammy-faye-2024/newyorker--naomi-fry.json",
-    "the-assembled-parties-2013/newyorker--hilton-als.json"
+    "the-assembled-parties-2013/newyorker--hilton-als.json",
+    "the-cherry-orchard-2016/newyorker--hilton-als.json",
+    "the-collaboration-2022/newyorker--naomi-fry.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -156,13 +156,11 @@
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "pictures-from-home-2023/newyorker--helen-shaw.json"
     ],
-    "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 86,
+      "count": 87,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
