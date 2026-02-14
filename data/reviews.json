@@ -5,13 +5,13 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 11739,
-      "skippedNoScore": 6047,
+      "skippedNoScore": 6040,
       "skippedDuplicate": 50,
       "skippedDuplicateUrl": 220,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1070,
+      "skippedDuplicateText": 1074,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1678,
+      "skippedWrongProduction": 1679,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 3,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 12,
         "human-review": 62,
         "originalScore-priority0": 1664,
-        "llmScore": 7748,
+        "llmScore": 7749,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2119,
+        "llmScore-lowconf": 2118,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -166625,7 +166625,7 @@
       "outletId": "stagebuddy",
       "outlet": "Stage Buddy",
       "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elyse Trevers",
@@ -166635,7 +166635,7 @@
       "pullQuote": "'It Hot' does not disappoint. It's big, it's lavish, it's all anyone could want in a musical and more.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "some-like-it-hot-2022",
