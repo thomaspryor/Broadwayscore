@@ -171,6 +171,7 @@ jobs:
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -455,6 +456,7 @@ jobs:
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
