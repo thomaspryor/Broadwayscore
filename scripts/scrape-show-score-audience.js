@@ -46,12 +46,16 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
 
-// Build multi-production lookup: for each title base, find the most recent production.
-// ShowScore sometimes has separate pages per production (e.g. /sunset-boulevard = 2017,
-// /sunset-boulevard-broadway = 2024). When only ONE page exists, only the newest production
-// gets the data. When separate pages exist, each production can have its own.
+// Build multi-production lookup: for each title base, find the most recent production
+// that has actually started performances. ShowScore sometimes has separate pages per
+// production (e.g. /sunset-boulevard = 2017, /sunset-boulevard-broadway = 2024).
+// When only ONE page exists, only the newest production gets the data.
+// Exclude shows whose previews haven't started — they can't have real audience data.
+const today = new Date().toISOString().split('T')[0];
 const mostRecentByTitle = {};
 for (const s of showsData.shows) {
+  const previewDate = s.previewsStartDate || s.openingDate;
+  if (previewDate && previewDate > today) continue; // Skip future shows
   const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
   const existing = mostRecentByTitle[titleBase];
   if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
