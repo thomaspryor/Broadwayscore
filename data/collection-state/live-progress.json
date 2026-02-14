@@ -1,67 +1,15 @@
 {
-  "updatedAt": "2026-02-14T17:01:02.744Z",
-  "processed": 38,
-  "failed": 82,
-  "successRate": "31.7%",
+  "updatedAt": "2026-02-14T19:57:23.046Z",
+  "processed": 36,
+  "failed": 64,
+  "successRate": "36.0%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 30,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 5
+    "brightdata": 3,
+    "archive": 4
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-14T16:50:50.738Z",
-      "event": "bb-session",
-      "session": "9cf54d6a",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-14T16:51:33.549Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771087860314\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMASkjI2Kgjv9UALPhWIg==&cid=jn6bktCPD7H7bP25xCyYGEkScRR~kSb98Xmy4vpcuxq2DVNMjJpg0P1~85rsGn5p0ntoKRE3B9lXQzo3d3KAKoKqZUGmclDfOYDHLmp2zqPkNU6Q~ePfsgmDGbz_42Dm&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771087860314\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771087860314\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMASkjI2Kgjv9UALPhWIg==&cid=jn6bktCPD7H7bP25xCyYGEkScRR~kSb98Xmy4vpcuxq2DVNMjJpg0P1~85rsGn5p0ntoKRE3B9lXQzo3d3KAKoKqZUGmclDfOYDHLmp2zqPkNU6Q~ePfsgmDGbz_42Dm&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771087860314\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    30 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771087860314\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMASkjI2Kgjv9UALPhWIg==&cid=jn6bktCPD7H7bP25xCyYGEkScRR~kSb98Xmy4vpcuxq2DVNMjJpg0P1~85rsGn5p0ntoKRE3B9lXQzo3d3KAKoKqZUGmclDfOYDHLmp2zqPkNU6Q~ePfsgmDGbz_42Dm&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771087860314\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-14T16:52:34.965Z",
-      "event": "bb-session",
-      "session": "27c70782",
-      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
-    },
-    {
-      "t": "2026-02-14T16:52:54.278Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-14T16:53:29.747Z",
-      "event": "bb-session",
-      "session": "d94d2627",
-      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
-    },
-    {
-      "t": "2026-02-14T16:53:48.917Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-14T16:54:47.526Z",
-      "event": "bb-session",
-      "session": "19b2d747",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
-    },
-    {
-      "t": "2026-02-14T16:55:20.703Z",
-      "event": "bb-session",
-      "session": "8fc1c364",
-      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
-    },
-    {
-      "t": "2026-02-14T16:55:39.569Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
