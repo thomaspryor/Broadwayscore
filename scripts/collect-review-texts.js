@@ -27,6 +27,11 @@
  *   BROWSERBASE_ENABLED - 'true' to enable Browserbase tier
  *   BROWSERBASE_MAX_SESSIONS_PER_DAY - Daily limit (default: 30 = ~$3/day)
  *   BROWSERBASE_MAX_SESSIONS_PER_RUN - Per-run limit (default: 10)
+ *   WSJ_COOKIES - Base64-encoded JSON cookie array for WSJ paywall bypass
+ *   NEWYORKER_COOKIES - Base64-encoded JSON cookie array for New Yorker paywall bypass
+ *   NYT_COOKIES - Base64-encoded JSON cookie array for NYT paywall bypass
+ *   VULTURE_COOKIES - Base64-encoded JSON cookie array for Vulture/NYMag paywall bypass
+ *   WAPO_COOKIES - Base64-encoded JSON cookie array for Washington Post paywall bypass
  *   BATCH_SIZE - Reviews per batch (default: 10)
  *   MAX_REVIEWS - Max reviews to process (default: 50, 0 = all)
  *   PRIORITY - 'tier1' or 'all' (default: all)
@@ -347,6 +352,137 @@ const OUTLET_WAIT_CONFIGS = {
     extraWait: 3000,
   },
 };
+
+// ============================================================================
+// COOKIE INJECTION (bypass paywall login via exported browser cookies)
+// ============================================================================
+// Cookies can be provided via:
+//   1. Local files: data/cookies/{domain-key}.json (e.g., data/cookies/wsj.json)
+//   2. Environment variables: WSJ_COOKIES, NEWYORKER_COOKIES (base64-encoded JSON arrays)
+// Format: Playwright-compatible cookie array [{name, value, domain, path, ...}]
+// When cookies are available for a domain, login attempts are skipped entirely.
+
+const COOKIE_DOMAIN_MAP = {
+  'wsj.com': { envVar: 'WSJ_COOKIES', fileKey: 'wsj' },
+  'newyorker.com': { envVar: 'NEWYORKER_COOKIES', fileKey: 'newyorker' },
+  'nytimes.com': { envVar: 'NYT_COOKIES', fileKey: 'nytimes' },
+  'vulture.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },
+  'nymag.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },  // Same Condé Nast auth
+  'washingtonpost.com': { envVar: 'WAPO_COOKIES', fileKey: 'wapo' },
+};
+
+// Cache loaded cookies to avoid re-reading files/decoding base64 every time
+const _cookieCache = {};
+
+/**
+ * Load cookies for a given domain. Checks env var first (base64 JSON), then local file.
+ * Returns Playwright-compatible cookie array or null if none available.
+ */
+function loadCookiesForDomain(domain) {
+  // Normalize domain (strip www.)
+  const normalizedDomain = domain.replace(/^www\./, '');
+
+  // Find matching cookie config
+  const cookieConfig = COOKIE_DOMAIN_MAP[normalizedDomain];
+  if (!cookieConfig) return null;
+
+  // Check cache
+  if (_cookieCache[normalizedDomain] !== undefined) {
+    return _cookieCache[normalizedDomain];
+  }
+
+  // Try env var first (base64-encoded JSON array — used in CI)
+  const envVal = process.env[cookieConfig.envVar];
+  if (envVal) {
+    try {
+      const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
+      const cookies = JSON.parse(decoded);
+      if (Array.isArray(cookies) && cookies.length > 0) {
+        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
+        _cookieCache[normalizedDomain] = cookies;
+        return cookies;
+      }
+    } catch (e) {
+      console.log(`  ⚠ Failed to parse ${cookieConfig.envVar} env var: ${e.message}`);
+    }
+  }
+
+  // Try local file (data/cookies/{fileKey}.json)
+  const cookieFilePath = path.join('data', 'cookies', `${cookieConfig.fileKey}.json`);
+  if (fs.existsSync(cookieFilePath)) {
+    try {
+      const cookies = JSON.parse(fs.readFileSync(cookieFilePath, 'utf-8'));
+      if (Array.isArray(cookies) && cookies.length > 0) {
+        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from ${cookieFilePath}`);
+        _cookieCache[normalizedDomain] = cookies;
+        return cookies;
+      }
+    } catch (e) {
+      console.log(`  ⚠ Failed to parse cookie file ${cookieFilePath}: ${e.message}`);
+    }
+  }
+
+  _cookieCache[normalizedDomain] = null;
+  return null;
+}
+
+/**
+ * Check if cookies are available for a URL's domain.
+ * Returns the domain key if cookies exist, null otherwise.
+ */
+function hasCookiesForUrl(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) {
+        const cookies = loadCookiesForDomain(domain);
+        if (cookies) return domain;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+/**
+ * Inject cookies into a Playwright browser context.
+ * Filters cookies to ensure they have required fields for Playwright's addCookies().
+ */
+async function injectCookies(browserContext, domain) {
+  const cookies = loadCookiesForDomain(domain);
+  if (!cookies || cookies.length === 0) return false;
+
+  try {
+    // Ensure each cookie has the minimum required fields for Playwright
+    const validCookies = cookies
+      .filter(c => c.name && c.value && c.domain)
+      .map(c => ({
+        name: c.name,
+        value: c.value,
+        domain: c.domain,
+        path: c.path || '/',
+        httpOnly: c.httpOnly !== undefined ? c.httpOnly : false,
+        secure: c.secure !== undefined ? c.secure : true,
+        sameSite: c.sameSite || 'None',
+        // Playwright needs expires as a Unix timestamp (seconds), not ms
+        ...(c.expires && c.expires > 0 ? { expires: c.expires > 1e12 ? Math.floor(c.expires / 1000) : c.expires } : {}),
+      }));
+
+    if (validCookies.length === 0) {
+      console.log(`  ⚠ No valid cookies found for ${domain} (missing name/value/domain)`);
+      return false;
+    }
+
+    await browserContext.addCookies(validCookies);
+    console.log(`  🍪 Injected ${validCookies.length} cookies for ${domain}`);
+    return true;
+  } catch (e) {
+    console.log(`  ⚠ Failed to inject cookies for ${domain}: ${e.message}`);
+    return false;
+  }
+}
+
+// Track domains where cookies have been injected (to skip login)
+const cookieInjectedDomains = new Set();
 
 // Statistics tracking
 const stats = {
@@ -1408,10 +1544,22 @@ async function fetchWithBrowserbase(url, review) {
     const bbContext = contexts[0] || await bbBrowser.newContext();
     bbPage = await bbContext.newPage();
 
+    // Try cookie injection first (faster, more reliable than login)
+    let bbCookiesInjected = false;
+    const cookieDomain = hasCookiesForUrl(url);
+    if (cookieDomain) {
+      bbCookiesInjected = await injectCookies(bbContext, cookieDomain);
+      if (bbCookiesInjected) {
+        console.log(`    🍪 Browserbase: cookies injected for ${cookieDomain} — skipping login`);
+        state.log.push({ t: new Date().toISOString(), event: 'bb-cookie-inject', domain: cookieDomain });
+      }
+    }
+
     // Login to paywalled sites before navigating to the review URL
     // Browserbase has CAPTCHA solving, making it ideal for sites that block Playwright
+    // Skip login if cookies were already injected for this domain
     const paywallCreds = getPaywallCredentials(url);
-    if (paywallCreds && paywallCreds.email) {
+    if (paywallCreds && paywallCreds.email && !bbCookiesInjected) {
       console.log(`    → Browserbase login to ${paywallCreds.domain}...`);
       try {
         const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
@@ -3676,6 +3824,15 @@ async function setupBrowser() {
       return getParameter.apply(this, arguments);
     };
   });
+
+  // Inject cookies for paywalled domains (bypasses login entirely)
+  for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
+    const injected = await injectCookies(context, domain);
+    if (injected) {
+      cookieInjectedDomains.add(domain);
+      loggedInDomains.add(domain); // Mark as "logged in" so loginToSite() is skipped
+    }
+  }
 
   page = await context.newPage();
   console.log('✓ Browser ready');
