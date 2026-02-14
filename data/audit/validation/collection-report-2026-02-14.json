@@ -17,15 +17,15 @@
     "successRate": "30.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 15,
     "archive": 28
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 92,
+    "tier1Success": 92,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 138,
@@ -187,7 +187,9 @@
     "ann-2013/ap--mark-kennedy.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -268,5 +270,6 @@
       "isKnownBlocked": true
     }
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
