@@ -1,290 +1,34 @@
 {
-  "timestamp": "2026-02-14T14:58:50.991Z",
+  "timestamp": "2026-02-14T15:20:16.355Z",
   "dryRun": false,
   "verify": {
-    "processed": 275,
-    "verified": 241,
-    "flagged": 34,
+    "processed": 47,
+    "verified": 45,
+    "flagged": 2,
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "the-music-man-2022",
-        "file": "nyt-theater--jonathan-mandell.json",
+        "showId": "the-road-to-mecca-2012",
+        "file": "theatermania--david-rooney.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be a listing of recent posts and archives from New York Theater, not a review of 'The Music Man'. The content is also truncated and contains mostly navigation and archive links.",
+        "reasoning": "The scraped content appears to be a 'not found' page or a page with minimal content, likely unrelated to a review of 'The Road to Mecca'. It also appears to be truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-music-man-2022",
-        "file": "talkinbroadway--matthew-murray.json",
+        "showId": "the-shark-is-broken-2023",
+        "file": "ap--mark-kennedy.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation, advertisements, and error messages, indicating it is not a valid review article. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-picture-of-dorian-gray-2025",
-        "file": "the-interested-bystander--cary-wong.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Becoming Eve\" at the New York Theatre Workshop at Abrons Art Center, not \"The Picture of Dorian Gray\" on Broadway.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-visit-2015",
-        "file": "talkinbroadway--fred-sokol.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content explicitly mentions the Williamstown Theatre Festival, indicating a regional theater production, not the Broadway production at the Lyceum Theatre. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-visit-2015",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is mostly navigation and error messages, indicating it's not a valid review article. The text is also severely truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-visit-2015",
-        "file": "vulture--jesse-green.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the play 'Airline Highway', not 'The Visit'. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-winslow-boy-2013",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and error messages, and is severely truncated, indicating it's not a valid review article.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-woman-in-white-2005",
-        "file": "variety--charles-isherwood.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the animated film 'Robots', as indicated by the title and content discussing the film's plot, animation, and voice acting. This is not a review of the Broadway production 'The Woman in White'.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "translations-2007",
-        "file": "front-row-center--brittany-crowell.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Irish Repertory Theater, indicating it's not the Broadway production. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "translations-2007",
-        "file": "theater-life--barry-gordin.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of \"Translations\" at the Irish Rep, which is an Off-Broadway theater. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "war-horse-2011",
-        "file": "ew--lisa-schwarzbaum.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions Steven Spielberg as the director and refers to the 'movie' War Horse, indicating it's a film review, not a Broadway review. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "war-horse-2011",
-        "file": "newyorker--hilton-als.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"The Motherf**ker with the Hat\" at the Gerald Schoenfeld Theatre, not \"War Horse\" at the Vivian Beaumont Theater. The content is therefore a review of a different Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "war-horse-2011",
-        "file": "variety--marilyn-stasio.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of a show called \"The People in the Picture\", not \"War Horse\". Therefore, it is the wrong article.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "about-entertainment--chris-caggiano.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The content reviews multiple shows, not just \"Wicked,\" making it a different article than expected. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "ajc--wendell-brock.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Fox Theatre in Atlanta, indicating a touring production rather than the Broadway production at the Gershwin Theatre in New York City. The article also discusses other Broadway musicals at the Fox Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "awards-watch-sophia-ciminello--sophia-ciminello.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly discusses Jon M. Chu's film adaptation of Wicked, referencing the movie's plot, cast, and reception. It is not a review of the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "bbc-caryn-james--caryn-james.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly discusses the film adaptation of Wicked, starring Ariana Grande and Cynthia Erivo, and refers to 'Part One' and 'For Good', indicating it's about the two-part film adaptation.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "cbr-caralynn-matassa--caralynn-matassa.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review discusses the film adaptation of Wicked starring Ariana Grande and Cynthia Erivo, not the Broadway production. It mentions the Rotten Tomatoes score and plot details specific to the film.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "charlotte-observer--adam-bell.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions 'touring Broadway show in Charlotte' and 'first Broadway tour to restart in the U.S. during COVID-19'. This indicates it is a review of a touring production, not the Broadway production at the Gershwin Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "collider-therese-lacson--therese-lacson.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review discusses 'Wicked: For Good' and mentions Ariana Grande and Cynthia Erivo, indicating it's about the film adaptation, not the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "consequence-liz-shannon-miller--liz-shannon-miller.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the film adaptation 'Wicked: For Good, Part 2', not the Broadway production. The review is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "fresh-fiction-courtney-howard--courtney-howard.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review mentions Cynthia Erivo, Ariana Grande, and Jeff Goldblum, who are starring in the film adaptation of Wicked. The review also references director Jon M. Chu, who directed the film.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "frontmezzjunkies--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a touring production of Wicked in Austin, not the Broadway production. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "hollywood-reporter--david-rooney.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly discusses the 'movie version' directed by Jon M. Chu, indicating it's a film review, not a Broadway review. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "inverse-lyvie-scott--lyvie-scott.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review discusses 'Wicked: Part One' and 'Wicked: For Good', mentioning Jon M. Chu as director and Cynthia Erivo and Ariana Grande in the cast, which indicates it's about the film adaptation, not the Broadway show.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "joysauce-siddhant-adlakha--siddhant-adlakha.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly discusses \"Universal's adaptation\" and mentions Ariana Grande and Cynthia Erivo in the film, indicating it's a film review, not a Broadway review.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "mamas-geeky-tessa-smith--tessa-smith.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions Ariana Grande and Cynthia Erivo and refers to the content as a 'film', indicating it is a review of the movie adaptation of Wicked, not the Broadway show.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "mashable-kristy-puchko--kristy-puchko.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the film adaptation 'Wicked: For Good,' not the Broadway stage production. It discusses the movie's plot, actors, and visual elements.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "nexus-point-news-demet-koc--demet-koc.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the 'Wicked' film adaptation starring Cynthia Erivo and Ariana Grande, not the Broadway stage production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "nytimes--ben-brantley.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Omnium Gatherum\" at the Variety Arts Theater, not \"Wicked\" at the Gershwin Theatre. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "observer--rex-reed.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the film \"Master and Commander: The Far Side of the World\", not the Broadway production of \"Wicked\".",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "trib-live--alexis-papalia.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is explicitly for a production of \"Wicked\" at the Benedum Center in Pittsburgh, not the Broadway production. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "vulture--bilge-eberi.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The review discusses Jon M. Chu's film adaptation of Wicked, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "wicked-2003",
-        "file": "we-are-green-bay--warren-gerds.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Fox Cities Performing Arts Center and a touring Broadway show, indicating it's not a review of the Broadway production at the Gershwin Theatre.",
+        "reasoning": "The scraped content consists of image captions and social media sharing options, not a review article. The content is also truncated.",
         "provider": "llm:gemini"
       }
     ]
   },
   "recover": {
-    "processed": 39,
+    "processed": 1,
     "recovered": 0,
-    "confirmedCorrect": 39,
+    "confirmedCorrect": 1,
     "errors": 0,
     "recoveryDetails": []
   }
