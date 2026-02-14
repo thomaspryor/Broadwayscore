@@ -2,7 +2,7 @@
   "runDate": "2026-02-14T19:02:42.304Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "punch-2025",
     "aggressive": false,
@@ -17,18 +17,18 @@
     "successRate": "85.7%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 27,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "brightdata": 4,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 9,
     "tier1Success": 9,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 94,
     "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 2,
