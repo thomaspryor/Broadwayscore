@@ -9,19 +9,229 @@
  *   4. Truncation (paywall, incomplete content)
  *   5. Navigation/junk (scraped footer instead of article)
  *
- * Falls back to heuristic checks when ANTHROPIC_API_KEY is unavailable.
+ * Provider chain: Kimi (cheapest) → Gemini Flash → GPT-4o-mini → Claude Sonnet → heuristic fallback
+ * Falls back to heuristic checks when no API keys are available.
  */
 
-const Anthropic = require('@anthropic-ai/sdk').default;
+const https = require('https');
 
-let anthropic = null;
+// ============================================================
+// LLM Provider Implementations (cheapest → most expensive)
+// ============================================================
 
-function initClient() {
-  if (!anthropic && process.env.ANTHROPIC_API_KEY) {
-    anthropic = new Anthropic();
-  }
-  return anthropic;
+/**
+ * Call Kimi K2.5 via OpenRouter — cheapest option
+ */
+function callKimi(prompt) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error('OPENROUTER_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'moonshotai/kimi-k2.5',
+      temperature: 0.1,
+      max_tokens: 400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const req = https.request('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://broadwayscorecard.com',
+        'X-Title': 'Broadway Scorecard Content Verification'
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.choices?.[0]?.message?.content || '');
+          } catch (e) {
+            reject(new Error(`Kimi parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Kimi HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
 }
+
+/**
+ * Call Gemini Flash — ~$0.0001/review (practically free)
+ */
+function callGemini(prompt) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.1, maxOutputTokens: 400 }
+    });
+
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            resolve(text);
+          } catch (e) {
+            reject(new Error(`Gemini parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Gemini HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call OpenAI GPT-4o-mini — ~$0.0003/review
+ */
+function callOpenAI(prompt) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 400,
+      temperature: 0.1
+    });
+
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.choices?.[0]?.message?.content || '');
+          } catch (e) {
+            reject(new Error(`OpenAI parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`OpenAI HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call Claude Sonnet — ~$0.003/review (most expensive, last resort)
+ */
+function callClaude(prompt) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const req = https.request('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.content?.[0]?.text || '');
+          } catch (e) {
+            reject(new Error(`Claude parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Claude HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// ============================================================
+// Provider Chain
+// ============================================================
+
+/** Get available providers in order of preference (cheapest first) */
+function getProviderChain() {
+  const providers = [];
+  if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
+  if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
+  if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
+  if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
+  return providers;
+}
+
+/**
+ * Call LLM with automatic fallback through provider chain
+ * @returns {{ text: string, provider: string } | null}
+ */
+async function callWithFallback(prompt) {
+  const chain = getProviderChain();
+  if (chain.length === 0) return null;
+
+  for (let i = 0; i < chain.length; i++) {
+    const { name, call } = chain[i];
+    try {
+      const text = await call(prompt);
+      return { text, provider: name };
+    } catch (e) {
+      console.log(`    ${name} verify error: ${e.message}`);
+      if (i < chain.length - 1) {
+        console.log(`    Falling back to ${chain[i + 1].name}...`);
+      }
+    }
+  }
+
+  return null; // All providers failed
+}
+
+// ============================================================
+// Main Verification
+// ============================================================
 
 /**
  * Verify scraped content matches expected Broadway review
@@ -37,13 +247,6 @@ function initClient() {
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
 async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue }) {
-  const client = initClient();
-
-  if (!client) {
-    // No API key - fall back to heuristic checks
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-  }
-
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -107,46 +310,46 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 
 Set isValid=true only if the content is a review of the BROADWAY production and is not truncated/junk.`;
 
+  const result = await callWithFallback(prompt);
+
+  if (!result) {
+    // No LLM providers available — fall back to heuristics
+    return heuristicVerify({ scrapedText, excerpt, showTitle });
+  }
+
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    const text = response.content[0].text;
-
-    // Parse JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
+      const parsed = JSON.parse(jsonMatch[0]);
       return {
-        isValid: result.isValid ?? true,
-        confidence: result.confidence || 'medium',
-        issues: result.issues || [],
-        truncated: result.truncated || false,
-        wrongArticle: result.wrongArticle || false,
-        wrongProduction: result.wrongProduction || false,
-        isFilmTv: result.isFilmTv || false,
-        reasoning: result.reasoning || '',
-        verifiedBy: 'llm'
+        isValid: parsed.isValid ?? true,
+        confidence: parsed.confidence || 'medium',
+        issues: parsed.issues || [],
+        truncated: parsed.truncated || false,
+        wrongArticle: parsed.wrongArticle || false,
+        wrongProduction: parsed.wrongProduction || false,
+        isFilmTv: parsed.isFilmTv || false,
+        reasoning: parsed.reasoning || '',
+        verifiedBy: `llm:${result.provider}`
       };
     }
 
-    // Couldn't parse - fall back to heuristics
-    console.log('    LLM verify: could not parse JSON response, falling back to heuristic');
+    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
     return heuristicVerify({ scrapedText, excerpt, showTitle });
 
   } catch (error) {
-    console.error(`    LLM verification error: ${error.message}`);
-    // Fall back to heuristics on error
+    console.error(`    LLM verify parse error: ${error.message}`);
     return heuristicVerify({ scrapedText, excerpt, showTitle });
   }
 }
 
+// ============================================================
+// Heuristic Fallback
+// ============================================================
+
 /**
  * Heuristic-based content verification (no API needed)
- * Used as fallback when LLM is unavailable
+ * Used as fallback when all LLM providers are unavailable
  */
 function heuristicVerify({ scrapedText, excerpt, showTitle }) {
   const issues = [];

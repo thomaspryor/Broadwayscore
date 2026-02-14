@@ -196,6 +196,9 @@ jobs:
 
       - name: Re-scrape truncated reviews (partition ${{ matrix.partition }})
         env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
