@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-14T21:47:15.893Z",
+  "runDate": "2026-02-14T22:00:03.663Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,21 +11,21 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 34,
-    "failed": 24,
+    "processed": 36,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "58.6%"
+    "successRate": "62.1%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 27
+    "archive": 30
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 10,
+    "tier1Attempts": 10,
+    "tier1Success": 9,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 0,
@@ -33,12 +33,12 @@
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier4Attempts": 57,
-    "tier4Success": 39,
-    "totalFailed": 24,
+    "tier4Success": 45,
+    "totalFailed": 22,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -65,6 +65,7 @@
     "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
     "kinky-boots-2013/ew--thom-geier.json",
     "la-cage-aux-folles-2010/entertainment-weekly--thom-geier.json",
+    "mary-poppins-2006/ew--steve-daly.json",
     "newsies-the-musical-2012/ew--thom-geier.json",
     "nice-work-if-you-can-get-it-2012/ew--adam-markovitz.json",
     "pippin-2013/ew--thom-geier.json",
@@ -76,6 +77,7 @@
     "the-real-thing-2014/ew--thom-geier.json",
     "the-trip-to-bountiful-2013/ew--melissa-rose-bernardo.json",
     "the-winslow-boy-2013/ew--thom-geier.json",
+    "time-stands-still-2010/ew--melissa-rose-bernardo.json",
     "war-horse-2011/ew--thom-geier.json"
   ],
   "failed": [
@@ -89,7 +91,6 @@
     "gypsy-2024/ew--unknown.json",
     "hands-on-a-hardbody-2013/ew--clark-collis.json",
     "hello-dolly-2017/ew--maya-stanton.json",
-    "mary-poppins-2006/ew--steve-daly.json",
     "mr-saturday-night-2022/ew--andrea-towers.json",
     "oslo-2017/ew--elysa-gardner.json",
     "oslo-2017/ew--unknown.json",
@@ -100,7 +101,6 @@
     "swept-away-2024/ew--emlyn-travis.json",
     "the-last-ship-2014/ew--thom-geier.json",
     "the-realistic-joneses-2014/ew--melissa-rose-bernardo.json",
-    "time-stands-still-2010/ew--melissa-rose-bernardo.json",
     "tina-2019/ew--leah-greenblatt.json",
     "war-paint-2017/ew--caitlin-brody.json"
   ],
@@ -110,7 +110,6 @@
       "700-sundays-2013/ew--jessica-shaw.json",
       "all-the-way-2014/ew--thom-geier.json",
       "holler-if-ya-hear-me-2014/ew--unknown.json",
-      "punch-2025/ew--emlyn-travis.json",
       "summer-1976-2023/ew--dalton-ross.json",
       "the-winslow-boy-2013/ew--thom-geier.json"
     ],
@@ -136,25 +135,20 @@
       "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
       "kinky-boots-2013/ew--thom-geier.json",
       "la-cage-aux-folles-2010/entertainment-weekly--thom-geier.json",
+      "mary-poppins-2006/ew--steve-daly.json",
       "newsies-the-musical-2012/ew--thom-geier.json",
       "nice-work-if-you-can-get-it-2012/ew--adam-markovitz.json",
       "pippin-2013/ew--thom-geier.json",
+      "punch-2025/ew--emlyn-travis.json",
       "race-2009/ew--.json",
       "race-2009/ew--lisa-schwarzbaum.json",
       "the-heiress-2012/ew--thom-geier.json",
       "the-real-thing-2014/ew--thom-geier.json",
       "the-trip-to-bountiful-2013/ew--melissa-rose-bernardo.json",
+      "time-stands-still-2010/ew--melissa-rose-bernardo.json",
       "war-horse-2011/ew--thom-geier.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
