@@ -1,43 +1,29 @@
 {
-  "timestamp": "2026-02-14T15:20:26.873Z",
+  "timestamp": "2026-02-14T15:20:41.678Z",
   "dryRun": false,
   "verify": {
-    "processed": 48,
-    "verified": 45,
-    "flagged": 3,
+    "processed": 49,
+    "verified": 47,
+    "flagged": 2,
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "torch-song-2018",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and unrelated text, indicating it's not a valid review article. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "young-frankenstein-2007",
-        "file": "theater-life--barry-gordin.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the CM Performing Art Center in Oakdale, Long Island, indicating it is not a Broadway production. The review is therefore of the wrong production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "young-frankenstein-2007",
-        "file": "variety--david-rooney.json",
+        "showId": "the-whos-tommy-2024",
+        "file": "variety--charles-isherwood.json",
         "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content consists of headlines and descriptions of various film and TV shows, not a review of the Broadway production of 'Young Frankenstein'. It is clearly a collection of film/TV reviews.",
+        "reasoning": "The scraped content is a collection of film and TV news articles and trailers, not a review of the Broadway production of 'The Who's Tommy'. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "waiting-for-godot-2025",
+        "file": "guardian--adrian-horton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review discusses a production directed by James Macdonald, starring Lucian Msamati and Ben Whishaw. This is a production that played at the Arts Theatre in London in 2024, not the Broadway production at the Hudson Theatre in 2025.",
         "provider": "llm:gemini"
       }
     ]
   },
-  "recover": {
-    "processed": 1,
-    "recovered": 0,
-    "confirmedCorrect": 1,
-    "errors": 0,
-    "recoveryDetails": []
-  }
+  "recover": null
 }
