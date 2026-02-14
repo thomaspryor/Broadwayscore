@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-14",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11619,
+      "totalReviews": 11617,
       "skippedNoScore": 6188,
-      "skippedDuplicate": 52,
+      "skippedDuplicate": 51,
       "skippedDuplicateUrl": 223,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1057,
+      "skippedDuplicateText": 1058,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1670,
+      "skippedWrongProduction": 1671,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 1,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 12,
         "human-review": 62,
         "originalScore-priority0": 1670,
-        "llmScore": 7618,
+        "llmScore": 7619,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2124,
+        "llmScore-lowconf": 2121,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -65328,7 +65328,7 @@
       "outletId": "bergen-record",
       "outlet": "The Record (Bergen)",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Robert Feldberg",
@@ -65338,7 +65338,7 @@
       "pullQuote": "It forces us to reflect on who we are, and what we really think about the guy with the different race, religion or ethnicity who lives next door.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "disgraced-2014",
@@ -66870,23 +66870,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "eclipsed-2016",
-      "outletId": "ap",
-      "outlet": "Associated Press",
-      "assignedScore": 92,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Mark Kennedy",
-      "url": "https://abcnews.go.com/Entertainment/wireStory/review-lupita-nyongo-soars-searing-play-eclipsed-37450553",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The five-member cast—all women—is a true ensemble and must not be missed",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "eclipsed-2016",
@@ -114773,7 +114756,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Matthew Murray",
@@ -114783,7 +114766,7 @@
       "pullQuote": "The show's problems are legion, and they start with the fact that it feels less like a musical than a concert featuring songs that happen to share a common theme.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "jekyll-and-hyde-2013",
@@ -119885,23 +119868,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "king-charles-iii-2015",
-      "outletId": "evening-standard",
-      "outlet": "Evening Standard",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Fiona Mountford",
-      "url": "https://www.standard.co.uk/goingout/theatre/king-charles-iii-wyndhams-theatre--theatre-review-9728311.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "This is undoubtedly one of the most stimulating plays of the year.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "king-charles-iii-2015",
