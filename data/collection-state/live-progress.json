@@ -1,15 +1,22 @@
 {
-  "updatedAt": "2026-02-14T03:52:12.475Z",
-  "processed": 13,
-  "failed": 17,
-  "successRate": "43.3%",
+  "updatedAt": "2026-02-14T04:02:38.842Z",
+  "processed": 28,
+  "failed": 32,
+  "successRate": "46.7%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 20,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "brightdata": 3,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T03:50:37.001Z",
+      "event": "bb-session",
+      "session": "cc6cbdda",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    }
+  ]
 }
