@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-14T17:24:56.417Z",
+  "runDate": "2026-02-14T17:36:00.390Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
@@ -11,34 +11,34 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 42,
-    "failed": 118,
+    "processed": 43,
+    "failed": 137,
     "skipped": 0,
-    "successRate": "26.3%"
+    "successRate": "23.9%"
   },
   "tierBreakdown": {
     "playwright": 32,
     "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 8,
-    "archive": 5
+    "archive": 6
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 16,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 16,
-    "tier3Success": 6,
-    "tier4Attempts": 11,
+    "tier3Attempts": 14,
+    "tier3Success": 4,
+    "tier4Attempts": 10,
     "tier4Success": 0,
-    "totalFailed": 16,
+    "totalFailed": 19,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -84,7 +84,8 @@
     "wicked-2003/nytimes--charles-isherwood.json",
     "wicked-2003/variety--charles-isherwood.json",
     "wicked-2003/variety--peter-debruge.json",
-    "aladdin-2014/ew--thom-geier.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/wsj--terry-teachout.json"
   ],
   "failed": [
     "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
@@ -204,7 +205,26 @@
     "the-lion-king-1997/nytimes--ben-brantley.json",
     "the-outsiders-2024/newyorker--naomi-fry.json",
     "wicked-2003/newyorker--.json",
-    "wicked-2003/newyorker--john-lahr.json"
+    "wicked-2003/newyorker--john-lahr.json",
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "all-out-2025/newsweek--lauren-giella.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -260,7 +280,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
       "into-the-woods-2022/new-york-sun--elysa-gardner.json",
-      "death-of-a-salesman-2026/nytimes--jesse-green.json"
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "aladdin-2014/wsj--terry-teachout.json"
     ]
   },
   "failuresByOutlet": {
@@ -269,13 +290,6 @@
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
       "isKnownBlocked": true
     }
   },
