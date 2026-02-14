@@ -91,7 +91,7 @@ const CLI = {
   forceTier: args.find(a => a.startsWith('--tier='))?.split('=')[1],
   testUrl: args.find(a => a.startsWith('--test-url='))?.split('=')[1],
   stealthProxy: args.includes('--stealth-proxy'), // Use ScrapingBee stealth proxy (25 credits/req)
-  llmVerify: args.includes('--llm-verify') || process.env.LLM_VERIFY === 'true', // Use LLM to verify content
+  // LLM verification now runs by default when ANTHROPIC_API_KEY is available (no opt-in needed)
 };
 
 // Dependencies (loaded dynamically)
@@ -2967,8 +2967,8 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // POST-SCRAPE VALIDATION FLAGS (Phase 1)
   // ========================================
 
-  // 1A. Show title mention check
-  if (cleanedText.length > 500) {
+  // 1A. Show title mention check (heuristic fallback — skipped when LLM verified)
+  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && cleanedText.length > 500) {
     const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
     const showId = data.showId || review.showId || '';
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
@@ -2978,7 +2978,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt) ? 'excerpt' : 'needs-rescrape';
-      console.log(`    ⚠ Show not mentioned in text — fullText nulled: ${showCheck.reason}`);
+      console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${showCheck.reason}`);
     } else {
       delete data.showNotMentioned;
     }
@@ -3045,11 +3045,10 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     }
   }
 
-  // 1D. Content-show match verification
+  // 1D. Content-show match verification (heuristic fallback — skipped when LLM verified)
   // Uses weighted signals (title, director, venue, cast) to detect wrong-show content.
-  // Only auto-nulls on confident_mismatch (score <= -3) with 2+ independent negative signals,
-  // per critique review recommendations. For probable_mismatch, logs warning only.
-  if (cleanedText && cleanedText.length > 500 && data.fullText) {
+  // Only auto-nulls on confident_mismatch (score <= -3) with 2+ independent negative signals.
+  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && cleanedText && cleanedText.length > 500 && data.fullText) {
     const showIdForContent = data.showId || review.showId || '';
     let showMeta = null;
     try {
@@ -3062,47 +3061,81 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     if (showMeta) {
       const contentMatch = verifyFullTextContent(cleanedText, showMeta);
       if (contentMatch.verdict === 'confident_mismatch' && contentMatch.negativeSignalCount >= 2) {
-        // Strong mismatch with multiple independent signals — null the fullText
         const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
         data.wrongFullText = data.fullText;
         data.fullText = null;
         data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
         data.contentMismatchScore = contentMatch.score;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
-        console.log(`    ⚠ Content mismatch (score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+        console.log(`    ⚠ Heuristic fallback — content mismatch (score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
       } else if (contentMatch.verdict === 'confident_mismatch' || contentMatch.verdict === 'probable_mismatch') {
-        // Weaker signal — log warning but don't auto-null
-        console.log(`    ⚠ Content match warning (${contentMatch.verdict}, score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+        console.log(`    ⚠ Heuristic fallback — content match warning (${contentMatch.verdict}, score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
       }
     }
   }
 
-  // Store LLM content verification results
+  // Store LLM content verification results and ACT on high-confidence rejections
   if (contentVerification) {
     data.contentVerification = {
       isValid: contentVerification.isValid,
       confidence: contentVerification.confidence,
       truncated: contentVerification.truncated,
       wrongArticle: contentVerification.wrongArticle,
+      wrongProduction: contentVerification.wrongProduction,
+      isFilmTv: contentVerification.isFilmTv,
       issues: contentVerification.issues,
+      reasoning: contentVerification.reasoning,
       verifiedBy: contentVerification.verifiedBy,
       verifiedAt: new Date().toISOString()
     };
 
-    // Flag for manual review if LLM detected issues
-    if (contentVerification.wrongArticle) {
-      data.flaggedForReview = true;
-      data.flagReason = 'LLM detected possible wrong article';
+    const isHighConfidence = contentVerification.confidence === 'high' || contentVerification.confidence === 'medium';
+
+    // Auto-null fullText on high/medium confidence wrong article (completely wrong show/content)
+    if (contentVerification.wrongArticle && isHighConfidence && data.fullText) {
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.wrongShow = true;
+      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+      console.log(`    ✗ LLM: Wrong article (${contentVerification.confidence}) — fullText nulled`);
     }
-    if (contentVerification.truncated && !data.truncationSignals) {
+
+    // Auto-null fullText on high/medium confidence wrong production (tour, regional, off-Broadway, etc.)
+    if (contentVerification.wrongProduction && isHighConfidence && data.fullText) {
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.wrongProduction = true;
+      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+      console.log(`    ✗ LLM: Wrong production (${contentVerification.confidence}) — fullText nulled`);
+    }
+
+    // Auto-null fullText on high/medium confidence film/TV content
+    if (contentVerification.isFilmTv && isHighConfidence && data.fullText) {
+      const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.wrongShow = true;
+      data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+      console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
+    }
+
+    // Flag low-confidence rejections for manual review instead of auto-acting
+    if (!contentVerification.isValid && !isHighConfidence) {
+      data.flaggedForReview = true;
+      data.flagReason = `LLM verification: ${contentVerification.issues.join(', ')} (${contentVerification.confidence} confidence)`;
+      console.log(`    ⚠ LLM: Low confidence rejection — flagged for manual review`);
+    }
+
+    if (contentVerification.truncated && data.fullText) {
       data.textQuality = 'truncated';
     }
   }
 
-  // 1E. Tour/film/TV contamination check
-  // Stamps reviews with contamination flags at collection time so rebuild can act on them.
-  // Uses same detection functions as rebuild-time safety net (shared excerpt-validation module).
-  if (data.fullText && data.fullText.length >= 200) {
+  // 1E. Heuristic fallback: Tour/film/TV contamination check
+  // Only runs when LLM verification was not available (no API key, error, etc.)
+  if ((!contentVerification || contentVerification.verifiedBy !== 'llm') && data.fullText && data.fullText.length >= 200) {
     const introText = data.fullText.slice(0, 600);
     const showIdForTour = data.showId || review.showId || '';
 
@@ -3119,7 +3152,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
       if (tourCheck.isTourReview) {
         data.possibleTourReview = true;
         data.tourSignal = tourCheck.signal;
-        console.log(`    ⚠ Possible tour review: ${tourCheck.signal}`);
+        console.log(`    ⚠ Heuristic fallback — possible tour review: ${tourCheck.signal}`);
       }
     }
 
@@ -3128,7 +3161,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     if (filmCheck.isFilmTv) {
       data.possibleFilmTvReview = true;
       data.filmTvSignals = filmCheck.signals;
-      console.log(`    ⚠ Possible film/TV review: ${filmCheck.signals.join(', ')}`);
+      console.log(`    ⚠ Heuristic fallback — possible film/TV review: ${filmCheck.signals.join(', ')}`);
     }
   }
 
@@ -3844,32 +3877,40 @@ async function processReview(review) {
       console.log(`  Issues: ${validation.issues.join(', ')}`);
     }
 
-    // LLM-based content verification (if enabled)
+    // LLM-based content verification (runs by default, falls back to heuristic without API key)
     let contentVerification = null;
-    if (CLI.llmVerify && validation.wordCount >= 200) {
+    if (validation.wordCount >= 200) {
       console.log(`  LLM Verification...`);
       try {
-        // Get excerpt from existing review data
+        // Get excerpt and show metadata from existing review data
         const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
         const excerpt = reviewData.dtliExcerpt || reviewData.bwwExcerpt || reviewData.showScoreExcerpt || '';
+        const showId = reviewData.showId || review.showId || '';
+
+        // Look up show metadata for richer context
+        let showMeta = null;
+        try {
+          if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+          showMeta = _showsJsonCache.shows.find(s => s.id === showId);
+        } catch (e) { /* shows.json unavailable */ }
 
         contentVerification = await verifyContent({
           scrapedText: result.text,
           excerpt: excerpt,
-          showTitle: reviewData.showId?.replace(/-\d{4}$/, '').replace(/-/g, ' ') || '',
+          showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
           outletName: review.outlet,
-          criticName: review.critic
+          criticName: review.critic,
+          openingDate: showMeta?.openingDate || null,
+          venue: showMeta?.venue || null
         });
 
-        console.log(`  LLM Verify: ${contentVerification.isValid ? 'VALID' : 'ISSUES'} (${contentVerification.confidence} confidence)`);
+        const verifier = contentVerification.verifiedBy === 'llm' ? 'LLM' : 'Heuristic';
+        console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
         if (contentVerification.issues.length > 0) {
-          console.log(`  LLM Issues: ${contentVerification.issues.join(', ')}`);
+          console.log(`  Issues: ${contentVerification.issues.join(', ')}`);
         }
-        if (contentVerification.wrongArticle) {
-          console.log(`  ⚠ WARNING: May be wrong article!`);
-        }
-        if (contentVerification.truncated) {
-          console.log(`  ⚠ WARNING: Content appears truncated`);
+        if (contentVerification.reasoning) {
+          console.log(`  Reasoning: ${contentVerification.reasoning}`);
         }
       } catch (e) {
         console.log(`  LLM Verify error: ${e.message}`);

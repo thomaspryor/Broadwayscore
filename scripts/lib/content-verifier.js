@@ -1,10 +1,15 @@
 /**
  * LLM-Based Content Verification
  *
- * Uses Claude/OpenAI to verify scraped content quality:
- * 1. Matches expected review (compare to excerpt)
- * 2. Detects wrong article (different topic scraped)
- * 3. Detects truncation (paywall/incomplete content)
+ * Primary content gate for scraped review texts. Runs by default on all
+ * reviews with 200+ chars. Detects:
+ *   1. Wrong article (different topic, different show entirely)
+ *   2. Wrong production (tour, regional, off-Broadway, West End — not Broadway)
+ *   3. Film/TV content (movie adaptation, streaming, TV special)
+ *   4. Truncation (paywall, incomplete content)
+ *   5. Navigation/junk (scraped footer instead of article)
+ *
+ * Falls back to heuristic checks when ANTHROPIC_API_KEY is unavailable.
  */
 
 const Anthropic = require('@anthropic-ai/sdk').default;
@@ -19,7 +24,7 @@ function initClient() {
 }
 
 /**
- * Verify scraped content matches expected review
+ * Verify scraped content matches expected Broadway review
  *
  * @param {Object} params
  * @param {string} params.scrapedText - The scraped full text
@@ -27,9 +32,11 @@ function initClient() {
  * @param {string} params.showTitle - Show title for context
  * @param {string} params.outletName - Outlet name
  * @param {string} params.criticName - Critic name
- * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle }
+ * @param {string} [params.openingDate] - Broadway opening date (YYYY-MM-DD) for temporal context
+ * @param {string} [params.venue] - Broadway venue name
+ * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue }) {
   const client = initClient();
 
   if (!client) {
@@ -43,48 +50,67 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       confidence: 'high',
       issues: ['Content too short (<200 chars)'],
       truncated: true,
-      wrongArticle: false
+      wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
+      verifiedBy: 'skip-short'
     };
   }
 
-  const prompt = `You are a content verification assistant for a Broadway review aggregator.
+  const dateContext = openingDate ? `\n- Broadway opening date: ${openingDate}` : '';
+  const venueContext = venue ? `\n- Broadway venue: ${venue}` : '';
+  const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
-I scraped what should be a theater review. Verify if the content is valid.
+  const prompt = `You are a content verification assistant for a Broadway review aggregator. We only include reviews of Broadway productions (shows performed in Broadway theaters in New York City).
+
+I scraped what should be a Broadway theater review. Verify if the content is valid.
 
 **Expected Review:**
 - Show: "${showTitle}"
 - Outlet: ${outletName}
-- Critic: ${criticName || 'Unknown'}
-- Known excerpt: "${excerpt || 'No excerpt available'}"
+- Critic: ${criticName || 'Unknown'}${dateContext}${venueContext}${excerptContext}
 
-**Scraped Content (first 2000 chars):**
-${scrapedText.substring(0, 2000)}
+**Scraped Content (first 2500 chars):**
+${scrapedText.substring(0, 2500)}
 
-**Scraped Content Length:** ${scrapedText.length} characters
+**Total scraped length:** ${scrapedText.length} characters
 
-Analyze and respond with JSON only:
+Analyze the content and respond with ONLY valid JSON (no markdown fences):
 {
   "isValid": true/false,
   "confidence": "high"/"medium"/"low",
-  "issues": ["list of issues found"],
-  "truncated": true/false,
   "wrongArticle": true/false,
-  "reasoning": "brief explanation"
+  "wrongProduction": true/false,
+  "isFilmTv": true/false,
+  "truncated": true/false,
+  "issues": ["list of issues found"],
+  "reasoning": "1-2 sentence explanation"
 }
 
-Check for:
-1. Does the content discuss "${showTitle}" (the Broadway show)?
-2. If excerpt provided, does the scraped text contain similar content/phrases?
-3. Is the content truncated (ends mid-sentence, has paywall text, "subscribe to read more")?
-4. Is this a different article (movie review, news article, different show)?
-5. Is this navigation/footer junk instead of actual review content?
+**Check these specific things:**
 
-Respond ONLY with valid JSON.`;
+1. **Wrong article**: Is this about a completely different show, or not a theater review at all (news article, obituary, listicle, etc.)?
+
+2. **Wrong production** (IMPORTANT): Is this reviewing a NON-Broadway production of "${showTitle}"? Red flags:
+   - National tour, touring production, touring company, "on tour"
+   - Regional theater (Ahmanson, Kennedy Center, Old Globe, Goodman, etc.)
+   - Off-Broadway or Off-Off-Broadway venue
+   - West End / London production
+   - Pre-Broadway tryout or out-of-town engagement
+   A review of the BROADWAY production that merely *mentions* a tour or previous run is NOT a wrong production — it must be *reviewing* a non-Broadway staging.
+
+3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live Broadway performance)?
+
+4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
+
+5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
+
+Set isValid=true only if the content is a review of the BROADWAY production and is not truncated/junk.`;
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
+      max_tokens: 400,
       messages: [{ role: 'user', content: prompt }]
     });
 
@@ -95,17 +121,20 @@ Respond ONLY with valid JSON.`;
     if (jsonMatch) {
       const result = JSON.parse(jsonMatch[0]);
       return {
-        isValid: result.isValid,
+        isValid: result.isValid ?? true,
         confidence: result.confidence || 'medium',
         issues: result.issues || [],
         truncated: result.truncated || false,
         wrongArticle: result.wrongArticle || false,
+        wrongProduction: result.wrongProduction || false,
+        isFilmTv: result.isFilmTv || false,
         reasoning: result.reasoning || '',
         verifiedBy: 'llm'
       };
     }
 
     // Couldn't parse - fall back to heuristics
+    console.log('    LLM verify: could not parse JSON response, falling back to heuristic');
     return heuristicVerify({ scrapedText, excerpt, showTitle });
 
   } catch (error) {
@@ -117,6 +146,7 @@ Respond ONLY with valid JSON.`;
 
 /**
  * Heuristic-based content verification (no API needed)
+ * Used as fallback when LLM is unavailable
  */
 function heuristicVerify({ scrapedText, excerpt, showTitle }) {
   const issues = [];
@@ -130,6 +160,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
       issues: ['No content'],
       truncated: true,
       wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
       verifiedBy: 'heuristic'
     };
   }
@@ -172,11 +204,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
 
   // Check excerpt match (if provided)
   if (excerpt && excerpt.length > 50) {
-    // Normalize both texts
     const excerptNorm = excerpt.toLowerCase().replace(/[^a-z0-9\s]/g, '').substring(0, 100);
     const textNorm = text.replace(/[^a-z0-9\s]/g, '');
-
-    // Check if key phrases from excerpt appear in text
     const excerptWords = excerptNorm.split(/\s+/).filter(w => w.length > 4);
     const matchingWords = excerptWords.filter(w => textNorm.includes(w));
     const matchRate = matchingWords.length / excerptWords.length;
@@ -202,7 +231,6 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     issues.push('Content appears to be mostly navigation/footer junk');
   }
 
-  // Determine overall validity
   const isValid = !wrongArticle && issues.length <= 1;
 
   return {
@@ -211,6 +239,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     issues,
     truncated,
     wrongArticle,
+    wrongProduction: false, // Heuristics can't reliably detect this
+    isFilmTv: false, // Heuristics can't reliably detect this
     verifiedBy: 'heuristic'
   };
 }
@@ -223,14 +253,11 @@ function quickValidityCheck(text, showTitle) {
 
   const lower = text.toLowerCase();
 
-  // Must contain some theater-related words
   const theaterWords = ['broadway', 'theater', 'theatre', 'musical', 'stage', 'performance', 'actor', 'cast', 'director'];
   const hasTheaterContent = theaterWords.some(w => lower.includes(w));
 
-  // Should mention the show (if we know the title)
   const showMentioned = !showTitle || lower.includes(showTitle.toLowerCase());
 
-  // Should not be mostly junk
   const junkRatio = (lower.match(/privacy|terms|cookie|subscribe|sign in/g) || []).length;
 
   return hasTheaterContent && showMentioned && junkRatio < 3;
