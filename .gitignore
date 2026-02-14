@@ -131,6 +131,9 @@ data/broadway.db-wal
 # Image audit archive (21MB+ binary images, local recovery only)
 data/audit/deleted-images/
 
+# Cookie files for paywall bypass (contain session tokens — never commit)
+data/cookies/
+
 # Playwright MCP screenshots
 .playwright-mcp/
 

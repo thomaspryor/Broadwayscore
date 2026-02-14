@@ -191,6 +191,7 @@ export default function RootLayout({
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
                   <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
+                  <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Predictions</Link></li>
                   <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>
                   <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>
                   <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>

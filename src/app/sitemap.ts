@@ -101,6 +101,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...browsePages,
     // Best-of lists - high priority discovery pages
     ...bestOfPages,
+    // Tony Awards predictions
+    {
+      url: `${BASE_URL}/tony-awards`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     // Rankings hub page
     {
       url: `${BASE_URL}/rankings`,
