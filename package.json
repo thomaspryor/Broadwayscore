@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/validate-shows-prebuild.js && node scripts/generate-commercial-export.js && node scripts/compute-gold-lists.js",
+    "prebuild": "node scripts/validate-shows-prebuild.js && node scripts/generate-commercial-export.js && node scripts/compute-gold-lists.js && node scripts/generate-blog-reviews-for-scoring.js && node scripts/generate-review-og-images.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",

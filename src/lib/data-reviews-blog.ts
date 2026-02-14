@@ -133,3 +133,7 @@ export function getAllBlogReviews(): BlogReview[] {
 export function getBlogReviewBySlug(slug: string): BlogReview | undefined {
   return loadReviews().find(r => r.slug === slug);
 }
+
+export function getBlogReviewByShowSlug(showSlug: string): BlogReview | undefined {
+  return loadReviews().find(r => r.showSlug === showSlug);
+}
