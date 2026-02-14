@@ -155,7 +155,17 @@ jobs:
           BRIGHTDATA_ZONE: mcp_unlocker
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
-          BROWSERBASE_ENABLED: 'false'
+          BROWSERBASE_ENABLED: 'true'
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -424,7 +434,17 @@ jobs:
           BRIGHTDATA_ZONE: mcp_unlocker
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
-          BROWSERBASE_ENABLED: 'false'
+          BROWSERBASE_ENABLED: 'true'
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}

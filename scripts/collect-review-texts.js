@@ -153,6 +153,7 @@ const CONFIG = {
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
   browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
   browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
+  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '5'), // Prevent one domain starving others
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -172,11 +173,11 @@ const CONFIG = {
 
   // Paywalled domains and their credential env vars
   paywalledDomains: {
-    'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD' },
+    'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD', altPassVar: 'NYTIMES_PASSWORD' },
     'vulture.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'nymag.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'newyorker.com': { emailVar: 'NEW_YORKER_EMAIL', passVar: 'NEW_YORKER_PASSWORD' },
-    'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD' },
+    'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD', altPassVar: 'WASHPOST_PASSWORD' },
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
   },
 
@@ -186,8 +187,9 @@ const CONFIG = {
     'theatermania.com', 'observer.com', 'chicagotribune.com',
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
-    'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
-    'newyorker.com',  // Condé Nast switched to OTC-only auth — Playwright login triggers spam OTC emails
+    'nytimes.com',  // DataDome CAPTCHA in headless — skip to Browserbase
+    'wsj.com',  // Dow Jones SSO anti-bot detection — fake-rejects correct password in automated browsers
+    'newyorker.com',  // Condé Nast id.condenast.com — routes automated browsers to OTP, not password login
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
   ],
 
@@ -394,6 +396,7 @@ let browserbaseUsage = {
   sessionsToday: 0,
   sessionsThisRun: 0,
   minutesToday: 0,
+  sessionsPerDomain: {},  // { 'wsj.com': 3, 'nytimes.com': 2, ... } — per-run cap prevents starvation
   history: [],
 };
 
@@ -1353,6 +1356,13 @@ async function fetchWithBrowserbase(url, review) {
   browserbaseUsage.sessionsThisRun++;
   stats.browserbaseSessionsUsed++;
 
+  // Track per-domain usage to prevent one domain starving others
+  try {
+    const urlDomain = new URL(url).hostname.replace('www.', '');
+    browserbaseUsage.sessionsPerDomain[urlDomain] = (browserbaseUsage.sessionsPerDomain[urlDomain] || 0) + 1;
+  } catch {}
+
+
   console.log(`    Browserbase session ${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun} (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} today)`);
 
   let bbBrowser = null;
@@ -2198,6 +2208,15 @@ function buildTierChain(ctx, review) {
       timeoutMs: 120000,
       shouldRun: () => {
         if (!CONFIG.browserbaseEnabled || !canUseBrowserbase()) return false;
+        // Per-domain session cap — prevents one domain class from consuming all sessions
+        try {
+          const urlDomain = new URL(url).hostname.replace('www.', '');
+          const domainSessions = browserbaseUsage.sessionsPerDomain[urlDomain] || 0;
+          if (domainSessions >= CONFIG.browserbaseMaxSessionsPerDomain) {
+            console.log(`    ⚠ Browserbase per-domain limit reached for ${urlDomain} (${domainSessions}/${CONFIG.browserbaseMaxSessionsPerDomain})`);
+            return false;
+          }
+        } catch {}
         return (
           ctx.isKnownBlocked || ctx.sawCaptcha ||
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
@@ -2360,7 +2379,7 @@ function getPaywallCredentials(url) {
   for (const [domain, creds] of Object.entries(CONFIG.paywalledDomains)) {
     if (url.includes(domain)) {
       const email = process.env[creds.emailVar];
-      const password = process.env[creds.passVar];
+      const password = process.env[creds.passVar] || (creds.altPassVar && process.env[creds.altPassVar]);
       if (email && password) {
         return { domain, email, password };
       }
