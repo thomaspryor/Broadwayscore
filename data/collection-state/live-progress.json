@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-14T04:33:34.051Z",
-  "processed": 43,
+  "updatedAt": "2026-02-14T04:46:25.038Z",
+  "processed": 58,
   "failed": 77,
-  "successRate": "35.8%",
+  "successRate": "43.0%",
   "tierBreakdown": {
-    "playwright": 21,
-    "browserbase": 0,
+    "playwright": 35,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 17,
-    "archive": 5
+    "brightdata": 13,
+    "archive": 12
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T03:50:37.001Z",
+      "event": "bb-session",
+      "session": "cc6cbdda",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    },
+    {
+      "t": "2026-02-14T04:16:22.186Z",
+      "event": "bb-session",
+      "session": "d024691e",
+      "url": "https://www.amny.com/entertainment/american-son-review-1.22896845/"
+    },
+    {
+      "t": "2026-02-14T04:27:54.818Z",
+      "event": "bb-session",
+      "session": "45bc0497",
+      "url": "https://www.amny.com/entertainment/bullets-over-broadway-is-mildly-entertaining-"
+    },
+    {
+      "t": "2026-02-14T04:31:34.993Z",
+      "event": "bb-session",
+      "session": "48b65c31",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-don-t-dress-for-dinner-1-s"
+    },
+    {
+      "t": "2026-02-14T04:35:43.039Z",
+      "event": "bb-session",
+      "session": "77ea154e",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-eiling-1.2484301"
+    }
+  ]
 }
