@@ -1,25 +1,255 @@
 /**
  * LLM-Based Content Verification
  *
- * Uses Claude/OpenAI to verify scraped content quality:
- * 1. Matches expected review (compare to excerpt)
- * 2. Detects wrong article (different topic scraped)
- * 3. Detects truncation (paywall/incomplete content)
+ * Primary content gate for scraped review texts. Runs by default on all
+ * reviews with 200+ chars. Detects:
+ *   1. Wrong article (different topic, different show entirely)
+ *   2. Wrong production (tour, regional, off-Broadway, West End — not Broadway)
+ *   3. Film/TV content (movie adaptation, streaming, TV special)
+ *   4. Truncation (paywall, incomplete content)
+ *   5. Navigation/junk (scraped footer instead of article)
+ *
+ * Provider chain: Kimi (cheapest) → Gemini Flash → GPT-4o-mini → Claude Sonnet → heuristic fallback
+ * Falls back to heuristic checks when no API keys are available.
  */
 
-const Anthropic = require('@anthropic-ai/sdk').default;
+const https = require('https');
 
-let anthropic = null;
+// ============================================================
+// LLM Provider Implementations (cheapest → most expensive)
+// ============================================================
 
-function initClient() {
-  if (!anthropic && process.env.ANTHROPIC_API_KEY) {
-    anthropic = new Anthropic();
-  }
-  return anthropic;
+/**
+ * Call Kimi K2.5 via OpenRouter — cheapest option
+ */
+function callKimi(prompt) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error('OPENROUTER_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'moonshotai/kimi-k2.5',
+      temperature: 0.1,
+      max_tokens: 400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const req = https.request('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://broadwayscorecard.com',
+        'X-Title': 'Broadway Scorecard Content Verification'
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.choices?.[0]?.message?.content || '');
+          } catch (e) {
+            reject(new Error(`Kimi parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Kimi HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
 }
 
 /**
- * Verify scraped content matches expected review
+ * Call Gemini Flash — ~$0.0001/review (practically free)
+ */
+function callGemini(prompt) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.1, maxOutputTokens: 400 }
+    });
+
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            resolve(text);
+          } catch (e) {
+            reject(new Error(`Gemini parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Gemini HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call OpenAI GPT-4o-mini — ~$0.0003/review
+ */
+function callOpenAI(prompt) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 400,
+      temperature: 0.1
+    });
+
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.choices?.[0]?.message?.content || '');
+          } catch (e) {
+            reject(new Error(`OpenAI parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`OpenAI HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call Claude Sonnet — ~$0.003/review (most expensive, last resort)
+ */
+function callClaude(prompt) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const req = https.request('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.content?.[0]?.text || '');
+          } catch (e) {
+            reject(new Error(`Claude parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Claude HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// ============================================================
+// Provider Chain
+// ============================================================
+
+/** Get available providers in order of preference (cheapest first) */
+function getProviderChain() {
+  const providers = [];
+  if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
+  if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
+  if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
+  if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
+  return providers;
+}
+
+/**
+ * Call LLM with automatic fallback through provider chain.
+ * Parses JSON from response — if response isn't valid JSON, falls back to next provider.
+ * @returns {{ parsed: Object, provider: string } | null}
+ */
+async function callWithFallback(prompt) {
+  const chain = getProviderChain();
+  if (chain.length === 0) return null;
+
+  for (let i = 0; i < chain.length; i++) {
+    const { name, call } = chain[i];
+    try {
+      const text = await call(prompt);
+
+      // Parse JSON from response — unparseable = try next provider
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        console.log(`    ${name}: no JSON in response, trying next...`);
+        continue;
+      }
+
+      try {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return { parsed, provider: name };
+      } catch (parseErr) {
+        console.log(`    ${name}: invalid JSON (${parseErr.message}), trying next...`);
+        continue;
+      }
+    } catch (e) {
+      console.log(`    ${name} verify error: ${e.message}`);
+      if (i < chain.length - 1) {
+        console.log(`    Falling back to ${chain[i + 1].name}...`);
+      }
+    }
+  }
+
+  return null; // All providers failed
+}
+
+// ============================================================
+// Main Verification
+// ============================================================
+
+/**
+ * Verify scraped content matches expected Broadway review
  *
  * @param {Object} params
  * @param {string} params.scrapedText - The scraped full text
@@ -27,96 +257,102 @@ function initClient() {
  * @param {string} params.showTitle - Show title for context
  * @param {string} params.outletName - Outlet name
  * @param {string} params.criticName - Critic name
- * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle }
+ * @param {string} [params.openingDate] - Broadway opening date (YYYY-MM-DD) for temporal context
+ * @param {string} [params.venue] - Broadway venue name
+ * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName }) {
-  const client = initClient();
-
-  if (!client) {
-    // No API key - fall back to heuristic checks
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-  }
-
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
       confidence: 'high',
       issues: ['Content too short (<200 chars)'],
       truncated: true,
-      wrongArticle: false
+      wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
+      verifiedBy: 'skip-short'
     };
   }
 
-  const prompt = `You are a content verification assistant for a Broadway review aggregator.
+  const dateContext = openingDate ? `\n- Broadway opening date: ${openingDate}` : '';
+  const venueContext = venue ? `\n- Broadway venue: ${venue}` : '';
+  const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
-I scraped what should be a theater review. Verify if the content is valid.
+  const prompt = `You are a content verification assistant for a Broadway review aggregator. We only include reviews of Broadway productions (shows performed in Broadway theaters in New York City).
+
+I scraped what should be a Broadway theater review. Verify if the content is valid.
 
 **Expected Review:**
 - Show: "${showTitle}"
 - Outlet: ${outletName}
-- Critic: ${criticName || 'Unknown'}
-- Known excerpt: "${excerpt || 'No excerpt available'}"
+- Critic: ${criticName || 'Unknown'}${dateContext}${venueContext}${excerptContext}
 
-**Scraped Content (first 2000 chars):**
-${scrapedText.substring(0, 2000)}
+**Scraped Content (first 2500 chars):**
+${scrapedText.substring(0, 2500)}
 
-**Scraped Content Length:** ${scrapedText.length} characters
+**Total scraped length:** ${scrapedText.length} characters
 
-Analyze and respond with JSON only:
+Analyze the content and respond with ONLY valid JSON (no markdown fences):
 {
   "isValid": true/false,
   "confidence": "high"/"medium"/"low",
-  "issues": ["list of issues found"],
-  "truncated": true/false,
   "wrongArticle": true/false,
-  "reasoning": "brief explanation"
+  "wrongProduction": true/false,
+  "isFilmTv": true/false,
+  "truncated": true/false,
+  "issues": ["list of issues found"],
+  "reasoning": "1-2 sentence explanation"
 }
 
-Check for:
-1. Does the content discuss "${showTitle}" (the Broadway show)?
-2. If excerpt provided, does the scraped text contain similar content/phrases?
-3. Is the content truncated (ends mid-sentence, has paywall text, "subscribe to read more")?
-4. Is this a different article (movie review, news article, different show)?
-5. Is this navigation/footer junk instead of actual review content?
+**Check these specific things:**
 
-Respond ONLY with valid JSON.`;
+1. **Wrong article**: Is this about a completely different show, or not a theater review at all (news article, obituary, listicle, etc.)?
 
-  try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [{ role: 'user', content: prompt }]
-    });
+2. **Wrong production** (IMPORTANT): Is this reviewing a NON-Broadway production of "${showTitle}"? Red flags:
+   - National tour, touring production, touring company, "on tour"
+   - Regional theater (Ahmanson, Kennedy Center, Old Globe, Goodman, etc.)
+   - Off-Broadway or Off-Off-Broadway venue
+   - West End / London production
+   - Pre-Broadway tryout or out-of-town engagement
+   A review of the BROADWAY production that merely *mentions* a tour or previous run is NOT a wrong production — it must be *reviewing* a non-Broadway staging.
 
-    const text = response.content[0].text;
+3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live Broadway performance)?
 
-    // Parse JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
-      return {
-        isValid: result.isValid,
-        confidence: result.confidence || 'medium',
-        issues: result.issues || [],
-        truncated: result.truncated || false,
-        wrongArticle: result.wrongArticle || false,
-        reasoning: result.reasoning || '',
-        verifiedBy: 'llm'
-      };
-    }
+4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
 
-    // Couldn't parse - fall back to heuristics
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
+5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
 
-  } catch (error) {
-    console.error(`    LLM verification error: ${error.message}`);
-    // Fall back to heuristics on error
+Set isValid=true only if the content is a review of the BROADWAY production and is not truncated/junk.`;
+
+  const result = await callWithFallback(prompt);
+
+  if (!result) {
+    // No LLM providers available (or all returned unparseable JSON) — fall back to heuristics
     return heuristicVerify({ scrapedText, excerpt, showTitle });
   }
+
+  const parsed = result.parsed;
+  return {
+    isValid: parsed.isValid ?? true,
+    confidence: parsed.confidence || 'medium',
+    issues: parsed.issues || [],
+    truncated: parsed.truncated || false,
+    wrongArticle: parsed.wrongArticle || false,
+    wrongProduction: parsed.wrongProduction || false,
+    isFilmTv: parsed.isFilmTv || false,
+    reasoning: parsed.reasoning || '',
+    verifiedBy: `llm:${result.provider}`
+  };
 }
+
+// ============================================================
+// Heuristic Fallback
+// ============================================================
 
 /**
  * Heuristic-based content verification (no API needed)
+ * Used as fallback when all LLM providers are unavailable
  */
 function heuristicVerify({ scrapedText, excerpt, showTitle }) {
   const issues = [];
@@ -130,6 +366,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
       issues: ['No content'],
       truncated: true,
       wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
       verifiedBy: 'heuristic'
     };
   }
@@ -172,11 +410,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
 
   // Check excerpt match (if provided)
   if (excerpt && excerpt.length > 50) {
-    // Normalize both texts
     const excerptNorm = excerpt.toLowerCase().replace(/[^a-z0-9\s]/g, '').substring(0, 100);
     const textNorm = text.replace(/[^a-z0-9\s]/g, '');
-
-    // Check if key phrases from excerpt appear in text
     const excerptWords = excerptNorm.split(/\s+/).filter(w => w.length > 4);
     const matchingWords = excerptWords.filter(w => textNorm.includes(w));
     const matchRate = matchingWords.length / excerptWords.length;
@@ -202,7 +437,6 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     issues.push('Content appears to be mostly navigation/footer junk');
   }
 
-  // Determine overall validity
   const isValid = !wrongArticle && issues.length <= 1;
 
   return {
@@ -211,6 +445,8 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     issues,
     truncated,
     wrongArticle,
+    wrongProduction: false, // Heuristics can't reliably detect this
+    isFilmTv: false, // Heuristics can't reliably detect this
     verifiedBy: 'heuristic'
   };
 }
@@ -223,14 +459,11 @@ function quickValidityCheck(text, showTitle) {
 
   const lower = text.toLowerCase();
 
-  // Must contain some theater-related words
   const theaterWords = ['broadway', 'theater', 'theatre', 'musical', 'stage', 'performance', 'actor', 'cast', 'director'];
   const hasTheaterContent = theaterWords.some(w => lower.includes(w));
 
-  // Should mention the show (if we know the title)
   const showMentioned = !showTitle || lower.includes(showTitle.toLowerCase());
 
-  // Should not be mostly junk
   const junkRatio = (lower.match(/privacy|terms|cookie|subscribe|sign in/g) || []).length;
 
   return hasTheaterContent && showMentioned && junkRatio < 3;

@@ -1,0 +1,341 @@
+name: Verify Existing Reviews (LLM)
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel jobs (1-10)'
+        required: false
+        type: choice
+        default: '5'
+        options: ['1', '2', '3', '4', '5', '6', '7', '8', '10']
+      max_per_job:
+        description: 'Max reviews per job (0 = all)'
+        required: false
+        default: '500'
+      mode:
+        description: 'What to check'
+        required: false
+        type: choice
+        default: 'both'
+        options: ['both', 'verify-only', 'recover-only']
+      dry_run:
+        description: 'Dry run — log what would change without modifying files'
+        required: false
+        type: boolean
+        default: false
+      max_rounds:
+        description: 'Max self-chaining rounds (0 = no chaining)'
+        required: false
+        default: '10'
+      current_round:
+        description: 'Current round (auto-set by chaining)'
+        required: false
+        default: '1'
+
+# Retroactive LLM content verification for all existing reviews.
+# Two modes: (1) verify unverified reviews for wrong-production/wrong-show/film-TV
+#             (2) re-evaluate existing wrongProduction/wrongShow flags for false positives
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.partition.outputs.matrix }}
+      total_verify: ${{ steps.count.outputs.verify }}
+      total_recover: ${{ steps.count.outputs.recover }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Count and partition
+        id: count
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            const showVerify = {}, showRecover = {};
+            let totalVerify = 0, totalRecover = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            for (const d of dirs) {
+              let vCount = 0, rCount = 0;
+              const files = fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json");
+              for (const f of files) {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if ((r.wrongProduction || r.wrongShow) && !r.wrongAttribution) {
+                    const text = r.fullText || r.wrongFullText || r.garbageFullText;
+                    if (text && text.length >= 200 && !(r.verifiedBy && r.verifiedBy.startsWith("llm:"))) rCount++;
+                  } else if (!r.wrongProduction && !r.wrongShow && !r.wrongAttribution) {
+                    if (r.fullText && r.fullText.length >= 200 && !(r.verifiedBy && r.verifiedBy.startsWith("llm:"))) vCount++;
+                  }
+                } catch {}
+              }
+              if (vCount > 0) { showVerify[d] = vCount; totalVerify += vCount; }
+              if (rCount > 0) { showRecover[d] = rCount; totalRecover += rCount; }
+            }
+            fs.writeFileSync("/tmp/show-verify.json", JSON.stringify(showVerify));
+            fs.writeFileSync("/tmp/show-recover.json", JSON.stringify(showRecover));
+            console.log("Verify:", totalVerify, "Recover:", totalRecover);
+          '
+          VERIFY=$(node -e "const c=JSON.parse(require('fs').readFileSync('/tmp/show-verify.json','utf8'));console.log(Object.values(c).reduce((a,b)=>a+b,0))")
+          RECOVER=$(node -e "const c=JSON.parse(require('fs').readFileSync('/tmp/show-recover.json','utf8'));console.log(Object.values(c).reduce((a,b)=>a+b,0))")
+          echo "verify=$VERIFY" >> $GITHUB_OUTPUT
+          echo "recover=$RECOVER" >> $GITHUB_OUTPUT
+          echo "Unverified reviews: $VERIFY, Flagged for re-eval: $RECOVER"
+
+      - name: Build partition matrix
+        id: partition
+        env:
+          JOBS: ${{ inputs.parallel_jobs }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const verify = JSON.parse(fs.readFileSync("/tmp/show-verify.json", "utf8"));
+            const recover = JSON.parse(fs.readFileSync("/tmp/show-recover.json", "utf8"));
+            const mode = process.env.MODE || "both";
+
+            // Merge show counts based on mode
+            const combined = {};
+            if (mode !== "recover-only") {
+              for (const [k, v] of Object.entries(verify)) combined[k] = (combined[k] || 0) + v;
+            }
+            if (mode !== "verify-only") {
+              for (const [k, v] of Object.entries(recover)) combined[k] = (combined[k] || 0) + v;
+            }
+
+            const shows = Object.entries(combined).sort((a, b) => b[1] - a[1]);
+            const jobs = Math.min(parseInt(process.env.JOBS), shows.length || 1);
+            const partitions = Array.from({ length: jobs }, () => ({ shows: [], count: 0 }));
+
+            shows.forEach(([show, count]) => {
+              const lightest = partitions.reduce((min, p, i) => p.count < partitions[min].count ? i : min, 0);
+              partitions[lightest].shows.push(show);
+              partitions[lightest].count += count;
+            });
+
+            const matrix = partitions
+              .filter(p => p.shows.length > 0)
+              .map((p, i) => ({ partition: i + 1, shows: p.shows.join(","), review_count: p.count }));
+
+            console.log(JSON.stringify(matrix));
+            fs.writeFileSync("/tmp/matrix.json", JSON.stringify(matrix));
+          '
+          MATRIX=$(cat /tmp/matrix.json)
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+      - name: Summary
+        run: |
+          echo "## Retroactive LLM Verification: Preparation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Unverified reviews:** ${{ steps.count.outputs.verify }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Flagged for re-evaluation:** ${{ steps.count.outputs.recover }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Mode:** ${{ inputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Round:** ${{ inputs.current_round }} / ${{ inputs.max_rounds }}" >> $GITHUB_STEP_SUMMARY
+
+  verify:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJson(inputs.parallel_jobs) }}
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Stagger start
+        run: |
+          DELAY=$(( (${{ matrix.partition }} - 1) * 10 ))
+          echo "Staggering partition ${{ matrix.partition }} by ${DELAY}s"
+          sleep $DELAY
+
+      - name: Run verification (partition ${{ matrix.partition }})
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHOW_FILTER: ${{ matrix.shows }}
+          COMMIT_EVERY: '25'
+        run: |
+          ARGS=""
+          if [ "${{ inputs.mode }}" = "verify-only" ]; then
+            ARGS="$ARGS --verify-only"
+          elif [ "${{ inputs.mode }}" = "recover-only" ]; then
+            ARGS="$ARGS --recover-only"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ inputs.max_per_job }}" != "0" ]; then
+            ARGS="$ARGS --limit=${{ inputs.max_per_job }}"
+          fi
+          node scripts/verify-existing-reviews.js $ARGS
+
+      - name: Commit and push (partition ${{ matrix.partition }})
+        if: always()
+        run: |
+          git add data/review-texts/ data/audit/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for partition ${{ matrix.partition }}"
+          else
+            git commit -m "feat: Retroactive LLM verify (round ${{ inputs.current_round }}, partition ${{ matrix.partition }}/${{ inputs.parallel_jobs }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Push attempt $i failed, retrying..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
+          fi
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verify-report-partition-${{ matrix.partition }}
+          path: data/audit/retroactive-verify-report.json
+          retention-days: 30
+
+  rebuild:
+    if: ${{ inputs.dry_run != true && always() }}
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Rebuild reviews.json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit rebuilt reviews.json
+        if: always()
+        run: |
+          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (retroactive LLM verify round ${{ inputs.current_round }})"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            git push || true
+          fi
+
+      - name: Count remaining and chain
+        if: always()
+        id: chain
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          REMAINING=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let verify = 0, recover = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            for (const d of dirs) {
+              const files = fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json");
+              for (const f of files) {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if ((r.wrongProduction || r.wrongShow) && !r.wrongAttribution) {
+                    const text = r.fullText || r.wrongFullText || r.garbageFullText;
+                    if (text && text.length >= 200 && !(r.verifiedBy && r.verifiedBy.startsWith("llm:"))) recover++;
+                  } else if (!r.wrongProduction && !r.wrongShow && !r.wrongAttribution) {
+                    if (r.fullText && r.fullText.length >= 200 && !(r.verifiedBy && r.verifiedBy.startsWith("llm:"))) verify++;
+                  }
+                } catch {}
+              }
+            }
+            console.log(verify + recover);
+          ')
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          CURRENT=${{ inputs.current_round }}
+          MAX=${{ inputs.max_rounds }}
+          echo "Remaining: $REMAINING reviews, round $CURRENT of $MAX"
+          if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
+            NEXT=$((CURRENT + 1))
+            echo "Chaining round $NEXT..."
+            gh workflow run "Verify Existing Reviews (LLM)" \
+              -f parallel_jobs=${{ inputs.parallel_jobs }} \
+              -f max_per_job=${{ inputs.max_per_job }} \
+              -f mode=${{ inputs.mode }} \
+              -f dry_run=false \
+              -f max_rounds=$MAX \
+              -f current_round=$NEXT
+            echo "chained=true" >> $GITHUB_OUTPUT
+          else
+            echo "No chaining needed (remaining=$REMAINING, round=$CURRENT/$MAX)"
+            echo "chained=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Retroactive LLM Verify Round ${{ inputs.current_round }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY
