@@ -1,15 +1,76 @@
 {
-  "updatedAt": "2026-02-14T09:51:59.579Z",
-  "processed": 38,
-  "failed": 62,
-  "successRate": "38.0%",
+  "updatedAt": "2026-02-14T09:56:09.109Z",
+  "processed": 62,
+  "failed": 48,
+  "successRate": "56.4%",
   "tierBreakdown": {
-    "playwright": 33,
-    "browserbase": 0,
+    "playwright": 6,
+    "browserbase": 15,
     "scrapingbee": 0,
-    "brightdata": 4,
-    "archive": 1
+    "brightdata": 28,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T09:24:07.244Z",
+      "event": "bb-session",
+      "session": "705424e5",
+      "url": "https://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+    },
+    {
+      "t": "2026-02-14T09:24:40.467Z",
+      "event": "bb-session",
+      "session": "b5eed1c0",
+      "url": "https://www.hollywoodreporter.com/review/act-one-theater-review-697276"
+    },
+    {
+      "t": "2026-02-14T09:26:05.824Z",
+      "event": "bb-session",
+      "session": "f83fb479",
+      "url": "https://www.hollywoodreporter.com/review/amelie-a-new-musical-theater-957477"
+    },
+    {
+      "t": "2026-02-14T09:26:49.421Z",
+      "event": "bb-session",
+      "session": "f1b84f1f",
+      "url": "https://www.hollywoodreporter.com/review/baby-you-theater-review-182679"
+    },
+    {
+      "t": "2026-02-14T09:27:03.688Z",
+      "event": "bb-session",
+      "session": "765d314c",
+      "url": "https://www.variety.com/review/VE1117945106"
+    },
+    {
+      "t": "2026-02-14T09:27:58.593Z",
+      "event": "bb-session",
+      "session": "71b0fd23",
+      "url": "https://www.hollywoodreporter.com/review/bandstand-997614"
+    },
+    {
+      "t": "2026-02-14T09:28:21.449Z",
+      "event": "bb-session",
+      "session": "e5fec254",
+      "url": "http://www.hollywoodreporter.com/review/beautiful-carole-king-musical-theater-67"
+    },
+    {
+      "t": "2026-02-14T09:28:51.991Z",
+      "event": "bb-session",
+      "session": "33cc418f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/bernhardt-hamlet-theater-rev"
+    },
+    {
+      "t": "2026-02-14T09:30:00.070Z",
+      "event": "bb-session",
+      "session": "df7f15ea",
+      "url": "https://www.hollywoodreporter.com/review/dont-dress-dinner-theater-review-316689"
+    },
+    {
+      "t": "2026-02-14T09:30:51.044Z",
+      "event": "bb-session",
+      "session": "799c8a85",
+      "url": "https://www.variety.com/review/VE1117947452"
+    }
+  ]
 }
