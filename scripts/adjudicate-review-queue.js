@@ -305,6 +305,84 @@ async function main() {
       continue;
     }
 
+    // Skip if already resolved as wrongProduction or verified clean
+    if (sourceData.wrongProduction === true || sourceData.tourCheckVerified) {
+      console.log(`  ⏭️  Already resolved (wrongProduction=${sourceData.wrongProduction}, tourCheckVerified=${sourceData.tourCheckVerified}) — skipping`);
+      results.skipped++;
+      continue;
+    }
+
+    // Contamination flags need a different adjudication approach:
+    // For tour/film/TV flags, we need to determine if this is a Broadway review or not,
+    // not score it. Use Claude to make a binary decision.
+    if (review.reason === 'possible-tour-fulltext' || review.reason === 'possible-film-tv-fulltext') {
+      if (DRY_RUN) {
+        console.log(`  [DRY RUN] Would adjudicate contamination flag: ${review.reason}`);
+        results.skipped++;
+        continue;
+      }
+
+      const text = sourceData.fullText || sourceData.dtliExcerpt || sourceData.bwwExcerpt || '';
+      if (!text || text.length < 50) {
+        console.log(`  ⚠️  No text to adjudicate contamination — skipping`);
+        results.skipped++;
+        continue;
+      }
+
+      try {
+        const message = await anthropic.messages.create({
+          model: 'claude-sonnet-4-5-20250929',
+          max_tokens: 300,
+          temperature: 0.2,
+          messages: [{
+            role: 'user',
+            content: `You are a Broadway review classifier. Determine if this review is about a BROADWAY production or a NON-BROADWAY production (national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special).
+
+**Show:** ${sourceData.showId}
+**Outlet:** ${sourceData.outlet || review.outletId}
+**Flag reason:** ${review.reason} — ${review.detail || ''}
+
+**Review text (first 1500 chars):**
+${text.slice(0, 1500)}
+
+Respond with ONLY this JSON (no markdown fences):
+{
+  "verdict": "broadway" or "not-broadway",
+  "confidence": "high" or "medium" or "low",
+  "reasoning": "1-2 sentence explanation",
+  "productionType": "broadway" or "national-tour" or "regional" or "pre-broadway" or "film-tv" or "other"
+}` }],
+        });
+        const resp = message.content[0].text;
+
+        const result = JSON.parse(resp);
+
+        if (result.confidence === 'high' || result.confidence === 'medium') {
+          if (result.verdict === 'not-broadway') {
+            sourceData.wrongProduction = true;
+            sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
+          } else {
+            sourceData.tourCheckVerified = 'false-positive';
+            sourceData.tourCheckNote = `Auto-adjudicated: legitimate Broadway review. ${result.reasoning}`;
+          }
+          fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+          console.log(`  ✅ Contamination adjudicated: ${result.verdict} (${result.confidence}) — ${result.reasoning}`);
+          results.resolved++;
+        } else {
+          sourceData.adjudicationAttempts = (sourceData.adjudicationAttempts || 0) + 1;
+          fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+          console.log(`  ❓ Low confidence — attempt ${sourceData.adjudicationAttempts}, skipping`);
+          results.skipped++;
+        }
+      } catch (err) {
+        console.log(`  ⚠️  Contamination adjudication failed: ${err.message}`);
+        results.errors++;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      continue;
+    }
+
     const attempts = sourceData.adjudicationAttempts || 0;
 
     // Check max attempts — auto-accept LLM score
