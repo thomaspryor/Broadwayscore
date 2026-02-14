@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-14",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11398,
+      "totalReviews": 11394,
       "skippedNoScore": 6449,
       "skippedDuplicate": 52,
       "skippedDuplicateUrl": 223,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1044,
+      "skippedDuplicateText": 1046,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1656,
+      "skippedWrongProduction": 1657,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 21,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 16,
         "human-review": 62,
         "originalScore-priority0": 1293,
-        "llmScore": 7709,
+        "llmScore": 7707,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 2154,
+        "llmScore-lowconf": 2152,
         "llmScore-review": 8,
         "assignedScore": 0,
         "originalScore": 0,
@@ -59988,7 +59988,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Steven Suskin",
@@ -59998,7 +59998,7 @@
       "pullQuote": "So there is plenty for musical comedy audiences to be happy about, especially at a time when there is nothing else on Broadway in this category.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "dames-at-sea-2015",
@@ -77818,7 +77818,7 @@
       "pullQuote": "Long-winded and impossibly earnest, the world-premiere musical features an unremarkable score and a lumbering book.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "flying-over-sunset-2021",
@@ -78590,7 +78590,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Regina Weinreich",
@@ -78600,7 +78600,7 @@
       "pullQuote": "From Eddie's first words: 'I'm not leaving,' you are in the play's intense grip",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fool-for-love-2015",
@@ -117674,7 +117674,7 @@
       "pullQuote": "The play comes across less as a text emerging thrillingly to life than as a talking textbook.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "junk-2017",
@@ -144207,23 +144207,6 @@
     },
     {
       "showId": "oslo-2017",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "http://www.hollywoodreporter.com/review/oslo-theater-review-909909",
-      "publishDate": "June 13, 2017",
-      "originalRating": null,
-      "pullQuote": "Oslo makes for absorbing theater, transforming what could have been a dry historical procedural into a gripping human drama",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "oslo-2017",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
@@ -155214,23 +155197,6 @@
     },
     {
       "showId": "richard-iii-2013",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 94,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "http://www.hollywoodreporter.com/review/twelfth-night-richard-iii-theater-654931",
-      "publishDate": "November 11, 2013",
-      "originalRating": null,
-      "pullQuote": "It's hard to imagine six more exciting hours of vital, emotionally and intellectually engaging theater.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "richard-iii-2013",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 93,
@@ -155310,23 +155276,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "rock-n-roll-2007",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
-      "assignedScore": 95,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/stereophonic-review-theater-david-adjmi-broadway-1235877998/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Arguably the best new American drama since Annie Baker's The Flick",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -170209,23 +170158,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-cher-show-2018",
-      "outletId": "theatre-reviews-limited",
-      "outlet": "Theatre Reviews Limited",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Joseph Verlezza",
-      "url": "https://www.theatrereviews.com/broadway-review-the-cher-show-at-the-neil-simon-theatre/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "There is nothing groundbreaking about this show, but it is good solid entertainment with performances that would be hard to beat.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-cher-show-2018",
