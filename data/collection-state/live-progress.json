@@ -1,15 +1,52 @@
 {
-  "updatedAt": "2026-02-14T04:29:05.015Z",
-  "processed": 1,
-  "failed": 99,
-  "successRate": "1.0%",
+  "updatedAt": "2026-02-14T04:32:58.193Z",
+  "processed": 75,
+  "failed": 90,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 53,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 3,
+    "archive": 19
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T03:39:12.729Z",
+      "event": "bb-session",
+      "session": "6ef862b7",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    },
+    {
+      "t": "2026-02-14T03:40:10.066Z",
+      "event": "bb-session",
+      "session": "cc43a2ea",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+    },
+    {
+      "t": "2026-02-14T03:49:47.802Z",
+      "event": "bb-session",
+      "session": "33b1d10b",
+      "url": "https://www.thewrap.com/spongebob-squarepants-broadway-review-bouncy-tunes-keep-"
+    },
+    {
+      "t": "2026-02-14T03:50:03.218Z",
+      "event": "bb-session",
+      "session": "fdbed133",
+      "url": "http://www.thewrap.com/bridges-madison-county-theater-review-kelli-ohara-steven-"
+    },
+    {
+      "t": "2026-02-14T04:17:46.879Z",
+      "event": "bb-session",
+      "session": "0cdbf73d",
+      "url": "https://www.amny.com/entertainment/review-time-travel-gone-wrong-in-broadways-ba"
+    },
+    {
+      "t": "2026-02-14T04:24:55.273Z",
+      "event": "bb-session",
+      "session": "1bb0da06",
+      "url": "https://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back"
+    }
+  ]
 }
