@@ -425,9 +425,22 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   }
 
   // Validate URL slug matches show title using robust word matching
+  // Also reject tour/regional roundup articles (e.g., "National-Tour-of-...", "on-Tour")
   const validRoundupUrls = roundupUrls.filter(url => {
     const urlSlug = (url.split('/article/')[1] || '').replace(/-/g, ' ').toLowerCase();
-    return titleWordsMatch(searchTitle, urlSlug);
+    if (!titleWordsMatch(searchTitle, urlSlug)) return false;
+    // General non-Broadway check (tours, streaming, off-Broadway, etc.)
+    if (isNotBroadway(urlSlug)) {
+      console.log(`  [SKIP] roundup: non-Broadway article: ${url.split('/article/')[1] || url}`);
+      return false;
+    }
+    // Additional roundup-specific checks (safe in article titles, too aggressive for review text)
+    if (/\bon tour\b/.test(urlSlug) || /\bat the kennedy center\b/.test(urlSlug) ||
+        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(urlSlug)) {
+      console.log(`  [SKIP] roundup: non-Broadway venue/tour in title: ${url.split('/article/')[1] || url}`);
+      return false;
+    }
+    return true;
   });
 
   if (validRoundupUrls.length === 0) {
