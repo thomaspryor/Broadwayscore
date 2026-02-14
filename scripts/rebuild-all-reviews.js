@@ -1197,6 +1197,37 @@ for (const s of showsData.shows) {
   showTitleMap[s.id] = s.title;
 }
 
+// Build URL-year cross-production guard for multi-production shows
+// Pattern: review URL contains a year clearly closer to a sibling production = wrong directory
+const multiProdYearGuard = {};
+{
+  const titleGroups = {};
+  for (const s of showsData.shows) {
+    const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
+    titleGroups[normTitle].push(s);
+  }
+  for (const [, prods] of Object.entries(titleGroups)) {
+    if (prods.length < 2) continue;
+    for (const show of prods) {
+      const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
+        : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
+      if (!showYear) continue;
+      const siblings = prods.filter(p => p.id !== show.id).map(p => ({
+        id: p.id,
+        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null
+      })).filter(p => p.year);
+      if (siblings.length > 0) {
+        multiProdYearGuard[show.id] = { showYear, siblings };
+      }
+    }
+  }
+  const guardedCount = Object.keys(multiProdYearGuard).length;
+  if (guardedCount > 0) {
+    console.log(`URL-year cross-production guard active for ${guardedCount} multi-production shows`);
+  }
+}
+
 // Build director cross-check lookup for multi-production shows
 // Pattern: reviews in OLDER production dirs mentioning NEWER production's director = wrong production
 const multiProdDirectorGuard = {};
@@ -1372,6 +1403,38 @@ showDirs.forEach(showId => {
             });
             stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
             return;
+          }
+        }
+      }
+
+      // URL-year cross-production guard for multi-production shows
+      // If a review's URL or publish date contains a year clearly closer to a sibling production,
+      // skip it (likely filed in the wrong directory by aggregator scrapers)
+      if (multiProdYearGuard[showId]) {
+        const guard = multiProdYearGuard[showId];
+        let detectedYear = null;
+        let yearSource = null;
+        // Check publish date first (more reliable)
+        if (data.publishDate) {
+          const m = data.publishDate.match(/(20\d\d|19\d\d)/);
+          if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
+        }
+        // Fall back to URL year
+        if (!detectedYear && data.url) {
+          const m = data.url.match(/\/(20\d\d|19\d\d)\//);
+          if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
+        }
+        if (detectedYear) {
+          const distToThis = Math.abs(detectedYear - guard.showYear);
+          if (distToThis > 1) {
+            for (const sib of guard.siblings) {
+              const distToSib = Math.abs(detectedYear - sib.year);
+              if (distToSib < distToThis) {
+                console.log(`  [URL-YEAR GUARD] ${showId}/${file}: ${yearSource}=${detectedYear}, show=${guard.showYear}, closer to ${sib.id} (${sib.year})`);
+                stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
+                return;
+              }
+            }
           }
         }
       }
@@ -1923,6 +1986,7 @@ console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
+console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
