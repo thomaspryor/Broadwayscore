@@ -5,13 +5,23 @@
     "airline-highway-2015/nytg--stanford-friedman.json",
     "almost-famous-2022/hollywood-reporter--angie-han.json",
     "almost-famous-2022/hollywood-reporter--david-rooney.json",
-    "appropriate-2023/hollywood-reporter--angie-han.json"
+    "appropriate-2023/hollywood-reporter--angie-han.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "be-more-chill-2019/hollywood-reporter--frank-scheck.json",
+    "blackbird-2016/hollywood-reporter--david-rooney.json",
+    "chinglish-2011/hollywood-reporter--david-rooney.json",
+    "clybourne-park-2012/hollywood-reporter--david-rooney.json",
+    "come-fly-away-2010/hollywood-reporter--franck-scheck.json",
+    "end-of-the-rainbow-2012/hollywood-reporter--david-rooney.json",
+    "fences-2010/hollywood-reporter--unknown.json"
   ],
   "failed": [
     "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
     "almost-famous-2022/nyt-theater--jonathan-mandell.json",
     "american-idiot-2010/hollywood-reporter--frank-scheck.json",
-    "american-idiot-2010/variety--steven-suskin.json"
+    "american-idiot-2010/variety--steven-suskin.json",
+    "fela-2012/hollywood-reporter--frank-scheck.json",
+    "fela-2012/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,18 +32,32 @@
       "data/review-texts/a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
       "data/review-texts/a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
-      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json"
+      "a-free-man-of-color-2010/hollywood-reporter--david-rooney.json",
+      "data/review-texts/be-more-chill-2019/hollywood-reporter--frank-scheck.json",
+      "be-more-chill-2019/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/chinglish-2011/hollywood-reporter--david-rooney.json",
+      "chinglish-2011/hollywood-reporter--david-rooney.json",
+      "data/review-texts/clybourne-park-2012/hollywood-reporter--david-rooney.json",
+      "clybourne-park-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/come-fly-away-2010/hollywood-reporter--franck-scheck.json",
+      "come-fly-away-2010/hollywood-reporter--franck-scheck.json",
+      "data/review-texts/end-of-the-rainbow-2012/hollywood-reporter--david-rooney.json",
+      "end-of-the-rainbow-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/fences-2010/hollywood-reporter--unknown.json",
+      "fences-2010/hollywood-reporter--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "almost-famous-2022/hollywood-reporter--angie-han.json",
       "almost-famous-2022/hollywood-reporter--david-rooney.json",
-      "appropriate-2023/hollywood-reporter--angie-han.json"
+      "appropriate-2023/hollywood-reporter--angie-han.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+      "blackbird-2016/hollywood-reporter--david-rooney.json"
     ]
   },
   "startTime": "2026-02-14T03:22:15.251Z",
-  "lastProcessed": "appropriate-2023/hollywood-reporter--angie-han.json",
+  "lastProcessed": "fences-2010/hollywood-reporter--unknown.json",
   "log": [
     {
       "t": "2026-02-14T03:22:18.042Z",
@@ -58,6 +82,42 @@
       "event": "bb-session",
       "session": "63d7ecb6",
       "url": "https://www.variety.com/review/VE1117942595.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-02-14T03:24:09.657Z",
+      "event": "bb-session",
+      "session": "509e9274",
+      "url": "https://www.hollywoodreporter.com/news/general-news/be-more-chill-theater-review"
+    },
+    {
+      "t": "2026-02-14T03:24:39.589Z",
+      "event": "bb-session",
+      "session": "6b7728c2",
+      "url": "https://www.hollywoodreporter.com/review/chinglish-theater-review-254309"
+    },
+    {
+      "t": "2026-02-14T03:24:52.900Z",
+      "event": "bb-session",
+      "session": "cd1f774c",
+      "url": "https://www.hollywoodreporter.com/review/clybourne-park-theater-review-314189"
+    },
+    {
+      "t": "2026-02-14T03:25:08.143Z",
+      "event": "bb-session",
+      "session": "ca7c66b6",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/come-fly-away-theater-rev"
+    },
+    {
+      "t": "2026-02-14T03:25:44.067Z",
+      "event": "bb-session",
+      "session": "48eaffee",
+      "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891"
+    },
+    {
+      "t": "2026-02-14T03:25:59.299Z",
+      "event": "bb-session",
+      "session": "73ac58b2",
+      "url": "https://www.hollywoodreporter.com/review/fences-review-946013"
     }
   ]
 }
