@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-14T02:28:05.589Z",
-  "processed": 70,
-  "failed": 120,
-  "successRate": "36.8%",
+  "updatedAt": "2026-02-14T02:33:50.229Z",
+  "processed": 365,
+  "failed": 285,
+  "successRate": "56.2%",
   "tierBreakdown": {
-    "playwright": 43,
-    "browserbase": 0,
+    "playwright": 201,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 19,
-    "archive": 8
+    "brightdata": 111,
+    "archive": 72
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T21:14:40.963Z",
+      "event": "bb-session",
+      "session": "6c841bb7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
+    },
+    {
+      "t": "2026-02-13T21:16:10.994Z",
+      "event": "bb-session",
+      "session": "71efcdc2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/shopping/best-last-minute-gifts-1235"
+    },
+    {
+      "t": "2026-02-13T21:16:28.144Z",
+      "event": "bb-session",
+      "session": "0577460b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-13T21:16:46.816Z",
+      "event": "bb-session",
+      "session": "2468ccb2",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-13T21:18:50.572Z",
+      "event": "bb-session",
+      "session": "92b9e6fb",
+      "url": "https://www.thewrap.com/mj-the-musical-broadway-review/"
+    }
+  ]
 }
