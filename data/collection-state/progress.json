@@ -74,7 +74,11 @@
     "enron-2010/ny1--roma-torre.json",
     "enron-2010/usatoday--elysa-gardner.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/broadwayworld--michael-dale.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadwayworld--michael-dale.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/exeunt-magazine--nicole-serratore.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/front-row-center--tulis-mccall.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/scribicide--aaron-botwick.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-nounou.json"
   ],
   "failed": [
     "grey-house-2023/nyt-theater--jonathan-mandell.json",
@@ -166,7 +170,18 @@
     "festen-2006/evening-standard--henry-hitchings.json",
     "festen-2006/telegraph--charles-spencer.json",
     "festen-2006/whatsonstage--michael-coveney.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/caroleditosti--carole-di-tosti.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/caroleditosti--carole-di-tosti.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/curtainup--simon-saltzman.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/gotham-playgoer--robert-sholiton.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/ny1--roma-torre.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/nysr--ny1-roma-torre.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/the-stage-uk--naveen-kumar.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-scene--david-kaufman.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
+    "glengarry-glen-ross-2025/amny--matt-windman.json",
+    "glengarry-glen-ross-2025/ap--mark-kennedy.json",
+    "glengarry-glen-ross-2025/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -223,12 +238,17 @@
       "cats-1982/the-sunflower--reviews-karen-galindo.json",
       "cats-1982/tulsa-world--james-d-watts.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/broadwayworld--michael-dale.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/broadwayworld--michael-dale.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/exeunt-magazine--nicole-serratore.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/front-row-center--tulis-mccall.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/scribicide--aaron-botwick.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-nounou.json"
     ],
     "browserbase": [
       "data/review-texts/glengarry-glen-ross-2025/thewrap--robert-hofler.json",
       "data/review-texts/back-to-the-future-2023/amny--matt-windman.json",
-      "data/review-texts/cats-1982/amny--matt-windman.json"
+      "data/review-texts/cats-1982/amny--matt-windman.json",
+      "data/review-texts/glengarry-glen-ross-2025/amny--matt-windman.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -259,7 +279,7 @@
     ]
   },
   "startTime": "2026-02-14T03:32:52.175Z",
-  "lastProcessed": "frankie-and-johnny-in-the-clair-de-lune-2019/caroleditosti--carole-di-tosti.json",
+  "lastProcessed": "glengarry-glen-ross-2025/theater-life--samuel-l-leiter.json",
   "log": [
     {
       "t": "2026-02-14T03:39:12.729Z",
@@ -296,6 +316,12 @@
       "event": "bb-session",
       "session": "1bb0da06",
       "url": "https://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back"
+    },
+    {
+      "t": "2026-02-14T04:36:42.011Z",
+      "event": "bb-session",
+      "session": "87d4a6e6",
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/"
     }
   ]
 }
