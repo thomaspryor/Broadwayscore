@@ -2,7 +2,7 @@
   "runDate": "2026-02-14T18:46:42.554Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "call-me-izzy-2025",
     "aggressive": false,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 9,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -83,6 +83,21 @@
       "call-me-izzy-2025/washpost--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New York Times": {
+      "count": 57,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
