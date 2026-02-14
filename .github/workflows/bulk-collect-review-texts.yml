@@ -241,6 +241,7 @@ jobs:
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
