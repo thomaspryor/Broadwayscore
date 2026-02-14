@@ -463,7 +463,7 @@ jobs:
       actions: write
 
     env:
-      SOFT_PAYWALL_DOMAINS: 'theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com'
+      SOFT_PAYWALL_DOMAINS: 'theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com,nypost.com,variety.com,hollywoodreporter.com,nydailynews.com,newsday.com'
 
     steps:
       - name: Checkout repository
