@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-14T17:13:29.866Z",
+  "runDate": "2026-02-14T17:24:56.417Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
@@ -11,33 +11,33 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 38,
-    "failed": 102,
+    "processed": 42,
+    "failed": 118,
     "skipped": 0,
-    "successRate": "27.1%"
+    "successRate": "26.3%"
   },
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 32,
     "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 5,
+    "brightdata": 8,
     "archive": 5
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 1,
+    "tier1Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 16,
     "tier2Success": 0,
     "tier3Attempts": 16,
-    "tier3Success": 2,
-    "tier4Attempts": 15,
+    "tier3Success": 6,
+    "tier4Attempts": 11,
     "tier4Success": 0,
-    "totalFailed": 20,
+    "totalFailed": 16,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -80,7 +80,11 @@
     "death-of-a-salesman-2026/nytimes--jesse-green.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "the-lion-king-1997/vulture--john-simon.json"
+    "the-lion-king-1997/vulture--john-simon.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/variety--peter-debruge.json",
+    "aladdin-2014/ew--thom-geier.json"
   ],
   "failed": [
     "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
@@ -184,7 +188,23 @@
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
     "the-outsiders-2024/newyorker--naomi-fry.json",
-    "wicked-2003/newyorker--.json"
+    "wicked-2003/newyorker--.json",
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -218,7 +238,8 @@
       "once-on-this-island-2017/theatre-reviews-limited--joseph-verlezza.json",
       "our-town-2024/theatre-reviews-limited--joseph-verlezza.json",
       "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "aladdin-2014/ew--thom-geier.json"
     ],
     "browserbase": [
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json"
@@ -229,7 +250,10 @@
       "stranger-things-2024/tickertv--cheryl-king.json",
       "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--peter-debruge.json"
     ],
     "archive": [
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
@@ -241,25 +265,18 @@
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 8,
+      "count": 9,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
     },
     "The Hollywood Reporter": {
-      "count": 5,
+      "count": 1,
       "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "newyorktheatreguide.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
