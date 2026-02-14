@@ -79,7 +79,14 @@ export default function AudienceBuzzPage() {
       show,
       buzz: getAudienceBuzz(show.id),
     }))
-    .filter(item => item.buzz && item.buzz.combinedScore > 0)
+    .filter(item => {
+      if (!item.buzz || item.buzz.combinedScore <= 0) return false;
+      // Minimum 5 total reviews across all sources
+      const total = (item.buzz.sources.showScore?.reviewCount || 0)
+        + (item.buzz.sources.mezzanine?.reviewCount || 0)
+        + (item.buzz.sources.reddit?.reviewCount || 0);
+      return total >= 5;
+    })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
 
   // Group by grade
