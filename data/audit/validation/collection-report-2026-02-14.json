@@ -2,7 +2,7 @@
   "runDate": "2026-02-14T23:42:58.490Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -17,15 +17,15 @@
     "successRate": "8.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 5,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 92,
+    "tier1Success": 92,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 69,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -122,7 +122,9 @@
     "young-frankenstein-2007/newyorker--john-lahr.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -145,5 +147,6 @@
       "isKnownBlocked": true
     }
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
