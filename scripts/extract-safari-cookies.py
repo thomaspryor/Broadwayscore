@@ -51,6 +51,41 @@ DOMAIN_GROUPS = {
         "output": "ft.json",
         "secret_name": "FT_COOKIES",
     },
+    "timeout": {
+        "domains": [".timeout.com", "timeout.com"],
+        "output": "timeout.json",
+        "secret_name": "TIMEOUT_COOKIES",
+    },
+    "nypost": {
+        "domains": [".nypost.com", "nypost.com"],
+        "output": "nypost.json",
+        "secret_name": "NYPOST_COOKIES",
+    },
+    "nydailynews": {
+        "domains": [".nydailynews.com", "nydailynews.com"],
+        "output": "nydailynews.json",
+        "secret_name": "NYDAILYNEWS_COOKIES",
+    },
+    "deadline": {
+        "domains": [".deadline.com", "deadline.com", ".pmc.com", "pmc.com"],
+        "output": "deadline.json",
+        "secret_name": "DEADLINE_COOKIES",
+    },
+    "observer": {
+        "domains": [".observer.com", "observer.com"],
+        "output": "observer.json",
+        "secret_name": "OBSERVER_COOKIES",
+    },
+    "hollywoodreporter": {
+        "domains": [".hollywoodreporter.com", "hollywoodreporter.com", ".pmc.com"],
+        "output": "hollywoodreporter.json",
+        "secret_name": "THR_COOKIES",
+    },
+    "ew": {
+        "domains": [".ew.com", "ew.com"],
+        "output": "ew.json",
+        "secret_name": "EW_COOKIES",
+    },
 }
 
 # Project root (where data/ lives)
