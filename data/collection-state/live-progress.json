@@ -1,15 +1,76 @@
 {
-  "updatedAt": "2026-02-14T06:16:56.149Z",
+  "updatedAt": "2026-02-14T06:18:15.950Z",
   "processed": 15,
-  "failed": 85,
-  "successRate": "15.0%",
+  "failed": 15,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 2,
+    "browserbase": 16,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 15
+    "brightdata": 5,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T06:08:55.057Z",
+      "event": "bb-session",
+      "session": "d17842d6",
+      "url": "https://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
+    },
+    {
+      "t": "2026-02-14T06:09:34.983Z",
+      "event": "bb-session",
+      "session": "658a45b1",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-soldiers-play-theater-1271"
+    },
+    {
+      "t": "2026-02-14T06:10:29.798Z",
+      "event": "bb-session",
+      "session": "fd2e8d4b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/aint-no-mo-review-jordan-e-coop"
+    },
+    {
+      "t": "2026-02-14T06:11:00.704Z",
+      "event": "bb-session",
+      "session": "b1bbe4e5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/aint-no-mo-review-broadway-1235"
+    },
+    {
+      "t": "2026-02-14T06:11:19.464Z",
+      "event": "bb-session",
+      "session": "147b6fcf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-david-mamet-12"
+    },
+    {
+      "t": "2026-02-14T06:12:16.016Z",
+      "event": "bb-session",
+      "session": "0444a9b9",
+      "url": "https://www.hollywoodreporter.com/news/general-news/be-more-chill-theater-review"
+    },
+    {
+      "t": "2026-02-14T06:13:56.251Z",
+      "event": "bb-session",
+      "session": "7f96eca7",
+      "url": "https://www.hollywoodreporter.com/news/big-fish-theater-review-634505/"
+    },
+    {
+      "t": "2026-02-14T06:14:24.738Z",
+      "event": "bb-session",
+      "session": "6fd20432",
+      "url": "https://variety.com/2010/legit/reviews/brief-encounter-1117957542/"
+    },
+    {
+      "t": "2026-02-14T06:14:51.285Z",
+      "event": "bb-session",
+      "session": "38e3744f",
+      "url": "http://www.hollywoodreporter.com/review/harvey-fiersteins-casa-valentina-theater"
+    },
+    {
+      "t": "2026-02-14T06:15:11.014Z",
+      "event": "bb-session",
+      "session": "5b50a0ee",
+      "url": "https://www.hollywoodreporter.com/news/general-news/children-of-a-lesser-god-the"
+    }
+  ]
 }
