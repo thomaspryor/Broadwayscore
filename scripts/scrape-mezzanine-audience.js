@@ -162,7 +162,16 @@ function normalize(s) {
 function matchProductions(productions, shows) {
   const matches = [];
 
+  const today = new Date().toISOString().split('T')[0];
+
   for (const show of shows) {
+    // Skip shows whose previews haven't started yet — no real audience data possible
+    const previewDate = show.previewsStartDate || show.openingDate;
+    if (previewDate && previewDate > today) {
+      if (verbose) console.log(`  SKIP ${show.id}: previews haven't started yet (${previewDate})`);
+      continue;
+    }
+
     const title = show.title;
     const openYear = parseInt((show.openingDate || '').substring(0, 4));
     const normTitle = normalize(title);
