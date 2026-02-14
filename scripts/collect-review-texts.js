@@ -2319,6 +2319,7 @@ function buildTierContext(review) {
   const urlLower = url.toLowerCase();
 
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
+  const hasCookiesLoaded = !!hasCookiesForUrl(url);
   const isArchiveFirstSite = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
 
   let isOldReview = false;
@@ -2337,6 +2338,7 @@ function buildTierContext(review) {
     url,
     urlLower,
     isKnownBlocked,
+    hasCookiesLoaded,
     isArchiveFirst,
     hasPaywallCreds,
     // Mutable signals set by onFailure hooks, read by later shouldRun predicates
@@ -2434,8 +2436,8 @@ function buildTierChain(ctx, review) {
       tierNumber: 1,
       method: 'playwright',
       label: 'Playwright with stealth',
-      shouldRun: () => !ctx.isKnownBlocked,
-      skipMessage: 'Skipped (known-blocked site)',
+      shouldRun: () => !ctx.isKnownBlocked || ctx.hasCookiesLoaded,
+      skipMessage: 'Skipped (known-blocked site, no cookies)',
       execute: (url) => fetchWithPlaywright(url, review),
       onFailure: (error) => {
         ctx.anyTierFailed = true;
