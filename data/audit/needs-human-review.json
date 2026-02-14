@@ -373,14 +373,14 @@
       "flaggedAt": "2026-02-14T08:46:24.042Z"
     },
     {
-      "showId": "guys-and-dolls-2009",
-      "outletId": "talkinbroadway",
-      "criticName": "Susan Berlin",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "showId": "good-night-and-good-luck-2025",
+      "outletId": "digital-journal",
+      "criticName": "Markos Papadatos",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5\" (=100, bucket=positive) vs LLM 43 (bucket=mixed, conf=high)",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-14T08:46:24.671Z"
