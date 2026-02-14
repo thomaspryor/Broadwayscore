@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-02-14T17:01:02.744Z",
+  "updatedAt": "2026-02-14T17:11:52.357Z",
   "processed": 38,
-  "failed": 82,
-  "successRate": "31.7%",
+  "failed": 92,
+  "successRate": "29.2%",
   "tierBreakdown": {
     "playwright": 31,
-    "browserbase": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 5,
     "archive": 5
@@ -62,6 +62,52 @@
       "t": "2026-02-14T16:55:39.569Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:06:54.689Z",
+      "event": "bb-session",
+      "session": "48f25a33",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-14T17:07:39.938Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-14T17:08:02.079Z",
+      "event": "bb-session",
+      "session": "b1e7d52d",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+    },
+    {
+      "t": "2026-02-14T17:08:24.867Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:08:58.372Z",
+      "event": "bb-session",
+      "session": "8ac6c577",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-14T17:09:21.486Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:09:45.335Z",
+      "event": "bb-session",
+      "session": "43832b2a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-02-14T17:09:59.495Z",
+      "event": "bb-session",
+      "session": "c92827fd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
     }
   ]
 }

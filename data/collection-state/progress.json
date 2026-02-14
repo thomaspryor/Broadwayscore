@@ -121,7 +121,17 @@
     "moulin-rouge-2019/vulture--sara-holdren.json",
     "six-2021/newyorker--naomi-fry.json",
     "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json"
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -158,7 +168,9 @@
       "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
       "the-lion-king-1997/vulture--john-simon.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "book-of-mormon-2011/the-independent-uk--peter-marks.json",
@@ -176,7 +188,7 @@
     ]
   },
   "startTime": "2026-02-14T15:11:01.048Z",
-  "lastProcessed": "the-lion-king-1997/vulture--john-simon.json",
+  "lastProcessed": "maybe-happy-ending-2024/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-02-14T16:50:50.738Z",
@@ -228,6 +240,52 @@
       "t": "2026-02-14T16:55:39.569Z",
       "event": "bb-login-uncertain",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:06:54.689Z",
+      "event": "bb-session",
+      "session": "48f25a33",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-14T17:07:39.938Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771088826607\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAhLVv9XSFZ_gANCnmLA==&cid=AwxanHTVldvPVmB0wrDHNXgg3GJWP0TBwLTUG~VzBFo23E7d5rM8IUllSxTclhAZlgR9uCGpqzRmEY6c54I1kofT78v3Jix7hJzmdDp3bIQ4ZXmj9iZASI7jALnV2SOZ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1771088826607\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-14T17:08:02.079Z",
+      "event": "bb-session",
+      "session": "b1e7d52d",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+    },
+    {
+      "t": "2026-02-14T17:08:24.867Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:08:58.372Z",
+      "event": "bb-session",
+      "session": "8ac6c577",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-14T17:09:21.486Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-14T17:09:45.335Z",
+      "event": "bb-session",
+      "session": "43832b2a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-02-14T17:09:59.495Z",
+      "event": "bb-session",
+      "session": "c92827fd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
     }
   ]
 }
