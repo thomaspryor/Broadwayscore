@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-02-14T05:22:21.063Z",
+  "dryRun": true,
+  "verify": {
+    "processed": 35,
+    "verified": 29,
+    "flagged": 6,
+    "errors": 0,
+    "flagDetails": [
+      {
+        "showId": "110-in-the-shade-2007",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly website navigation and unrelated links, and is severely truncated, indicating it is not a valid review of the Broadway production of \"110 in the Shade.\"",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "110-in-the-shade-2007",
+        "file": "variety--david-rooney.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content is a collection of film and TV news and reviews from Variety, not a review of the Broadway production of \"110 in the Shade.\"",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "1984-2017",
+        "file": "guardian--adrian-horton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Her Majesty's Theatre, Adelaide, and discusses an Australian production of 1984, indicating it is not a review of the Broadway production at the Hudson Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "1984-2017",
+        "file": "guardian--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Her Majesty's Theatre, Adelaide, indicating it is not a review of the Broadway production. The review also mentions the production being an English production that came to the Melbourne Festival.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "1984-2017",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly website navigation and error messages, indicating it's not a valid review article. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "1984-2017",
+        "file": "wsj--charles-isherwood.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of a filmed version of '1984' performed at the Alley Theatre in Houston, not the Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      }
+    ]
+  },
+  "recover": {
+    "processed": 15,
+    "recovered": 5,
+    "confirmedCorrect": 10,
+    "errors": 0,
+    "recoveryDetails": [
+      {
+        "showId": "13-2008",
+        "file": "variety--david-rooney.json",
+        "wasFlagged": "wrongShow",
+        "textSource": "fullText",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the Broadway production of \"13\", although it also discusses the Netflix adaptation. The content is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "file": "motif--john-fuzek.json",
+        "wasFlagged": "wrongProduction",
+        "textSource": "fullText",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"A Beautiful Noise, The Neil Diamond Musical\" and does not indicate that it is a review of a non-Broadway production. The review appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "file": "new-city-stage--dennis-polkow.json",
+        "wasFlagged": "wrongProduction",
+        "textSource": "fullText",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"A Beautiful Noise, The Neil Diamond Musical\" and the excerpt matches the expected content. The review is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "a-bronx-tale-2007",
+        "file": "thewrap--robert-hofler.json",
+        "wasFlagged": "wrongShow",
+        "textSource": "fullText",
+        "confidence": "high",
+        "reasoning": "The excerpt discusses Chazz Palminteri and the stage origins of 'A Bronx Tale,' suggesting it's a review of the Broadway production. However, the scraped content is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "a-christmas-carol-2022",
+        "file": "ew--ruth-kinane.json",
+        "wasFlagged": "wrongProduction",
+        "textSource": "fullText",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of 'A Christmas Carol' on Broadway, specifically mentioning the Lyceum Theater in New York City. The text is truncated, but the portion available confirms it's a Broadway review.",
+        "provider": "llm:gemini"
+      }
+    ]
+  }
+}
