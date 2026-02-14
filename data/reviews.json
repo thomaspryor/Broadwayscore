@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-14",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11391,
-      "skippedNoScore": 6449,
+      "totalReviews": 11388,
+      "skippedNoScore": 6447,
       "skippedDuplicate": 52,
       "skippedDuplicateUrl": 223,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1049,
+      "skippedDuplicateText": 1051,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1657,
+      "skippedWrongProduction": 1659,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 21,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 16,
         "human-review": 62,
         "originalScore-priority0": 1293,
-        "llmScore": 7708,
+        "llmScore": 7709,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 2148,
+        "llmScore-lowconf": 2144,
         "llmScore-review": 8,
         "assignedScore": 0,
         "originalScore": 0,
@@ -496,7 +496,7 @@
       "outletId": "nysr",
       "outlet": "New York Stage Review",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Dale",
@@ -506,7 +506,7 @@
       "pullQuote": "This new Broadway revival of '1776' brings fresh energy and contemporary relevance to the 1969 musical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -23074,7 +23074,7 @@
       "outletId": "pittsburgh-post-gazette",
       "outlet": "Pittsburgh Post Gazette",
       "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Sharon Eberson",
@@ -23084,7 +23084,7 @@
       "pullQuote": "Every so often a gem the likes of 'An American in Paris' is brought from screen to stage, and for a moment you can stop asking why so many movies are made into musicals.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "an-american-in-paris-2015",
@@ -32916,23 +32916,6 @@
     },
     {
       "showId": "beetlejuice-2025",
-      "outletId": "medium",
-      "outlet": "Medium",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Christian Lewis",
-      "url": "https://medium.com/@christianlewis_11156/review-beetlejuice-comes-to-broadway-broadway-broadway-74ed8a2975d4",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Overall, the bland score and imperfect lyrics do not justify making 'Beetlejuice' into a musical.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "beetlejuice-2025",
       "outletId": "musical-theatre-review",
       "outlet": "Musical Theatre Review",
       "assignedScore": 63,
@@ -34562,23 +34545,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "betrayal-2013",
-      "outletId": "talkinbroadway",
-      "outlet": "Talkin' Broadway",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Matthew Murray",
-      "url": "http://www.talkinbroadway.com/world/Betrayal.html",
-      "publishDate": "November 11, 2013",
-      "originalRating": null,
-      "pullQuote": "Under the direction of Mike Nichols, this revival of Harold Pinter's 1978 drama about adultery and friendship proves that some plays are so perfectly constructed that they can survive almost any interpretation.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "betrayal-2013",
@@ -40367,7 +40333,7 @@
       "outletId": "broadway-blog",
       "outlet": "Broadway Blog",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Wexler",
@@ -40377,7 +40343,7 @@
       "pullQuote": "'Bright Star' delivers a unique voice in a season full of heavy hitters.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bright-star-2016",
@@ -40732,23 +40698,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "I felt as if I had discovered something fresh and new.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "bright-star-2016",
-      "outletId": "out-magazine",
-      "outlet": "Out Magazine",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Michael Musto",
-      "url": "https://www.out.com/michael-musto/2016/3/28/guys-worst-grindr-hookups-i-got-call-his-boyfriend",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's nicely pulled off though the characters and plot sometimes come off a little mushy, as if out of a Hallmark movie.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -48149,7 +48098,7 @@
       "pullQuote": "This production finds the play's blazing emotional center and lets it burn with a steady, mesmerizing flame.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
