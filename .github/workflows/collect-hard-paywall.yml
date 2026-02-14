@@ -172,6 +172,15 @@ jobs:
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
+          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
+          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
+          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
+          THR_COOKIES: ${{ secrets.THR_COOKIES }}
+          EW_COOKIES: ${{ secrets.EW_COOKIES }}
+          NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
+          NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -457,6 +466,15 @@ jobs:
           VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
           WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
+          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
+          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
+          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
+          THR_COOKIES: ${{ secrets.THR_COOKIES }}
+          EW_COOKIES: ${{ secrets.EW_COOKIES }}
+          NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
+          NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
