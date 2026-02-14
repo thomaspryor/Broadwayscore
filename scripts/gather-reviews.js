@@ -50,6 +50,7 @@ const {
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
+const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
 let chromium, playwright;
 try {
@@ -1559,6 +1560,13 @@ function createReviewFile(showId, reviewData) {
     return false;
   }
 
+  // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
+  const outletText = reviewData.outlet || reviewData.outletId || '';
+  if (isNotBroadway(outletText)) {
+    console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
+    return false;
+  }
+
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
   if (!quickDateCheck(showId, reviewData.url, reviewData.publishDate)) {
     const verification = verifyProduction({
@@ -1899,10 +1907,20 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === BroadwayWorld Review Roundups ===');
   const bwwResult = await searchBWWRoundup(show, year);
   if (bwwResult) {
-    const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
-    foundReviews.push(...bwwReviews);
-    // Archive the page
-    archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+    // Check if the roundup article is about a tour/regional/non-Broadway production.
+    // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
+    // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
+    const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
+    if (isNotBroadway(roundupTitle) ||
+        /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
+        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
+      console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
+    } else {
+      const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+      foundReviews.push(...bwwReviews);
+      // Archive the page
+      archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+    }
   }
   await sleep(DELAY_MS);
 
@@ -2013,6 +2031,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
+        // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '')) {
+          console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
+          continue;
+        }
+
         const filename = generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
         const filePath = path.join(showDir, filename);
 
