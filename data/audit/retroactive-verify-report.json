@@ -1,158 +1,566 @@
 {
-  "timestamp": "2026-02-14T14:41:37.680Z",
+  "timestamp": "2026-02-14T14:41:40.918Z",
   "dryRun": false,
   "verify": {
-    "processed": 1912,
-    "verified": 1736,
-    "flagged": 176,
+    "processed": 1922,
+    "verified": 1754,
+    "flagged": 168,
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "come-from-away-2017",
-        "file": "the-stage-uk--mark-shenton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review roundup of the West End production of 'Come From Away' at the Phoenix Theatre in London, not the Broadway production at the Gerald Schoenfeld Theatre in New York.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "company-2006",
-        "file": "timeout--adam-feldman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for \"Found\" at the Atlantic Theater Company (Off Broadway), not \"Company\" on Broadway. The review is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "deuce-2007",
-        "file": "nypost--elisabeth-vincentelli.json",
+        "showId": "cost-of-living-2022",
+        "file": "theatermania--adam-feldman.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Donny & Marie: A Broadway Christmas\", not \"Deuce\". Therefore, it is the wrong article.",
+        "reasoning": "The scraped content appears to be a 'not found' page with unrelated video promotion, not a review of 'Cost of Living'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "dont-dress-for-dinner-2012",
-        "file": "wsj--terry-teachout.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content starts with website navigation and registration prompts, indicating it's not the actual review of \"Don't Dress for Dinner\". The review excerpt at the end is for \"Nice Work If You Can Get It\", and the content is truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "enron-2010",
-        "file": "guardian--alexis-soloski.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review clearly states it is for a production at the Minerva, Chichester, indicating it is not a Broadway review. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "exit-the-king-2009",
-        "file": "hollywood-reporter--stephen-dalton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of Exit the King at the Olivier, the National Theatre in London, not the 2009 Broadway production at the Ethel Barrymore Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "exit-the-king-2009",
-        "file": "the-times-david-jays--david-jays.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The review appears to be about a London production of Exit the King, not the Broadway production. Also, the content is truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "exit-the-king-2009",
-        "file": "wsj--terry-teachout.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content does not contain a review of 'Exit the King' but rather navigation and account management information from the Wall Street Journal.",
-        "provider": "llm:openai"
-      },
-      {
-        "showId": "follies-2011",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is about a production of \"Follies\" at the Paper Mill Playhouse in Millburn, New Jersey, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "girl-from-the-north-country-2022",
+        "showId": "cost-of-living-2022",
         "file": "theatermania--jesse-green.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is not a review of the Broadway production of 'Girl From The North Country'. It contains announcements for BroadwayCon and snippets of reviews for other productions, including Off-Broadway shows. The content is also truncated.",
+        "reasoning": "The scraped content appears to be a 'not found' page with some unrelated video promotion, and is therefore not a valid review of 'Cost of Living' on Broadway. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "godspell-2011",
+        "showId": "curtains-2007",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and unrelated links, and is severely truncated. It does not resemble a theater review.",
+        "reasoning": "The scraped content consists primarily of navigation links and other non-review content. The text is also truncated, making it impossible to determine if it's a valid review of the Broadway production of 'Curtains'.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "godspell-2011",
+        "showId": "dear-evan-hansen-2016",
+        "file": "out-magazine--michael-musto.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is an interview with Charles Busch, not a review of Dear Evan Hansen. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "dear-evan-hansen-2016",
+        "file": "timeout--adam-feldman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions that it is for the Second Stage production, which is an Off-Broadway venue. Therefore, it is not a review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "death-of-a-salesman-2012",
+        "file": "artsfuse--nancy-grossman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Lyric Stage Company in Boston, indicating it is not a Broadway production. The text states \"Staged by The Lyric Stage Company, 140 Clarendon Street, Boston\".",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "death-of-a-salesman-2012",
+        "file": "front-row-center--stanford-friedman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a Yiddish production of Death of a Salesman at the Castillo Theater, which is not a Broadway venue. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "death-of-a-salesman-2012",
+        "file": "theatermania--charles-isherwood.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content starts with a news announcement about a cancelled preview performance of 'Death of a Salesman' and then lists titles of other reviews. It is not a review of the Broadway production itself and is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "death-of-a-salesman-2012",
+        "file": "theatermania--david-finkle.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a 'not found' page with some unrelated video information, and is truncated. It is not a review of 'Death of a Salesman'.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "driving-miss-daisy-2010",
+        "file": "observer--jesse-oxfeld.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Rain: A Tribute to the Beatles on Broadway\", making it the wrong article. Additionally, the content is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "driving-miss-daisy-2010",
+        "file": "village-voice--michael-feingold.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a collection of short reviews for various plays, and does not contain any information about \"Driving Miss Daisy\".",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "english-2025",
+        "file": "the-interested-bystander--cary-wong.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Urinetown\", not \"English\". The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "escape-to-margaritaville-2018",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and unrelated links, and is severely truncated, indicating it's not a complete article or review.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "faith-healer-2006",
+        "file": "all-that-dazzles-uk--daz-gale.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a London production of Faith Healer, not the Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "faith-healer-2006",
+        "file": "evening-standard--nick-curtis.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions 'The 6 London plays you should book now' and refers to the Evening Standard Best Play Award, indicating it's a London/West End production of Faith Healer, not the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "faith-healer-2006",
+        "file": "telegraph--dominic-cavendish.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions a live-streamed 'in camera' production from the Old Vic, indicating it's not a review of the Broadway production at the Booth Theatre. The article reviews a streamed performance, not a live stage performance.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "faith-healer-2006",
+        "file": "theatre-weekly-uk--greg-stewart.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions a revival at the Lyric Hammersmith, indicating it is not the Broadway production. The text also appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "fool-for-love-2015",
+        "file": "boston-globe--don-aucoin.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a Williamstown Theatre Festival production of 'Fool for Love,' not the Broadway production. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "fool-for-love-2015",
+        "file": "huffpost--david-finkle.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the play \"Barbecue\", not \"Fool for Love\". The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "fool-for-love-2015",
+        "file": "the-record-theater--bob-goepfert.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Williamstown Theatre Festival, indicating it's not a Broadway production. The text also ends abruptly, suggesting truncation.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "fool-for-love-2015",
+        "file": "theatermania--adam-feldman.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Placebo\" at Playwrights Horizons, not \"Fool for Love\" on Broadway. The review is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "frostnixon-2007",
+        "file": "guardian--michael-billington.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of a play consisting of four short pieces, performed at the MacPhail Centre in Ullapool, Scotland. It is not a review of Frost/Nixon or any Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "glory-days-2008",
         "file": "variety--david-rooney.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of a play called \"Before I Leave You\" at the Huntington Theater Company in Boston. This is not a review of \"Godspell\" on Broadway.",
+        "reasoning": "The scraped content is a review of Chita Rivera's performance at Feinstein's/54 Below, not a review of the Broadway production of 'Glory Days'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "hands-on-a-hardbody-2013",
-        "file": "variety--marilyn-stasio.json",
+        "showId": "hadestown-2019",
+        "file": "broadway-and-me--janice-c-simpson.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a news article discussing the Drama Desk Award nominations, where 'Hands on a Hardbody' received several nominations. It is not a review of the show itself.",
+        "reasoning": "The scraped content discusses multiple shows, including 'Be More Chill,' and is therefore not solely a review of 'Hadestown'. Additionally, the content is truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "hangmen-2022",
-        "file": "dailybeast--tim-teeman.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Islander\", not \"Hangmen\". The review is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "heisenberg-2016",
-        "file": "on-stage-blog--asya-gorovits.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a commentary on cultural representation and criticism, specifically in relation to Latino artists and performances, and does not mention the play 'Heisenberg' or any theater production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "heisenberg-2016",
-        "file": "theatre-is-easy--brett-aresco.json",
+        "showId": "hadestown-2019",
+        "file": "broadwayworld--michael-dale.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review is for an Off-Broadway production of Heisenberg at New York City Center, not the Broadway production at the Samuel J. Friedman Theatre. The scraped content is also truncated.",
+        "reasoning": "The review explicitly mentions a UK production at the National's Olivier theatre, indicating it's not the Broadway production at the Walter Kerr Theatre. The scraped content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "here-lies-love-2023",
+        "showId": "hadestown-2019",
+        "file": "deadline--greg-evans.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a production of Hadestown at the New York Theatre Workshop, which is an Off-Broadway venue, not the Broadway production at the Walter Kerr Theatre. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "guardian--adrian-horton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Olivier in London, indicating it's a review of the West End production, not the Broadway one. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "guardian--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Olivier, London, indicating it's a West End production. The text also ends mid-sentence, showing truncation.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
         "file": "hollywood-reporter--david-rooney.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content reviews a production of 'Hadestown' at the New York Theatre Workshop, which is an Off-Broadway venue, not the Broadway production at the Walter Kerr Theatre. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "newnownextcom--michael-musto.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Gary: A Sequel to Titus Andronicus\", not \"Hadestown\". The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a collection of unrelated links and phrases, indicating it is not a valid review article. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "vulture--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the New York Theatre Workshop, which is an Off-Broadway venue. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "hollywood-reporter--angie-han.json",
         "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content is about the Emmy awards and TV shows like 'Saturday Night Live' and 'Last Week Tonight,' not a Broadway review of 'Here Lies Love'.",
+        "reasoning": "The scraped content is a review of the film 'AGGRO DR1FT' by Harmony Korine, not a review of the Broadway musical 'Harmony'. It is therefore not a valid Broadway review.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "high-2011",
-        "file": "thewrap--robert-hofler.json",
+        "showId": "harmony-2023",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and other non-review content. It is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "theater-pizzazz--carol-rocamora.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is not a review, but rather a news item about Barry Manilow's appearances related to the show. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "hedwig-and-the-angry-inch-2014",
+        "file": "sfgate--lily-janiak.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of \"High Spirits\" at New York City Center, not \"High\" on Broadway. The text is also truncated.",
+        "reasoning": "The review explicitly mentions SHN's production at the Golden Gate Theatre, indicating it's not the Broadway production. The text also appears to be cut off.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "hughie-2016",
+        "showId": "how-i-learned-to-drive-2022",
+        "file": "variety--peter-marks.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content consists of various film and TV news items and reviews, including Super Bowl ads, film trailers, and interviews. It does not contain any review of the Broadway production of \"How I Learned to Drive\".",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "how-to-succeed-in-business-without-really-trying-2011",
+        "file": "lost-in-theatreland-uk--maili-ni-ghormain.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is of a London production of \"How to Succeed in Business Without Really Trying\", not the Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "how-to-succeed-in-business-without-really-trying-2011",
+        "file": "observer--jesse-oxfeld.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"The Book of Mormon\", not \"How to Succeed in Business Without Really Trying\". The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "how-to-succeed-in-business-without-really-trying-2011",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and unrelated keywords, and the total length is very short, indicating truncation and a lack of actual review content.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "how-to-succeed-in-business-without-really-trying-2011",
+        "file": "whatsonstage--alun-hood.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is not of the 2011 Broadway production of \"How to Succeed in Business Without Really Trying.\" It appears to be a review of a different, possibly regional or West End, production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "ifthen-2014",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and website elements, not a review. It is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a collection of unrelated keywords and phrases, followed by an error message and more keywords. It is not a review of any kind, and is heavily truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "jerusalem-2011",
+        "file": "theater-life--eric-march.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content describes a concert by Dudu Fisher at the Museum of Jewish Heritage, not the Broadway play 'Jerusalem' at the Music Box Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "job-2024",
+        "file": "front-row-center--david-walters.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Connelly Theater, an Off-Broadway venue, indicating it is not a review of the Broadway production at the Helen Hayes Theater. The content also appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "job-2024",
+        "file": "hollywood-reporter--david-rooney.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of a play starring Jeffrey Wright, set in New Orleans and involving Thomas Jefferson. This is not a review of the play \"JOB\". The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "job-2024",
+        "file": "theatre-reviews-limited--david-roberts.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Jesus Christ Superstar\", not \"JOB\". The content explicitly mentions the show's name and the creative team involved in the production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "britishtheatrecom--stephen-collins.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Almeida Theatre, indicating it's reviewing the London production, not the Broadway one. The excerpt also lacks any mention of the Music Box Theatre or the Broadway opening date.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "everything-theatre-uk--don-calogero.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Almeida Theatre, which is a London venue, indicating it's not a review of the Broadway production. The date of the review (April 2014) also precedes the Broadway opening date (November 2015).",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "hollywood-reporter--stephen-dalton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the West End transfer from the Almeida Theatre in London, indicating it's not the Broadway production. The text also ends mid-sentence.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "huffpost--victoria-sadler.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review discusses the Almeida Theatre production of King Charles III, which is a London production, not the Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "stu-on-broadway--stu-brown.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of 'Frozen' at A.C.T. of Connecticut, not 'King Charles III' on Broadway. Therefore, it is the wrong show and the wrong production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and advertising links, followed by an error message. It is not a review of the Broadway production of King Charles III and is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "the-upcoming-uk--joshua-worth.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of Tim Crouch's 'The Tempest', not 'King Charles III'. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "theatermania--adam-feldman.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"The Twentieth-Century Way\", not \"King Charles III\". The review is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "king-charles-iii-2015",
+        "file": "timeout--caroline-mcginn.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Almeida Theatre in London, indicating it's not the Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "latin-history-for-morons-2017",
+        "file": "cititour--brian-scott-lipton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a production of \"Latin History for Morons\" at Studio 54, which is not the Harold and Miriam Steinberg Center for Theatre. The review also mentions a previous run at the Public Theater, indicating this is not solely about the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "les-liaisons-dangereuses-2016",
+        "file": "british-theatre-guide--philip-fisher.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Donmar Warehouse in London and the dates of the London run. This indicates it is not a review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "les-liaisons-dangereuses-2016",
+        "file": "huffpost--steven-suskin.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Donmar Warehouse, indicating it's a review of the London production, not the Broadway one. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "les-liaisons-dangereuses-2016",
+        "file": "huffpost--victoria-sadler.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions 'This production at the Donmar' which indicates it is reviewing the London production at the Donmar Warehouse, not the Broadway production at the Booth Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "les-liaisons-dangereuses-2016",
+        "file": "the-telegraph-uk--dominic-cavendish.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Josie Rourke's Donmar revival, indicating it's a London production, not the Broadway one. The text also ends mid-sentence.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "lucky-guy-2013",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is mostly navigation and website boilerplate, and it's severely truncated, indicating it's not a complete review article. It appears to be a 'page does not exist' error.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "m-butterfly-2017",
+        "file": "show-showdown--elizabeth-wollman.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content discusses 'Miss Saigon' and mentions seeing the revival. The text is also truncated, indicating it's incomplete.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "m-butterfly-2017",
+        "file": "showbiz411--roger-friedman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is about 'M. Butterfly', but it incorrectly states the opening venue as the Cort Theater instead of the James Earl Jones Theatre, indicating it's likely a review of a different production or an error in the review itself. Since the venue is incorrect, it's not a valid review for the specified Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "machinal-2014",
+        "file": "all-that-dazzles-uk--daz-gale.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions The Old Vic, a London theatre, and a transfer from Bath, indicating it's not a Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "machinal-2014",
+        "file": "front-row-center--sarah-downs.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a New York Theatre Company's revival of Machinal at New York City Center Theatre 2, which is an Off-Broadway venue, not a Broadway theater.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "cititour--brian-scott-lipton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions \"national tour\" and lists actors who are not part of the Broadway cast. The text also appears to be cut off at the end.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "pages-on-stages--mason-pilevsky.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is explicitly about the North American Broadway Tour of Mamma Mia!, not the Broadway production itself. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "variety--owen-gleiberman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content reviews a production of Mamma Mia! with a cast that does not match the Broadway production. The cast mentioned is from the Toronto production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "mj-2022",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
@@ -160,1267 +568,795 @@
         "provider": "llm:gemini"
       },
       {
-        "showId": "hughie-2016",
-        "file": "theatermania--david-gordon.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content starts with information about the Hughie production, but then devolves into a list of unrelated theater reviews. It is not a review of Hughie itself.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "in-transit-2016",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and other non-review content, and is truncated. It is not a review of the Broadway production of \"In Transit.\"",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "irving-berlins-white-christmas-2009",
-        "file": "nytimes--charles-isherwood.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the John W. Engeman Theater at Northport, indicating it's a regional production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "irving-berlins-white-christmas-2009",
-        "file": "theatermania--david-finkle.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'page not found' error and some unrelated video promotion, not a review of 'Irving Berlin's White Christmas'. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "its-only-a-play-2014",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content consists primarily of navigation elements, links to other sites, and error messages, indicating it is not a valid review article. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kinky-boots-2013",
-        "file": "cititour--brian-scott-lipton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content mentions Stage 42, which is an Off-Broadway venue. The content is also truncated, making it impossible to verify the full context.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kinky-boots-2013",
-        "file": "front-row-center--brittany-crowell.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it's for the Off-Broadway revival at Stage 42. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kinky-boots-2013",
-        "file": "royberkinfo--roy-berko.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is explicitly about a college production of Kinky Boots at Baldwin Wallace University, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kinky-boots-2013",
-        "file": "theatermania--zachary-stewart.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be an error page or search result, not a review of Kinky Boots. It is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kinky-boots-2013",
-        "file": "variety--marilyn-stasio.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a box office report discussing the financial performance of various Broadway shows, including Kinky Boots. It is not a review of the show itself. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kpop-2022",
-        "file": "nypost--johnny-oleksinski.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content discusses the producers of 'KPOP' demanding an apology from The New York Times for a review they deemed insensitive. It is not a review itself.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kpop-2022",
-        "file": "theater-pizzazz--samuel-l-leiter.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a cast announcement for the Broadway production of KPOP, not a review. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "kpop-2022",
-        "file": "washpost--peter-marks.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"A Beautiful Noise: The Neil Diamond Musical\" at the Broadhurst Theatre, not \"KPOP\" at the Circle in the Square Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "legally-blonde-2007",
-        "file": "culture-whisper--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of 'Legally Blonde' at Regent's Park Open Air Theatre in London, not the Broadway production. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "legally-blonde-2007",
-        "file": "evening-standard--nick-curtis.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions a 2010 London production starring Sheridan Smith, and refers to Lucy Moss's reinvention of the show, indicating it's reviewing a more recent London staging, not the original 2007 Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "liberation-2025",
-        "file": "nysr--new-york-notebook-sandy-macdonald.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a Roundabout/Laura Pels Theatre production, which is Off-Broadway, not the Broadway production at the James Earl Jones Theatre. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "liberation-2025",
-        "file": "nytg--austin-fimmano.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for an Off-Broadway production of \"Liberation\" presented by Roundabout Theatre Company, not the Broadway production at the James Earl Jones Theatre. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "liberation-2025",
-        "file": "the-interested-bystander--cary-wong.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Did You Eat?\" at the Public Theater, which is an Off-Broadway venue, not a review of \"Liberation\" on Broadway. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "berkshire-edge--peter-bergman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production is playing at Proctors Theatre in Schenectady, NY, indicating it is not a Broadway review.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "berkshire-edge--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production is playing at Proctors Theatre in Schenectady, NY, indicating it is not a Broadway review.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "city-pulse--chelsea-lake-roberts.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Wharton Center, indicating it's not the Broadway production. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "cleveland--joey-morona.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'inaugural tour' and 'Playhouse Square’s Connor Palace', indicating it's not the Broadway production at the Gerald Schoenfeld Theatre. The text also ends mid-sentence, suggesting truncation.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "clevelandcom--joey-morona.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'inaugural tour' and 'Playhouse Square’s Connor Palace', indicating it's not the Broadway production at the Gerald Schoenfeld Theatre. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "daily-pilot--sarah-mosqueda.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The article explicitly mentions the Segerstrom Center for the Arts in Costa Mesa, indicating it's a touring production and not the Broadway show. The text also ends mid-sentence.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "dallas-voice--david-taffet.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions the 'Life of Pi' production running through Aug. 17 at the Winspear Opera House, indicating it is not the Broadway production. The Broadway production ran at the Gerald Schoenfeld Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "dc-theater-arts--bob-ashby.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'touring production of Life of Pi' at the Kennedy Center. This indicates it is not a review of the Broadway production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "denver-post--john-wenzel.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a touring production of Life of Pi, playing at the Buell Theatre in Denver, not the Broadway production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "fort-worth-star-telegram--rick-mauch.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a production of \"Life of Pi\" at Bass Hall as part of Performing Arts Fort Worth's Broadway at the Bass Series, not the Broadway production at the Gerald Schoenfeld Theatre. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "fort-worth-star-telgram--rick-mauch.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of \"Life of Pi\" at Bass Hall in Fort Worth, part of Performing Arts Fort Worth’s Broadway at the Bass Series, not the Broadway production at the Gerald Schoenfeld Theatre in New York City. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "houston-chronicle--doni-wilson.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions \"The touring production of 'Life of Pi'\" and the Hobby Center in Houston, indicating it's not the Broadway production at the Gerald Schoenfeld Theatre. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "nippertown--bill-kellert.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states the production is at Proctors in Schenectady, indicating it is not the Broadway production. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "oregon-artswatch--linda-ferguson.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a touring production of Life of Pi, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "seattle-times--gemma-wilson.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the play is 'running at the Paramount Theatre through April 20,' indicating a touring production. While it mentions the Broadway production, the review is focused on the touring show.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "the-charlotte-ledger--lawrence-toppman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions a national tour of \"Life of Pi\" and a canceled opening night in Charlotte due to technical issues with the turntable. This indicates that the review is of a touring production, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "the-orange-county-register--christopher-smith.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions Segerstrom Hall in Costa Mesa, indicating a touring production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
+        "showId": "mj-2022",
         "file": "theatermania--jesse-green.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of an Off-Broadway play called 'Heartland' at 59E59 Theaters, not the Broadway production of 'Life of Pi'. The review is also truncated.",
+        "reasoning": "The scraped content appears to be a 'not found' page with some navigation and a video advertisement for 'Beaches'. It is not a review of 'MJ The Musical'.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "life-of-pi-2023",
-        "file": "times-union--katherine-kiessling.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'national tour of Life of Pi' and the venue is Proctors in Schenectady, indicating it is not a Broadway review. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "file": "weho-times--shaena-engle.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states the production is playing at the Ahmanson Theatre, which is a regional theater in Los Angeles, not a Broadway theater in New York City. Therefore, it is not a review of the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "long-days-journey-into-night-2016",
-        "file": "front-row-center--david-walters.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Audible Theater at Minetta Lane Theatre, which is an Off-Broadway venue. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "long-days-journey-into-night-2016",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of a production of \"Long Day's Journey Into Night\" at the Plymouth Theatre, which is NOT the Todd Haimes Theatre. Also, the content appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "long-days-journey-into-night-2016",
-        "file": "theater-life--barry-gordin.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for an Off-Broadway production of Long Day's Journey Into Night at the Minetta Lane Theatre, not the 2016 Broadway production at the Todd Haimes Theatre. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "long-days-journey-into-night-2016",
-        "file": "woman-around-town--alix-cohen.json",
+        "showId": "mj-2022",
+        "file": "usatoday--david-rooney.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a curated article about the cost of long-distance driving, not a review of 'Long Day's Journey Into Night' or any theatrical production. The article is also truncated.",
+        "reasoning": "The scraped content is a news article about women and aging, not a review of \"MJ The Musical\". The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "macbeth-2022",
-        "file": "assocoiated-press--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of Macbeth at Lincoln Center's Vivian Beaumont Theater, which is not a Broadway theater. The review is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "macbeth-2022",
-        "file": "chicagotribune--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review clearly states it is about a Lincoln Center Theatre production of Macbeth, which is not the Broadway production at the Longacre Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "macbeth-2022",
-        "file": "front-row-center--victoria-weisfeld.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions The Shakespeare Theatre of New Jersey, indicating it is not a Broadway production. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "macbeth-2022",
-        "file": "newsday--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions Lincoln Center Theater, which is not a Broadway venue. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "macbeth-2022",
-        "file": "thewrap--steve-pond.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production opened at Lincoln Center Theater's Vivian Beaumont, which is not a Broadway theater. Therefore, it's the wrong production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "macbeth-2022",
-        "file": "timeout--adam-feldman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of Macbeth at the Vivian Beaumont Theater, which is part of Lincoln Center Theater, not the Longacre Theatre on Broadway. Therefore, it is not a review of the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "mauritius-2007",
-        "file": "variety--david-rooney.json",
+        "showId": "mj-2022",
+        "file": "variety--aramide-tinubu.json",
         "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content is a collection of film and TV reviews, not a review of the Broadway production of 'Mauritius'. The content is also truncated.",
+        "reasoning": "The scraped content is a news article about Warner Bros. International Television Production and BBC Studios Distribution, discussing television formats and licensing deals, not a review of a Broadway show.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "maybe-happy-ending-2024",
-        "file": "the-interested-bystander--cary-wong.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"Death Becomes Her\", not \"Maybe Happy Ending\". The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "meteor-shower-2017",
-        "file": "latimes--charles-mcnulty.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content explicitly mentions the Old Globe theater in San Diego, indicating it's a review of the regional production, not the Broadway production at the Booth Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "meteor-shower-2017",
-        "file": "latimes--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Old Globe theater, indicating it's not the Broadway production at the Booth Theatre. The content is a review, but of the wrong production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "meteor-shower-2017",
-        "file": "san-diego-union-tribune--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Old Globe Theatre in San Diego, indicating it's not the Broadway production. The content also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "meteor-shower-2017",
-        "file": "theater-life--david-sheward.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content clearly discusses the production 'Once on This Island' at Circle in the Square, indicating it is not a review of 'Meteor Shower'.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "meteor-shower-2017",
-        "file": "usatoday--elysa-gardner.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a local news article about a fraternity suspension at the University of Southern Indiana, not a review of the Broadway show \"Meteor Shower.\" The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
-        "file": "variety--jesse-green.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a collection of film and TV news and reviews from Variety, not a review of the Broadway show \"Mike Birbiglia: The Old Man & The Pool.\"",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "mrs-doubtfire-2021",
-        "file": "ap--mark-kennedy.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is mostly website navigation and news headlines, indicating it's not a theater review. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "mrs-doubtfire-2021",
-        "file": "theater-scene--darryl-reilly.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content discusses the show's temporary closure and the impact of COVID-19 on its run, rather than providing a critical assessment of the performance itself. Therefore, it is not a review.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "my-fair-lady-2018",
+        "showId": "my-name-is-lucy-barton-2020",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is mostly navigation and website boilerplate, indicating it's not a valid review article. The text is also truncated.",
+        "reasoning": "The scraped content is mostly navigation and website elements, not a review. It is also severely truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "no-mans-land-2013",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and error messages, indicating that the page does not exist or the content is not a valid review. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "oleanna-2009",
-        "file": "evening-standard--jessie-thompson.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a West End production of Oleanna at the Arts Theatre in London, not the Broadway production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "on-a-clear-day-you-can-see-forever-2011",
-        "file": "dailybeast--tim-teeman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Irish Repertory Theatre's production, indicating it is not a Broadway review. The text also ends mid-sentence, suggesting truncation.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "on-a-clear-day-you-can-see-forever-2011",
-        "file": "front-row-center--stanford-friedman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it's for a production at The Irish Repertory Theatre, which is not a Broadway venue. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "on-a-clear-day-you-can-see-forever-2011",
-        "file": "nysr--elysa-gardner.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is about the Irish Repertory Theatre's production of 'On a Clear Day You Can See Forever', not the Broadway production at the St. James Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "on-a-clear-day-you-can-see-forever-2011",
-        "file": "theater-life--barry-gordin.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is for the Irish Repertory Theater's revival of \"On a Clear Day You Can See Forever\", which is not a Broadway production. The review mentions the original Broadway run and a 2011 revival, but it is not reviewing those productions.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "on-a-clear-day-you-can-see-forever-2011",
-        "file": "variety--marilyn-stasio.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of a play called \"Haunted Child\", not \"On a Clear Day You Can See Forever\". Therefore, it is the wrong article.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-mattress-2024",
-        "file": "nytimes--elisabeth-vincentelli.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is for the Encores! revival at City Center, which is not a Broadway theater. Therefore, it is not a review of the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-mattress-2024",
-        "file": "theater-pizzazz--brian-scott-lipton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is for a City Center Encores! revival of 'Once Upon a Mattress', which is not the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-mattress-2024",
-        "file": "theatermania--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for the New York City Center Encores! production of \"Once Upon a Mattress\", not the Broadway production at the Hudson Theatre. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-mattress-2024",
-        "file": "vulture--christopher-bonanos.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for an Encores! production at City Center, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-one-more-time-2023",
-        "file": "theatermania--adam-feldman.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'not found' page or a page with navigation and unrelated video content, not a review. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "once-upon-a-one-more-time-2023",
-        "file": "theatermania--david-gordon.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be a generic error page or search result, not a review. It is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "passing-strange-2008",
-        "file": "londontheatre--marianka-swain.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Young Vic, a London theater, indicating it's not a Broadway review. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "passing-strange-2008",
-        "file": "whatsonstage--sarah-crompton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions 'Broadway to London' and refers to Giles Terera, indicating it's a London production of Passing Strange. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "peter-and-the-starcatcher-2012",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is mostly navigation and error messages, indicating it's not a valid review article. The text is also severely truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "prima-facie-2023",
-        "file": "guardian--adrian-horton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Harold Pinter theatre in London and Jodie Comer's West End debut. This indicates it is not a review of the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "all-that-dazzles-uk--sam-waite.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a London production at the Hampstead Theatre, not the Broadway production at the Bernard B. Jacobs Theatre. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "ap--mark-kennedy.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is not a review of \"Rock 'n' Roll\". It appears to be image captions and sharing options related to a review of the Broadway production \"Stereophonic\". The content is also truncated and incomplete, consisting mostly of non-article content.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "artsdesk--aleks-sierz.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review discusses the play's premiere at the Royal Court and a revival, indicating it's likely a London production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "broadwayworld--franco-milazzo.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Hampstead Theatre, indicating it's a London production, not the Broadway one. The text also ends abruptly, suggesting truncation.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "evening-standard--tim-bano.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review discusses a production at the Royal Court in London, indicating it is not a review of the Broadway production at the Bernard B. Jacobs Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "everything-theatre-uk--alastair-ball.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions Hampstead Theatre, indicating it's not a Broadway production. The text also appears to be cut off.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "ew--dalton-ross.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for \"Stereophonic\", not \"Rock 'n' Roll\". The review mentions the Golden Theatre on Broadway, but also mentions an initial fall run at Playwrights Horizons (Off-Broadway). The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "rock-n-roll-2007",
-        "file": "whatsonstage--frey-kwa-hawking.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of 'Rock 'n' Roll' at the Hampstead Theatre in London, not the Broadway production. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shrek-the-musical-2008",
-        "file": "metro--maxie-szalwinska.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions 'the London version' and the Theatre Royal Drury Lane, indicating it's a review of the West End production, not the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shrek-the-musical-2008",
-        "file": "the-daily-mail--quentin-letts.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions Drury Lane and the Theatre Royal, London, indicating it's a review of the West End production, not the Broadway one. It also mentions Amanda Holden, who was in the London cast.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shrek-the-musical-2008",
+        "showId": "my-name-is-lucy-barton-2020",
         "file": "the-independent--paul-taylor.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'London version of Shrek The Musical' and refers to actors in that production. The text is also truncated at the end.",
+        "reasoning": "The review mentions the Bridge Theatre, which is in London, not Broadway. The review is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "shucked-2023",
-        "file": "boca-magazine--john-thomason.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the 'Broward Center’s national Broadway tour of “Shucked”', indicating it is not a review of the Broadway production at the Nederlander Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "chicago-sun-times--catey-sullivan.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content explicitly states that the review is for a production of \"Shucked\" at the CIBC Theatre in Chicago. This is not the Broadway production at the Nederlander Theatre in New York City. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "clevelandcom--joey-morona.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is explicitly for a production of 'Shucked' at Playhouse Square in Cleveland, indicating a touring or regional engagement, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "daily-pilot--sarah-mosqueda.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions Segerstrom, which is a regional theater. The phrase 'North American tour' also indicates it is not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "dallas-voice--stage-notes.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a list of theater events in the Dallas area, including a production of Shucked at Broadway Dallas. This is not a review of the Broadway production of Shucked.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "dc-theater-arts--laura-mills.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is about the National Tour of Shucked playing at the National Theatre in Washington, DC, not the Broadway production at the Nederlander Theatre in New York City.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "fanbolt--emma-loggins.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions 'Shucked' playing at Atlanta's Fox Theatre, indicating a touring production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "fort-worth-star-telgram--rick-mauch.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions \"Tuesday’s opening night at Bass Hall\" and \"Performing Arts Fort Worth Broadway at the Bass Series\". This indicates it's a review of a production in Fort Worth, not the Broadway production in New York. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "latin-life-denver--joe-contreras.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Buell Theatre at the DCPA, indicating it's not a Broadway production. Additionally, the text is cut off at the end.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "md-theatre-guide--alyssa-mutterperi.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states the production is at the Buell Theatre in Denver, indicating it is not a Broadway review. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "md-theatre-guide--lynne-menefee.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production is playing at the Buell Theatre at the DCPA, which is a regional theater in Denver, not a Broadway theater in New York City.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "nippertown--bill-kellert.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states the production is at Proctors, indicating it is not the Broadway production at the Nederlander Theatre. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "sfchronicle--lily-janiak.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Curran Theatre in San Francisco, indicating it is not a review of the Broadway production. The article also includes the date the reviewer saw the show at the Curran Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the national tour playing at the Broward Center for the Performing Arts in Fort Lauderdale. The text is also truncated at the end.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "tampa-bay-times--stephanie-hayes.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that \"Shucked,\" a Tony Award-winning musical comedy now on tour, opened at the David A. Straz Jr. Center for the Performing Arts. This indicates it is reviewing a touring production, not the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "the-charlotte-ledger--lawrence-toppman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Belk Theater and Broadway Lights series, indicating a touring production. The text also ends mid-sentence.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "the-orange-county-register--christopher-smith.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states the production is at Segerstrom Hall, indicating it is not the Broadway production. The article reviews a regional production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
+        "showId": "nice-work-if-you-can-get-it-2012",
         "file": "theatermania--david-gordon.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'not found' page or a search results page, not a review. It is also truncated.",
+        "reasoning": "The scraped content appears to be an error page or a search result page, not a review of \"Nice Work If You Can Get It\". It is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "shucked-2023",
-        "file": "times-union--katherine-kiessling.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is about the North American tour of 'Shucked' playing at Proctors in Schenectady, not the Broadway production at the Nederlander Theatre in New York City.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "shucked-2023",
-        "file": "variety--peter-marks.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is about the television industry in Miami, specifically focusing on Telemundo and TelevisaUnivision. It is not a review of any theatrical production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "six-2021",
-        "file": "amny--matt-windman.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is not a review of 'SIX' or any theatrical production. It appears to be a news article or blog post about movies, and it is truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "six-2021",
-        "file": "guardian--adrian-horton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Sydney Opera House production and the upcoming Broadway debut, indicating it's reviewing the former. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "six-2021",
+        "showId": "oh-mary-2024",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation links and unrelated text, indicating it's not a valid review. The content is also truncated.",
+        "reasoning": "The scraped content is mostly navigation and error messages, and it's severely truncated, indicating it's not a valid review of the Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "stereophonic-2024",
-        "file": "talkinbroadway--matthew-murray.json",
+        "showId": "oh-mary-2024",
+        "file": "theater-scene--joel-benjamin.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly states it is for the national tour of Stereophonic at the Seattle Paramount Theatre. The scraped content is also truncated.",
+        "reasoning": "The review explicitly mentions the Lucille Lortel Theatre in Greenwich Village, which is an Off-Broadway venue. Therefore, it is not a review of the Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "stereophonic-2024",
-        "file": "theater-life--samuel-l-leiter.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review clearly states that the production being reviewed is at Playwrights Horizons, which is an Off-Broadway theater. Therefore, it is not a review of the Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "stereophonic-2024",
-        "file": "theatermania--jackson-mchenry.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'not found' page or a page with unrelated video content and navigation elements. It is not a review of 'Stereophonic' or any other production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "stereophonic-2024",
-        "file": "thestage--lane-williamson.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that it is about the West End production of Stereophonic, discussing its transfer from Broadway to London and referencing the Duke of York's Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "sunday-in-the-park-with-george-2008",
-        "file": "esquire--tyler-coates.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is an interview with Andrew Garfield, not a review of \"Sunday in the Park with George\". The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "sunday-in-the-park-with-george-2008",
-        "file": "nytimes--ben-brantley.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a production at Studio 54, an Off-Broadway venue, not a Broadway theater. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "sunday-in-the-park-with-george-2008",
-        "file": "theatermania--david-finkle.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content describes celebrity events and galas, not a review of the specified Broadway production. It mentions other theatrical events but does not review \"Sunday in the Park with George\".",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "sunday-in-the-park-with-george-2008",
-        "file": "washpost--peter-marks.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of 'Sunday in the Park with George' at the Hudson Theatre, not the Harold and Miriam Steinberg Center for Theatre as expected. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tammy-faye-2024",
-        "file": "guardian--adrian-horton.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of the Almeida Theatre (London) production of \"Tammy Faye\", not the Broadway production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tammy-faye-2024",
-        "file": "londontheatre--marianka-swain.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the West End, indicating it's reviewing the London production of 'Tammy Faye', not the Broadway one. The review also comes from London Theatre.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tammy-faye-2024",
-        "file": "telegraph--dominic-cavendish.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Almeida Theatre, which is in London, not Broadway. Therefore, it is reviewing a different production of the show.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tammy-faye-2024",
+        "showId": "oh-mary-2024",
         "file": "theatermania--jesse-green.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be an error page or incomplete content, not a review. It also mentions a different show, 'Beaches', premiering at the Majestic Theatre.",
+        "reasoning": "The scraped content appears to be a 'not found' page or a page with minimal content, and is therefore not a valid review of the specified Broadway production. The scraped content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-cher-show-2018",
-        "file": "the-chicago-sun-times-miriam-di-nunzio--miriam-di-nunzio.json",
+        "showId": "operation-mincemeat-2025",
+        "file": "pages-on-stages--mason-pilevsky.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly states it's about the pre-Broadway world premiere of \"The Cher Show\" at the Oriental Theatre in Chicago, indicating it's not the Broadway production at the Neil Simon Theatre.",
+        "reasoning": "The review is dated May 8, 2025, which is after the Broadway opening date of March 20, 2025, but the content suggests it is not the Broadway production. The reviewer does not mention the John Golden Theatre or Broadway at all, and the overall tone suggests a smaller, non-Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-cher-show-2018",
-        "file": "variety--steven-oxman.json",
+        "showId": "pictures-from-home-2023",
+        "file": "cititour--brian-scott-lipton.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review is for the pre-Broadway engagement of \"The Cher Show\" in Chicago, not the Broadway production. The article is also truncated.",
+        "reasoning": "The review is for \"Pictures From Home\" at Studio 54, which is an Off-Broadway venue. The scraped content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-cher-show-2018",
-        "file": "woman-around-town--alix-cohen.json",
+        "showId": "pictures-from-home-2023",
+        "file": "nytimes--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content reviews a production of 'Pictures From Home' at Studio 54, which is a Broadway theater, but the expected venue is Harold and Miriam Steinberg Center for Theatre. Therefore, it's likely a review of a different production, even if it's still on Broadway.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "plaza-suite-2022",
+        "file": "ap--mark-kennedy.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a contributed article about the costs of moving and using professional services, not a review of \"The Cher Show\" or any theatrical production.",
+        "reasoning": "The scraped content consists primarily of image captions and social sharing options, lacking the actual review text. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-children-2017",
-        "file": "guardian--jesse-green.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of Lucy Kirkwood's 'The Children' at the Gate Theatre in Dublin, not the Caryl Churchill play on Broadway. The text explicitly mentions 'Gate, Dublin' as the venue.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-collaboration-2022",
-        "file": "variety--frank-rizzo.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content contains headlines and summaries related to film and television, such as Super Bowl ads, Netflix content, and film reviews. There is no mention of 'The Collaboration' or any Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-color-purple-2005",
-        "file": "nypost--clive-barnes.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the 2023 film adaptation of \"The Color Purple\", not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-color-purple-2005",
-        "file": "thewrap--ross-bonaime.json",
-        "reason": "film/TV",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of the film adaptation of \"The Color Purple\", not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-cripple-of-inishmaan-2014",
-        "file": "thewrap--robert-hofler.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions the Cort Theatre, not the James Earl Jones Theatre, indicating it's reviewing a different production of \"The Cripple of Inishmaan\". The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-crucible-2016",
-        "file": "theater-life--barry-gordin.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is about Bedlam's production at the Connelly Theatre, which is not a Broadway venue. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-ferryman-2018",
-        "file": "newnownextcom--michael-musto.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"The Lifespan of a Fact\", not \"The Ferryman\". The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-ferryman-2018",
-        "file": "newyorker--vinson-cunningham.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"The Waverly Gallery\", not \"The Ferryman\". The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-ferryman-2018",
-        "file": "parade--janice-kaplan.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The content does not focus on \"The Ferryman\" and is a collection of reviews. It is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-ferryman-2018",
+        "showId": "plaza-suite-2022",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and website elements, not a review. The content is also truncated.",
+        "reasoning": "The scraped content appears to be mostly navigation and other non-article content. It is also truncated, making it impossible to determine if it is a valid review of the Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-ferryman-2018",
-        "file": "valleyadvocate--chris-rohmann.json",
-        "reason": "wrongArticle",
+        "showId": "present-laughter-2010",
+        "file": "theater-pizzazz--michael-bracken.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content is not solely a review of the Broadway production of 'The Ferryman'. It compares 'The Ferryman' to another play, 'Trick or Treat', and the review is truncated.",
+        "reasoning": "The review discusses a PBS Great Performances streaming of Present Laughter, indicating it's a filmed version. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-glass-menagerie-2017",
-        "file": "nbcny--robert-kahn.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "datebook--lily-janiak.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review mentions the production opened at the Booth Theatre after a run at the American Repertory Theater outside Boston, indicating it is not a review of the Broadway production at the Belasco Theatre.",
+        "reasoning": "The review is for a production at BroadwaySF's Orpheum Theatre, indicating a touring production. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "evening-standard--nick-curtis.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "greenville-journal--paul-hyde.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review is from the Evening Standard and mentions the production being set in Blackpool, indicating it is a review of the West End/London production, not the Broadway production. The text is also truncated.",
+        "reasoning": "The review explicitly mentions the 'national tour' and the Peace Center, indicating it is not a review of the Broadway production at the Nederlander Theatre.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
+        "showId": "pretty-woman-the-musical-2018",
         "file": "guardian--adrian-horton.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the Harold Pinter Theatre in London, indicating it's not the Broadway production. The text also appears to be truncated.",
+        "reasoning": "The review specifies the Piccadilly Theatre in London, indicating it is not a Broadway production. The review also mentions Danny Mac and Aimie Atkinson, who were in the West End production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "guardian--arifa-akbar.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "hec--gerry-kowarsky.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review is for a production of 'The Hills of California' at the Harold Pinter Theatre in London, not the Broadway production at the Broadhurst Theatre. The text is also truncated.",
+        "reasoning": "The review explicitly states it is about the 'North American tour now playing at the Fox Theatre,' indicating it is not a review of the Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "inews--fiona-mountford.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "houston-press--jessica-goldman.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the West End and discusses the play opening directly into the West End. This indicates it is not a review of the Broadway production.",
+        "reasoning": "The review mentions 'this touring production of Pretty Woman,' indicating it's not the Broadway production. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "londontheatre--olivia-rook.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "minneapolis-star-tribune--chris-hewitt.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly states it is for the West End production at the Harold Pinter Theatre in London. This is not a review of the Broadway production.",
+        "reasoning": "The review explicitly states the show is playing at the Orpheum Theatre, indicating a non-Broadway production. The text also appears to be truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "radio-times-olivia-garrett--olivia-garrett.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "onstage-colorado--alex-miller.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the West End, indicating it's not a Broadway production. The text also appears to be cut off mid-sentence.",
+        "reasoning": "The review explicitly mentions the show 'rolling through Denver,' indicating a touring or regional production, not the Broadway production. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "philadelphia-inquirer--julia-m-klein.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a Seattle production of 'Pretty Woman' and includes unrelated content, indicating it's not a Broadway review. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "san-antonio-express-news--deborah-martin.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is explicitly about the touring production of 'Pretty Woman' playing at the Majestic Theatre in San Antonio. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "seattles-child--julie-hanson.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The review is published in Seattle's Child, suggesting it covers a local production or event in the Seattle area, not the Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "south-pasadenan--alisa-hayashida.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states that 'Pretty Woman: The Musical opened at The Dolby Theatre on Friday for its three week run here in Los Angeles'. This indicates it is not a review of the Broadway production at the Nederlander Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "stir--vince-kanasoot.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions \"This touring production of the Broadway show\", indicating it is not a review of the Broadway production itself.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "stl-today--calvin-wilson.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content explicitly mentions a touring company of \"Pretty Woman: The Musical,\" indicating that the review is not of the Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is mostly junk, including navigation elements and an error message ('Page does not exist'). It's also heavily truncated, making it impossible to verify if it's a valid review of the Broadway production.",
+        "reasoning": "The scraped content appears to be mostly navigation and error messages, not a review. It is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "the-independent--alice-saville.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "the-cap-times--lindsay-christians.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review mentions Blackpool, England and refers to the production as being Jez Butterworth's latest play after Jerusalem and The Ferryman, which were West End hits. This indicates it is reviewing the London production, not the Broadway one.",
+        "reasoning": "The review explicitly states that \"Pretty Woman: The Musical\" is \"on tour\" and playing at Overture Hall. This indicates it is not a review of the Broadway production. The scraped content also appears to be truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-hills-of-california-2024",
-        "file": "whatsonstage--sarah-crompton.json",
+        "showId": "pretty-woman-the-musical-2018",
+        "file": "the-herald-bulletin--scott-l-miley.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review clearly states that it is a review of the world premiere production in the West End, not the Broadway production. The text is also truncated.",
+        "reasoning": "The review explicitly mentions the Murat Theatre in Indianapolis, indicating a touring production. The text also appears to be truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-importance-of-being-earnest-2011",
-        "file": "front-row-center--donna-herman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a New York Classical Theatre production in Central Park, not the Broadway production at the Todd Haimes Theatre. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-importance-of-being-earnest-2011",
-        "file": "front-row-center--victoria-weisfeld.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Shakespeare Theatre of New Jersey, indicating it's not a Broadway production. The text also appears to be truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-importance-of-being-earnest-2011",
-        "file": "theatermania--charles-isherwood.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be a 'page not found' error and some unrelated content about an upcoming Broadway show, not a review of 'The Importance of Being Earnest'.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-other-place-2013",
-        "file": "front-row-center--kendra-jones.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review mentions a 2024 London premiere, indicating that it is reviewing a London production of \"The Other Place\", not the 2013 Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-other-place-2013",
-        "file": "guardian--charles-spencer.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of multiple plays performed at the RSC Mischief festival in Stratford-upon-Avon, including a play called 'The Other Place', which is not the Broadway production. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-other-place-2013",
+        "showId": "private-lives-2011",
         "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly website navigation and unrelated links, indicating it's not a valid review article. The content is also truncated.",
+        "reasoning": "The scraped content appears to be an error message and navigation elements, not a review. It is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-other-place-2013",
-        "file": "whatsonstage--sarah-crompton.json",
-        "reason": "wrongProduction",
+        "showId": "private-lives-2011",
+        "file": "theatermania--david-finkle.json",
+        "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of 'The Other Place' at the Lyttelton Theatre in London, not the Broadway production at the Samuel J. Friedman Theatre. The review discusses a play by Alexander Zeldin, which is a different play than the one starring Laurie Metcalf.",
+        "reasoning": "The scraped content appears to be a 'page not found' error with some unrelated video content, and is therefore not a valid review of the Broadway production of 'Private Lives'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-outsiders-2024",
+        "showId": "promises-promises-2010",
+        "file": "bloomberg-news--john-simon.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a collection of news headlines and snippets from Bloomberg, not a theater review of \"Promises, Promises\". It is also heavily truncated and contains mostly navigation and unrelated articles.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "promises-promises-2010",
+        "file": "variety--david-rooney.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Measure for Measure\", not \"Promises, Promises\". The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
         "file": "the-interested-bystander--cary-wong.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of 'Cabaret at the Kit Kat Club' and not 'The Outsiders'. The text is also truncated.",
+        "reasoning": "The scraped content is a review of 'Stranger Things: The First Shadow', which is a different show than the expected 'Real Women Have Curves'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-piano-lesson-2022",
-        "file": "deadline--greg-evans.json",
-        "reason": "film/TV",
+        "showId": "saint-joan-2018",
+        "file": "show-buzz-nyc--laura-heller.json",
+        "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content discusses Denzel Washington's film adaptation of 'The Piano Lesson,' mentioning the Broadway revival only in passing. The review focuses on the film's direction, casting, and adaptation from the stage play, not the Broadway stage production itself. The article is also truncated.",
+        "reasoning": "The scraped content is a roundup of the 2017-2018 Broadway season, not a review of 'Saint Joan'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-piano-lesson-2022",
-        "file": "nytimes--maya-phillips.json",
-        "reason": "film/TV",
+        "showId": "saint-joan-2018",
+        "file": "stage-left--robert-russo.json",
+        "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of the film adaptation of 'The Piano Lesson,' as indicated by references to Netflix, Denzel Washington's involvement in producing film adaptations of August Wilson's plays, and mentions of the 1995 TV movie. The text is also truncated.",
+        "reasoning": "The scraped content is a review of the 2017-2018 Broadway season, not a review of 'Saint Joan'. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-pirate-queen-2007",
+        "showId": "seminar-2011",
+        "file": "theatermania--david-finkle.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a 'not found' page with some unrelated video information, not a review of 'Seminar'. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "seminar-2011",
+        "file": "theatermania--david-rooney.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a 'not found' page or a page with unrelated video content, not a review of 'Seminar'. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "she-loves-me-2016",
+        "file": "american-theater-web--andy-propst.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is not a review of 'She Loves Me' or any Broadway show. It appears to be a collection of unrelated text snippets, including promotional material for acting classes and casino websites.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "she-loves-me-2016",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation, ads, and other non-review content. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "guardian--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a West End (London) production of Slave Play, not the Broadway production. The article is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "inews--fiona-mountford.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is of a London production of Slave Play, not the Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "the-standard--nick-curtis.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions \"vital presence in the West End\", indicating it's a London production, not Broadway.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "the-times--dominic-maxwell.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review excerpt mentions the West End, indicating it's not a Broadway review. Additionally, the content begins with a question unrelated to the play, suggesting it's not a direct review and is truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "theatre-reviews-limited--david-roberts.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The scraped content explicitly states the show is running at the Golden Theatre, while the expected review specifies the August Wilson Theatre. This indicates the review is for a different production or a different run of the same show.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "theatre-weekly--ke-meng.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions 'London' and 'West End', indicating it's not a Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "slave-play-2021",
+        "file": "whatsonstage--sarah-crompton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states it is about the UK premiere of Slave Play, indicating it is not a review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "summer-2018",
+        "file": "dailybeast--tim-teeman.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the play 'Summer, 1976' at the Samuel J. Friedman Theatre, not the musical 'Summer' at the Lunt-Fontanne Theatre. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "summer-2018",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be a list of unrelated links and navigation elements, not a review of the Broadway production of 'Summer'. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "summer-2018",
+        "file": "thewrap--robert-hofler.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"Summer, 1976\" at the Samuel J. Friedman Theatre, not the Broadway show \"Summer\" about Donna Summer. The review is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "sunset-boulevard-2017",
+        "file": "broadwayworld--michael-dale.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Moonlight Amphitheatre, indicating a regional production. The text also appears to be cut off mid-sentence.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "file": "amny--matt-windman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review discusses a revival of \"Sunset Boulevard\" at the Palace Theatre, but it originated at the English National Opera and is directed by Lonny Price. This indicates it is not the Broadway production at the St. James Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "file": "guardian--adrian-horton.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Princess Theatre, Melbourne, and Opera Australia, indicating it's not a Broadway production. It also mentions Sarah Brightman in the role of Norma Desmond, which differs from the Broadway production starring Nicole Scherzinger.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "file": "the-interested-bystander--cary-wong.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is not a review of \"Sunset Boulevard\" at the St. James Theatre. It reviews \"DRAG: The Musical\" and \"Mama I'm a Big Girl Now\" at New World Stages, which is an Off-Broadway venue. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "file": "theatre-reviews-limited--david-roberts.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The content is a press release discussing the upcoming Broadway production of Sunset Boulevard starring Glenn Close, rather than a review of the show. It details the production's history and previous engagements.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-39-steps-2008",
+        "file": "ap--mark-kennedy.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is of an Off-Broadway production at the Union Square Theater, not a Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-coast-of-utopia-2006",
         "file": "variety--charles-isherwood.json",
         "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content consists of various news headlines and articles related to film, TV, and music, not a review of the Broadway production of 'The Pirate Queen'. The content is also truncated.",
+        "reasoning": "The scraped content is a collection of film and TV news, trailers, and interviews, not a theater review. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-front-page-2016",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is mostly junk, including navigation elements and error messages. It is also heavily truncated and does not resemble a theater review.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-front-page-2016",
+        "file": "woman-around-town--alix-cohen.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is an advertisement about moving and does not contain any theater review information. It is not related to the Broadway production of \"The Front Page\".",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-history-boys-2006",
+        "file": "broadwayworld--cheryl-markosky.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Sheffield Theatres and describes a production in a British school setting, indicating it is not the Broadway production at the Broadhurst Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-history-boys-2006",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review discusses a revival and mentions the National Theatre and Sheffield grammar school, suggesting it's reviewing a UK production, not the original Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-lion-king-1997",
+        "file": "USATODAY--david-patrick-stearns.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of 'The Great Gatsby' on Broadway, not 'The Lion King'. The article discusses the adaptation of the novel and the musical's creative elements.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-lion-king-1997",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation, error messages, and unrelated links, indicating it is not a valid review article. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-normal-heart-2011",
+        "file": "indiewire--unknown.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the HBO film adaptation of \"The Normal Heart\", not the Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-normal-heart-2011",
+        "file": "usatoday--elysa-gardner.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the HBO film adaptation of 'The Normal Heart,' not the Broadway stage production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "ap--mark-kennedy.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly website navigation and unrelated news headlines, not a review of 'The Notebook' or any other show. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "chicago-sun-times-steven-oxman--steven-oxman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a pre-Broadway production of \"The Notebook\" at the Chicago Shakespeare Theater, not the Broadway production at the Gerald Schoenfeld Theatre. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "daily-herald-barbara-vitello--barbara-vitello.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Chicago Shakespeare Theater, indicating it is not a Broadway production. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "new-city-stage-dennis-polkow--dennis-polkow.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is explicitly of the Chicago Shakespeare Theater's production of 'The Notebook,' which is a regional theater and therefore not a Broadway production. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "the-epoch-times-betty-mohr--betty-mohr.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states that it is reviewing \"The Notebook\" at the Chicago Shakespeare Theater, which is a regional theater and not a Broadway venue. Therefore, it is not a valid review for our Broadway aggregator.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "cititour--brian-scott-lipton.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The review is for an Off-Broadway production of a play called \"The Seagull/Woodstock, NY\" at the Pershing Square Theater Center. This is not the Broadway production of \"The Seagull\" at the Walter Kerr Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "evening-standard--unknown.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Emilia Clarke's West End debut, indicating it's a London production, not a Broadway one. The text also mentions super-director Jamie Lloyd, who directed the West End production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "i-news--unknown.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions Emilia Clarke's West End debut, indicating it's a London production, not a Broadway one. It also references Jamie Lloyd, whose Cyrano De Bergerac had a second hit run earlier this year, further suggesting a London context.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "josh-at-the-movies-josh-batchelder--josh-batchelder.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for 'The Seagull/Woodstock, NY', a New Group production set in the Hudson Valley, not the 2008 Broadway production of 'The Seagull'. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "nysr--frank-scheck.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The review explicitly states it's for \"The Seagull/Woodstock, NY\" at The New Group, an Off-Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions \"The New Group production directed by Scott Elliott\", which is an Off-Broadway theater company. This indicates the review is not of the Broadway production at the Walter Kerr Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "nytimes--jesse-green.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a production at the Classic Stage Company, an Off-Broadway venue, not the Broadway production at the Walter Kerr Theatre. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "queerty--matthew-wexler.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for an Off-Broadway production of \"The Seagull\" at The New Group, not the Broadway production at the Walter Kerr Theatre. The scraped content is therefore the wrong article.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "talkinbroadway--james-wilson.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review details a specific adaptation of 'The Seagull' with distinct character names and a playwright mentioned, suggesting it's not the Broadway production from 2008. The content also includes references to modern elements and modifications that deviate from the original Chekhov play as it would have been staged on Broadway in 2008.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "the-queer-review-james-kleinmann--james-kleinmann.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for an Off-Broadway production of \"The Seagull/Woodstock, NY\" at Pershing Square Signature Center, not the Broadway production at the Walter Kerr Theatre. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "thewrap--robert-hofler.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for \"The Seagull/Woodstock, NY\" at the Pershing Square Signature Center, which is an Off-Broadway venue, not the Broadway production at the Walter Kerr Theatre. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "variety--charles-isherwood.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review discusses a production of 'The Seagull' with a different cast and set designer than the 2008 Broadway production. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-seagull-2008",
+        "file": "vulture--jackson-mchenry.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for \"The Seagull/Woodstock, NY\", a production that transplants Chekhov to the Hudson Valley, not the Broadway production of \"The Seagull\". The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "4columns-david-cote--david-cote.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the BAM Harvey Theater in Brooklyn as the venue, indicating it is not a Broadway production at the James Earl Jones Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "america-magazine-rob-weinert-kendt--unknown.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the production being at the Brooklyn Academy of Music (BAM), which is not a Broadway theater. Therefore, it's a review of a non-Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "amny--matt-windman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the production taking place at BAM, indicating it is not the Broadway production at the James Earl Jones Theatre. The text also appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "dailybeast--tim-teeman.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions a production at BAM (Brooklyn Academy of Music), indicating it is not a Broadway review. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "nysr--frank-scheck.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for an off-Broadway production at the Brooklyn Academy of Music, not the Broadway production at the James Earl Jones Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the production is at the Brooklyn Academy of Music (BAM), indicating it is not a Broadway review. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "file": "theater-pizzazz--carol-rocamora.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states that the production opened at the Brooklyn Academy of Music (BAM), indicating it is not a Broadway review. It also mentions a previous run at the Goodman Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-testament-of-mary-2013",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and unrelated links, suggesting it's not a valid review. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-thanksgiving-play-2023",
+        "file": "nytg--amelia-merrill.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states the show is running at Playwrights Horizons, which is an Off-Broadway venue. Therefore, it is not a review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-threepenny-opera-2006",
+        "file": "front-row-center--tulis-mccall.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review mentions Laura Osnes and Michael Park, who starred in a 2011 Off-Broadway production of The Threepenny Opera at the Atlantic Theater Company. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-threepenny-opera-2006",
+        "file": "newsday--linda-winer.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states that the production is at The Atlantic Theater Company, which is an Off-Broadway venue. The text also ends mid-sentence, indicating truncation.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-threepenny-opera-2006",
+        "file": "nydailynews--joe-dziemianowicz.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Atlantic Theater Company, which is an Off-Broadway venue. Therefore, it is not a review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-visit-2015",
+        "file": "albany-times-union--steve-barnes.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states it is for a production at the Williamstown Theatre Festival. The text is also truncated.",
         "provider": "llm:gemini"
       }
     ]
   },
   "recover": {
-    "processed": 88,
+    "processed": 78,
     "recovered": 0,
-    "confirmedCorrect": 88,
+    "confirmedCorrect": 78,
     "errors": 0,
     "recoveryDetails": []
   }
