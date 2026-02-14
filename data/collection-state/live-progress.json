@@ -1,15 +1,76 @@
 {
-  "updatedAt": "2026-02-14T04:40:51.201Z",
-  "processed": 13,
-  "failed": 87,
-  "successRate": "13.0%",
+  "updatedAt": "2026-02-14T04:43:56.060Z",
+  "processed": 20,
+  "failed": 10,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 14,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 13
+    "brightdata": 5,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-02-14T04:34:46.472Z",
+      "event": "bb-session",
+      "session": "0722120a",
+      "url": "https://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&u"
+    },
+    {
+      "t": "2026-02-14T04:35:10.592Z",
+      "event": "bb-session",
+      "session": "f5c8a10c",
+      "url": "https://www.hollywoodreporter.com/review/a-night-janis-joplin-theater-647216?utm"
+    },
+    {
+      "t": "2026-02-14T04:35:37.132Z",
+      "event": "bb-session",
+      "session": "bf4e290e",
+      "url": "https://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
+    },
+    {
+      "t": "2026-02-14T04:35:55.998Z",
+      "event": "bb-session",
+      "session": "4cd2bd8c",
+      "url": "https://www.hollywoodreporter.com/review/benjamin-walker-american-psycho-theater"
+    },
+    {
+      "t": "2026-02-14T04:38:42.082Z",
+      "event": "bb-session",
+      "session": "9d1858b4",
+      "url": "https://www.hollywoodreporter.com/news/big-fish-theater-review-634505/"
+    },
+    {
+      "t": "2026-02-14T04:40:05.172Z",
+      "event": "bb-session",
+      "session": "f406dd75",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-rev"
+    },
+    {
+      "t": "2026-02-14T04:40:32.103Z",
+      "event": "bb-session",
+      "session": "441ed0d8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-rev"
+    },
+    {
+      "t": "2026-02-14T04:41:10.757Z",
+      "event": "bb-session",
+      "session": "d3ba4bdf",
+      "url": "https://www.hollywoodreporter.com/newsletter1/"
+    },
+    {
+      "t": "2026-02-14T04:41:32.126Z",
+      "event": "bb-session",
+      "session": "d54a312f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/clydes-broadway-review-lynn-not"
+    },
+    {
+      "t": "2026-02-14T04:41:50.800Z",
+      "event": "bb-session",
+      "session": "d536787d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theate"
+    }
+  ]
 }
