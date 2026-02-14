@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-14T04:52:31.714Z",
+  "runDate": "2026-02-14T04:56:52.311Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,16 +11,16 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 38,
+    "processed": 2,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "2.6%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 2,
     "archive": 0
   },
   "statistics": {
@@ -28,72 +28,73 @@
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 23,
+    "tier2Attempts": 24,
     "tier2Success": 0,
-    "tier3Attempts": 23,
-    "tier3Success": 23,
-    "tier4Attempts": 17,
-    "tier4Success": 17,
-    "totalFailed": 38,
+    "tier3Attempts": 24,
+    "tier3Success": 5,
+    "tier4Attempts": 20,
+    "tier4Success": 4,
+    "totalFailed": 22,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "sweat-2017/deadline--jeremy-gerard.json"
+    "bright-star-2016/chicagotribune--chris-jones.json",
+    "bright-star-2016/chicagotribune--unknown.json"
   ],
   "failed": [
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
-    "a-soldiers-play-2020/deadline--greg-evans.json",
-    "almost-famous-2022/deadline--pete-hammond.json",
-    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
-    "an-american-in-paris-2015/deadline--pete-hammond.json",
-    "cabaret-2014/deadline--greg-evans.json",
-    "cabaret-2024/deadline--greg-evans.json",
-    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
-    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
-    "falsettos-2016/deadline--jeremy-gerard.json",
-    "fully-committed-2016/deadline--jeremy-gerard.json",
-    "gypsy-2024/deadline--pete-hammond.json",
-    "illinoise-2024/deadline--greg-evans.json",
-    "it-shoulda-been-you-2015/deadline--jeremy-gerard.json",
-    "kiss-me-kate-2019/deadline--greg-evans.json",
-    "kiss-me-kate-2019/deadline--pete-hammond.json",
-    "lempicka-2024/deadline--greg-evans.json",
-    "living-on-love-2015/deadline--jeremy-gerard.json",
-    "old-times-2015/deadline--jeremy-gerard.json",
-    "once-on-this-island-2017/deadline--jeremy-gerard.json",
-    "patriots-2024/deadline--greg-evans.json",
-    "patriots-2024/deadline--pete-hammond.json",
-    "present-laughter-2017/deadline--jeremy-gerard.json",
-    "prince-of-broadway-2017/deadline--jeremy-gerard.json",
-    "purpose-2025/deadline--greg-evans.json",
-    "redwood-2025/deadline--greg-evans.json",
-    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
-    "slave-play-2021/deadline--greg-evans.json",
-    "something-rotten-2015/deadline--jeremy-gerard.json",
-    "stereophonic-2024/deadline--greg-evans.json",
-    "suffs-2024/deadline--pete-hammond.json",
-    "the-last-five-years-2025/deadline--greg-evans.json",
-    "the-parisian-woman-2017/deadline--jeremy-gerard.json",
-    "the-parisian-woman-2017/deadline--pete-hammond.json",
-    "the-rose-tattoo-2019/deadline--pete-hammond.json",
-    "trouble-in-mind-2021/deadline--greg-evans.json",
-    "uncle-vanya-2024/deadline--greg-evans.json"
+    "gutenberg-2023/nydailynews--chris-jones.json",
+    "a-behanding-in-spokane-2010/chicagotribune--chris-jones.json",
+    "a-life-in-the-theatre-2010/chicagotribune--chris-jones.json",
+    "after-miss-julie-2009/chicagotribune--chris-jones.json",
+    "all-the-way-2014/chicagotribune--chris-jones.json",
+    "american-idiot-2010/chicagotribune--chris-jones.json",
+    "baby-its-you-2011/chicagotribune--chris-jones.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/chicagotribune--chris-jones.json",
+    "billy-elliot-the-musical-2008/chicagotribune--chris-jones.json",
+    "bloody-bloody-andrew-jackson-2010/chicagotribune--chris-jones.json",
+    "butley-2006/chicagotribune--chris-jones.json",
+    "dead-outlaw-2025/chicagotribune--chris-jones.json",
+    "glengarry-glen-ross-2012/chicagotribune--chris-jones.json",
+    "guys-and-dolls-2009/chicagotribune--chris-jones.json",
+    "hands-on-a-hardbody-2013/chicagotribune--chris-jones.json",
+    "how-to-succeed-in-business-without-really-trying-2011/chicagotribune--chris-jones.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/chicagotribune--chris-jones.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "la-bete-2010/chicagotribune--chris-jones.json",
+    "nice-work-if-you-can-get-it-2012/chicagotribune--chris-jones.json",
+    "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
+    "once-upon-a-one-more-time-2023/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "sweat-2017/deadline--jeremy-gerard.json"
+      "bright-star-2016/chicagotribune--chris-jones.json",
+      "bright-star-2016/chicagotribune--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Chicago Tribune": {
+      "count": 14,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
