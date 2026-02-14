@@ -12,6 +12,7 @@ import { getCastChanges } from '@/lib/data-cast';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
+import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
@@ -496,6 +497,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const commercial = getShowCommercial(show.slug);
   const castChangesData = getCastChanges(show.id);
   const goldListMemberships = getShowSeasonGoldLists(show.id);
+  const blogReview = getBlogReviewByShowSlug(show.slug);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -802,6 +804,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           );
         })()}
+
+        {/* Blog Review Cross-Link */}
+        {blogReview && (
+          <Link
+            href={`/reviews/${blogReview.slug}`}
+            className="card card-interactive p-4 sm:p-5 mb-4 flex items-center justify-between gap-4 group"
+          >
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-brand uppercase tracking-wide mb-1">Our Review</p>
+              <p className="text-sm text-gray-200 font-medium truncate">{blogReview.title}</p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <span className="text-2xl font-bold text-white">{blogReview.score}</span>
+              <span className="text-gray-400 group-hover:text-brand transition-colors">&rarr;</span>
+            </div>
+          </Link>
+        )}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (

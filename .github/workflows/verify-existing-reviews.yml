@@ -12,7 +12,7 @@ on:
       max_per_job:
         description: 'Max reviews per job (0 = all)'
         required: false
-        default: '500'
+        default: '2000'
       mode:
         description: 'What to check'
         required: false
