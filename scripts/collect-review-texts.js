@@ -369,6 +369,7 @@ const COOKIE_DOMAIN_MAP = {
   'vulture.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },
   'nymag.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },  // Same Condé Nast auth
   'washingtonpost.com': { envVar: 'WAPO_COOKIES', fileKey: 'wapo' },
+  'ft.com': { envVar: 'FT_COOKIES', fileKey: 'ft' },
 };
 
 // Cache loaded cookies to avoid re-reading files/decoding base64 every time
