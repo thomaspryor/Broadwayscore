@@ -9,8 +9,12 @@
  *   4. Truncation (paywall, incomplete content)
  *   5. Navigation/junk (scraped footer instead of article)
  *
- * Provider chain: Kimi (cheapest) → Gemini Flash → GPT-4o-mini → Claude Sonnet → heuristic fallback
+ * Provider chain: Gemini Flash (cheapest) → Kimi K2 → GPT-4o-mini → Claude Sonnet → heuristic fallback
  * Falls back to heuristic checks when no API keys are available.
+ *
+ * Note: Kimi K2.5 is a reasoning model that uses 2000+ internal chain-of-thought tokens
+ * before producing output — incompatible with max_tokens=400 JSON classification.
+ * Using kimi-k2-0905 (non-reasoning) instead.
  */
 
 const https = require('https');
@@ -20,7 +24,10 @@ const https = require('https');
 // ============================================================
 
 /**
- * Call Kimi K2.5 via OpenRouter — cheapest option
+ * Call Kimi K2 (non-reasoning) via OpenRouter — fallback after Gemini
+ * Note: kimi-k2.5 is a reasoning model that consumes 2000+ tokens on internal
+ * chain-of-thought before producing output, making it incompatible with
+ * max_tokens=400 JSON classification. Using kimi-k2-0905 instead.
  */
 function callKimi(prompt) {
   const apiKey = process.env.OPENROUTER_API_KEY;
@@ -28,7 +35,7 @@ function callKimi(prompt) {
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'moonshotai/kimi-k2.5',
+      model: 'moonshotai/kimi-k2-0905',
       temperature: 0.1,
       max_tokens: 400,
       messages: [{ role: 'user', content: prompt }]
@@ -198,9 +205,8 @@ function callClaude(prompt) {
 /** Get available providers in order of preference (cheapest first) */
 function getProviderChain() {
   const providers = [];
-  // Kimi (OpenRouter) skipped for verification — consistently returns non-JSON prose.
-  // Re-enable if Kimi improves JSON compliance: if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
   if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
+  if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
   if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
   if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
   return providers;

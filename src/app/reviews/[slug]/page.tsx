@@ -28,7 +28,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const url = `${BASE_URL}/reviews/${review.slug}`;
   const ogImageUrl = review.heroImage
     ? toAbsoluteUrl(review.heroImage)
-    : `${BASE_URL}/og/home.png`;
+    : `${BASE_URL}/og/reviews/${review.slug}.png`;
 
   return {
     title: `${review.title} | Reviews`,
