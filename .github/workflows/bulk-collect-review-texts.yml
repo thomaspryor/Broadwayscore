@@ -236,6 +236,11 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -245,8 +250,8 @@ jobs:
           BRIGHTDATA_ZONE: mcp_unlocker
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
-          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_per_job }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_per_job || '5' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.test_mode == true && '5' || inputs.max_per_job }}
           SHOW_FILTER: ${{ matrix.shows }}

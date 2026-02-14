@@ -27,6 +27,11 @@
  *   BROWSERBASE_ENABLED - 'true' to enable Browserbase tier
  *   BROWSERBASE_MAX_SESSIONS_PER_DAY - Daily limit (default: 30 = ~$3/day)
  *   BROWSERBASE_MAX_SESSIONS_PER_RUN - Per-run limit (default: 10)
+ *   WSJ_COOKIES - Base64-encoded JSON cookie array for WSJ paywall bypass
+ *   NEWYORKER_COOKIES - Base64-encoded JSON cookie array for New Yorker paywall bypass
+ *   NYT_COOKIES - Base64-encoded JSON cookie array for NYT paywall bypass
+ *   VULTURE_COOKIES - Base64-encoded JSON cookie array for Vulture/NYMag paywall bypass
+ *   WAPO_COOKIES - Base64-encoded JSON cookie array for Washington Post paywall bypass
  *   BATCH_SIZE - Reviews per batch (default: 10)
  *   MAX_REVIEWS - Max reviews to process (default: 50, 0 = all)
  *   PRIORITY - 'tier1' or 'all' (default: all)
@@ -153,6 +158,7 @@ const CONFIG = {
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
   browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
   browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
+  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '5'), // Prevent one domain starving others
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -172,11 +178,11 @@ const CONFIG = {
 
   // Paywalled domains and their credential env vars
   paywalledDomains: {
-    'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD' },
+    'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD', altPassVar: 'NYTIMES_PASSWORD' },
     'vulture.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'nymag.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'newyorker.com': { emailVar: 'NEW_YORKER_EMAIL', passVar: 'NEW_YORKER_PASSWORD' },
-    'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD' },
+    'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD', altPassVar: 'WASHPOST_PASSWORD' },
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
   },
 
@@ -186,8 +192,9 @@ const CONFIG = {
     'theatermania.com', 'observer.com', 'chicagotribune.com',
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
-    'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
-    'newyorker.com',  // Condé Nast switched to OTC-only auth — Playwright login triggers spam OTC emails
+    'nytimes.com',  // DataDome CAPTCHA in headless — skip to Browserbase
+    'wsj.com',  // Dow Jones SSO anti-bot detection — fake-rejects correct password in automated browsers
+    'newyorker.com',  // Condé Nast id.condenast.com — routes automated browsers to OTP, not password login
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
   ],
 
@@ -346,6 +353,137 @@ const OUTLET_WAIT_CONFIGS = {
   },
 };
 
+// ============================================================================
+// COOKIE INJECTION (bypass paywall login via exported browser cookies)
+// ============================================================================
+// Cookies can be provided via:
+//   1. Local files: data/cookies/{domain-key}.json (e.g., data/cookies/wsj.json)
+//   2. Environment variables: WSJ_COOKIES, NEWYORKER_COOKIES (base64-encoded JSON arrays)
+// Format: Playwright-compatible cookie array [{name, value, domain, path, ...}]
+// When cookies are available for a domain, login attempts are skipped entirely.
+
+const COOKIE_DOMAIN_MAP = {
+  'wsj.com': { envVar: 'WSJ_COOKIES', fileKey: 'wsj' },
+  'newyorker.com': { envVar: 'NEWYORKER_COOKIES', fileKey: 'newyorker' },
+  'nytimes.com': { envVar: 'NYT_COOKIES', fileKey: 'nytimes' },
+  'vulture.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },
+  'nymag.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },  // Same Condé Nast auth
+  'washingtonpost.com': { envVar: 'WAPO_COOKIES', fileKey: 'wapo' },
+};
+
+// Cache loaded cookies to avoid re-reading files/decoding base64 every time
+const _cookieCache = {};
+
+/**
+ * Load cookies for a given domain. Checks env var first (base64 JSON), then local file.
+ * Returns Playwright-compatible cookie array or null if none available.
+ */
+function loadCookiesForDomain(domain) {
+  // Normalize domain (strip www.)
+  const normalizedDomain = domain.replace(/^www\./, '');
+
+  // Find matching cookie config
+  const cookieConfig = COOKIE_DOMAIN_MAP[normalizedDomain];
+  if (!cookieConfig) return null;
+
+  // Check cache
+  if (_cookieCache[normalizedDomain] !== undefined) {
+    return _cookieCache[normalizedDomain];
+  }
+
+  // Try env var first (base64-encoded JSON array — used in CI)
+  const envVal = process.env[cookieConfig.envVar];
+  if (envVal) {
+    try {
+      const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
+      const cookies = JSON.parse(decoded);
+      if (Array.isArray(cookies) && cookies.length > 0) {
+        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
+        _cookieCache[normalizedDomain] = cookies;
+        return cookies;
+      }
+    } catch (e) {
+      console.log(`  ⚠ Failed to parse ${cookieConfig.envVar} env var: ${e.message}`);
+    }
+  }
+
+  // Try local file (data/cookies/{fileKey}.json)
+  const cookieFilePath = path.join('data', 'cookies', `${cookieConfig.fileKey}.json`);
+  if (fs.existsSync(cookieFilePath)) {
+    try {
+      const cookies = JSON.parse(fs.readFileSync(cookieFilePath, 'utf-8'));
+      if (Array.isArray(cookies) && cookies.length > 0) {
+        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from ${cookieFilePath}`);
+        _cookieCache[normalizedDomain] = cookies;
+        return cookies;
+      }
+    } catch (e) {
+      console.log(`  ⚠ Failed to parse cookie file ${cookieFilePath}: ${e.message}`);
+    }
+  }
+
+  _cookieCache[normalizedDomain] = null;
+  return null;
+}
+
+/**
+ * Check if cookies are available for a URL's domain.
+ * Returns the domain key if cookies exist, null otherwise.
+ */
+function hasCookiesForUrl(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) {
+        const cookies = loadCookiesForDomain(domain);
+        if (cookies) return domain;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+/**
+ * Inject cookies into a Playwright browser context.
+ * Filters cookies to ensure they have required fields for Playwright's addCookies().
+ */
+async function injectCookies(browserContext, domain) {
+  const cookies = loadCookiesForDomain(domain);
+  if (!cookies || cookies.length === 0) return false;
+
+  try {
+    // Ensure each cookie has the minimum required fields for Playwright
+    const validCookies = cookies
+      .filter(c => c.name && c.value && c.domain)
+      .map(c => ({
+        name: c.name,
+        value: c.value,
+        domain: c.domain,
+        path: c.path || '/',
+        httpOnly: c.httpOnly !== undefined ? c.httpOnly : false,
+        secure: c.secure !== undefined ? c.secure : true,
+        sameSite: c.sameSite || 'None',
+        // Playwright needs expires as a Unix timestamp (seconds), not ms
+        ...(c.expires && c.expires > 0 ? { expires: c.expires > 1e12 ? Math.floor(c.expires / 1000) : c.expires } : {}),
+      }));
+
+    if (validCookies.length === 0) {
+      console.log(`  ⚠ No valid cookies found for ${domain} (missing name/value/domain)`);
+      return false;
+    }
+
+    await browserContext.addCookies(validCookies);
+    console.log(`  🍪 Injected ${validCookies.length} cookies for ${domain}`);
+    return true;
+  } catch (e) {
+    console.log(`  ⚠ Failed to inject cookies for ${domain}: ${e.message}`);
+    return false;
+  }
+}
+
+// Track domains where cookies have been injected (to skip login)
+const cookieInjectedDomains = new Set();
+
 // Statistics tracking
 const stats = {
   tier1Attempts: 0,
@@ -394,6 +532,7 @@ let browserbaseUsage = {
   sessionsToday: 0,
   sessionsThisRun: 0,
   minutesToday: 0,
+  sessionsPerDomain: {},  // { 'wsj.com': 3, 'nytimes.com': 2, ... } — per-run cap prevents starvation
   history: [],
 };
 
@@ -1240,32 +1379,150 @@ async function browserbaseLogin(bbPage, domain, email, password) {
   }
 
   if (domain === 'nytimes.com') {
+    console.log(`    → Browserbase: navigating to NYT login...`);
     await bbPage.goto('https://myaccount.nytimes.com/auth/login', { timeout: CONFIG.loginTimeout });
     await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
     await bbPage.waitForTimeout(3000);
 
-    const emailInput = await bbPage.$('input[name="email"], input[type="email"]');
-    if (!emailInput) return false;
-    await emailInput.click();
+    // Check for DataDome CAPTCHA overlay before attempting any clicks
+    const hasCaptcha = await bbPage.evaluate(() => {
+      const iframes = document.querySelectorAll('iframe');
+      for (const f of iframes) {
+        if (f.src && f.src.includes('captcha-delivery.com')) return true;
+      }
+      const text = document.body?.innerText || '';
+      if (text.includes('confirm that you are human') || text.includes('Slide right to complete')) return true;
+      return false;
+    });
+    if (hasCaptcha) {
+      console.log(`    → CAPTCHA detected on NYT login - waiting for Browserbase to solve...`);
+      try {
+        await bbPage.waitForFunction(() => {
+          const iframes = document.querySelectorAll('iframe');
+          for (const f of iframes) {
+            if (f.src && f.src.includes('captcha-delivery.com')) return false;
+          }
+          return true;
+        }, { timeout: 45000 });
+        console.log(`    → CAPTCHA resolved, proceeding with login...`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ NYT CAPTCHA not resolved after 45s - login failed`);
+        return false;
+      }
+    }
+
+    // Step 1: Email entry
+    let emailInput = null;
+    const emailSelectors = 'input[name="email"], input[type="email"], #email';
+    try {
+      await bbPage.waitForSelector(emailSelectors, { timeout: 15000 });
+      emailInput = await bbPage.$(emailSelectors);
+    } catch (e) {
+      console.log(`    → NYT email field slow to render, waiting...`);
+      await bbPage.waitForTimeout(5000);
+      emailInput = await bbPage.$(emailSelectors);
+    }
+    if (!emailInput) {
+      console.log(`    ✗ NYT login FAILED (no email field found)`);
+      return false;
+    }
+    try {
+      await emailInput.click();
+    } catch (e) {
+      console.log(`    → Email click failed (possible overlay), using keyboard focus...`);
+      await bbPage.keyboard.press('Tab');
+    }
     await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
 
-    const continueBtn = await bbPage.$('button:has-text("Continue"), button[data-testid="submit-email"]');
-    if (continueBtn) await continueBtn.click();
-    else await bbPage.keyboard.press('Enter');
-    await bbPage.waitForTimeout(3000);
+    // Click Continue / submit email
+    const continueBtn = await bbPage.$('button[data-testid="submit-email"], button:has-text("Continue"), button[type="submit"]');
+    if (continueBtn) {
+      try {
+        await continueBtn.click();
+      } catch (e) {
+        console.log(`    → Continue button click failed, pressing Enter...`);
+        await bbPage.keyboard.press('Enter');
+      }
+    } else {
+      await bbPage.keyboard.press('Enter');
+    }
+    await bbPage.waitForTimeout(5000);
 
-    const passInput = await bbPage.$('input[type="password"]');
-    if (!passInput) return false;
-    await passInput.click();
+    // Check for CAPTCHA after email submission (DataDome sometimes triggers here)
+    const hasCaptchaAfterEmail = await bbPage.evaluate(() => {
+      const iframes = document.querySelectorAll('iframe');
+      for (const f of iframes) {
+        if (f.src && f.src.includes('captcha-delivery.com')) return true;
+      }
+      return false;
+    });
+    if (hasCaptchaAfterEmail) {
+      console.log(`    → CAPTCHA appeared after email entry - waiting for Browserbase to solve...`);
+      try {
+        await bbPage.waitForFunction(() => {
+          const iframes = document.querySelectorAll('iframe');
+          for (const f of iframes) {
+            if (f.src && f.src.includes('captcha-delivery.com')) return false;
+          }
+          return true;
+        }, { timeout: 45000 });
+        console.log(`    → CAPTCHA resolved after email step`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ NYT CAPTCHA not resolved after email step - login failed`);
+        return false;
+      }
+    }
+
+    // Step 2: Password entry
+    let passInput = null;
+    try {
+      await bbPage.waitForSelector('input[type="password"]', { timeout: 15000 });
+      passInput = await bbPage.$('input[type="password"]');
+    } catch (e) {
+      console.log(`    → NYT password field slow to render, waiting...`);
+      await bbPage.waitForTimeout(5000);
+      passInput = await bbPage.$('input[type="password"]');
+    }
+    if (!passInput) {
+      const postEmailUrl = bbPage.url();
+      console.log(`    ✗ NYT login FAILED (no password field found)`);
+      console.log(`    → Post-email URL: ${postEmailUrl.substring(0, 100)}`);
+      return false;
+    }
+    try {
+      await passInput.click();
+    } catch (e) {
+      console.log(`    → Password click failed (possible overlay), using keyboard focus...`);
+      await bbPage.keyboard.press('Tab');
+    }
     await passInput.type(password, { delay: 30 });
+    await bbPage.waitForTimeout(500);
 
-    const loginBtn = await bbPage.$('button:has-text("Log In"), button[type="submit"]');
-    if (loginBtn) await loginBtn.click();
-    else await bbPage.keyboard.press('Enter');
+    // Click Log In / submit password
+    const loginBtn = await bbPage.$('button[data-testid="login-button"], button:has-text("Log In"), button[type="submit"]');
+    if (loginBtn) {
+      try {
+        await loginBtn.click();
+      } catch (e) {
+        console.log(`    → Login button click failed, pressing Enter...`);
+        await bbPage.keyboard.press('Enter');
+      }
+    } else {
+      await bbPage.keyboard.press('Enter');
+    }
     await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
     await bbPage.waitForTimeout(3000);
 
-    return !bbPage.url().includes('auth/login');
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('auth/login')) {
+      console.log(`    ✓ NYT login succeeded (left login page)`);
+      return true;
+    }
+    console.log(`    ⚠ NYT login uncertain (URL: ${postUrl.substring(0, 100)}) - continuing`);
+    return true;
   }
 
   return false;
@@ -1353,6 +1610,13 @@ async function fetchWithBrowserbase(url, review) {
   browserbaseUsage.sessionsThisRun++;
   stats.browserbaseSessionsUsed++;
 
+  // Track per-domain usage to prevent one domain starving others
+  try {
+    const urlDomain = new URL(url).hostname.replace('www.', '');
+    browserbaseUsage.sessionsPerDomain[urlDomain] = (browserbaseUsage.sessionsPerDomain[urlDomain] || 0) + 1;
+  } catch {}
+
+
   console.log(`    Browserbase session ${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun} (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} today)`);
 
   let bbBrowser = null;
@@ -1398,10 +1662,22 @@ async function fetchWithBrowserbase(url, review) {
     const bbContext = contexts[0] || await bbBrowser.newContext();
     bbPage = await bbContext.newPage();
 
+    // Try cookie injection first (faster, more reliable than login)
+    let bbCookiesInjected = false;
+    const cookieDomain = hasCookiesForUrl(url);
+    if (cookieDomain) {
+      bbCookiesInjected = await injectCookies(bbContext, cookieDomain);
+      if (bbCookiesInjected) {
+        console.log(`    🍪 Browserbase: cookies injected for ${cookieDomain} — skipping login`);
+        state.log.push({ t: new Date().toISOString(), event: 'bb-cookie-inject', domain: cookieDomain });
+      }
+    }
+
     // Login to paywalled sites before navigating to the review URL
     // Browserbase has CAPTCHA solving, making it ideal for sites that block Playwright
+    // Skip login if cookies were already injected for this domain
     const paywallCreds = getPaywallCredentials(url);
-    if (paywallCreds && paywallCreds.email) {
+    if (paywallCreds && paywallCreds.email && !bbCookiesInjected) {
       console.log(`    → Browserbase login to ${paywallCreds.domain}...`);
       try {
         const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
@@ -2198,6 +2474,15 @@ function buildTierChain(ctx, review) {
       timeoutMs: 120000,
       shouldRun: () => {
         if (!CONFIG.browserbaseEnabled || !canUseBrowserbase()) return false;
+        // Per-domain session cap — prevents one domain class from consuming all sessions
+        try {
+          const urlDomain = new URL(url).hostname.replace('www.', '');
+          const domainSessions = browserbaseUsage.sessionsPerDomain[urlDomain] || 0;
+          if (domainSessions >= CONFIG.browserbaseMaxSessionsPerDomain) {
+            console.log(`    ⚠ Browserbase per-domain limit reached for ${urlDomain} (${domainSessions}/${CONFIG.browserbaseMaxSessionsPerDomain})`);
+            return false;
+          }
+        } catch {}
         return (
           ctx.isKnownBlocked || ctx.sawCaptcha ||
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
@@ -2360,7 +2645,7 @@ function getPaywallCredentials(url) {
   for (const [domain, creds] of Object.entries(CONFIG.paywalledDomains)) {
     if (url.includes(domain)) {
       const email = process.env[creds.emailVar];
-      const password = process.env[creds.passVar];
+      const password = process.env[creds.passVar] || (creds.altPassVar && process.env[creds.altPassVar]);
       if (email && password) {
         return { domain, email, password };
       }
@@ -3657,6 +3942,15 @@ async function setupBrowser() {
       return getParameter.apply(this, arguments);
     };
   });
+
+  // Inject cookies for paywalled domains (bypasses login entirely)
+  for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
+    const injected = await injectCookies(context, domain);
+    if (injected) {
+      cookieInjectedDomains.add(domain);
+      loggedInDomains.add(domain); // Mark as "logged in" so loginToSite() is skipped
+    }
+  }
 
   page = await context.newPage();
   console.log('✓ Browser ready');

@@ -148,12 +148,14 @@ async function discoverShows() {
     discoveredShows = await fetchShowsFromBroadwayOrg();
     console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
     if (discoveredShows.length === 0) {
-      console.warn('WARN: Broadway.org returned 0 shows. Possible scraper breakage (DOM structure may have changed).');
+      console.error('ERROR: Broadway.org returned 0 shows. Scraper is broken (DOM structure change, Cloudflare block, or site outage).');
+      process.exitCode = 1;
     }
     console.log('');
   } catch (e) {
-    console.error('Error fetching Broadway.org:', e.message);
+    console.error('ERROR: Failed to fetch Broadway.org:', e.message);
     console.log('');
+    process.exitCode = 1;
     return { newShows: [], count: 0 };
   }
 

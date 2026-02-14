@@ -9,13 +9,14 @@
  * Sites tested:
  *   - NYT (New York Times)
  *   - Vulture (NY Magazine - Condé Nast)
- *   - New Yorker (Condé Nast - same credentials as Vulture)
+ *   - New Yorker (Condé Nast - separate subscription)
  *   - WaPo (Washington Post)
  *   - WSJ (Wall Street Journal)
  *
  * Environment variables:
  *   NYT_EMAIL, NYT_PASSWORD (or NYTIMES_PASSWORD)
- *   VULTURE_EMAIL, VULTURE_PASSWORD (also used for New Yorker)
+ *   VULTURE_EMAIL, VULTURE_PASSWORD
+ *   NEW_YORKER_EMAIL, NEW_YORKER_PASSWORD
  *   WAPO_EMAIL, WAPO_PASSWORD (or WASHPOST_PASSWORD)
  *   WSJ_EMAIL, WSJ_PASSWORD
  *
@@ -24,6 +25,7 @@
  *   node scripts/test-paywalled-access.js --site=nyt
  *   node scripts/test-paywalled-access.js --site=newyorker
  *   node scripts/test-paywalled-access.js --headful  (show browser)
+ *   node scripts/test-paywalled-access.js --browserbase  (use Browserbase cloud browser + CAPTCHA solving)
  */
 
 const { chromium } = require('playwright');
@@ -31,6 +33,7 @@ const { chromium } = require('playwright');
 // Parse command line args
 const args = process.argv.slice(2);
 const headful = args.includes('--headful') || args.includes('--headed');
+const useBrowserbase = args.includes('--browserbase');
 const siteFilter = args.find(a => a.startsWith('--site='))?.split('=')[1];
 
 // Test configuration for each site
@@ -47,21 +50,32 @@ const SITES = {
       await page.goto('https://myaccount.nytimes.com/auth/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(3000); // Wait for SPA to render
 
+      // Diagnostic dump
+      const pageInfo = await page.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input')).map(i => ({
+          type: i.type, name: i.name, id: i.id,
+        }));
+        const buttons = Array.from(document.querySelectorAll('button')).map(b => b.textContent?.trim().substring(0, 30));
+        return { title: document.title, url: window.location.href, inputs, buttons };
+      });
+      console.log(`    Page: ${pageInfo.url}`);
+      console.log(`    Inputs: ${JSON.stringify(pageInfo.inputs)}`);
+
       // Wait for email field
       console.log('    Waiting for email field...');
       const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 20000 });
-      await emailField.fill(email);
+      await emailField.type(email, { delay: 30 });
 
       // Click continue button
       console.log('    Clicking continue...');
-      const continueBtn = await page.waitForSelector('button[type="submit"], button:has-text("Continue")', { timeout: 10000 });
+      const continueBtn = await page.waitForSelector('button[data-testid="submit-email"], button[type="submit"], button:has-text("Continue")', { timeout: 10000 });
       await continueBtn.click();
 
       // Wait for password field (NYT has two-step login)
       console.log('    Waiting for password field...');
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
       const passwordField = await page.waitForSelector('input[name="password"], input[type="password"], #password', { timeout: 15000 });
-      await passwordField.fill(password);
+      await passwordField.type(password, { delay: 30 });
 
       // Click login button
       console.log('    Clicking login...');
@@ -86,23 +100,29 @@ const SITES = {
       await page.goto(articleUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(3000);
 
-      // Check for paywall indicators
-      const paywallSelectors = [
-        '[data-testid="paywall"]',
-        '.css-mcm29f', // NYT paywall modal
-        '[class*="PaywallButton"]',
-        'button:has-text("Subscribe")',
-        '[data-testid="inline-message"]'
-      ];
+      // Check for paywall indicators — be specific to avoid false positives
+      // NYT has a "Subscribe" button in the nav bar that isn't a paywall gate
+      const paywallDetected = await page.evaluate(() => {
+        // Check for specific paywall elements
+        const paywallEl = document.querySelector('[data-testid="paywall"], [class*="PaywallButton"], .css-mcm29f');
+        if (paywallEl && paywallEl.offsetParent !== null) return 'paywall element';
 
-      for (const selector of paywallSelectors) {
-        const element = await page.$(selector);
-        if (element) {
-          const isVisible = await element.isVisible();
-          if (isVisible) {
-            return { success: false, reason: 'Paywall detected' };
-          }
+        // Check for gateway/regwall modal
+        const gateway = document.querySelector('[data-testid="gateway"], [data-testid="inline-message"], [class*="gateway"]');
+        if (gateway && gateway.offsetParent !== null) return 'gateway modal';
+
+        // Check if article body is truncated with a "Subscribe" CTA WITHIN the article
+        const articleArea = document.querySelector('article, [data-testid="article-body"]');
+        if (articleArea) {
+          const subBtn = articleArea.querySelector('button:has([class*="Subscribe"]), [class*="subscribe-cta"]');
+          if (subBtn) return 'subscribe CTA in article';
         }
+
+        return null;
+      });
+
+      if (paywallDetected) {
+        return { success: false, reason: `Paywall detected (${paywallDetected})` };
       }
 
       // Check for article content
@@ -112,6 +132,7 @@ const SITES = {
       }
 
       const articleText = await articleBody.textContent();
+      console.log(`    Article text length: ${articleText.length} chars`);
       if (articleText.length < 500) {
         return { success: false, reason: `Article too short (${articleText.length} chars) - likely truncated` };
       }
@@ -127,47 +148,111 @@ const SITES = {
     emailEnv: 'VULTURE_EMAIL',
     passwordEnv: ['VULTURE_PASSWORD'],
     login: async (page, email, password) => {
-      console.log('    Navigating to Vulture login...');
+      console.log('    Navigating to Vulture login (subs.nymag.com)...');
 
-      // First go to vulture and find login
-      await page.goto('https://www.vulture.com', { waitUntil: 'networkidle', timeout: 30000 });
+      // Go directly to the NY Mag auth page (same as production code)
+      await page.goto('https://subs.nymag.com/account', { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(3000); // Wait for SPA to render
 
-      // Look for login/sign in link
-      const loginLink = await page.$('a[href*="login"], a:has-text("Log In"), a:has-text("Sign In"), button:has-text("Log In")');
-      if (loginLink) {
-        await loginLink.click();
-        await page.waitForTimeout(2000);
-      } else {
-        // Try direct login URL
-        await page.goto('https://pyxis.nymag.com/auth', { waitUntil: 'networkidle', timeout: 30000 });
-      }
+      // Diagnostic dump
+      const pageInfo = await page.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input')).map(i => ({
+          type: i.type, name: i.name, id: i.id, placeholder: i.placeholder,
+        }));
+        const buttons = Array.from(document.querySelectorAll('button')).map(b => b.textContent?.trim().substring(0, 30));
+        return { title: document.title, url: window.location.href, inputs, buttons };
+      });
+      console.log(`    Page: ${pageInfo.url} — "${pageInfo.title}"`);
+      console.log(`    Inputs: ${JSON.stringify(pageInfo.inputs)}`);
+      console.log(`    Buttons: ${JSON.stringify(pageInfo.buttons)}`);
 
+      // Step 1: Enter email
+      // IMPORTANT: Must use type() not fill() - the "Submit Email" button is disabled
+      // until React detects input events, which fill() doesn't trigger
       console.log('    Looking for email field...');
-      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 15000 });
-      await emailField.fill(email);
+      const emailField = await page.waitForSelector('input[type="email"], input[name="email"], [role="textbox"]', { timeout: 15000 });
+      await emailField.click();
+      await emailField.type(email, { delay: 30 });
+      await page.waitForTimeout(1000);
 
-      // Check if there's a separate password field or continue button
-      const passwordField = await page.$('input[name="password"], input[type="password"]');
-      if (passwordField) {
-        await passwordField.fill(password);
-        const submitBtn = await page.$('button[type="submit"]');
-        if (submitBtn) await submitBtn.click();
+      // Click "Submit Email" button (should now be enabled after typing)
+      console.log('    Clicking Submit Email...');
+      const submitEmailBtn = await page.$('button:has-text("Submit Email"):not([disabled])');
+      if (submitEmailBtn) {
+        await submitEmailBtn.click();
       } else {
-        // Two-step login
-        const continueBtn = await page.$('button[type="submit"], button:has-text("Continue")');
-        if (continueBtn) {
-          await continueBtn.click();
-          await page.waitForTimeout(2000);
-          const pwdField = await page.waitForSelector('input[name="password"], input[type="password"]', { timeout: 10000 });
-          await pwdField.fill(password);
-          const loginBtn = await page.$('button[type="submit"]');
-          if (loginBtn) await loginBtn.click();
+        // Fallback: try any submit button or Enter
+        const anySubmit = await page.$('button[type="submit"], button:has-text("Continue")');
+        if (anySubmit) {
+          await anySubmit.click();
+        } else {
+          console.log('    ⚠ No submit button found, pressing Enter');
+          await page.keyboard.press('Enter');
         }
       }
+      await page.waitForTimeout(4000);
 
-      console.log('    Waiting for login to complete...');
+      // Step 2: Enter password
+      // The page has TWO password inputs — one in "Create Account" section (hidden)
+      // and one in "Sign In" section (#passwordInput, visible after email submit)
+      console.log('    Looking for password field...');
+      // Wait for the correct password field to become visible
+      let passwordField = null;
+      try {
+        passwordField = await page.waitForSelector('#passwordInput:visible, input[type="password"]:visible', { timeout: 15000 });
+      } catch (e) {
+        // Dump current state
+        const state = await page.evaluate(() => {
+          const inputs = Array.from(document.querySelectorAll('input[type="password"]')).map(i => ({
+            id: i.id, name: i.name, visible: i.offsetParent !== null,
+          }));
+          return { url: window.location.href, passwordInputs: inputs,
+            text: document.body?.innerText?.substring(0, 300) || '' };
+        });
+        console.log(`    Password inputs: ${JSON.stringify(state.passwordInputs)}`);
+        console.log(`    Page text: ${state.text.substring(0, 200)}`);
+        throw new Error('No visible password field found after email submit');
+      }
+      await passwordField.click();
+      await passwordField.type(password, { delay: 30 });
+      await page.waitForTimeout(500);
+
+      // Click "Sign In" button — must be the one near the password field, not the nav "Sign In"
+      console.log('    Clicking Sign In...');
+      // Look for the Sign In button that follows the password field in the form
+      const signInBtn = await page.evaluate(() => {
+        const pwdInput = document.querySelector('#passwordInput') || document.querySelector('input[type="password"]:not([style*="display: none"])');
+        if (!pwdInput) return null;
+        // Walk up to find the containing form/section, then find its Sign In button
+        let container = pwdInput.parentElement;
+        for (let i = 0; i < 5 && container; i++) {
+          const btn = container.querySelector('button');
+          if (btn && btn.textContent.includes('Sign In')) {
+            // Return a data attribute we can use to find it
+            btn.setAttribute('data-test-target', 'signin');
+            return true;
+          }
+          container = container.parentElement;
+        }
+        return null;
+      });
+      if (signInBtn) {
+        const btn = await page.$('button[data-test-target="signin"]');
+        if (btn) await btn.click();
+      } else {
+        // Fallback: click the last "Sign In" button (likely the login one, not nav)
+        const allSignIn = await page.$$('button:has-text("Sign In")');
+        if (allSignIn.length > 0) {
+          await allSignIn[allSignIn.length - 1].click();
+        } else {
+          await page.keyboard.press('Enter');
+        }
+      }
       await page.waitForTimeout(5000);
 
+      // Verify
+      const postUrl = page.url();
+      console.log(`    Post-login URL: ${postUrl}`);
       return true;
     },
     checkAccess: async (page, articleUrl) => {
@@ -211,39 +296,47 @@ const SITES = {
 
   newyorker: {
     name: 'The New Yorker (Condé Nast)',
-    loginUrl: 'https://www.newyorker.com/accounts/login',
+    loginUrl: 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB',
     testArticle: 'https://www.newyorker.com/magazine/2024/04/01/the-outsiders-broadway-review',
-    emailEnv: 'VULTURE_EMAIL', // Same Condé Nast credentials
-    passwordEnv: ['VULTURE_PASSWORD'],
+    emailEnv: 'NEW_YORKER_EMAIL',
+    passwordEnv: ['NEW_YORKER_PASSWORD'],
     login: async (page, email, password) => {
       console.log('    Navigating to New Yorker login...');
-      await page.goto('https://www.newyorker.com/accounts/login', { waitUntil: 'networkidle', timeout: 30000 });
+      await page.goto('https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB', { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(3000); // Wait for Condé Nast SPA to render
 
+      // Step 1: Email
       console.log('    Looking for email field...');
-      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 15000 });
-      await emailField.fill(email);
+      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], [role="textbox"]', { timeout: 15000 });
+      await emailField.type(email, { delay: 30 }); // Use .type() not .fill() for React forms
+      await page.waitForTimeout(1000);
 
-      // Check if there's a separate password field or continue button
-      const passwordField = await page.$('input[name="password"], input[type="password"]');
-      if (passwordField) {
-        await passwordField.fill(password);
-        const submitBtn = await page.$('button[type="submit"]');
-        if (submitBtn) await submitBtn.click();
-      } else {
-        // Two-step login
-        const continueBtn = await page.$('button[type="submit"], button:has-text("Continue")');
-        if (continueBtn) {
-          await continueBtn.click();
-          await page.waitForTimeout(2000);
-          const pwdField = await page.waitForSelector('input[name="password"], input[type="password"]', { timeout: 10000 });
-          await pwdField.fill(password);
-          const loginBtn = await page.$('button[type="submit"]');
-          if (loginBtn) await loginBtn.click();
-        }
-      }
+      // Click "Continue with e-mail" button
+      console.log('    Clicking continue...');
+      const continueBtn = await page.waitForSelector('button:has-text("Continue with e-mail"), button:has-text("Continue"), button[type="submit"]', { timeout: 10000 });
+      await continueBtn.click();
+      await page.waitForTimeout(5000); // Wait for password step
+
+      // Step 2: Password
+      console.log('    Looking for password field...');
+      const passwordField = await page.waitForSelector('input[type="password"]', { timeout: 15000 });
+      await passwordField.type(password, { delay: 30 });
+      await page.waitForTimeout(500);
+
+      // Click "Sign in" button
+      console.log('    Clicking sign in...');
+      const signInBtn = await page.waitForSelector('button:has-text("Sign in"), button:has-text("Sign In"), button[type="submit"]', { timeout: 10000 });
+      await signInBtn.click();
 
       console.log('    Waiting for login to complete...');
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(8000);
+
+      // Verify: should redirect away from id.condenast.com
+      const finalUrl = page.url();
+      console.log(`    Post-login URL: ${finalUrl}`);
+      if (finalUrl.includes('id.condenast.com')) {
+        console.log('    ⚠ Still on auth page — login may have failed');
+      }
 
       return true;
     },
@@ -362,46 +455,151 @@ const SITES = {
   wsj: {
     name: 'Wall Street Journal',
     loginUrl: 'https://sso.accounts.dowjones.com/login',
-    testArticle: 'https://www.wsj.com/arts-culture/theater-review-swept-away-broadway-avett-brothers-musical-c54de174',
+    testArticle: 'https://www.wsj.com/articles/smash-review-an-inside-broadway-musical-bdcafc62',
     emailEnv: 'WSJ_EMAIL',
     passwordEnv: ['WSJ_PASSWORD'],
     login: async (page, email, password) => {
       console.log('    Navigating to WSJ login...');
       // accounts.wsj.com/login redirects to sso.accounts.dowjones.com
       await page.goto('https://accounts.wsj.com/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(3000); // Wait for SPA to render
+      await page.waitForTimeout(3000); // Wait for SPA redirect + render
 
-      console.log('    Looking for email field...');
-      // WSJ uses name="emailOrUsername" and id="emailOrUsername-form-item" (updated Feb 2026)
-      const emailField = await page.waitForSelector('input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"]', { timeout: 20000 });
-      await emailField.fill(email);
-
-      // WSJ has continue button then password
-      const continueBtn = await page.$('button[type="submit"], button:has-text("Continue"), button:has-text("Next")');
-      if (continueBtn) {
-        await continueBtn.click();
-        await page.waitForTimeout(3000);
+      // Check for CAPTCHA (DataDome on Dow Jones SSO) — Browserbase can solve these
+      const hasCaptcha = await page.evaluate(() => {
+        const text = document.body?.innerText || '';
+        if (text.includes('Verification Required') || text.includes('Slide right to secure')) return true;
+        const iframes = document.querySelectorAll('iframe');
+        for (const f of iframes) {
+          if (f.src && f.src.includes('captcha-delivery.com')) return true;
+        }
+        return false;
+      });
+      if (hasCaptcha) {
+        console.log('    CAPTCHA detected — waiting for Browserbase to solve (up to 45s)...');
+        try {
+          await page.waitForFunction(() => {
+            const text = document.body?.innerText || '';
+            if (text.includes('Verification Required') || text.includes('Slide right to secure')) return false;
+            const iframes = document.querySelectorAll('iframe');
+            for (const f of iframes) {
+              if (f.src && f.src.includes('captcha-delivery.com')) return false;
+            }
+            return true;
+          }, { timeout: 45000 });
+          console.log('    CAPTCHA resolved, proceeding...');
+          await page.waitForTimeout(3000); // Wait for form to render post-CAPTCHA
+        } catch (e) {
+          console.log('    CAPTCHA not resolved after 45s — continuing anyway');
+        }
       }
 
-      console.log('    Looking for password field...');
-      const passwordField = await page.waitForSelector('input[name="password"], input[type="password"]', { timeout: 15000 });
-      await passwordField.fill(password);
+      // Diagnostic dump
+      const pageInfo = await page.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input')).map(i => ({
+          type: i.type, name: i.name, id: i.id, placeholder: i.placeholder,
+        }));
+        const buttons = Array.from(document.querySelectorAll('button')).map(b => b.textContent?.trim().substring(0, 30));
+        return { title: document.title, url: window.location.href, inputs, buttons };
+      });
+      console.log(`    Page: ${pageInfo.url}`);
+      console.log(`    Title: "${pageInfo.title}"`);
+      console.log(`    Inputs: ${JSON.stringify(pageInfo.inputs)}`);
+      console.log(`    Buttons: ${JSON.stringify(pageInfo.buttons)}`);
 
-      const loginBtn = await page.$('button[type="submit"], button:has-text("Sign In"), button:has-text("Log In"), button:has-text("Continue")');
+      // Step 1: Enter email/username
+      // Broad selector set including generic text input (matches production BB code)
+      console.log('    Looking for email field...');
+      const emailSelectors = 'input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"], input[name="email"], input[type="text"]:not([name="search"])';
+      const emailField = await page.waitForSelector(emailSelectors, { timeout: 20000 });
+      await emailField.click();
+      await emailField.type(email, { delay: 30 }); // Use type() not fill()
+      await page.waitForTimeout(500);
+
+      // Click "Continue" button
+      console.log('    Clicking Continue...');
+      const continueBtn = await page.$('button:has-text("Continue"), button[type="submit"]');
+      if (continueBtn) {
+        await continueBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(4000);
+
+      // Step 2: Enter password
+      console.log('    Looking for password field...');
+      const passwordField = await page.waitForSelector('input[type="password"], input[name="password"]', { timeout: 15000 });
+      await passwordField.click();
+      await passwordField.type(password, { delay: 30 });
+      await page.waitForTimeout(500);
+
+      // Dump password step state
+      const pwdStepInfo = await page.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input:not([type="hidden"])')).map(i => ({
+          type: i.type, name: i.name, id: i.id, visible: i.offsetParent !== null,
+        }));
+        const buttons = Array.from(document.querySelectorAll('button')).map(b => ({
+          text: b.textContent?.trim().substring(0, 30),
+          visible: b.offsetParent !== null, type: b.type,
+        }));
+        return { url: window.location.href, inputs, buttons };
+      });
+      console.log(`    Password step URL: ${pwdStepInfo.url.substring(pwdStepInfo.url.indexOf('#'))}`);
+      console.log(`    Visible inputs: ${JSON.stringify(pwdStepInfo.inputs.filter(i => i.visible))}`);
+      console.log(`    Visible buttons: ${JSON.stringify(pwdStepInfo.buttons.filter(b => b.visible))}`);
+
+      // Click Sign In (prefer over Continue to avoid re-clicking email step)
+      console.log('    Clicking Sign In...');
+      let loginBtn = await page.$('button:has-text("Sign In"), button:has-text("Log In")');
+      if (!loginBtn) {
+        loginBtn = await page.$('button[type="submit"], button:has-text("Continue")');
+      }
       if (loginBtn) {
+        const btnText = await loginBtn.evaluate(el => el.textContent?.trim());
+        console.log(`    Clicking button: "${btnText}"`);
         await loginBtn.click();
+      } else {
+        console.log('    No button found, pressing Enter...');
+        await page.keyboard.press('Enter');
       }
 
       console.log('    Waiting for login to complete...');
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(8000);
+
+      // Screenshot after sign-in attempt
+      try {
+        const ssPath = `/tmp/wsj-post-signin-${Date.now()}.png`;
+        await page.screenshot({ path: ssPath });
+        console.log(`    Post-signin screenshot: ${ssPath}`);
+      } catch (e) {}
+
+      // Full diagnostic dump after login attempt
+      const postLoginState = await page.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input:not([type="hidden"])')).map(i => ({
+          type: i.type, name: i.name, visible: i.offsetParent !== null, value: i.type === 'password' ? `(${i.value.length} chars)` : i.value,
+        }));
+        const errorEls = document.querySelectorAll('[class*="error"], [class*="Error"], [role="alert"], .message--error, [class*="invalid"], [class*="warning"]');
+        const errors = Array.from(errorEls).map(e => e.textContent?.trim().substring(0, 100)).filter(t => t && t.length > 2);
+        const bodyText = document.body?.innerText?.substring(0, 500) || '';
+        return { url: window.location.href, inputs, errors, bodyText: bodyText.substring(0, 300) };
+      });
+      console.log(`    Post-login inputs: ${JSON.stringify(postLoginState.inputs)}`);
+      if (postLoginState.errors.length) {
+        console.log(`    POST-LOGIN ERRORS: ${JSON.stringify(postLoginState.errors)}`);
+      }
+      console.log(`    Page text preview: ${postLoginState.bodyText.substring(0, 200)}`);
+
+      // Verify: check if redirected away from SSO domain
+      const postUrl = postLoginState.url;
+      console.log(`    Post-login URL: ${postUrl}`);
+      const postHost = new URL(postUrl).hostname;
+      const leftSso = !postHost.includes('accounts.dowjones.com') && !postHost.includes('accounts.wsj.com');
+      if (leftSso) {
+        console.log('    ✓ Left SSO domain — login likely succeeded');
+      }
 
       // Check for error messages
-      const errorEl = await page.$('[class*="error"], [class*="alert"], [role="alert"]');
-      if (errorEl) {
-        const errorText = await errorEl.textContent().catch(() => '');
-        if (errorText && errorText.length > 5) {
-          throw new Error(`Login error: ${errorText.trim().substring(0, 100)}`);
-        }
+      if (postLoginState.errors.length > 0) {
+        throw new Error(`Login error: ${postLoginState.errors[0]}`);
       }
 
       return true;
@@ -409,34 +607,65 @@ const SITES = {
     checkAccess: async (page, articleUrl) => {
       console.log('    Navigating to test article...');
       await page.goto(articleUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(5000);
 
-      // Check for paywall
-      const paywallSelectors = [
-        '[class*="paywall"]',
-        '[class*="Paywall"]',
-        '.wsj-snippet-login',
-        'button:has-text("Subscribe")',
-        '[data-testid="paywall"]'
-      ];
+      // Diagnostic dump
+      const articleInfo = await page.evaluate(() => {
+        const body = document.body?.innerText?.substring(0, 500) || '';
+        const hasArticle = !!document.querySelector('article');
+        const articleContent = document.querySelector('article, .article-content, [class*="ArticleBody"], [class*="article-body"]');
+        const contentLen = articleContent ? articleContent.textContent.length : 0;
+        return { url: window.location.href, title: document.title, hasArticle, contentLen, bodyPreview: body.substring(0, 200) };
+      });
+      console.log(`    Article page: ${articleInfo.url.substring(0, 80)}`);
+      console.log(`    Title: "${articleInfo.title}"`);
+      console.log(`    Has <article>: ${articleInfo.hasArticle}, content length: ${articleInfo.contentLen}`);
 
-      for (const selector of paywallSelectors) {
-        const element = await page.$(selector);
-        if (element) {
-          const isVisible = await element.isVisible();
-          if (isVisible) {
-            return { success: false, reason: 'Paywall detected' };
-          }
+      // Take screenshot for debugging
+      try {
+        const ssPath = `/tmp/wsj-article-${Date.now()}.png`;
+        await page.screenshot({ path: ssPath });
+        console.log(`    Screenshot: ${ssPath}`);
+      } catch (e) {}
+
+      // Check for paywall — be more specific for WSJ
+      const paywallDetected = await page.evaluate(() => {
+        // WSJ specific paywall indicators
+        const snippetLogin = document.querySelector('.wsj-snippet-login, [class*="snippet-promotion"]');
+        if (snippetLogin && snippetLogin.offsetParent !== null) return 'wsj-snippet-login';
+        // Generic
+        const paywall = document.querySelector('[data-testid="paywall"], [class*="paywall"i]');
+        if (paywall && paywall.offsetParent !== null) return 'paywall element';
+        // Check for truncated content with "Subscribe" CTA in article area
+        const article = document.querySelector('article');
+        if (article) {
+          const subCta = article.querySelector('[class*="subscribe"i], [class*="Paywall"i]');
+          if (subCta) return 'subscribe CTA in article';
         }
+        return null;
+      });
+
+      if (paywallDetected) {
+        return { success: false, reason: `Paywall detected (${paywallDetected})` };
       }
 
-      // Check for article content
-      const articleBody = await page.$('article, .article-content, [class*="ArticleBody"]');
+      // Check for article content — broader selectors for WSJ
+      const articleBody = await page.$('article, .article-content, [class*="ArticleBody"], [class*="article-body"], .wsj-snippet-body, main [data-type="article"]');
       if (!articleBody) {
+        // Try getting any main content
+        const mainContent = await page.$('main, #main, [role="main"]');
+        if (mainContent) {
+          const mainText = await mainContent.textContent();
+          if (mainText.length > 500) {
+            console.log(`    Found main content: ${mainText.length} chars`);
+            return { success: true, articleLength: mainText.length };
+          }
+        }
         return { success: false, reason: 'Article body not found' };
       }
 
       const articleText = await articleBody.textContent();
+      console.log(`    Article text length: ${articleText.length} chars`);
       if (articleText.length < 500) {
         return { success: false, reason: `Article too short (${articleText.length} chars)` };
       }
@@ -545,14 +774,50 @@ async function main() {
   console.log('╔════════════════════════════════════════════════════════════╗');
   console.log('║        PAYWALLED SITE ACCESS TEST                          ║');
   console.log('╚════════════════════════════════════════════════════════════╝');
-  console.log(`\nMode: ${headful ? 'Headful (visible browser)' : 'Headless'}`);
+  const mode = useBrowserbase ? 'Browserbase (cloud + CAPTCHA solving)' : headful ? 'Headful (visible browser)' : 'Headless';
+  console.log(`\nMode: ${mode}`);
   console.log(`Sites to test: ${siteFilter || 'all'}\n`);
 
-  // Launch browser
-  const browser = await chromium.launch({
-    headless: !headful,
-    args: ['--disable-blink-features=AutomationControlled']
-  });
+  let browser;
+  let bbSessionId = null;
+
+  if (useBrowserbase) {
+    // Connect via Browserbase cloud browser
+    const axios = require('axios');
+    const apiKey = process.env.BROWSERBASE_API_KEY;
+    const projectId = process.env.BROWSERBASE_PROJECT_ID;
+
+    if (!apiKey || !projectId) {
+      console.error('BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID must be set');
+      process.exit(1);
+    }
+
+    console.log('Creating Browserbase session...');
+    const sessionResponse = await axios.post(
+      'https://www.browserbase.com/v1/sessions',
+      {
+        projectId,
+        browserSettings: {
+          solveCaptchas: true,
+          fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] }
+        }
+      },
+      { headers: { 'x-bb-api-key': apiKey, 'Content-Type': 'application/json' } }
+    );
+
+    bbSessionId = sessionResponse.data.id;
+    console.log(`Browserbase session: ${bbSessionId}`);
+    console.log(`Debug URL: https://www.browserbase.com/sessions/${bbSessionId}\n`);
+
+    const connectUrl = `wss://connect.browserbase.com?apiKey=${apiKey}&sessionId=${bbSessionId}`;
+    browser = await chromium.connectOverCDP(connectUrl);
+  } else {
+    // Launch local browser
+    browser = await chromium.launch({
+      headless: !headful,
+      args: ['--disable-blink-features=AutomationControlled']
+    });
+  }
 
   const results = [];
   const sitesToTest = siteFilter ? [siteFilter] : Object.keys(SITES);
