@@ -1,0 +1,69 @@
+name: Generate Related Shows
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate all shows'
+        required: false
+        default: 'false'
+        type: boolean
+      show_filter:
+        description: 'Single show slug to process'
+        required: false
+        type: string
+  schedule:
+    # Monthly on the 1st at 3 AM UTC
+    - cron: '0 3 1 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate related shows
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          node scripts/generate-related-shows.js $ARGS
+
+      - name: Commit and push results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/related-shows.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          SHOW_COUNT=$(node -e "const d=require('./data/related-shows.json');console.log(Object.keys(d.shows).length)")
+          git commit -m "chore: Update related shows ($SHOW_COUNT shows)"
+          for i in 1 2 3 4 5; do
+            git push && break
+            echo "Push failed (attempt $i), pulling and retrying..."
+            sleep $((i * 2))
+            git pull --rebase -X theirs
+          done
