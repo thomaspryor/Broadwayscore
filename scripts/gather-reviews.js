@@ -1907,10 +1907,20 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === BroadwayWorld Review Roundups ===');
   const bwwResult = await searchBWWRoundup(show, year);
   if (bwwResult) {
-    const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
-    foundReviews.push(...bwwReviews);
-    // Archive the page
-    archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+    // Check if the roundup article is about a tour/regional/non-Broadway production.
+    // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
+    // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
+    const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
+    if (isNotBroadway(roundupTitle) ||
+        /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
+        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
+      console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
+    } else {
+      const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+      foundReviews.push(...bwwReviews);
+      // Archive the page
+      archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+    }
   }
   await sleep(DELAY_MS);
 
