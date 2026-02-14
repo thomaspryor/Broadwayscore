@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-14T14:57:57.976Z",
+  "timestamp": "2026-02-14T14:58:08.003Z",
   "dryRun": false,
   "verify": {
     "processed": 276,
@@ -8,267 +8,267 @@
     "errors": 0,
     "flagDetails": [
       {
-        "showId": "the-rose-tattoo-2019",
-        "file": "front-row-center--victoria-weisfeld.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of 'The Rose Tattoo' at The Shakespeare Theatre of New Jersey, not the Broadway production at the Todd Haimes Theatre. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-rose-tattoo-2019",
-        "file": "talkinbroadway--howard-miller.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it is for the Tennessee Williams Festival of St. Louis production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-rose-tattoo-2019",
-        "file": "talkinbroadway--matthew-murray.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be mostly navigation and unrelated links, indicating it's not a valid review article. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-royal-family-2009",
-        "file": "nytimes--ben-brantley.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The scraped content is a review of \"The Royal Family of Broadway\" at Barrington Stage Company in Pittsfield, MA, not the Broadway production of \"The Royal Family\". The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-royal-family-2009",
-        "file": "nytimes--jesse-green.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for \"The Royal Family of Broadway\" at Barrington Stage Company in Pittsfield, MA, not the Broadway production of \"The Royal Family\". The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-royal-family-2009",
-        "file": "the-berkshire-eagle-j-peter-bergman--j-peter-bergman.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it's about a world premiere at Barrington Stage Company in Pittsfield, Massachusetts, which is not a Broadway venue. Additionally, it's a review of a musical adaptation, not the original play.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-royal-family-2009",
-        "file": "the-times-union-steve-barnes--steve-barnes.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review clearly states it is for a production at Barrington Stage Company in Pittsfield, Massachusetts, which is not a Broadway theater. The content also appears to be cut off.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-royal-family-2009",
-        "file": "the-westfield-news-mark-g-auerbach--westfield-newsroom.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a Barrington Stage Company production of \"The Royal Family of Broadway\", a musical adaptation of the original play. This is a regional theater production, not the Broadway production from 2009.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "the-scottsboro-boys-2010",
-        "file": "variety--charles-isherwood.json",
+        "showId": "the-little-mermaid-2008",
+        "file": "black-girl-nerds-stacey-yvonne--stacey-yvonne.json",
         "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content is a film review, not a Broadway review of 'The Scottsboro Boys'. The review is for a film called 'Some Days Are Better Than Others'.",
+        "reasoning": "The review explicitly discusses Disney's live-action film 'The Little Mermaid' starring Halle Bailey, indicating it is a film review and not a review of the Broadway stage production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-scottsboro-boys-2010",
-        "file": "village-voice--michael-feingold.json",
-        "reason": "wrongArticle",
+        "showId": "the-little-mermaid-2008",
+        "file": "cnn-brian-lowry--brian-lowry.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content is a collection of mini-reviews for multiple shows, not a review of \"The Scottsboro Boys\". Additionally, the content is truncated.",
+        "reasoning": "The scraped content appears to be related to the film adaptation of 'The Little Mermaid' and not a review of the Broadway production. The presence of video thumbnails and references to the film strongly suggest it is not a Broadway review.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-seafarer-2007",
-        "file": "dailybeast--tim-teeman.json",
+        "showId": "the-little-mermaid-2008",
+        "file": "collider-ross-bonaime--ross-bonaime.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of the 2023 live-action film 'The Little Mermaid,' not the Broadway stage production. The text also appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "dailybeast--coleman-spilde.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the 'live-action remake' and release date of May 26, indicating it's a film review, not a Broadway review. The content discusses casting controversies and visual effects, which are relevant to the film adaptation.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "empire-helen-ohara--helen-o-hara.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the 'live-action remake' and release date of the film, indicating it is a film review, not a Broadway review. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "ew--maureen-lee-lenker.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The review discusses the 1989 animated film and the 2023 live-action film adaptation, indicating it is a film review, not a review of the Broadway show.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "games-radar-molly-edwards--molly-edwards.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions Rob Marshall as the director, Halle Bailey as Ariel, and Melissa McCarthy as Ursula, which are all associated with the 2023 film. The review also discusses visual effects (VFX), which are not relevant to a stage production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "geeks-of-color-joshua-mackey--joshua-mackey.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The review discusses the live-action film adaptation starring Halle Bailey, not the Broadway stage production. It mentions elements specific to the film, such as CGI and racial diversity in the casting.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-little-mermaid-2008",
+        "file": "latimes--justin-chang.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the Irish Repertory Theatre's production of The Seafarer, indicating it is not a review of the Broadway production. The text is also truncated.",
+        "reasoning": "The review discusses a production of 'The Little Mermaid' directed by Glenn Casale at La Mirada, which is a regional theater. The article is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-seafarer-2007",
-        "file": "dctheatrescene--deb-miller.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "mashable-kristy-puchko--kristy-puchko.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the Irish Repertory Theatre, indicating it's not the Broadway production. The text also appears to be truncated.",
+        "reasoning": "The review explicitly mentions Rob Marshall as the director and Halle Bailey as Ariel, which are associated with the 2023 film. It also references the 1989 animated film, further indicating it's a film review.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-seafarer-2007",
-        "file": "hollywood-reporter--frank-scheck.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "metro-tori-brazier--tori-brazier.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review is of the Irish Repertory Theatre's revival of The Seafarer, not the Broadway production. The text is also truncated.",
+        "reasoning": "The scraped content is a review of the live-action film remake of 'The Little Mermaid', not the Broadway stage production. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-seafarer-2007",
-        "file": "vulture--sara-holdren.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "screen-daily-nikki-baughan--nikki-baughan.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the Irish Rep, indicating it's not the Broadway production. The text also appears to be cut off mid-sentence.",
+        "reasoning": "The scraped content is a review of the 2023 live-action film adaptation of The Little Mermaid, not the Broadway stage production. The review is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-sound-inside-2019",
-        "file": "broadwayworld--michael-dale.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "screen-rant-rachel-labonte--rachel-labonte.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review mentions a production running from July 5th to August 2nd, 2025, and does not mention the Harold and Miriam Steinberg Center for Theatre. It also mentions 'New Zealand Theatre Newsletter', indicating it is not a Broadway review.",
+        "reasoning": "The review explicitly discusses the 'live-action version' and compares it to the animated classic, indicating it's a film review, not a Broadway review.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-sound-inside-2019",
-        "file": "chicagotribune--chris-jones.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "slash-film--vanessa-armstrong.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review explicitly states it is of the Williamstown Theatre Festival production. The scraped content is truncated.",
+        "reasoning": "The review explicitly discusses the live-action remake of the Disney film, referencing casting choices and plot adjustments made in the film. It does not discuss the Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-sound-inside-2019",
-        "file": "talkinbroadway--fred-sokol.json",
-        "reason": "wrongProduction",
+        "showId": "the-little-mermaid-2008",
+        "file": "the-av-club-leigh-monson--leigh-monson.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The review clearly states it is for a production at the Williamstown Theatre Festival, which is a regional theater, not a Broadway production. The text is also truncated.",
+        "reasoning": "The review explicitly mentions the 'Disney remake' and refers to Halle Bailey as Ariel, indicating it's about the 2023 film. It does not discuss the 2008 Broadway production.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "the-sound-inside-2019",
-        "file": "talkinbroadway--nancy-grossman.json",
-        "reason": "wrongArticle",
+        "showId": "the-little-mermaid-2008",
+        "file": "the-independent--clarisse-loughrey.json",
+        "reason": "film/TV",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be a list of navigation links and error message, not a review of 'The Sound Inside'. The content is also truncated.",
+        "reasoning": "The scraped content is a review of the 2023 live-action film adaptation of The Little Mermaid, not the Broadway stage production. The text is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "tina-2019",
-        "file": "broadwayworld--michael-dale.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of 'Tina' playing at the Queen Elizabeth Theatre in Vancouver, BC, which is a touring production. The article is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "trouble-in-mind-2021",
-        "file": "theatermania--jesse-green.json",
-        "reason": "wrongArticle",
-        "confidence": "high",
-        "reasoning": "The scraped content appears to be an error page or a page with minimal content, not a review. It is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tuck-everlasting-2016",
-        "file": "artsatl--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production of \"Tuck Everlasting\" at the Alliance Theatre, which is a regional theater in Atlanta, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tuck-everlasting-2016",
-        "file": "atlanta-intown--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of the Alliance Theatre's world premiere of 'Tuck Everlasting,' which is a regional theater production, not the Broadway production. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "tuck-everlasting-2016",
-        "file": "the-atlanta-journal-constitution--wendell-brock.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for the Alliance Theatre production of Tuck Everlasting, which is a regional theater. The content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "venus-in-fur-2011",
+        "showId": "the-lyons-2012",
         "file": "variety--marilyn-stasio.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content is a review of \"A Christmas Story\", not \"Venus in Fur\". The text also appears to be truncated.",
+        "reasoning": "The scraped content is a review of \"Newsies\", not \"The Lyons\". The review is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "waitress-2016",
-        "file": "909wbur--unknown.json",
+        "showId": "the-people-in-the-picture-2011",
+        "file": "ew--lisa-schwarzbaum.json",
         "reason": "wrongProduction",
         "confidence": "high",
-        "reasoning": "The review explicitly mentions the American Repertory Theater (A.R.T.) production in Cambridge, MA, which is a pre-Broadway tryout, not the Broadway production itself. The scraped content also appears to be truncated.",
+        "reasoning": "The review is for a production of \"The People in the Picture\" at Studio 54, which is not a Broadway theater. The content is also truncated.",
         "provider": "llm:gemini"
       },
       {
-        "showId": "waitress-2016",
-        "file": "boston-arts-diary--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states it's for the American Repertory Theater production of Waitress at the Loeb Theater, Harvard University, Cambridge, MA. This is not a Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "waitress-2016",
-        "file": "boston-globe--unknown.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is of a pre-Broadway tryout of \"Waitress\" at the American Repertory Theater (ART) in Boston, not the Broadway production. The text is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "file": "daily-bruin--krish-aditya.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review is for a production at the Geffen Playhouse, not the Booth Theatre on Broadway. The scraped content is also truncated.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "file": "la-art-party--kathy-leonardo.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly mentions the Geffen Playhouse, indicating it is not a Broadway production. The review also mentions Calista Flockhart as Martha, which was a Geffen Playhouse production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "file": "santa-barbara-independent-maggie-yates--maggie-yates.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production is at the Geffen Playhouse in Los Angeles, indicating it is not a Broadway production.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "file": "the-independent--maggie-yates.json",
-        "reason": "wrongProduction",
-        "confidence": "high",
-        "reasoning": "The review explicitly states that the production is at the Geffen Playhouse in Los Angeles, indicating it is not a Broadway production. The Santa Barbara Independent is also mentioned.",
-        "provider": "llm:gemini"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "file": "theatermania--jesse-green.json",
+        "showId": "the-people-in-the-picture-2011",
+        "file": "talkinbroadway--matthew-murray.json",
         "reason": "wrongArticle",
         "confidence": "high",
-        "reasoning": "The scraped content appears to be an error page or a page with minimal content, not a review. It is also truncated.",
+        "reasoning": "The scraped content appears to be mostly navigation and website elements, indicating it's not a valid review article. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-present-2017",
+        "file": "variety--marilyn-stasio.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly mentions the Sydney Theatre Company, indicating it's not the Broadway production. The text also appears to be truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-real-thing-2014",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly junk, including navigation elements and error messages. The text is also truncated, making it impossible to determine if it's a valid review of the Broadway production.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "flavorwire--matthew-ismael-ruiz.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"The Wiz Live!\" which aired on NBC, not a review of the Broadway production of \"The Wiz\" at the Marquis Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "time--daniel-dandamp039addario.json",
+        "reason": "film/TV",
+        "confidence": "high",
+        "reasoning": "The scraped content explicitly refers to 'The Wiz Live!' on NBC and discusses the television production's cast and cultural context. It is not a review of the Broadway revival.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "title-of-show-2008",
+        "file": "nytimes--ben-brantley.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is for a production at the Brooklyn Navy Yard, not the Broadway production at the Lyceum Theatre. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "title-of-show-2008",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and error messages, not a theater review. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "travesties-2018",
+        "file": "medium--christian-lewis.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review is of a Roundabout Theatre Company production of Travesties at the American Airlines Theatre, which originated at the Menier Chocolate Factory in London. This indicates a transfer or revival, not the original Broadway production at the Todd Haimes Theatre.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "vanya-and-sonia-and-masha-and-spike-2013",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content appears to be mostly navigation and error messages, indicating it's not a valid review article. The content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "war-paint-2017",
+        "file": "around-the-town-chicago--alan-bresloff.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states the show opened at The Goodman Theatre on its journey to Broadway, indicating it's a pre-Broadway tryout. The text is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "war-paint-2017",
+        "file": "chicago-theatre-review--colin-douglas.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states that the show is premiering at Chicago's Goodman Theatre as a pre-Broadway tryout, indicating it is not a review of the Broadway production itself.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "war-paint-2017",
+        "file": "daily-herald--barbara-vitello.json",
+        "reason": "wrongProduction",
+        "confidence": "high",
+        "reasoning": "The review explicitly states the musical opened at the Goodman Theatre in Chicago. This indicates it is a review of a pre-Broadway tryout, not the Broadway production itself. The scraped content is also truncated.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "war-paint-2017",
+        "file": "talkinbroadway--matthew-murray.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is mostly navigation and unrelated links, and the text is truncated, indicating it's not a complete review of the Broadway production of 'War Paint'.",
+        "provider": "llm:gemini"
+      },
+      {
+        "showId": "well-2006",
+        "file": "northjerseycom--robert-feldberg.json",
+        "reason": "wrongArticle",
+        "confidence": "high",
+        "reasoning": "The scraped content is a review of \"A Free Man of Color\", not \"Well\", and the text is truncated, making it incomplete.",
         "provider": "llm:gemini"
       }
     ]
   },
   "recover": {
-    "processed": 6,
+    "processed": 20,
     "recovered": 0,
-    "confirmedCorrect": 6,
+    "confirmedCorrect": 20,
     "errors": 0,
     "recoveryDetails": []
   }
