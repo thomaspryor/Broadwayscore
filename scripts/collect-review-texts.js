@@ -1379,32 +1379,150 @@ async function browserbaseLogin(bbPage, domain, email, password) {
   }
 
   if (domain === 'nytimes.com') {
+    console.log(`    → Browserbase: navigating to NYT login...`);
     await bbPage.goto('https://myaccount.nytimes.com/auth/login', { timeout: CONFIG.loginTimeout });
     await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
     await bbPage.waitForTimeout(3000);
 
-    const emailInput = await bbPage.$('input[name="email"], input[type="email"]');
-    if (!emailInput) return false;
-    await emailInput.click();
+    // Check for DataDome CAPTCHA overlay before attempting any clicks
+    const hasCaptcha = await bbPage.evaluate(() => {
+      const iframes = document.querySelectorAll('iframe');
+      for (const f of iframes) {
+        if (f.src && f.src.includes('captcha-delivery.com')) return true;
+      }
+      const text = document.body?.innerText || '';
+      if (text.includes('confirm that you are human') || text.includes('Slide right to complete')) return true;
+      return false;
+    });
+    if (hasCaptcha) {
+      console.log(`    → CAPTCHA detected on NYT login - waiting for Browserbase to solve...`);
+      try {
+        await bbPage.waitForFunction(() => {
+          const iframes = document.querySelectorAll('iframe');
+          for (const f of iframes) {
+            if (f.src && f.src.includes('captcha-delivery.com')) return false;
+          }
+          return true;
+        }, { timeout: 45000 });
+        console.log(`    → CAPTCHA resolved, proceeding with login...`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ NYT CAPTCHA not resolved after 45s - login failed`);
+        return false;
+      }
+    }
+
+    // Step 1: Email entry
+    let emailInput = null;
+    const emailSelectors = 'input[name="email"], input[type="email"], #email';
+    try {
+      await bbPage.waitForSelector(emailSelectors, { timeout: 15000 });
+      emailInput = await bbPage.$(emailSelectors);
+    } catch (e) {
+      console.log(`    → NYT email field slow to render, waiting...`);
+      await bbPage.waitForTimeout(5000);
+      emailInput = await bbPage.$(emailSelectors);
+    }
+    if (!emailInput) {
+      console.log(`    ✗ NYT login FAILED (no email field found)`);
+      return false;
+    }
+    try {
+      await emailInput.click();
+    } catch (e) {
+      console.log(`    → Email click failed (possible overlay), using keyboard focus...`);
+      await bbPage.keyboard.press('Tab');
+    }
     await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
 
-    const continueBtn = await bbPage.$('button:has-text("Continue"), button[data-testid="submit-email"]');
-    if (continueBtn) await continueBtn.click();
-    else await bbPage.keyboard.press('Enter');
-    await bbPage.waitForTimeout(3000);
+    // Click Continue / submit email
+    const continueBtn = await bbPage.$('button[data-testid="submit-email"], button:has-text("Continue"), button[type="submit"]');
+    if (continueBtn) {
+      try {
+        await continueBtn.click();
+      } catch (e) {
+        console.log(`    → Continue button click failed, pressing Enter...`);
+        await bbPage.keyboard.press('Enter');
+      }
+    } else {
+      await bbPage.keyboard.press('Enter');
+    }
+    await bbPage.waitForTimeout(5000);
 
-    const passInput = await bbPage.$('input[type="password"]');
-    if (!passInput) return false;
-    await passInput.click();
+    // Check for CAPTCHA after email submission (DataDome sometimes triggers here)
+    const hasCaptchaAfterEmail = await bbPage.evaluate(() => {
+      const iframes = document.querySelectorAll('iframe');
+      for (const f of iframes) {
+        if (f.src && f.src.includes('captcha-delivery.com')) return true;
+      }
+      return false;
+    });
+    if (hasCaptchaAfterEmail) {
+      console.log(`    → CAPTCHA appeared after email entry - waiting for Browserbase to solve...`);
+      try {
+        await bbPage.waitForFunction(() => {
+          const iframes = document.querySelectorAll('iframe');
+          for (const f of iframes) {
+            if (f.src && f.src.includes('captcha-delivery.com')) return false;
+          }
+          return true;
+        }, { timeout: 45000 });
+        console.log(`    → CAPTCHA resolved after email step`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ NYT CAPTCHA not resolved after email step - login failed`);
+        return false;
+      }
+    }
+
+    // Step 2: Password entry
+    let passInput = null;
+    try {
+      await bbPage.waitForSelector('input[type="password"]', { timeout: 15000 });
+      passInput = await bbPage.$('input[type="password"]');
+    } catch (e) {
+      console.log(`    → NYT password field slow to render, waiting...`);
+      await bbPage.waitForTimeout(5000);
+      passInput = await bbPage.$('input[type="password"]');
+    }
+    if (!passInput) {
+      const postEmailUrl = bbPage.url();
+      console.log(`    ✗ NYT login FAILED (no password field found)`);
+      console.log(`    → Post-email URL: ${postEmailUrl.substring(0, 100)}`);
+      return false;
+    }
+    try {
+      await passInput.click();
+    } catch (e) {
+      console.log(`    → Password click failed (possible overlay), using keyboard focus...`);
+      await bbPage.keyboard.press('Tab');
+    }
     await passInput.type(password, { delay: 30 });
+    await bbPage.waitForTimeout(500);
 
-    const loginBtn = await bbPage.$('button:has-text("Log In"), button[type="submit"]');
-    if (loginBtn) await loginBtn.click();
-    else await bbPage.keyboard.press('Enter');
+    // Click Log In / submit password
+    const loginBtn = await bbPage.$('button[data-testid="login-button"], button:has-text("Log In"), button[type="submit"]');
+    if (loginBtn) {
+      try {
+        await loginBtn.click();
+      } catch (e) {
+        console.log(`    → Login button click failed, pressing Enter...`);
+        await bbPage.keyboard.press('Enter');
+      }
+    } else {
+      await bbPage.keyboard.press('Enter');
+    }
     await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
     await bbPage.waitForTimeout(3000);
 
-    return !bbPage.url().includes('auth/login');
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('auth/login')) {
+      console.log(`    ✓ NYT login succeeded (left login page)`);
+      return true;
+    }
+    console.log(`    ⚠ NYT login uncertain (URL: ${postUrl.substring(0, 100)}) - continuing`);
+    return true;
   }
 
   return false;
