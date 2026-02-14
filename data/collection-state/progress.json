@@ -1,162 +1,46 @@
 {
-  "processed": [
-    "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
-    "a-soldiers-play-2020/hollywood-reporter--david-rooney.json",
-    "act-one-2014/hollywood-reporter--unknown.json",
-    "act-one-2014/nytg--david-roberts.json",
-    "after-midnight-2013/hollywood-reporter--david-rooney.json",
-    "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-    "all-my-sons-2019/nyt-theater--raven-snook.json",
-    "allegiance-2015/hollywood-reporter--david-rooney.json",
-    "allegiance-2015/nytg--jane-dentinger.json",
-    "allegiance-2015/nytg--tulis-mccall.json",
-    "an-act-of-god-2016/hollywood-reporter--frank-scheck.json",
-    "an-act-of-god-2016/nytg--unknown.json",
-    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-    "butley-2006/hollywood-reporter--david-rooney.json",
-    "casa-valentina-2014/hollywood-reporter--david-rooney.json",
-    "fences-2010/hollywood-reporter--unknown.json",
-    "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-    "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
-    "fiddler-on-the-roof-2015/nytg--marc-miller.json",
-    "finding-neverland-2015/hollywood-reporter--david-rooney.json",
-    "fun-home-2015/hollywood-reporter--unknown.json",
-    "fun-home-2015/nytg--tulis-mccall.json",
-    "ghetto-klown-2011/hollywood-reporter--david-rooney.json",
-    "groundhog-day-2017/hollywood-reporter--david-rooney.json",
-    "guys-and-dolls-2009/hollywood-reporter--frank-sheck.json",
-    "hand-to-god-2015/hollywood-reporter--david-rooney.json",
-    "how-to-succeed-in-business-without-really-trying-2011/hollywood-reporter--david-rooney.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/hollywood-reporter--david-rooney.json",
-    "junk-2017/hollywood-reporter--david-rooney.json",
-    "king-kong-2018/hollywood-reporter--david-rooney.json",
-    "kinky-boots-2013/hollywood-reporter--david-rooney.json"
-  ],
+  "processed": [],
   "failed": [
-    "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json",
-    "baby-its-you-2011/hollywood-reporter--david-rooney.json",
-    "baby-its-you-2011/variety--steven-suskin.json",
-    "back-to-the-future-2023/variety--charles-isherwood.json",
-    "fela-2009/variety--sam-thielman.json",
-    "ghetto-klown-2011/variety--marilyn-stasio.json",
-    "grey-house-2023/nyt-theater--jonathan-mandell.json",
-    "grey-house-2023/variety--peter-marks.json",
-    "groundhog-day-2017/variety--marilyn-stasio.json"
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
+    "a-soldiers-play-2020/deadline--greg-evans.json",
+    "almost-famous-2022/deadline--pete-hammond.json",
+    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/deadline--pete-hammond.json",
+    "cabaret-2014/deadline--greg-evans.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "dear-evan-hansen-2016/deadline--jeremy-gerard.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
+    "falsettos-2016/deadline--jeremy-gerard.json",
+    "fully-committed-2016/deadline--jeremy-gerard.json",
+    "gypsy-2024/deadline--pete-hammond.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "it-shoulda-been-you-2015/deadline--jeremy-gerard.json",
+    "kiss-me-kate-2019/deadline--greg-evans.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "lempicka-2024/deadline--greg-evans.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "old-times-2015/deadline--jeremy-gerard.json",
+    "once-on-this-island-2017/deadline--jeremy-gerard.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "present-laughter-2017/deadline--jeremy-gerard.json",
+    "prince-of-broadway-2017/deadline--jeremy-gerard.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
+    "slave-play-2021/deadline--greg-evans.json",
+    "something-rotten-2015/deadline--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "allegiance-2015/nytg--jane-dentinger.json",
-      "allegiance-2015/nytg--tulis-mccall.json",
-      "an-act-of-god-2016/nytg--unknown.json",
-      "fiddler-on-the-roof-2015/nytg--marc-miller.json",
-      "fun-home-2015/nytg--tulis-mccall.json"
-    ],
-    "browserbase": [
-      "data/review-texts/a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
-      "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
-      "data/review-texts/a-soldiers-play-2020/hollywood-reporter--david-rooney.json",
-      "a-soldiers-play-2020/hollywood-reporter--david-rooney.json",
-      "data/review-texts/act-one-2014/hollywood-reporter--unknown.json",
-      "act-one-2014/hollywood-reporter--unknown.json",
-      "data/review-texts/after-midnight-2013/hollywood-reporter--david-rooney.json",
-      "after-midnight-2013/hollywood-reporter--david-rooney.json",
-      "data/review-texts/all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-      "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/an-act-of-god-2016/hollywood-reporter--frank-scheck.json",
-      "an-act-of-god-2016/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/baby-its-you-2011/hollywood-reporter--david-rooney.json",
-      "data/review-texts/baby-its-you-2011/variety--steven-suskin.json",
-      "data/review-texts/butley-2006/hollywood-reporter--david-rooney.json",
-      "butley-2006/hollywood-reporter--david-rooney.json"
-    ],
+    "playwright": [],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "fences-2010/hollywood-reporter--unknown.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--unknown.json",
-      "finding-neverland-2015/hollywood-reporter--david-rooney.json",
-      "fun-home-2015/hollywood-reporter--unknown.json",
-      "ghetto-klown-2011/hollywood-reporter--david-rooney.json",
-      "guys-and-dolls-2009/hollywood-reporter--frank-sheck.json",
-      "how-to-succeed-in-business-without-really-trying-2011/hollywood-reporter--david-rooney.json",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013/hollywood-reporter--david-rooney.json"
-    ],
-    "archive": [
-      "act-one-2014/nytg--david-roberts.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json",
-      "allegiance-2015/hollywood-reporter--david-rooney.json",
-      "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-      "casa-valentina-2014/hollywood-reporter--david-rooney.json",
-      "groundhog-day-2017/hollywood-reporter--david-rooney.json",
-      "hand-to-god-2015/hollywood-reporter--david-rooney.json",
-      "junk-2017/hollywood-reporter--david-rooney.json",
-      "king-kong-2018/hollywood-reporter--david-rooney.json",
-      "kinky-boots-2013/hollywood-reporter--david-rooney.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
-  "startTime": "2026-02-14T04:36:50.072Z",
-  "lastProcessed": "kinky-boots-2013/hollywood-reporter--david-rooney.json",
-  "log": [
-    {
-      "t": "2026-02-14T04:36:51.572Z",
-      "event": "bb-session",
-      "session": "6b7cbb29",
-      "url": "https://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-125627"
-    },
-    {
-      "t": "2026-02-14T04:37:09.399Z",
-      "event": "bb-session",
-      "session": "21bb7ecb",
-      "url": "https://www.hollywoodreporter.com/news/general-news/a-soldiers-play-theater-1271"
-    },
-    {
-      "t": "2026-02-14T04:37:51.717Z",
-      "event": "bb-session",
-      "session": "905237d6",
-      "url": "https://www.hollywoodreporter.com/review/act-one-theater-review-697276"
-    },
-    {
-      "t": "2026-02-14T04:39:28.518Z",
-      "event": "bb-session",
-      "session": "1a13d132",
-      "url": "https://www.hollywoodreporter.com/review/midnight-theater-review-652788"
-    },
-    {
-      "t": "2026-02-14T04:39:50.291Z",
-      "event": "bb-session",
-      "session": "e97c1168",
-      "url": "https://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756"
-    },
-    {
-      "t": "2026-02-14T04:41:23.063Z",
-      "event": "bb-session",
-      "session": "edd1c8cb",
-      "url": "https://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347"
-    },
-    {
-      "t": "2026-02-14T04:42:25.181Z",
-      "event": "bb-session",
-      "session": "d7b72ebd",
-      "url": "https://www.hollywoodreporter.com/review/baby-you-theater-review-182679"
-    },
-    {
-      "t": "2026-02-14T04:42:39.568Z",
-      "event": "bb-session",
-      "session": "8a102d39",
-      "url": "https://www.variety.com/review/VE1117945106"
-    },
-    {
-      "t": "2026-02-14T04:43:05.513Z",
-      "event": "bb-session",
-      "session": "f396b3b8",
-      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-musical-broadway-revie"
-    },
-    {
-      "t": "2026-02-14T04:43:21.922Z",
-      "event": "bb-session",
-      "session": "4a7da188",
-      "url": "https://www.hollywoodreporter.com/review/bullets-broadway-theater-review-695186"
-    }
-  ]
+  "startTime": "2026-02-14T04:49:02.847Z",
+  "lastProcessed": "something-rotten-2015/deadline--jeremy-gerard.json",
+  "log": []
 }
