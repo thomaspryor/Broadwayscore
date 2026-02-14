@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-14",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11394,
+      "totalReviews": 11391,
       "skippedNoScore": 6449,
       "skippedDuplicate": 52,
       "skippedDuplicateUrl": 223,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1046,
+      "skippedDuplicateText": 1049,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 1657,
       "recoveredFromGarbage": 143,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 16,
         "human-review": 62,
         "originalScore-priority0": 1293,
-        "llmScore": 7707,
+        "llmScore": 7708,
         "thumb-override-llm": 2,
-        "llmScore-lowconf": 2152,
+        "llmScore-lowconf": 2148,
         "llmScore-review": 8,
         "assignedScore": 0,
         "originalScore": 0,
@@ -5103,7 +5103,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -5113,7 +5113,7 @@
       "pullQuote": "A Christmas Story succeeds as well as it does because it doesn't try to be anything more than what it is: a gentle, sweet, and ultimately satisfying look at one boy's holiday dreams.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-story-the-musical-2012",
@@ -31862,23 +31862,6 @@
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
-      "outletId": "frequentbusinesstraveler",
-      "outlet": "Frequentbusinesstraveler",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jonathan Spira",
-      "url": "https://www.frequentbusinesstraveler.com/2015/02/beautiful-the-carole-king-musical-at-stephen-sondheim-theatre-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The audience is there for the great music and choreography, and the cast does not disappoint.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
       "outletId": "front-row-center",
       "outlet": "Front Row Center",
       "assignedScore": 78,
@@ -31893,23 +31876,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "beautiful-the-carole-king-musical-2014",
-      "outletId": "huffpost",
-      "outlet": "HuffPost",
-      "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Finkle",
-      "url": "https://www.huffpost.com/david-finkle/first-nighter-beautiful-t_b_4586854.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "\"...it should have a long and healthy run, if, that is, the producers can either convince Jessie Mueller to remain in the title role forever or, failing that, if they can find replacements as enormously talented as she is and as cannily cast... Beautiful is snappily moved along by Derek McLane's shifting sets...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
@@ -48190,7 +48156,7 @@
       "outletId": "philadelphia-inquirer",
       "outlet": "The Philadelphia Inquirer",
       "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Toby Zinman",
@@ -48200,7 +48166,7 @@
       "pullQuote": "Cat is a play about disease: not just the cancer that is destroying Big Daddy, but the 'mendacity' and 'disgust' devouring the family, and, by implication, American society: much more is at stake than the land, and we should be more powerfully moved than I, at least, was this time through.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
@@ -76411,23 +76377,6 @@
     },
     {
       "showId": "fish-in-the-dark-2015",
-      "outletId": "latimes",
-      "outlet": "Los Angeles Times",
-      "assignedScore": 44,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "David Ng",
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-larry-david-fish-in-the-dark-review-20150306-column.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "This is an overextended sitcom that would like to become a farce but settles instead for some hoary Neil Simon middle ground.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "fish-in-the-dark-2015",
       "outletId": "nbcny",
       "outlet": "NBC New York",
       "assignedScore": 44,
@@ -76720,7 +76669,7 @@
       "outletId": "epoch-times",
       "outlet": "The Epoch Times",
       "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Diana Barth",
@@ -76730,7 +76679,7 @@
       "pullQuote": "It is funny and sometimes silly. But actually if one digs beneath the gags... there are some deep and even poignant issues dealt with.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fish-in-the-dark-2015",
