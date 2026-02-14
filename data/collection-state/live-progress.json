@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-14T00:01:02.203Z",
-  "processed": 70,
-  "failed": 100,
-  "successRate": "41.2%",
+  "updatedAt": "2026-02-14T00:03:36.426Z",
+  "processed": 194,
+  "failed": 206,
+  "successRate": "48.5%",
   "tierBreakdown": {
-    "playwright": 45,
-    "browserbase": 0,
+    "playwright": 79,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 12
+    "brightdata": 85,
+    "archive": 36
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T21:18:22.041Z",
+      "event": "bb-session",
+      "session": "45a38692",
+      "url": "http://www.hollywoodreporter.com/review/free-man-color-theater-review-46713"
+    },
+    {
+      "t": "2026-02-13T21:18:41.712Z",
+      "event": "bb-session",
+      "session": "45d40d1f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-strange-loop-broadway-review-"
+    },
+    {
+      "t": "2026-02-13T21:19:12.492Z",
+      "event": "bb-session",
+      "session": "a58525e2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/aint-no-mo-review-jordan-e-coop"
+    },
+    {
+      "t": "2026-02-13T21:19:45.147Z",
+      "event": "bb-session",
+      "session": "855aba46",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/aint-no-mo-review-broadway-1235"
+    },
+    {
+      "t": "2026-02-13T21:20:01.907Z",
+      "event": "bb-session",
+      "session": "6de186f8",
+      "url": "https://www.hollywoodreporter.com/news/general-news/aint-too-proud-life-times-te"
+    }
+  ]
 }
