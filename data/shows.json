@@ -567,6 +567,7 @@
       "limitedRun": true,
       "status": "open",
       "type": "play",
+      "isRevival": true,
       "runtime": "1h 55m",
       "intermissions": 1,
       "synopsis": "Bug is a play by American playwright Tracy Letts. Exploring themes of paranoia and conspiracy theories, the play tells the story of a woman who, as she spends time with a newly acquainted man in her motel room, starts sharing more and more of his paranoias.",
@@ -574,7 +575,7 @@
       "tags": [
         "play",
         "thriller",
-        "new",
+        "revival",
         "rush"
       ],
       "officialUrl": "https://bugonbroadway.com",
@@ -2055,6 +2056,7 @@
       "status": "open",
       "limitedRun": true,
       "type": "play",
+      "isRevival": true,
       "runtime": "1h 30m",
       "intermissions": 0,
       "images": {
@@ -2067,7 +2069,7 @@
       "tags": [
         "play",
         "drama",
-        "new",
+        "revival",
         "short",
         "rush"
       ],
@@ -2902,6 +2904,7 @@
       "closingDate": "2026-05-24",
       "status": "previews",
       "type": "play",
+      "isRevival": true,
       "runtime": null,
       "intermissions": null,
       "images": {
@@ -2914,7 +2917,8 @@
       "previewsStartDate": "2026-02-21",
       "tags": [
         "upcoming",
-        "play"
+        "play",
+        "revival"
       ],
       "ticketLinks": [
         {
@@ -3171,6 +3175,7 @@
       "closingDate": "2026-06-14",
       "status": "previews",
       "type": "play",
+      "isRevival": true,
       "runtime": null,
       "intermissions": null,
       "images": {
@@ -3183,6 +3188,7 @@
       "previewsStartDate": "2026-03-18",
       "tags": [
         "upcoming",
+        "revival",
         "rush"
       ],
       "ticketLinks": [
@@ -3465,7 +3471,7 @@
       "openingDate": "2026-03-23",
       "closingDate": "2026-06-28",
       "status": "previews",
-      "type": "musical",
+      "type": "play",
       "runtime": null,
       "intermissions": null,
       "images": {
@@ -3473,11 +3479,13 @@
         "thumbnail": "/images/shows/giant-2026/thumbnail.webp",
         "poster": "/images/shows/giant-2026/poster.webp"
       },
-      "synopsis": "Giant is a musical based on the 1952 Edna Ferber novel of the same name, with music and lyrics by Michael John LaChiusa and the book by Sybille Pearson. The musical premiered at the Signature Theatre in Arlington, Virginia in 2009.",
+      "synopsis": "Set in summer 1983, Roald Dahl faces the fallout from a recently published antisemitic article just as The Witches is about to be released. Over one fraught afternoon at his family home, he must choose between making a public apology or defending his reputation. Winner of three Olivier Awards.",
       "ageRecommendation": null,
       "previewsStartDate": "2026-03-11",
       "tags": [
-        "upcoming"
+        "upcoming",
+        "play",
+        "drama"
       ],
       "ticketLinks": [
         {
@@ -3486,15 +3494,16 @@
           "priceFrom": null
         }
       ],
-      "cast": [],
+      "cast": [
+        { "name": "John Lithgow", "role": "Roald Dahl" },
+        { "name": "Aya Cash" },
+        { "name": "Elliot Levey" },
+        { "name": "Rachael Stirling" }
+      ],
       "creativeTeam": [
         {
-          "name": "Michael John LaChiusa",
-          "role": "Music & Lyrics"
-        },
-        {
-          "name": "Sybille Pearson",
-          "role": "Book"
+          "name": "Mark Rosenblatt",
+          "role": "Playwright"
         },
         {
           "name": "Nicholas Hytner",

@@ -25,19 +25,21 @@ function getTonySeasonWindow(): TonySeasonWindow {
   const year = now.getFullYear();
   const month = now.getMonth(); // 0-indexed
 
+  // Tony eligibility windows (season starts the day after previous ceremony's cutoff)
+  // 2024-25 cutoff: April 27, 2025 → 2025-26 season starts April 28, 2025
   // Jan-Jun: current Tony season started previous April
   // Jul-Dec: current Tony season started this April
   if (month <= 5) {
     return {
-      start: `${year - 1}-04-24`,
-      end: `${year}-04-26`,
+      start: `${year - 1}-04-28`,
+      end: `${year}-04-27`,
       label: `${year - 1}-${year}`,
       ceremonyYear: year,
     };
   }
   return {
-    start: `${year}-04-24`,
-    end: `${year + 1}-04-26`,
+    start: `${year}-04-28`,
+    end: `${year + 1}-04-27`,
     label: `${year}-${year + 1}`,
     ceremonyYear: year + 1,
   };
@@ -66,12 +68,15 @@ function serializeShow(show: ComputedShow): SerializedTonyShow {
   };
 }
 
+// Tour stops explicitly ruled Tony-eligible by the Administration Committee
+const TONY_ELIGIBLE_TOUR_STOPS = new Set(['mamma-mia']);
+
 function getTourStopSlugs(): Set<string> {
   const slugs = new Set<string>();
   const shows = (commercialData as Record<string, unknown>).shows as Record<string, { designation?: string }> | undefined;
   if (!shows) return slugs;
   for (const [slug, data] of Object.entries(shows)) {
-    if (data.designation === 'Tour Stop') slugs.add(slug);
+    if (data.designation === 'Tour Stop' && !TONY_ELIGIBLE_TOUR_STOPS.has(slug)) slugs.add(slug);
   }
   return slugs;
 }
@@ -366,6 +371,7 @@ export default function TonyAwardsPage() {
             Rankings are derived from aggregated critic reviews collected from {eligible.length > 0 ? 'dozens of' : ''} outlets.
             Shows appear automatically as they open and get reviewed — no editorial intervention.
             Tony eligibility based on opening dates within the {season.label} season.
+            Includes currently announced shows only. Category classifications (new vs. revival) are subject to official Tony Awards Administration Committee rulings.
           </p>
           <div className="flex flex-wrap gap-4 mt-3">
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
