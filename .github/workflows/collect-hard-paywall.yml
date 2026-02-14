@@ -166,6 +166,11 @@ jobs:
           NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -445,6 +450,11 @@ jobs:
           NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}

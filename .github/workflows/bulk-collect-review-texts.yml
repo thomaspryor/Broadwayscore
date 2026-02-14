@@ -236,6 +236,11 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
