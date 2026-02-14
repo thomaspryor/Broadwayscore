@@ -82,6 +82,7 @@ const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent } = require('./lib/content-quality');
+const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -3095,6 +3096,39 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     }
     if (contentVerification.truncated && !data.truncationSignals) {
       data.textQuality = 'truncated';
+    }
+  }
+
+  // 1E. Tour/film/TV contamination check
+  // Stamps reviews with contamination flags at collection time so rebuild can act on them.
+  // Uses same detection functions as rebuild-time safety net (shared excerpt-validation module).
+  if (data.fullText && data.fullText.length >= 200) {
+    const introText = data.fullText.slice(0, 600);
+    const showIdForTour = data.showId || review.showId || '';
+
+    // Tour detection (skip tour-stop shows)
+    let isTourStop = false;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const sm = _showsJsonCache.shows.find(s => s.id === showIdForTour);
+      if (sm && sm.status === 'tour-stop') isTourStop = true;
+    } catch (e) { /* shows.json unavailable */ }
+
+    if (!isTourStop) {
+      const tourCheck = isTourReviewExcerpt(introText);
+      if (tourCheck.isTourReview) {
+        data.possibleTourReview = true;
+        data.tourSignal = tourCheck.signal;
+        console.log(`    ⚠ Possible tour review: ${tourCheck.signal}`);
+      }
+    }
+
+    // Film/TV detection
+    const filmCheck = isFilmTvReview(introText);
+    if (filmCheck.isFilmTv) {
+      data.possibleFilmTvReview = true;
+      data.filmTvSignals = filmCheck.signals;
+      console.log(`    ⚠ Possible film/TV review: ${filmCheck.signals.join(', ')}`);
     }
   }
 
