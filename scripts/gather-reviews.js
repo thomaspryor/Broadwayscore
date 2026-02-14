@@ -50,6 +50,7 @@ const {
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
+const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
 let chromium, playwright;
 try {
@@ -1559,6 +1560,13 @@ function createReviewFile(showId, reviewData) {
     return false;
   }
 
+  // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
+  const outletText = reviewData.outlet || reviewData.outletId || '';
+  if (isNotBroadway(outletText)) {
+    console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
+    return false;
+  }
+
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
   if (!quickDateCheck(showId, reviewData.url, reviewData.publishDate)) {
     const verification = verifyProduction({
@@ -2013,6 +2021,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
+        // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '')) {
+          console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
+          continue;
+        }
+
         const filename = generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
         const filePath = path.join(showDir, filename);
 
