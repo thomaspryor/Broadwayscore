@@ -1,15 +1,46 @@
 {
-  "updatedAt": "2026-02-14T00:45:14.090Z",
-  "processed": 21,
-  "failed": 79,
-  "successRate": "21.0%",
+  "updatedAt": "2026-02-14T00:48:18.724Z",
+  "processed": 258,
+  "failed": 232,
+  "successRate": "52.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 123,
+    "browserbase": 5,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 21
+    "brightdata": 84,
+    "archive": 58
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-13T21:19:06.622Z",
+      "event": "bb-session",
+      "session": "bd293541",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-02-13T21:19:26.748Z",
+      "event": "bb-session",
+      "session": "1008301b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-02-13T21:21:46.234Z",
+      "event": "bb-session",
+      "session": "0d67b348",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
+    },
+    {
+      "t": "2026-02-13T21:23:57.457Z",
+      "event": "bb-session",
+      "session": "7289e68f",
+      "url": "http://www.hollywoodreporter.com/review/1984-theater-1015985?utm_source=twitter"
+    },
+    {
+      "t": "2026-02-13T21:24:16.187Z",
+      "event": "bb-session",
+      "session": "f01cc992",
+      "url": "https://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-39318"
+    }
+  ]
 }
