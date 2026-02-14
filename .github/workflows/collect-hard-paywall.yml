@@ -146,6 +146,7 @@ jobs:
       - name: Collect review texts
         if: ${{ inputs.dry_run != true && steps.count.outputs.eligible > 0 }}
         env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: mcp_unlocker
@@ -411,6 +412,7 @@ jobs:
       - name: Collect review texts for ${{ matrix.domain }}
         if: ${{ inputs.dry_run != true }}
         env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: mcp_unlocker
