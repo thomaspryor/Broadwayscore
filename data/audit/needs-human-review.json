@@ -1,65 +1,13 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-14T02:28:41.571Z",
-    "totalFlagged": 23,
+    "generatedAt": "2026-02-14T05:59:26.265Z",
+    "totalFlagged": 48,
     "reasons": {
-      "possible-tour-fulltext": 13,
-      "originalScore-llm-conflict": 10
+      "originalScore-llm-conflict": 12,
+      "possible-tour-fulltext": 36
     }
   },
   "reviews": [
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "clevelands-star-102",
-      "criticName": "Glenn Anderson",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
-      "llmScore": 82,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-14T02:28:14.443Z"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "houston-chronicle",
-      "criticName": "Joey Guerra",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
-      "llmScore": 78,
-      "llmBucket": "Positive",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-14T02:28:14.463Z"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "revue",
-      "criticName": "Marin Heinritz",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
-      "llmScore": 82,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-14T02:28:14.495Z"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "the-minnesota-star-tribune",
-      "criticName": "Rohan Preston",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
-      "llmScore": 40,
-      "llmBucket": "Negative",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-14T02:28:14.507Z"
-    },
     {
       "showId": "a-life-in-the-theatre-2010",
       "outletId": "ew",
@@ -71,7 +19,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:15.203Z"
+      "flaggedAt": "2026-02-14T05:58:56.132Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -84,7 +32,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:15.318Z"
+      "flaggedAt": "2026-02-14T05:58:56.251Z"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -97,7 +45,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:15.779Z"
+      "flaggedAt": "2026-02-14T05:58:56.727Z"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -110,7 +58,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:16.001Z"
+      "flaggedAt": "2026-02-14T05:58:56.938Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -123,7 +71,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:16.779Z"
+      "flaggedAt": "2026-02-14T05:58:57.722Z"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -136,7 +84,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:16.938Z"
+      "flaggedAt": "2026-02-14T05:58:57.896Z"
     },
     {
       "showId": "american-son-2018",
@@ -149,20 +97,163 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:17.192Z"
+      "flaggedAt": "2026-02-14T05:58:58.178Z"
     },
     {
-      "showId": "bye-bye-birdie-2009",
-      "outletId": "theatermania",
-      "criticName": "Keith Loria",
+      "showId": "annie-2012",
+      "outletId": "people",
+      "criticName": "Dave Quinn",
       "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:58:58.856Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "calgary-herald",
+      "criticName": "Louis B. Hobson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.663Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "chicago-sun-times",
+      "criticName": "Catey Sullivan",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-14T05:58:59.666Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "denver-post",
+      "criticName": "John Wenzel",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bBuell Theatre\\b",
+      "llmScore": 74,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.677Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "gephardt-daily",
+      "criticName": "Nancy Van Valkenburg",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": 80,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.683Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "oklahoma-city-free-press",
+      "criticName": "Adrienne Proctor",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.689Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "revue",
+      "criticName": "Marin Heinritz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 74,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.698Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "times-union",
+      "criticName": "Katherine Kiessling",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 75,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-14T05:58:59.713Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "tulsa-world",
+      "criticName": "James D. Watts",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
       "llmScore": 79,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:58:59.716Z"
+    },
+    {
+      "showId": "bright-star-2016",
+      "outletId": "nbcny",
+      "criticName": "Robert Kahn",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:19.764Z"
+      "flaggedAt": "2026-02-14T05:59:00.695Z"
+    },
+    {
+      "showId": "bright-star-2016",
+      "outletId": "reflections-in-the-light",
+      "criticName": "Lauren Yarger",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:00.711Z"
+    },
+    {
+      "showId": "cats-1982",
+      "outletId": "tulsa-world",
+      "criticName": "James D. Watts",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": 80,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:01.799Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -175,7 +266,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:20.888Z"
+      "flaggedAt": "2026-02-14T05:59:02.584Z"
     },
     {
       "showId": "follies-2011",
@@ -188,7 +279,59 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:22.966Z"
+      "flaggedAt": "2026-02-14T05:59:05.253Z"
+    },
+    {
+      "showId": "funny-girl-2022",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:05.834Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "dcmetro",
+      "criticName": "Gina Jun",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:06.186Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "dctheatrescene",
+      "criticName": "Jayne Blanchard",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 77,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:06.188Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "the-georgetowner",
+      "criticName": "Gary Tischler",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 80,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:06.211Z"
     },
     {
       "showId": "gigi-2015",
@@ -201,7 +344,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:23.602Z"
+      "flaggedAt": "2026-02-14T05:59:06.227Z"
     },
     {
       "showId": "girl-from-the-north-country-2022",
@@ -214,7 +357,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:23.606Z"
+      "flaggedAt": "2026-02-14T05:59:06.236Z"
+    },
+    {
+      "showId": "godspell-2011",
+      "outletId": "theater-life",
+      "criticName": "Eric March",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1.5/5 stars\" (=30, bucket=negative) vs LLM 62 (bucket=mixed, conf=medium)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:06.453Z"
     },
     {
       "showId": "golden-boy-2012",
@@ -227,12 +383,38 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:23.786Z"
+      "flaggedAt": "2026-02-14T05:59:06.463Z"
     },
     {
-      "showId": "miss-saigon-2017",
-      "outletId": "broadstreetreview",
-      "criticName": "Cameron Kelsall",
+      "showId": "good-night-and-good-luck-2025",
+      "outletId": "digital-journal",
+      "criticName": "Markos Papadatos",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5\" (=100, bucket=positive) vs LLM 45 (bucket=mixed, conf=medium)",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:06.515Z"
+    },
+    {
+      "showId": "indecent-2017",
+      "outletId": "the-modernist-beat",
+      "criticName": "Anthony Pennino",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:09.860Z"
+    },
+    {
+      "showId": "jersey-boys-2005",
+      "outletId": "philadelphia-inquirer",
+      "criticName": "Howard Shapiro",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\bnational tour\\b",
       "llmScore": null,
@@ -240,7 +422,137 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:29.586Z"
+      "flaggedAt": "2026-02-14T05:59:10.411Z"
+    },
+    {
+      "showId": "les-miserables-1987",
+      "outletId": "ap",
+      "criticName": "Mark Kennedy",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:12.281Z"
+    },
+    {
+      "showId": "les-miserables-2014",
+      "outletId": "ap",
+      "criticName": "Mark Kennedy",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:12.323Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "cleveland",
+      "criticName": "Joey Morona",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.472Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "daily-pilot",
+      "criticName": "Sarah Mosqueda",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bSegerstrom\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.476Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "dc-theater-arts",
+      "criticName": "Bob Ashby",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.482Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "denver-post",
+      "criticName": "John Wenzel",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bBuell Theatre\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.488Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "houston-chronicle",
+      "criticName": "Doni Wilson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.496Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "md-theatre-guide",
+      "criticName": "Herb Merrick",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bNorth American tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.499Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "oregon-artswatch",
+      "criticName": "Linda Ferguson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.532Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "the-orange-county-register",
+      "criticName": "Christopher Smith",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bSegerstrom\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-14T05:59:12.544Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -253,20 +565,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:29.885Z"
+      "flaggedAt": "2026-02-14T05:59:14.571Z"
     },
     {
-      "showId": "newsies-the-musical-2012",
-      "outletId": "ew",
-      "criticName": "Thom Geier",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 79 (bucket=positive, conf=medium)",
-      "llmScore": 79,
-      "llmBucket": "Positive",
-      "llmConfidence": "medium",
+      "showId": "motown-the-musical-2016",
+      "outletId": "wnbc",
+      "criticName": "Robert Kahn",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:30.433Z"
+      "flaggedAt": "2026-02-14T05:59:14.598Z"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -279,7 +591,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:30.482Z"
+      "flaggedAt": "2026-02-14T05:59:15.280Z"
     },
     {
       "showId": "ragtime-2025",
@@ -292,20 +604,33 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:32.959Z"
+      "flaggedAt": "2026-02-14T05:59:17.785Z"
     },
     {
-      "showId": "wicked-2003",
-      "outletId": "timeout",
-      "criticName": "David Cote",
+      "showId": "the-trip-to-bountiful-2013",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
       "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
-      "llmScore": 82,
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
       "llmBucket": "Positive",
-      "llmConfidence": "high",
+      "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-14T02:28:41.182Z"
+      "flaggedAt": "2026-02-14T05:59:24.066Z"
+    },
+    {
+      "showId": "time-stands-still-2010",
+      "outletId": "ew",
+      "criticName": "Melissa Rose Bernardo",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 90 (bucket=positive, conf=medium)",
+      "llmScore": 90,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-14T05:59:24.573Z"
     }
   ]
 }
