@@ -33,7 +33,7 @@ I built a free, open Broadway research database called Broadway Scorecard
 especially anyone studying criticism, theater economics, or the business
 side of producing.
 
-It covers 11,400+ professional reviews across 685 shows from the last 20
+It covers 14,000+ professional reviews across 725+ shows from the last 20
 seasons, with scoring breakdowns by outlet and tier. It also tracks
 recoupment data for 120+ shows (capitalization, weekly running costs,
 weeks to recoup) — the kind of financial data that's usually only
@@ -67,7 +67,7 @@ running costs, estimated recoupment percentages — sourced from SEC
 filings, trade press, and public records. That data is normally very hard
 for students to access in one place.
 
-It also aggregates 11,400+ critic reviews across 685 shows with
+It also aggregates 14,000+ critic reviews across 725+ shows with
 transparent scoring methodology, plus weekly box office and audience
 sentiment data.
 
@@ -93,7 +93,7 @@ Hi,
 I built a free, open Broadway data resource (broadwayscorecard.com) that
 might be relevant for your Dramaturgy and Dramatic Criticism students.
 
-It aggregates 11,400+ professional reviews from 490 outlets across 685
+It aggregates 14,000+ professional reviews from 420+ outlets across 725+
 shows, with per-outlet and per-critic scoring breakdowns. Students can
 see, for example, that Jesse Green's NYT reviews average 3.6 points
 higher than Ben Brantley's did — or that the same critic scores
@@ -122,8 +122,8 @@ Hi,
 
 I'd like to suggest broadwayscorecard.com as a resource for Broadway.org.
 
-It's a free, independent site that aggregates 11,400+ critic reviews
-across 685 Broadway shows from the last 20 seasons — essentially a Rotten
+It's a free, independent site that aggregates 14,000+ critic reviews
+across 725+ Broadway shows from the last 20 seasons — essentially a Rotten
 Tomatoes for Broadway, with transparent scoring methodology.
 
 It also includes weekly box office tracking, audience sentiment data, and
@@ -168,7 +168,7 @@ broadwayscorecard.com
 
 This is a labor of love. I'm not a company trying to make money — just a Broadway fan wanting to geek out on data and help others in the process.
 
-If you notice any errors or inaccuracies please let me know! I want to fix them. And across 700+ shows and 11,000+ reviews, there will be some!
+If you notice any errors or inaccuracies please let me know! I want to fix them. And across 700+ shows and 14,000+ reviews, there will be some!
 
 I then got carried away and added:
 - **Box Office Scorecards** — weekly grosses, capacity, and trends
@@ -193,12 +193,12 @@ Ideas are so, so welcome!
 
 ### POST 1: Season Rankings
 
-**Title:** `I analyzed 11,400 Broadway reviews from the last 20 seasons. Here's how each season stacks up.`
+**Title:** `I analyzed 14,000+Broadway reviews from the last 20 seasons. Here's how each season stacks up.`
 
 **Body:**
 ```
 I've been building a database of professional Broadway reviews — currently
-11,400+ reviews across 685 shows from 490 outlets and 924 critics (NYT,
+14,000+ reviews across 725+ shows from 420+ outlets and 870+ critics (NYT,
 Vulture, Variety, Post, TheaterMania, Hollywood Reporter, and hundreds more).
 
 I scored each review on a 0-100 scale using a mix of explicit critic ratings
@@ -264,11 +264,11 @@ which seasons were strongest?
 
 ### POST 2: Outlet Rankings (Toughest vs Most Generous)
 
-**Title:** `Which Broadway outlets are the toughest graders? I looked at 11,400 reviews to find out.`
+**Title:** `Which Broadway outlets are the toughest graders? I looked at 14,000+reviews to find out.`
 
 **Body:**
 ```
-Using the same database of 11,400+ Broadway reviews from 490 outlets, I
+Using the same database of 14,000+ Broadway reviews from 420+ outlets, I
 looked at which outlets consistently grade shows the highest and lowest.
 
 (Important caveat: this doesn't mean "best" or "worst" — harsh outlets
@@ -373,7 +373,7 @@ What stands out:
 - **Be More Chill** is the internet fandom effect in data form: 47
   reviews, massive range, below-average score.
 
-Data from broadwayscorecard.com — 11,400+ reviews across 685 shows.
+Data from broadwayscorecard.com — 14,000+ reviews across 725+ shows.
 
 What show's polarization surprises you the most?
 ```
@@ -439,7 +439,7 @@ Which side do you usually agree with — critics or audiences?
 
 ### POST 5: Plays vs Musicals
 
-**Title:** `Do Broadway critics grade plays and musicals differently? Here's what 11,400 reviews say.`
+**Title:** `Do Broadway critics grade plays and musicals differently? Here's what 14,000+reviews say.`
 
 **Body:**
 ```
@@ -497,7 +497,7 @@ scale?
 
 **Body:**
 ```
-Based on 11,400+ reviews from 490 outlets. Minimum 8 reviews per show.
+Based on 14,000+ reviews from 420+ outlets. Minimum 8 reviews per show.
 
 | Rank | Show | Year | Type | Avg Score | Reviews |
 |------|------|------|------|-----------|---------|
@@ -665,7 +665,7 @@ running costs, estimated recoupment percentages — sourced from SEC
 filings and trade press. That information is usually locked behind
 industry walls, and I think making it public matters.
 
-We also aggregate 11,400+ critic reviews with transparent methodology,
+We also aggregate 14,000+ critic reviews with transparent methodology,
 so anyone can see exactly how a show's score is calculated and why
 different outlets trend harder or softer.
 
@@ -736,7 +736,7 @@ Quick pitch for your morning roundup: I built Broadway Scorecard
 (broadwayscorecard.com), a free database your readers might find
 useful for quick reference.
 
-It aggregates 11,400+ critic reviews across 685 shows with transparent
+It aggregates 14,000+ critic reviews across 725+ shows with transparent
 scoring methodology — essentially a Rotten Tomatoes for Broadway. Also
 includes weekly box office (with WoW and YoY comparisons), audience
 sentiment data, and recoupment tracking for 120+ shows.
@@ -770,8 +770,8 @@ are exactly the kind of honest takes the industry needs more of. You're
 not afraid to talk about the money side, which is rare.
 
 I built something that might be useful for your coverage: Broadway
-Scorecard (broadwayscorecard.com) is a free database of 11,400+ critic
-reviews across 685 shows, plus recoupment data for 120+ shows. The
+Scorecard (broadwayscorecard.com) is a free database of 14,000+ critic
+reviews across 725+ shows, plus recoupment data for 120+ shows. The
 financial transparency stuff feels particularly aligned with what you
 write about — like the Cabaret investor lawsuit. Our /biz section
 tracks exactly the kind of capitalization and recoupment data that
