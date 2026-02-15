@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 13215,
+      "totalReviews": 13214,
       "skippedNoScore": 4664,
       "skippedDuplicate": 89,
       "skippedDuplicateUrl": 410,
       "skippedCrossOutletDuplicateUrl": 27,
       "skippedDuplicateText": 476,
       "skippedFingerprintDedup": 79,
-      "skippedWrongProduction": 1824,
+      "skippedWrongProduction": 1825,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 3,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 12,
         "human-review": 67,
         "originalScore-priority0": 1680,
-        "llmScore": 9358,
+        "llmScore": 9359,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1975,
+        "llmScore-lowconf": 1973,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -1414,7 +1414,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -1424,7 +1424,7 @@
       "pullQuote": "Jane Fonda's return to Broadway after 46 years is reason enough to see 33 Variations, but fortunately Moisés Kaufman's play about obsession, legacy, and the creative process provides plenty of other compelling reasons as well.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "33-variations-2009",
@@ -30099,7 +30099,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Mark Kennedy",
@@ -30109,7 +30109,7 @@
       "pullQuote": "It's lewd and smugly arch and increasingly tiresome.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bad-cinderella-2023",
@@ -95127,7 +95127,7 @@
       "pullQuote": "Wolfe offers a rich new layer, sufficient in itself, and more so as part of history.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "gypsy-2024",
@@ -97068,23 +97068,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "hamlet-2009",
-      "outletId": "the-independent",
-      "outlet": "The Independent",
-      "assignedScore": 75,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Lister",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/first-night-hamlet-national-theatre-london-2100704.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It is certainly a chilling production that demands to be seen.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "hamlet-2009",
@@ -151821,7 +151804,7 @@
       "pullQuote": "The new Broadway production is genuinely gripping, gritty and emotionally shattering.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "of-mice-and-men-2014",
@@ -155256,7 +155239,7 @@
       "pullQuote": "The production is still pretty damn enjoyable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "on-the-twentieth-century-2015",
