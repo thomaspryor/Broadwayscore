@@ -2,7 +2,9 @@
   "processed": [
     "chicago-1996/time--.json",
     "chicago-1996/time--richard-zoglin.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json"
+    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
+    "an-american-in-paris-2015/nytg--kathleen-campion.json",
+    "betrayal-2013/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "all-out-2025/newsweek--lauren-giella.json",
@@ -21,11 +23,22 @@
     "the-lion-king-1997/post-and-courier--dottie-ashley.json",
     "the-lion-king-1997/sarasota-herald-tribune--jay-handelman.json",
     "the-lion-king-1997/seattle-post-intelligencer--jeffrey-eric-jenkins.json",
-    "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json"
+    "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
+    "the-lion-king-1997/unknown--frank-scheck.json",
+    "the-lion-king-1997/unknown--harry-currie.json",
+    "the-lion-king-1997/unknown--mal-vincent.json",
+    "the-lion-king-1997/unknown--marianne-evett.json",
+    "the-lion-king-1997/unknown--nelson-pressley.json",
+    "the-lion-king-1997/unknown--te-foreman.json",
+    "the-lion-king-1997/unknown--unknown.json",
+    "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "an-american-in-paris-2015/nytg--kathleen-campion.json",
+      "betrayal-2013/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -36,6 +49,6 @@
     ]
   },
   "startTime": "2026-02-15T07:30:04.055Z",
-  "lastProcessed": "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
+  "lastProcessed": "betrayal-2013/nyt-theater--jonathan-mandell.json",
   "log": []
 }
