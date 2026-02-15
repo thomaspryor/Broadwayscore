@@ -1,39 +1,17 @@
 {
-  "updatedAt": "2026-02-15T23:13:19.270Z",
-  "processed": 50,
-  "failed": 60,
-  "successRate": "45.5%",
+  "updatedAt": "2026-02-15T23:22:40.741Z",
+  "processed": 57,
+  "failed": 63,
+  "successRate": "47.5%",
   "tierBreakdown": {
     "playwright": 11,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archive": 36
+    "brightdata": 9,
+    "archive": 37
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-02-15T23:01:40.506Z",
-      "event": "bb-session",
-      "session": "1dcd5399",
-      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
-    },
-    {
-      "t": "2026-02-15T23:01:42.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-15T23:02:52.678Z",
-      "event": "bb-session",
-      "session": "f252af55",
-      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
-    },
-    {
-      "t": "2026-02-15T23:02:54.822Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-15T23:04:20.851Z",
       "event": "bb-session",
@@ -119,6 +97,28 @@
     },
     {
       "t": "2026-02-15T23:12:52.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:14:14.135Z",
+      "event": "bb-session",
+      "session": "da355897",
+      "url": "https://www.nytimes.com/2016/01/26/theater/review-our-mothers-brief-affair-a-son"
+    },
+    {
+      "t": "2026-02-15T23:14:16.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:15:29.678Z",
+      "event": "bb-session",
+      "session": "24f6be3b",
+      "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html"
+    },
+    {
+      "t": "2026-02-15T23:15:31.704Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
