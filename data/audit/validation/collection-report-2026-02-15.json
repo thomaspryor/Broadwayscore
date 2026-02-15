@@ -2,7 +2,7 @@
   "runDate": "2026-02-15T11:23:31.839Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -276,5 +276,6 @@
       "isKnownBlocked": true
     }
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
