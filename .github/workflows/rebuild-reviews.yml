@@ -55,6 +55,12 @@ jobs:
             echo "count=0" >> $GITHUB_OUTPUT
           fi
 
+      - name: Extract pull quotes for new reviews
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/extract-pull-quotes.js --limit=100
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
