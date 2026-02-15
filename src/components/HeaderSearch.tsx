@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Fuse from 'fuse.js';
 
 interface Show {
   id: string;
@@ -10,6 +11,7 @@ interface Show {
   slug: string;
   status: string;
   venue?: string;
+  creativeTeamNames?: string;
   images?: {
     thumbnail?: string;
   };
@@ -28,15 +30,23 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  // Fuse.js instance for fuzzy search
+  const fuse = useMemo(() => new Fuse(shows, {
+    keys: [
+      { name: 'title', weight: 0.6 },
+      { name: 'venue', weight: 0.2 },
+      { name: 'creativeTeamNames', weight: 0.2 },
+    ],
+    threshold: 0.35,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+  }), [shows]);
+
   // Filter shows based on query
   const filteredShows = useMemo(() => {
     if (query.length < 1) return [];
-    return shows
-      .filter(show =>
-        show.title.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 8); // Limit to 8 results
-  }, [query, shows]);
+    return fuse.search(query, { limit: 8 }).map(result => result.item);
+  }, [query, fuse]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
