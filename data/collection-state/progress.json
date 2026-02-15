@@ -56,7 +56,10 @@
     "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
-    "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json"
+    "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+    "war-horse-2011/nydailynews--joe-dziemianowicz.json",
+    "cabaret-2024/advertisement--chris-jones.json",
+    "promises-promises-2010/rob-ashford--unknown.json"
   ],
   "failed": [
     "chicago-1996/nydailynews--joe-dziemianowicz.json",
@@ -91,7 +94,8 @@
     "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
     "the-present-2017/nydailynews--joe-dziemianowicz.json",
     "the-price-2017/nydailynews--chris-jones.json",
-    "the-price-2017/nydailynews--joe-dziemianowicz.json"
+    "the-price-2017/nydailynews--joe-dziemianowicz.json",
+    "well-2006/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -112,7 +116,8 @@
       "sylvia-2015/nydailynews--joe-dziemianowicz.json",
       "the-cherry-orchard-2016/nydailynews--joe-dziemianowicz.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json"
+      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+      "cabaret-2024/advertisement--chris-jones.json"
     ],
     "archive": [
       "a-behanding-in-spokane-2010/nydailynews--joe-dziemianowicz.json",
@@ -158,11 +163,13 @@
       "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
       "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
       "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
-      "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json"
+      "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+      "war-horse-2011/nydailynews--joe-dziemianowicz.json",
+      "promises-promises-2010/rob-ashford--unknown.json"
     ]
   },
   "startTime": "2026-02-15T19:56:53.832Z",
-  "lastProcessed": "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "promises-promises-2010/rob-ashford--unknown.json",
   "log": [
     {
       "t": "2026-02-15T20:01:18.792Z",
@@ -414,6 +421,17 @@
     },
     {
       "t": "2026-02-15T20:25:25.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-15T20:26:44.941Z",
+      "event": "bb-session",
+      "session": "8da9d73c",
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-reviv"
+    },
+    {
+      "t": "2026-02-15T20:26:47.108Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
