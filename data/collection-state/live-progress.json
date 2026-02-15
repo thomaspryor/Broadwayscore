@@ -1,15 +1,34 @@
 {
-  "updatedAt": "2026-02-15T16:40:55.745Z",
-  "processed": 18,
-  "failed": 12,
-  "successRate": "60.0%",
+  "updatedAt": "2026-02-15T16:44:52.276Z",
+  "processed": 12,
+  "failed": 18,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 14,
-    "browserbase": 0,
+    "playwright": 9,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 3
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T16:41:29.047Z",
+      "event": "bb-session",
+      "session": "f4ea4b75",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-15T16:42:04.643Z",
+      "event": "bb-session",
+      "session": "9b88c4ef",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
+    },
+    {
+      "t": "2026-02-15T16:44:28.334Z",
+      "event": "bb-session",
+      "session": "62c379f2",
+      "url": "https://www.indiewire.com/2021/12/clydes-broadway-review-1234685678/"
+    }
+  ]
 }
