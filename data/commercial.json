@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-02-11",
+    "lastUpdated": "2026-02-15",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "notes": "recoupedWeeks is DEPRECATED - now calculated from openingDate + recoupedDate in the data layer. Only recoupedDate is required for recouped shows.",
     "designations": {
@@ -194,7 +194,7 @@
       "recoupedDate": "2022-11",
       "recoupedWeeks": 173,
       "recoupedSource": "Producer Carmen Pavlovic (confirmed mid-2023)",
-      "notes": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption insurance. Closing July 26, 2026 after 7 years and 2,265 performances (36th longest-running show in Broadway history).",
+      "notes": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption loan. Set to close July 26, 2026 after 7 years - will be 36th longest-running show in Broadway history with 2,265 regular performances.",
       "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
@@ -717,7 +717,7 @@
         "verifiedBy": "manual",
         "notes": "SEC EDGAR: 'Now A Warning LLC' (CIK 0002040672) filed Oct 2024. Range: $29M min, $31.5M max. c/o 321 Theatrical. Listed as Comcast/NBCUniversal/DreamWorks subsidiary. Previous Deep Research estimated $20M — too low. Earlier recoupment claim (Dec 2025) was based on incorrect $20M cap and is now unverified."
       },
-      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization found in EDGAR). Previous $20M estimate and Dec 2025 recoupment claim were based on incorrect cap figure. At $29M, show has likely NOT recouped (~$24M cumulative profit). Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
+      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization for new play/musical). Being filmed February 2026 with original cast for future release."
     },
     "buena-vista-social-club": {
       "designation": "TBD",
@@ -1005,7 +1005,7 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross. Limited run closed Feb 9, 2026.",
+      "notes": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross. Closed February 8, 2026 after limited engagement.",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
