@@ -1,0 +1,666 @@
+{
+  "_meta": {
+    "description": "Commercial data audit report",
+    "generatedAt": "2026-02-15T15:32:42.287Z",
+    "scriptVersion": "1.0.0"
+  },
+  "summary": {
+    "totalEntries": 120,
+    "totalShowsInShowsJson": 727,
+    "matchStats": {
+      "matchedBySlug": 114,
+      "matchedById": 5,
+      "orphaned": 1
+    },
+    "designationDistribution": {
+      "Miracle": 9,
+      "Windfall": 18,
+      "Trickle": 3,
+      "Fizzle": 19,
+      "Flop": 33,
+      "Easy Winner": 15,
+      "TBD": 13,
+      "Nonprofit": 8,
+      "Tour Stop": 2
+    },
+    "recoupmentStats": {
+      "recouped": 45,
+      "notRecouped": 65,
+      "nullOrMissing": 10
+    },
+    "dataCompleteness": {
+      "hasCapitalization": 98,
+      "hasWeeklyRunningCost": 80,
+      "hasCostMethodology": 103,
+      "hasSources": 67,
+      "hasDeepResearch": 92
+    },
+    "openShowCoverage": {
+      "totalOpenPreviewsShows": 44,
+      "withCommercialData": 30,
+      "withoutCommercialData": 14,
+      "coveragePct": 68
+    },
+    "issuesSummary": {
+      "total": 100,
+      "bySeverity": {
+        "high": 1,
+        "medium": 6,
+        "low": 93
+      },
+      "byType": {
+        "orphan-entry": 1,
+        "id-mismatch": 5,
+        "source-quality": 46,
+        "methodology": 8,
+        "closed-show-tbd": 1,
+        "nonprofit-classification": 7,
+        "recoupment-pct": 1,
+        "coverage-gap": 14,
+        "deprecated-field": 17
+      }
+    }
+  },
+  "issues": [
+    {
+      "type": "orphan-entry",
+      "severity": "high",
+      "showId": "mamma-mia-2001",
+      "detail": "Commercial key \"mamma-mia-2001\" not found in shows.json (neither as slug nor ID). Title in commercial: \"Miracle\"."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "here-lies-love-2023",
+      "detail": "Commercial key \"here-lies-love-2023\" matches show ID but not slug. Show slug is \"here-lies-love\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "lempicka-2024",
+      "detail": "Commercial key \"lempicka-2024\" matches show ID but not slug. Show slug is \"lempicka\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "once-upon-a-one-more-time-2023",
+      "detail": "Commercial key \"once-upon-a-one-more-time-2023\" matches show ID but not slug. Show slug is \"once-upon-a-one-more-time\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "merrily-we-roll-along-2023",
+      "detail": "Commercial key \"merrily-we-roll-along-2023\" matches show ID but not slug. Show slug is \"merrily-we-roll-along\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "just-for-us-2023",
+      "detail": "Commercial key \"just-for-us-2023\" matches show ID but not slug. Show slug is \"just-for-us\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "hamilton",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "wicked",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-lion-king",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "book-of-mormon",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "hadestown",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "mj",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "six",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "moulin-rouge",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "and-juliet",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "stereophonic",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "oh-mary",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "water-for-elephants",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "suffs",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-notebook",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "back-to-the-future",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "our-town",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "death-becomes-her",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-great-gatsby",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-outsiders",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "stranger-things",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "operation-mincemeat",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "just-in-time",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "two-strangers",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "chess",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "maybe-happy-ending",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "oedipus",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "aladdin",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "queen-of-versailles",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "all-out",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "art-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "othello-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "glengarry-glen-ross-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "waiting-for-godot-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "parade-2023",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "smash-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "sunset-boulevard-2024",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "an-enemy-of-the-people",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "romeo-juliet-2024",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "good-night-and-good-luck-2025",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "redwood",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "once-upon-a-mattress-2024",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "cats-the-jellicle-ball",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "proof",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "hells-kitchen",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "the-outsiders",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "chess",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "maybe-happy-ending",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "queen-of-versailles",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "smash-2025",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "once-upon-a-mattress-2024",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "the-wiz",
+      "detail": "Show is closed (closed 546 days ago on 2024-08-18) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "oedipus",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "floyd-collins-2025",
+      "detail": "Show is at \"Vivian Beaumont Theater\" (Lincoln Center Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "pirates-the-penzance-musical-2025",
+      "detail": "Show is at \"Todd Haimes Theatre\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "appropriate",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Easy Winner\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "detail": "Show is at \"Harold and Miriam Steinberg Center for Theatre\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "days-of-wine-and-roses",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "liberation",
+      "detail": "Designated \"Nonprofit\" but venue \"James Earl Jones Theatre\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "recoupment-pct",
+      "severity": "low",
+      "showId": "suffs",
+      "detail": "Designation is \"Fizzle\" but estimatedRecoupmentPct is [0, 10]%. Fizzle typically implies 30%+ recovery. Consider \"Flop\" if <30%."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "every-brilliant-thing",
+      "detail": "Open/previews show \"Every Brilliant Thing\" at Hudson Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "death-of-a-salesman",
+      "detail": "Open/previews show \"Death of a Salesman\" at Winter Garden Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "beaches",
+      "detail": "Open/previews show \"Beaches, A New Musical\" at Majestic Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-balusters",
+      "detail": "Open/previews show \"The Balusters\" at Samuel J. Friedman Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "becky-shaw",
+      "detail": "Open/previews show \"Becky Shaw\" at Helen Hayes Theater has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "dog-day-afternoon",
+      "detail": "Open/previews show \"Dog Day Afternoon\" at August Wilson Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "fallen-angels",
+      "detail": "Open/previews show \"Fallen Angels\" at Todd Haimes Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-fear-of-13",
+      "detail": "Open/previews show \"The Fear of 13\" at James Earl Jones Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "giant",
+      "detail": "Open/previews show \"Giant\" at Music Box Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "joe-turners-come-and-gone",
+      "detail": "Open/previews show \"Joe Turner's Come and Gone\" at Ethel Barrymore Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-lost-boys",
+      "detail": "Open/previews show \"The Lost Boys\" at Palace Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "the-rocky-horror-show",
+      "detail": "Open/previews show \"The Rocky Horror Show\" at Studio 54 has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "schmigadoon",
+      "detail": "Open/previews show \"Schmigadoon!\" at Nederlander Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "titanique",
+      "detail": "Open/previews show \"Titanique\" at St. James Theatre has no commercial data entry."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "hamilton",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 10). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "wicked",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 113). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "book-of-mormon",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 36). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "hadestown",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 30). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "mj",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 68). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "moulin-rouge",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 173). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "and-juliet",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 83). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "stereophonic",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 45). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "oh-mary",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 19). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "the-outsiders",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 89). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "aladdin",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 38). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "mamma-mia-2001",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 28). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "art-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 13). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "othello-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "glengarry-glen-ross-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 9). This is now calculated dynamically from openingDate + recoupedDate."
+    },
+    {
+      "type": "deprecated-field",
+      "severity": "low",
+      "showId": "waiting-for-godot-2025",
+      "detail": "Has deprecated \"recoupedWeeks\" field (value: 8). This is now calculated dynamically from openingDate + recoupedDate."
+    }
+  ]
+}
