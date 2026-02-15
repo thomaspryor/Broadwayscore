@@ -204,6 +204,7 @@ jobs:
           fi
 
       - name: Commit merged results
+        if: always()
         run: |
           git add data/audience-buzz.json data/show-score-urls.json
           git add -A data/show-score-shards/ 2>/dev/null || true
