@@ -2,7 +2,7 @@
   "runDate": "2026-02-15T22:20:51.170Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "little-bear-ridge-road-2025",
     "aggressive": false,
@@ -86,6 +86,14 @@
       "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New York Times": {
+      "count": 17,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
