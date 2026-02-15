@@ -1,15 +1,57 @@
 {
-  "updatedAt": "2026-02-15T15:52:45.516Z",
-  "processed": 7,
-  "failed": 93,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-15T15:57:05.489Z",
+  "processed": 40,
+  "failed": 40,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 34,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 7
+    "brightdata": 1,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T15:42:02.516Z",
+      "event": "bb-session",
+      "session": "987cc9bb",
+      "url": "https://www.thewrap.com/a-strange-loop-broadway-review-michael-jackson/"
+    },
+    {
+      "t": "2026-02-15T15:42:29.499Z",
+      "event": "bb-session",
+      "session": "a8bc279e",
+      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
+    },
+    {
+      "t": "2026-02-15T15:42:44.403Z",
+      "event": "bb-session",
+      "session": "a0588ea5",
+      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
+    },
+    {
+      "t": "2026-02-15T15:44:23.669Z",
+      "event": "bb-session",
+      "session": "9f4e4a78",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
+    },
+    {
+      "t": "2026-02-15T15:47:54.064Z",
+      "event": "bb-session",
+      "session": "02edb036",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+    },
+    {
+      "t": "2026-02-15T15:47:56.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T15:54:16.051Z",
+      "event": "bb-session",
+      "session": "91b6054f",
+      "url": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-conno"
+    }
+  ]
 }
