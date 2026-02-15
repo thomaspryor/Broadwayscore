@@ -1,49 +1,127 @@
 {
-  "updatedAt": "2026-02-15T18:28:34.183Z",
-  "processed": 5,
-  "failed": 55,
-  "successRate": "8.3%",
+  "updatedAt": "2026-02-15T18:40:51.101Z",
+  "processed": 115,
+  "failed": 195,
+  "successRate": "37.1%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 80,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 5
+    "brightdata": 20,
+    "archive": 26
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 20,
   "recentActivity": [
     {
-      "t": "2026-02-15T18:24:09.581Z",
+      "t": "2026-02-15T16:05:29.487Z",
       "event": "bb-session",
-      "session": "59e9a303",
-      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+      "session": "4bbc2a76",
+      "url": "https://www.thewrap.com/oscar-isaac-rachel-brosnahan-sign-in-sidney-brusteins-wi"
     },
     {
-      "t": "2026-02-15T18:24:11.643Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:25:45.451Z",
+      "t": "2026-02-15T16:07:42.278Z",
       "event": "bb-session",
-      "session": "685c9369",
-      "url": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html"
+      "session": "49af7a8c",
+      "url": "https://www.thewrap.com/violet-theater-review"
     },
     {
-      "t": "2026-02-15T18:25:47.576Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:27:21.768Z",
+      "t": "2026-02-15T16:19:42.232Z",
       "event": "bb-session",
-      "session": "38e810d1",
-      "url": "https://www.vulture.com/2011/04/theater_review_catch_me_if_yo.html"
+      "session": "85986a29",
+      "url": "https://www.usatoday.com/story/life/theater/2009/03/10/33-variations-review/2870"
     },
     {
-      "t": "2026-02-15T18:27:23.594Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-15T16:19:44.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T16:30:40.012Z",
+      "event": "bb-session",
+      "session": "4587b611",
+      "url": "https://www.usatoday.com/story/life/theater/2013/11/17/broadway-review-gentleman"
+    },
+    {
+      "t": "2026-02-15T16:30:42.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T16:34:56.231Z",
+      "event": "bb-session",
+      "session": "46e41745",
+      "url": "https://www.usatoday.com/life/theater/reviews/2010-01-25-bridge25_ST_N.htm?csp=3"
+    },
+    {
+      "t": "2026-02-15T16:34:58.324Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T16:44:11.439Z",
+      "event": "bb-session",
+      "session": "522b4c72",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/making-a-killing-in-t"
+    },
+    {
+      "t": "2026-02-15T16:44:13.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:57:12.066Z",
+      "event": "bb-session",
+      "session": "23592b83",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/the-magic-of-paris-ru"
+    },
+    {
+      "t": "2026-02-15T16:57:14.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:05:56.704Z",
+      "event": "bb-session",
+      "session": "ca76a2a4",
+      "url": "https://www.thestage.co.uk/reviews/reviews/angels-in-america-review-at-neil-simo"
+    },
+    {
+      "t": "2026-02-15T17:05:59.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-15T17:21:57.519Z",
+      "event": "bb-session",
+      "session": "180c1aaa",
+      "url": "https://www.thestage.co.uk/reviews/reviews/bernhardthamlet-review-at-american-ai"
+    },
+    {
+      "t": "2026-02-15T17:21:59.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-15T17:37:16.740Z",
+      "event": "bb-session",
+      "session": "6bc18bab",
+      "url": "https://www.thestage.co.uk/reviews/2016/cats-review-at-neil-simon-theatre-new-yo"
+    },
+    {
+      "t": "2026-02-15T17:37:18.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-15T17:38:16.318Z",
+      "event": "bb-session",
+      "session": "f6f6177f",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/169274606_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:38:18.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
