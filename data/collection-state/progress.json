@@ -21,7 +21,13 @@
     "swept-away-2024/washpost--naveen-kumar.json",
     "the-encounter-2016/washpost--peter-marks.json",
     "the-front-page-2016/washpost--peter-marks.json",
-    "the-hills-of-california-2024/washpost--naveen-kumar.json"
+    "the-hills-of-california-2024/washpost--naveen-kumar.json",
+    "the-sign-in-sidney-brusteins-window-2023/washpost--peter-marks.json",
+    "the-wiz-2024/washpost--gloria-oladipo.json",
+    "thoughts-of-a-colored-man-2021/washpost--peter-marks.json",
+    "waiting-for-godot-2025/washpost--naveen-kumar.json",
+    "war-horse-2011/washpost--peter-marks.json",
+    "west-side-story-2020/washpost--peter-marks.json"
   ],
   "failed": [
     "hadestown-2019/washpost--peter-marks.json",
@@ -81,7 +87,11 @@
     "the-ferryman-2018/washpost--peter-marks.json",
     "the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
     "the-little-dog-laughed-2006/washpost--peter-marks.json",
-    "the-little-mermaid-2008/washpost--peter-marks.json"
+    "the-little-mermaid-2008/washpost--peter-marks.json",
+    "the-lyons-2012/ap--mark-kennedy.json",
+    "the-music-man-2022/washpost--mark-kennedy.json",
+    "the-threepenny-opera-2006/ap--mark-kennedy.json",
+    "travesties-2018/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -106,17 +116,24 @@
       "swept-away-2024/washpost--naveen-kumar.json",
       "the-encounter-2016/washpost--peter-marks.json",
       "the-front-page-2016/washpost--peter-marks.json",
-      "the-hills-of-california-2024/washpost--naveen-kumar.json"
+      "the-hills-of-california-2024/washpost--naveen-kumar.json",
+      "the-sign-in-sidney-brusteins-window-2023/washpost--peter-marks.json",
+      "thoughts-of-a-colored-man-2021/washpost--peter-marks.json",
+      "waiting-for-godot-2025/washpost--naveen-kumar.json",
+      "war-horse-2011/washpost--peter-marks.json",
+      "west-side-story-2020/washpost--peter-marks.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-wiz-2024/washpost--gloria-oladipo.json"
+    ],
     "archive": [
       "old-times-2015/washpost--peter-marks.json"
     ]
   },
   "startTime": "2026-02-15T15:31:17.823Z",
-  "lastProcessed": "the-little-mermaid-2008/washpost--peter-marks.json",
+  "lastProcessed": "west-side-story-2020/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-02-15T15:31:40.405Z",
@@ -489,6 +506,39 @@
     },
     {
       "t": "2026-02-15T16:04:11.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-15T16:04:58.046Z",
+      "event": "bb-session",
+      "session": "103d4663",
+      "url": "https://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-l"
+    },
+    {
+      "t": "2026-02-15T16:05:00.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-15T16:05:42.652Z",
+      "event": "bb-session",
+      "session": "4e4440c8",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-threepenny-opera-is-ene"
+    },
+    {
+      "t": "2026-02-15T16:05:44.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-15T16:07:05.118Z",
+      "event": "bb-session",
+      "session": "ec726221",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-rev"
+    },
+    {
+      "t": "2026-02-15T16:07:07.262Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
