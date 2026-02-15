@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-15T15:42:33.462Z",
-  "processed": 44,
-  "failed": 56,
-  "successRate": "44.0%",
+  "updatedAt": "2026-02-15T15:44:10.083Z",
+  "processed": 65,
+  "failed": 15,
+  "successRate": "81.3%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 63,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 18
+    "brightdata": 0,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T15:42:35.725Z",
+      "event": "bb-session",
+      "session": "94c49dd2",
+      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+    },
+    {
+      "t": "2026-02-15T15:42:37.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    }
+  ]
 }
