@@ -1,105 +1,84 @@
 {
-  "runDate": "2026-02-15T22:10:49.034Z",
+  "runDate": "2026-02-15T22:12:55.772Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "call-me-izzy-2025",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 23,
+    "processed": 11,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "23.3%"
+    "successRate": "84.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 2
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 0,
-    "tier1_5Attempts": 24,
+    "tier1Attempts": 9,
+    "tier1Success": 8,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 24,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 24,
-    "tier3Success": 8,
-    "tier4Attempts": 15,
-    "tier4Success": 0,
-    "totalFailed": 23,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 4,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 24,
-    "browserbaseMinutesUsed": 7,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
+    "call-me-izzy-2025/nytg--austin-fimmano.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "call-me-izzy-2025/nypost--johnny-oleksinski.json",
+    "call-me-izzy-2025/theatermania--david-gordon.json",
+    "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
+    "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
+    "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
+    "call-me-izzy-2025/theater-scene--joseph-pisano.json",
+    "call-me-izzy-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "1776-2022/newyorker--naomi-fry.json",
-    "1984-2017/newyorker--hilton-als.json",
-    "a-christmas-carol-2019/newyorker--jesse-green.json",
-    "a-christmas-carol-2022/newyorker--naomi-fry.json",
-    "a-free-man-of-color-2010/newyorker--hilton-als.json",
-    "a-time-to-kill-2013/newyorker--hilton-als.json",
-    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
-    "act-one-2014/newyorker--hilton-als.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json",
-    "all-my-sons-2008/newyorker--hilton-als.json",
-    "american-psycho-2016/newyorker--hilton-als.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
-    "the-norman-conquests-2009/newyorker--john-lahr.json",
-    "the-parisian-woman-2017/newyorker--hilton-als.json",
-    "the-present-2017/newyorker--hilton-als.json"
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "call-me-izzy-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
+      "call-me-izzy-2025/nytg--austin-fimmano.json",
+      "call-me-izzy-2025/theatermania--david-gordon.json",
+      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
+      "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
+      "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
+      "call-me-izzy-2025/theater-scene--joseph-pisano.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "lombardi-2010/newyorker--uncredited.json"
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "call-me-izzy-2025/nypost--johnny-oleksinski.json",
+      "call-me-izzy-2025/washpost--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 14,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
