@@ -1,89 +1,143 @@
 {
-  "runDate": "2026-02-15T23:23:54.048Z",
+  "runDate": "2026-02-15T23:33:01.895Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
-    "showFilter": "little-bear-ridge-road-2025",
+    "showFilter": "punch-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 5,
+    "processed": 12,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "68.8%"
+    "successRate": "85.7%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 11,
+    "tier1Attempts": 10,
     "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
-    "tier4Attempts": 6,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 5,
     "tier4Success": 5,
-    "totalFailed": 4,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "little-bear-ridge-road-2025/nytg--gillian-russo.json",
-    "little-bear-ridge-road-2025/variety--daniel-daddario.json",
-    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
-    "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
-    "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json",
-    "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
-    "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
-    "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
-    "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json",
-    "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
+    "punch-2025/nyt-theater--jonathan-mandell.json",
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/culturesauce--thom-geier.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json",
+    "punch-2025/talkinbroadway--howard-miller.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "punch-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
-    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
-    "little-bear-ridge-road-2025/theatre-reviews-limited--david-roberts.json",
-    "little-bear-ridge-road-2025/timeout--adam-feldman.json",
-    "little-bear-ridge-road-2025/theater-scene--samuel-l-leiter.json"
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theater-scene--darryl-reilly.json"
   ],
   "tierDetails": {
     "playwright": [
-      "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
-      "little-bear-ridge-road-2025/nytg--gillian-russo.json",
-      "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
-      "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
-      "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
-      "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
-      "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json"
+      "punch-2025/nyt-theater--jonathan-mandell.json",
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/culturesauce--thom-geier.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json",
+      "punch-2025/the-interested-bystander--cary-wong.json",
+      "punch-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "little-bear-ridge-road-2025/variety--daniel-daddario.json",
-      "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
-      "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json"
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Vanity Fair": {
+      "count": 1,
+      "domain": "vanityfair.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 9,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 2,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "bigissue": {
+      "count": 1,
+      "domain": "bigissue.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 1,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
