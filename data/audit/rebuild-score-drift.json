@@ -1,15 +1,31 @@
 {
-  "timestamp": "2026-02-15T00:30:57.473Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-02-15T02:29:37.167Z",
+  "totalDrifted": 3,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "network-2018",
-      "outlet": "Gotham Playgoer",
-      "critic": "Robert Sholiton",
+      "showId": "grand-horizons-2020",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 20,
+      "newScore": 80,
+      "delta": 60
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "outlet": "The Guardian",
+      "critic": "Alexis Soloski",
       "oldScore": 93,
-      "newScore": 42,
-      "delta": 51
+      "newScore": 62,
+      "delta": 31
+    },
+    {
+      "showId": "gutenberg-2023",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 83,
+      "newScore": 71,
+      "delta": 12
     }
   ]
 }

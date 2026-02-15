@@ -672,8 +672,10 @@ async function fetchWithPlaywright(url, review) {
   }
 
   // Check for paywall and login if needed
+  // Skip login entirely if cookies exist for this domain (avoids OTC email spam)
   const paywallCreds = getPaywallCredentials(url);
-  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain)) {
+  const hasCookiesForDomain = paywallCreds && hasCookiesForUrl(url);
+  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain) && !hasCookiesForDomain) {
     const loginSuccess = await loginToSite(paywallCreds.domain, paywallCreds.email, paywallCreds.password);
     if (loginSuccess) {
       loggedInDomains.add(paywallCreds.domain);
