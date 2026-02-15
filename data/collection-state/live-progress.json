@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-15T21:30:47.252Z",
-  "processed": 77,
-  "failed": 103,
-  "successRate": "42.8%",
+  "updatedAt": "2026-02-15T21:31:19.176Z",
+  "processed": 1,
+  "failed": 19,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 16,
-    "archive": 11
+    "brightdata": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T21:31:13.226Z",
+      "event": "bb-session",
+      "session": "717c8d20",
+      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+    },
+    {
+      "t": "2026-02-15T21:31:15.252Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    }
+  ]
 }
