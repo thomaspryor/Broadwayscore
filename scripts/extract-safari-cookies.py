@@ -86,6 +86,66 @@ DOMAIN_GROUPS = {
         "output": "ew.json",
         "secret_name": "EW_COOKIES",
     },
+    "theatermania": {
+        "domains": [".theatermania.com", "theatermania.com"],
+        "output": "theatermania.json",
+        "secret_name": "THEATERMANIA_COOKIES",
+    },
+    "huffpost": {
+        "domains": [".huffpost.com", "huffpost.com", ".huffingtonpost.com", "huffingtonpost.com"],
+        "output": "huffpost.json",
+        "secret_name": "HUFFPOST_COOKIES",
+    },
+    "usatoday": {
+        "domains": [".usatoday.com", "usatoday.com", ".gannett.com", "gannett.com"],
+        "output": "usatoday.json",
+        "secret_name": "USATODAY_COOKIES",
+    },
+    "northjersey": {
+        "domains": [".northjersey.com", "northjersey.com", ".gannett.com"],
+        "output": "northjersey.json",
+        "secret_name": "NORTHJERSEY_COOKIES",
+    },
+    "bloomberg": {
+        "domains": [".bloomberg.com", "bloomberg.com"],
+        "output": "bloomberg.json",
+        "secret_name": "BLOOMBERG_COOKIES",
+    },
+    "thestage": {
+        "domains": [".thestage.co.uk", "thestage.co.uk"],
+        "output": "thestage.json",
+        "secret_name": "THESTAGE_COOKIES",
+    },
+    "talkinbroadway": {
+        "domains": [".talkinbroadway.com", "talkinbroadway.com"],
+        "output": "talkinbroadway.json",
+        "secret_name": "TALKINBROADWAY_COOKIES",
+    },
+    "backstage": {
+        "domains": [".backstage.com", "backstage.com"],
+        "output": "backstage.json",
+        "secret_name": "BACKSTAGE_COOKIES",
+    },
+    "amny": {
+        "domains": [".amny.com", "amny.com"],
+        "output": "amny.json",
+        "secret_name": "AMNY_COOKIES",
+    },
+    "curtainup": {
+        "domains": [".curtainup.com", "curtainup.com"],
+        "output": "curtainup.json",
+        "secret_name": "CURTAINUP_COOKIES",
+    },
+    "theaterscene": {
+        "domains": [".theaterscene.net", "theaterscene.net"],
+        "output": "theaterscene.json",
+        "secret_name": "THEATERSCENE_COOKIES",
+    },
+    "frontmezzjunkies": {
+        "domains": [".frontmezzjunkies.com", "frontmezzjunkies.com"],
+        "output": "frontmezzjunkies.json",
+        "secret_name": "FRONTMEZZJUNKIES_COOKIES",
+    },
 }
 
 # Project root (where data/ lives)
