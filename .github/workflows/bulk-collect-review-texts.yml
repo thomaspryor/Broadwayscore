@@ -236,6 +236,8 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
