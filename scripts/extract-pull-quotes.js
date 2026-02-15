@@ -296,6 +296,12 @@ function scanReviewFiles() {
         // Skip garbage / wrong show / roundup articles
         if (data.wrongProduction || data.wrongShow || data.isRoundupArticle) { stats.skipped++; continue; }
 
+        // Skip truncated/incomplete reviews — best quote is likely behind the paywall
+        if (data.textStatus === 'truncated' || ['truncated', 'stub', 'excerpt'].includes(data.contentTier)) {
+          stats.skipped++;
+          continue;
+        }
+
         files.push({ filePath, data });
       } catch (e) {
         stats.errors++;
