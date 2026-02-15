@@ -156,9 +156,9 @@ const CONFIG = {
 
   // Browserbase spending limits (to control costs - $0.10/browser hour)
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
-  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '5'), // Prevent one domain starving others
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '200'), // ~$20/day max (Startup plan: 500h)
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '40'), // Per workflow run
+  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '15'), // Prevent one domain starving others
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -184,6 +184,11 @@ const CONFIG = {
     'newyorker.com': { emailVar: 'NEW_YORKER_EMAIL', passVar: 'NEW_YORKER_PASSWORD' },
     'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD', altPassVar: 'WASHPOST_PASSWORD' },
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
+    'bloomberg.com': { emailVar: 'BLOOMBERG_EMAIL', passVar: 'BLOOMBERG_PASSWORD' },
+    'northjersey.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
+    'usatoday.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
+    'thestage.co.uk': { emailVar: 'THESTAGE_EMAIL', passVar: 'THESTAGE_PASSWORD' },
+    'ft.com': { emailVar: 'FT_EMAIL', passVar: 'FT_PASSWORD' },
   },
 
   // Sites known to block aggressively (skip Playwright, start with ScrapingBee)
@@ -196,6 +201,8 @@ const CONFIG = {
     'wsj.com',  // Dow Jones SSO anti-bot detection — fake-rejects correct password in automated browsers
     'newyorker.com',  // Condé Nast id.condenast.com — routes automated browsers to OTP, not password login
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
+    'bloomberg.com',  // PerimeterX anti-bot — needs Browserbase CAPTCHA solving for login
+    'ft.com',  // hCaptcha on login — needs Browserbase CAPTCHA solving
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
@@ -1075,6 +1082,178 @@ async function loginToSite(domain, email, password) {
       return true;
     }
 
+    if (domain === 'bloomberg.com') {
+      // Bloomberg two-step login: email → "Continue" → password → "Sign in"
+      // Has PerimeterX (PX) anti-bot detection — Playwright may be blocked
+      await page.goto('https://www.bloomberg.com/account/signin', { timeout: CONFIG.loginTimeout });
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(3000);
+
+      // Dismiss consent modal if present (Bloomberg shows "We've updated our terms" overlay)
+      const consentBtn = await page.$('#cmp-consent-modal button, button:has-text("Accept All"), button:has-text("I Agree")');
+      if (consentBtn) {
+        const isVisible = await consentBtn.isVisible().catch(() => false);
+        if (isVisible) {
+          console.log('    → Dismissing Bloomberg consent modal...');
+          await consentBtn.click();
+          await page.waitForTimeout(2000);
+        }
+      }
+
+      // Check for PerimeterX challenge
+      const hasPxChallenge = await page.evaluate(() => {
+        const text = document.body?.innerText || '';
+        return text.includes('Press & Hold') || text.includes('Human Challenge') ||
+               !!document.querySelector('#px-captcha, [id*="perimeterx"]');
+      });
+      if (hasPxChallenge) {
+        console.log('    ✗ Bloomberg login blocked by PerimeterX — skipping Playwright login');
+        console.log('      → Bloomberg articles will use cookies or Browserbase tier');
+        return false;
+      }
+
+      // Step 1: Enter email
+      const emailInput = await page.$('input[type="text"][placeholder*="email"], input[type="email"], input[name="email"]');
+      if (!emailInput) {
+        console.log('    ✗ Bloomberg login FAILED (no email field found)');
+        return false;
+      }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(1000);
+
+      // Click "Continue" button
+      const continueBtn = await page.$('button:has-text("Continue"), button[type="submit"]');
+      if (continueBtn) {
+        await continueBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(4000);
+
+      // Step 2: Enter password
+      const passInput = await page.$('input[type="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+
+        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Continue"), button[type="submit"]');
+        if (signInBtn) {
+          await signInBtn.click();
+        } else {
+          await page.keyboard.press('Enter');
+        }
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else {
+        console.log('    ✗ Bloomberg login FAILED (no password field after email step)');
+        return false;
+      }
+
+      // Verify: check if redirected away from signin or user indicator appears
+      const postUrl = page.url();
+      const hasError = await page.$('[class*="error"], [data-testid="error"], [role="alert"]').catch(() => null);
+      if (hasError) {
+        const errorText = await hasError.textContent().catch(() => '');
+        console.log(`    ✗ Bloomberg login FAILED (error: ${errorText.substring(0, 80)})`);
+        return false;
+      }
+      if (!postUrl.includes('/account/signin')) {
+        console.log('    ✓ Bloomberg login verified (left signin page)');
+        return true;
+      }
+      console.log('    ⚠ Bloomberg login uncertain - continuing anyway');
+      return true;
+    }
+
+    if (domain === 'northjersey.com' || domain === 'usatoday.com') {
+      const returnUrl = domain === 'northjersey.com' ? 'https://www.northjersey.com/' : 'https://www.usatoday.com/';
+      await page.goto(`https://login.usatoday.com/?return-url=${encodeURIComponent(returnUrl)}`, { timeout: CONFIG.loginTimeout });
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(3000);
+      const emailInput = await page.$('input[type="email"], input[name="email"], input[id*="email"]');
+      if (!emailInput) { console.log(`    ✗ ${domain} login FAILED (no email field)`); return false; }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(500);
+      const passInput = await page.$('input[type="password"], input[name="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Log in"), button[type="submit"]');
+        if (signInBtn) await signInBtn.click();
+        else await page.keyboard.press('Enter');
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else { console.log(`    ✗ ${domain} login FAILED (no password field)`); return false; }
+      const postUrl = page.url();
+      if (!postUrl.includes('login.usatoday.com')) { console.log(`    ✓ ${domain} login verified`); return true; }
+      console.log(`    ⚠ ${domain} login uncertain - continuing`);
+      return true;
+    }
+
+    if (domain === 'thestage.co.uk') {
+      await page.goto('https://www.thestage.co.uk/login', { timeout: CONFIG.loginTimeout });
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(3000);
+      const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
+      if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await page.waitForTimeout(1000); } }
+      const emailInput = await page.$('input[type="email"], input[name="email"], input[id*="email"]');
+      if (!emailInput) { console.log('    ✗ The Stage login FAILED (no email field)'); return false; }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(500);
+      const passInput = await page.$('input[type="password"], input[name="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"]');
+        if (signInBtn) await signInBtn.click();
+        else await page.keyboard.press('Enter');
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else { console.log('    ✗ The Stage login FAILED (no password field)'); return false; }
+      const postUrl = page.url();
+      if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login verified'); return true; }
+      console.log('    ⚠ The Stage login uncertain - continuing');
+      return true;
+    }
+
+    if (domain === 'ft.com') {
+      await page.goto('https://accounts.ft.com/login', { timeout: CONFIG.loginTimeout });
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(3000);
+      const hasHcaptcha = await page.$('iframe[src*="hcaptcha"], .h-captcha, [data-hcaptcha-widget-id]');
+      if (hasHcaptcha) { console.log('    ✗ FT login blocked by hCaptcha — skipping Playwright'); return false; }
+      const emailInput = await page.$('input[type="email"], input[name="email"], input[id*="email"]');
+      if (!emailInput) { console.log('    ✗ FT login FAILED (no email field)'); return false; }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(500);
+      const nextBtn = await page.$('button:has-text("Next"), button:has-text("Enter"), button[type="submit"]');
+      if (nextBtn) await nextBtn.click();
+      else await page.keyboard.press('Enter');
+      await page.waitForTimeout(4000);
+      const passInput = await page.$('input[type="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Submit"), button[type="submit"]');
+        if (signInBtn) await signInBtn.click();
+        else await page.keyboard.press('Enter');
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else { console.log('    ✗ FT login FAILED (no password field)'); return false; }
+      const postUrl = page.url();
+      if (!postUrl.includes('accounts.ft.com')) { console.log('    ✓ FT login verified'); return true; }
+      console.log('    ⚠ FT login uncertain - continuing');
+      return true;
+    }
+
     if (domain === 'wsj.com') {
       // WSJ redirects to sso.accounts.dowjones.com for login
       // Two-step: email/username → "Continue" button → password → "Continue" button
@@ -1397,6 +1576,181 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       return true;
     }
     console.log(`    ⚠ New Yorker login uncertain (URL: ${postUrl.substring(0, 80)}) - continuing`);
+    return true;
+  }
+
+  if (domain === 'bloomberg.com') {
+    console.log(`    → Browserbase: navigating to Bloomberg login...`);
+    await bbPage.goto('https://www.bloomberg.com/account/signin', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    // Dismiss consent modal if present (Bloomberg shows "We've updated our terms" overlay)
+    const bbConsentBtn = await bbPage.$('#cmp-consent-modal button, button:has-text("Accept All"), button:has-text("I Agree")');
+    if (bbConsentBtn) {
+      const isVisible = await bbConsentBtn.isVisible().catch(() => false);
+      if (isVisible) {
+        console.log(`    → Dismissing Bloomberg consent modal...`);
+        await bbConsentBtn.click();
+        await bbPage.waitForTimeout(2000);
+      }
+    }
+
+    // Check for PerimeterX challenge — Browserbase should auto-solve
+    const hasPxChallenge = await bbPage.evaluate(() => {
+      return !!document.querySelector('#px-captcha, [id*="perimeterx"]') ||
+             (document.body?.innerText || '').includes('Press & Hold');
+    });
+    if (hasPxChallenge) {
+      console.log(`    → PerimeterX challenge detected — waiting for Browserbase to solve...`);
+      try {
+        await bbPage.waitForFunction(() => {
+          return !document.querySelector('#px-captcha, [id*="perimeterx"]') &&
+                 !(document.body?.innerText || '').includes('Press & Hold');
+        }, { timeout: 45000 });
+        console.log(`    → PerimeterX resolved, proceeding with login...`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ PerimeterX not resolved after 45s - continuing anyway`);
+      }
+    }
+
+    // Step 1: Email
+    const emailInput = await bbPage.$('input[type="text"][placeholder*="email"], input[type="email"], input[name="email"]');
+    if (!emailInput) {
+      console.log(`    ✗ Bloomberg login FAILED (no email field)`);
+      return false;
+    }
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(1000);
+
+    const continueBtn = await bbPage.$('button:has-text("Continue"), button[type="submit"]');
+    if (continueBtn) await continueBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForTimeout(4000);
+
+    // Step 2: Password
+    const passInput = await bbPage.$('input[type="password"]');
+    if (!passInput) {
+      console.log(`    ✗ Bloomberg login FAILED (no password field after email step)`);
+      return false;
+    }
+    await passInput.click();
+    await passInput.type(password, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+
+    const signInBtn = await bbPage.$('button:has-text("Sign in"), button:has-text("Continue"), button[type="submit"]');
+    if (signInBtn) await signInBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('/account/signin')) {
+      console.log(`    ✓ Bloomberg login succeeded (via Browserbase)`);
+      return true;
+    }
+    console.log(`    ⚠ Bloomberg login uncertain (URL: ${postUrl.substring(0, 80)}) - continuing`);
+    return true;
+  }
+
+  if (domain === 'northjersey.com' || domain === 'usatoday.com') {
+    console.log(`    → Browserbase: navigating to ${domain} Gannett login...`);
+    const returnUrl = domain === 'northjersey.com' ? 'https://www.northjersey.com/' : 'https://www.usatoday.com/';
+    await bbPage.goto(`https://login.usatoday.com/?return-url=${encodeURIComponent(returnUrl)}`, { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+    const emailInput = await bbPage.$('input[type="email"], input[name="email"], input[id*="email"]');
+    if (!emailInput) { console.log(`    ✗ ${domain} login FAILED (no email field)`); return false; }
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+    const passInput = await bbPage.$('input[type="password"], input[name="password"]');
+    if (passInput) {
+      await passInput.click();
+      await passInput.type(password, { delay: 30 });
+      await bbPage.waitForTimeout(500);
+      const signInBtn = await bbPage.$('button:has-text("Sign in"), button:has-text("Log in"), button[type="submit"]');
+      if (signInBtn) await signInBtn.click();
+      else await bbPage.keyboard.press('Enter');
+      await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await bbPage.waitForTimeout(3000);
+    } else { console.log(`    ✗ ${domain} login FAILED (no password field)`); return false; }
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('login.usatoday.com')) { console.log(`    ✓ ${domain} login succeeded (via Browserbase)`); return true; }
+    console.log(`    ⚠ ${domain} login uncertain - continuing`);
+    return true;
+  }
+
+  if (domain === 'thestage.co.uk') {
+    console.log(`    → Browserbase: navigating to The Stage login...`);
+    await bbPage.goto('https://www.thestage.co.uk/login', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+    const cookieBtn = await bbPage.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
+    if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await bbPage.waitForTimeout(1000); } }
+    const emailInput = await bbPage.$('input[type="email"], input[name="email"], input[id*="email"]');
+    if (!emailInput) { console.log('    ✗ The Stage login FAILED (no email field)'); return false; }
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+    const passInput = await bbPage.$('input[type="password"], input[name="password"]');
+    if (passInput) {
+      await passInput.click();
+      await passInput.type(password, { delay: 30 });
+      await bbPage.waitForTimeout(500);
+      const signInBtn = await bbPage.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"]');
+      if (signInBtn) await signInBtn.click();
+      else await bbPage.keyboard.press('Enter');
+      await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await bbPage.waitForTimeout(3000);
+    } else { console.log('    ✗ The Stage login FAILED (no password field)'); return false; }
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login succeeded (via Browserbase)'); return true; }
+    console.log('    ⚠ The Stage login uncertain - continuing');
+    return true;
+  }
+
+  if (domain === 'ft.com') {
+    console.log(`    → Browserbase: navigating to FT login...`);
+    await bbPage.goto('https://accounts.ft.com/login', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+    const hasHcaptcha = await bbPage.$('iframe[src*="hcaptcha"], .h-captcha, [data-hcaptcha-widget-id]');
+    if (hasHcaptcha) {
+      console.log('    → hCaptcha detected on FT — waiting for Browserbase to solve...');
+      try {
+        await bbPage.waitForFunction(() => {
+          return !document.querySelector('iframe[src*="hcaptcha"]') && !document.querySelector('.h-captcha iframe');
+        }, { timeout: 45000 });
+        console.log('    → hCaptcha resolved, proceeding with login...');
+        await bbPage.waitForTimeout(2000);
+      } catch (e) { console.log('    ✗ hCaptcha not resolved after 45s - continuing anyway'); }
+    }
+    const emailInput = await bbPage.$('input[type="email"], input[name="email"], input[id*="email"]');
+    if (!emailInput) { console.log('    ✗ FT login FAILED (no email field)'); return false; }
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+    const nextBtn = await bbPage.$('button:has-text("Next"), button:has-text("Enter"), button[type="submit"]');
+    if (nextBtn) await nextBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForTimeout(4000);
+    const passInput = await bbPage.$('input[type="password"]');
+    if (passInput) {
+      await passInput.click();
+      await passInput.type(password, { delay: 30 });
+      await bbPage.waitForTimeout(500);
+      const signInBtn = await bbPage.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Submit"), button[type="submit"]');
+      if (signInBtn) await signInBtn.click();
+      else await bbPage.keyboard.press('Enter');
+      await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await bbPage.waitForTimeout(3000);
+    } else { console.log('    ✗ FT login FAILED (no password field)'); return false; }
+    const postUrl = bbPage.url();
+    if (!postUrl.includes('accounts.ft.com')) { console.log('    ✓ FT login succeeded (via Browserbase)'); return true; }
+    console.log('    ⚠ FT login uncertain - continuing');
     return true;
   }
 
