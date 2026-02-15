@@ -743,7 +743,28 @@ function isGenericQuote(text) {
   for (const p of [...genericPatterns, ...sceneSettingPatterns]) {
     if (p.test(lower)) return true;
   }
+
+  // Short quotes whose entire evaluative content is "must-see" or "not to be missed"
+  if (lower.length < 100 && /(must[- ]see|not to be missed|highly recommended)\b/.test(lower)) {
+    return true;
+  }
+
   return false;
+}
+
+/**
+ * Trim a quote to the last complete sentence (ending in . ! ? or closing quote).
+ * Returns the original if it already ends cleanly or no sentence boundary is found.
+ */
+function trimToCompleteSentence(text) {
+  if (!text) return text;
+  const trimmed = text.trim();
+  // Already ends with sentence-ending punctuation
+  if (/[.!?"\u201D')]\s*$/.test(trimmed)) return trimmed;
+  // Find the last sentence-ending punctuation
+  const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
+  if (match && match[1].length >= 40) return match[1].trim();
+  return trimmed;
 }
 
 function selectBestExcerpt(data, showTitle) {
@@ -789,9 +810,11 @@ function selectBestExcerpt(data, showTitle) {
   }
 
   // 0. Try dedicated LLM pull quote (highest quality — focused extraction prompt)
+  //    Quality gate: reject generic/scene-setting, trim mid-sentence cutoffs
   if (data.llmPullQuote && data.llmPullQuote.length > 30) {
-    const cleaned = cleanExcerpt(data.llmPullQuote);
-    if (cleaned && !isJunkExcerpt(cleaned)) {
+    const trimmed = trimToCompleteSentence(data.llmPullQuote);
+    const cleaned = cleanExcerpt(trimmed);
+    if (cleaned && !isJunkExcerpt(cleaned) && !isGenericQuote(cleaned)) {
       const validated = validateExcerpt(cleaned, 'llmPullQuote');
       if (validated) return validated;
     }
