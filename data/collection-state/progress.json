@@ -56,7 +56,10 @@
     "airline-highway-2015/chicago-splash--justin-leclaire.json",
     "airline-highway-2015/chicago-stage-standard--will-cameron.json",
     "airline-highway-2015/ny1--roma-torre.json",
-    "airline-highway-2015/talkinbroadway--john-olson.json"
+    "airline-highway-2015/talkinbroadway--john-olson.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "all-my-sons-2008/exeunt-magazine--nicole-serratore.json",
+    "all-my-sons-2008/reclining-standards--david-fox.json"
   ],
   "failed": [
     "american-idiot-2010/hollywood-reporter--frank-scheck.json",
@@ -131,7 +134,14 @@
     "aint-too-proud-2019/usatoday--elysa-gardner.json",
     "airline-highway-2015/huffpost--david-finkle.json",
     "airline-highway-2015/huffpost--michael-giltz.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json"
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "all-my-sons-2008/adriandimanlig--adrian-dimanlig.json",
+    "all-my-sons-2008/curtainup--elyse-sommer.json",
+    "all-my-sons-2008/stagezine--scott-harrah.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "american-idiot-2010/ap--michael-kuchwara.json",
+    "american-idiot-2010/broadwayworldcom--michael-dale.json",
+    "american-idiot-2010/ny1--roma-torre.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -180,7 +190,9 @@
       "grey-house-2023/cititour--brian-scott-lipton.json",
       "a-night-with-janis-joplin-2013/the-times-uk--will-hogkinson.json",
       "aint-too-proud-2019/front-row-center--donna-herman.json",
-      "airline-highway-2015/ny1--roma-torre.json"
+      "airline-highway-2015/ny1--roma-torre.json",
+      "all-my-sons-2008/exeunt-magazine--nicole-serratore.json",
+      "all-my-sons-2008/reclining-standards--david-fox.json"
     ],
     "browserbase": [
       "data/review-texts/bad-cinderella-2023/thewrap--robert-hofler.json",
@@ -203,11 +215,12 @@
       "machinal-2014/thewrap--robert-hofler.json",
       "a-streetcar-named-desire-2012/village-voice--michael-musto.json",
       "airline-highway-2015/chicago-splash--justin-leclaire.json",
-      "airline-highway-2015/chicago-stage-standard--will-cameron.json"
+      "airline-highway-2015/chicago-stage-standard--will-cameron.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ]
   },
   "startTime": "2026-02-15T16:39:12.407Z",
-  "lastProcessed": "aladdin-2014/catholic-transcript--bernard-carragher.json",
+  "lastProcessed": "american-idiot-2010/ny1--roma-torre.json",
   "log": [
     {
       "t": "2026-02-15T16:41:29.047Z",
@@ -288,6 +301,17 @@
       "t": "2026-02-15T17:31:42.210Z",
       "event": "bb-cookie-inject",
       "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:38:49.813Z",
+      "event": "bb-session",
+      "session": "81971b23",
+      "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm"
+    },
+    {
+      "t": "2026-02-15T17:38:51.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
