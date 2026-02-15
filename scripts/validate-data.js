@@ -401,6 +401,153 @@ function validateCreativeTeamQuality(shows) {
 }
 
 // ===========================================
+// CREATIVE TEAM STRUCTURAL COMPLETENESS
+// ===========================================
+//
+// Catches the class of bug where IBDB scraping misses principal credits
+// (composers, lyricists, playwrights, book writers). This is a STRUCTURAL
+// check — "does this musical have a composer?" — not a data-quality check.
+//
+// Three layers:
+//   1. Every musical must have at least one songwriter role (Music/Lyrics/combo)
+//   2. Every play must have at least one writer role (Playwright/Book/Author)
+//   3. Asymmetry detection: Music without Lyrics or vice versa
+//
+// Known exceptions are explicitly listed with explanations so they don't
+// generate noise, but new shows with the same gap will be flagged.
+
+function validateCreativeTeamCompleteness(shows) {
+  info('Checking creative team structural completeness...');
+  let issues = 0;
+
+  // --- Role detection helpers ---
+  function rolesOf(team) {
+    return (team || []).map(m => (m.role || '').toLowerCase());
+  }
+  function hasAny(roles, ...patterns) {
+    return roles.some(r => patterns.some(p => r.includes(p)));
+  }
+  function hasMusic(roles) {
+    return hasAny(roles, 'music', 'composer', 'original score', 'original music');
+  }
+  function hasLyrics(roles) {
+    return hasAny(roles, 'lyrics', 'lyricist');
+  }
+  function hasAnySongwriter(roles) {
+    return hasMusic(roles) || hasLyrics(roles);
+  }
+  function hasBook(roles) {
+    return hasAny(roles, 'book');
+  }
+  function hasWriter(roles) {
+    return hasAny(roles, 'playwright', 'author', 'co-writer', 'adaptation',
+      'translator', 'written by', 'book', 'writer');
+  }
+  function hasDirector(roles) {
+    return hasAny(roles, 'director');
+  }
+
+  // --- Known exceptions (verified correct — won't generate warnings) ---
+  // Each entry: show ID + reason it's legitimately missing the role
+  const KNOWN_MUSICAL_NO_SONGWRITER = new Set([
+    'burn-the-floor-2009',       // Dance extravaganza, no original songs
+  ]);
+
+  const KNOWN_MUSICAL_NO_BOOK = new Set([
+    // Sung-through musicals (no spoken dialogue = no book)
+    'cats-1982', 'cats-2016', 'cats-the-jellicle-ball-2026',
+    'les-miserables-1987',
+    'the-phantom-of-the-opera-1988',
+    'evita-2012',
+    'jesus-christ-superstar-2012',
+    'miss-saigon-2017',
+    'godspell-2011',
+    'the-gershwins-porgy-and-bess-2012',
+    'pirates-the-penzance-musical-2025',
+    // Revues / concert shows / jukebox compilations (no narrative book)
+    'after-midnight-2013',
+    'rain-2010',
+    'sondheim-on-sondheim-2010',
+    'stephen-sondheims-old-friends-2025',
+    'bob-fosses-dancin-2023',
+    'burn-the-floor-2009',
+    'cirque-du-soleil-paramour-2016',
+    'cirque-dreams-2008',
+    'chita-rivera-the-dancers-life-2005',
+    'ring-of-fire-2006',
+    'the-times-they-are-achangin-2006',
+    'all-about-me-2010',
+    'the-pirate-queen-2007',
+  ]);
+
+  const KNOWN_MUSICAL_NO_DIRECTOR = new Set([
+    'rain-2010',                 // Concert show, no traditional director credit
+  ]);
+
+  const KNOWN_PLAY_NO_WRITER = new Set([
+    'mark-twain-tonight-2005',       // One-man show (Hal Holbrook as Mark Twain)
+    'is-this-a-room-2021',           // Verbatim theatre — transcript, no traditional playwright
+    'the-encounter-2016',            // Devised piece by Complicite/Simon McBurney
+    'primo-2005',                    // Solo show adapted from Primo Levi's memoir
+    'latinologues-2005',             // Comedy sketch show
+  ]);
+
+  const KNOWN_MUSIC_NO_LYRICS = new Set([
+    // Jukebox musicals where "Music" credit is catalog/compilation, lyrics from various songs
+    'bullets-over-broadway-2014',
+    'the-cher-show-2018',
+    'priscilla-queen-of-the-desert-2011',
+    'bob-fosses-dancin-2023',
+    'everyday-rapture-2010',
+  ]);
+
+  for (const show of shows) {
+    const team = show.creativeTeam || [];
+    if (team.length === 0) continue; // Empty teams handled elsewhere
+    const roles = rolesOf(team);
+
+    if (show.type === 'musical') {
+      // Check 1: Musical must have at least one songwriter
+      if (!hasAnySongwriter(roles) && !KNOWN_MUSICAL_NO_SONGWRITER.has(show.id)) {
+        warn(`[creative-completeness] Musical "${show.title}" (${show.id}) has NO Music or Lyrics credit — likely missing songwriter data from IBDB`);
+        issues++;
+      }
+
+      // Check 2: Musical should have a Book credit (warn, many legitimate exceptions)
+      if (!hasBook(roles) && !KNOWN_MUSICAL_NO_BOOK.has(show.id)) {
+        warn(`[creative-completeness] Musical "${show.title}" (${show.id}) has no Book credit — verify if sung-through/revue (add to exceptions) or genuinely missing`);
+        issues++;
+      }
+
+      // Check 3: Musical should have a Director
+      if (!hasDirector(roles) && !KNOWN_MUSICAL_NO_DIRECTOR.has(show.id)) {
+        warn(`[creative-completeness] Musical "${show.title}" (${show.id}) has no Director credit`);
+        issues++;
+      }
+
+      // Check 4: Asymmetry — Music without Lyrics suggests incomplete scrape
+      if (hasMusic(roles) && !hasLyrics(roles) && !KNOWN_MUSIC_NO_LYRICS.has(show.id)) {
+        warn(`[creative-completeness] Musical "${show.title}" (${show.id}) has Music but no Lyrics credit — likely incomplete`);
+        issues++;
+      }
+    } else {
+      // Play
+      // Check 5: Play must have a playwright/writer
+      if (!hasWriter(roles) && !KNOWN_PLAY_NO_WRITER.has(show.id)) {
+        warn(`[creative-completeness] Play "${show.title}" (${show.id}) has no Playwright or Writer credit`);
+        issues++;
+      }
+    }
+  }
+
+  if (issues === 0) {
+    ok('All shows pass creative team completeness checks');
+  } else {
+    info(`Creative team completeness: ${issues} warning(s) — review and fix data or add to known exceptions`);
+  }
+}
+
+// ===========================================
 // SAFETY CHECKS
 // ===========================================
 
@@ -1210,6 +1357,7 @@ function runValidation() {
   console.log('');
   validateSynopsisQuality(shows);
   validateCreativeTeamQuality(shows);
+  validateCreativeTeamCompleteness(shows);
   console.log('');
   validateMinimumCounts(shows);
   console.log('');
