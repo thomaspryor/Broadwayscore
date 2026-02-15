@@ -1,101 +1,95 @@
 {
-  "runDate": "2026-02-15T22:10:49.034Z",
+  "runDate": "2026-02-15T22:20:51.170Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "little-bear-ridge-road-2025",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 23,
+    "processed": 11,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "23.3%"
+    "successRate": "68.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 7,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 0,
-    "tier1_5Attempts": 24,
-    "tier1_5Success": 0,
-    "tier2Attempts": 24,
+    "tier1Attempts": 11,
+    "tier1Success": 10,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 24,
-    "tier3Success": 8,
-    "tier4Attempts": 15,
-    "tier4Success": 0,
-    "totalFailed": 23,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 6,
+    "tier4Success": 5,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 24,
-    "browserbaseMinutesUsed": 7,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    "little-bear-ridge-road-2025/nytg--gillian-russo.json",
+    "little-bear-ridge-road-2025/variety--daniel-daddario.json",
+    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+    "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
+    "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json",
+    "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
+    "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
+    "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
+    "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json",
+    "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "1776-2022/newyorker--naomi-fry.json",
-    "1984-2017/newyorker--hilton-als.json",
-    "a-christmas-carol-2019/newyorker--jesse-green.json",
-    "a-christmas-carol-2022/newyorker--naomi-fry.json",
-    "a-free-man-of-color-2010/newyorker--hilton-als.json",
-    "a-time-to-kill-2013/newyorker--hilton-als.json",
-    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
-    "act-one-2014/newyorker--hilton-als.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json",
-    "all-my-sons-2008/newyorker--hilton-als.json",
-    "american-psycho-2016/newyorker--hilton-als.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
-    "the-norman-conquests-2009/newyorker--john-lahr.json",
-    "the-parisian-woman-2017/newyorker--hilton-als.json",
-    "the-present-2017/newyorker--hilton-als.json"
+    "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
+    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
+    "little-bear-ridge-road-2025/theatre-reviews-limited--david-roberts.json",
+    "little-bear-ridge-road-2025/timeout--adam-feldman.json",
+    "little-bear-ridge-road-2025/theater-scene--samuel-l-leiter.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
+      "little-bear-ridge-road-2025/nytg--gillian-russo.json",
+      "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
+      "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
+      "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
+      "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
+      "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json"
+    ],
+    "browserbase": [
+      "data/review-texts/little-bear-ridge-road-2025/variety--daniel-daddario.json",
+      "little-bear-ridge-road-2025/variety--daniel-daddario.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+      "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
     ],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "lombardi-2010/newyorker--uncredited.json"
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+      "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 14,
-      "domain": "newyorker.com",
+    "The New York Times": {
+      "count": 17,
+      "domain": "nytimes.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
