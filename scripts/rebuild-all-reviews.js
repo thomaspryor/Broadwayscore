@@ -1809,8 +1809,60 @@ if (fs.existsSync(reviewsJsonPath)) {
         process.exit(1);
       }
     }
+
+    // ========================================
+    // 3B-ii: PER-SHOW REVIEW COUNT REGRESSION GATE
+    // ========================================
+    // If any show loses >2 scored reviews in a rebuild, something is wrong.
+    // In CI: abort to prevent data corruption from reaching production.
+    const REGRESSION_DROP_THRESHOLD = 2; // max reviews a single show can lose
+    const REGRESSION_MAX_SHOWS = 5;      // max shows that can regress before hard abort
+
+    const oldCountByShow = new Map();
+    for (const r of currentReviews) {
+      oldCountByShow.set(r.showId, (oldCountByShow.get(r.showId) || 0) + 1);
+    }
+    const newCountByShow = new Map();
+    for (const r of allReviews) {
+      newCountByShow.set(r.showId, (newCountByShow.get(r.showId) || 0) + 1);
+    }
+
+    const regressions = [];
+    for (const [showId, oldCount] of oldCountByShow) {
+      const newCount = newCountByShow.get(showId) || 0;
+      const dropped = oldCount - newCount;
+      if (dropped > REGRESSION_DROP_THRESHOLD) {
+        regressions.push({ showId, oldCount, newCount, dropped });
+      }
+    }
+
+    if (regressions.length > 0) {
+      regressions.sort((a, b) => b.dropped - a.dropped);
+
+      const auditDir = path.join(__dirname, '../data/audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(auditDir, 'rebuild-regression.json'),
+        JSON.stringify({ timestamp: new Date().toISOString(), regressions }, null, 2) + '\n'
+      );
+
+      console.log(`\n⚠️  REVIEW COUNT REGRESSION: ${regressions.length} show(s) lost >${REGRESSION_DROP_THRESHOLD} reviews`);
+      regressions.slice(0, 10).forEach(r => {
+        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped})`);
+      });
+      if (regressions.length > 10) {
+        console.log(`  ...and ${regressions.length - 10} more`);
+      }
+
+      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && !process.env.ALLOW_REGRESSION) {
+        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
+        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
+        console.error('Set ALLOW_REGRESSION=true to override.');
+        process.exit(1);
+      }
+    }
   } catch (e) {
-    // Can't read current file, skip drift check (first build)
+    // Can't read current file, skip drift/regression check (first build)
   }
 }
 
