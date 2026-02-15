@@ -708,8 +708,8 @@ function extractExcerptFromFullText(fullText, showTitle) {
  * typically open reviews with context/scene-setting, not evaluative content.
  * Aggregator editors hand-pick evaluative quotes.
  *
- * Priority: LLM keyPhrases > showScoreExcerpt > bwwExcerpt > nycTheatreExcerpt >
- *           dtliExcerpt > fullText extract > existing pullQuote
+ * Priority: llmPullQuote > LLM keyPhrases > showScoreExcerpt > bwwExcerpt >
+ *           nycTheatreExcerpt > dtliExcerpt > fullText extract > existing pullQuote
  */
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
@@ -756,7 +756,16 @@ function selectBestExcerpt(data, showTitle) {
     return excerpt;
   }
 
-  // 1. Try LLM-extracted key phrases first (already curated quotes!)
+  // 0. Try dedicated LLM pull quote (highest quality — focused extraction prompt)
+  if (data.llmPullQuote && data.llmPullQuote.length > 30) {
+    const cleaned = cleanExcerpt(data.llmPullQuote);
+    if (cleaned && !isJunkExcerpt(cleaned)) {
+      const validated = validateExcerpt(cleaned, 'llmPullQuote');
+      if (validated) return validated;
+    }
+  }
+
+  // 1. Try LLM-extracted key phrases (from scoring pipeline)
   if (data.llmScore?.keyPhrases?.length > 0) {
     // Find a positive or descriptive quote
     for (const phrase of data.llmScore.keyPhrases) {
