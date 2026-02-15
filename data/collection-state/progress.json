@@ -54,7 +54,11 @@
     "bug-2026/theatre-reviews-limited--david-roberts.json",
     "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
     "chicago-1996/ew--melissa-rose-bernardo.json",
-    "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-of-a-salesman-2026/newsday--linda-winer.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hamilton-2015/timeout--adam-feldman.json",
+    "hamilton-2015/timeout--david-cote.json"
   ],
   "failed": [
     "hadestown-2019/observer--david-cote.json",
@@ -91,7 +95,13 @@
     "chicago-1996/nydailynews--joe-dziemianowicz.json",
     "chicago-1996/nypost--elisabeth-vincentelli.json",
     "chicago-1996/wsj--terry-teachout.json",
-    "death-becomes-her-2024/timeout--adam-feldman.json"
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -145,7 +155,8 @@
     ],
     "scrapingbee": [],
     "brightdata": [
-      "death-becomes-her-2024/chelsea-community-news--michael-musto.json"
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "hadestown-2019/wsj--terry-teachout.json"
     ],
     "archive": [
       "high-2011/observer--jesse-oxfeld.json",
@@ -158,11 +169,14 @@
       "aladdin-2014/ew--thom-geier.json",
       "aladdin-2014/wsj--terry-teachout.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
-      "book-of-mormon-2011/vulture--scott-brown.json"
+      "book-of-mormon-2011/vulture--scott-brown.json",
+      "death-of-a-salesman-2026/newsday--linda-winer.json",
+      "hamilton-2015/timeout--adam-feldman.json",
+      "hamilton-2015/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-02-15T21:30:25.619Z",
-  "lastProcessed": "death-becomes-her-2024/timeout--adam-feldman.json",
+  "lastProcessed": "hamilton-2015/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-02-15T21:56:56.607Z",
@@ -230,6 +244,45 @@
       "event": "bb-session",
       "session": "fafffc51",
       "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-15T22:10:18.890Z",
+      "event": "bb-session",
+      "session": "8dc3fd67",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-15T22:10:21.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:10:58.804Z",
+      "event": "bb-session",
+      "session": "ded56321",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-15T22:14:23.800Z",
+      "event": "bb-session",
+      "session": "36d27b11",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-15T22:14:26.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:15:33.051Z",
+      "event": "bb-session",
+      "session": "a02998c1",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-15T22:15:35.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
