@@ -143,6 +143,14 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
+          NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
+          NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
+          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
+          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
@@ -174,7 +182,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '10' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
@@ -488,6 +496,14 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
+          NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
+          NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
+          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
+          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
           NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
@@ -519,7 +535,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '10' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           OUTLET_TIER: ${{ matrix.outlet_tier }}
