@@ -2,7 +2,7 @@
   "runDate": "2026-02-15T22:40:21.689Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "call-me-izzy-2025",
     "aggressive": false,
@@ -14,27 +14,27 @@
     "processed": 11,
     "failed": 2,
     "skipped": 0,
-    "successRate": "84.6%"
+    "successRate": "47.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 53,
-    "archive": 74
+    "brightdata": 46,
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 9,
     "tier1Success": 8,
     "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 87,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 2,
+    "tier3Attempts": 87,
+    "tier3Success": 70,
+    "tier4Attempts": 22,
+    "tier4Success": 1,
+    "totalFailed": 53,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0.6,
@@ -79,39 +79,11 @@
     ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 4,
-      "domain": "wsj.com",
+    "The New York Times": {
+      "count": 17,
+      "domain": "nytimes.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Deadline": {
-      "count": 1,
-      "domain": "deadline.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
       "isKnownBlocked": true
     }
   },
