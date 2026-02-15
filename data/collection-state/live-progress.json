@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-15T20:04:00.552Z",
-  "processed": 75,
-  "failed": 125,
-  "successRate": "37.5%",
+  "updatedAt": "2026-02-15T20:18:00.500Z",
+  "processed": 38,
+  "failed": 42,
+  "successRate": "47.5%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 5
+    "brightdata": 10,
+    "archive": 28
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 23,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T20:07:12.431Z",
+      "event": "bb-session",
+      "session": "7a7f8de0",
+      "url": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html"
+    },
+    {
+      "t": "2026-02-15T20:07:14.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:08:25.764Z",
+      "event": "bb-session",
+      "session": "047e5a14",
+      "url": "https://www.nytimes.com/2016/01/26/theater/review-our-mothers-brief-affair-a-son"
+    },
+    {
+      "t": "2026-02-15T20:08:27.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:09:37.621Z",
+      "event": "bb-session",
+      "session": "1f77757d",
+      "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html"
+    },
+    {
+      "t": "2026-02-15T20:09:39.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:10:46.526Z",
+      "event": "bb-session",
+      "session": "929560ea",
+      "url": "https://www.nytimes.com/2012/04/16/theater/reviews/peter-and-the-starcatcher-wit"
+    },
+    {
+      "t": "2026-02-15T20:10:48.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:11:55.036Z",
+      "event": "bb-session",
+      "session": "4377ee9c",
+      "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html"
+    },
+    {
+      "t": "2026-02-15T20:11:57.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:13:03.423Z",
+      "event": "bb-session",
+      "session": "43ee95e8",
+      "url": "https://www.nytimes.com/2025/04/24/theater/pirates-penzance-musical-review.html"
+    },
+    {
+      "t": "2026-02-15T20:13:05.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:14:12.578Z",
+      "event": "bb-session",
+      "session": "9cbc399a",
+      "url": "https://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soig"
+    },
+    {
+      "t": "2026-02-15T20:14:14.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:15:20.819Z",
+      "event": "bb-session",
+      "session": "eda8175d",
+      "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html"
+    },
+    {
+      "t": "2026-02-15T20:15:23.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:16:29.521Z",
+      "event": "bb-session",
+      "session": "90ddab00",
+      "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html"
+    },
+    {
+      "t": "2026-02-15T20:16:31.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T20:17:37.141Z",
+      "event": "bb-session",
+      "session": "d58ff9f8",
+      "url": "https://www.nytimes.com/2010/04/26/theater/reviews/26promises.html"
+    },
+    {
+      "t": "2026-02-15T20:17:39.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
