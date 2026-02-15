@@ -936,13 +936,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
         )}
 
-        {/* Creative Team */}
-        {show.creativeTeam && show.creativeTeam.length > 0 && (
+        {/* Creative Team — show only principal roles */}
+        {show.creativeTeam && show.creativeTeam.length > 0 && (() => {
+          const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
+          const principals = show.creativeTeam.filter(m => PRINCIPAL_ROLES.test(m.role));
+          return principals.length > 0 ? (
           <div className="mb-8">
             <div className="card p-5 sm:p-6">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
               <ul className="space-y-2.5 sm:space-y-2">
-                {show.creativeTeam.map((member, i) => {
+                {principals.map((member, i) => {
                   const creativeLink = getCreativeLink(member.name, member.role);
                   return (
                   <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
@@ -958,7 +961,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </ul>
             </div>
           </div>
-        )}
+          ) : null;
+        })()}
 
         {/* Quick Facts - Structured data for users and AI systems */}
         <div className="card p-4 sm:p-5 mb-8">
