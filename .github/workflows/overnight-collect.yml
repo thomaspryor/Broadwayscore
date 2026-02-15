@@ -77,7 +77,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: '5'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '20'
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}

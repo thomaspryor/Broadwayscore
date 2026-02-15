@@ -7,24 +7,24 @@ const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
 
-export type LoopsStatus = 'idle' | 'submitting' | 'success' | 'error' | 'already_subscribed';
+export type FormspreeStatus = 'idle' | 'submitting' | 'success' | 'error' | 'already_subscribed';
 
-interface LoopsCaptureOptions {
+interface FormspreeCaptureOptions {
   userGroup: string;
   source: string;
   showId?: string;
   showTitle?: string;
 }
 
-interface LoopsCaptureResult {
-  status: LoopsStatus;
+interface FormspreeCaptureResult {
+  status: FormspreeStatus;
   errorMessage: string;
   submit: (email: string, options?: { firstName?: string }) => Promise<boolean>;
   isSubscribed: boolean;
 }
 
-export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResult {
-  const [status, setStatus] = useState<LoopsStatus>('idle');
+export function useFormspreeCapture(options: FormspreeCaptureOptions): FormspreeCaptureResult {
+  const [status, setStatus] = useState<FormspreeStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -51,7 +51,7 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
     const formId = isSubscriber ? FORMSPREE_SUBSCRIBER_FORM_ID : FORMSPREE_FOLLOW_FORM_ID;
 
     if (!formId) {
-      console.error(`useLoopsCapture: Formspree ${isSubscriber ? 'subscriber' : 'follow'} form ID not configured.`);
+      console.error(`useFormspreeCapture: Formspree ${isSubscriber ? 'subscriber' : 'follow'} form ID not configured.`);
       setStatus('error');
       setErrorMessage('Email subscription is not available right now.');
       return false;

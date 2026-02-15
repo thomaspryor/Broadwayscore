@@ -67,7 +67,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         setUserData(parsed);
         setHasEmail(true);
       } else if (loopsSubscribed) {
-        // User subscribed via Loops (header, footer, homepage banner, show follow)
+        // User subscribed via Formspree (header, footer, homepage banner, show follow)
         // Treat as having email so we don't nag them again
         setHasEmail(true);
       }
@@ -142,8 +142,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     setHasEmail(true);
     setModalOpen(false);
 
-    // TODO: In future, also send to backend/Formspree/etc.
-    console.log('Email captured:', data);
+    // Email is already captured via Formspree in the inline forms (header, footer, etc.)
+    // This modal path only saves locally to gate content access
   }, []);
 
   const shouldShowGate = useCallback(() => {
