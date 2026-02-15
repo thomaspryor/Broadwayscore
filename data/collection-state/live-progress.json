@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-15T22:09:26.641Z",
-  "processed": 55,
-  "failed": 35,
-  "successRate": "61.1%",
+  "updatedAt": "2026-02-15T22:16:35.846Z",
+  "processed": 59,
+  "failed": 41,
+  "successRate": "59.0%",
   "tierBreakdown": {
     "playwright": 42,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 11
+    "brightdata": 2,
+    "archive": 14
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
       "t": "2026-02-15T21:56:56.607Z",
@@ -78,6 +78,45 @@
       "event": "bb-session",
       "session": "fafffc51",
       "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-15T22:10:18.890Z",
+      "event": "bb-session",
+      "session": "8dc3fd67",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-15T22:10:21.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:10:58.804Z",
+      "event": "bb-session",
+      "session": "ded56321",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-15T22:14:23.800Z",
+      "event": "bb-session",
+      "session": "36d27b11",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-15T22:14:26.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:15:33.051Z",
+      "event": "bb-session",
+      "session": "a02998c1",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-15T22:15:35.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
