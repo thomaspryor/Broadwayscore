@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-15T23:22:13.423Z",
-  "processed": 11,
-  "failed": 2,
-  "successRate": "84.6%",
+  "updatedAt": "2026-02-15T23:39:18.175Z",
+  "processed": 193,
+  "failed": 397,
+  "successRate": "32.7%",
   "tierBreakdown": {
-    "playwright": 8,
-    "browserbase": 0,
+    "playwright": 113,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 48,
+    "archive": 45
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 15,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T21:43:51.249Z",
+      "event": "bb-session",
+      "session": "e6e83b16",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-15T21:43:53.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:45:04.885Z",
+      "event": "bb-session",
+      "session": "6ae1e0be",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-15T21:45:06.956Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:46:18.902Z",
+      "event": "bb-session",
+      "session": "64098ae0",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-02-15T21:46:21.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:49:06.952Z",
+      "event": "bb-session",
+      "session": "3d2e4798",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-02-15T21:49:09.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:50:32.454Z",
+      "event": "bb-session",
+      "session": "ce94ed32",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-15T21:50:34.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:51:40.333Z",
+      "event": "bb-session",
+      "session": "d640eb98",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-02-15T21:51:42.628Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:52:48.124Z",
+      "event": "bb-session",
+      "session": "3d53e342",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-02-15T21:52:50.277Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:54:04.198Z",
+      "event": "bb-session",
+      "session": "1b2e05af",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-15T21:54:06.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:55:16.207Z",
+      "event": "bb-session",
+      "session": "11ff396e",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-15T21:55:18.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T21:57:20.526Z",
+      "event": "bb-session",
+      "session": "890a84af",
+      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
+    },
+    {
+      "t": "2026-02-15T21:57:22.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
