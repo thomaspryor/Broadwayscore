@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-15T15:53:09.680Z",
+    "generatedAt": "2026-02-15T16:00:28.498Z",
     "description": "Per-show per-aggregator review coverage audit (read-only)",
     "totalShows": 727,
     "showsWithGaps": 477,
-    "totalMissingReviews": 5165,
-    "totalTrulyMissing": 1026
+    "totalMissingReviews": 5167,
+    "totalTrulyMissing": 1028
   },
   "summary": {
     "archiveCounts": {
@@ -27,7 +27,7 @@
     "totalMissing": {
       "dtli": 188,
       "showScore": 2292,
-      "bww": 1014,
+      "bww": 1016,
       "bwwReviews": 589,
       "playbillVerdict": 1079,
       "nycTheatre": 3
@@ -31746,10 +31746,10 @@
     "a-little-night-music-2009": {
       "title": "A Little Night Music",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 29,
       "hasGap": true,
-      "totalGap": 11,
-      "trulyMissing": 0,
+      "totalGap": 12,
+      "trulyMissing": 1,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -31766,8 +31766,8 @@
         },
         "bww": {
           "archiveCount": 5,
-          "extractedCount": 3,
-          "gap": 2,
+          "extractedCount": 2,
+          "gap": 3,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -31795,7 +31795,7 @@
       "maxAggregatorCount": 30,
       "flags": [
         "dtli-no-archive",
-        "bww-under-2",
+        "bww-under-3",
         "bwwReviews-under-6",
         "playbillVerdict-under-3",
         "nycTheatre-no-archive"
@@ -36758,10 +36758,10 @@
     "the-country-girl-2008": {
       "title": "The Country Girl",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 9,
       "hasGap": true,
-      "totalGap": 5,
-      "trulyMissing": 3,
+      "totalGap": 6,
+      "trulyMissing": 4,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -36778,8 +36778,8 @@
         },
         "bww": {
           "archiveCount": 13,
-          "extractedCount": 8,
-          "gap": 5,
+          "extractedCount": 7,
+          "gap": 6,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -36806,7 +36806,7 @@
       "maxAggregatorCount": 13,
       "flags": [
         "dtli-no-archive",
-        "bww-under-5",
+        "bww-under-6",
         "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
