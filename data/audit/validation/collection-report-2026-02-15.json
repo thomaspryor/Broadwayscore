@@ -2,9 +2,9 @@
   "runDate": "2026-02-15T21:17:27.165Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "book-of-mormon-2011,chicago-1996,and-juliet-2022,hadestown-2019,ragtime-2025,what-the-constitution-means-to-me-2019,sweat-2017,the-encounter-2016,oslo-2017,oklahoma-2019,king-charles-iii-2015,the-little-foxes-2017,some-like-it-hot-2022,children-of-a-lesser-god-2018,the-father-2016,hughie-2016,the-cher-show-2018,american-son-2018,in-transit-2016,straight-white-men-2018,bernhardthamlet-2018,dear-evan-hansen-2016,punch-2025,the-prom-2018,a-strange-loop-2022,fiddler-on-the-roof-2015,king-lear-2019,on-the-town-2014,the-nap-2018,all-my-sons-2019,kinky-boots-2013,paradise-square-2022,slave-play-2021,tuck-everlasting-2016,a-life-in-the-theatre-2010,evita-2012,linda-vista-2019,on-the-twentieth-century-2015,thoughts-of-a-colored-man-2021,wonderland-2011,beetlejuice-2022,dana-h-2021,fat-ham-2023,good-people-2011,kpop-2022,new-york-new-york-2023,red-2010,the-picture-of-dorian-gray-2025,act-one-2014,breakfast-at-tiffanys-2013,catch-me-if-you-can-2011,glengarry-glen-ross-2012,illinoise-2024,motown-the-musical-2016,promises-promises-2010,spongebob-squarepants-2017,the-big-knife-2013,the-heiress-2012,the-scottsboro-boys-2010,a-bronx-tale-the-musical-2016,bengal-tiger-at-the-baghdad-zoo-2011,cats-2016,dont-dress-for-dinner-2012,grand-horizons-2020,honeymoon-in-vegas-2015,mrs-doubtfire-2021,other-desert-cities-2011,stick-fly-2011,the-hills-of-california-2024,trouble-in-mind-2021,700-sundays-2013,american-idiot-2010,big-fish-2013,diana-the-musical-2021,hangmen-2022,left-on-tenth-2024,my-name-is-lucy-barton-2020,outside-mullingar-2014,south-pacific-2008,sunday-in-the-park-with-george-2017,the-columnist-2012,the-normal-heart-2011,the-velocity-of-autumn-2014,venus-in-fur-2011,a-christmas-carol-2019,american-buffalo-2008,birthday-candles-2022,exit-the-king-2009,golden-boy-2012,la-bete-2010,mary-poppins-2006,peter-pan-goes-wrong-2023,romeo-and-juliet-2013,the-boys-in-the-band-2018,the-merchant-of-venice-2010,the-play-that-goes-wrong-2017,walking-with-ghosts-2022,a-catered-affair-2008,an-enemy-of-the-people-2024,bronx-bombers-2014,dead-accounts-2012,godspell-2011,i-need-that-2023,joe-turners-come-and-gone-2009,love-letters-2014,prima-facie-2023,soul-doctor-2013,the-history-boys-2006,the-present-2017,a-chorus-line-2006,a-night-with-janis-joplin-2013,company-2006,heart-of-rock-and-roll-2024,john-proctor-is-the-villain-2025,lysistrata-jones-2011,primo-2005,the-last-five-years-2025,the-whos-tommy-2024,all-in-comedy-about-love-2024,chita-rivera-the-dancers-life-2005,deuce-2007,frostnixon-2007,hot-feet-2006,martin-short-fame-becomes-me-2006,rent-1996,superior-donuts-2009,the-39-steps-2008,the-new-one-2018,the-seafarer-2007,three-days-of-rain-2006,young-frankenstein-2007",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -259,6 +259,41 @@
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Reading Eagle": {
+      "count": 1,
+      "domain": "readingeagle.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Reading Eagle (George Hatza)": {
+      "count": 1,
+      "domain": "readingeagle.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 1,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
