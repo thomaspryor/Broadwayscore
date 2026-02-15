@@ -74,7 +74,11 @@
     "operation-mincemeat-2025/wsj--charles-isherwood.json",
     "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-lion-king-1997/new-york--john-simon.json"
+    "the-lion-king-1997/new-york--john-simon.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/timeout--david-cote.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "hadestown-2019/observer--david-cote.json",
@@ -141,7 +145,13 @@
     "stranger-things-2024/timeout--adam-feldman.json",
     "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
     "the-great-gatsby-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/deadline--greg-evans.json"
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "book-of-mormon-2011/cititour--lesley-alexander.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,20 +209,22 @@
       "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
       "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-lion-king-1997/new-york--john-simon.json"
+      "the-lion-king-1997/new-york--john-simon.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
       "data/review-texts/wicked-2003/variety--peter-debruge.json",
       "wicked-2003/variety--peter-debruge.json",
-      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/the-outsiders-2024/deadline--greg-evans.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
       "hadestown-2019/wsj--terry-teachout.json",
       "moulin-rouge-2019/wsj--terry-teachout.json",
-      "operation-mincemeat-2025/wsj--charles-isherwood.json"
+      "operation-mincemeat-2025/wsj--charles-isherwood.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "high-2011/observer--jesse-oxfeld.json",
@@ -230,11 +242,13 @@
       "hamilton-2015/timeout--adam-feldman.json",
       "hamilton-2015/timeout--david-cote.json",
       "hamilton-2015/wsj--terry-teachout.json",
-      "harry-potter-2021/wsj--terry-teachout.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-02-15T21:30:25.619Z",
-  "lastProcessed": "the-outsiders-2024/deadline--greg-evans.json",
+  "lastProcessed": "aladdin-2014/catholic-transcript--bernard-carragher.json",
   "log": [
     {
       "t": "2026-02-15T21:56:56.607Z",
@@ -405,6 +419,39 @@
     },
     {
       "t": "2026-02-15T22:31:09.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:37:59.877Z",
+      "event": "bb-session",
+      "session": "9e12d482",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-02-15T22:38:01.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-15T22:39:12.614Z",
+      "event": "bb-session",
+      "session": "1206fd29",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-15T22:39:14.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:41:10.604Z",
+      "event": "bb-session",
+      "session": "39215900",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-15T22:41:12.882Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
