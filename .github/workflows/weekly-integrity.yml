@@ -46,6 +46,7 @@ jobs:
           echo "sync_delta=$(cat data/integrity-report.json | jq '.summary.syncDelta')" >> $GITHUB_OUTPUT
 
       - name: Commit history update
+        if: always()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
