@@ -3,11 +3,12 @@
  * Daily Data Health Check
  *
  * Monitors all automated pipelines for silent failures.
- * 20 checks across 4 categories:
+ * Checks across 5 categories:
  *   A. Data Freshness (7) — are data files up to date?
  *   B. Data Sync (3) — do derived files match source files?
  *   C. Pipeline Health (6) — did critical workflows run recently? (warn only)
  *   D. Content Quality (1) — is scored review percentage healthy?
+ *   E. Cookie Expiration (1) — are paywall cookies still valid?
  *
  * Progressive alerting:
  *   - #weekly-reports: always (daily summary)
@@ -276,6 +277,84 @@ function checkQuality() {
   ];
 }
 
+// --- Category E: Cookie Expiration ---
+
+const COOKIE_DIR = path.join(DATA_DIR, 'cookies');
+const COOKIE_WARN_DAYS = 7;
+const COOKIE_ERROR_DAYS = 2;
+const CRITICAL_COOKIE_OUTLETS = new Set([
+  'wsj', 'nytimes', 'newyorker', 'wapo', 'ft', 'vulture', 'timeout'
+]);
+
+function checkCookieExpiration() {
+  const results = [];
+  if (!fs.existsSync(COOKIE_DIR)) {
+    results.push({ name: 'Cookies: expiration', status: 'warn', message: 'data/cookies/ not found', hint: 'Run: python3 scripts/extract-safari-cookies.py' });
+    return results;
+  }
+
+  const files = fs.readdirSync(COOKIE_DIR).filter(f => f.endsWith('.json'));
+  if (files.length === 0) {
+    results.push({ name: 'Cookies: expiration', status: 'warn', message: 'No cookie files found' });
+    return results;
+  }
+
+  const now = Date.now() / 1000;
+  const details = [];
+
+  for (const file of files) {
+    const outlet = file.replace('.json', '');
+    const isCritical = CRITICAL_COOKIE_OUTLETS.has(outlet);
+    try {
+      const cookies = JSON.parse(fs.readFileSync(path.join(COOKIE_DIR, file), 'utf8'));
+      if (!Array.isArray(cookies) || cookies.length === 0) continue;
+
+      const validCookies = cookies.filter(c => c.expires && c.expires > 0);
+      if (validCookies.length === 0) continue;
+
+      const latestExpiry = Math.max(...validCookies.map(c => c.expires));
+      const daysLeft = (latestExpiry - now) / (60 * 60 * 24);
+
+      if (daysLeft <= COOKIE_WARN_DAYS) {
+        details.push({ outlet, daysLeft: Math.round(daysLeft * 10) / 10, isCritical });
+      }
+    } catch (e) {
+      details.push({ outlet, daysLeft: -1, isCritical, error: e.message });
+    }
+  }
+
+  if (details.length > 0) {
+    const criticalIssues = details.filter(d => d.isCritical);
+    const status = criticalIssues.some(d => d.daysLeft <= COOKIE_ERROR_DAYS) ? 'error'
+      : criticalIssues.length > 0 ? 'warn'
+      : details.some(d => d.daysLeft <= 0) ? 'warn'
+      : 'pass';
+
+    const expired = details.filter(d => d.daysLeft <= 0).length;
+    const expiring = details.filter(d => d.daysLeft > 0).length;
+    const summary = details
+      .sort((a, b) => a.daysLeft - b.daysLeft)
+      .slice(0, 5)
+      .map(d => `${d.outlet}${d.isCritical ? '*' : ''}: ${d.daysLeft <= 0 ? 'EXPIRED' : d.daysLeft + 'd left'}`)
+      .join(', ');
+
+    results.push({
+      name: 'Cookies: expiration',
+      status,
+      message: `${expired} expired, ${expiring} expiring <${COOKIE_WARN_DAYS}d — ${summary}`,
+      hint: 'Run: python3 scripts/extract-safari-cookies.py then gh secret set <NAME> < /tmp/<file>.txt',
+    });
+  } else {
+    results.push({
+      name: 'Cookies: expiration',
+      status: 'pass',
+      message: `${files.length} cookie files, all valid >${COOKIE_WARN_DAYS}d`,
+    });
+  }
+
+  return results;
+}
+
 // --- Progressive Alerting ---
 
 function loadHistory() {
@@ -295,12 +374,13 @@ function saveHistory(history) {
 // --- Discord Notifications ---
 
 async function sendDailyReport(results, history) {
-  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [] };
+  const categories = { Freshness: [], Sync: [], Pipelines: [], Quality: [], Cookies: [] };
   for (const r of results) {
     if (r.name.startsWith('Freshness:')) categories.Freshness.push(r);
     else if (r.name.startsWith('Sync:')) categories.Sync.push(r);
     else if (r.name.startsWith('Pipeline:')) categories.Pipelines.push(r);
     else if (r.name.startsWith('Quality:')) categories.Quality.push(r);
+    else if (r.name.startsWith('Cookies:')) categories.Cookies.push(r);
   }
 
   const catSummary = (checks) => {
@@ -346,6 +426,7 @@ async function sendDailyReport(results, history) {
     { name: 'Sync', value: catSummary(categories.Sync), inline: true },
     { name: 'Pipelines', value: catSummary(categories.Pipelines), inline: true },
     { name: 'Quality', value: catSummary(categories.Quality), inline: true },
+    { name: 'Cookies', value: catSummary(categories.Cookies), inline: true },
   ];
 
   const webhookUrl = process.env.DISCORD_WEBHOOK_REPORTS;
@@ -397,6 +478,7 @@ async function main() {
     ...checkSync(),
     ...checkPipelines(),
     ...checkQuality(),
+    ...checkCookieExpiration(),
   ];
 
   // Print console summary
