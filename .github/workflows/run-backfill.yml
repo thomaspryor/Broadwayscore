@@ -35,6 +35,6 @@ jobs:
               git push origin main && break
               echo "Push attempt $i failed, retrying..."
               sleep $((RANDOM % 10 + 5))
-              git pull --rebase origin main
+              git pull --rebase -X theirs origin main || true
             done
           fi
