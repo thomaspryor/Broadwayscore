@@ -1,15 +1,96 @@
 {
-  "updatedAt": "2026-02-15T17:22:47.653Z",
-  "processed": 34,
-  "failed": 36,
-  "successRate": "48.6%",
+  "updatedAt": "2026-02-15T17:35:53.809Z",
+  "processed": 57,
+  "failed": 73,
+  "successRate": "43.8%",
   "tierBreakdown": {
-    "playwright": 28,
-    "browserbase": 0,
+    "playwright": 45,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 4,
-    "archive": 6
+    "brightdata": 6,
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T16:41:29.047Z",
+      "event": "bb-session",
+      "session": "f4ea4b75",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-15T16:42:04.643Z",
+      "event": "bb-session",
+      "session": "9b88c4ef",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
+    },
+    {
+      "t": "2026-02-15T16:44:28.334Z",
+      "event": "bb-session",
+      "session": "62c379f2",
+      "url": "https://www.indiewire.com/2021/12/clydes-broadway-review-1234685678/"
+    },
+    {
+      "t": "2026-02-15T16:46:33.239Z",
+      "event": "bb-session",
+      "session": "5625fc0e",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+    },
+    {
+      "t": "2026-02-15T16:46:36.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T16:57:17.390Z",
+      "event": "bb-session",
+      "session": "c2c4a64b",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    },
+    {
+      "t": "2026-02-15T17:09:41.714Z",
+      "event": "bb-session",
+      "session": "2fe1d56e",
+      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
+    },
+    {
+      "t": "2026-02-15T17:10:15.086Z",
+      "event": "bb-session",
+      "session": "71e7e77a",
+      "url": "https://www.thewrap.com/violet-theater-review"
+    },
+    {
+      "t": "2026-02-15T17:15:51.584Z",
+      "event": "bb-session",
+      "session": "0b194d48",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/227339681_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:15:53.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:25:32.112Z",
+      "event": "bb-session",
+      "session": "7bc54d18",
+      "url": "https://www.usatoday.com/story/life/theater/2019/03/21/aint-too-proud-temptation"
+    },
+    {
+      "t": "2026-02-15T17:25:34.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:31:40.208Z",
+      "event": "bb-session",
+      "session": "867c3918",
+      "url": "https://www.huffpost.com/david-finkle/first-nighter-lisa-damour_b_7132894.html"
+    },
+    {
+      "t": "2026-02-15T17:31:42.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    }
+  ]
 }
