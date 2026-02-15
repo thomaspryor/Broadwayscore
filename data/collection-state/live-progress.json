@@ -1,15 +1,128 @@
 {
-  "updatedAt": "2026-02-15T00:57:42.810Z",
-  "processed": 21,
-  "failed": 79,
-  "successRate": "21.0%",
+  "updatedAt": "2026-02-15T01:13:15.390Z",
+  "processed": 9,
+  "failed": 21,
+  "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 18,
+    "brightdata": 6,
     "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T00:52:30.458Z",
+      "event": "bb-session",
+      "session": "9d518fad",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-15T00:53:10.773Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:54:07.431Z",
+      "event": "bb-session",
+      "session": "d41fdaf4",
+      "url": "https://www.wsj.com/arts-culture/theater/maybe-happy-ending-review-broadway-musi"
+    },
+    {
+      "t": "2026-02-15T00:54:48.907Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:55:25.226Z",
+      "event": "bb-session",
+      "session": "06f4fa39",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-15T00:56:06.279Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:56:29.908Z",
+      "event": "bb-session",
+      "session": "c7ee3d09",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-15T00:57:11.494Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:57:34.739Z",
+      "event": "bb-session",
+      "session": "74d54adb",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-02-15T00:58:16.585Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:58:37.763Z",
+      "event": "bb-session",
+      "session": "7952d678",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-02-15T00:59:19.656Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T00:59:58.604Z",
+      "event": "bb-session",
+      "session": "7021b4e4",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
+    },
+    {
+      "t": "2026-02-15T01:00:39.606Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T01:02:24.709Z",
+      "event": "bb-session",
+      "session": "db709390",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-15T01:03:03.116Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117352689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA2fJdPd8_RcEANA1qtA==&cid=fc38V7DKUyuk9Mtvs1Rg2~WtDJt6G71XD1k9KTVzowXbNcMyBIWifpIaW_NcQOX6qOMEe5S_fJOIPWVQkLV1TmjF1ffwzwEvS5RlPoYfq9Qe4tS2dZzE0TyMBLUNZtV0&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117352689\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117352689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA2fJdPd8_RcEANA1qtA==&cid=fc38V7DKUyuk9Mtvs1Rg2~WtDJt6G71XD1k9KTVzowXbNcMyBIWifpIaW_NcQOX6qOMEe5S_fJOIPWVQkLV1TmjF1ffwzwEvS5RlPoYfq9Qe4tS2dZzE0TyMBLUNZtV0&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117352689\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117352689\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA2fJdPd8_RcEANA1qtA==&cid=fc38V7DKUyuk9Mtvs1Rg2~WtDJt6G71XD1k9KTVzowXbNcMyBIWifpIaW_NcQOX6qOMEe5S_fJOIPWVQkLV1TmjF1ffwzwEvS5RlPoYfq9Qe4tS2dZzE0TyMBLUNZtV0&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117352689\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-15T01:03:53.480Z",
+      "event": "bb-session",
+      "session": "c99bf7b9",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-15T01:04:32.057Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117441408\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMADtQDTzzTU3kANA1qtA==&cid=3SE_x5SpfK1N2k2mIPHzRSe0K9Zc1pr4L_Y~7dMbRDoqhhTbm~cP4oWN7QoS_URrS1qvb8~DbBMc97NwhSy6zSsgRl6Z3bcykuRgtTY2FhSfYy549~Elew~_dilK3bOV&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117441408\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117441408\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMADtQDTzzTU3kANA1qtA==&cid=3SE_x5SpfK1N2k2mIPHzRSe0K9Zc1pr4L_Y~7dMbRDoqhhTbm~cP4oWN7QoS_URrS1qvb8~DbBMc97NwhSy6zSsgRl6Z3bcykuRgtTY2FhSfYy549~Elew~_dilK3bOV&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117441408\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    33 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771117441408\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMADtQDTzzTU3kANA1qtA==&cid=3SE_x5SpfK1N2k2mIPHzRSe0K9Zc1pr4L_Y~7dMbRDoqhhTbm~cP4oWN7QoS_URrS1qvb8~DbBMc97NwhSy6zSsgRl6Z3bcykuRgtTY2FhSfYy549~Elew~_dilK3bOV&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771117441408\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-15T01:05:56.149Z",
+      "event": "bb-session",
+      "session": "341074e0",
+      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
+    },
+    {
+      "t": "2026-02-15T01:06:37.468Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
