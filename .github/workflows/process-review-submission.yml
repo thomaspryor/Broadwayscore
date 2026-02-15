@@ -206,7 +206,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit and push changes
-        if: success()
+        if: always()
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         run: |

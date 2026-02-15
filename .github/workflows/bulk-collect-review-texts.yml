@@ -382,6 +382,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit and push rebuilt reviews.json
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -457,7 +458,7 @@ jobs:
           echo "Reviews still needing fullText: $REMAINING"
 
       - name: Chain next round
-        if: inputs.max_rounds != '0' && inputs.test_mode != true
+        if: always() && inputs.max_rounds != '0' && inputs.test_mode != true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
