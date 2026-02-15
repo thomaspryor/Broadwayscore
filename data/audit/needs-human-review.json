@@ -3,8 +3,8 @@
     "generatedAt": "2026-02-15T12:04:17.584Z",
     "totalFlagged": 74,
     "reasons": {
-      "possible-tour-fulltext": 27,
-      "originalScore-llm-conflict": 47
+      "possible-tour-fulltext": 26,
+      "originalScore-llm-conflict": 48
     }
   },
   "reviews": [
@@ -651,9 +651,9 @@
       "criticName": "Howard Miller",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T12:04:05.559Z"
@@ -742,9 +742,9 @@
       "criticName": "Robert Kahn",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\btouring production\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T12:04:07.181Z"
