@@ -125,7 +125,9 @@
     "fun-home-2015/ap--unknown.json",
     "fun-home-2015/towleroad--naveen-kumar.json",
     "funny-girl-2022/collider-maggie-lovitt--maggie-lovitt.json",
-    "funny-girl-2022/elysa-gardner--york-sun.json"
+    "funny-girl-2022/elysa-gardner--york-sun.json",
+    "funny-girl-2022/theater-life--paulanne-simmons.json",
+    "grey-house-2023/slash-film--caroline-cao.json"
   ],
   "failed": [
     "almost-famous-2022/nyt-theater--jonathan-mandell.json",
@@ -331,7 +333,15 @@
     "fun-home-2015/simon-parris-man-in-chair--simon-parris.json",
     "fun-home-2015/wnbc--robert-kahn.json",
     "funny-girl-2022/ap--mark-kennedy.json",
-    "funny-girl-2022/latimes--charles-mcnulty.json"
+    "funny-girl-2022/latimes--charles-mcnulty.json",
+    "funny-girl-2022/talkinbroadway--matthew-murray.json",
+    "funny-girl-2022/theater-scene--darryl-reilly.json",
+    "funny-girl-2022/usatoday--charles-isherwood.json",
+    "ghost-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "good-night-oscar-2023/broadway-blog--billy-mcentee.json",
+    "good-night-oscar-2023/theater-scene--victor-gluck.json",
+    "grand-horizons-2020/broadwayworld--michael-dale.json",
+    "grey-house-2023/exeunt-magazine--loren-noveck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -435,7 +445,9 @@
       "fully-committed-2016/stagezine--david-nounou.json",
       "fully-committed-2016/towncountry--john-winterman.json",
       "fun-home-2015/towleroad--naveen-kumar.json",
-      "funny-girl-2022/collider-maggie-lovitt--maggie-lovitt.json"
+      "funny-girl-2022/collider-maggie-lovitt--maggie-lovitt.json",
+      "funny-girl-2022/theater-life--paulanne-simmons.json",
+      "grey-house-2023/slash-film--caroline-cao.json"
     ],
     "browserbase": [
       "data/review-texts/children-of-a-lesser-god-2018/fordham-observer--michael-appler.json",
@@ -487,7 +499,7 @@
     ]
   },
   "startTime": "2026-02-15T16:14:43.212Z",
-  "lastProcessed": "funny-girl-2022/latimes--charles-mcnulty.json",
+  "lastProcessed": "grey-house-2023/slash-film--caroline-cao.json",
   "log": [
     {
       "t": "2026-02-15T16:19:04.958Z",
@@ -651,6 +663,28 @@
       "t": "2026-02-15T19:00:06.608Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T19:19:31.156Z",
+      "event": "bb-session",
+      "session": "70e67635",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2022/04/25/funny-girl-broad"
+    },
+    {
+      "t": "2026-02-15T19:19:32.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T19:20:55.096Z",
+      "event": "bb-session",
+      "session": "15c002fc",
+      "url": "https://www.bloomberg.com/news/2012-04-24/-ghost-is-banal-blinding-lyons-electri"
+    },
+    {
+      "t": "2026-02-15T19:20:57.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
