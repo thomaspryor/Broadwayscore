@@ -2,6 +2,14 @@
   "generatedAt": "2026-02-15T06:02:21.581Z",
   "issues": [
     {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "bright-star-2016",
+      "outlet": "nytimes",
+      "critic": "Ben Brantley",
+      "detail": "Critics_Pick but score=41 (source: llmScore)"
+    },
+    {
       "type": "rating-score-mismatch",
       "severity": "high",
       "showId": "oh-hello-on-broadway-2016",
@@ -21,7 +29,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "a-dolls-house-part-2-2017",
-      "detail": "26/61 reviews (43%) scored exactly 82"
+      "detail": "25/60 reviews (42%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -33,13 +41,13 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "dear-evan-hansen-2016",
-      "detail": "19/51 reviews (37%) scored exactly 82"
+      "detail": "19/52 reviews (37%) scored exactly 82"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "eclipsed-2016",
-      "detail": "17/47 reviews (36%) scored exactly 82"
+      "detail": "18/48 reviews (38%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -51,7 +59,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "hand-to-god-2015",
-      "detail": "13/34 reviews (38%) scored exactly 82"
+      "detail": "15/38 reviews (39%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -80,14 +88,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "punch-2025",
-      "detail": "8/21 reviews (38%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "shucked-2023",
-      "detail": "26/53 reviews (49%) scored exactly 80"
+      "detail": "26/54 reviews (48%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -111,7 +113,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "the-waverly-gallery-2018",
-      "detail": "6/16 reviews (38%) scored exactly 80"
+      "detail": "6/17 reviews (35%) scored exactly 80"
     },
     {
       "type": "score-clustering",

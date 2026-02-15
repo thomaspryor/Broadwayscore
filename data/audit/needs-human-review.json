@@ -3,11 +3,24 @@
     "generatedAt": "2026-02-15T06:02:21.697Z",
     "totalFlagged": 71,
     "reasons": {
-      "originalScore-llm-conflict": 47,
-      "possible-tour-fulltext": 24
+      "possible-tour-fulltext": 27,
+      "originalScore-llm-conflict": 47
     }
   },
   "reviews": [
+    {
+      "showId": "700-sundays-2013",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T05:58:00.389Z"
+    },
     {
       "showId": "a-christmas-story-the-musical-2012",
       "outletId": "ew",
