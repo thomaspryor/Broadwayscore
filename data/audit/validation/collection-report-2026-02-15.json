@@ -1,0 +1,130 @@
+{
+  "runDate": "2026-02-15T00:07:41.553Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 7,
+    "failed": 48,
+    "skipped": 0,
+    "successRate": "12.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 5,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 49,
+    "tier2Success": 0,
+    "tier3Attempts": 49,
+    "tier3Success": 8,
+    "tier4Attempts": 40,
+    "tier4Success": 1,
+    "totalFailed": 48,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+  ],
+  "failed": [
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-time-to-kill-2013/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "aint-no-mo-2022/newyorker--naomi-fry.json",
+    "all-my-sons-2008/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--john-lahr.json",
+    "all-my-sons-2019/newyorker--hilton-als.json",
+    "all-the-way-2014/newyorker--hilton-als.json",
+    "american-psycho-2016/newyorker--hilton-als.json",
+    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "king-kong-2018/newyorker--vinson-cunningham.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
+    "the-glass-menagerie-2013/newyorker--hilton-als.json",
+    "the-glass-menagerie-2017/newyorker--hilton-als.json",
+    "the-inheritance-2019/newyorker--hilton-als.json",
+    "the-king-and-i-2015/newyorker--hilton-als.json",
+    "the-lifespan-of-a-fact-2018/newyorker--hilton-als.json",
+    "the-new-one-2018/newyorker--hilton-als.json",
+    "the-norman-conquests-2009/newyorker--john-lahr.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "the-present-2017/newyorker--hilton-als.json",
+    "the-realistic-joneses-2014/newyorker--hilton-als.json",
+    "the-seagull-2008/newyorker--hilton-als.json",
+    "the-visit-2015/newyorker--hilton-als.json",
+    "the-waverly-gallery-2018/newyorker--hilton-als.json",
+    "the-wiz-2024/newyorker--naomi-fry.json",
+    "thoughts-of-a-colored-man-2021/newyorker--vinson-cunningham.json",
+    "time-and-the-conways-2017/newyorker--hilton-als.json",
+    "time-stands-still-2010/newyorker--hilton-als.json",
+    "time-stands-still-2010/newyorker--uncredited.json",
+    "to-kill-a-mockingbird-2018/newyorker--hilton-als.json",
+    "venus-in-fur-2011/newyorker--john-lahr.json",
+    "waiting-for-godot-2013/newyorker--john-lahr.json",
+    "wolf-hall-parts-one-and-two-2015/newyorker--hilton-als.json",
+    "yellow-face-2024/newyorker--naomi-fry.json",
+    "young-frankenstein-2007/newyorker--john-lahr.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    ],
+    "archive": [
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "lombardi-2010/newyorker--uncredited.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 39,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": []
+}
