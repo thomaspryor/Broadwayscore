@@ -17,7 +17,8 @@
     "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
     "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
     "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
-    "fiddler-on-the-roof-2015/musical-theatre-review--ron-cohen.json"
+    "fiddler-on-the-roof-2015/musical-theatre-review--ron-cohen.json",
+    "gypsy-2024/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -31,7 +32,16 @@
     "cat-on-a-hot-tin-roof-2013/bloomberg-news--jeremy-gerard.json",
     "elling-2010/new-jersey-newsroom--michael-sommers.json",
     "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
-    "enron-2010/nj-newsroom--michael-sommers.json"
+    "enron-2010/nj-newsroom--michael-sommers.json",
+    "fiddler-on-the-roof-2015/reviewing-the-drama--robin-riegelhaupt.json",
+    "floyd-collins-2025/new-york-sun--elysa-gardner.json",
+    "fool-for-love-2015/theatre-reviews-limited--david-roberts.json",
+    "fool-for-love-2015/thewrap--robert-hofler.json",
+    "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+    "glengarry-glen-ross-2025/thewrap--robert-hofler.json",
+    "godspell-2011/bloomberg-news--jeremy-gerard.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -49,9 +59,13 @@
       "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
       "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
       "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-      "eclipsed-2016/theatre-reviews-limited--david-roberts.json"
+      "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
+      "gypsy-2024/theatre-reviews-limited--joseph-verlezza.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/fool-for-love-2015/thewrap--robert-hofler.json",
+      "data/review-texts/glengarry-glen-ross-2025/thewrap--robert-hofler.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "a-christmas-carol-2022/guardian--alexis-soloski.json"
@@ -63,6 +77,19 @@
     ]
   },
   "startTime": "2026-02-15T16:37:51.844Z",
-  "lastProcessed": "fiddler-on-the-roof-2015/musical-theatre-review--ron-cohen.json",
-  "log": []
+  "lastProcessed": "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+  "log": [
+    {
+      "t": "2026-02-15T16:42:05.180Z",
+      "event": "bb-session",
+      "session": "59fe72bc",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+    },
+    {
+      "t": "2026-02-15T16:42:21.582Z",
+      "event": "bb-session",
+      "session": "06d8779b",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    }
+  ]
 }
