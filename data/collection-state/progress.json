@@ -31,7 +31,9 @@
     "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
     "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
     "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "my-name-is-lucy-barton-2020/broadwaynews--charles-isherwood.json"
+    "my-name-is-lucy-barton-2020/broadwaynews--charles-isherwood.json",
+    "oslo-2017/edge-new-york--wickham-boyle.json",
+    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "elf-2024/nytg--caroline-cao.json",
@@ -61,7 +63,15 @@
     "mean-girls-2018/am-newyork--matt-windman.json",
     "mean-girls-2018/katzreviews--ed-katz.json",
     "merrily-we-roll-along-2023/thewrap--william-bibbiani.json",
-    "motown-the-musical-2016/the-detroit-news--unknown.json"
+    "motown-the-musical-2016/the-detroit-news--unknown.json",
+    "next-fall-2010/bloomberg-news--john-simon.json",
+    "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "promises-promises-2010/nj-newsroom--michael-sommers.json",
+    "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
+    "side-show-2014/thewrap--robert-hofler.json",
+    "that-championship-season-2011/bloomberg-news--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -94,39 +104,15 @@
       "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
       "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
       "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "my-name-is-lucy-barton-2020/broadwaynews--charles-isherwood.json"
+      "my-name-is-lucy-barton-2020/broadwaynews--charles-isherwood.json",
+      "oslo-2017/edge-new-york--wickham-boyle.json",
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [
       "data/review-texts/children-of-a-lesser-god-2018/fordham-observer--michael-appler.json"
     ],
     "scrapingbee": [],
-    "brightdata": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "eureka-day-2024/nytimes--unknown.json",
-      "high-2011/nytimes--ben-brantley.json",
-      "kpop-2022/nytimes--unknown.json",
-      "old-times-2015/nytimes--unknown.json",
-      "parade-2023/nytimes--unknown.json",
-      "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
-      "peter-pan-goes-wrong-2023/nytimes--unknown.json",
-      "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
-      "present-laughter-2017/nytimes--ben-brantley.json",
-      "prince-of-broadway-2017/nytimes--ben-brantley.json",
-      "promises-promises-2010/nytimes--ben-brantley.json",
-      "punch-2025/nytimes--elisabeth-vincentelli.json",
-      "ragtime-2009/nytimes--laura-collins-hughes.json",
-      "rock-n-roll-2007/nytimes--ben-brantley.json",
-      "shucked-2023/nytimes--jesse-green.json",
-      "something-rotten-2015/nytimes--unknown.json",
-      "spring-awakening-2006/nytimes--charles-isherwood.json",
-      "sunset-boulevard-2024/nytimes--jesse-green.json",
-      "sunset-boulevard-2024/nytimes--unknown.json",
-      "the-encounter-2016/nytimes--unknown.json",
-      "the-lehman-trilogy-2021/nytimes--unknown.json",
-      "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
-      "the-notebook-2024/nytimes--jesse-green.json",
-      "the-notebook-2024/nytimes--unknown.json"
-    ],
+    "brightdata": [],
     "archive": [
       "act-one-2014/nytg--david-roberts.json",
       "oslo-2017/nytg--david-gordon.json",
@@ -134,7 +120,7 @@
     ]
   },
   "startTime": "2026-02-15T22:23:31.238Z",
-  "lastProcessed": "my-name-is-lucy-barton-2020/broadwaynews--charles-isherwood.json",
+  "lastProcessed": "that-championship-season-2011/bloomberg-news--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-02-15T22:27:25.845Z",
@@ -152,6 +138,12 @@
       "t": "2026-02-15T22:29:39.349Z",
       "event": "bb-cookie-inject",
       "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T22:42:46.004Z",
+      "event": "bb-session",
+      "session": "8dbe1553",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
     }
   ]
 }
