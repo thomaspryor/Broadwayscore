@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-15T18:05:20.016Z",
-  "processed": 39,
-  "failed": 11,
-  "successRate": "78.0%",
+  "updatedAt": "2026-02-15T18:18:28.381Z",
+  "processed": 103,
+  "failed": 177,
+  "successRate": "36.8%",
   "tierBreakdown": {
-    "playwright": 38,
-    "browserbase": 0,
+    "playwright": 77,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 20,
+    "archive": 17
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T16:35:56.814Z",
+      "event": "bb-session",
+      "session": "46ac61e5",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/biographical-play-sho"
+    },
+    {
+      "t": "2026-02-15T16:35:58.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:39:00.541Z",
+      "event": "bb-session",
+      "session": "f755fb7a",
+      "url": "https://www.usatoday.com/story/life/theater/2014/04/17/broadway-review-act-one/7"
+    },
+    {
+      "t": "2026-02-15T16:39:02.387Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T16:39:52.324Z",
+      "event": "bb-session",
+      "session": "230c37ef",
+      "url": "https://www.usatoday.com/story/life/theater/2014/04/17/broadway-review-act-one/7"
+    },
+    {
+      "t": "2026-02-15T16:39:54.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:05:06.189Z",
+      "event": "bb-session",
+      "session": "b3c35e1d",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/a-wretch-s-search-for"
+    },
+    {
+      "t": "2026-02-15T17:05:08.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:14:33.317Z",
+      "event": "bb-session",
+      "session": "6f7d68ef",
+      "url": "https://www.bloomberg.com/news/2011-04-28/mantello-throws-a-fit-in-normal-heart-"
+    },
+    {
+      "t": "2026-02-15T17:14:35.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T17:24:33.355Z",
+      "event": "bb-session",
+      "session": "09924b3b",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/229493451_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:24:35.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:25:50.204Z",
+      "event": "bb-session",
+      "session": "ffa34dab",
+      "url": "https://www.bloomberg.com/news/2013-10-07/-big-fish-is-a-gorgeous-charming-dream"
+    },
+    {
+      "t": "2026-02-15T17:25:52.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T17:32:57.589Z",
+      "event": "bb-session",
+      "session": "4749d83f",
+      "url": "https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20"
+    },
+    {
+      "t": "2026-02-15T17:33:03.449Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:33:27.738Z",
+      "event": "bb-session",
+      "session": "56a5a9b3",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/244168841_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:33:29.649Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:42:22.794Z",
+      "event": "bb-session",
+      "session": "26d75ca5",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/187415221_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:42:24.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    }
+  ]
 }
