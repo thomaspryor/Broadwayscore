@@ -1,15 +1,82 @@
 {
-  "updatedAt": "2026-02-15T16:49:31.639Z",
-  "processed": 20,
-  "failed": 20,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-15T16:51:04.782Z",
+  "processed": 92,
+  "failed": 60,
+  "successRate": "60.5%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 81,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 7
+    "brightdata": 0,
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T15:42:35.725Z",
+      "event": "bb-session",
+      "session": "94c49dd2",
+      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+    },
+    {
+      "t": "2026-02-15T15:42:37.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-02-15T16:21:20.602Z",
+      "event": "bb-session",
+      "session": "0238ddac",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/227339681_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T16:21:22.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:22:13.643Z",
+      "event": "bb-session",
+      "session": "6f1c34bb",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/revisiting-a-turning-"
+    },
+    {
+      "t": "2026-02-15T16:22:15.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:23:06.765Z",
+      "event": "bb-session",
+      "session": "0e6dcd62",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/biographical-play-sho"
+    },
+    {
+      "t": "2026-02-15T16:23:08.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:23:44.388Z",
+      "event": "bb-session",
+      "session": "12c66759",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/a-wretch-s-search-for"
+    },
+    {
+      "t": "2026-02-15T16:23:46.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T16:24:39.750Z",
+      "event": "bb-session",
+      "session": "01e0085b",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/making-a-killing-in-t"
+    },
+    {
+      "t": "2026-02-15T16:24:41.649Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    }
+  ]
 }
