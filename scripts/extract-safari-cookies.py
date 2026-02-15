@@ -86,6 +86,11 @@ DOMAIN_GROUPS = {
         "output": "ew.json",
         "secret_name": "EW_COOKIES",
     },
+    "vulture": {
+        "domains": [".vulture.com", "vulture.com", ".nymag.com", "nymag.com"],
+        "output": "vulture.json",
+        "secret_name": "VULTURE_COOKIES",
+    },
     "theatermania": {
         "domains": [".theatermania.com", "theatermania.com"],
         "output": "theatermania.json",

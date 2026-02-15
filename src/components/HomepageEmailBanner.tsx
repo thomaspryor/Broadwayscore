@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { emailCaptureConfig } from '@/config/email-capture';
 
 const VISIT_COUNT_KEY = 'bsc_visit_count';
@@ -13,7 +13,7 @@ export default function HomepageEmailBanner() {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState('');
 
-  const { status, errorMessage, submit, isSubscribed } = useLoopsCapture({
+  const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'homepage-banner',
   });

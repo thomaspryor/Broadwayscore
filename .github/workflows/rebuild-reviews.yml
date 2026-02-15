@@ -61,6 +61,12 @@ jobs:
         run: node scripts/extract-pull-quotes.js --limit=100
         continue-on-error: true
 
+      - name: Classify new review files
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}

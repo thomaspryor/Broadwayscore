@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { emailCaptureConfig } from '@/config/email-capture';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
@@ -28,7 +28,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
     showTitle,
   }), [showId, showTitle]);
 
-  const { status, errorMessage, submit, isSubscribed } = useLoopsCapture(loopsOptions);
+  const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture(loopsOptions);
 
   // Check dismiss state, subscription, and per-show follow state
   useEffect(() => {
