@@ -1035,21 +1035,28 @@ function getBestScore(data) {
   // and are more reliable than regex extraction from fullText, which can match
   // garbage sidebar content or unrelated embedded articles.
   if (data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore, data.outletId);
-    if (parsed !== null) {
-      // Direction guard: flag for human review if originalScore wildly conflicts with LLM.
-      // Still USES the originalScore (explicit data has priority), but surfaces the conflict.
-      const llm = data.llmScore && data.llmScore.score;
-      const llmConf = data.llmScore && data.llmScore.confidence;
-      if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
-        const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
-        const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
-        if (parsedBucket !== llmBucket) {
-          flagForHumanReview(data, 'originalScore-llm-conflict',
-            `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})`);
+    // Skip low-confidence originalScores — these are often misreads from page templates
+    // (e.g., "1/5" from a star icon in a sidebar, "D" from a page element)
+    if (data.scoreConfidence === 'low') {
+      stats.skippedLowConfidenceOriginal = (stats.skippedLowConfidenceOriginal || 0) + 1;
+      // Fall through to LLM scoring instead
+    } else {
+      const parsed = parseOriginalScore(data.originalScore, data.outletId);
+      if (parsed !== null) {
+        // Direction guard: flag for human review if originalScore wildly conflicts with LLM.
+        // Still USES the originalScore (explicit data has priority), but surfaces the conflict.
+        const llm = data.llmScore && data.llmScore.score;
+        const llmConf = data.llmScore && data.llmScore.confidence;
+        if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
+          const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
+          const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
+          if (parsedBucket !== llmBucket) {
+            flagForHumanReview(data, 'originalScore-llm-conflict',
+              `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})`);
+          }
         }
+        return { score: parsed, source: 'originalScore-priority0' };
       }
-      return { score: parsed, source: 'originalScore-priority0' };
     }
   }
 
@@ -1720,6 +1727,37 @@ showDirs.forEach(showId => {
         }
       }
 
+      // EXCERPT CROSS-VALIDATION: If fullText is COMPLETE and long, check that
+      // aggregator excerpts share distinctive words with this review. Mismatched
+      // excerpts (from wrong critic) happen when aggregators show one excerpt per
+      // outlet but we have multiple critics at the same outlet (e.g., 2 NYT reviews).
+      // REPORT ONLY — too many false positives from truncated fullTexts to auto-null.
+      if (data.fullText && data.fullText.length >= 800 &&
+          data.contentTier === 'complete' && data.textStatus === 'complete') {
+        const ftWords = new Set(data.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+        const excerptFields = ['dtliExcerpt', 'showScoreExcerpt'];
+        for (const field of excerptFields) {
+          if (data[field] && data[field].length >= 50) {
+            const exWords = (data[field].toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
+            if (exWords.length < 5) continue;
+            const matchCount = exWords.filter(w => ftWords.has(w)).length;
+            const matchRate = matchCount / exWords.length;
+            // If <20% of distinctive excerpt words appear in fullText,
+            // the excerpt is likely from a different critic's review
+            if (matchRate < 0.20) {
+              stats.excerptMismatches = (stats.excerptMismatches || 0) + 1;
+              if (!stats.excerptMismatchDetails) stats.excerptMismatchDetails = [];
+              stats.excerptMismatchDetails.push({
+                path: `${showId}/${file}`,
+                field,
+                matchRate: Math.round(matchRate * 100) + '%',
+                excerptSnippet: data[field].substring(0, 80)
+              });
+            }
+          }
+        }
+      }
+
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
       const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || '';
@@ -1965,7 +2003,31 @@ for (const r of allReviews) {
   }
 }
 
-// Check 3: Score clustering per show (many identical LLM scores)
+// Check 3: humanReviewScore overriding explicit originalScore in opposite direction
+for (const r of allReviews) {
+  if (r.originalRating && r.scoreSource === 'human-review') {
+    const parsed = parseOriginalScore(r.originalRating, r.outletId);
+    if (parsed !== null) {
+      const diff = Math.abs(r.assignedScore - parsed);
+      if (diff > 20) {
+        const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
+        const scoreBucket = r.assignedScore >= 70 ? 'positive' : r.assignedScore <= 40 ? 'negative' : 'mixed';
+        if (parsedBucket !== scoreBucket) {
+          consistencyIssues.push({
+            type: 'human-override-vs-explicit-grade',
+            severity: 'high',
+            showId: r.showId,
+            outlet: r.outletId,
+            critic: r.criticName,
+            detail: `humanReviewScore ${r.assignedScore} (${scoreBucket}) overrides explicit "${r.originalRating}" (=${parsed}, ${parsedBucket})`
+          });
+        }
+      }
+    }
+  }
+}
+
+// Check 4: Score clustering per show (many identical LLM scores)
 const showGroups = {};
 for (const r of allReviews) {
   if (!showGroups[r.showId]) showGroups[r.showId] = [];
@@ -2161,6 +2223,20 @@ if (stats.showNotMentionedWithExcerpts > 0) {
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
+}
+if (stats.skippedLowConfidenceOriginal > 0) {
+  console.log(`  Skipped low-confidence originalScores: ${stats.skippedLowConfidenceOriginal}`);
+}
+if (stats.excerptMismatches > 0) {
+  console.log(`  Excerpt-fullText mismatches (report only): ${stats.excerptMismatches}`);
+  if (stats.excerptMismatchDetails) {
+    for (const d of stats.excerptMismatchDetails.slice(0, 10)) {
+      console.log(`    ${d.path}: ${d.field} (${d.matchRate} word overlap)`);
+    }
+    if (stats.excerptMismatchDetails.length > 10) {
+      console.log(`    ...and ${stats.excerptMismatchDetails.length - 10} more`);
+    }
+  }
 }
 
 // Explicit rating summary
