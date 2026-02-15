@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getAllShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
@@ -354,6 +355,25 @@ function HomePageInner() {
 
   const shows = useMemo(() => getAllShows(), []);
 
+  // Fuse.js instance for fuzzy search across title, venue, and creative team
+  const fuse = useMemo(() => new Fuse(shows, {
+    keys: [
+      { name: 'title', weight: 0.6 },
+      { name: 'venue', weight: 0.2 },
+      { name: 'creativeTeamSearch', weight: 0.2 },
+    ],
+    threshold: 0.35,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+    getFn: (obj, path) => {
+      const key = Array.isArray(path) ? path[0] : path;
+      if (key === 'creativeTeamSearch') {
+        return (obj as ComputedShow).creativeTeam?.map(m => m.name).join(', ') || '';
+      }
+      return Fuse.config.getFn(obj, path);
+    },
+  }), [shows]);
+
   // Featured rows data - only shows opened in last 12 months
   const twelveMonthsAgo = useMemo(() => {
     const date = new Date();
@@ -451,22 +471,7 @@ function HomePageInner() {
     // When searching, include ALL shows (ignore status/type filters)
     // This ensures users can find any show in the database
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      let result = shows.filter(show =>
-        show.title.toLowerCase().includes(query) ||
-        show.venue.toLowerCase().includes(query)
-      );
-      // Sort search results by relevance (title match first, then by score)
-      result.sort((a, b) => {
-        const aTitle = a.title.toLowerCase();
-        const bTitle = b.title.toLowerCase();
-        const aStartsWith = aTitle.startsWith(query);
-        const bStartsWith = bTitle.startsWith(query);
-        if (aStartsWith && !bStartsWith) return -1;
-        if (!aStartsWith && bStartsWith) return 1;
-        return (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0);
-      });
-      return result;
+      return fuse.search(searchQuery).map(result => result.item);
     }
 
     // Non-search filtering: apply score mode, status, and type filters
@@ -553,7 +558,7 @@ function HomePageInner() {
     }
 
     return result;
-  }, [shows, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [shows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
@@ -602,7 +607,7 @@ function HomePageInner() {
         <input
           id="show-search"
           type="search"
-          placeholder="Search shows..."
+          placeholder="Search shows, venues, directors..."
           value={searchQuery}
           onChange={(e) => updateParams({ q: e.target.value })}
           className="search-input pl-12 focus-visible:outline-none"
