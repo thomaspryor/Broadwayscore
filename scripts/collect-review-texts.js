@@ -377,6 +377,18 @@ const COOKIE_DOMAIN_MAP = {
   'observer.com': { envVar: 'OBSERVER_COOKIES', fileKey: 'observer' },
   'hollywoodreporter.com': { envVar: 'THR_COOKIES', fileKey: 'hollywoodreporter' },
   'ew.com': { envVar: 'EW_COOKIES', fileKey: 'ew' },
+  // Free-site domains (anti-bot bypass, metered paywalls, GDPR walls)
+  'theatermania.com': { envVar: 'THEATERMANIA_COOKIES', fileKey: 'theatermania' },
+  'huffpost.com': { envVar: 'HUFFPOST_COOKIES', fileKey: 'huffpost' },
+  'huffingtonpost.com': { envVar: 'HUFFPOST_COOKIES', fileKey: 'huffpost' },
+  'usatoday.com': { envVar: 'USATODAY_COOKIES', fileKey: 'usatoday' },
+  'northjersey.com': { envVar: 'NORTHJERSEY_COOKIES', fileKey: 'northjersey' },
+  'bloomberg.com': { envVar: 'BLOOMBERG_COOKIES', fileKey: 'bloomberg' },
+  'thestage.co.uk': { envVar: 'THESTAGE_COOKIES', fileKey: 'thestage' },
+  'talkinbroadway.com': { envVar: 'TALKINBROADWAY_COOKIES', fileKey: 'talkinbroadway' },
+  'backstage.com': { envVar: 'BACKSTAGE_COOKIES', fileKey: 'backstage' },
+  'amny.com': { envVar: 'AMNY_COOKIES', fileKey: 'amny' },
+  'frontmezzjunkies.com': { envVar: 'FRONTMEZZJUNKIES_COOKIES', fileKey: 'frontmezzjunkies' },
 };
 
 // Cache loaded cookies to avoid re-reading files/decoding base64 every time
