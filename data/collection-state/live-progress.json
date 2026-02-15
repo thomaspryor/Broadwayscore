@@ -1,15 +1,49 @@
 {
-  "updatedAt": "2026-02-15T23:18:28.394Z",
-  "processed": 89,
-  "failed": 201,
-  "successRate": "30.7%",
+  "updatedAt": "2026-02-15T23:20:29.477Z",
+  "processed": 22,
+  "failed": 18,
+  "successRate": "55.0%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 20,
-    "archive": 17
+    "brightdata": 2,
+    "archive": 20
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T23:15:37.758Z",
+      "event": "bb-session",
+      "session": "93948978",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-15T23:15:40.068Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:18:07.070Z",
+      "event": "bb-session",
+      "session": "1ef56c08",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-15T23:18:09.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:19:31.007Z",
+      "event": "bb-session",
+      "session": "cf4fd78b",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-15T23:19:33.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
