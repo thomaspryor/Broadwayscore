@@ -4,13 +4,13 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 13733,
-      "skippedNoScore": 3992,
+      "totalReviews": 13734,
+      "skippedNoScore": 3991,
       "skippedDuplicate": 94,
       "skippedDuplicateUrl": 409,
       "skippedCrossOutletDuplicateUrl": 29,
       "skippedDuplicateText": 481,
-      "skippedFingerprintDedup": 77,
+      "skippedFingerprintDedup": 76,
       "skippedWrongProduction": 1900,
       "recoveredFromGarbage": 138,
       "scoreSources": {
@@ -20,7 +20,7 @@
         "explicit-letterGrade": 12,
         "human-review": 68,
         "originalScore-priority0": 1690,
-        "llmScore": 9907,
+        "llmScore": 9908,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 1938,
         "llmScore-review": 2,
@@ -62569,7 +62569,7 @@
       "pullQuote": "As the best new musical of the season, Dead Outlaw proves that producers don’t need a well-known IP or $31 million to make an impact.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "dead-outlaw-2025",
@@ -66344,7 +66344,7 @@
       "pullQuote": "And while it’s admirable that the creators largely avoided bombastic gestures, it never captures the emotional agony and historical turbulence its characters confront.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "doctor-zhivago-2015",
@@ -101473,6 +101473,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "hedwig-and-the-angry-inch-2014",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
+      "publishDate": "April 23, 2014",
+      "originalRating": null,
+      "pullQuote": "His boots and the show are much kinkier than anything else on Broadway.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
