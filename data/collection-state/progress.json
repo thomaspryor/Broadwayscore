@@ -231,7 +231,11 @@
     "hamilton-2015/wsj--terry-teachout.json",
     "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
     "harry-potter-2021/wsj--terry-teachout.json",
-    "hells-kitchen-2024/observer--david-cote.json"
+    "hells-kitchen-2024/observer--david-cote.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -641,7 +645,13 @@
     "hadestown-2019/wsj--charles-isherwood.json",
     "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
     "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json"
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "just-in-time-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -762,7 +772,10 @@
       "bug-2026/theatre-reviews-limited--david-roberts.json",
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
       "chicago-1996/ew--melissa-rose-bernardo.json",
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
       "data/review-texts/glengarry-glen-ross-2025/thewrap--robert-hofler.json",
@@ -771,7 +784,8 @@
       "data/review-texts/chicago-1996/nypost--elisabeth-vincentelli.json",
       "data/review-texts/hadestown-2019/observer--david-cote.json",
       "data/review-texts/hells-kitchen-2024/observer--david-cote.json",
-      "hells-kitchen-2024/observer--david-cote.json"
+      "hells-kitchen-2024/observer--david-cote.json",
+      "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -827,7 +841,8 @@
       "and-juliet-2022/theatermania--hayley-levitt.json",
       "book-of-mormon-2011/vulture--scott-brown.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "hadestown-2019/wsj--terry-teachout.json"
+      "hadestown-2019/wsj--terry-teachout.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json"
     ],
     "archive": [
       "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
@@ -907,7 +922,7 @@
     ]
   },
   "startTime": "2026-02-15T15:40:23.015Z",
-  "lastProcessed": "hells-kitchen-2024/observer--david-cote.json",
+  "lastProcessed": "maybe-happy-ending-2024/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-02-15T15:43:13.043Z",
@@ -1438,6 +1453,24 @@
       "event": "bb-session",
       "session": "0e3209aa",
       "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-15T22:53:02.718Z",
+      "event": "bb-session",
+      "session": "dfbe87dc",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-15T22:55:14.571Z",
+      "event": "bb-session",
+      "session": "031a85ac",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-02-15T22:55:38.363Z",
+      "event": "bb-session",
+      "session": "1f252249",
+      "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-an"
     }
   ]
 }
