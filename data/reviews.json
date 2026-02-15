@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 12170,
+      "totalReviews": 12169,
       "skippedNoScore": 5502,
       "skippedDuplicate": 49,
       "skippedDuplicateUrl": 213,
       "skippedCrossOutletDuplicateUrl": 4,
-      "skippedDuplicateText": 1105,
+      "skippedDuplicateText": 1106,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 1718,
       "recoveredFromGarbage": 141,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1640,
         "llmScore": 8214,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2113,
+        "llmScore-lowconf": 2112,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -109844,7 +109844,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -109854,7 +109854,7 @@
       "pullQuote": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "illinoise-2024",
@@ -115803,23 +115803,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Lucky for audiences at 'Jitney' that those nine souls onstage are mesmerizingly heartbreaking, passionate, comical, and true.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "jitney-2017",
-      "outletId": "broadwayworld",
-      "outlet": "BroadwayWorld",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Michael Dale",
-      "url": "https://www.broadwayworld.com/article/BWW-Review-August-Wilsons-Compelling-JITNEY-Finally-Arrives-On-Broadway-20170120",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A superb production filled with funk, grit, humor and some positively thrilling acting.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -148112,7 +148095,7 @@
       "pullQuote": "The revival of Michael Frayn's 'Noises Off' that opened Sunday at the Roundabout Theatre Company's Theatre is every bit as funny as you've heard—and then some.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "noises-off-2016",
