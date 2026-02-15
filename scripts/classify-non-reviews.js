@@ -14,6 +14,8 @@
  * Options:
  *   --dry-run          Heuristic checks only, no LLM calls
  *   --apply            Write isNonReview flag to source files (high-confidence only)
+ *   --incremental      Daily rebuild mode: skip already-classified files, auto-apply,
+ *                      skip calibration gate, default limit=50, safety cap at >10 non-reviews
  *   --force            Allow --apply even if per-show guard triggers
  *   --limit=N          Cap LLM calls
  *   --concurrency=N    Parallel LLM calls (default: 10)
@@ -58,9 +60,11 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const APPLY = args.includes('--apply');
 const FORCE = args.includes('--force');
+const INCREMENTAL = args.includes('--incremental');
 const RESUME = args.includes('--resume');
 const VERBOSE = args.includes('--verbose');
-const LIMIT = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1]) || 0;
+const LIMIT_RAW = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1]) || 0;
+const LIMIT = LIMIT_RAW || (INCREMENTAL ? 50 : 0);
 const CONCURRENCY = parseInt((args.find(a => a.startsWith('--concurrency=')) || '').split('=')[1]) || 10;
 const MAX_COST = parseFloat((args.find(a => a.startsWith('--max-cost=')) || '').split('=')[1]) || 5.00;
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
@@ -527,6 +531,7 @@ async function main() {
   console.log(`Provider: ${PROVIDER} | Cost/call: $${COST_PER_CALL}`);
   console.log(`Budget: $${MAX_COST} | Concurrency: ${CONCURRENCY}`);
   if (DRY_RUN) console.log('MODE: dry-run (heuristic only)');
+  else if (INCREMENTAL) console.log('MODE: incremental (auto-apply, skip calibration, limit=' + LIMIT + ')');
   else if (APPLY) console.log('MODE: apply (will write flags to source files, high-confidence only)');
   else console.log('MODE: report (LLM classification, no file writes)');
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
@@ -584,9 +589,9 @@ async function main() {
     } catch (e) { /* fresh start */ }
   }
 
-  // Run calibration gate (unless dry-run)
+  // Run calibration gate (unless dry-run or incremental — already validated)
   let calibration = null;
-  if (!DRY_RUN) {
+  if (!DRY_RUN && !INCREMENTAL) {
     calibration = await runCalibrationGate(showTitleMap);
     if (!calibration.passed) {
       console.log('\nCalibration FAILED. Aborting. Tune the prompt or check the calibration files.');
@@ -633,6 +638,12 @@ async function main() {
         continue;
       }
 
+      // In incremental mode, skip files already classified (have classifiedAt timestamp)
+      if (INCREMENTAL && data.classifiedAt) {
+        stats.skippedAlreadyClassified = (stats.skippedAlreadyClassified || 0) + 1;
+        continue;
+      }
+
       const fullText = data.fullText || '';
       if (fullText.length > 200) {
         stats.withFullText++;
@@ -667,9 +678,16 @@ async function main() {
   console.log(`Total files: ${stats.totalFiles}`);
   console.log(`In reviews.json: ${stats.inReviewsJson}`);
   console.log(`Skipped (excluded): ${stats.skippedExcluded}`);
+  if (stats.skippedAlreadyClassified) console.log(`Skipped (already classified): ${stats.skippedAlreadyClassified}`);
   console.log(`With fullText (→ LLM): ${stats.withFullText}`);
   console.log(`Excerpt-only (→ heuristic): ${stats.excerptOnly}`);
   console.log(`Heuristic-flagged: ${stats.heuristicFlagged}`);
+
+  // Early exit in incremental mode when nothing new to classify
+  if (INCREMENTAL && toClassify.length === 0) {
+    console.log('\nIncremental: No unclassified files found. Nothing to do.');
+    return;
+  }
 
   if (DRY_RUN) {
     console.log('\n=== DRY RUN — Heuristic flags only ===');
@@ -803,7 +821,8 @@ async function main() {
     for (const f of impact.removedFiles) {
       console.log(`    ${f}`);
     }
-    if (impact.removed > 2) {
+    // Skip per-show guard in incremental mode (finds 0-5 files, not bulk)
+    if (!INCREMENTAL && impact.removed > 2) {
       console.log(`  ⚠ WARNING: ${impact.showTitle} would lose >2 reviews!`);
       blockedByGuard = true;
     }
@@ -813,9 +832,13 @@ async function main() {
     console.log('  No shows affected.');
   }
 
-  // Apply mode
-  if (APPLY) {
-    if (blockedByGuard && !FORCE) {
+  // Apply mode (--apply or --incremental auto-applies)
+  const shouldApply = APPLY || INCREMENTAL;
+  if (shouldApply) {
+    // Incremental safety cap: if >10 non-reviews found, something is wrong
+    if (INCREMENTAL && nonReviews.length > 10) {
+      console.log(`\n⚠ INCREMENTAL SAFETY CAP: Found ${nonReviews.length} non-reviews (>10). Skipping auto-apply. Run manually with --apply to review.`);
+    } else if (blockedByGuard && !FORCE) {
       console.log('\n⚠ BLOCKED: Per-show guard triggered. Use --force to override.');
     } else {
       console.log(`\n=== APPLYING FLAGS (${nonReviews.length} high-confidence non-reviews) ===`);
@@ -827,6 +850,7 @@ async function main() {
           data.isNonReview = true;
           data.nonReviewType = nr.contentType;
           data.nonReviewClassifiedBy = PROVIDER;
+          data.classifiedAt = new Date().toISOString();
           fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
           applied++;
           console.log(`  Applied: ${nr.file} → ${nr.contentType}`);
@@ -835,6 +859,25 @@ async function main() {
         }
       }
       console.log(`Applied ${applied} flags.`);
+
+      // Stamp classifiedAt on confirmed reviews too (so they're skipped next incremental run)
+      if (INCREMENTAL && reviewsConfirmed.length > 0) {
+        console.log(`\n=== STAMPING classifiedAt on ${reviewsConfirmed.length} confirmed reviews ===`);
+        let stamped = 0;
+        const now = new Date().toISOString();
+        for (const relPath of reviewsConfirmed) {
+          const fullPath = path.join(REVIEW_TEXTS_DIR, relPath);
+          try {
+            const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+            data.classifiedAt = now;
+            fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
+            stamped++;
+          } catch (e) {
+            if (VERBOSE) console.log(`  ERROR stamping ${relPath}: ${e.message}`);
+          }
+        }
+        console.log(`Stamped ${stamped} confirmed reviews.`);
+      }
     }
   }
 
@@ -873,7 +916,7 @@ function saveReport(nonReviews, uncertainCases, heuristicFlags, reviewsConfirmed
   const report = {
     meta: {
       generatedAt: new Date().toISOString(),
-      mode: APPLY ? 'apply' : DRY_RUN ? 'dry-run' : 'report',
+      mode: INCREMENTAL ? 'incremental' : APPLY ? 'apply' : DRY_RUN ? 'dry-run' : 'report',
       provider: PROVIDER,
       stats: { ...stats },
       calibration: calibration ? {
