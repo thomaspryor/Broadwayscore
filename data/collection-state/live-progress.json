@@ -1,34 +1,45 @@
 {
-  "updatedAt": "2026-02-15T16:47:34.850Z",
-  "processed": 7,
-  "failed": 13,
-  "successRate": "35.0%",
+  "updatedAt": "2026-02-15T16:56:44.392Z",
+  "processed": 24,
+  "failed": 26,
+  "successRate": "48.0%",
   "tierBreakdown": {
-    "playwright": 6,
-    "browserbase": 4,
+    "playwright": 18,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 2,
+    "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-15T16:45:54.082Z",
+      "t": "2026-02-15T16:41:29.047Z",
       "event": "bb-session",
-      "session": "6d29be75",
-      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+      "session": "f4ea4b75",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
     },
     {
-      "t": "2026-02-15T16:46:06.403Z",
+      "t": "2026-02-15T16:42:04.643Z",
       "event": "bb-session",
-      "session": "0703822e",
-      "url": "https://www.thewrap.com/a-strange-loop-broadway-review-michael-jackson/"
+      "session": "9b88c4ef",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
     },
     {
-      "t": "2026-02-15T16:46:16.377Z",
+      "t": "2026-02-15T16:44:28.334Z",
       "event": "bb-session",
-      "session": "2f7327e0",
-      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+      "session": "62c379f2",
+      "url": "https://www.indiewire.com/2021/12/clydes-broadway-review-1234685678/"
+    },
+    {
+      "t": "2026-02-15T16:46:33.239Z",
+      "event": "bb-session",
+      "session": "5625fc0e",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+    },
+    {
+      "t": "2026-02-15T16:46:36.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
