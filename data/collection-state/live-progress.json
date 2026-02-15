@@ -1,49 +1,95 @@
 {
-  "updatedAt": "2026-02-15T18:28:34.183Z",
-  "processed": 5,
-  "failed": 55,
-  "successRate": "8.3%",
+  "updatedAt": "2026-02-15T18:36:58.205Z",
+  "processed": 99,
+  "failed": 161,
+  "successRate": "38.1%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 73,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 5
+    "brightdata": 16,
+    "archive": 16
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-02-15T18:24:09.581Z",
+      "t": "2026-02-15T16:15:46.048Z",
       "event": "bb-session",
-      "session": "59e9a303",
-      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+      "session": "6cacbfe1",
+      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
     },
     {
-      "t": "2026-02-15T18:24:11.643Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:25:45.451Z",
+      "t": "2026-02-15T16:20:48.648Z",
       "event": "bb-session",
-      "session": "685c9369",
-      "url": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html"
+      "session": "f5fae5c7",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
     },
     {
-      "t": "2026-02-15T18:25:47.576Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:27:21.768Z",
+      "t": "2026-02-15T16:26:15.682Z",
       "event": "bb-session",
-      "session": "38e810d1",
-      "url": "https://www.vulture.com/2011/04/theater_review_catch_me_if_yo.html"
+      "session": "aeca6b68",
+      "url": "http://www.thewrap.com/something-rotten-theater-review-or-how-a-musical-called-o"
     },
     {
-      "t": "2026-02-15T18:27:23.594Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-15T16:29:43.740Z",
+      "event": "bb-session",
+      "session": "1453b17c",
+      "url": "https://fordhamobserver.com/36668/recent/arts-and-culture/review-the-prom-is-a-c"
+    },
+    {
+      "t": "2026-02-15T16:45:00.761Z",
+      "event": "bb-session",
+      "session": "ee3a3430",
+      "url": "https://www.thestage.co.uk/reviews/2016/a-bronx-tale-the-musical-opens-at-the-lo"
+    },
+    {
+      "t": "2026-02-15T16:45:02.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-15T16:52:17.401Z",
+      "event": "bb-session",
+      "session": "a9d4a1bb",
+      "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-revie"
+    },
+    {
+      "t": "2026-02-15T16:52:19.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T16:52:59.667Z",
+      "event": "bb-session",
+      "session": "20705f0d",
+      "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-revie"
+    },
+    {
+      "t": "2026-02-15T16:53:01.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:07:21.762Z",
+      "event": "bb-session",
+      "session": "b74335b5",
+      "url": "https://www.huffpost.com/scott-stearman/the-interfaith-resonance-of-allegiance_b"
+    },
+    {
+      "t": "2026-02-15T17:07:24.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:22:35.322Z",
+      "event": "bb-session",
+      "session": "df1d1d59",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/239868361_Theater_review_"
+    },
+    {
+      "t": "2026-02-15T17:22:37.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
