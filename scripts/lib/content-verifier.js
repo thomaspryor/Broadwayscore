@@ -9,12 +9,8 @@
  *   4. Truncation (paywall, incomplete content)
  *   5. Navigation/junk (scraped footer instead of article)
  *
- * Provider chain: Gemini Flash (cheapest) → Kimi K2 → GPT-4o-mini → Claude Sonnet → heuristic fallback
+ * Provider chain: Gemini Flash (cheapest) → GPT-4o-mini → Claude Sonnet → heuristic fallback
  * Falls back to heuristic checks when no API keys are available.
- *
- * Note: Kimi K2.5 is a reasoning model that uses 2000+ internal chain-of-thought tokens
- * before producing output — incompatible with max_tokens=400 JSON classification.
- * Using kimi-k2-0905 (non-reasoning) instead.
  */
 
 const https = require('https');
@@ -22,54 +18,6 @@ const https = require('https');
 // ============================================================
 // LLM Provider Implementations (cheapest → most expensive)
 // ============================================================
-
-/**
- * Call Kimi K2 (non-reasoning) via OpenRouter — fallback after Gemini
- * Note: kimi-k2.5 is a reasoning model that consumes 2000+ tokens on internal
- * chain-of-thought before producing output, making it incompatible with
- * max_tokens=400 JSON classification. Using kimi-k2-0905 instead.
- */
-function callKimi(prompt) {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) throw new Error('OPENROUTER_API_KEY not set');
-
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: 'moonshotai/kimi-k2-0905',
-      temperature: 0.1,
-      max_tokens: 400,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    const req = https.request('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://broadwayscorecard.com',
-        'X-Title': 'Broadway Scorecard Content Verification'
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const json = JSON.parse(data);
-            resolve(json.choices?.[0]?.message?.content || '');
-          } catch (e) {
-            reject(new Error(`Kimi parse error: ${e.message}`));
-          }
-        } else {
-          reject(new Error(`Kimi HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-}
 
 /**
  * Call Gemini Flash — ~$0.0001/review (practically free)
@@ -206,16 +154,14 @@ function callClaude(prompt) {
 function getProviderChain() {
   const providers = [];
   if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
-  if (process.env.OPENROUTER_API_KEY) providers.push({ name: 'kimi', call: callKimi });
   if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
   if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
   return providers;
 }
 
 /**
- * Call LLM with automatic fallback through provider chain.
- * Parses JSON from response — if response isn't valid JSON, falls back to next provider.
- * @returns {{ parsed: Object, provider: string } | null}
+ * Call LLM with automatic fallback through provider chain
+ * @returns {{ text: string, provider: string }}
  */
 async function callWithFallback(prompt) {
   const chain = getProviderChain();
@@ -225,21 +171,7 @@ async function callWithFallback(prompt) {
     const { name, call } = chain[i];
     try {
       const text = await call(prompt);
-
-      // Parse JSON from response — unparseable = try next provider
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        console.log(`    ${name}: no JSON in response, trying next...`);
-        continue;
-      }
-
-      try {
-        const parsed = JSON.parse(jsonMatch[0]);
-        return { parsed, provider: name };
-      } catch (parseErr) {
-        console.log(`    ${name}: invalid JSON (${parseErr.message}), trying next...`);
-        continue;
-      }
+      return { text, provider: name };
     } catch (e) {
       console.log(`    ${name} verify error: ${e.message}`);
       if (i < chain.length - 1) {
@@ -335,22 +267,34 @@ Set isValid=true only if the content is a review of the BROADWAY production and 
   const result = await callWithFallback(prompt);
 
   if (!result) {
-    // No LLM providers available (or all returned unparseable JSON) — fall back to heuristics
+    // No LLM providers available — fall back to heuristics
     return heuristicVerify({ scrapedText, excerpt, showTitle });
   }
 
-  const parsed = result.parsed;
-  return {
-    isValid: parsed.isValid ?? true,
-    confidence: parsed.confidence || 'medium',
-    issues: parsed.issues || [],
-    truncated: parsed.truncated || false,
-    wrongArticle: parsed.wrongArticle || false,
-    wrongProduction: parsed.wrongProduction || false,
-    isFilmTv: parsed.isFilmTv || false,
-    reasoning: parsed.reasoning || '',
-    verifiedBy: `llm:${result.provider}`
-  };
+  try {
+    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      return {
+        isValid: parsed.isValid ?? true,
+        confidence: parsed.confidence || 'medium',
+        issues: parsed.issues || [],
+        truncated: parsed.truncated || false,
+        wrongArticle: parsed.wrongArticle || false,
+        wrongProduction: parsed.wrongProduction || false,
+        isFilmTv: parsed.isFilmTv || false,
+        reasoning: parsed.reasoning || '',
+        verifiedBy: `llm:${result.provider}`
+      };
+    }
+
+    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
+    return heuristicVerify({ scrapedText, excerpt, showTitle });
+
+  } catch (error) {
+    console.error(`    LLM verify parse error: ${error.message}`);
+    return heuristicVerify({ scrapedText, excerpt, showTitle });
+  }
 }
 
 // ============================================================

@@ -1,15 +1,40 @@
 {
-  "updatedAt": "2026-02-15T02:26:46.795Z",
-  "processed": 1,
-  "failed": 93,
-  "successRate": "1.1%",
+  "updatedAt": "2026-02-15T02:31:00.173Z",
+  "processed": 243,
+  "failed": 47,
+  "successRate": "83.8%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 6,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 232,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T01:47:50.575Z",
+      "event": "bb-session",
+      "session": "04806a0f",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-15T01:48:05.718Z",
+      "event": "bb-session",
+      "session": "9c9f7e94",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-951987?utm_source=twitter"
+    },
+    {
+      "t": "2026-02-15T01:48:20.035Z",
+      "event": "bb-session",
+      "session": "4311a1f0",
+      "url": "https://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-125627"
+    },
+    {
+      "t": "2026-02-15T01:48:35.322Z",
+      "event": "bb-session",
+      "session": "0c6f232d",
+      "url": "https://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-39318"
+    }
+  ]
 }
