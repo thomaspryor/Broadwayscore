@@ -1,49 +1,27 @@
 {
-  "updatedAt": "2026-02-15T15:46:08.177Z",
-  "processed": 142,
-  "failed": 208,
-  "successRate": "40.6%",
+  "updatedAt": "2026-02-15T15:48:52.114Z",
+  "processed": 57,
+  "failed": 113,
+  "successRate": "33.5%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 47,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 22,
-    "archive": 25
+    "brightdata": 2,
+    "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-15T15:35:06.925Z",
+      "t": "2026-02-15T15:42:35.725Z",
       "event": "bb-session",
-      "session": "d8c64551",
-      "url": "https://www.thestage.co.uk/reviews/61091"
+      "session": "94c49dd2",
+      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
     },
     {
-      "t": "2026-02-15T15:35:09.233Z",
+      "t": "2026-02-15T15:42:37.910Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-02-15T15:37:03.980Z",
-      "event": "bb-session",
-      "session": "f07f3f66",
-      "url": "https://www.thestage.co.uk/reviews/2016/cats-review-at-neil-simon-theatre-new-yo"
-    },
-    {
-      "t": "2026-02-15T15:37:06.087Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-02-15T15:44:58.333Z",
-      "event": "bb-session",
-      "session": "fe67a821",
-      "url": "https://www.thestage.co.uk/reviews/2017/m-butterfly-review-cort-theatre-new-york"
-    },
-    {
-      "t": "2026-02-15T15:45:00.422Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "observer.com"
     }
   ]
 }
