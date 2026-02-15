@@ -1,15 +1,52 @@
 {
-  "updatedAt": "2026-02-15T22:52:14.717Z",
-  "processed": 14,
-  "failed": 16,
-  "successRate": "46.7%",
+  "updatedAt": "2026-02-15T22:56:35.744Z",
+  "processed": 40,
+  "failed": 50,
+  "successRate": "44.4%",
   "tierBreakdown": {
-    "playwright": 9,
-    "browserbase": 0,
+    "playwright": 25,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "brightdata": 2,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T22:35:19.234Z",
+      "event": "bb-session",
+      "session": "f9586bee",
+      "url": "https://www.thewrap.com/a-strange-loop-broadway-review-michael-jackson/"
+    },
+    {
+      "t": "2026-02-15T22:35:56.336Z",
+      "event": "bb-session",
+      "session": "1c2db80a",
+      "url": "https://www.indiewire.com/2021/12/clydes-broadway-review-1234685678/"
+    },
+    {
+      "t": "2026-02-15T22:37:43.094Z",
+      "event": "bb-session",
+      "session": "21d336ea",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+    },
+    {
+      "t": "2026-02-15T22:37:54.414Z",
+      "event": "bb-session",
+      "session": "5b1f83b2",
+      "url": "https://www.thewrap.com/funny-girl-broadway-review-beanie-feldstein/"
+    },
+    {
+      "t": "2026-02-15T22:42:03.125Z",
+      "event": "bb-session",
+      "session": "e7612a71",
+      "url": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-conno"
+    },
+    {
+      "t": "2026-02-15T22:50:47.466Z",
+      "event": "bb-session",
+      "session": "4e51f1c2",
+      "url": "https://fordhamobserver.com/36668/recent/arts-and-culture/review-the-prom-is-a-c"
+    }
+  ]
 }
