@@ -1,50 +1,17 @@
 {
-  "updatedAt": "2026-02-15T21:58:27.789Z",
-  "processed": 176,
-  "failed": 334,
-  "successRate": "34.5%",
+  "updatedAt": "2026-02-15T22:06:11.576Z",
+  "processed": 178,
+  "failed": 342,
+  "successRate": "34.2%",
   "tierBreakdown": {
-    "playwright": 113,
+    "playwright": 115,
     "browserbase": 5,
     "scrapingbee": 0,
-    "brightdata": 32,
+    "brightdata": 33,
     "archive": 42
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-02-15T17:09:09.499Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-15T17:11:08.248Z",
-      "event": "bb-session",
-      "session": "d39ae4b7",
-      "url": "https://www.usatoday.com/life/theater/reviews/2008-11-13-billy-elliot_N.htm"
-    },
-    {
-      "t": "2026-02-15T17:11:10.231Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-15T17:12:28.543Z",
-      "event": "bb-session",
-      "session": "8889ec99",
-      "url": "https://www.northjersey.com/arts_entertainment/134889028_Romeo_and_Juliet__with_"
-    },
-    {
-      "t": "2026-02-15T17:12:30.565Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-02-15T17:13:26.532Z",
-      "event": "bb-session",
-      "session": "5d624b84",
-      "url": "https://www.usatoday.com/story/life/theater/2011/12/02/bonnie-and-clyde-broadway"
-    },
     {
       "t": "2026-02-15T17:13:28.617Z",
       "event": "bb-cookie-inject",
@@ -123,6 +90,39 @@
       "event": "bb-session",
       "session": "ab884292",
       "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
+    },
+    {
+      "t": "2026-02-15T21:59:15.874Z",
+      "event": "bb-session",
+      "session": "c552281a",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-15T22:00:02.672Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:03:26.994Z",
+      "event": "bb-session",
+      "session": "8d4cb253",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-15T22:04:14.707Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:04:52.212Z",
+      "event": "bb-session",
+      "session": "b3407c9c",
+      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+    },
+    {
+      "t": "2026-02-15T22:04:54.336Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
     }
   ]
 }
