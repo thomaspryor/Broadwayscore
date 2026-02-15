@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-15T02:22:06.574Z",
-  "processed": 0,
-  "failed": 40,
-  "successRate": "0%",
+  "updatedAt": "2026-02-15T02:22:14.521Z",
+  "processed": 44,
+  "failed": 56,
+  "successRate": "44.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 19,
+    "archive": 25
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T01:36:21.961Z",
+      "event": "bb-session",
+      "session": "394c15ca",
+      "url": "https://www.nytimes.com/2006/10/31/theater/reviews/31loui.html"
+    },
+    {
+      "t": "2026-02-15T01:36:24.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:37:47.471Z",
+      "event": "bb-session",
+      "session": "e3a7ae80",
+      "url": "https://www.nytimes.com/2008/04/04/theater/reviews/04macb.html"
+    },
+    {
+      "t": "2026-02-15T01:37:49.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:40:15.683Z",
+      "event": "bb-session",
+      "session": "f6b18126",
+      "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-daniel-craig.html"
+    },
+    {
+      "t": "2026-02-15T01:40:17.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:41:40.677Z",
+      "event": "bb-session",
+      "session": "e00079b7",
+      "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-broadway.html"
+    },
+    {
+      "t": "2026-02-15T01:41:42.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:42:50.820Z",
+      "event": "bb-session",
+      "session": "5cda1cee",
+      "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html#:~:text="
+    },
+    {
+      "t": "2026-02-15T01:42:52.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:43:59.859Z",
+      "event": "bb-session",
+      "session": "f9e53eda",
+      "url": "https://www.nytimes.com/2018/04/08/theater/mean-girls-review-broadway-musical.ht"
+    },
+    {
+      "t": "2026-02-15T01:44:01.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:45:07.173Z",
+      "event": "bb-session",
+      "session": "d2e4965e",
+      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
+    },
+    {
+      "t": "2026-02-15T01:45:09.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:46:25.476Z",
+      "event": "bb-session",
+      "session": "1495bbe8",
+      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
+    },
+    {
+      "t": "2026-02-15T01:46:27.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:47:37.796Z",
+      "event": "bb-session",
+      "session": "4e77ed9b",
+      "url": "https://www.nytimes.com/2010/04/12/theater/reviews/12quartet.html"
+    },
+    {
+      "t": "2026-02-15T01:47:39.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T01:49:01.970Z",
+      "event": "bb-session",
+      "session": "68118f70",
+      "url": "https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html"
+    },
+    {
+      "t": "2026-02-15T01:49:04.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
