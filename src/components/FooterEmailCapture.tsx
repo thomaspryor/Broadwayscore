@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 
 export default function FooterEmailCapture() {
   const [email, setEmail] = useState('');
-  const { status, errorMessage, submit, isSubscribed } = useLoopsCapture({
+  const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'footer',
   });
