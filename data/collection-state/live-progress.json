@@ -1,15 +1,28 @@
 {
-  "updatedAt": "2026-02-15T22:25:44.461Z",
-  "processed": 9,
-  "failed": 11,
-  "successRate": "45.0%",
+  "updatedAt": "2026-02-15T22:27:24.887Z",
+  "processed": 32,
+  "failed": 28,
+  "successRate": "53.3%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 15,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 4,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T22:23:13.400Z",
+      "event": "bb-session",
+      "session": "7efcd3b3",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+    },
+    {
+      "t": "2026-02-15T22:25:30.577Z",
+      "event": "bb-session",
+      "session": "20fac40c",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+    }
+  ]
 }
