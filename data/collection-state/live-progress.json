@@ -1,27 +1,45 @@
 {
-  "updatedAt": "2026-02-15T15:46:31.430Z",
-  "processed": 83,
-  "failed": 19,
-  "successRate": "81.4%",
+  "updatedAt": "2026-02-15T15:48:58.761Z",
+  "processed": 35,
+  "failed": 25,
+  "successRate": "58.3%",
   "tierBreakdown": {
-    "playwright": 81,
-    "browserbase": 0,
+    "playwright": 24,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 2,
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-15T15:42:35.725Z",
+      "t": "2026-02-15T15:36:53.302Z",
       "event": "bb-session",
-      "session": "94c49dd2",
-      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+      "session": "7c3327e7",
+      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
     },
     {
-      "t": "2026-02-15T15:42:37.910Z",
+      "t": "2026-02-15T15:37:48.944Z",
+      "event": "bb-session",
+      "session": "2ca3d64f",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-15T15:40:42.739Z",
+      "event": "bb-session",
+      "session": "97224de8",
+      "url": "http://www.bloomberg.com/news/2010-12-15/donny-marie-offer-puppy-love-to-besotte"
+    },
+    {
+      "t": "2026-02-15T15:40:45.117Z",
       "event": "bb-cookie-inject",
-      "domain": "observer.com"
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T15:42:18.941Z",
+      "event": "bb-session",
+      "session": "f9c948f8",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
     }
   ]
 }
