@@ -1425,16 +1425,43 @@ showDirs.forEach(showId => {
       }
 
       // Skip files flagged as duplicates by cleanup-review-sources.js
+      // But only if the referenced file exists and is NOT also flagged as a duplicate
+      // (prevents circular chains where all copies get excluded)
       if (data.duplicateOf) {
-        stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
-        return;
+        const refPath = path.join(showDir, data.duplicateOf);
+        let refAlsoDupe = false;
+        try {
+          const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
+          refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+        } catch {
+          refAlsoDupe = true; // Reference file missing — stale flag
+        }
+        if (!refAlsoDupe) {
+          stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+          return;
+        }
+        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip files flagged as duplicate text of another review (same content, different critic)
       // Set by collect-review-texts.js content fingerprinting
+      // But only if the referenced file exists and is NOT also flagged — prevents circular exclusion
       if (data.duplicateTextOf) {
-        stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
-        return;
+        const refPath = path.join(showDir, data.duplicateTextOf);
+        let refAlsoDupe = false;
+        try {
+          const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
+          refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+        } catch {
+          refAlsoDupe = true; // Reference file missing — stale flag
+        }
+        if (!refAlsoDupe) {
+          stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
+          return;
+        }
+        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
@@ -1446,6 +1473,12 @@ showDirs.forEach(showId => {
       // Skip wrong-show reviews (review content is for a different show)
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
+      }
+
+      // Skip non-reviews (profiles, interviews, previews, features, news articles)
+      if (data.isNonReview === true) {
+        stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
 
@@ -2099,12 +2132,16 @@ console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
+if (stats.circularDuplicateRecovered > 0) {
+  console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
+}
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
