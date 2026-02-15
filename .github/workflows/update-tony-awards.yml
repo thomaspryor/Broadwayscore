@@ -56,7 +56,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.changes.outputs.has_changes == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
