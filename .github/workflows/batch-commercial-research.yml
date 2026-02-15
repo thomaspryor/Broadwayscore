@@ -70,7 +70,7 @@ jobs:
           node scripts/batch-commercial-research.js $ARGS
 
       - name: Commit pending results
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: always() && github.event.inputs.dry_run != 'true'
         run: |
           git add data/commercial-pending-review.json
 

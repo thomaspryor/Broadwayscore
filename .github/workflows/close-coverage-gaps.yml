@@ -501,6 +501,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit rebuild
+        if: always()
         run: |
           git add data/reviews.json data/audit/ data/review-texts/
           if git diff --cached --quiet; then
