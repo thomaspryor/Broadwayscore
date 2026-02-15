@@ -1,15 +1,128 @@
 {
-  "updatedAt": "2026-02-15T22:19:14.010Z",
-  "processed": 26,
-  "failed": 4,
-  "successRate": "86.7%",
+  "updatedAt": "2026-02-15T22:21:22.918Z",
+  "processed": 187,
+  "failed": 353,
+  "successRate": "34.6%",
   "tierBreakdown": {
-    "playwright": 23,
-    "browserbase": 0,
+    "playwright": 117,
+    "browserbase": 7,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 2
+    "brightdata": 35,
+    "archive": 47
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T22:04:54.336Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-15T22:06:22.372Z",
+      "event": "bb-session",
+      "session": "58bcc981",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-15T22:07:10.200Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:07:41.502Z",
+      "event": "bb-session",
+      "session": "f69669bf",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-15T22:08:27.962Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:09:18.610Z",
+      "event": "bb-session",
+      "session": "792be674",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-15T22:09:34.487Z",
+      "event": "bb-session",
+      "session": "273f8e8c",
+      "url": "http://www.nydailynews.com/entertainment/arts/2011/10/28/2011-10-28_chinglish_re"
+    },
+    {
+      "t": "2026-02-15T22:10:06.237Z",
+      "event": "bb-session",
+      "session": "9607626c",
+      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
+    },
+    {
+      "t": "2026-02-15T22:11:03.862Z",
+      "event": "bb-session",
+      "session": "d8e9d3a9",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-15T22:11:51.399Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:12:33.319Z",
+      "event": "bb-session",
+      "session": "1ebafe90",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-15T22:12:50.820Z",
+      "event": "bb-session",
+      "session": "8600c1a7",
+      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
+    },
+    {
+      "t": "2026-02-15T22:13:19.027Z",
+      "event": "bb-session",
+      "session": "45eaabaf",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-15T22:14:05.144Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:14:46.402Z",
+      "event": "bb-session",
+      "session": "be34a5f4",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-15T22:15:33.096Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:16:37.359Z",
+      "event": "bb-session",
+      "session": "4149b1df",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-02-15T22:17:24.740Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:19:52.979Z",
+      "event": "bb-session",
+      "session": "b13a0be2",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-02-15T22:20:41.207Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
