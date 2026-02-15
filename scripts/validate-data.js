@@ -478,6 +478,7 @@ function validateCreativeTeamCompleteness(shows) {
     'the-times-they-are-achangin-2006',
     'all-about-me-2010',
     'the-pirate-queen-2007',
+    'here-lies-love-2023',             // Immersive concept album musical, no traditional book
   ]);
 
   const KNOWN_MUSICAL_NO_DIRECTOR = new Set([
@@ -499,6 +500,8 @@ function validateCreativeTeamCompleteness(shows) {
     'priscilla-queen-of-the-desert-2011',
     'bob-fosses-dancin-2023',
     'everyday-rapture-2010',
+    'buena-vista-social-club-2025',  // Cuban catalog music, no single songwriter
+    'titanique-2026',                // Céline Dion catalog parody
   ]);
 
   for (const show of shows) {
