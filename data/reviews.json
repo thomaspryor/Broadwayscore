@@ -5,13 +5,13 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 11903,
-      "skippedNoScore": 5819,
+      "skippedNoScore": 5815,
       "skippedDuplicate": 49,
       "skippedDuplicateUrl": 217,
       "skippedCrossOutletDuplicateUrl": 5,
       "skippedDuplicateText": 1087,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1700,
+      "skippedWrongProduction": 1701,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 3,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 12,
         "human-review": 62,
         "originalScore-priority0": 1654,
-        "llmScore": 7929,
+        "llmScore": 7928,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2115,
+        "llmScore-lowconf": 2116,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -45760,7 +45760,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 30,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Jackson McHenry",
@@ -45770,7 +45770,7 @@
       "pullQuote": "A production like this ends up taking a sadistic stance towards its own audience, insisting that because it is punishing you for caring about its suffering character, it is doing something serious and valuable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -116672,7 +116672,7 @@
       "pullQuote": "I’m not convinced that...the catharsis of drama is best achieved at the cost of trauma",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "job-2024",
