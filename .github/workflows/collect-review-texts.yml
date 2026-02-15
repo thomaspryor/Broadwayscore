@@ -182,7 +182,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '10' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
@@ -535,7 +535,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
-          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '10' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           OUTLET_TIER: ${{ matrix.outlet_tier }}
