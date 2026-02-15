@@ -743,7 +743,28 @@ function isGenericQuote(text) {
   for (const p of [...genericPatterns, ...sceneSettingPatterns]) {
     if (p.test(lower)) return true;
   }
+
+  // Short quotes whose entire evaluative content is "must-see" or "not to be missed"
+  if (lower.length < 100 && /(must[- ]see|not to be missed|highly recommended)\b/.test(lower)) {
+    return true;
+  }
+
   return false;
+}
+
+/**
+ * Trim a quote to the last complete sentence (ending in . ! ? or closing quote).
+ * Returns the original if it already ends cleanly or no sentence boundary is found.
+ */
+function trimToCompleteSentence(text) {
+  if (!text) return text;
+  const trimmed = text.trim();
+  // Already ends with sentence-ending punctuation
+  if (/[.!?"\u201D')]\s*$/.test(trimmed)) return trimmed;
+  // Find the last sentence-ending punctuation
+  const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
+  if (match && match[1].length >= 40) return match[1].trim();
+  return trimmed;
 }
 
 function selectBestExcerpt(data, showTitle) {
@@ -789,9 +810,11 @@ function selectBestExcerpt(data, showTitle) {
   }
 
   // 0. Try dedicated LLM pull quote (highest quality — focused extraction prompt)
+  //    Quality gate: reject generic/scene-setting, trim mid-sentence cutoffs
   if (data.llmPullQuote && data.llmPullQuote.length > 30) {
-    const cleaned = cleanExcerpt(data.llmPullQuote);
-    if (cleaned && !isJunkExcerpt(cleaned)) {
+    const trimmed = trimToCompleteSentence(data.llmPullQuote);
+    const cleaned = cleanExcerpt(trimmed);
+    if (cleaned && !isJunkExcerpt(cleaned) && !isGenericQuote(cleaned)) {
       const validated = validateExcerpt(cleaned, 'llmPullQuote');
       if (validated) return validated;
     }
@@ -1402,16 +1425,43 @@ showDirs.forEach(showId => {
       }
 
       // Skip files flagged as duplicates by cleanup-review-sources.js
+      // But only if the referenced file exists and is NOT also flagged as a duplicate
+      // (prevents circular chains where all copies get excluded)
       if (data.duplicateOf) {
-        stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
-        return;
+        const refPath = path.join(showDir, data.duplicateOf);
+        let refAlsoDupe = false;
+        try {
+          const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
+          refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+        } catch {
+          refAlsoDupe = true; // Reference file missing — stale flag
+        }
+        if (!refAlsoDupe) {
+          stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+          return;
+        }
+        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip files flagged as duplicate text of another review (same content, different critic)
       // Set by collect-review-texts.js content fingerprinting
+      // But only if the referenced file exists and is NOT also flagged — prevents circular exclusion
       if (data.duplicateTextOf) {
-        stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
-        return;
+        const refPath = path.join(showDir, data.duplicateTextOf);
+        let refAlsoDupe = false;
+        try {
+          const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
+          refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+        } catch {
+          refAlsoDupe = true; // Reference file missing — stale flag
+        }
+        if (!refAlsoDupe) {
+          stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
+          return;
+        }
+        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
@@ -1423,6 +1473,12 @@ showDirs.forEach(showId => {
       // Skip wrong-show reviews (review content is for a different show)
       if (data.wrongShow === true) {
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
+      }
+
+      // Skip non-reviews (profiles, interviews, previews, features, news articles)
+      if (data.isNonReview === true) {
+        stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
 
@@ -1809,8 +1865,60 @@ if (fs.existsSync(reviewsJsonPath)) {
         process.exit(1);
       }
     }
+
+    // ========================================
+    // 3B-ii: PER-SHOW REVIEW COUNT REGRESSION GATE
+    // ========================================
+    // If any show loses >2 scored reviews in a rebuild, something is wrong.
+    // In CI: abort to prevent data corruption from reaching production.
+    const REGRESSION_DROP_THRESHOLD = 2; // max reviews a single show can lose
+    const REGRESSION_MAX_SHOWS = 5;      // max shows that can regress before hard abort
+
+    const oldCountByShow = new Map();
+    for (const r of currentReviews) {
+      oldCountByShow.set(r.showId, (oldCountByShow.get(r.showId) || 0) + 1);
+    }
+    const newCountByShow = new Map();
+    for (const r of allReviews) {
+      newCountByShow.set(r.showId, (newCountByShow.get(r.showId) || 0) + 1);
+    }
+
+    const regressions = [];
+    for (const [showId, oldCount] of oldCountByShow) {
+      const newCount = newCountByShow.get(showId) || 0;
+      const dropped = oldCount - newCount;
+      if (dropped > REGRESSION_DROP_THRESHOLD) {
+        regressions.push({ showId, oldCount, newCount, dropped });
+      }
+    }
+
+    if (regressions.length > 0) {
+      regressions.sort((a, b) => b.dropped - a.dropped);
+
+      const auditDir = path.join(__dirname, '../data/audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(auditDir, 'rebuild-regression.json'),
+        JSON.stringify({ timestamp: new Date().toISOString(), regressions }, null, 2) + '\n'
+      );
+
+      console.log(`\n⚠️  REVIEW COUNT REGRESSION: ${regressions.length} show(s) lost >${REGRESSION_DROP_THRESHOLD} reviews`);
+      regressions.slice(0, 10).forEach(r => {
+        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped})`);
+      });
+      if (regressions.length > 10) {
+        console.log(`  ...and ${regressions.length - 10} more`);
+      }
+
+      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && !process.env.ALLOW_REGRESSION) {
+        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
+        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
+        console.error('Set ALLOW_REGRESSION=true to override.');
+        process.exit(1);
+      }
+    }
   } catch (e) {
-    // Can't read current file, skip drift check (first build)
+    // Can't read current file, skip drift/regression check (first build)
   }
 }
 
@@ -2024,12 +2132,16 @@ console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
+if (stats.circularDuplicateRecovered > 0) {
+  console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
+}
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
