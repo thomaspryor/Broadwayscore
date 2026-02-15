@@ -1,13 +1,26 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-15T05:53:23.673Z",
-    "totalFlagged": 71,
+    "generatedAt": "2026-02-15T05:53:23.657Z",
+    "totalFlagged": 74,
     "reasons": {
-      "originalScore-llm-conflict": 45,
-      "possible-tour-fulltext": 24
+      "possible-tour-fulltext": 27,
+      "originalScore-llm-conflict": 47
     }
   },
   "reviews": [
+    {
+      "showId": "700-sundays-2013",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T05:52:58.665Z"
+    },
     {
       "showId": "a-christmas-story-the-musical-2012",
       "outletId": "ew",
@@ -19,7 +32,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:50.980Z"
+      "flaggedAt": "2026-02-15T05:52:58.916Z"
     },
     {
       "showId": "a-life-in-the-theatre-2010",
@@ -32,7 +45,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:51.345Z"
+      "flaggedAt": "2026-02-15T05:52:59.306Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -45,20 +58,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:51.425Z"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "outletId": "stagezine",
-      "criticName": "David NouNou",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"0/5\" (=0, bucket=negative) vs LLM 82 (bucket=positive, conf=high)",
-      "llmScore": 82,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:51.885Z"
+      "flaggedAt": "2026-02-15T05:52:59.380Z"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -71,7 +71,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:52.074Z"
+      "flaggedAt": "2026-02-15T05:53:00.003Z"
     },
     {
       "showId": "airline-highway-2015",
@@ -84,7 +84,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:52.222Z"
+      "flaggedAt": "2026-02-15T05:53:00.138Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -97,7 +97,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:52.794Z"
+      "flaggedAt": "2026-02-15T05:53:00.550Z"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -110,7 +110,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:52.932Z"
+      "flaggedAt": "2026-02-15T05:53:00.660Z"
     },
     {
       "showId": "american-son-2018",
@@ -123,7 +123,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:53.178Z"
+      "flaggedAt": "2026-02-15T05:53:00.841Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "houston-press",
+      "criticName": "Unknown",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": 73,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-15T05:53:01.982Z"
     },
     {
       "showId": "bright-star-2016",
@@ -136,7 +149,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:55.582Z"
+      "flaggedAt": "2026-02-15T05:53:02.684Z"
     },
     {
       "showId": "bright-star-2016",
@@ -149,7 +162,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:55.598Z"
+      "flaggedAt": "2026-02-15T05:53:02.698Z"
+    },
+    {
+      "showId": "bronx-bombers-2014",
+      "outletId": "timeout",
+      "criticName": "David Cote",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5\" (=100, bucket=positive) vs LLM 60 (bucket=mixed, conf=high)",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T05:53:02.775Z"
     },
     {
       "showId": "chinglish-2011",
@@ -162,7 +188,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:57.133Z"
+      "flaggedAt": "2026-02-15T05:53:03.892Z"
     },
     {
       "showId": "collected-stories-2010",
@@ -175,7 +201,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:57.394Z"
+      "flaggedAt": "2026-02-15T05:53:04.079Z"
     },
     {
       "showId": "constellations-2015",
@@ -188,7 +214,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:57.619Z"
+      "flaggedAt": "2026-02-15T05:53:04.272Z"
     },
     {
       "showId": "cyrano-de-bergerac-2012",
@@ -201,7 +227,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:57.820Z"
+      "flaggedAt": "2026-02-15T05:53:04.424Z"
     },
     {
       "showId": "follies-2011",
@@ -214,7 +240,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:52:59.834Z"
+      "flaggedAt": "2026-02-15T05:53:06.086Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -227,7 +253,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.370Z"
+      "flaggedAt": "2026-02-15T05:53:06.472Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -240,7 +266,20 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.387Z"
+      "flaggedAt": "2026-02-15T05:53:06.492Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "blogcritics",
+      "criticName": "Michelle Alexandria",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T05:53:06.705Z"
     },
     {
       "showId": "gigi-2015",
@@ -253,7 +292,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.702Z"
+      "flaggedAt": "2026-02-15T05:53:06.710Z"
     },
     {
       "showId": "girl-from-the-north-country-2022",
@@ -266,7 +305,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.742Z"
+      "flaggedAt": "2026-02-15T05:53:06.742Z"
     },
     {
       "showId": "glengarry-glen-ross-2012",
@@ -279,7 +318,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.822Z"
+      "flaggedAt": "2026-02-15T05:53:06.812Z"
     },
     {
       "showId": "godspell-2011",
@@ -292,7 +331,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.935Z"
+      "flaggedAt": "2026-02-15T05:53:06.899Z"
     },
     {
       "showId": "golden-boy-2012",
@@ -305,7 +344,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.943Z"
+      "flaggedAt": "2026-02-15T05:53:06.906Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -318,7 +357,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.992Z"
+      "flaggedAt": "2026-02-15T05:53:06.942Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -331,7 +370,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:00.996Z"
+      "flaggedAt": "2026-02-15T05:53:06.943Z"
+    },
+    {
+      "showId": "hedwig-and-the-angry-inch-2014",
+      "outletId": "ew",
+      "criticName": "Unknown",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T05:53:08.139Z"
     },
     {
       "showId": "indecent-2017",
@@ -344,7 +396,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:04.114Z"
+      "flaggedAt": "2026-02-15T05:53:09.215Z"
     },
     {
       "showId": "lend-me-a-tenor-2010",
@@ -357,7 +409,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:06.207Z"
+      "flaggedAt": "2026-02-15T05:53:10.714Z"
     },
     {
       "showId": "les-miserables-1987",
@@ -370,7 +422,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:06.415Z"
+      "flaggedAt": "2026-02-15T05:53:10.860Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -383,7 +435,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:06.452Z"
+      "flaggedAt": "2026-02-15T05:53:10.890Z"
     },
     {
       "showId": "life-of-pi-2023",
@@ -396,7 +448,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-15T05:53:06.603Z"
+      "flaggedAt": "2026-02-15T05:53:10.993Z"
     },
     {
       "showId": "lucky-guy-2013",
@@ -409,7 +461,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:07.058Z"
+      "flaggedAt": "2026-02-15T05:53:11.328Z"
     },
     {
       "showId": "machinal-2014",
@@ -422,7 +474,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:07.286Z"
+      "flaggedAt": "2026-02-15T05:53:11.499Z"
     },
     {
       "showId": "man-and-boy-2011",
@@ -435,7 +487,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:07.402Z"
+      "flaggedAt": "2026-02-15T05:53:11.580Z"
     },
     {
       "showId": "man-and-boy-2011",
@@ -448,7 +500,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:07.404Z"
+      "flaggedAt": "2026-02-15T05:53:11.581Z"
     },
     {
       "showId": "million-dollar-quartet-2010",
@@ -461,7 +513,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:08.270Z"
+      "flaggedAt": "2026-02-15T05:53:12.227Z"
     },
     {
       "showId": "motown-the-musical-2013",
@@ -474,7 +526,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:08.708Z"
+      "flaggedAt": "2026-02-15T05:53:12.556Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -487,7 +539,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:08.724Z"
+      "flaggedAt": "2026-02-15T05:53:12.568Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -500,7 +552,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:08.745Z"
+      "flaggedAt": "2026-02-15T05:53:12.584Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -513,7 +565,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:09.041Z"
+      "flaggedAt": "2026-02-15T05:53:12.798Z"
     },
     {
       "showId": "newsies-the-musical-2012",
@@ -526,7 +578,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:09.491Z"
+      "flaggedAt": "2026-02-15T05:53:13.116Z"
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -539,7 +591,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:09.561Z"
+      "flaggedAt": "2026-02-15T05:53:13.170Z"
     },
     {
       "showId": "noises-off-2016",
@@ -552,7 +604,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:09.604Z"
+      "flaggedAt": "2026-02-15T05:53:13.199Z"
     },
     {
       "showId": "noises-off-2016",
@@ -565,7 +617,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:09.634Z"
+      "flaggedAt": "2026-02-15T05:53:13.225Z"
     },
     {
       "showId": "outside-mullingar-2014",
@@ -578,20 +630,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:11.095Z"
-    },
-    {
-      "showId": "parade-2023",
-      "outletId": "dc-theater-arts",
-      "criticName": "Jennifer Georgia",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\btouring production\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-15T05:53:11.158Z"
+      "flaggedAt": "2026-02-15T05:53:14.288Z"
     },
     {
       "showId": "pretty-woman-the-musical-2018",
@@ -604,7 +643,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.062Z"
+      "flaggedAt": "2026-02-15T05:53:15.006Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -617,7 +656,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.224Z"
+      "flaggedAt": "2026-02-15T05:53:15.128Z"
     },
     {
       "showId": "priscilla-queen-of-the-desert-2011",
@@ -630,7 +669,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.240Z"
+      "flaggedAt": "2026-02-15T05:53:15.144Z"
     },
     {
       "showId": "promises-promises-2010",
@@ -643,7 +682,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.283Z"
+      "flaggedAt": "2026-02-15T05:53:15.182Z"
     },
     {
       "showId": "ragtime-2025",
@@ -656,7 +695,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.751Z"
+      "flaggedAt": "2026-02-15T05:53:15.537Z"
     },
     {
       "showId": "rain-2010",
@@ -669,7 +708,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.801Z"
+      "flaggedAt": "2026-02-15T05:53:15.572Z"
     },
     {
       "showId": "red-2010",
@@ -682,7 +721,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:12.901Z"
+      "flaggedAt": "2026-02-15T05:53:15.650Z"
     },
     {
       "showId": "scandalous-2012",
@@ -695,7 +734,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:13.440Z"
+      "flaggedAt": "2026-02-15T05:53:16.047Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -708,7 +747,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:13.799Z"
+      "flaggedAt": "2026-02-15T05:53:16.326Z"
     },
     {
       "showId": "the-addams-family-2010",
@@ -721,7 +760,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:16.009Z"
+      "flaggedAt": "2026-02-15T05:53:18.013Z"
     },
     {
       "showId": "the-columnist-2012",
@@ -734,7 +773,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:16.783Z"
+      "flaggedAt": "2026-02-15T05:53:18.564Z"
     },
     {
       "showId": "the-gershwins-porgy-and-bess-2012",
@@ -747,7 +786,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:17.537Z"
+      "flaggedAt": "2026-02-15T05:53:19.107Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -760,7 +799,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:17.559Z"
+      "flaggedAt": "2026-02-15T05:53:19.122Z"
     },
     {
       "showId": "the-glass-menagerie-2017",
@@ -773,7 +812,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:17.648Z"
+      "flaggedAt": "2026-02-15T05:53:19.186Z"
     },
     {
       "showId": "the-house-of-blue-leaves-2011",
@@ -786,7 +825,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:18.055Z"
+      "flaggedAt": "2026-02-15T05:53:19.482Z"
     },
     {
       "showId": "the-last-ship-2014",
@@ -799,7 +838,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:18.572Z"
+      "flaggedAt": "2026-02-15T05:53:19.876Z"
     },
     {
       "showId": "the-lyons-2012",
@@ -812,7 +851,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:18.890Z"
+      "flaggedAt": "2026-02-15T05:53:20.133Z"
     },
     {
       "showId": "the-new-one-2018",
@@ -825,7 +864,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:19.211Z"
+      "flaggedAt": "2026-02-15T05:53:20.411Z"
     },
     {
       "showId": "the-other-place-2013",
@@ -838,7 +877,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:19.361Z"
+      "flaggedAt": "2026-02-15T05:53:20.524Z"
     },
     {
       "showId": "the-trip-to-bountiful-2013",
@@ -851,7 +890,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:20.901Z"
+      "flaggedAt": "2026-02-15T05:53:21.682Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -864,7 +903,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:21.084Z"
+      "flaggedAt": "2026-02-15T05:53:21.820Z"
     },
     {
       "showId": "the-winslow-boy-2013",
@@ -877,7 +916,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:21.217Z"
+      "flaggedAt": "2026-02-15T05:53:21.915Z"
     },
     {
       "showId": "time-stands-still-2010",
@@ -890,7 +929,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:21.621Z"
+      "flaggedAt": "2026-02-15T05:53:22.206Z"
     },
     {
       "showId": "vanya-and-sonia-and-masha-and-spike-2013",
@@ -903,7 +942,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:22.469Z"
+      "flaggedAt": "2026-02-15T05:53:22.831Z"
     },
     {
       "showId": "war-paint-2017",
@@ -916,7 +955,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:22.834Z"
+      "flaggedAt": "2026-02-15T05:53:23.100Z"
     },
     {
       "showId": "wicked-2003",
@@ -929,7 +968,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-15T05:53:23.260Z"
+      "flaggedAt": "2026-02-15T05:53:23.405Z"
     }
   ]
 }
