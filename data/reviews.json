@@ -4,25 +4,25 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 14044,
+      "totalReviews": 14043,
       "skippedNoScore": 3683,
       "skippedDuplicate": 95,
       "skippedDuplicateUrl": 408,
       "skippedCrossOutletDuplicateUrl": 30,
-      "skippedDuplicateText": 482,
+      "skippedDuplicateText": 483,
       "skippedFingerprintDedup": 79,
       "skippedWrongProduction": 1927,
       "recoveredFromGarbage": 138,
       "scoreSources": {
-        "explicit-stars": 3,
+        "explicit-stars": 4,
         "explicit-outOf": 0,
         "explicit-slash": 0,
-        "explicit-letterGrade": 12,
+        "explicit-letterGrade": 15,
         "human-review": 67,
-        "originalScore-priority0": 1690,
-        "llmScore": 10229,
+        "originalScore-priority0": 1687,
+        "llmScore": 10228,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1932,
+        "llmScore-lowconf": 1931,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -47546,18 +47546,18 @@
       "showId": "carousel-2018",
       "outletId": "fordham-observer",
       "outlet": "Fordham Observer",
-      "assignedScore": 21,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Pan",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Michael Appler",
       "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed-and-ill-equipped/",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "2/5",
       "pullQuote": "An ill-timed and remarkably tactless misfire",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "carousel-2018",
@@ -95758,7 +95758,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -98791,7 +98791,7 @@
       "outletId": "nysr",
       "outlet": "New York Stage Review",
       "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
+      "scoreSource": "explicit-stars",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -113341,7 +113341,7 @@
       "pullQuote": "Little wonder that so many are so eager to salute Sondheim; we can only hope for more homages as lovely as this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -114599,7 +114599,7 @@
       "pullQuote": "While act one offers plenty of silly, lightweight fun, the play essentially collapses in the self-indulgent, overly sentimental act two.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "its-only-a-play-2014",
@@ -123067,7 +123067,7 @@
       "pullQuote": "Glenda Jackson was great fun, but, really, Lear shouldn't be great fun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "king-lear-2019",
@@ -130537,23 +130537,6 @@
       "showId": "little-bear-ridge-road-2025",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
-      "assignedScore": 92,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "This is a gorgeous play — unassuming and concise but emotionally expansive, attentive to its characters' interior lives as much as their quotidian routines.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "little-bear-ridge-road-2025",
-      "outletId": "hollywood-reporter",
-      "outlet": "The Hollywood Reporter",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -135417,7 +135400,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 83,
-      "scoreSource": "originalScore-priority0",
+      "scoreSource": "explicit-letterGrade",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Emlyn Travis",
@@ -180858,7 +180841,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 93,
-      "scoreSource": "originalScore-priority0",
+      "scoreSource": "explicit-letterGrade",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Ruth Kinane",
@@ -217228,7 +217211,7 @@
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 83,
-      "scoreSource": "originalScore-priority0",
+      "scoreSource": "explicit-letterGrade",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Emlyn Travis",
