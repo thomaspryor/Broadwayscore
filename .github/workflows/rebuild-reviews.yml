@@ -67,10 +67,6 @@ jobs:
         run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
         continue-on-error: true
 
-      - name: Detect syndicated duplicates
-        run: node scripts/detect-syndicated-duplicates.js
-        continue-on-error: true
-
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
