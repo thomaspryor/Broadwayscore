@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-15T17:11:26.085Z",
-  "processed": 58,
-  "failed": 82,
-  "successRate": "41.4%",
+  "updatedAt": "2026-02-15T17:22:08.604Z",
+  "processed": 60,
+  "failed": 90,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 50,
     "browserbase": 7,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 4,
     "archive": 6
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-02-15T16:19:04.958Z",
@@ -53,6 +53,28 @@
       "event": "bb-session",
       "session": "114ef9a7",
       "url": "https://www.thewrap.com/travesties-broadway-review-tom-hollander-pulls-stoppard/"
+    },
+    {
+      "t": "2026-02-15T17:14:44.029Z",
+      "event": "bb-session",
+      "session": "ece7f111",
+      "url": "https://www.huffpost.com/steven-suskin/a-time-to-kill_b_4132348.html"
+    },
+    {
+      "t": "2026-02-15T17:14:47.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:19:45.208Z",
+      "event": "bb-session",
+      "session": "6af5f066",
+      "url": "https://www.usatoday.com/story/life/theater/2019/03/21/aint-too-proud-temptation"
+    },
+    {
+      "t": "2026-02-15T17:19:47.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
