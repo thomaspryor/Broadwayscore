@@ -946,6 +946,20 @@ function extractShowScoreReviews(html, showId) {
       continue;
     }
 
+    // Skip URLs with paths strongly indicating non-review content
+    const nonReviewPathPatterns = [
+      /\/(?:video|videos|gallery|galleries|slideshow|photo-gallery)\//i,
+      /\/(?:podcast|podcasts|episode)\//i,
+      /\/(?:obituary|obituaries|in-memoriam)\//i,
+      /\/(?:behind-the-scenes|backstage)\//i,
+    ];
+    try {
+      const urlPath = new URL(url).pathname;
+      if (nonReviewPathPatterns.some(p => p.test(urlPath))) {
+        continue;
+      }
+    } catch { /* malformed URL — let through for downstream handling */ }
+
     // Try to find outlet context nearby
     const contextStart = Math.max(0, match.index - 500);
     const context = html.substring(contextStart, match.index + match[0].length);
