@@ -91,7 +91,17 @@
     "the-boys-in-the-band-2018/vulture--jesse-green.json",
     "the-bridges-of-madison-county-2014/vulture--jesse-green.json",
     "the-glass-menagerie-2013/vulture--jesse-green.json",
-    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json"
+    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+    "the-lifespan-of-a-fact-2018/vulture--sara-holdren.json",
+    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+    "the-music-man-2022/vulture--helen-shaw.json",
+    "the-mystery-of-edwin-drood-2012/vulture--jesse-green.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-picture-of-dorian-gray-2025/vulture--sara-holdren.json",
+    "the-river-2014/vulture--jesse-green.json",
+    "the-rose-tattoo-2019/vulture--christopher-bonanos.json",
+    "the-scottsboro-boys-2010/vulture--scott-brown.json",
+    "the-sign-in-sidney-brusteins-window-2023/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -101,7 +111,10 @@
     "brightdata": [
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
       "punch-2025/vulture--sara-holdren.json",
-      "the-anarchist-2012/vulture--jesse-green.json"
+      "the-anarchist-2012/vulture--jesse-green.json",
+      "the-glass-menagerie-2013/vulture--jesse-green.json",
+      "the-river-2014/vulture--jesse-green.json",
+      "the-rose-tattoo-2019/vulture--christopher-bonanos.json"
     ],
     "archive": [
       "a-view-from-the-bridge-2010/vulture--jesse-green.json",
@@ -112,7 +125,7 @@
     ]
   },
   "startTime": "2026-02-15T21:27:50.978Z",
-  "lastProcessed": "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-02-15T21:31:13.226Z",
@@ -243,6 +256,50 @@
     },
     {
       "t": "2026-02-15T22:00:42.424Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T22:03:52.439Z",
+      "event": "bb-session",
+      "session": "71fdfce5",
+      "url": "http://www.vulture.com/2017/03/theater-review-sally-field-in-a-reimagined-glass-"
+    },
+    {
+      "t": "2026-02-15T22:03:54.316Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T22:11:04.150Z",
+      "event": "bb-session",
+      "session": "4ab1f8e2",
+      "url": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
+    },
+    {
+      "t": "2026-02-15T22:11:05.941Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T22:14:14.689Z",
+      "event": "bb-session",
+      "session": "8aec6d31",
+      "url": "https://www.vulture.com/2014/11/theater-review-the-river.html"
+    },
+    {
+      "t": "2026-02-15T22:14:16.662Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T22:15:58.412Z",
+      "event": "bb-session",
+      "session": "69ec0c77",
+      "url": "https://www.vulture.com/2019/10/theater-review-marisa-tomei-in-the-rose-tattoo-o"
+    },
+    {
+      "t": "2026-02-15T22:16:00.370Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     }
