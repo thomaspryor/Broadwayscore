@@ -68,7 +68,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit changes
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: always() && github.event.inputs.dry_run != 'true'
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"

@@ -243,6 +243,7 @@ jobs:
           fi
 
       - name: Commit merged results
+        if: always()
         run: |
           git add data/audience-buzz.json
           # Also remove shard directory if cleanup worked

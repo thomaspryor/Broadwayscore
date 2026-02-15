@@ -3,7 +3,7 @@
     "generatedAt": "2026-02-15T22:08:28.515Z",
     "totalFlagged": 72,
     "reasons": {
-      "possible-tour-fulltext": 24,
+      "possible-tour-fulltext": 23,
       "originalScore-llm-conflict": 48
     }
   },
@@ -768,9 +768,9 @@
       "criticName": "MATT WINDMAN",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T22:08:21.686Z"
@@ -872,9 +872,9 @@
       "criticName": "Roger Friedman",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 91,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T22:08:25.688Z"
