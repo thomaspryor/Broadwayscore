@@ -39,6 +39,13 @@ Never give approximate ranges. If you can't access a source, say so.
 - **Push:** Use 5-retry loop with `--rebase -X theirs` (see `gather-reviews.yml` pattern)
 - Before shipping any new batch script or workflow, verify: "If this times out at 50%, do we keep the first 50%?" If no, add checkpointing.
 
+### 8. Roadmap Discipline
+Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore` to read the Roadmap issue.
+- If the user's request isn't tracked, add it to the appropriate section.
+- If something similar is "In Progress," tell the user before starting (don't silently duplicate).
+When finishing: update the issue body (move item to "Recently Done") and post a comment summarizing what was done.
+**Rabbit hole prevention:** If you discover a new issue mid-task, add it to Backlog via a comment and continue your current work. Do NOT context-switch unless the user explicitly asks.
+
 ---
 
 ## Project Overview
