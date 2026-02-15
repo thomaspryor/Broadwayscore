@@ -156,9 +156,9 @@ const CONFIG = {
 
   // Browserbase spending limits (to control costs - $0.10/browser hour)
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
-  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '5'), // Prevent one domain starving others
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '200'), // ~$20/day max (Startup plan: 500h)
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '40'), // Per workflow run
+  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '15'), // Prevent one domain starving others
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -186,6 +186,7 @@ const CONFIG = {
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
     'bloomberg.com': { emailVar: 'BLOOMBERG_EMAIL', passVar: 'BLOOMBERG_PASSWORD' },
     'northjersey.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
+    'usatoday.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
     'thestage.co.uk': { emailVar: 'THESTAGE_EMAIL', passVar: 'THESTAGE_PASSWORD' },
     'ft.com': { emailVar: 'FT_EMAIL', passVar: 'FT_PASSWORD' },
   },
