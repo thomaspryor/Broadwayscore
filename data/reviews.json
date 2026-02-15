@@ -4,13 +4,13 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 13227,
+      "totalReviews": 13229,
       "skippedNoScore": 4660,
       "skippedDuplicate": 89,
       "skippedDuplicateUrl": 410,
       "skippedCrossOutletDuplicateUrl": 27,
-      "skippedDuplicateText": 474,
-      "skippedFingerprintDedup": 78,
+      "skippedDuplicateText": 473,
+      "skippedFingerprintDedup": 77,
       "skippedWrongProduction": 1827,
       "recoveredFromGarbage": 138,
       "scoreSources": {
@@ -20,7 +20,7 @@
         "explicit-letterGrade": 12,
         "human-review": 67,
         "originalScore-priority0": 1691,
-        "llmScore": 9362,
+        "llmScore": 9364,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 1972,
         "llmScore-review": 2,
@@ -15719,7 +15719,7 @@
       "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038",
       "publishDate": "March 20, 2014",
       "originalRating": null,
-      "pullQuote": "While it doesn't rival the imagination or innovation of \"The Lion King,\" the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.",
+      "pullQuote": "It’s not the most sophisticated entertainment, but the target demographic won’t mind at all.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -42639,6 +42639,23 @@
       "publishDate": "February 6, 2014",
       "originalRating": null,
       "pullQuote": "This new play by Eric Simonson feels less like a work for the theater than like a love letter to the Yankees that accidentally wandered onto a stage.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "bronx-bombers-2014",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square.html?_r=0",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The drama inherent in clashing egos gives 'Bronx Bombers' some natural juice in the early innings, but the suspense more or less gets benched in the play's second act.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -115636,7 +115653,7 @@
       "pullQuote": "While act one offers plenty of silly, lightweight fun, the play essentially collapses in the self-indulgent, overly sentimental act two.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "its-only-a-play-2014",
@@ -181938,6 +181955,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Well, you could have knocked me over with a feather because I will forgive the flaws of It Hot as a theatrical experience to embrace the overwhelming authenticity.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "some-like-it-hot-2022",
+      "outletId": "queerty",
+      "outlet": "Queerty",
+      "assignedScore": 81,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Matthew Wexler",
+      "url": "https://www.queerty.com/broadways-like-hot-sizzles-everyones-invited-party-20221212/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Gloriously it would, and in a musical no less, a big high-kicking, splashy show.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
