@@ -1,6 +1,5 @@
 {
   "processed": [
-    "a-view-from-the-bridge-2010/vulture--jesse-green.json",
     "cyrano-de-bergerac-2007/vulture--scott-brown.json",
     "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json",
     "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
@@ -18,6 +17,7 @@
     "a-christmas-carol-2022/vulture--jackson-mchenry.json",
     "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
     "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "a-view-from-the-bridge-2010/vulture--jesse-green.json",
     "allegiance-2015/vulture--jesse-green.json",
     "almost-famous-2022/vulture--helen-shaw.json",
     "anastasia-2017/vulture--jesse-green.json",
@@ -65,53 +65,56 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+      "gettin-the-band-back-together-2018/vulture--sara-holdren.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
+      "a-view-from-the-bridge-2010/vulture--jesse-green.json",
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json"
     ],
     "archive": [
-      "a-view-from-the-bridge-2010/vulture--jesse-green.json",
       "cyrano-de-bergerac-2007/vulture--scott-brown.json",
       "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json",
       "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
       "magicbird-2012/vulture--scott-brown.json"
     ]
   },
-  "startTime": "2026-02-15T21:27:50.978Z",
+  "startTime": "2026-02-15T21:22:38.182Z",
   "lastProcessed": "mcneal-2024/vulture--jackson-mchenry.json",
   "log": [
     {
-      "t": "2026-02-15T21:31:13.226Z",
+      "t": "2026-02-15T21:29:05.014Z",
       "event": "bb-session",
-      "session": "717c8d20",
-      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+      "session": "ab741f6c",
+      "url": "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html#"
     },
     {
-      "t": "2026-02-15T21:31:15.252Z",
+      "t": "2026-02-15T21:29:10.008Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-15T21:34:58.145Z",
+      "t": "2026-02-15T21:32:23.941Z",
       "event": "bb-session",
-      "session": "736e85e7",
+      "session": "78427a90",
       "url": "http://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html"
     },
     {
-      "t": "2026-02-15T21:35:00.123Z",
+      "t": "2026-02-15T21:32:25.915Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-15T21:38:25.810Z",
+      "t": "2026-02-15T21:38:58.503Z",
       "event": "bb-session",
-      "session": "66a6e428",
-      "url": "https://www.vulture.com/2018/08/theater-via-exit-9-its-gettin-the-band-back-toge"
+      "session": "200bfb23",
+      "url": "http://www.vulture.com/2014/04/theater-review-casa-valentina.html"
     },
     {
-      "t": "2026-02-15T21:38:27.725Z",
+      "t": "2026-02-15T21:38:59.058Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     }
