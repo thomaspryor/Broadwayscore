@@ -313,6 +313,97 @@ async function crossVerify(result, userPrompt) {
 }
 
 /**
+ * Text verification gate: verify the LLM's claimed rating actually exists
+ * in the source text. This catches hallucinations where the LLM invents
+ * a rating that isn't there.
+ * Returns null to reject, or the result to keep.
+ */
+function verifyInText(result, fullText) {
+  if (!result || !fullText) return null;
+  const ft = fullText;
+  const lower = ft.toLowerCase();
+
+  // --- Letter grades ---
+  if (result.type === 'letter') {
+    const gradeMatch = (result.raw || '').match(/([A-D][+\-–—]?|F)/i);
+    if (!gradeMatch) return null;
+    const grade = gradeMatch[1].replace(/[–—]/g, '-');
+
+    // For ALL letter grades (single or multi-char), require they appear in a
+    // "rating position" — not just anywhere in text. This prevents adjectival
+    // uses like "A+ piece of comedy" from being treated as ratings.
+    const escapedGrade = grade.replace('+', '\\+').replace('-', '\\-');
+    const dashVariants = grade.endsWith('-')
+      ? [escapedGrade, escapedGrade.slice(0, -2) + '[–—]']
+      : [escapedGrade];
+
+    // Position 1: First 100 chars (Gotham Playgoer style — review starts with grade)
+    const first100 = ft.slice(0, 100);
+    for (const v of dashVariants) {
+      if (new RegExp('(^|\\s)' + v + '(\\s|$)', 'm').test(first100)) return result;
+    }
+
+    // Position 2: Last 500 chars (EW style — grade near end before boilerplate)
+    const last500 = ft.slice(-500);
+    for (const v of dashVariants) {
+      // Grade preceded by sentence-ending punctuation (". B+" or "! A-")
+      if (new RegExp('[.!?\\n]\\s*' + v + '(\\s|$|\\(|[A-Z])').test(last500)) return result;
+      // Grade immediately before "(Tickets" or "For tickets" (EW concatenated pattern)
+      if (new RegExp(v + '\\s*[\\(F]').test(last500)) return result;
+      // Grade at end of line
+      if (new RegExp(v + '\\s*$', 'm').test(last500)) return result;
+    }
+
+    // Position 3: "Grade: X" or "Rating: X" anywhere in text
+    for (const v of dashVariants) {
+      if (new RegExp('(grade|rating)\\s*:\\s*' + v, 'i').test(ft)) return result;
+    }
+
+    if (VERBOSE) console.log(`  TEXT-VERIFY REJECT: letter grade "${grade}" not verifiable in rating position`);
+    stats.textVerifyReject = (stats.textVerifyReject || 0) + 1;
+    return null;
+  }
+
+  // --- Star ratings ---
+  if (result.type === 'stars') {
+    // Must have asterisks, unicode stars, or "out of N" pattern
+    if (ft.includes('*') || ft.includes('★') || ft.includes('⭐') || ft.includes('☆')) return result;
+    if (lower.includes('out of four') || lower.includes('out of five') || lower.includes('out of 4') || lower.includes('out of 5')) return result;
+    if (lower.includes('%bd') || lower.includes('%2a')) return result; // URL-encoded ½ or *
+    if (lower.includes('two and a half') || lower.includes('three and a half') || lower.includes('one and a half') || lower.includes('two and one-half') || lower.includes('three and one-half')) return result;
+    // X/Y stars pattern
+    const slashMatch = (result.raw || '').match(/([\d.½]+)\s*\/\s*(\d+)/);
+    if (slashMatch && (lower.includes(slashMatch[1] + '/' + slashMatch[2]) || lower.includes(slashMatch[1] + ' / ' + slashMatch[2]))) return result;
+
+    if (VERBOSE) console.log(`  TEXT-VERIFY REJECT: star rating "${result.raw}" — no star/asterisk evidence in text`);
+    stats.textVerifyReject = (stats.textVerifyReject || 0) + 1;
+    return null;
+  }
+
+  // --- Numeric ratings ---
+  if (result.type === 'numeric') {
+    const slashMatch = (result.raw || '').match(/([\d.]+)\s*\/\s*(\d+)/);
+    if (slashMatch) {
+      // Check for X/Y or X out of Y in text
+      if (lower.includes(slashMatch[1] + '/' + slashMatch[2])) return result;
+      if (lower.includes(slashMatch[1] + ' / ' + slashMatch[2])) return result;
+      if (lower.includes(slashMatch[1] + ' out of ' + slashMatch[2])) return result;
+    }
+    // Check for "rating:" or "score:" with the number nearby
+    if (lower.includes('rating:') || lower.includes('score:') || lower.includes('grade:')) {
+      const num = String(result.value);
+      if (lower.includes(num)) return result;
+    }
+
+    if (VERBOSE) console.log(`  TEXT-VERIFY REJECT: numeric rating "${result.raw}" — pattern not found in text`);
+    stats.textVerifyReject = (stats.textVerifyReject || 0) + 1;
+    return null;
+  }
+
+  return result;
+}
+
+/**
  * Post-extraction sanity checks to catch LLM false positives.
  * Returns null to reject, or the result to keep.
  */
@@ -515,6 +606,13 @@ async function processReview(entry) {
     return;
   }
 
+  // Step 0: Text verification — confirm the rating actually exists in the source text
+  parsed = verifyInText(parsed, data.fullText);
+  if (!parsed) {
+    stats.notFound++;
+    return;
+  }
+
   // Step 1: Post-extraction sanity checks (hypotheticals, runtimes, bare letters)
   parsed = postValidate(parsed);
   if (!parsed) {
@@ -633,6 +731,7 @@ async function main() {
   console.log(`Written: ${stats.written}`);
   console.log(`By type: ${JSON.stringify(stats.byType)}`);
   if (stats.corrected) console.log(`Asterisk corrections: ${stats.corrected}`);
+  if (stats.textVerifyReject) console.log(`Text-verify rejections: ${stats.textVerifyReject}`);
   if (stats.postValidateReject) console.log(`Post-validate rejections: ${stats.postValidateReject}`);
   if (stats.crossVerifyAgree) console.log(`Cross-verify agree: ${stats.crossVerifyAgree}`);
   if (stats.crossVerifyReject) console.log(`Cross-verify reject: ${stats.crossVerifyReject}`);

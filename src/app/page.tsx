@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, memo, useCallback, Suspense } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useMemo, memo, useCallback, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
@@ -285,58 +285,72 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Comp
 
 // Inner component that uses searchParams
 function HomePageInner() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+  const initialSearchParams = useSearchParams();
 
-  // Parse URL params with defaults
-  const statusParam = (searchParams.get('status') as StatusParam) || DEFAULT_STATUS;
-  const sortParam = (searchParams.get('sort') as SortParam) || DEFAULT_SORT;
-  const typeParam = (searchParams.get('type') as TypeParam) || DEFAULT_TYPE;
-  const scoreModeParam = (searchParams.get('scoreMode') as ScoreModeParam) || DEFAULT_SCORE_MODE;
-  const searchQuery = searchParams.get('q') || '';
+  // Local state for instant updates (no full-page reload)
+  const [filters, setFilters] = useState(() => ({
+    status: (['now_playing', 'closed', 'upcoming', 'closing_soon', 'all'].includes(initialSearchParams.get('status') as string)
+      ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
+    sort: (['recent', 'score_desc', 'score_asc', 'alpha', 'audience_buzz'].includes(initialSearchParams.get('sort') as string)
+      ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
+    type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
+      ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
+    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
+      ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
+    q: initialSearchParams.get('q') || '',
+  }));
 
-  // Validate params (use default if invalid)
-  const status: StatusParam = ['now_playing', 'closed', 'upcoming', 'all'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
-  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon', 'audience_buzz'].includes(sortParam) ? sortParam : DEFAULT_SORT;
-  const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
-  const scoreMode: ScoreModeParam = ['critics', 'audience'].includes(scoreModeParam) ? scoreModeParam : DEFAULT_SCORE_MODE;
+  const status = filters.status;
+  const sort = filters.sort;
+  const type = filters.type;
+  const scoreMode = filters.scoreMode;
+  const searchQuery = filters.q;
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];
 
-  // Update URL helper
+  // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    for (const [key, value] of Object.entries(updates)) {
-      if (value === null) {
-        params.delete(key);
-      } else {
-        // Don't include default values in URL
-        const isDefault =
-          (key === 'status' && value === DEFAULT_STATUS) ||
-          (key === 'sort' && value === DEFAULT_SORT) ||
-          (key === 'type' && value === DEFAULT_TYPE) ||
-          (key === 'scoreMode' && value === DEFAULT_SCORE_MODE) ||
-          (key === 'q' && value === '');
-
-        if (isDefault) {
-          params.delete(key);
+    setFilters(prev => {
+      const next = { ...prev };
+      for (const [key, value] of Object.entries(updates)) {
+        if (value === null) {
+          (next as Record<string, string>)[key] =
+            key === 'status' ? DEFAULT_STATUS :
+            key === 'sort' ? DEFAULT_SORT :
+            key === 'type' ? DEFAULT_TYPE :
+            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
         } else {
-          params.set(key, value);
+          (next as Record<string, string>)[key] = value;
         }
       }
-    }
 
-    const paramString = params.toString();
-    router.push(paramString ? `${pathname}?${paramString}` : pathname, { scroll: false });
-  }, [searchParams, pathname, router]);
+      // Sync to URL without triggering navigation
+      const urlParams = new URLSearchParams();
+      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
+      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
+      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
+      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
+      if (next.q) urlParams.set('q', next.q);
+
+      const paramString = urlParams.toString();
+      window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
+
+      return next;
+    });
+  }, []);
 
   // Clear all filters
   const clearAllFilters = useCallback(() => {
-    router.push(pathname, { scroll: false });
-  }, [pathname, router]);
+    setFilters({
+      status: DEFAULT_STATUS,
+      sort: DEFAULT_SORT,
+      type: DEFAULT_TYPE,
+      scoreMode: DEFAULT_SCORE_MODE,
+      q: '',
+    });
+    window.history.replaceState({}, '', '/');
+  }, []);
 
   const shows = useMemo(() => getAllShows(), []);
 

@@ -708,11 +708,64 @@ function extractExcerptFromFullText(fullText, showTitle) {
  * typically open reviews with context/scene-setting, not evaluative content.
  * Aggregator editors hand-pick evaluative quotes.
  *
- * Priority: LLM keyPhrases > showScoreExcerpt > bwwExcerpt > nycTheatreExcerpt >
- *           dtliExcerpt > fullText extract > existing pullQuote
+ * Priority: llmPullQuote > LLM keyPhrases > showScoreExcerpt > bwwExcerpt >
+ *           nycTheatreExcerpt > dtliExcerpt > fullText extract > existing pullQuote
  */
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
+
+/**
+ * Quality gate for LLM-extracted pull quotes. Rejects generic or scene-setting
+ * quotes that don't add value over aggregator excerpts.
+ */
+function isGenericQuote(text) {
+  if (!text) return true;
+  const lower = text.toLowerCase().trim();
+
+  // Generic praise/criticism that could apply to any show
+  const genericPatterns = [
+    /^(it('s| is)|this is) (a )?(must[- ]see|worth seeing|not to be missed)\b/,
+    /^don'?t miss (it|this)/,
+    /^(highly )?recommended\.?$/,
+    /^(go )?see (it|this show)/,
+    /^a (great|good|wonderful|terrible|bad) show\.?$/,
+  ];
+
+  // Scene-setting openers
+  const sceneSettingPatterns = [
+    /^when the (curtain|lights|house lights|show) /,
+    /^at the [a-z]+ the(a|u)tre/,
+    /^on a recent (evening|night|afternoon)/,
+    /^(walking|stepping) into the /,
+    /^the (stage|set) (is|was) (bare|dark|set)/,
+  ];
+
+  for (const p of [...genericPatterns, ...sceneSettingPatterns]) {
+    if (p.test(lower)) return true;
+  }
+
+  // Short quotes whose entire evaluative content is "must-see" or "not to be missed"
+  if (lower.length < 100 && /(must[- ]see|not to be missed|highly recommended)\b/.test(lower)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Trim a quote to the last complete sentence (ending in . ! ? or closing quote).
+ * Returns the original if it already ends cleanly or no sentence boundary is found.
+ */
+function trimToCompleteSentence(text) {
+  if (!text) return text;
+  const trimmed = text.trim();
+  // Already ends with sentence-ending punctuation
+  if (/[.!?"\u201D')]\s*$/.test(trimmed)) return trimmed;
+  // Find the last sentence-ending punctuation
+  const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
+  if (match && match[1].length >= 40) return match[1].trim();
+  return trimmed;
+}
 
 function selectBestExcerpt(data, showTitle) {
   const showId = data.showId;
@@ -756,7 +809,18 @@ function selectBestExcerpt(data, showTitle) {
     return excerpt;
   }
 
-  // 1. Try LLM-extracted key phrases first (already curated quotes!)
+  // 0. Try dedicated LLM pull quote (highest quality — focused extraction prompt)
+  //    Quality gate: reject generic/scene-setting, trim mid-sentence cutoffs
+  if (data.llmPullQuote && data.llmPullQuote.length > 30) {
+    const trimmed = trimToCompleteSentence(data.llmPullQuote);
+    const cleaned = cleanExcerpt(trimmed);
+    if (cleaned && !isJunkExcerpt(cleaned) && !isGenericQuote(cleaned)) {
+      const validated = validateExcerpt(cleaned, 'llmPullQuote');
+      if (validated) return validated;
+    }
+  }
+
+  // 1. Try LLM-extracted key phrases (from scoring pipeline)
   if (data.llmScore?.keyPhrases?.length > 0) {
     // Find a positive or descriptive quote
     for (const phrase of data.llmScore.keyPhrases) {
@@ -1768,8 +1832,60 @@ if (fs.existsSync(reviewsJsonPath)) {
         process.exit(1);
       }
     }
+
+    // ========================================
+    // 3B-ii: PER-SHOW REVIEW COUNT REGRESSION GATE
+    // ========================================
+    // If any show loses >2 scored reviews in a rebuild, something is wrong.
+    // In CI: abort to prevent data corruption from reaching production.
+    const REGRESSION_DROP_THRESHOLD = 2; // max reviews a single show can lose
+    const REGRESSION_MAX_SHOWS = 5;      // max shows that can regress before hard abort
+
+    const oldCountByShow = new Map();
+    for (const r of currentReviews) {
+      oldCountByShow.set(r.showId, (oldCountByShow.get(r.showId) || 0) + 1);
+    }
+    const newCountByShow = new Map();
+    for (const r of allReviews) {
+      newCountByShow.set(r.showId, (newCountByShow.get(r.showId) || 0) + 1);
+    }
+
+    const regressions = [];
+    for (const [showId, oldCount] of oldCountByShow) {
+      const newCount = newCountByShow.get(showId) || 0;
+      const dropped = oldCount - newCount;
+      if (dropped > REGRESSION_DROP_THRESHOLD) {
+        regressions.push({ showId, oldCount, newCount, dropped });
+      }
+    }
+
+    if (regressions.length > 0) {
+      regressions.sort((a, b) => b.dropped - a.dropped);
+
+      const auditDir = path.join(__dirname, '../data/audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(auditDir, 'rebuild-regression.json'),
+        JSON.stringify({ timestamp: new Date().toISOString(), regressions }, null, 2) + '\n'
+      );
+
+      console.log(`\n⚠️  REVIEW COUNT REGRESSION: ${regressions.length} show(s) lost >${REGRESSION_DROP_THRESHOLD} reviews`);
+      regressions.slice(0, 10).forEach(r => {
+        console.log(`  ${r.showId}: ${r.oldCount}→${r.newCount} (lost ${r.dropped})`);
+      });
+      if (regressions.length > 10) {
+        console.log(`  ...and ${regressions.length - 10} more`);
+      }
+
+      if (regressions.length >= REGRESSION_MAX_SHOWS && process.env.CI && !process.env.ALLOW_REGRESSION) {
+        console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
+        console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
+        console.error('Set ALLOW_REGRESSION=true to override.');
+        process.exit(1);
+      }
+    }
   } catch (e) {
-    // Can't read current file, skip drift check (first build)
+    // Can't read current file, skip drift/regression check (first build)
   }
 }
 

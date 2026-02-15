@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useCallback, Suspense } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useMemo, useCallback, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
@@ -54,47 +54,53 @@ function formatOpeningDate(dateStr: string): string {
 }
 
 function NVPPageInner() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+  const initialSearchParams = useSearchParams();
 
-  // Parse URL params
-  const statusParam = (searchParams.get('status') as StatusParam) || DEFAULT_STATUS;
-  const sortParam = (searchParams.get('sort') as SortParam) || DEFAULT_SORT;
-  const typeParam = (searchParams.get('type') as TypeParam) || DEFAULT_TYPE;
-  const scoreModeParam = (searchParams.get('scoreMode') as ScoreModeParam) || DEFAULT_SCORE_MODE;
+  // Local state for instant updates (no full-page reload)
+  const [filters, setFilters] = useState(() => ({
+    status: (['playing', 'all', 'closed'].includes(initialSearchParams.get('status') as string)
+      ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
+    sort: (['score_desc', 'recent', 'alpha'].includes(initialSearchParams.get('sort') as string)
+      ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
+    type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
+      ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
+    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
+      ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
+  }));
 
-  // Validate params
-  const status: StatusParam = ['playing', 'all', 'closed'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
-  const sort: SortParam = ['score_desc', 'recent', 'alpha'].includes(sortParam) ? sortParam : DEFAULT_SORT;
-  const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
-  const scoreMode: ScoreModeParam = ['critics', 'audience'].includes(scoreModeParam) ? scoreModeParam : DEFAULT_SCORE_MODE;
+  const status = filters.status;
+  const sort = filters.sort;
+  const type = filters.type;
+  const scoreMode = filters.scoreMode;
 
-  // Update URL helper
+  // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    for (const [key, value] of Object.entries(updates)) {
-      if (value === null) {
-        params.delete(key);
-      } else {
-        const isDefault =
-          (key === 'status' && value === DEFAULT_STATUS) ||
-          (key === 'sort' && value === DEFAULT_SORT) ||
-          (key === 'type' && value === DEFAULT_TYPE) ||
-          (key === 'scoreMode' && value === DEFAULT_SCORE_MODE);
-
-        if (isDefault) {
-          params.delete(key);
+    setFilters(prev => {
+      const next = { ...prev };
+      for (const [key, value] of Object.entries(updates)) {
+        if (value === null) {
+          (next as Record<string, string>)[key] =
+            key === 'status' ? DEFAULT_STATUS :
+            key === 'sort' ? DEFAULT_SORT :
+            key === 'type' ? DEFAULT_TYPE :
+            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
         } else {
-          params.set(key, value);
+          (next as Record<string, string>)[key] = value;
         }
       }
-    }
 
-    const paramString = params.toString();
-    router.push(paramString ? `${pathname}?${paramString}` : pathname, { scroll: false });
-  }, [searchParams, pathname, router]);
+      const urlParams = new URLSearchParams();
+      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
+      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
+      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
+      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
+
+      const paramString = urlParams.toString();
+      window.history.replaceState({}, '', paramString ? `/nvp?${paramString}` : '/nvp');
+
+      return next;
+    });
+  }, []);
 
   const allShows = useMemo(() => getAllShows(), []);
 
