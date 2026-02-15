@@ -1322,6 +1322,96 @@ function validateBlogReviews() {
 // MAIN
 // ===========================================
 
+// ===========================================
+// Cross-file key validation
+// Prevents orphan entries and key type mismatches
+// ===========================================
+
+function validateCrossFileKeys(shows) {
+  info('Checking cross-file key consistency...');
+
+  const slugSet = new Set(shows.map(s => s.slug));
+  const idSet = new Set(shows.map(s => s.id));
+  // Map from ID to slug for mismatch detection
+  const idToSlug = new Map(shows.map(s => [s.id, s.slug]));
+  let issues = 0;
+
+  // 1. Commercial keys must be show SLUGS (data-commercial.ts looks up by slug)
+  const commercialFile = path.join(__dirname, '..', 'data', 'commercial.json');
+  if (fs.existsSync(commercialFile)) {
+    try {
+      const commercial = JSON.parse(fs.readFileSync(commercialFile, 'utf8'));
+      const commercialKeys = Object.keys(commercial.shows || {});
+
+      for (const key of commercialKeys) {
+        if (!slugSet.has(key)) {
+          // Check if it's a show ID instead of a slug
+          if (idSet.has(key)) {
+            const correctSlug = idToSlug.get(key);
+            warn(`commercial.json key "${key}" is a show ID, not a slug. Should be "${correctSlug}". Entry is invisible on /biz page.`);
+            issues++;
+          } else {
+            warn(`commercial.json key "${key}" not found in shows.json (orphan entry)`);
+            issues++;
+          }
+        }
+      }
+    } catch (e) {
+      // Already validated in validateCommercialJson
+    }
+  }
+
+  // 2. Awards keys must be show IDs
+  const awardsFile = path.join(__dirname, '..', 'data', 'awards.json');
+  if (fs.existsSync(awardsFile)) {
+    try {
+      const awards = JSON.parse(fs.readFileSync(awardsFile, 'utf8'));
+      const awardsKeys = Object.keys(awards.shows || {});
+
+      for (const key of awardsKeys) {
+        if (!idSet.has(key)) {
+          if (slugSet.has(key)) {
+            warn(`awards.json key "${key}" appears to be a slug, not a show ID`);
+          } else {
+            warn(`awards.json key "${key}" not found in shows.json (orphan entry)`);
+          }
+          issues++;
+        }
+      }
+    } catch (e) {
+      // Parse errors handled elsewhere
+    }
+  }
+
+  // 3. Audience buzz keys must be show IDs
+  const audienceFile = path.join(__dirname, '..', 'data', 'audience-buzz.json');
+  if (fs.existsSync(audienceFile)) {
+    try {
+      const audience = JSON.parse(fs.readFileSync(audienceFile, 'utf8'));
+      const audienceKeys = Object.keys(audience.shows || {});
+
+      for (const key of audienceKeys) {
+        if (!idSet.has(key)) {
+          if (slugSet.has(key)) {
+            warn(`audience-buzz.json key "${key}" appears to be a slug, not a show ID`);
+          } else {
+            warn(`audience-buzz.json key "${key}" not found in shows.json (orphan entry)`);
+          }
+          issues++;
+        }
+      }
+    } catch (e) {
+      // Parse errors handled elsewhere
+    }
+  }
+
+  if (issues === 0) {
+    ok('All cross-file keys are consistent (commercial=slug, awards=ID, audience=ID)');
+  } else {
+    warn(`${issues} cross-file key issue(s) found — run audit scripts for details`);
+  }
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -1377,6 +1467,8 @@ function runValidation() {
   validateOutletFragmentation();
   console.log('');
   validateBlogReviews();
+  console.log('');
+  validateCrossFileKeys(shows);
 
   // Summary
   console.log('');
