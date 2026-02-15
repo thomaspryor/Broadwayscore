@@ -69,6 +69,7 @@ const getSearchShows = () => {
     slug: show.slug,
     status: show.status,
     venue: show.venue,
+    creativeTeamNames: show.creativeTeam?.map(m => m.name).join(', ') || undefined,
     images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
   }));
 };
