@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-15T23:17:25.692Z",
-  "processed": 28,
-  "failed": 22,
-  "successRate": "56.0%",
+  "updatedAt": "2026-02-15T23:21:30.254Z",
+  "processed": 29,
+  "failed": 31,
+  "successRate": "48.3%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 28
+    "archive": 29
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-15T23:14:16.622Z",
@@ -20,6 +20,39 @@
     },
     {
       "t": "2026-02-15T23:14:18.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:18:33.157Z",
+      "event": "bb-session",
+      "session": "4b43b073",
+      "url": "https://www.nytimes.com/2008/04/04/theater/reviews/04macb.html"
+    },
+    {
+      "t": "2026-02-15T23:18:35.175Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:19:44.936Z",
+      "event": "bb-session",
+      "session": "39140247",
+      "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-daniel-craig.html"
+    },
+    {
+      "t": "2026-02-15T23:19:47.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:21:07.200Z",
+      "event": "bb-session",
+      "session": "a456ce85",
+      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
+    },
+    {
+      "t": "2026-02-15T23:21:09.275Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

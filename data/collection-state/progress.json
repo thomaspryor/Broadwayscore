@@ -27,7 +27,8 @@
     "just-for-us-2023/nytimes--jesse-green.json",
     "kpop-2022/nytimes--unknown.json",
     "left-on-tenth-2024/nytimes--jesse-green.json",
-    "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+    "les-miserables-2006/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -51,7 +52,16 @@
     "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
     "honeymoon-in-vegas-2015/nytimes--unknown.json",
     "job-2024/nytimes--ben-brantley.json",
-    "la-bete-2010/nytimes--ben-brantley.json"
+    "la-bete-2010/nytimes--ben-brantley.json",
+    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
+    "macbeth-2008/nytimes--ben-brantley.json",
+    "macbeth-2008/nytimes--jesse-green.json",
+    "macbeth-2013/nytimes--jesse-green.json",
+    "macbeth-2022/nytimes--jesse-green.json",
+    "macbeth-2022/nytimes--unknown.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "mean-girls-2018/nytimes--ben-brantley.json",
+    "mean-girls-2018/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -87,11 +97,12 @@
       "just-for-us-2023/nytimes--jesse-green.json",
       "kpop-2022/nytimes--unknown.json",
       "left-on-tenth-2024/nytimes--jesse-green.json",
-      "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+      "les-miserables-2006/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-15T23:13:25.795Z",
-  "lastProcessed": "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+  "lastProcessed": "mean-girls-2018/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-15T23:14:16.622Z",
@@ -101,6 +112,39 @@
     },
     {
       "t": "2026-02-15T23:14:18.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:18:33.157Z",
+      "event": "bb-session",
+      "session": "4b43b073",
+      "url": "https://www.nytimes.com/2008/04/04/theater/reviews/04macb.html"
+    },
+    {
+      "t": "2026-02-15T23:18:35.175Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:19:44.936Z",
+      "event": "bb-session",
+      "session": "39140247",
+      "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-daniel-craig.html"
+    },
+    {
+      "t": "2026-02-15T23:19:47.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:21:07.200Z",
+      "event": "bb-session",
+      "session": "a456ce85",
+      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
+    },
+    {
+      "t": "2026-02-15T23:21:09.275Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
