@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 14060,
+      "totalReviews": 14059,
       "skippedNoScore": 3634,
       "skippedDuplicate": 94,
       "skippedDuplicateUrl": 408,
       "skippedCrossOutletDuplicateUrl": 30,
       "skippedDuplicateText": 481,
       "skippedFingerprintDedup": 79,
-      "skippedWrongProduction": 1926,
+      "skippedWrongProduction": 1927,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 3,
@@ -27,7 +27,7 @@
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 110
+        "thumb": 109
       }
     }
   },
@@ -15178,7 +15178,7 @@
       "pullQuote": "This is one of the better Disney stage musicals, complete with several eye-popping production numbers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "aladdin-2014",
@@ -41526,7 +41526,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 60,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
@@ -41536,7 +41536,7 @@
       "pullQuote": "The show feels oddly disconnected from its own emotions.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "brighton-beach-memoirs-2009",
@@ -69259,7 +69259,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -69269,7 +69269,7 @@
       "pullQuote": "Tracie Bennett's performance as Judy Garland is nothing short of extraordinary, capturing both the vulnerability and the fierce determination that defined the legend's final years.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "end-of-the-rainbow-2012",
@@ -193759,23 +193759,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-2005",
-      "outletId": "culturesauce",
-      "outlet": "Culture Sauce",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Thom Geier",
-      "url": "https://culturesauce.com/2025/11/17/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Finn’s tunes remain toe-tapping treats, and the whole cast throws themselves into the numbers with a youthful energy that suits their characters’ ages. Spelling Bee is the perfect antidote to these dreary anxiety-ridden times, and it’s worth settling down for a long, laughter-induced spell.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-2005",
