@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-15T00:46:30.280Z",
+  "runDate": "2026-02-15T00:45:26.245Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 49,
+    "processed": 8,
+    "failed": 47,
     "skipped": 0,
-    "successRate": "10.9%"
+    "successRate": "14.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 5,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -31,13 +31,13 @@
     "tier2Attempts": 49,
     "tier2Success": 0,
     "tier3Attempts": 49,
-    "tier3Success": 8,
-    "tier4Attempts": 42,
-    "tier4Success": 2,
-    "totalFailed": 49,
+    "tier3Success": 7,
+    "tier4Attempts": 40,
+    "tier4Success": 1,
+    "totalFailed": 47,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 20,
-    "browserbaseMinutesUsed": 11.7,
+    "browserbaseMinutesUsed": 13.8,
     "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -46,8 +46,10 @@
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "lombardi-2010/newyorker--uncredited.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
     "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
   ],
   "failed": [
@@ -74,8 +76,6 @@
     "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "king-kong-2018/newyorker--vinson-cunningham.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
     "the-glass-menagerie-2013/newyorker--hilton-als.json",
     "the-glass-menagerie-2017/newyorker--hilton-als.json",
     "the-inheritance-2019/newyorker--hilton-als.json",
@@ -113,12 +113,14 @@
       "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
     ],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
     ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 40,
+      "count": 39,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
