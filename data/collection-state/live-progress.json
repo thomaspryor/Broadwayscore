@@ -1,15 +1,57 @@
 {
-  "updatedAt": "2026-02-15T15:52:45.516Z",
-  "processed": 7,
-  "failed": 93,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-15T16:00:36.391Z",
+  "processed": 32,
+  "failed": 38,
+  "successRate": "45.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 27,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 7
+    "brightdata": 2,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T15:43:13.043Z",
+      "event": "bb-session",
+      "session": "39c5bc81",
+      "url": "https://www.indiewire.com/2021/12/clydes-broadway-review-1234685678/"
+    },
+    {
+      "t": "2026-02-15T15:46:09.224Z",
+      "event": "bb-session",
+      "session": "237f3915",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    },
+    {
+      "t": "2026-02-15T15:51:18.885Z",
+      "event": "bb-session",
+      "session": "090b64fd",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+    },
+    {
+      "t": "2026-02-15T15:52:51.891Z",
+      "event": "bb-session",
+      "session": "2d329fc2",
+      "url": "https://origin-www.bloomberg.com/news/2013-04-26/andrea-martin-s-swing-a-long-da"
+    },
+    {
+      "t": "2026-02-15T15:52:54.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T15:53:49.521Z",
+      "event": "bb-session",
+      "session": "aaf757e3",
+      "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cove"
+    },
+    {
+      "t": "2026-02-15T15:54:41.106Z",
+      "event": "bb-session",
+      "session": "f35e92c4",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+    }
+  ]
 }
