@@ -1,82 +1,84 @@
 {
-  "runDate": "2026-02-15T23:43:25.445Z",
+  "runDate": "2026-02-15T23:49:10.178Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "call-me-izzy-2025",
+    "showFilter": "punch-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
+    "processed": 12,
     "failed": 2,
     "skipped": 0,
-    "successRate": "84.6%"
+    "successRate": "85.7%"
   },
   "tierBreakdown": {
     "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 8,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
+    "tier4Attempts": 5,
+    "tier4Success": 5,
     "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
-    "call-me-izzy-2025/nytg--austin-fimmano.json",
-    "call-me-izzy-2025/nytimes--jesse-green.json",
-    "call-me-izzy-2025/nypost--johnny-oleksinski.json",
-    "call-me-izzy-2025/theatermania--david-gordon.json",
-    "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-    "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
-    "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
-    "call-me-izzy-2025/theater-scene--joseph-pisano.json",
-    "call-me-izzy-2025/washpost--naveen-kumar.json"
+    "punch-2025/nyt-theater--jonathan-mandell.json",
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/culturesauce--thom-geier.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json",
+    "punch-2025/talkinbroadway--howard-miller.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "punch-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "call-me-izzy-2025/vulture--jackson-mchenry.json",
-    "call-me-izzy-2025/wsj--charles-isherwood.json"
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theater-scene--darryl-reilly.json"
   ],
   "tierDetails": {
     "playwright": [
-      "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
-      "call-me-izzy-2025/nytg--austin-fimmano.json",
-      "call-me-izzy-2025/theatermania--david-gordon.json",
-      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-      "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
-      "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
-      "call-me-izzy-2025/theater-scene--joseph-pisano.json"
+      "punch-2025/nyt-theater--jonathan-mandell.json",
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/culturesauce--thom-geier.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json",
+      "punch-2025/the-interested-bystander--cary-wong.json",
+      "punch-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "call-me-izzy-2025/nytimes--jesse-green.json",
-      "call-me-izzy-2025/nypost--johnny-oleksinski.json",
-      "call-me-izzy-2025/washpost--naveen-kumar.json"
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
   "failuresByOutlet": {},
