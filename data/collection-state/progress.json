@@ -1,79 +1,286 @@
 {
   "processed": [
-    "aladdin-2014/ew--thom-geier.json",
-    "chicago-1996/ew--melissa-rose-bernardo.json",
-    "wicked-2003/ew--alice-king.json",
-    "700-sundays-2013/ew--jessica-shaw.json",
-    "all-the-way-2014/ew--thom-geier.json",
-    "big-fish-2013/ew--thom-geier.json",
-    "death-of-a-salesman-2012/ew--thom-geler.json",
-    "doctor-zhivago-2015/ew--jessica-shaw.json",
-    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
-    "everyday-rapture-2010/entertainment-weekly--thom-geier.json",
-    "golden-boy-2012/ew--adam-markovitz.json",
-    "hedwig-and-the-angry-inch-2014/ew--unknown.json",
-    "holler-if-ya-hear-me-2014/ew--unknown.json",
-    "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
-    "kinky-boots-2013/ew--thom-geier.json",
-    "la-cage-aux-folles-2010/entertainment-weekly--thom-geier.json",
-    "mary-poppins-2006/ew--steve-daly.json",
-    "newsies-the-musical-2012/ew--thom-geier.json",
-    "nice-work-if-you-can-get-it-2012/ew--adam-markovitz.json",
-    "pippin-2013/ew--thom-geier.json"
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "1776-2022/ew--leah-greenblatt.json",
-    "a-dolls-house-part-2-2017/ew--maya-stanton.json",
-    "a-life-in-the-theatre-2010/ew--tanner-stransky.json",
-    "a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json",
-    "anastasia-2017/ew--caitlin-brody.json",
-    "bandstand-2017/ew--breanne-l-heldman.json",
-    "burn-the-floor-2009/ew--jennifer-armstrong.json",
-    "catch-me-if-you-can-2011/ew--thom-geier.json",
-    "collected-stories-2010/ew--melissa-rose-bernardo.json",
-    "ghetto-klown-2011/ew--keith-staskiewicz.json",
-    "gypsy-2008/ew--kathryn-vandervalk.json",
-    "gypsy-2024/ew--kathryn-vandervalk.json",
-    "gypsy-2024/ew--unknown.json",
-    "hands-on-a-hardbody-2013/ew--clark-collis.json",
-    "hello-dolly-2017/ew--maya-stanton.json",
-    "mr-saturday-night-2022/ew--andrea-towers.json",
-    "oslo-2017/ew--elysa-gardner.json",
-    "oslo-2017/ew--unknown.json",
-    "pictures-from-home-2023/ew--leah-greenblatt.json",
-    "prince-of-broadway-2017/ew--jessica-derschowitz.json"
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-time-to-kill-2013/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "aint-no-mo-2022/newyorker--naomi-fry.json",
+    "all-my-sons-2008/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--john-lahr.json",
+    "all-my-sons-2019/newyorker--hilton-als.json",
+    "all-the-way-2014/newyorker--hilton-als.json",
+    "american-psycho-2016/newyorker--hilton-als.json",
+    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "king-kong-2018/newyorker--vinson-cunningham.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
+    "the-glass-menagerie-2013/newyorker--hilton-als.json",
+    "the-glass-menagerie-2017/newyorker--hilton-als.json",
+    "the-inheritance-2019/newyorker--hilton-als.json",
+    "the-king-and-i-2015/newyorker--hilton-als.json",
+    "the-lifespan-of-a-fact-2018/newyorker--hilton-als.json",
+    "the-new-one-2018/newyorker--hilton-als.json",
+    "the-norman-conquests-2009/newyorker--john-lahr.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "the-present-2017/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "chicago-1996/ew--melissa-rose-bernardo.json",
-      "700-sundays-2013/ew--jessica-shaw.json",
-      "all-the-way-2014/ew--thom-geier.json",
-      "doctor-zhivago-2015/ew--jessica-shaw.json",
-      "holler-if-ya-hear-me-2014/ew--unknown.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    ],
     "archive": [
-      "aladdin-2014/ew--thom-geier.json",
-      "wicked-2003/ew--alice-king.json",
-      "big-fish-2013/ew--thom-geier.json",
-      "death-of-a-salesman-2012/ew--thom-geler.json",
-      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
-      "everyday-rapture-2010/entertainment-weekly--thom-geier.json",
-      "golden-boy-2012/ew--adam-markovitz.json",
-      "hedwig-and-the-angry-inch-2014/ew--unknown.json",
-      "jesus-christ-superstar-2012/ew--melissa-rose-bernardo.json",
-      "kinky-boots-2013/ew--thom-geier.json",
-      "la-cage-aux-folles-2010/entertainment-weekly--thom-geier.json",
-      "mary-poppins-2006/ew--steve-daly.json",
-      "newsies-the-musical-2012/ew--thom-geier.json",
-      "nice-work-if-you-can-get-it-2012/ew--adam-markovitz.json",
-      "pippin-2013/ew--thom-geier.json"
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ]
   },
-  "startTime": "2026-02-15T00:27:55.132Z",
-  "lastProcessed": "prince-of-broadway-2017/ew--jessica-derschowitz.json",
-  "log": []
+  "startTime": "2026-02-15T00:15:29.748Z",
+  "lastProcessed": "the-present-2017/newyorker--hilton-als.json",
+  "log": [
+    {
+      "t": "2026-02-15T00:15:46.497Z",
+      "event": "bb-session",
+      "session": "9d0c04d7",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-15T00:16:06.452Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:16:44.867Z",
+      "event": "bb-session",
+      "session": "0541f1bc",
+      "url": "https://www.newyorker.com/magazine/2017/07/03/1984-on-broadway"
+    },
+    {
+      "t": "2026-02-15T00:17:03.440Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:17:40.828Z",
+      "event": "bb-session",
+      "session": "b44958fb",
+      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
+    },
+    {
+      "t": "2026-02-15T00:18:00.425Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:18:23.405Z",
+      "event": "bb-session",
+      "session": "94733f1c",
+      "url": "https://www.newyorker.com/magazine/2022/12/19/a-christmas-carol-theatre-review"
+    },
+    {
+      "t": "2026-02-15T00:18:43.225Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:19:20.480Z",
+      "event": "bb-session",
+      "session": "4d1b0fcb",
+      "url": "https://www.newyorker.com/magazine/2010/11/29/in-living-color"
+    },
+    {
+      "t": "2026-02-15T00:19:38.383Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:20:16.486Z",
+      "event": "bb-session",
+      "session": "207fb637",
+      "url": "https://www.newyorker.com/magazine/2013/11/04/time-kill"
+    },
+    {
+      "t": "2026-02-15T00:20:35.389Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:21:08.675Z",
+      "event": "bb-session",
+      "session": "836ffc5b",
+      "url": "https://www.newyorker.com/magazine/2015/12/07/views-from-the-bridge"
+    },
+    {
+      "t": "2026-02-15T00:21:27.406Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:21:52.023Z",
+      "event": "bb-session",
+      "session": "ebc0af93",
+      "url": "https://www.newyorker.com/magazine/2014/05/05/act-one"
+    },
+    {
+      "t": "2026-02-15T00:22:10.856Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:24:16.034Z",
+      "event": "bb-session",
+      "session": "9e8eaa2d",
+      "url": "https://www.newyorker.com/magazine/2022/12/19/aint-no-mo-theatre-review"
+    },
+    {
+      "t": "2026-02-15T00:24:35.098Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:25:12.700Z",
+      "event": "bb-session",
+      "session": "842bb35a",
+      "url": "https://www.newyorker.com/magazine/2008/10/27/family-plots"
+    },
+    {
+      "t": "2026-02-15T00:25:31.298Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:26:11.585Z",
+      "event": "bb-session",
+      "session": "047b9b00",
+      "url": "https://www.newyorker.com/magazine/2008/11/03/fathers-and-sons-2"
+    },
+    {
+      "t": "2026-02-15T00:26:30.738Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:27:08.142Z",
+      "event": "bb-session",
+      "session": "d4a5c3b8",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/all-my-sons-and-burn-this-on-broad"
+    },
+    {
+      "t": "2026-02-15T00:27:28.006Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:28:07.189Z",
+      "event": "bb-session",
+      "session": "47d3bab5",
+      "url": "https://www.newyorker.com/magazine/2014/04/07/the-great-society"
+    },
+    {
+      "t": "2026-02-15T00:28:26.481Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:29:02.788Z",
+      "event": "bb-session",
+      "session": "89f53532",
+      "url": "https://www.newyorker.com/magazine/2016/05/09/american-psycho-the-musical-on-bro"
+    },
+    {
+      "t": "2026-02-15T00:29:22.917Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:30:00.958Z",
+      "event": "bb-session",
+      "session": "8269f114",
+      "url": "https://www.newyorker.com/magazine/2024/03/25/an-enemy-of-the-people-theatre-rev"
+    },
+    {
+      "t": "2026-02-15T00:30:20.414Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:30:54.060Z",
+      "event": "bb-session",
+      "session": "6eec1657",
+      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+    },
+    {
+      "t": "2026-02-15T00:31:12.629Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:32:13.984Z",
+      "event": "bb-session",
+      "session": "af25e982",
+      "url": "https://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charli"
+    },
+    {
+      "t": "2026-02-15T00:32:34.682Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:32:57.165Z",
+      "event": "bb-session",
+      "session": "9f4b4e3e",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-02-15T00:33:17.874Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:33:35.755Z",
+      "event": "bb-session",
+      "session": "d8459acb",
+      "url": "https://www.newyorker.com/magazine/2018/11/19/shades-of-darkness-in-king-kong-an"
+    },
+    {
+      "t": "2026-02-15T00:33:54.954Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-15T00:34:12.358Z",
+      "event": "bb-session",
+      "session": "255a7fc6",
+      "url": "https://www.newyorker.com/magazine/2025/11/10/little-bear-ridge-road-theatre-rev"
+    },
+    {
+      "t": "2026-02-15T00:34:31.743Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    }
+  ]
 }
