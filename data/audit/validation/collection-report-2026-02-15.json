@@ -2,7 +2,7 @@
   "runDate": "2026-02-15T22:40:21.689Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 50,
     "priority": "all",
     "showFilter": "call-me-izzy-2025",
     "aggressive": false,
@@ -20,8 +20,8 @@
     "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 53,
+    "archive": 74
   },
   "statistics": {
     "tier1Attempts": 9,
@@ -70,7 +70,6 @@
       "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
       "call-me-izzy-2025/theater-scene--joseph-pisano.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -79,6 +78,42 @@
       "call-me-izzy-2025/washpost--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 4,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Deadline": {
+      "count": 1,
+      "domain": "deadline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
