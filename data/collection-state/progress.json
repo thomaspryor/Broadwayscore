@@ -15,7 +15,13 @@
     "camelot-2023/nytimes--unknown.json",
     "casa-valentina-2014/nytimes--ben-brantley.json",
     "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
-    "cats-1982/nytimes--charles-isherwood.json"
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-2016/nytimes--charles-isherwood.json",
+    "china-doll-2015/nytimes--ben-brantley.json",
+    "colin-quinn-long-story-short-2010/nytimes--jason-zinoman.json",
+    "company-2006/nytimes--jesse-green.json",
+    "cult-of-love-2024/nytimes--jesse-green.json",
+    "eureka-day-2024/nytimes--unknown.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -31,14 +37,20 @@
     "baby-its-you-2011/nytimes--charles-isherwood.json",
     "bernhardthamlet-2018/nytimes--ben-brantley.json",
     "bernhardthamlet-2018/nytimes--jesse-green.json",
-    "blithe-spirit-2009/nytimes--ben-brantley.json"
+    "blithe-spirit-2009/nytimes--ben-brantley.json",
+    "elf-2024/nytimes--unknown.json",
+    "fela-2009/nytimes--ben-brantley.json",
+    "fela-2012/nytimes--.json",
+    "fun-home-2015/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "colin-quinn-long-story-short-2010/nytimes--jason-zinoman.json"
+    ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
       "wicked-2003/nytimes--charles-isherwood.json",
@@ -55,11 +67,16 @@
       "camelot-2023/nytimes--unknown.json",
       "casa-valentina-2014/nytimes--ben-brantley.json",
       "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
-      "cats-1982/nytimes--charles-isherwood.json"
+      "cats-1982/nytimes--charles-isherwood.json",
+      "cats-2016/nytimes--charles-isherwood.json",
+      "china-doll-2015/nytimes--ben-brantley.json",
+      "company-2006/nytimes--jesse-green.json",
+      "cult-of-love-2024/nytimes--jesse-green.json",
+      "eureka-day-2024/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-02-15T18:19:40.797Z",
-  "lastProcessed": "cats-1982/nytimes--charles-isherwood.json",
+  "lastProcessed": "fun-home-2015/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-15T18:20:44.483Z",
@@ -69,6 +86,17 @@
     },
     {
       "t": "2026-02-15T18:20:46.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T18:24:18.957Z",
+      "event": "bb-session",
+      "session": "8194779e",
+      "url": "http://www.nytimes.com/2015/07/24/theater/review-colin-quinn-full-of-nostalgia-f"
+    },
+    {
+      "t": "2026-02-15T18:24:21.272Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

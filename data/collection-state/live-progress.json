@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-15T18:23:15.356Z",
-  "processed": 16,
-  "failed": 14,
-  "successRate": "53.3%",
+  "updatedAt": "2026-02-15T18:24:55.878Z",
+  "processed": 22,
+  "failed": 18,
+  "successRate": "55.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 16
+    "brightdata": 1,
+    "archive": 21
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-15T18:20:44.483Z",
@@ -20,6 +20,17 @@
     },
     {
       "t": "2026-02-15T18:20:46.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T18:24:18.957Z",
+      "event": "bb-session",
+      "session": "8194779e",
+      "url": "http://www.nytimes.com/2015/07/24/theater/review-colin-quinn-full-of-nostalgia-f"
+    },
+    {
+      "t": "2026-02-15T18:24:21.272Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
