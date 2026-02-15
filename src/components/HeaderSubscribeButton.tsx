@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 
 export default function HeaderSubscribeButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
-  const { status, errorMessage, submit, isSubscribed } = useLoopsCapture({
+  const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'header',
   });
