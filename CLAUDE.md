@@ -55,7 +55,7 @@ Broadway review aggregator. **Tech:** Next.js 14, TypeScript, Tailwind CSS, stat
 
 **Philosophy:** Set-and-forget automation. The site maintains itself indefinitely via GitHub Actions — new shows discovered daily, reviews gathered automatically, grosses updated weekly, Tony Awards scraped annually. No manual intervention required.
 
-**Current state:** 724+ shows (IBDB 2005-present + pre-2005 classics), 22,000+ source files, 8,300+ scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
+**Current state:** 727+ shows (IBDB 2005-present + pre-2005 classics), 22,000+ source files, 14,000+ scored reviews from 420+ outlets and 870+ critics. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
 
 ## Scoring Methodology
 
