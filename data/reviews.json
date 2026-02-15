@@ -5,13 +5,13 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 12057,
-      "skippedNoScore": 5626,
+      "skippedNoScore": 5625,
       "skippedDuplicate": 49,
-      "skippedDuplicateUrl": 215,
+      "skippedDuplicateUrl": 213,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1103,
+      "skippedDuplicateText": 1105,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1708,
+      "skippedWrongProduction": 1709,
       "recoveredFromGarbage": 141,
       "scoreSources": {
         "explicit-stars": 3,
@@ -19,8 +19,8 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 12,
         "human-review": 62,
-        "originalScore-priority0": 1638,
-        "llmScore": 8105,
+        "originalScore-priority0": 1639,
+        "llmScore": 8104,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 2110,
         "llmScore-review": 2,
@@ -14463,7 +14463,7 @@
       "pullQuote": "But nice as it is to have a wide assortment of colorful characters, the focus too often drifts away from the central players.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "airline-highway-2015",
@@ -113496,23 +113496,6 @@
     },
     {
       "showId": "it-shoulda-been-you-2015",
-      "outletId": "talkinbroadway",
-      "outlet": "Talkin' Broadway",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Unknown",
-      "url": "https://www.talkinbroadway.com/regional/nj/nj484.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Maybe, I'm taking this dated, stereotyping bit of fluff too seriously.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "it-shoulda-been-you-2015",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 76,
@@ -171279,6 +171262,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "skylight-2015",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Cote",
+      "url": "https://www.timeout.com/newyork/theater/skylight",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "Society looms large in the Stephen Daldry's charged revival of David Hare's Skylight­...Bob Crowley's set...never lets you forget the wider world beyond Kyra's drab, barely heated flat. No matter how bitterly personal -- or airily abstract -- things get between these ex-lovers, you cannot ignore the...",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "skylight-2015",
