@@ -175,7 +175,9 @@
     "wicked-2003/variety--peter-debruge.json",
     "aladdin-2014/ew--thom-geier.json",
     "aladdin-2014/wsj--terry-teachout.json",
-    "and-juliet-2022/theatermania--hayley-levitt.json"
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -511,7 +513,15 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "aladdin-2014/timeout--adam-feldman.json",
     "all-out-2025/newsweek--lauren-giella.json",
-    "and-juliet-2022/theatermania--jesse-green.json"
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/timeout--adam-feldman.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/vulture--scott-brown.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "chess-2025/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -628,7 +638,9 @@
       "once-upon-a-one-more-time-2023/click-here--unknown.json",
       "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
       "paradise-square-2022/theater-life--samuel-l-leiter.json",
-      "purpose-2025/theater-life--samuel-l-leiter.json"
+      "purpose-2025/theater-life--samuel-l-leiter.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
       "data/review-texts/glengarry-glen-ross-2025/thewrap--robert-hofler.json",
@@ -670,7 +682,8 @@
       "on-the-twentieth-century-2015/broadwayworld--michael-dale.json",
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
       "pippin-2013/backstage--unknown.json",
-      "and-juliet-2022/theatermania--hayley-levitt.json"
+      "and-juliet-2022/theatermania--hayley-levitt.json",
+      "book-of-mormon-2011/vulture--scott-brown.json"
     ],
     "archive": [
       "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
@@ -718,7 +731,7 @@
     ]
   },
   "startTime": "2026-02-15T15:40:23.015Z",
-  "lastProcessed": "and-juliet-2022/theatermania--jesse-green.json",
+  "lastProcessed": "chess-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-02-15T15:43:13.043Z",
@@ -944,6 +957,39 @@
       "event": "bb-session",
       "session": "ab884292",
       "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
+    },
+    {
+      "t": "2026-02-15T21:59:15.874Z",
+      "event": "bb-session",
+      "session": "c552281a",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-15T22:00:02.672Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:03:26.994Z",
+      "event": "bb-session",
+      "session": "8d4cb253",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-15T22:04:14.707Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:04:52.212Z",
+      "event": "bb-session",
+      "session": "b3407c9c",
+      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+    },
+    {
+      "t": "2026-02-15T22:04:54.336Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
     }
   ]
 }
