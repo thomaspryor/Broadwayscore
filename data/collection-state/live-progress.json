@@ -1,15 +1,40 @@
 {
-  "updatedAt": "2026-02-15T16:30:00.097Z",
-  "processed": 25,
-  "failed": 75,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-15T16:32:38.267Z",
+  "processed": 38,
+  "failed": 42,
+  "successRate": "47.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 34,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 16,
-    "archive": 9
+    "brightdata": 2,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T16:15:46.048Z",
+      "event": "bb-session",
+      "session": "6cacbfe1",
+      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+    },
+    {
+      "t": "2026-02-15T16:20:48.648Z",
+      "event": "bb-session",
+      "session": "f5fae5c7",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    },
+    {
+      "t": "2026-02-15T16:26:15.682Z",
+      "event": "bb-session",
+      "session": "aeca6b68",
+      "url": "http://www.thewrap.com/something-rotten-theater-review-or-how-a-musical-called-o"
+    },
+    {
+      "t": "2026-02-15T16:29:43.740Z",
+      "event": "bb-session",
+      "session": "1453b17c",
+      "url": "https://fordhamobserver.com/36668/recent/arts-and-culture/review-the-prom-is-a-c"
+    }
+  ]
 }
