@@ -1482,6 +1482,13 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip syndicated duplicates (same critic, different outlet, same review text)
+      // Flagged by scripts/detect-syndicated-duplicates.js
+      if (data.isSyndicatedDuplicate === true) {
+        stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
+        return;
+      }
+
       // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
@@ -2133,6 +2140,7 @@ console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
+console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
