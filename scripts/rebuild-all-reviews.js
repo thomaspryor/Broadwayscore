@@ -714,6 +714,38 @@ function extractExcerptFromFullText(fullText, showTitle) {
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
 
+/**
+ * Quality gate for LLM-extracted pull quotes. Rejects generic or scene-setting
+ * quotes that don't add value over aggregator excerpts.
+ */
+function isGenericQuote(text) {
+  if (!text) return true;
+  const lower = text.toLowerCase().trim();
+
+  // Generic praise/criticism that could apply to any show
+  const genericPatterns = [
+    /^(it('s| is)|this is) (a )?(must[- ]see|worth seeing|not to be missed)\b/,
+    /^don'?t miss (it|this)/,
+    /^(highly )?recommended\.?$/,
+    /^(go )?see (it|this show)/,
+    /^a (great|good|wonderful|terrible|bad) show\.?$/,
+  ];
+
+  // Scene-setting openers
+  const sceneSettingPatterns = [
+    /^when the (curtain|lights|house lights|show) /,
+    /^at the [a-z]+ the(a|u)tre/,
+    /^on a recent (evening|night|afternoon)/,
+    /^(walking|stepping) into the /,
+    /^the (stage|set) (is|was) (bare|dark|set)/,
+  ];
+
+  for (const p of [...genericPatterns, ...sceneSettingPatterns]) {
+    if (p.test(lower)) return true;
+  }
+  return false;
+}
+
 function selectBestExcerpt(data, showTitle) {
   const showId = data.showId;
 
