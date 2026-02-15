@@ -1,49 +1,127 @@
 {
-  "updatedAt": "2026-02-15T18:28:34.183Z",
-  "processed": 5,
-  "failed": 55,
-  "successRate": "8.3%",
+  "updatedAt": "2026-02-15T18:32:36.558Z",
+  "processed": 103,
+  "failed": 167,
+  "successRate": "38.1%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 82,
+    "browserbase": 7,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 5
+    "brightdata": 11,
+    "archive": 14
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 16,
   "recentActivity": [
     {
-      "t": "2026-02-15T18:24:09.581Z",
+      "t": "2026-02-15T16:55:09.135Z",
       "event": "bb-session",
-      "session": "59e9a303",
-      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
+      "session": "ae1d5fda",
+      "url": "https://www.indiewire.com/features/crafts/the-wiz-broadway-revival-costumes-dian"
     },
     {
-      "t": "2026-02-15T18:24:11.643Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:25:45.451Z",
+      "t": "2026-02-15T16:56:32.070Z",
       "event": "bb-session",
-      "session": "685c9369",
-      "url": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html"
+      "session": "114ef9a7",
+      "url": "https://www.thewrap.com/travesties-broadway-review-tom-hollander-pulls-stoppard/"
     },
     {
-      "t": "2026-02-15T18:25:47.576Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-15T18:27:21.768Z",
+      "t": "2026-02-15T17:14:44.029Z",
       "event": "bb-session",
-      "session": "38e810d1",
-      "url": "https://www.vulture.com/2011/04/theater_review_catch_me_if_yo.html"
+      "session": "ece7f111",
+      "url": "https://www.huffpost.com/steven-suskin/a-time-to-kill_b_4132348.html"
     },
     {
-      "t": "2026-02-15T18:27:23.594Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-15T17:14:47.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:19:45.208Z",
+      "event": "bb-session",
+      "session": "6af5f066",
+      "url": "https://www.usatoday.com/story/life/theater/2019/03/21/aint-too-proud-temptation"
+    },
+    {
+      "t": "2026-02-15T17:19:47.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:22:31.529Z",
+      "event": "bb-session",
+      "session": "03db07f1",
+      "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm"
+    },
+    {
+      "t": "2026-02-15T17:22:33.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:25:26.042Z",
+      "event": "bb-session",
+      "session": "559001a4",
+      "url": "https://www.usatoday.com/story/life/theater/2022/10/11/almost-famous-broadway-re"
+    },
+    {
+      "t": "2026-02-15T17:25:27.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:36:48.073Z",
+      "event": "bb-session",
+      "session": "dbabf2b4",
+      "url": "https://www.huffpost.com/michael-giltz/theater-upbeat-bandstand_b_8328446.html"
+    },
+    {
+      "t": "2026-02-15T17:36:50.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:49:36.157Z",
+      "event": "bb-session",
+      "session": "0f2cc073",
+      "url": "https://www.usatoday.com/story/life/theater/2017/04/27/bandstand-review-broadway"
+    },
+    {
+      "t": "2026-02-15T17:49:38.221Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T18:10:55.840Z",
+      "event": "bb-session",
+      "session": "088aa3f0",
+      "url": "https://www.northjersey.com/arts_entertainment/Ballroom_show_turns_out_dance_inf"
+    },
+    {
+      "t": "2026-02-15T18:10:57.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T18:25:40.003Z",
+      "event": "bb-session",
+      "session": "207e206b",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-02-15T18:25:42.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-15T18:30:51.382Z",
+      "event": "bb-session",
+      "session": "86f9832b",
+      "url": "https://www.bloomberg.com/news/articles/2018-03-16/-escape-to-margaritaville-rev"
+    },
+    {
+      "t": "2026-02-15T18:30:53.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
