@@ -1,27 +1,49 @@
 {
-  "updatedAt": "2026-02-15T21:38:24.244Z",
-  "processed": 55,
-  "failed": 15,
-  "successRate": "78.6%",
+  "updatedAt": "2026-02-15T21:38:50.433Z",
+  "processed": 5,
+  "failed": 55,
+  "successRate": "8.3%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-15T21:37:49.948Z",
+      "t": "2026-02-15T21:31:13.226Z",
       "event": "bb-session",
-      "session": "93532d7c",
-      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+      "session": "717c8d20",
+      "url": "https://www.vulture.com/2014/04/theater-review-a-raisin-in-the-sun.html"
     },
     {
-      "t": "2026-02-15T21:37:52.038Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
+      "t": "2026-02-15T21:31:15.252Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T21:34:58.145Z",
+      "event": "bb-session",
+      "session": "736e85e7",
+      "url": "http://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html"
+    },
+    {
+      "t": "2026-02-15T21:35:00.123Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-15T21:38:25.810Z",
+      "event": "bb-session",
+      "session": "66a6e428",
+      "url": "https://www.vulture.com/2018/08/theater-via-exit-9-its-gettin-the-band-back-toge"
+    },
+    {
+      "t": "2026-02-15T21:38:27.725Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     }
   ]
 }
