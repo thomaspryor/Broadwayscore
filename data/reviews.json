@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 11991,
-      "skippedNoScore": 5714,
+      "totalReviews": 11990,
+      "skippedNoScore": 5713,
       "skippedDuplicate": 49,
       "skippedDuplicateUrl": 216,
       "skippedCrossOutletDuplicateUrl": 5,
-      "skippedDuplicateText": 1094,
+      "skippedDuplicateText": 1095,
       "skippedFingerprintDedup": 1,
       "skippedWrongProduction": 1705,
       "recoveredFromGarbage": 141,
@@ -19,10 +19,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 12,
         "human-review": 62,
-        "originalScore-priority0": 1653,
-        "llmScore": 8018,
+        "originalScore-priority0": 1652,
+        "llmScore": 8020,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2115,
+        "llmScore-lowconf": 2113,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -4321,7 +4321,7 @@
       "outletId": "observer",
       "outlet": "Observer",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Cote",
@@ -4331,7 +4331,7 @@
       "pullQuote": "The kids at the matinee I attended squealed at the low-tech but delightful stage effects.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -10492,7 +10492,7 @@
       "outletId": "observer",
       "outlet": "Observer",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Cote",
@@ -10502,7 +10502,7 @@
       "pullQuote": "A Strange Loop is profanely funny and courageously raw, but on a second viewing it's also claustrophobically fixated on the wounds of youth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -95076,7 +95076,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamilton-2015",
@@ -149134,23 +149134,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "old-times-2015",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Adam Feldman",
-      "url": "http://www.timeout.com/newyork/theater/old-times",
-      "publishDate": "October 6, 2015",
-      "originalRating": 80,
-      "pullQuote": "The three performances are excellent, particularly Owen's, which finds the exact right note of suave menace.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "old-times-2015",
