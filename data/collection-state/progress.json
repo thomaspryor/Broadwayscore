@@ -59,7 +59,11 @@
     "airline-highway-2015/talkinbroadway--john-olson.json",
     "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
     "all-my-sons-2008/exeunt-magazine--nicole-serratore.json",
-    "all-my-sons-2008/reclining-standards--david-fox.json"
+    "all-my-sons-2008/reclining-standards--david-fox.json",
+    "an-enemy-of-the-people-2012/usatoday--elysa-gardner.json",
+    "an-enemy-of-the-people-2012/usatoday--patrick-ryan.json",
+    "an-enemy-of-the-people-2024/theater-scene--deirdre-donovan.json",
+    "angels-in-america-2018/broadway-blog--matthew-wexler.json"
   ],
   "failed": [
     "american-idiot-2010/hollywood-reporter--frank-scheck.json",
@@ -141,7 +145,13 @@
     "all-my-sons-2008/usatoday--elysa-gardner.json",
     "american-idiot-2010/ap--michael-kuchwara.json",
     "american-idiot-2010/broadwayworldcom--michael-dale.json",
-    "american-idiot-2010/ny1--roma-torre.json"
+    "american-idiot-2010/ny1--roma-torre.json",
+    "american-idiot-2010/village-voice--michael-feingold.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "an-enemy-of-the-people-2012/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/slantmagazine--dan-rubins.json",
+    "an-enemy-of-the-people-2024/theater-scene--victor-gluck.json",
+    "angels-in-america-2018/curtainup--elyse-sommer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -205,7 +215,8 @@
       "the-glass-menagerie-2013/guardian--alexis-soloski.json",
       "west-side-story-2009/guardian--adrian-horton.json",
       "a-night-with-janis-joplin-2013/broadwayworld--michael-dale.json",
-      "airline-highway-2015/talkinbroadway--john-olson.json"
+      "airline-highway-2015/talkinbroadway--john-olson.json",
+      "an-enemy-of-the-people-2012/usatoday--patrick-ryan.json"
     ],
     "archive": [
       "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
@@ -216,11 +227,14 @@
       "a-streetcar-named-desire-2012/village-voice--michael-musto.json",
       "airline-highway-2015/chicago-splash--justin-leclaire.json",
       "airline-highway-2015/chicago-stage-standard--will-cameron.json",
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+      "an-enemy-of-the-people-2012/usatoday--elysa-gardner.json",
+      "an-enemy-of-the-people-2024/theater-scene--deirdre-donovan.json",
+      "angels-in-america-2018/broadway-blog--matthew-wexler.json"
     ]
   },
   "startTime": "2026-02-15T16:39:12.407Z",
-  "lastProcessed": "american-idiot-2010/ny1--roma-torre.json",
+  "lastProcessed": "angels-in-america-2018/curtainup--elyse-sommer.json",
   "log": [
     {
       "t": "2026-02-15T16:41:29.047Z",
@@ -249,7 +263,7 @@
     {
       "t": "2026-02-15T16:46:36.166Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "bloomberg.com"
     },
     {
       "t": "2026-02-15T16:57:17.390Z",
@@ -310,6 +324,28 @@
     },
     {
       "t": "2026-02-15T17:38:51.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:42:59.607Z",
+      "event": "bb-session",
+      "session": "1d2b7e0c",
+      "url": "https://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-peo"
+    },
+    {
+      "t": "2026-02-15T17:43:01.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:43:59.212Z",
+      "event": "bb-session",
+      "session": "7e1e7081",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/03/18/enemy-people-broad"
+    },
+    {
+      "t": "2026-02-15T17:44:01.639Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
     }
