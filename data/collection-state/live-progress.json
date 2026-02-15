@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-15T17:41:06.413Z",
-  "processed": 60,
-  "failed": 80,
-  "successRate": "42.9%",
+  "updatedAt": "2026-02-15T17:46:52.103Z",
+  "processed": 64,
+  "failed": 86,
+  "successRate": "42.7%",
   "tierBreakdown": {
     "playwright": 47,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 6,
-    "archive": 9
+    "brightdata": 7,
+    "archive": 12
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
     {
       "t": "2026-02-15T16:41:29.047Z",
@@ -100,6 +100,28 @@
     },
     {
       "t": "2026-02-15T17:38:51.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:42:59.607Z",
+      "event": "bb-session",
+      "session": "1d2b7e0c",
+      "url": "https://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-peo"
+    },
+    {
+      "t": "2026-02-15T17:43:01.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:43:59.212Z",
+      "event": "bb-session",
+      "session": "7e1e7081",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/03/18/enemy-people-broad"
+    },
+    {
+      "t": "2026-02-15T17:44:01.639Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
     }
