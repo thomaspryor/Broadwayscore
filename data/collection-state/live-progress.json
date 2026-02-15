@@ -1,15 +1,122 @@
 {
-  "updatedAt": "2026-02-15T22:14:52.745Z",
-  "processed": 99,
-  "failed": 161,
-  "successRate": "38.1%",
+  "updatedAt": "2026-02-15T22:16:35.846Z",
+  "processed": 59,
+  "failed": 41,
+  "successRate": "59.0%",
   "tierBreakdown": {
-    "playwright": 66,
-    "browserbase": 0,
+    "playwright": 42,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 15,
-    "archive": 20
+    "brightdata": 2,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 11,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T21:56:56.607Z",
+      "event": "bb-session",
+      "session": "16be3729",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-15T21:56:58.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T21:58:25.569Z",
+      "event": "bb-session",
+      "session": "dbc826b1",
+      "url": "https://variety.com/2003/legit/reviews/wicked-7-1200538236/"
+    },
+    {
+      "t": "2026-02-15T22:01:23.065Z",
+      "event": "bb-session",
+      "session": "a7a2051e",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-15T22:01:25.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:02:39.339Z",
+      "event": "bb-session",
+      "session": "62af5a42",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-15T22:02:41.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:05:46.586Z",
+      "event": "bb-session",
+      "session": "e19099be",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-15T22:05:48.491Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:07:11.657Z",
+      "event": "bb-session",
+      "session": "d8704bbc",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-15T22:07:14.017Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:07:53.484Z",
+      "event": "bb-session",
+      "session": "fafffc51",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-15T22:10:18.890Z",
+      "event": "bb-session",
+      "session": "8dc3fd67",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-15T22:10:21.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:10:58.804Z",
+      "event": "bb-session",
+      "session": "ded56321",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-15T22:14:23.800Z",
+      "event": "bb-session",
+      "session": "36d27b11",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-15T22:14:26.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T22:15:33.051Z",
+      "event": "bb-session",
+      "session": "a02998c1",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-15T22:15:35.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
