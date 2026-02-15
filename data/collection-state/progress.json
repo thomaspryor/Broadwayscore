@@ -47,7 +47,14 @@
     "network-2018/observer--rex-reed.json",
     "new-york-new-york-2023/observer--rex-reed.json",
     "oklahoma-2019/observer--rex-reed.json",
-    "othello-2025/observer--david-cote.json"
+    "othello-2025/observer--david-cote.json",
+    "pass-over-2021/observer--david-cote.json",
+    "pictures-from-home-2023/observer--david-cote.json",
+    "plaza-suite-2022/observer--david-cote.json",
+    "prima-facie-2023/observer--david-cote.json",
+    "prince-of-broadway-2017/observer--rex-reed.json",
+    "race-2009/observer--jesse-oxfeld.json",
+    "significant-other-2017/observer--rex-reed.json"
   ],
   "failed": [
     "hadestown-2019/observer--david-cote.json",
@@ -61,7 +68,10 @@
     "into-the-woods-2022/observer--david-cote.json",
     "into-the-woods-2022/observer--jesse-green.json",
     "job-2024/observer--david-cote.json",
-    "les-liaisons-dangereuses-2016/observer--rex-reed.json"
+    "les-liaisons-dangereuses-2016/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/observer--jesse-oxfeld.json",
+    "romeo-juliet-2024/observer--david-cote.json",
+    "shucked-2023/observer--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -112,16 +122,35 @@
       "network-2018/observer--rex-reed.json",
       "new-york-new-york-2023/observer--rex-reed.json",
       "oklahoma-2019/observer--rex-reed.json",
-      "othello-2025/observer--david-cote.json"
+      "othello-2025/observer--david-cote.json",
+      "pass-over-2021/observer--david-cote.json",
+      "pictures-from-home-2023/observer--david-cote.json",
+      "plaza-suite-2022/observer--david-cote.json",
+      "prima-facie-2023/observer--david-cote.json",
+      "prince-of-broadway-2017/observer--rex-reed.json",
+      "significant-other-2017/observer--rex-reed.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "high-2011/observer--jesse-oxfeld.json"
+      "high-2011/observer--jesse-oxfeld.json",
+      "race-2009/observer--jesse-oxfeld.json"
     ]
   },
   "startTime": "2026-02-15T22:01:27.747Z",
-  "lastProcessed": "othello-2025/observer--david-cote.json",
-  "log": []
+  "lastProcessed": "significant-other-2017/observer--rex-reed.json",
+  "log": [
+    {
+      "t": "2026-02-15T22:08:55.270Z",
+      "event": "bb-session",
+      "session": "6fb75688",
+      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+    },
+    {
+      "t": "2026-02-15T22:08:57.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    }
+  ]
 }
