@@ -1,35 +1,17 @@
 {
-  "updatedAt": "2026-02-15T22:48:58.414Z",
-  "processed": 232,
-  "failed": 408,
+  "updatedAt": "2026-02-15T22:56:23.273Z",
+  "processed": 236,
+  "failed": 414,
   "successRate": "36.3%",
   "tierBreakdown": {
-    "playwright": 117,
-    "browserbase": 7,
+    "playwright": 120,
+    "browserbase": 8,
     "scrapingbee": 0,
-    "brightdata": 53,
+    "brightdata": 54,
     "archive": 74
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-02-15T22:33:08.466Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194757458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA6P0AEf8Mcq4ANA1qtA==&cid=o2_uLi8wXI7Bpa6vHgyJFlHvxQc~oogK~I_pRBvSdJzKVZAqcePfReCNG1Y9UUW~xPJrD29KHtg9ytOzvrHoRDy6HwwPIsGeL5ABioWhSST2O4uhXeyArSwFe_RW72BY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194757458\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194757458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA6P0AEf8Mcq4ANA1qtA==&cid=o2_uLi8wXI7Bpa6vHgyJFlHvxQc~oogK~I_pRBvSdJzKVZAqcePfReCNG1Y9UUW~xPJrD29KHtg9ytOzvrHoRDy6HwwPIsGeL5ABioWhSST2O4uhXeyArSwFe_RW72BY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194757458\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194757458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA6P0AEf8Mcq4ANA1qtA==&cid=o2_uLi8wXI7Bpa6vHgyJFlHvxQc~oogK~I_pRBvSdJzKVZAqcePfReCNG1Y9UUW~xPJrD29KHtg9ytOzvrHoRDy6HwwPIsGeL5ABioWhSST2O4uhXeyArSwFe_RW72BY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194757458\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
-    },
-    {
-      "t": "2026-02-15T22:33:50.264Z",
-      "event": "bb-session",
-      "session": "a309fed8",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-15T22:34:31.745Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194840922\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4iPNbhba_tIANA1qtA==&cid=bYFJkdezH5Arml3j28KvUnCKwK02t08VTy01Z1jUeeNebWJB8xvs86Z3sh5FyCORl7qp8YKNpdd~AxgICh3KI5BMhJGc3A28DmASq3ZTJKMZdeWNa84JmRHp12wycLze&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194840922\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194840922\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4iPNbhba_tIANA1qtA==&cid=bYFJkdezH5Arml3j28KvUnCKwK02t08VTy01Z1jUeeNebWJB8xvs86Z3sh5FyCORl7qp8YKNpdd~AxgICh3KI5BMhJGc3A28DmASq3ZTJKMZdeWNa84JmRHp12wycLze&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194840922\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771194840922\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4iPNbhba_tIANA1qtA==&cid=bYFJkdezH5Arml3j28KvUnCKwK02t08VTy01Z1jUeeNebWJB8xvs86Z3sh5FyCORl7qp8YKNpdd~AxgICh3KI5BMhJGc3A28DmASq3ZTJKMZdeWNa84JmRHp12wycLze&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771194840922\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
     {
       "t": "2026-02-15T22:35:09.230Z",
       "event": "bb-session",
@@ -128,6 +110,24 @@
       "event": "bb-session",
       "session": "0e3209aa",
       "url": "https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-m"
+    },
+    {
+      "t": "2026-02-15T22:53:02.718Z",
+      "event": "bb-session",
+      "session": "dfbe87dc",
+      "url": "https://observer.com/2024/04/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-15T22:55:14.571Z",
+      "event": "bb-session",
+      "session": "031a85ac",
+      "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-02-15T22:55:38.363Z",
+      "event": "bb-session",
+      "session": "1f252249",
+      "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-an"
     }
   ]
 }
