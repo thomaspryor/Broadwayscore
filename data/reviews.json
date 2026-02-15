@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 13339,
-      "skippedNoScore": 4410,
-      "skippedDuplicate": 95,
+      "totalReviews": 13340,
+      "skippedNoScore": 4409,
+      "skippedDuplicate": 94,
       "skippedDuplicateUrl": 409,
       "skippedCrossOutletDuplicateUrl": 27,
       "skippedDuplicateText": 480,
       "skippedFingerprintDedup": 76,
-      "skippedWrongProduction": 1882,
+      "skippedWrongProduction": 1883,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 3,
@@ -22,7 +22,7 @@
         "originalScore-priority0": 1693,
         "llmScore": 9505,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1945,
+        "llmScore-lowconf": 1946,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3380,6 +3380,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "outletId": "bergen-record",
+      "outlet": "The Record (Bergen)",
+      "assignedScore": 62,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Robert Feldberg",
+      "url": null,
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "\"A Bronx Tale\" isn't a bad musical. It just doesn't seem a necessary one.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "a-bronx-tale-2007",
@@ -113528,7 +113545,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
