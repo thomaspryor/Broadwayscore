@@ -1,17 +1,17 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-14",
+    "lastUpdated": "2026-02-15",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 11818,
-      "skippedNoScore": 5915,
+      "skippedNoScore": 5914,
       "skippedDuplicate": 49,
       "skippedDuplicateUrl": 217,
       "skippedCrossOutletDuplicateUrl": 5,
       "skippedDuplicateText": 1088,
       "skippedFingerprintDedup": 1,
-      "skippedWrongProduction": 1692,
+      "skippedWrongProduction": 1693,
       "recoveredFromGarbage": 143,
       "scoreSources": {
         "explicit-stars": 3,
@@ -95076,7 +95076,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamilton-2015",
