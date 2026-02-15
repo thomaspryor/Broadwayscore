@@ -1,15 +1,28 @@
 {
-  "updatedAt": "2026-02-15T16:40:55.745Z",
-  "processed": 18,
-  "failed": 12,
-  "successRate": "60.0%",
+  "updatedAt": "2026-02-15T16:43:22.776Z",
+  "processed": 19,
+  "failed": 21,
+  "successRate": "47.5%",
   "tierBreakdown": {
-    "playwright": 14,
-    "browserbase": 0,
+    "playwright": 15,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
     "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T16:42:05.180Z",
+      "event": "bb-session",
+      "session": "59fe72bc",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+    },
+    {
+      "t": "2026-02-15T16:42:21.582Z",
+      "event": "bb-session",
+      "session": "06d8779b",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    }
+  ]
 }
