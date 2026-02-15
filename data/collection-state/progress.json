@@ -57,7 +57,9 @@
     "a-delicate-balance-2014/amny--matt-windman.json",
     "a-delicate-balance-2014/latimes--unknown.json",
     "a-delicate-balance-2014/showbiz411--unknown.json",
-    "a-little-night-music-2009/theater-life--eric-march.json"
+    "a-little-night-music-2009/theater-life--eric-march.json",
+    "all-my-sons-2008/exeunt-magazine--nicole-serratore.json",
+    "all-my-sons-2008/reclining-standards--david-fox.json"
   ],
   "failed": [
     "almost-famous-2022/nyt-theater--jonathan-mandell.json",
@@ -141,7 +143,15 @@
     "a-streetcar-named-desire-2012/backstage--erik-haagensen.json",
     "a-streetcar-named-desire-2012/stannswarehouseorg--unknown.json",
     "a-streetcar-named-desire-2012/village-voice--michael-musto.json",
-    "a-time-to-kill-2013/broadwayworld--michael-dale.json"
+    "a-time-to-kill-2013/broadwayworld--michael-dale.json",
+    "a-time-to-kill-2013/huffpost--unknown.json",
+    "after-midnight-2013/huffpost--unknown.json",
+    "aint-too-proud-2019/front-row-center--donna-herman.json",
+    "aint-too-proud-2019/talkinbroadway--matthew-murray.json",
+    "aint-too-proud-2019/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/adriandimanlig--adrian-dimanlig.json",
+    "all-my-sons-2008/curtainup--elyse-sommer.json",
+    "all-my-sons-2008/stagezine--scott-harrah.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -193,7 +203,9 @@
       "the-piano-lesson-2022/cititour--brian-scott-lipton.json",
       "a-delicate-balance-2014/amny--matt-windman.json",
       "a-delicate-balance-2014/showbiz411--unknown.json",
-      "a-little-night-music-2009/theater-life--eric-march.json"
+      "a-little-night-music-2009/theater-life--eric-march.json",
+      "all-my-sons-2008/exeunt-magazine--nicole-serratore.json",
+      "all-my-sons-2008/reclining-standards--david-fox.json"
     ],
     "browserbase": [
       "data/review-texts/children-of-a-lesser-god-2018/fordham-observer--michael-appler.json",
@@ -208,7 +220,8 @@
     "brightdata": [
       "is-this-a-room-2021/thewrap--robert-hofler.json",
       "junk-2017/timeout--christopher-kelly.json",
-      "a-delicate-balance-2014/latimes--unknown.json"
+      "a-delicate-balance-2014/latimes--unknown.json",
+      "a-time-to-kill-2013/broadwayworld--michael-dale.json"
     ],
     "archive": [
       "beetlejuice-2025/musical-theatre-review--ron-cohen.json",
@@ -220,7 +233,7 @@
     ]
   },
   "startTime": "2026-02-15T16:14:43.212Z",
-  "lastProcessed": "a-time-to-kill-2013/broadwayworld--michael-dale.json",
+  "lastProcessed": "all-my-sons-2008/stagezine--scott-harrah.json",
   "log": [
     {
       "t": "2026-02-15T16:19:04.958Z",
@@ -263,6 +276,28 @@
       "event": "bb-session",
       "session": "114ef9a7",
       "url": "https://www.thewrap.com/travesties-broadway-review-tom-hollander-pulls-stoppard/"
+    },
+    {
+      "t": "2026-02-15T17:14:44.029Z",
+      "event": "bb-session",
+      "session": "ece7f111",
+      "url": "https://www.huffpost.com/steven-suskin/a-time-to-kill_b_4132348.html"
+    },
+    {
+      "t": "2026-02-15T17:14:47.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:19:45.208Z",
+      "event": "bb-session",
+      "session": "6af5f066",
+      "url": "https://www.usatoday.com/story/life/theater/2019/03/21/aint-too-proud-temptation"
+    },
+    {
+      "t": "2026-02-15T17:19:47.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
