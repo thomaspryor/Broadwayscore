@@ -1,71 +1,127 @@
 {
-  "updatedAt": "2026-02-15T18:14:08.799Z",
-  "processed": 50,
-  "failed": 100,
-  "successRate": "33.3%",
+  "updatedAt": "2026-02-15T19:58:46.679Z",
+  "processed": 147,
+  "failed": 263,
+  "successRate": "35.9%",
   "tierBreakdown": {
-    "playwright": 39,
-    "browserbase": 0,
+    "playwright": 112,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 7,
-    "archive": 7
+    "brightdata": 18,
+    "archive": 23
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 15,
   "recentActivity": [
     {
-      "t": "2026-02-15T17:24:26.451Z",
-      "event": "bb-session",
-      "session": "7c69f74a",
-      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-"
-    },
-    {
-      "t": "2026-02-15T17:24:28.528Z",
+      "t": "2026-02-15T16:46:36.166Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "bloomberg.com"
     },
     {
-      "t": "2026-02-15T17:25:43.724Z",
+      "t": "2026-02-15T16:57:17.390Z",
       "event": "bb-session",
-      "session": "e272958f",
-      "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-n"
+      "session": "c2c4a64b",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
     },
     {
-      "t": "2026-02-15T17:25:45.725Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-02-15T17:27:10.005Z",
+      "t": "2026-02-15T17:09:41.714Z",
       "event": "bb-session",
-      "session": "f0c8b6d1",
-      "url": "https://www.thestage.co.uk/reviews/a-wonderful-world-the-louis-armstrong-musical"
+      "session": "2fe1d56e",
+      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
     },
     {
-      "t": "2026-02-15T17:27:12.071Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-02-15T17:28:28.884Z",
+      "t": "2026-02-15T17:10:15.086Z",
       "event": "bb-session",
-      "session": "4f9532a8",
-      "url": "https://www.thestage.co.uk/reviews/american-son-starring-kerry-washington-review"
+      "session": "71e7e77a",
+      "url": "https://www.thewrap.com/violet-theater-review"
     },
     {
-      "t": "2026-02-15T17:28:30.921Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-02-15T17:29:57.960Z",
+      "t": "2026-02-15T17:15:51.584Z",
       "event": "bb-session",
-      "session": "dd87a5cf",
-      "url": "https://www.thestage.co.uk/reviews/anastasia-review-at-the-broadhurst-theatre-ne"
+      "session": "0b194d48",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/227339681_Theater_review_"
     },
     {
-      "t": "2026-02-15T17:29:59.985Z",
+      "t": "2026-02-15T17:15:53.511Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-15T17:25:32.112Z",
+      "event": "bb-session",
+      "session": "7bc54d18",
+      "url": "https://www.usatoday.com/story/life/theater/2019/03/21/aint-too-proud-temptation"
+    },
+    {
+      "t": "2026-02-15T17:25:34.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:31:40.208Z",
+      "event": "bb-session",
+      "session": "867c3918",
+      "url": "https://www.huffpost.com/david-finkle/first-nighter-lisa-damour_b_7132894.html"
+    },
+    {
+      "t": "2026-02-15T17:31:42.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T17:38:49.813Z",
+      "event": "bb-session",
+      "session": "81971b23",
+      "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm"
+    },
+    {
+      "t": "2026-02-15T17:38:51.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:42:59.607Z",
+      "event": "bb-session",
+      "session": "1d2b7e0c",
+      "url": "https://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-peo"
+    },
+    {
+      "t": "2026-02-15T17:43:01.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T17:43:59.212Z",
+      "event": "bb-session",
+      "session": "7e1e7081",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/03/18/enemy-people-broad"
+    },
+    {
+      "t": "2026-02-15T17:44:01.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-15T18:04:26.664Z",
+      "event": "bb-session",
+      "session": "a9272255",
+      "url": "https://www.huffpost.com/michael-giltz/theater-upbeat-bandstand_b_8328446.html"
+    },
+    {
+      "t": "2026-02-15T18:04:28.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
+    },
+    {
+      "t": "2026-02-15T18:15:56.861Z",
+      "event": "bb-session",
+      "session": "9df69796",
+      "url": "https://www.usatoday.com/story/life/theater/2017/04/27/bandstand-review-broadway"
+    },
+    {
+      "t": "2026-02-15T18:15:59.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
