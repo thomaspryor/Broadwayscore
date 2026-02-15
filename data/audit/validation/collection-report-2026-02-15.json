@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-15T20:37:49.853Z",
+  "runDate": "2026-02-15T20:58:45.014Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 83,
-    "failed": 16,
+    "processed": 82,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "83.8%"
+    "successRate": "82.8%"
   },
   "tierBreakdown": {
     "playwright": 81,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 99,
@@ -33,12 +33,12 @@
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier4Attempts": 10,
-    "tier4Success": 5,
-    "totalFailed": 16,
+    "tier4Success": 3,
+    "totalFailed": 17,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -97,7 +97,6 @@
     "plaza-suite-2022/observer--david-cote.json",
     "prima-facie-2023/observer--david-cote.json",
     "prince-of-broadway-2017/observer--rex-reed.json",
-    "race-2009/observer--jesse-oxfeld.json",
     "significant-other-2017/observer--rex-reed.json",
     "slave-play-2021/observer--david-cote.json",
     "smash-2025/observer--david-cote.json",
@@ -140,6 +139,7 @@
     "into-the-woods-2022/observer--jesse-green.json",
     "job-2024/observer--david-cote.json",
     "les-liaisons-dangereuses-2016/observer--rex-reed.json",
+    "race-2009/observer--jesse-oxfeld.json",
     "reasons-to-be-pretty-2009/observer--jesse-oxfeld.json",
     "romeo-juliet-2024/observer--david-cote.json",
     "shucked-2023/observer--david-cote.json",
@@ -233,8 +233,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "high-2011/observer--jesse-oxfeld.json",
-      "race-2009/observer--jesse-oxfeld.json"
+      "high-2011/observer--jesse-oxfeld.json"
     ]
   },
   "failuresByOutlet": {
@@ -246,7 +245,7 @@
       "isKnownBlocked": true
     },
     "New York Observer": {
-      "count": 1,
+      "count": 2,
       "domain": "observer.com",
       "hasCredentials": false,
       "isPaywalled": false,
