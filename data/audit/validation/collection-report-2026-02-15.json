@@ -2,7 +2,7 @@
   "runDate": "2026-02-15T23:33:01.895Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "punch-2025",
     "aggressive": false,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -81,6 +81,63 @@
       "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Vanity Fair": {
+      "count": 1,
+      "domain": "vanityfair.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 9,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 2,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "bigissue": {
+      "count": 1,
+      "domain": "bigissue.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 1,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
