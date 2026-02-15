@@ -3,10 +3,10 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-02-15",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 23233,
-    "skippedFiles": 3570,
-    "totalCritics": 1207,
-    "registryCritics": 425,
+    "totalFilesScanned": 23238,
+    "skippedFiles": 3641,
+    "totalCritics": 1180,
+    "registryCritics": 422,
     "flaggedReviews": 37
   },
   "flaggedReviews": [
@@ -368,10 +368,10 @@
       "outlet": "shelby-star-patrick-ryan",
       "showId": "uncle-vanya-2024",
       "file": "shelby-star-patrick-ryan--patrick-ryan.json",
-      "outletShare": 3,
+      "outletShare": 4,
       "primaryOutlet": "usatoday",
-      "primaryShare": 97,
-      "totalReviews": 29
+      "primaryShare": 96,
+      "totalReviews": 28
     },
     {
       "critic": "Charles McNulty",
@@ -430,7 +430,7 @@
         "vulture",
         "new-york-times"
       ],
-      "totalReviews": 437
+      "totalReviews": 436
     },
     {
       "critic": "David Finkle",
@@ -514,7 +514,8 @@
         "theatre-news-online",
         "ny-daily-news",
         "theater-news-online-joe-dziemianowicz",
-        "variety"
+        "variety",
+        "advertisement"
       ],
       "totalReviews": 415
     },
@@ -557,7 +558,7 @@
         "guardian",
         "financialtimes"
       ],
-      "totalReviews": 535
+      "totalReviews": 534
     },
     {
       "critic": "Elysa Gardner",
@@ -573,7 +574,7 @@
         "nytheatre",
         "newsday"
       ],
-      "totalReviews": 371
+      "totalReviews": 368
     },
     {
       "critic": "Brittani Samuel",
@@ -623,11 +624,11 @@
         "talkinbroadway",
         "dailybeast",
         "front-row-center",
-        "northjerseycom",
         "telegraph",
         "nysr",
         "showbiz411",
         "nbcnews",
+        "northjerseycom",
         "boston-herald",
         "the-los-angeles-times-charles-mcnulty",
         "the-star-ledger",
@@ -658,7 +659,6 @@
         "new-york-theater",
         "metro-uk",
         "bloomberg",
-        "b1039",
         "philadelphia-inquirer",
         "stannswarehouseorg",
         "san-diego-union-tribune",
@@ -667,7 +667,6 @@
         "news-tribune",
         "forward",
         "the-record",
-        "houston-press",
         "memphis-flyer",
         "new-york-1",
         "queerty",
@@ -745,7 +744,7 @@
         "culturesauce",
         "npr"
       ],
-      "totalReviews": 808
+      "totalReviews": 804
     },
     {
       "critic": "Brian Scott Lipton",
@@ -857,11 +856,12 @@
         "the-faster-times",
         "faster-times",
         "new-york-theatre",
+        "advertisement",
         "newyorktheater",
         "thestage",
         "the-stage-uk"
       ],
-      "totalReviews": 342
+      "totalReviews": 341
     },
     {
       "critic": "Jesse Green",
@@ -881,7 +881,7 @@
         "newyorkmagazine",
         "the-times-uk"
       ],
-      "totalReviews": 595
+      "totalReviews": 592
     },
     {
       "critic": "Howard Miller",
@@ -927,7 +927,7 @@
         "broadwaynews",
         "huffpost"
       ],
-      "totalReviews": 325
+      "totalReviews": 324
     },
     {
       "critic": "Michael Musto",
@@ -942,7 +942,7 @@
         "njcom",
         "villiage-voice"
       ],
-      "totalReviews": 97
+      "totalReviews": 96
     },
     {
       "critic": "Matt Windman",
@@ -1087,7 +1087,7 @@
         "vulture",
         "bloombergcom"
       ],
-      "totalReviews": 42
+      "totalReviews": 41
     },
     {
       "critic": "David Cote",
@@ -1138,6 +1138,7 @@
       "outlets": [
         "chicagotribune",
         "nydailynews",
+        "advertisement",
         "chicago-tribune",
         "dailybeast",
         "deadline",
@@ -1149,7 +1150,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 432
+      "totalReviews": 434
     },
     {
       "critic": "Elyse Trevers",
@@ -1205,7 +1206,7 @@
         "nytheatre",
         "nytheatrereviewcom"
       ],
-      "totalReviews": 34
+      "totalReviews": 33
     },
     {
       "critic": "Jesse Oxfeld",
@@ -1513,10 +1514,9 @@
         "thestage",
         "the-stage-uk",
         "vulture",
-        "towleroad-naveen-kumar",
-        "nytimes"
+        "towleroad-naveen-kumar"
       ],
-      "totalReviews": 172
+      "totalReviews": 171
     },
     {
       "critic": "Stephanie Zacharek",
@@ -1642,7 +1642,7 @@
         "mildlybitter",
         "variety"
       ],
-      "totalReviews": 49
+      "totalReviews": 48
     },
     {
       "critic": "Diane Snyder",
@@ -1896,15 +1896,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Arifa Akbar",
-      "slug": "arifa-akbar",
-      "outlets": [
-        "guardian",
-        "the-guardian-uk"
-      ],
-      "totalReviews": 3
-    },
-    {
       "critic": "Marianka Swain",
       "slug": "marianka-swain",
       "outlets": [
@@ -1952,17 +1943,6 @@
         "stagebuddy"
       ],
       "totalReviews": 3
-    },
-    {
-      "critic": "Dany Margolies",
-      "slug": "dany-margolies",
-      "outlets": [
-        "la-daily-news",
-        "los-angeles-daily-news",
-        "whittier-daily-news",
-        "latimes"
-      ],
-      "totalReviews": 4
     },
     {
       "critic": "J. Kelly Nestruck",
@@ -2080,6 +2060,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Michael Billington",
+      "slug": "michael-billington",
+      "outlets": [
+        "the-guardian-uk",
+        "guardian"
+      ],
+      "totalReviews": 4
+    },
+    {
       "critic": "Ian Shuttleworth",
       "slug": "ian-shuttleworth",
       "outlets": [
@@ -2123,6 +2112,15 @@
         "nytheatrecom"
       ],
       "totalReviews": 4
+    },
+    {
+      "critic": "Dave Fargnoli",
+      "slug": "dave-fargnoli",
+      "outlets": [
+        "the-stage-uk",
+        "thestage"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Merryn Johns",
