@@ -91,7 +91,7 @@ jobs:
           node scripts/generate-social-post.js $ARGS
 
       - name: Commit post history
-        if: inputs.dry_run != 'true'
+        if: always() && inputs.dry_run != 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
