@@ -9,6 +9,19 @@
   },
   "reviews": [
     {
+      "showId": "700-sundays-2013",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-15T09:00:35.770Z"
+    },
+    {
       "showId": "a-christmas-story-the-musical-2012",
       "outletId": "ew",
       "criticName": "Tanner Stransky",
@@ -599,9 +612,9 @@
       "criticName": "Howard Miller",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T09:04:21.761Z"
@@ -690,9 +703,9 @@
       "criticName": "Robert Kahn",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\btouring production\\b",
-      "llmScore": null,
-      "llmBucket": null,
-      "llmConfidence": null,
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "flaggedAt": "2026-02-15T09:04:23.367Z"
