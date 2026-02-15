@@ -2,9 +2,9 @@
   "runDate": "2026-02-15T20:27:22.090Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "book-of-mormon-2011,death-becomes-her-2024,mj-2022,chess-2025,all-out-2025,hamilton-2015,prince-of-broadway-2017,war-paint-2017,hello-dolly-2017,three-tall-women-2018,the-little-foxes-2017,the-children-2017,children-of-a-lesser-god-2018,network-2018,escape-to-margaritaville-2018,les-liaisons-dangereuses-2016,the-parisian-woman-2017,head-over-heels-2018,the-crucible-2016,hughie-2016,the-father-2016,some-like-it-hot-2022,burn-this-2019,fiddler-on-the-roof-2015,travesties-2018,an-american-in-paris-2015,latin-history-for-morons-2017,china-doll-2015,holiday-inn-the-new-irving-berlin-musical-2016,uncle-vanya-2024,kinky-boots-2013,punch-2025,the-rose-tattoo-2019,clybourne-park-2012,harmony-2023,peter-and-the-starcatcher-2012,the-cottage-2023,a-strange-loop-2022,all-my-sons-2019,betrayal-2013,for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022,on-a-clear-day-you-can-see-forever-2011,relatively-speaking-2011,the-addams-family-2010,the-picture-of-dorian-gray-2025,act-one-2014,dead-accounts-2012,leopoldstadt-2022,our-town-2024,priscilla-queen-of-the-desert-2011,redwood-2025,smash-2025,the-real-thing-2014,9-to-5-2009,american-idiot-2010,diana-the-musical-2021,floyd-collins-2025,illinoise-2024,macbeth-2013,mr-saturday-night-2022,paradise-square-2022,sondheim-on-sondheim-2010,the-great-society-2019,the-phantom-of-the-opera-1988,time-stands-still-2010,1984-2017,a-raisin-in-the-sun-2014,between-riverside-and-crazy-2022,bloody-bloody-andrew-jackson-2010,catch-me-if-you-can-2011,cost-of-living-2022,golden-boy-2012,jagged-little-pill-2019,living-on-love-2015,mrs-doubtfire-2021,private-lives-2011,stick-fly-2011,the-columnist-2012,the-piano-lesson-2022,thoughts-of-a-colored-man-2021,waiting-for-godot-2025,a-moon-for-the-misbegotten-2007,all-the-way-2014,come-fly-away-2010,disgraced-2014,enron-2010,glengarry-glen-ross-2012,holler-if-ya-hear-me-2014,ill-eat-you-last-a-chat-with-sue-mengers-2013,memphis-2009,passing-strange-2008,real-women-have-curves-2025,shrek-the-musical-2008,the-collaboration-2022,the-mystery-of-edwin-drood-2012,the-skin-of-our-teeth-2022,walking-with-ghosts-2022,aint-no-mo-2022,beetlejuice-2019,casa-valentina-2014,cyrano-de-bergerac-2007,eureka-day-2024,festen-2006,hairspray-2002,its-only-a-play-2014,les-liaisons-dangereuses-2008,macbeth-2022,outside-mullingar-2014,stereophonic-2024,the-cripple-of-inishmaan-2014,the-lyons-2012,the-ritz-2007,700-sundays-2013,a-free-man-of-color-2010,call-me-izzy,desire-under-the-elms-2009,grand-horizons-2020,hillary-and-clinton-2019,lady-day-at-emersons-bar-and-grill-2014,mary-jane-2024,prima-facie-2023,sunset-boulevard-2017,the-lieutenant-of-inishmore-2006,the-story-of-my-life-2009,you-cant-take-it-with-you-2014",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -216,7 +216,161 @@
       "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
+    },
+    "reviewing-the-drama": {
+      "count": 1,
+      "domain": "reviewingthedrama.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "edge-new-york": {
+      "count": 2,
+      "domain": "newyork.edgemedianetwork.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Broadway News": {
+      "count": 2,
+      "domain": "broadwaynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NewNowNext": {
+      "count": 1,
+      "domain": "newnownext.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "abscbnnewscom": {
+      "count": 1,
+      "domain": "rp1.abs-cbnnews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "onandoffbroadwaytheaterreviews": {
+      "count": 1,
+      "domain": "onandoffbroadwaytheaterreviews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Forward": {
+      "count": 1,
+      "domain": "forward.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theatrely": {
+      "count": 2,
+      "domain": "theatrely.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "access-atlanta": {
+      "count": 1,
+      "domain": "accessatlanta.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "BroadwayWorld": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Click here": {
+      "count": 1,
+      "domain": "wtfestival.secure.force.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Associated Press": {
+      "count": 3,
+      "domain": "utsandiego.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Bergen Record": {
+      "count": 3,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 2,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 2,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 2,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Off Script with Dan Dwyer": {
+      "count": 1,
+      "domain": "dandwyeroffscript.tumblr.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Roy Berko": {
+      "count": 1,
+      "domain": "royberko.info",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Time": {
+      "count": 1,
+      "domain": "time.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "amNY": {
+      "count": 1,
+      "domain": "edition.pagesuite-professional.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "ScheckOnTheater": {
+      "count": 1,
+      "domain": "scheckonthearts.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
