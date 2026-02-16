@@ -221,7 +221,14 @@
     "the-prom-2018/theatermania--zachary-stewart.json",
     "the-rose-tattoo-2019/theatermania--kenji-fujishima.json",
     "the-shark-is-broken-2023/theatermania--pete-hempstead.json",
-    "the-sign-in-sidney-brusteins-window-2023/theatermania--hayley-levitt.json"
+    "the-sign-in-sidney-brusteins-window-2023/theatermania--hayley-levitt.json",
+    "the-sound-inside-2019/theatermania--david-gordon.json",
+    "the-terms-of-my-surrender-2017/theatermania--zachary-stewart.json",
+    "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
+    "the-thanksgiving-play-2023/theatermania--haley-levitt.json",
+    "the-visit-2015/theatermania--hayley-levitt.json",
+    "the-waverly-gallery-2018/theatermania--zachary-stewart.json",
+    "the-wiz-2024/theatermania--jesse-green.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -431,7 +438,10 @@
     "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json",
     "the-price-2017/theatermania--jesse-green.json",
     "the-rose-tattoo-2019/theatermania--jesse-green.json",
-    "the-royal-family-2009/theatermania--david-finkle.json"
+    "the-royal-family-2009/theatermania--david-finkle.json",
+    "the-skin-of-our-teeth-2022/theatermania--pete-hempstead.json",
+    "the-terms-of-my-surrender-2017/theatermania--jesse-green.json",
+    "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -605,14 +615,21 @@
       "the-prom-2018/theatermania--zachary-stewart.json",
       "the-rose-tattoo-2019/theatermania--kenji-fujishima.json",
       "the-shark-is-broken-2023/theatermania--pete-hempstead.json",
-      "the-sign-in-sidney-brusteins-window-2023/theatermania--hayley-levitt.json"
+      "the-sign-in-sidney-brusteins-window-2023/theatermania--hayley-levitt.json",
+      "the-sound-inside-2019/theatermania--david-gordon.json",
+      "the-terms-of-my-surrender-2017/theatermania--zachary-stewart.json",
+      "the-thanksgiving-play-2023/theatermania--haley-levitt.json",
+      "the-visit-2015/theatermania--hayley-levitt.json",
+      "the-waverly-gallery-2018/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
       "take-me-out-2022/theatermania--jesse-green.json",
-      "the-norman-conquests-2009/theatermania--brian-scott-lipton.json"
+      "the-norman-conquests-2009/theatermania--brian-scott-lipton.json",
+      "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
+      "the-wiz-2024/theatermania--jesse-green.json"
     ],
     "archiveToday": [
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
@@ -672,7 +689,7 @@
     ]
   },
   "startTime": "2026-02-16T17:22:04.924Z",
-  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/theatermania--hayley-levitt.json",
+  "lastProcessed": "the-wiz-2024/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-02-16T18:11:12.762Z",
@@ -715,6 +732,28 @@
     },
     {
       "t": "2026-02-16T18:20:59.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:23:24.399Z",
+      "event": "bb-session",
+      "session": "100a2bb5",
+      "url": "https://www.theatermania.com/broadway/news/the-thanksgiving-play_95847.html"
+    },
+    {
+      "t": "2026-02-16T18:23:26.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:24:20.873Z",
+      "event": "bb-session",
+      "session": "d3891748",
+      "url": "https://www.theatermania.com/broadway/news/the-wiz-broadway-revival-2024_96847.h"
+    },
+    {
+      "t": "2026-02-16T18:24:22.978Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
