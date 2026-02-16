@@ -1037,7 +1037,7 @@ function getBestScore(data) {
   if (data.originalScore) {
     // Skip low-confidence originalScores — these are often misreads from page templates
     // (e.g., "1/5" from a star icon in a sidebar, "D" from a page element)
-    if (data.scoreConfidence === 'low') {
+    if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon') {
       stats.skippedLowConfidenceOriginal = (stats.skippedLowConfidenceOriginal || 0) + 1;
       // Fall through to LLM scoring instead
     } else {
@@ -1975,7 +1975,9 @@ const consistencyIssues = [];
 
 for (const r of allReviews) {
   // Check 1: Original rating vs assigned score mismatch
-  if (r.originalRating && typeof r.originalRating === 'string') {
+  // Skip when scoreSource is llmScore — means the originalRating was intentionally skipped
+  // (e.g., star-icon from TimeOut listing pages, low-confidence scraped ratings)
+  if (r.originalRating && typeof r.originalRating === 'string' && r.scoreSource !== 'llmScore') {
     const parsed = parseOriginalScore(r.originalRating, r.outletId);
     if (parsed !== null && Math.abs(r.assignedScore - parsed) > 20) {
       consistencyIssues.push({
@@ -2028,20 +2030,24 @@ for (const r of allReviews) {
 }
 
 // Check 4: Score clustering per show (many identical LLM scores)
+// Note: Moderate clustering (35-50%) at scores like 80, 82, 60 is EXPECTED behavior.
+// When 4 LLM models independently agree on "Positive" bucket, their scores naturally
+// average to 81-83, which rounds to 82. Similarly, "Mixed" converges to 60.
+// Only flag extreme cases (50%+ at one score with 8+ reviews).
 const showGroups = {};
 for (const r of allReviews) {
   if (!showGroups[r.showId]) showGroups[r.showId] = [];
   showGroups[r.showId].push(r);
 }
 for (const [showId, revs] of Object.entries(showGroups)) {
-  if (revs.length < 6) continue;
+  if (revs.length < 10) continue;
   const scoreCounts = {};
   for (const r of revs) {
     scoreCounts[r.assignedScore] = (scoreCounts[r.assignedScore] || 0) + 1;
   }
   for (const [score, count] of Object.entries(scoreCounts)) {
     const pct = (count / revs.length) * 100;
-    if (count >= 5 && pct >= 35) {
+    if (count >= 8 && pct >= 50) {
       consistencyIssues.push({
         type: 'score-clustering',
         severity: 'low',
