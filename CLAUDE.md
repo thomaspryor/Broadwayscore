@@ -39,7 +39,26 @@ Never give approximate ranges. If you can't access a source, say so.
 - **Push:** Use 5-retry loop with `--rebase -X theirs` (see `gather-reviews.yml` pattern)
 - Before shipping any new batch script or workflow, verify: "If this times out at 50%, do we keep the first 50%?" If no, add checkpointing.
 
-### 8. Roadmap Discipline
+### 8. Design System — Use Shared Components
+**NEVER create custom versions of existing UI components.** The shared component library is in `src/components/show-cards/`:
+- **`ScoreBadge`** — Score circles with tier coloring. Sizes: `sm` (44px, for tables/lists), `md` (56px), `lg` (80px, for homepage cards). Handles TBD for previews/low review count.
+- **`StatusBadge`** — Status pills: "NOW PLAYING" / "CLOSED" / "IN PREVIEWS". Green/gray/purple backgrounds.
+- **`FormatPill`** — "MUSICAL" / "PLAY" outline pills.
+- **`ProductionPill`** — "ORIGINAL" / "REVIVAL" filled pills.
+- **`getScoreTier()`** — Returns tier label + color for a score. Use for tier labels.
+- **`ShowImage`** (`src/components/ShowImage.tsx`) — Image with multi-source fallback. Always use theater mask emoji fallback, not first-letter placeholders.
+- **`getOptimizedImageUrl()`** (`src/lib/images.ts`) — Always wrap thumbnail paths through this for optimization.
+
+**Import from barrel:** `import { ScoreBadge, StatusBadge, FormatPill, ProductionPill, getScoreTier } from '@/components/show-cards';`
+
+**Rules for new pages:**
+- Browse/list/ranking pages MUST use the components above — no inline reimplementations
+- Thumbnail sizing: `w-24 h-24 sm:w-28 sm:h-28` (homepage cards), `w-14 h-14 sm:w-16 sm:h-16` (table rows)
+- Score tier labels use `text-[9px] font-semibold uppercase tracking-wide` with `style={{ color: tier.color }}`
+- Card interactive style: `card-interactive` class for hover/focus states
+- If you need a component that doesn't exist, add it to `show-cards/` and export from the barrel — do NOT define it inline in a page
+
+### 9. Roadmap Discipline
 Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore` to read the Roadmap issue.
 - If the user's request isn't tracked, add it to the appropriate section.
 - If something similar is "In Progress," tell the user before starting (don't silently duplicate).
