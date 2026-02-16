@@ -398,6 +398,9 @@ const COOKIE_DOMAIN_MAP = {
   'frontmezzjunkies.com': { envVar: 'FRONTMEZZJUNKIES_COOKIES', fileKey: 'frontmezzjunkies' },
 };
 
+// Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login
+const COOKIE_ONLY_DOMAINS = ['newyorker.com'];
+
 // Cache loaded cookies to avoid re-reading files/decoding base64 every time
 const _cookieCache = {};
 
@@ -692,9 +695,11 @@ async function fetchWithPlaywright(url, review) {
 
   // Check for paywall and login if needed
   // Skip login entirely if cookies exist for this domain (avoids OTC email spam)
+  // Also skip login for domains that route automated browsers to OTP (use cookies only)
   const paywallCreds = getPaywallCredentials(url);
   const hasCookiesForDomain = paywallCreds && hasCookiesForUrl(url);
-  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain) && !hasCookiesForDomain) {
+  const isCookieOnlyDomain = paywallCreds && COOKIE_ONLY_DOMAINS.includes(paywallCreds.domain);
+  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain) && !hasCookiesForDomain && !isCookieOnlyDomain) {
     const loginSuccess = await loginToSite(paywallCreds.domain, paywallCreds.email, paywallCreds.password);
     if (loginSuccess) {
       loggedInDomains.add(paywallCreds.domain);
@@ -2052,8 +2057,10 @@ async function fetchWithBrowserbase(url, review) {
     // Login to paywalled sites before navigating to the review URL
     // Browserbase has CAPTCHA solving, making it ideal for sites that block Playwright
     // Skip login if cookies were already injected for this domain
+    // Skip login for cookie-only domains (e.g., newyorker.com triggers OTC emails on login)
     const paywallCreds = getPaywallCredentials(url);
-    if (paywallCreds && paywallCreds.email && !bbCookiesInjected) {
+    const isCookieOnly = paywallCreds && COOKIE_ONLY_DOMAINS.includes(paywallCreds.domain);
+    if (paywallCreds && paywallCreds.email && !bbCookiesInjected && !isCookieOnly) {
       console.log(`    → Browserbase login to ${paywallCreds.domain}...`);
       try {
         const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
