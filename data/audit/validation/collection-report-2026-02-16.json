@@ -1,0 +1,89 @@
+{
+  "runDate": "2026-02-16T00:31:22.017Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "little-bear-ridge-road-2025",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 11,
+    "failed": 5,
+    "skipped": 0,
+    "successRate": "68.8%"
+  },
+  "tierBreakdown": {
+    "playwright": 7,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 11,
+    "tier1Success": 10,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier4Attempts": 6,
+    "tier4Success": 5,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "little-bear-ridge-road-2025/nytg--gillian-russo.json",
+    "little-bear-ridge-road-2025/variety--daniel-daddario.json",
+    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+    "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
+    "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json",
+    "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
+    "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
+    "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
+    "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json",
+    "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
+  ],
+  "failed": [
+    "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
+    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
+    "little-bear-ridge-road-2025/theatre-reviews-limited--david-roberts.json",
+    "little-bear-ridge-road-2025/timeout--adam-feldman.json",
+    "little-bear-ridge-road-2025/theater-scene--samuel-l-leiter.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
+      "little-bear-ridge-road-2025/nytg--gillian-russo.json",
+      "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
+      "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
+      "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
+      "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
+      "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json"
+    ],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "little-bear-ridge-road-2025/variety--daniel-daddario.json",
+      "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json"
+    ],
+    "archive": [
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+      "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
