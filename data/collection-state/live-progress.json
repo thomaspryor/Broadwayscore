@@ -1,49 +1,15 @@
 {
-  "updatedAt": "2026-02-16T09:55:24.453Z",
-  "processed": 75,
-  "failed": 75,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-16T10:01:37.766Z",
+  "processed": 48,
+  "failed": 12,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 30,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 15
+    "brightdata": 2,
+    "archive": 16
   },
-  "browserbaseSessions": 3,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T09:47:45.383Z",
-      "event": "bb-session",
-      "session": "aa535d70",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-16T09:48:21.616Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T09:50:14.895Z",
-      "event": "bb-session",
-      "session": "08b2f663",
-      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
-    },
-    {
-      "t": "2026-02-16T09:51:06.923Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T09:51:55.073Z",
-      "event": "bb-session",
-      "session": "c64a5896",
-      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
-    },
-    {
-      "t": "2026-02-16T09:52:47.607Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
