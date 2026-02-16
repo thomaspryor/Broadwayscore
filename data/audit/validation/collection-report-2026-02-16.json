@@ -1,80 +1,138 @@
 {
-  "runDate": "2026-02-16T04:27:06.304Z",
+  "runDate": "2026-02-16T04:32:55.190Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
-    "showFilter": "dead-outlaw-2025",
+    "showFilter": "stephen-sondheims-old-friends-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 10,
+    "processed": 4,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 66,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 6,
+    "tier1Attempts": 11,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 26,
     "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 9,
-    "tier4Success": 9,
-    "totalFailed": 10,
+    "tier3Success": 2,
+    "tier4Attempts": 6,
+    "tier4Success": 6,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "dead-outlaw-2025/variety--unknown.json",
-    "dead-outlaw-2025/observer--david-cote.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json",
-    "dead-outlaw-2025/latimes--charles-mcnulty.json",
-    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+    "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "dead-outlaw-2025/variety--frank-rizzo.json",
-    "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--unknown.json",
-    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/dailybeast--unknown.json",
-    "dead-outlaw-2025/usatoday--patrick-ryan.json"
+    "stephen-sondheims-old-friends-2025/nytg--caroline-cao.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "stephen-sondheims-old-friends-2025/new-york-sun--elysa-gardner.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--unknown.json",
+    "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+    "stephen-sondheims-old-friends-2025/timeout--adam-feldman.json",
+    "stephen-sondheims-old-friends-2025/culturesauce--thom-geier.json",
+    "stephen-sondheims-old-friends-2025/talkinbroadway--howard-miller.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
   ],
   "tierDetails": {
     "playwright": [
-      "dead-outlaw-2025/variety--unknown.json",
-      "dead-outlaw-2025/observer--david-cote.json",
-      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+      "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+      "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "torch-song-2018/cititour--brian-scott-lipton.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "fences-2010/talkinbroadway--matthew-murray.json",
+      "heisenberg-2016/ap--mark-kennedy.json",
+      "machinal-2014/broadwayworld--michael-dale.json",
+      "sweeney-todd-2023/bloomberg-mark-leydorf--mark-leydorf.json",
+      "the-assembled-parties-2013/talkinbroadway--matthew-murray.json"
+    ],
     "archive": [
-      "dead-outlaw-2025/theatermania--zachary-stewart.json",
-      "dead-outlaw-2025/latimes--charles-mcnulty.json"
+      "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 7,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Daily Beast": {
+      "count": 3,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 1,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 2,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
