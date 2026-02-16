@@ -1,17 +1,17 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-15",
+    "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 13461,
-      "skippedNoScore": 4280,
-      "skippedDuplicate": 95,
-      "skippedDuplicateUrl": 409,
+      "totalReviews": 14059,
+      "skippedNoScore": 3634,
+      "skippedDuplicate": 94,
+      "skippedDuplicateUrl": 408,
       "skippedCrossOutletDuplicateUrl": 30,
       "skippedDuplicateText": 481,
-      "skippedFingerprintDedup": 77,
-      "skippedWrongProduction": 1893,
+      "skippedFingerprintDedup": 79,
+      "skippedWrongProduction": 1927,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 3,
@@ -19,10 +19,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 12,
         "human-review": 68,
-        "originalScore-priority0": 1691,
-        "llmScore": 9629,
+        "originalScore-priority0": 1690,
+        "llmScore": 10241,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1940,
+        "llmScore-lowconf": 1933,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -15178,7 +15178,7 @@
       "pullQuote": "This is one of the better Disney stage musicals, complete with several eye-popping production numbers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aladdin-2014",
@@ -28324,6 +28324,23 @@
       "pullQuote": "This production eventually rewards our patience, even if we sometimes wish for quicker brushstrokes.",
       "dtliThumb": "Meh",
       "bwwThumb": "Up",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "art-2025",
+      "outletId": "frontmezzjunkies",
+      "outlet": "Front Mezz Junkies",
+      "assignedScore": 62,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Ross",
+      "url": "https://frontmezzjunkies.com/2025/11/17/art-on-broadway/",
+      "publishDate": "November 17, 2025",
+      "originalRating": null,
+      "pullQuote": "This revival offers a pleasant enough evening with three talented performers, but like Serge's prized white canvas, it ultimately left me admiring the polish more than the substance.",
+      "dtliThumb": null,
+      "bwwThumb": null,
       "contentTier": "complete"
     },
     {
@@ -113222,7 +113239,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -126450,7 +126467,7 @@
       "pullQuote": "Though the show is beautifully acted and staged, it feels more like a gentle memorial service than a fully realized theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "left-on-tenth-2024",
@@ -167737,7 +167754,7 @@
       "pullQuote": "Mr. Kline, I am delighted to report, fully delivers on the promise of that entrance, building a paradoxically natural performance as a man for whom the histrionic gesture is a conditioned reflex.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated",
+      "contentTier": "complete",
       "designation": "Critics_Pick"
     },
     {
