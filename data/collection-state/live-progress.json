@@ -1,27 +1,106 @@
 {
-  "updatedAt": "2026-02-16T19:03:42.718Z",
-  "processed": 58,
-  "failed": 12,
-  "successRate": "82.9%",
+  "updatedAt": "2026-02-16T19:16:14.841Z",
+  "processed": 134,
+  "failed": 146,
+  "successRate": "47.9%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 69,
+    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 6
+    "brightdata": 11,
+    "archiveToday": 18,
+    "archive": 54
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-02-16T18:54:41.806Z",
+      "t": "2026-02-16T18:31:42.054Z",
       "event": "bb-session",
-      "session": "af7a9cf1",
-      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+      "session": "dfe600e3",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
     },
     {
-      "t": "2026-02-16T18:54:44.153Z",
+      "t": "2026-02-16T18:31:44.229Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:33:26.270Z",
+      "event": "bb-session",
+      "session": "5d18ad9f",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-16T18:33:28.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:35:02.256Z",
+      "event": "bb-session",
+      "session": "c2bec42b",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-16T18:35:04.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:36:45.839Z",
+      "event": "bb-session",
+      "session": "e0afb356",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-02-16T18:36:48.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:38:29.737Z",
+      "event": "bb-session",
+      "session": "e6bc6f48",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-16T18:38:32.139Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:39:52.429Z",
+      "event": "bb-session",
+      "session": "f7842716",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-16T18:39:54.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:42:04.711Z",
+      "event": "bb-session",
+      "session": "8307d217",
+      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
+    },
+    {
+      "t": "2026-02-16T18:42:07.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T18:43:11.427Z",
+      "event": "bb-session",
+      "session": "9cf64ad6",
+      "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-b"
+    },
+    {
+      "t": "2026-02-16T18:43:14.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
