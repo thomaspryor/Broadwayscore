@@ -1,40 +1,17 @@
 {
-  "updatedAt": "2026-02-16T01:49:09.852Z",
-  "processed": 143,
-  "failed": 227,
-  "successRate": "38.6%",
+  "updatedAt": "2026-02-16T01:52:55.388Z",
+  "processed": 147,
+  "failed": 233,
+  "successRate": "38.7%",
   "tierBreakdown": {
-    "playwright": 77,
+    "playwright": 78,
     "browserbase": 8,
     "scrapingbee": 0,
-    "brightdata": 29,
+    "brightdata": 32,
     "archive": 45
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-02-16T01:24:36.620Z",
-      "event": "bb-session",
-      "session": "867fe8d8",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-16T01:25:23.515Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T01:26:11.876Z",
-      "event": "bb-session",
-      "session": "f0527338",
-      "url": "http://www.nydailynews.com/entertainment/arts/2011/10/28/2011-10-28_chinglish_re"
-    },
-    {
-      "t": "2026-02-16T01:26:38.325Z",
-      "event": "bb-session",
-      "session": "84d1ad03",
-      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
-    },
     {
       "t": "2026-02-16T01:28:04.812Z",
       "event": "bb-session",
@@ -126,6 +103,29 @@
       "event": "bb-session",
       "session": "47831178",
       "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-02-16T01:49:13.746Z",
+      "event": "bb-session",
+      "session": "18c216e4",
+      "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-an"
+    },
+    {
+      "t": "2026-02-16T01:50:25.702Z",
+      "event": "bb-session",
+      "session": "e5fca106",
+      "url": "https://www.theatermania.com/broadway/news/moulin-rouge-on-broadway-is-spectacul"
+    },
+    {
+      "t": "2026-02-16T01:51:17.613Z",
+      "event": "bb-session",
+      "session": "a6d50ab0",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-16T01:52:03.404Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }

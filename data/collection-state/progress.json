@@ -142,7 +142,11 @@
     "harry-potter-2021/wsj--terry-teachout.json",
     "hells-kitchen-2024/observer--david-cote.json",
     "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json"
+    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+    "maybe-happy-ending-2024/theatermania--jesse-green.json",
+    "moulin-rouge-2019/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "failed": [
     "bob-fosses-dancin-2023/nytg--gillian-russo.json",
@@ -371,7 +375,13 @@
     "hells-kitchen-2024/timeout--adam-feldman.json",
     "just-in-time-2025/timeout--adam-feldman.json",
     "marjorie-prime-2025/timeout--adam-feldman.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json"
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -452,7 +462,8 @@
       "chicago-1996/ew--melissa-rose-bernardo.json",
       "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
       "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json"
+      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
       "data/review-texts/the-ferryman-2018/fordham-observer--michael-appler.json",
@@ -494,7 +505,10 @@
       "and-juliet-2022/theatermania--hayley-levitt.json",
       "book-of-mormon-2011/vulture--scott-brown.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "hadestown-2019/wsj--terry-teachout.json"
+      "hadestown-2019/wsj--terry-teachout.json",
+      "maybe-happy-ending-2024/theatermania--jesse-green.json",
+      "moulin-rouge-2019/theatermania--zachary-stewart.json",
+      "moulin-rouge-2019/wsj--terry-teachout.json"
     ],
     "archive": [
       "all-my-sons-2019/nyt-theater--raven-snook.json",
@@ -545,7 +559,7 @@
     ]
   },
   "startTime": "2026-02-15T22:18:35.713Z",
-  "lastProcessed": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+  "lastProcessed": "oh-mary-2024/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-02-15T22:23:13.400Z",
@@ -857,6 +871,29 @@
       "event": "bb-session",
       "session": "47831178",
       "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-r"
+    },
+    {
+      "t": "2026-02-16T01:49:13.746Z",
+      "event": "bb-session",
+      "session": "18c216e4",
+      "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-an"
+    },
+    {
+      "t": "2026-02-16T01:50:25.702Z",
+      "event": "bb-session",
+      "session": "e5fca106",
+      "url": "https://www.theatermania.com/broadway/news/moulin-rouge-on-broadway-is-spectacul"
+    },
+    {
+      "t": "2026-02-16T01:51:17.613Z",
+      "event": "bb-session",
+      "session": "a6d50ab0",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-16T01:52:03.404Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
