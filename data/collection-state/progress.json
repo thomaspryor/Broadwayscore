@@ -53,7 +53,12 @@
     "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
     "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
     "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
-    "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json"
+    "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
+    "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
+    "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+    "war-horse-2011/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "chicago-1996/nydailynews--joe-dziemianowicz.json",
@@ -81,7 +86,10 @@
     "rent-1996/nydailynews--joe-dziemianowicz.json",
     "something-rotten-2015/nydailynews--joe-dziemianowicz.json",
     "sondheim-on-sondheim-2010/nydailynews--joe-dziemianowicz.json",
-    "the-father-2016/nydailynews--joe-dziemianowicz.json"
+    "the-father-2016/nydailynews--joe-dziemianowicz.json",
+    "the-present-2017/nydailynews--joe-dziemianowicz.json",
+    "the-price-2017/nydailynews--chris-jones.json",
+    "the-price-2017/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -144,11 +152,16 @@
       "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
       "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
       "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
-      "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json"
+      "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
+      "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
+      "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+      "war-horse-2011/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-02-16T01:44:57.870Z",
-  "lastProcessed": "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "war-horse-2011/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-02-16T01:47:38.860Z",
@@ -180,6 +193,17 @@
     },
     {
       "t": "2026-02-16T01:50:00.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T01:55:24.873Z",
+      "event": "bb-session",
+      "session": "a05c8669",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/cate-blanchett-richard-ro"
+    },
+    {
+      "t": "2026-02-16T01:55:26.977Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
