@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-16T03:24:37.182Z",
-  "processed": 4,
-  "failed": 12,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-16T03:48:26.013Z",
+  "processed": 14,
+  "failed": 26,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 7,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 35,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:30:35.031Z",
+      "event": "bb-session",
+      "session": "4549fbba",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
+    },
+    {
+      "t": "2026-02-16T03:30:37.084Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:31:43.225Z",
+      "event": "bb-session",
+      "session": "154a9610",
+      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
+    },
+    {
+      "t": "2026-02-16T03:31:45.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:34:18.491Z",
+      "event": "bb-session",
+      "session": "45e645ba",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
+    },
+    {
+      "t": "2026-02-16T03:34:20.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:37:07.004Z",
+      "event": "bb-session",
+      "session": "8405fc42",
+      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-se"
+    },
+    {
+      "t": "2026-02-16T03:37:09.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:38:32.266Z",
+      "event": "bb-session",
+      "session": "57d811d9",
+      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
+    },
+    {
+      "t": "2026-02-16T03:38:34.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:39:46.224Z",
+      "event": "bb-session",
+      "session": "1743077b",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-16T03:39:48.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:41:55.985Z",
+      "event": "bb-session",
+      "session": "7b765ecf",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-16T03:41:58.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:43:19.048Z",
+      "event": "bb-session",
+      "session": "68ec93d4",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-16T03:43:21.394Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:45:12.439Z",
+      "event": "bb-session",
+      "session": "1ce62abf",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-16T03:45:14.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:46:37.098Z",
+      "event": "bb-session",
+      "session": "0f9e7ae9",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-16T03:46:39.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
