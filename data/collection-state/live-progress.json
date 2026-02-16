@@ -1,15 +1,71 @@
 {
-  "updatedAt": "2026-02-16T13:09:20.879Z",
-  "processed": 40,
-  "failed": 10,
-  "successRate": "80.0%",
+  "updatedAt": "2026-02-16T13:09:58.608Z",
+  "processed": 22,
+  "failed": 18,
+  "successRate": "55.0%",
   "tierBreakdown": {
-    "playwright": 23,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 12
+    "brightdata": 1,
+    "archive": 20
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T13:01:23.714Z",
+      "event": "bb-session",
+      "session": "21c35922",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T13:01:59.902Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:03:51.420Z",
+      "event": "bb-session",
+      "session": "deb7b918",
+      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shi"
+    },
+    {
+      "t": "2026-02-16T13:04:39.508Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:05:16.895Z",
+      "event": "bb-session",
+      "session": "089ed433",
+      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T13:05:52.838Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:06:51.411Z",
+      "event": "bb-session",
+      "session": "3b531499",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-16T13:07:27.479Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:08:17.969Z",
+      "event": "bb-session",
+      "session": "eab7f06a",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-16T13:09:06.152Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
