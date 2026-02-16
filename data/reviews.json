@@ -5,12 +5,12 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 15082,
-      "skippedNoScore": 2564,
+      "skippedNoScore": 2565,
       "skippedDuplicate": 96,
       "skippedDuplicateUrl": 408,
       "skippedCrossOutletDuplicateUrl": 30,
       "skippedDuplicateText": 491,
-      "skippedFingerprintDedup": 79,
+      "skippedFingerprintDedup": 78,
       "skippedWrongProduction": 1951,
       "recoveredFromGarbage": 138,
       "scoreSources": {
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1665,
-        "llmScore": 10601,
+        "llmScore": 10600,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2673,
+        "llmScore-lowconf": 2674,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -67729,7 +67729,7 @@
       "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 69,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Richard Seff",
@@ -67739,7 +67739,7 @@
       "pullQuote": "I recommend this clearly sincere play to anyone interested in learning more about this underworld activity...But I warn that I found it more disturbing than moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "eclipsed-2016",
@@ -76393,7 +76393,7 @@
       "pullQuote": "It's at best a treasure chest of only mixed delights...It's not that the present cast and production creative team aren't working up to high levels...to gussy up the proceedings, the writers and director Diane Paulus turn to all sorts of diversions...since this is a musical, the score is the biggest disappointment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "finding-neverland-2015",
