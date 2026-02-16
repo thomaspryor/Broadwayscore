@@ -1,131 +1,15 @@
 {
-  "updatedAt": "2026-02-16T00:48:59.835Z",
-  "processed": 57,
-  "failed": 83,
-  "successRate": "40.7%",
+  "updatedAt": "2026-02-16T00:54:47.721Z",
+  "processed": 64,
+  "failed": 86,
+  "successRate": "42.7%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 47,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archive": 10
+    "brightdata": 10,
+    "archive": 12
   },
-  "browserbaseSessions": 16,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T00:16:53.937Z",
-      "event": "bb-session",
-      "session": "299b9f7e",
-      "url": "https://www.theatermania.com/broadway/news/juliet-broadway-review_92586.html"
-    },
-    {
-      "t": "2026-02-16T00:18:03.069Z",
-      "event": "bb-session",
-      "session": "33070aac",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
-    },
-    {
-      "t": "2026-02-16T00:18:49.522Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T00:19:16.985Z",
-      "event": "bb-session",
-      "session": "cd33c940",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-02-16T00:20:00.785Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771201169932\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA81vd5OTXbjEANA1qtA==&cid=SLEZdgfi290DZTXsNi9pJ~5KmEvQ5Cuf_D4lA78Gy6Aftk~IFBF0c7Oxue4pcjYvehcVBIcoOEYSSYSG~EGms1q4NuPLWEV4pSU~MLxum4a5_bX79O~zxhfbQZJJD9K3&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771201169932\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771201169932\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA81vd5OTXbjEANA1qtA==&cid=SLEZdgfi290DZTXsNi9pJ~5KmEvQ5Cuf_D4lA78Gy6Aftk~IFBF0c7Oxue4pcjYvehcVBIcoOEYSSYSG~EGms1q4NuPLWEV4pSU~MLxum4a5_bX79O~zxhfbQZJJD9K3&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771201169932\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771201169932\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA81vd5OTXbjEANA1qtA==&cid=SLEZdgfi290DZTXsNi9pJ~5KmEvQ5Cuf_D4lA78Gy6Aftk~IFBF0c7Oxue4pcjYvehcVBIcoOEYSSYSG~EGms1q4NuPLWEV4pSU~MLxum4a5_bX79O~zxhfbQZJJD9K3&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771201169932\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T00:23:04.852Z",
-      "event": "bb-session",
-      "session": "df42322a",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-16T00:23:52.375Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T00:24:30.647Z",
-      "event": "bb-session",
-      "session": "4239c8c9",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-16T00:25:19.675Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T00:27:29.092Z",
-      "event": "bb-session",
-      "session": "abb24863",
-      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
-    },
-    {
-      "t": "2026-02-16T00:27:59.230Z",
-      "event": "bb-session",
-      "session": "c0fae192",
-      "url": "http://www.nydailynews.com/entertainment/arts/2011/10/28/2011-10-28_chinglish_re"
-    },
-    {
-      "t": "2026-02-16T00:28:35.260Z",
-      "event": "bb-session",
-      "session": "7985bf29",
-      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
-    },
-    {
-      "t": "2026-02-16T00:29:54.712Z",
-      "event": "bb-session",
-      "session": "6a539963",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-16T00:30:41.550Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T00:32:33.332Z",
-      "event": "bb-session",
-      "session": "bf1cbc53",
-      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
-    },
-    {
-      "t": "2026-02-16T00:33:28.150Z",
-      "event": "bb-session",
-      "session": "f55d14f2",
-      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
-    },
-    {
-      "t": "2026-02-16T00:35:16.681Z",
-      "event": "bb-session",
-      "session": "1259431c",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
-    },
-    {
-      "t": "2026-02-16T00:35:58.440Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771202127695\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAO89kjfLPxdQANA1qtA==&cid=7X4djHt~czM53yMNicmc9vTUo_FGvRzjspb_KeXJRy07rGWmxHcVE12fh6eUDn8LrQ5HRnY5lJlI1ClYhVd8iTNVYLUqGWWXDvMKYmIteLlxkBz32abmICFNP7bPryIo&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771202127695\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771202127695\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAO89kjfLPxdQANA1qtA==&cid=7X4djHt~czM53yMNicmc9vTUo_FGvRzjspb_KeXJRy07rGWmxHcVE12fh6eUDn8LrQ5HRnY5lJlI1ClYhVd8iTNVYLUqGWWXDvMKYmIteLlxkBz32abmICFNP7bPryIo&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771202127695\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    20 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771202127695\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAO89kjfLPxdQANA1qtA==&cid=7X4djHt~czM53yMNicmc9vTUo_FGvRzjspb_KeXJRy07rGWmxHcVE12fh6eUDn8LrQ5HRnY5lJlI1ClYhVd8iTNVYLUqGWWXDvMKYmIteLlxkBz32abmICFNP7bPryIo&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771202127695\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-02-16T00:36:22.014Z",
-      "event": "bb-session",
-      "session": "9ff3c189",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-16T00:37:08.783Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
