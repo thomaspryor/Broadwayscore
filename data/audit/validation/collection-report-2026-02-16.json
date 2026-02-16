@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T00:46:31.587Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 50,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -249,6 +249,41 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Broadway News": {
+      "count": 1,
+      "domain": "broadway.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Reviews from My Seat": {
+      "count": 1,
+      "domain": "theaterreviewsfrommyseat.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
