@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T03:20:03.932Z",
-  "processed": 14,
-  "failed": 6,
-  "successRate": "70.0%",
+  "updatedAt": "2026-02-16T03:23:01.510Z",
+  "processed": 28,
+  "failed": 22,
+  "successRate": "56.0%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 28
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:20:36.237Z",
+      "event": "bb-session",
+      "session": "cff38e14",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T03:20:38.128Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
