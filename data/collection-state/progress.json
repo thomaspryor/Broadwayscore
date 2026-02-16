@@ -154,7 +154,12 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "the-great-gatsby-2024/observer--david-cote.json",
     "the-lion-king-1997/new-york--john-simon.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/timeout--david-cote.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json"
   ],
   "failed": [
     "bob-fosses-dancin-2023/nytg--gillian-russo.json",
@@ -401,7 +406,12 @@
     "the-outsiders-2024/deadline--greg-evans.json",
     "the-outsiders-2024/timeout--adam-feldman.json",
     "the-outsiders-2024/wsj--charles-isherwood.json",
-    "wicked-2003/broadway-reviewed--stephen-shwartz.json"
+    "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -488,7 +498,8 @@
       "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "the-lion-king-1997/new-york--john-simon.json",
-      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json"
     ],
     "browserbase": [
       "data/review-texts/the-ferryman-2018/fordham-observer--michael-appler.json",
@@ -501,7 +512,9 @@
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
       "the-great-gatsby-2024/observer--david-cote.json",
-      "data/review-texts/the-outsiders-2024/deadline--greg-evans.json"
+      "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
+      "data/review-texts/book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "data/review-texts/buena-vista-social-club-2025/amny--matt-windman.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -537,7 +550,8 @@
       "maybe-happy-ending-2024/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
       "moulin-rouge-2019/wsj--terry-teachout.json",
-      "operation-mincemeat-2025/wsj--charles-isherwood.json"
+      "operation-mincemeat-2025/wsj--charles-isherwood.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "all-my-sons-2019/nyt-theater--raven-snook.json",
@@ -585,11 +599,14 @@
       "hamilton-2015/timeout--david-cote.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
-      "ragtime-2025/wsj--charles-isherwood.json"
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/timeout--david-cote.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ]
   },
   "startTime": "2026-02-15T22:18:35.713Z",
-  "lastProcessed": "wicked-2003/broadway-reviewed--stephen-shwartz.json",
+  "lastProcessed": "chess-2025/theater-scene--samuel-l-leiter.json",
   "log": [
     {
       "t": "2026-02-15T22:23:13.400Z",
@@ -981,6 +998,29 @@
       "t": "2026-02-16T02:04:58.087Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T02:06:31.162Z",
+      "event": "bb-session",
+      "session": "23e99157",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-16T02:07:20.581Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T02:11:42.072Z",
+      "event": "bb-session",
+      "session": "d48c6102",
+      "url": "https://www.ft.com/content/f1e89e28-5635-11e0-82aa-00144feab49a"
+    },
+    {
+      "t": "2026-02-16T02:11:52.918Z",
+      "event": "bb-session",
+      "session": "b23dfd68",
+      "url": "https://www.amny.com/entertainment/broadway/review-buena-vista-social-clunk/"
     }
   ]
 }
