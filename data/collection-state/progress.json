@@ -68,7 +68,10 @@
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
+    ],
     "archive": [
       "a-view-from-the-bridge-2010/vulture--jesse-green.json",
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
@@ -82,15 +85,26 @@
   "lastProcessed": "mcneal-2024/vulture--jackson-mchenry.json",
   "log": [
     {
-      "t": "2026-02-16T16:59:24.155Z",
+      "t": "2026-02-16T16:54:47.530Z",
       "event": "bb-session",
-      "session": "a422437f",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+      "session": "e6c32688",
+      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
     },
     {
-      "t": "2026-02-16T16:59:26.351Z",
+      "t": "2026-02-16T16:54:49.363Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:56:48.793Z",
+      "event": "bb-session",
+      "session": "48756b54",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-16T16:56:50.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
