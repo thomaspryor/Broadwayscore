@@ -1,46 +1,61 @@
 {
-  "updatedAt": "2026-02-16T07:57:04.346Z",
-  "processed": 94,
-  "failed": 146,
-  "successRate": "39.2%",
+  "updatedAt": "2026-02-16T08:05:19.088Z",
+  "processed": 70,
+  "failed": 110,
+  "successRate": "38.9%",
   "tierBreakdown": {
-    "playwright": 66,
-    "browserbase": 1,
+    "playwright": 47,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 15,
-    "archive": 20
+    "brightdata": 10,
+    "archive": 17
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T05:59:41.453Z",
+      "t": "2026-02-16T06:50:46.785Z",
       "event": "bb-session",
-      "session": "84dcc50e",
-      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+      "session": "376c603e",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
     },
     {
-      "t": "2026-02-16T06:00:18.365Z",
+      "t": "2026-02-16T06:54:01.305Z",
       "event": "bb-session",
-      "session": "ac13ebe5",
-      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+      "session": "36cbfec7",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
     },
     {
-      "t": "2026-02-16T06:02:07.225Z",
+      "t": "2026-02-16T07:36:28.299Z",
       "event": "bb-session",
-      "session": "0b3fb8bd",
-      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+      "session": "08697ee5",
+      "url": "https://www.huffpost.com/michael-giltz/theater-upbeat-bandstand_b_8328446.html"
     },
     {
-      "t": "2026-02-16T06:16:10.905Z",
-      "event": "bb-session",
-      "session": "7de9e7f8",
-      "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cove"
+      "t": "2026-02-16T07:36:30.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffpost.com"
     },
     {
-      "t": "2026-02-16T06:17:04.685Z",
+      "t": "2026-02-16T07:44:27.273Z",
       "event": "bb-session",
-      "session": "167a7bd7",
-      "url": "https://www.thewrap.com/spongebob-squarepants-broadway-review-bouncy-tunes-keep-"
+      "session": "9667784f",
+      "url": "https://www.bloomberg.com/news/2013-10-07/-big-fish-is-a-gorgeous-charming-dream"
+    },
+    {
+      "t": "2026-02-16T07:44:29.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-16T07:51:01.383Z",
+      "event": "bb-session",
+      "session": "ffe8158f",
+      "url": "https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20"
+    },
+    {
+      "t": "2026-02-16T07:51:07.056Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
