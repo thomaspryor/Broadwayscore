@@ -1,38 +1,15 @@
 {
-  "updatedAt": "2026-02-16T06:45:35.532Z",
-  "processed": 6,
-  "failed": 54,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-16T06:47:13.277Z",
+  "processed": 50,
+  "failed": 10,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 49,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 5
+    "brightdata": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T06:42:24.010Z",
-      "event": "bb-session",
-      "session": "e5c074d8",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
-    },
-    {
-      "t": "2026-02-16T06:42:26.022Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:44:25.783Z",
-      "event": "bb-session",
-      "session": "69d6f8c9",
-      "url": "http://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html"
-    },
-    {
-      "t": "2026-02-16T06:44:27.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
