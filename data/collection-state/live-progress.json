@@ -1,15 +1,127 @@
 {
-  "updatedAt": "2026-02-16T04:59:41.069Z",
-  "processed": 22,
-  "failed": 28,
-  "successRate": "44.0%",
+  "updatedAt": "2026-02-16T05:01:22.486Z",
+  "processed": 68,
+  "failed": 92,
+  "successRate": "42.5%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 50,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 8
+    "brightdata": 10,
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:00:02.249Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:02:19.279Z",
+      "event": "bb-session",
+      "session": "44ae78dd",
+      "url": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+    },
+    {
+      "t": "2026-02-16T03:03:55.733Z",
+      "event": "bb-session",
+      "session": "aaeb8b2d",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-16T03:03:57.806Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:10:55.288Z",
+      "event": "bb-session",
+      "session": "4a1aa0e6",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-16T03:10:55.365Z",
+      "event": "bb-session",
+      "session": "1c7cb5b8",
+      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+    },
+    {
+      "t": "2026-02-16T03:10:57.401Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-16T03:10:59.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:13:31.999Z",
+      "event": "bb-session",
+      "session": "9967a2a6",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-16T03:13:33.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:14:58.064Z",
+      "event": "bb-session",
+      "session": "a260f89a",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-16T03:15:00.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:15:39.960Z",
+      "event": "bb-session",
+      "session": "f9bf9b43",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-16T03:18:26.798Z",
+      "event": "bb-session",
+      "session": "760c7af5",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-16T03:18:28.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:20:18.484Z",
+      "event": "bb-session",
+      "session": "051681a2",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-16T03:23:07.910Z",
+      "event": "bb-session",
+      "session": "cbff21af",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-16T03:23:09.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:24:17.718Z",
+      "event": "bb-session",
+      "session": "49848ce6",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-16T03:24:19.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
