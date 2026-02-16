@@ -61,6 +61,7 @@ function serializeShow(show: ComputedShow): SerializedTonyShow {
     title: show.title,
     venue: show.venue || '',
     openingDate: show.openingDate || '',
+    previewsStartDate: show.previewsStartDate || undefined,
     status: show.status || '',
     compositeScore: show.compositeScore,
     reviewCount: show.criticScore?.reviewCount || 0,
