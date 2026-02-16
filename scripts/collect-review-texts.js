@@ -576,9 +576,15 @@ let browserbaseUsage = {
   history: [],
 };
 
-// Archive.org rate-limit tracking (auto-disables archive-first after 3 consecutive failures)
+// Archive.org rate-limit tracking (backoff with cooldown instead of permanent disable)
 let archiveOrgConsecutiveFailures = 0;
 let archiveOrgDisabledForBatch = false;
+let archiveOrgCooldownCount = 0; // How many times we've hit the cooldown threshold
+let archiveOrgLastRequestTime = 0; // Timestamp of last Archive.org API call
+const ARCHIVE_ORG_MIN_DELAY_MS = 1500; // 1.5s between requests to avoid rate limits
+const ARCHIVE_ORG_COOLDOWN_THRESHOLD = 3; // Consecutive failures before cooldown
+const ARCHIVE_ORG_COOLDOWN_MS = 15000; // 15s cooldown after hitting threshold
+const ARCHIVE_ORG_MAX_COOLDOWNS = 3; // After 3 cooldowns (9+ failures), disable for batch
 
 // Browser and context (reused)
 let browser = null;
@@ -2464,6 +2470,13 @@ async function fetchFromArchive(url) {
 
   stats.tier4Attempts++;
 
+  // Rate-limit: wait at least ARCHIVE_ORG_MIN_DELAY_MS between requests
+  const elapsed = Date.now() - archiveOrgLastRequestTime;
+  if (elapsed < ARCHIVE_ORG_MIN_DELAY_MS) {
+    await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_MIN_DELAY_MS - elapsed));
+  }
+  archiveOrgLastRequestTime = Date.now();
+
   // Check if snapshots exist
   const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
   const availability = await axios.get(availabilityUrl, { timeout: 15000 });
@@ -2509,6 +2522,13 @@ async function fetchFromArchiveCDX(url) {
   if (!axios) {
     throw new Error('axios not available');
   }
+
+  // Rate-limit: wait at least ARCHIVE_ORG_MIN_DELAY_MS between requests
+  const elapsed = Date.now() - archiveOrgLastRequestTime;
+  if (elapsed < ARCHIVE_ORG_MIN_DELAY_MS) {
+    await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_MIN_DELAY_MS - elapsed));
+  }
+  archiveOrgLastRequestTime = Date.now();
 
   // Query CDX API for snapshots
   // New Yorker articles go back to 2008+, so use wider date range for paywalled sites
@@ -2632,19 +2652,115 @@ async function resolveTimeoutListingUrl(review) {
 // ============================================================================
 
 /**
- * Discover the correct URL for a review by searching Google via ScrapingBee SERP API.
+ * Discover the correct URL for a review by searching Google.
+ * Provider chain: ScrapingBee SERP API → Bright Data Web Unlocker (Google HTML).
  * Used when the existing URL returns 404 (common with ~88 fabricated web-search URLs).
  *
  * @param {Object} review - Review object with showId, outletId, outlet, criticName, url
  * @returns {string|null} - Discovered URL, or null if not found
  */
-const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs (raised from 50 — 84% success rate justifies higher cap)
+const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs
 let _showsJsonCache = null; // Cached shows.json data (static within a run)
+let _scrapingBeeSerpExhausted = false; // Track ScrapingBee SERP exhaustion (skip after first 401)
 
-async function discoverCorrectUrl(review) {
-  if (!CONFIG.scrapingBeeKey || !axios) {
+/**
+ * Search via ScrapingBee SERP API (returns structured JSON).
+ * @returns {Array<{url: string, title: string}>} organic results
+ */
+async function _serpViaScrapingBee(query) {
+  if (_scrapingBeeSerpExhausted || !CONFIG.scrapingBeeKey) return null;
+
+  try {
+    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+      params: { api_key: CONFIG.scrapingBeeKey, search: query },
+      timeout: 30000,
+    });
+    stats.scrapingBeeCreditsUsed += 1;
+    const data = response.data;
+    return (data.organic_results || data.results || []).map(r => ({
+      url: r.url || r.link,
+      title: r.title || '',
+    }));
+  } catch (error) {
+    const status = error.response?.status;
+    if (status === 401 || status === 403 || status === 429) {
+      _scrapingBeeSerpExhausted = true;
+      console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — switching to Bright Data for URL discovery`);
+    }
+    return null; // Signal to try next provider
+  }
+}
+
+/**
+ * Search via Bright Data Web Unlocker → Google HTML.
+ * Parses organic results from Google's HTML response.
+ * @returns {Array<{url: string, title: string}>} organic results
+ */
+async function _serpViaBrightData(query) {
+  if (!CONFIG.brightDataKey) return null;
+
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+
+  try {
+    const response = await axios.post('https://api.brightdata.com/request', {
+      zone: zoneName,
+      url: googleUrl,
+      format: 'raw',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CONFIG.brightDataKey}`,
+      },
+      timeout: 30000,
+    });
+
+    const html = typeof response.data === 'string' ? response.data : '';
+    if (!html || html.length < 500) return [];
+
+    // Parse Google organic results from HTML
+    // Google wraps results in <div class="g"> blocks with <a href="URL"> links
+    // Also handles /url?q=ACTUAL_URL& redirect links
+    const results = [];
+    // Match href values that look like real URLs (not google internal)
+    const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
+    const titleRegex = /<h3[^>]*>([^<]+)<\/h3>/g;
+    let match;
+
+    // Extract all non-Google URLs linked from the page
+    const seenUrls = new Set();
+    while ((match = hrefRegex.exec(html)) !== null) {
+      let url = match[1];
+      // Handle Google redirect URLs: /url?q=REAL_URL&sa=...
+      if (url.includes('/url?q=')) {
+        try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
+      }
+      // Skip Google services, webcache, translate, etc
+      if (url.includes('google.com') || url.includes('googleapis.com')) continue;
+      if (url.includes('webcache.') || url.includes('translate.')) continue;
+      if (seenUrls.has(url)) continue;
+      seenUrls.add(url);
+      results.push({ url, title: '' });
+    }
+
+    // Try to attach titles from h3 tags (best effort)
+    let titleIdx = 0;
+    while ((match = titleRegex.exec(html)) !== null && titleIdx < results.length) {
+      results[titleIdx].title = match[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+      titleIdx++;
+    }
+
+    return results.slice(0, 10);
+  } catch (error) {
+    console.log(`    ✗ Bright Data SERP failed: ${error.message}`);
     return null;
   }
+}
+
+async function discoverCorrectUrl(review) {
+  if (!axios) return null;
+  // Need at least one SERP provider
+  if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) return null;
 
   // Per-run cap to prevent runaway SERP API costs
   if (stats.urlDiscoveryAttempts >= URL_DISCOVERY_MAX_PER_RUN) {
@@ -2703,21 +2819,23 @@ async function discoverCorrectUrl(review) {
   console.log(`  [URL Discovery] Searching: ${query}`);
 
   try {
-    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-      params: {
-        api_key: CONFIG.scrapingBeeKey,
-        search: query,
-      },
-      timeout: 30000,
-    });
-    stats.scrapingBeeCreditsUsed += 1; // SERP API uses ~1 credit per search
+    // Provider chain: ScrapingBee → Bright Data
+    // null = provider failure (down/exhausted), [] = searched but no results
+    let results = await _serpViaScrapingBee(query);
+    let provider = 'scrapingbee';
+    if (!results) {
+      results = await _serpViaBrightData(query);
+      provider = 'brightdata';
+    }
 
-    // ScrapingBee SERP API returns JSON with organic_results
-    const data = response.data;
-    const results = data.organic_results || data.results || [];
+    // Both providers down — return sentinel so caller doesn't penalize the review
+    if (results === null) {
+      console.log(`    ✗ All SERP providers unavailable — skipping URL discovery (will NOT count as failure)`);
+      return '__SERP_UNAVAILABLE__';
+    }
 
     if (!results.length) {
-      console.log('    ✗ No search results found');
+      console.log(`    ✗ No search results found (via ${provider})`);
       return null;
     }
 
@@ -2739,7 +2857,7 @@ async function discoverCorrectUrl(review) {
     const shortSlug = shortTitle.replace(/\s+/g, '-');
 
     for (const result of results.slice(0, 5)) {
-      const url = result.url || result.link;
+      const url = result.url;
       if (!url) continue;
 
       // Skip non-article URLs (homepage, category pages, search results, image attachments)
@@ -2777,7 +2895,7 @@ async function discoverCorrectUrl(review) {
       if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
 
       // Looks like a match
-      console.log(`    ✓ Found: ${url}`);
+      console.log(`    ✓ Found (via ${provider}): ${url}`);
       stats.urlDiscoverySuccess++;
       stats.urlDiscoveryDetails.push({
         reviewId: review.reviewId || `${review.showId}/${review.file}`,
@@ -2787,7 +2905,7 @@ async function discoverCorrectUrl(review) {
       return url;
     }
 
-    console.log('    ✗ No matching URL found in search results');
+    console.log(`    ✗ No matching URL found in search results (via ${provider})`);
     return null;
   } catch (error) {
     console.log(`    ✗ URL discovery failed: ${error.message}`);
@@ -2935,12 +3053,19 @@ function buildTierChain(ctx, review) {
         ctx._archiveTierRan = true;
         archiveOrgConsecutiveFailures = 0; // Reset on success
       },
-      onFailure: (error) => {
+      onFailure: async (error) => {
         ctx._archiveTierRan = true;
         archiveOrgConsecutiveFailures++;
-        if (archiveOrgConsecutiveFailures >= 3 && !archiveOrgDisabledForBatch) {
-          archiveOrgDisabledForBatch = true;
-          console.log(`    ⚠ Archive.org rate-limited (${archiveOrgConsecutiveFailures} consecutive failures) — falling back to standard tier order for remainder of batch`);
+        if (archiveOrgConsecutiveFailures >= ARCHIVE_ORG_COOLDOWN_THRESHOLD && !archiveOrgDisabledForBatch) {
+          archiveOrgCooldownCount++;
+          if (archiveOrgCooldownCount >= ARCHIVE_ORG_MAX_COOLDOWNS) {
+            archiveOrgDisabledForBatch = true;
+            console.log(`    ⚠ Archive.org disabled for batch (${archiveOrgCooldownCount} cooldowns, ${archiveOrgConsecutiveFailures} total consecutive failures)`);
+          } else {
+            console.log(`    ⚠ Archive.org cooldown #${archiveOrgCooldownCount} (${archiveOrgConsecutiveFailures} consecutive failures) — waiting ${ARCHIVE_ORG_COOLDOWN_MS / 1000}s before retrying`);
+            await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_COOLDOWN_MS));
+            archiveOrgConsecutiveFailures = 0; // Reset after cooldown
+          }
         }
       },
     },
@@ -3156,7 +3281,7 @@ async function fetchReviewText(review) {
     } catch (error) {
       console.log(`    ✗ Failed: ${error.message}`);
       attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: error.message });
-      if (tier.onFailure) tier.onFailure(error, ctx);
+      if (tier.onFailure) await tier.onFailure(error, ctx);
       continue;
     }
 
@@ -4690,6 +4815,16 @@ async function processReview(review) {
     } catch (e) {}
 
     const discoveredUrl = await discoverCorrectUrl(review);
+    // SERP providers down — don't mark as attempted, let it retry next run
+    if (discoveredUrl === '__SERP_UNAVAILABLE__') {
+      try {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        delete fileData._showNotMentionedDiscoveryAttempted;
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      } catch (e) {}
+      stats.totalFailed++;
+      return { success: false, error: 'serp_unavailable' };
+    }
     if (discoveredUrl && discoveredUrl !== review.url) {
       console.log(`  [showNotMentioned] Discovered: ${review.url} → ${discoveredUrl}`);
       review._previousUrl = review.url;
@@ -4825,6 +4960,13 @@ async function processReview(review) {
       if (!discoveredUrl) {
         console.log('  [URL Discovery] Attempting to find correct URL via Google...');
         discoveredUrl = await discoverCorrectUrl(review);
+      }
+
+      // SERP providers all down — don't penalize this review, just skip it for this run
+      if (discoveredUrl === '__SERP_UNAVAILABLE__') {
+        console.log('  [URL Discovery] SERP unavailable — will retry next run without penalty');
+        stats.totalFailed++;
+        return { success: false, error: 'serp_unavailable' };
       }
 
       if (discoveredUrl) {
