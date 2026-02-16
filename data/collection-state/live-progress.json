@@ -1,17 +1,40 @@
 {
-  "updatedAt": "2026-02-16T20:04:55.607Z",
+  "updatedAt": "2026-02-16T20:13:44.296Z",
   "processed": 23,
   "failed": 17,
   "successRate": "57.5%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
+    "brightdata": 19,
+    "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T19:50:47.982Z",
+      "event": "bb-session",
+      "session": "8eb074f6",
+      "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-"
+    },
+    {
+      "t": "2026-02-16T19:50:49.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T19:52:31.655Z",
+      "event": "bb-session",
+      "session": "e38c4e22",
+      "url": "https://www.nytimes.com/2017/04/24/theater/anastasia-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T19:52:33.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
