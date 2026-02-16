@@ -1,51 +1,38 @@
 {
-  "updatedAt": "2026-02-16T06:44:18.570Z",
-  "processed": 27,
-  "failed": 23,
-  "successRate": "54.0%",
+  "updatedAt": "2026-02-16T06:45:06.439Z",
+  "processed": 4,
+  "failed": 36,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 22,
-    "browserbase": 2,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 4,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 3
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T06:32:23.281Z",
+      "t": "2026-02-16T06:42:24.010Z",
       "event": "bb-session",
-      "session": "f64683a1",
-      "url": "https://www.thewrap.com/a-strange-loop-broadway-review-michael-jackson/"
+      "session": "e5c074d8",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T06:34:26.738Z",
-      "event": "bb-session",
-      "session": "566fe7c8",
-      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
-    },
-    {
-      "t": "2026-02-16T06:35:48.629Z",
-      "event": "bb-session",
-      "session": "a9cee5fd",
-      "url": "https://www.fordhamobserver.com/review-children-of-a-lesser-god-is-revived-with-"
-    },
-    {
-      "t": "2026-02-16T06:37:07.392Z",
-      "event": "bb-session",
-      "session": "f1c3c37e",
-      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
-    },
-    {
-      "t": "2026-02-16T06:37:09.298Z",
+      "t": "2026-02-16T06:42:26.022Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-16T06:38:24.442Z",
+      "t": "2026-02-16T06:44:25.783Z",
       "event": "bb-session",
-      "session": "2541f647",
-      "url": "https://www.thewrap.com/funny-girl-broadway-review-beanie-feldstein/"
+      "session": "69d6f8c9",
+      "url": "http://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html"
+    },
+    {
+      "t": "2026-02-16T06:44:27.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
