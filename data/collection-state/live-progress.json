@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T09:18:54.779Z",
-  "processed": 17,
-  "failed": 13,
-  "successRate": "56.7%",
+  "updatedAt": "2026-02-16T09:20:37.694Z",
+  "processed": 23,
+  "failed": 17,
+  "successRate": "57.5%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 15
+    "archive": 20
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-16T09:13:42.236Z",
@@ -42,6 +42,17 @@
     },
     {
       "t": "2026-02-16T09:18:30.568Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:19:22.885Z",
+      "event": "bb-session",
+      "session": "07a86193",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-16T09:20:09.145Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
