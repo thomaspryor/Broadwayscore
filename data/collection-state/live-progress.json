@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T18:22:35.878Z",
-  "processed": 222,
-  "failed": 208,
-  "successRate": "51.6%",
+  "updatedAt": "2026-02-16T18:24:51.011Z",
+  "processed": 229,
+  "failed": 211,
+  "successRate": "52.0%",
   "tierBreakdown": {
-    "playwright": 170,
+    "playwright": 175,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 4,
     "archive": 50
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-02-16T18:11:12.762Z",
@@ -53,6 +53,28 @@
     },
     {
       "t": "2026-02-16T18:20:59.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:23:24.399Z",
+      "event": "bb-session",
+      "session": "100a2bb5",
+      "url": "https://www.theatermania.com/broadway/news/the-thanksgiving-play_95847.html"
+    },
+    {
+      "t": "2026-02-16T18:23:26.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:24:20.873Z",
+      "event": "bb-session",
+      "session": "d3891748",
+      "url": "https://www.theatermania.com/broadway/news/the-wiz-broadway-revival-2024_96847.h"
+    },
+    {
+      "t": "2026-02-16T18:24:22.978Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
