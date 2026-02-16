@@ -1,25 +1,124 @@
 {
-  "updatedAt": "2026-02-16T13:03:58.060Z",
-  "processed": 8,
-  "failed": 12,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-16T13:16:36.671Z",
+  "processed": 55,
+  "failed": 35,
+  "successRate": "61.1%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 12,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 8
+    "brightdata": 20,
+    "archive": 30
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 36,
   "recentActivity": [
     {
-      "t": "2026-02-16T13:02:01.250Z",
+      "t": "2026-02-16T13:05:12.964Z",
       "event": "bb-session",
-      "session": "fe4edf06",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "a27a6c89",
+      "url": "https://www.nytimes.com/2025/04/08/theater/old-friends-review-sondheim-peters-sa"
     },
     {
-      "t": "2026-02-16T13:02:45.649Z",
+      "t": "2026-02-16T13:06:00.847Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:06:22.479Z",
+      "event": "bb-session",
+      "session": "89ed0e67",
+      "url": "https://www.nytimes.com/2018/04/23/theater/review-summer-the-donna-summer-musica"
+    },
+    {
+      "t": "2026-02-16T13:07:10.025Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:07:30.759Z",
+      "event": "bb-session",
+      "session": "840e660e",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-16T13:08:19.173Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:08:42.127Z",
+      "event": "bb-session",
+      "session": "cfc215bb",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-16T13:09:30.698Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:09:52.866Z",
+      "event": "bb-session",
+      "session": "83b631bf",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T13:10:40.728Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:10:53.677Z",
+      "event": "bb-session",
+      "session": "39e40b8c",
+      "url": "http://www.nytimes.com/2014/10/06/theater/the-curious-incident-of-the-dog-in-the"
+    },
+    {
+      "t": "2026-02-16T13:11:41.399Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:12:03.450Z",
+      "event": "bb-session",
+      "session": "02566fe6",
+      "url": "http://www.nytimes.com/2016/09/30/theater/the-encounter-review.html?_r=0"
+    },
+    {
+      "t": "2026-02-16T13:12:51.206Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:13:04.614Z",
+      "event": "bb-session",
+      "session": "6847ebb4",
+      "url": "https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html"
+    },
+    {
+      "t": "2026-02-16T13:13:53.032Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:14:14.839Z",
+      "event": "bb-session",
+      "session": "007a21b1",
+      "url": "https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html"
+    },
+    {
+      "t": "2026-02-16T13:15:02.708Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:15:27.547Z",
+      "event": "bb-session",
+      "session": "73a32e28",
+      "url": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-an"
+    },
+    {
+      "t": "2026-02-16T13:16:15.627Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
