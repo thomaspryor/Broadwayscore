@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-02-15",
+    "lastUpdated": "2026-02-16",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 23253,
-    "skippedFiles": 3707,
+    "totalFilesScanned": 23289,
+    "skippedFiles": 3729,
     "totalCritics": 1157,
     "registryCritics": 422,
     "flaggedReviews": 37
@@ -170,10 +170,10 @@
       "outlet": "nytg",
       "showId": "act-one-2014",
       "file": "nytg--david-roberts.json",
-      "outletShare": 4,
+      "outletShare": 3,
       "primaryOutlet": "theatre-reviews-limited",
-      "primaryShare": 96,
-      "totalReviews": 57
+      "primaryShare": 97,
+      "totalReviews": 58
     },
     {
       "critic": "David Roberts",
@@ -181,10 +181,10 @@
       "outlet": "nytg",
       "showId": "falsettos-2016",
       "file": "nytg--david-roberts.json",
-      "outletShare": 4,
+      "outletShare": 3,
       "primaryOutlet": "theatre-reviews-limited",
-      "primaryShare": 96,
-      "totalReviews": 57
+      "primaryShare": 97,
+      "totalReviews": 58
     },
     {
       "critic": "Suzanna Bowling",
@@ -251,6 +251,28 @@
       "primaryOutlet": "theater-scene",
       "primaryShare": 99,
       "totalReviews": 100
+    },
+    {
+      "critic": "Charles McNulty",
+      "criticSlug": "charles-mcnulty",
+      "outlet": "the-los-angeles-times-charles-mcnulty",
+      "showId": "the-inheritance-2019",
+      "file": "latimes--charles-mcnulty.json",
+      "outletShare": 5,
+      "primaryOutlet": "latimes",
+      "primaryShare": 95,
+      "totalReviews": 44
+    },
+    {
+      "critic": "Charles McNulty",
+      "criticSlug": "charles-mcnulty",
+      "outlet": "the-los-angeles-times-charles-mcnulty",
+      "showId": "west-side-story-2020",
+      "file": "latimes--charles-mcnulty.json",
+      "outletShare": 5,
+      "primaryOutlet": "latimes",
+      "primaryShare": 95,
+      "totalReviews": 44
     },
     {
       "critic": "Mark Rifkin",
@@ -374,28 +396,6 @@
       "totalReviews": 28
     },
     {
-      "critic": "Charles McNulty",
-      "criticSlug": "charles-mcnulty",
-      "outlet": "the-los-angeles-times-charles-mcnulty",
-      "showId": "the-inheritance-2019",
-      "file": "latimes--charles-mcnulty.json",
-      "outletShare": 5,
-      "primaryOutlet": "latimes",
-      "primaryShare": 95,
-      "totalReviews": 42
-    },
-    {
-      "critic": "Charles McNulty",
-      "criticSlug": "charles-mcnulty",
-      "outlet": "the-los-angeles-times-charles-mcnulty",
-      "showId": "west-side-story-2020",
-      "file": "latimes--charles-mcnulty.json",
-      "outletShare": 5,
-      "primaryOutlet": "latimes",
-      "primaryShare": 95,
-      "totalReviews": 42
-    },
-    {
       "critic": "Joseph Verlezza",
       "criticSlug": "joseph-verlezza",
       "outlet": "theatre-reviews-limited-joseph-verlezza",
@@ -415,7 +415,7 @@
       "outletShare": 5,
       "primaryOutlet": "broadwayselect",
       "primaryShare": 95,
-      "totalReviews": 20
+      "totalReviews": 21
     }
   ],
   "freelancers": [
@@ -430,7 +430,7 @@
         "vulture",
         "new-york-times"
       ],
-      "totalReviews": 436
+      "totalReviews": 435
     },
     {
       "critic": "David Finkle",
@@ -453,7 +453,7 @@
         "huffpost",
         "associated-press-mark-kennedy"
       ],
-      "totalReviews": 209
+      "totalReviews": 208
     },
     {
       "critic": "David Rooney",
@@ -515,9 +515,9 @@
         "ny-daily-news",
         "theater-news-online-joe-dziemianowicz",
         "variety",
-        "advertisement"
+        "newyorktheatreguide"
       ],
-      "totalReviews": 415
+      "totalReviews": 416
     },
     {
       "critic": "Elisabeth  Vincentelli",
@@ -596,8 +596,8 @@
         "ew",
         "nydailynews",
         "newsday",
-        "huffpost",
         "latimes",
+        "huffpost",
         "vulture",
         "timeout",
         "bloomberg-news",
@@ -639,7 +639,6 @@
         "abc-news",
         "theater-pizzazz",
         "dcmetro",
-        "click-here",
         "frontmezzjunkies",
         "washington-times",
         "guardian",
@@ -660,6 +659,7 @@
         "metro-uk",
         "bloomberg",
         "philadelphia-inquirer",
+        "click-here",
         "stannswarehouseorg",
         "san-diego-union-tribune",
         "jks-theatre-scene",
@@ -713,7 +713,6 @@
         "center-on-the-aisle",
         "village-voice",
         "los-angeles-times",
-        "rob-ashford",
         "the-recs",
         "josh-at-the-movies-joshua-m-hayes",
         "rex-reed",
@@ -743,7 +742,7 @@
         "culturesauce",
         "npr"
       ],
-      "totalReviews": 799
+      "totalReviews": 796
     },
     {
       "critic": "Brian Scott Lipton",
@@ -757,7 +756,7 @@
         "cititourcom",
         "zeal-nyc"
       ],
-      "totalReviews": 227
+      "totalReviews": 228
     },
     {
       "critic": "Tim Teeman",
@@ -810,7 +809,7 @@
         "lighting-and-sound-america-david-barbour",
         "theatermania"
       ],
-      "totalReviews": 227
+      "totalReviews": 228
     },
     {
       "critic": "Helen Shaw",
@@ -855,12 +854,11 @@
         "the-faster-times",
         "faster-times",
         "new-york-theatre",
-        "advertisement",
         "newyorktheater",
         "thestage",
         "the-stage-uk"
       ],
-      "totalReviews": 338
+      "totalReviews": 339
     },
     {
       "critic": "Jesse Green",
@@ -903,7 +901,7 @@
         "theatrely",
         "whatsonstage"
       ],
-      "totalReviews": 94
+      "totalReviews": 95
     },
     {
       "critic": "Adam Feldman",
@@ -954,9 +952,9 @@
         "dailybeast",
         "deadline",
         "nytimes",
-        "variety",
         "amny-matt-windman",
         "newsday",
+        "variety",
         "vulture",
         "broadwaynews",
         "ew",
@@ -1007,7 +1005,7 @@
         "theater-news-online-jeremy-gerard",
         "bloomgberg"
       ],
-      "totalReviews": 255
+      "totalReviews": 254
     },
     {
       "critic": "Robert Kahn",
@@ -1018,7 +1016,7 @@
         "wnbc",
         "mbc-new-york"
       ],
-      "totalReviews": 141
+      "totalReviews": 146
     },
     {
       "critic": "Christopher Kelly",
@@ -1041,7 +1039,7 @@
         "entertainment-weekly",
         "enertainment-weekly"
       ],
-      "totalReviews": 184
+      "totalReviews": 183
     },
     {
       "critic": "Marilyn Stasio.",
@@ -1136,7 +1134,6 @@
       "outlets": [
         "chicagotribune",
         "nydailynews",
-        "advertisement",
         "chicago-tribune",
         "dailybeast",
         "deadline",
@@ -1148,7 +1145,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 434
+      "totalReviews": 432
     },
     {
       "critic": "Elyse Trevers",
@@ -1361,7 +1358,7 @@
         "theatrely",
         "nytg"
       ],
-      "totalReviews": 131
+      "totalReviews": 132
     },
     {
       "critic": "Juan A. Ramirez",
@@ -1616,7 +1613,7 @@
         "about-entertainment",
         "artsfuse"
       ],
-      "totalReviews": 17
+      "totalReviews": 18
     },
     {
       "critic": "Caroline Cao",
@@ -1640,7 +1637,7 @@
         "mildlybitter",
         "variety"
       ],
-      "totalReviews": 48
+      "totalReviews": 50
     },
     {
       "critic": "Diane Snyder",
@@ -1781,7 +1778,7 @@
         "out-magazine",
         "exeunt-magazine"
       ],
-      "totalReviews": 59
+      "totalReviews": 60
     },
     {
       "critic": "Rob Weinert- Kendt",
