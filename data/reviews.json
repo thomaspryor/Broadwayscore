@@ -4,26 +4,26 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16302,
-      "skippedNoScore": 1127,
+      "totalReviews": 16297,
+      "skippedNoScore": 1125,
       "skippedDuplicate": 95,
       "skippedDuplicateUrl": 319,
       "skippedCrossOutletDuplicateUrl": 28,
       "skippedDuplicateText": 498,
-      "skippedFingerprintDedup": 60,
+      "skippedFingerprintDedup": 59,
       "skippedUnknownCriticDedup": 249,
-      "skippedWrongProduction": 1984,
-      "recoveredFromGarbage": 104,
+      "skippedWrongProduction": 1987,
+      "recoveredFromGarbage": 103,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 0,
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 65,
-        "originalScore-priority0": 1667,
-        "llmScore": 10743,
+        "originalScore-priority0": 1673,
+        "llmScore": 10747,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3791,
+        "llmScore-lowconf": 3776,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -4236,18 +4236,18 @@
       "showId": "a-christmas-carol-2019",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/a-christmas-carol-broadway-review",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "This A Christmas Carol has many lovely moments and atmosphere aplenty. What it lacks, just a little, is cheer.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -4707,23 +4707,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "a-christmas-carol-2022",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
-      "url": "http://www.timeout.com/newyork/theater/a-christmas-carol-broadway-review",
-      "publishDate": "December 8, 2022",
-      "originalRating": 60,
-      "pullQuote": "This adaptation has charm and technical polish, but it lacks the emotional depth that would make it truly memorable.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2022",
@@ -5902,18 +5885,18 @@
       "showId": "a-dolls-house-2023",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/dolls-house-broadway-review-jessica-chastain-ibsen",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "Lloyd mostly surrounds Chastain with dry, sympathetic performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-dolls-house-2023",
@@ -8619,23 +8602,6 @@
       "contentTier": "excerpt"
     },
     {
-      "showId": "a-moon-for-the-misbegotten-2007",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Tim Bano",
-      "url": "https://www.timeout.com/london/theatre/a-moon-for-the-misbegotten-review",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "From the first moment, every line is a punch or a jab or a dagger.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
       "showId": "a-naked-girl-on-the-appian-way-2005",
       "outletId": "nytimes",
       "outlet": "The New York Times",
@@ -10486,7 +10452,7 @@
       "pullQuote": "A Strange Loop is a brilliant, uncompromising work of art that pushes the boundaries of what musical theater can be and say.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-strange-loop-2022",
@@ -10776,23 +10742,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "a-streetcar-named-desire-2012",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The Streetcar revival doesn't have much truck with magic; it does not invite the audience to share Blanche's delusions.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "a-streetcar-named-desire-2012",
@@ -12067,7 +12016,7 @@
       "pullQuote": "But this is ultimately Schreiber's play, and his hooded emotionality—first guarded, then blubbering—is exquisitely matched to Eddie's self-deflating sense of manhood: menacing in simmer but pathetic in boil.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -12413,18 +12362,18 @@
       "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/a-wonderful-world-broadway-review-louis-armstrong-james-monroe-iglehart",
       "publishDate": "November 11, 2024",
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "Whether Armstrong is on stage or off, Iglehart infuses him with bluff, buoyant charm.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
@@ -13614,7 +13563,7 @@
       "pullQuote": "Jordan E. Cooper's wild, funny, painful and necessary play is a brilliant piece of theatrical provocation",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -15745,6 +15694,23 @@
     },
     {
       "showId": "all-in-comedy-about-love-2024",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/all-in-comedy-about-love-broadway-review-simon-rich-john-mulaney",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "The show is not a comedy per se, but an anthology of comedy writing",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "all-in-comedy-about-love-2024",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 77,
@@ -16546,18 +16512,18 @@
       "showId": "all-my-sons-2019",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Helen Shaw",
       "url": "https://www.timeout.com/newyork/theater/all-my-sons-review-broadway-revival",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "All you'll be able to remember is a family of giants falling one after the other, like a stand of redwoods crashing down.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -16982,7 +16948,7 @@
       "pullQuote": "Cranston's LBJ is a triumph of physical and vocal transformation, capturing the president's crude charisma and political cunning with remarkable authenticity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-the-way-2014",
@@ -19590,7 +19556,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Cote",
@@ -19600,7 +19566,7 @@
       "pullQuote": "Amazing Grace may be based on historical persons and events, but but in this case, truth is more compelling than fiction.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "amazing-grace-2015",
@@ -19921,23 +19887,6 @@
       "publishDate": "November 18, 2008",
       "originalRating": null,
       "pullQuote": "Cedric the Entertainer brings surprising depth and nuance to his role as Walter 'Teach' Cole, while Haley Joel Osment makes a solid Broadway debut as the young Bobby.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/american-buffalo-broadway-review-david-mamet-sam-rockwell-revival",
-      "publishDate": "October 16, 2008",
-      "originalRating": 60,
-      "pullQuote": "Cedric the Entertainer brings surprising gravity to his role as the scheming Don, while John Leguizamo delivers a twitchy, compelling performance as the junkie Bobby.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -23406,23 +23355,6 @@
       "publishDate": "September 28, 2012",
       "originalRating": null,
       "pullQuote": "The production succeeds in making Ibsen's 1882 drama feel immediate and urgent, though it can't quite overcome the play's inherent didacticism.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/an-enemy-of-the-people",
-      "publishDate": "October 8, 2012",
-      "originalRating": 60,
-      "pullQuote": "Boyd Gaines delivers a passionate, beautifully modulated performance as Dr. Stockmann, the idealistic physician who discovers that his town's profitable spa waters are contaminated.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -28381,18 +28313,18 @@
       "showId": "art-2025",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 72,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/art-broadway-review-revival-play-james-corden-bobby-cannavale-neil-patrick-harris",
       "publishDate": "September 16, 2025",
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "The result is a slender but amusing 90-minute evening of Broadway entertainment.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "art-2025",
@@ -29871,7 +29803,7 @@
       "pullQuote": "The show has some appealing qualities, but it feels like a missed opportunity",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "bad-cinderella-2023",
@@ -31628,18 +31560,18 @@
       "showId": "be-more-chill-2019",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/be-more-chill",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "Be More Chill ultimately seems like a talented, likable team that is playing in the wrong league.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "be-more-chill-2019",
@@ -32625,7 +32557,7 @@
       "pullQuote": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "beetlejuice-2019",
@@ -33155,23 +33087,6 @@
       "contentTier": "excerpt"
     },
     {
-      "showId": "beetlejuice-2025",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It looks great, and there are strong performances and some outré laughs, but none of it quite fits together.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -33430,23 +33345,6 @@
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Andrzej Lukowski",
-      "url": "https://www.timeout.com/london/theatre/bengal-tiger-at-the-baghdad-zoo-review",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "I think it’s only gains from the delay in staging it over here. At this remove, it’s not only a fine drama about the hellish, morally tangled absurdity of conflict – it’s also a diagnosis...that seems all the more relevant.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
       "assignedScore": 60,
       "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
@@ -33458,7 +33356,7 @@
       "pullQuote": "Williams gives a committed performance as the title character, a philosophical feline who comments on the action from beyond the grave.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "invalid"
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
@@ -34246,18 +34144,18 @@
       "showId": "bernhardthamlet-2018",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/bernhardt-hamlet",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "While it is sometimes ungainly, the play is amusing on its own inside-theater terms.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bernhardthamlet-2018",
@@ -34852,7 +34750,7 @@
       "pullQuote": "Whether the work justifies such exorbitant ticket prices is another story.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "betrayal-2019",
@@ -35130,18 +35028,18 @@
       "showId": "betrayal-2019",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/betrayal-review-broadway-tom-hiddleston",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "Everything seems intended to suggest the very English repression of great passions that the play never actually conveys.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "betrayal-2019",
@@ -35634,7 +35532,7 @@
       "pullQuote": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a superb Broadway production that honors both its gritty realism and its underlying compassion.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "between-riverside-and-crazy-2022",
@@ -36576,7 +36474,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Adam Feldman",
@@ -36586,7 +36484,7 @@
       "pullQuote": "Haidle means to suggest that the specific is universal but he forgets to be specific.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "birthday-candles-2022",
@@ -39222,7 +39120,7 @@
       "pullQuote": "This musical will not change your brain in any way, but it delivers what it promises: a big Broadway production that leaves you grinning",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "boop-2025",
@@ -41840,6 +41738,23 @@
       "publishDate": "February 6, 2014",
       "originalRating": null,
       "pullQuote": "This new play by Eric Simonson feels less like a work for the theater than like a love letter to the Yankees that accidentally wandered onto a stage.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "bronx-bombers-2014",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square.html?_r=0",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The drama inherent in clashing egos gives 'Bronx Bombers' some natural juice in the early innings, but the suspense more or less gets benched in the play's second act.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -93665,7 +93580,7 @@
       "pullQuote": "Wolfe offers a rich new layer, sufficient in itself, and more so as part of history.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "gypsy-2024",
@@ -103181,7 +103096,7 @@
       "outletId": "chelsea-community-news",
       "outlet": "Chelsea Community News",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Musto",
