@@ -1626,6 +1626,26 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Unknown-critic dedup: if incoming critic is "unknown"/"unnamed" and a named critic
+      // already exists at this outlet, skip the unknown entry. This prevents BWW roundup entries
+      // (which have null critic → "unknown") from coexisting with named critic entries at the
+      // same outlet, which would give that outlet double weight in composite scores.
+      // Files are sorted so named critics come before "unknown" — named critic wins.
+      if (/^(unknown|unnamed)$/.test(criticKey)) {
+        let namedCriticExists = false;
+        for (const existingKey of seenKeys) {
+          const [existingOutlet, existingCritic] = existingKey.split('|');
+          if (existingOutlet === outletKey && !/^(unknown|unnamed)$/.test(existingCritic)) {
+            namedCriticExists = true;
+            break;
+          }
+        }
+        if (namedCriticExists) {
+          stats.skippedUnknownCriticDedup = (stats.skippedUnknownCriticDedup || 0) + 1;
+          return;
+        }
+      }
+
       // First-name prefix dedup: "jesse" at "nytimes" matches "jessegreen" at "nytimes"
       // This catches files like nytimes--jesse.json vs nytimes--jesse-green.json
       let prefixDuplicate = false;
@@ -2097,6 +2117,7 @@ const output = {
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
+      skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
@@ -2218,6 +2239,7 @@ console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}
 if (stats.circularDuplicateRecovered > 0) {
   console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
 }
+console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
