@@ -42,7 +42,17 @@
     "shucked-2023/nytimes--jesse-green.json",
     "shucked-2023/nytimes--unknown.json",
     "spring-awakening-2006/nytimes--charles-isherwood.json",
-    "sunset-boulevard-2024/nytimes--jesse-green.json"
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--unknown.json",
+    "the-big-knife-2013/nytimes--charles-isherwood.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+    "the-encounter-2016/nytimes--unknown.json",
+    "the-hills-of-california-2024/nytimes--houman-barekat.json",
+    "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+    "the-humans-2016/nytimes--unknown.json",
+    "the-inheritance-2019/nytimes--ben-brantley.json",
+    "the-inheritance-2019/nytimes--jesse-green.json",
+    "the-lehman-trilogy-2021/nytimes--unknown.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -87,7 +97,10 @@
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-big-knife-2013/nytimes--charles-isherwood.json",
+      "the-big-knife-2013/nytimes--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
@@ -134,10 +147,31 @@
       "shucked-2023/nytimes--jesse-green.json",
       "shucked-2023/nytimes--unknown.json",
       "spring-awakening-2006/nytimes--charles-isherwood.json",
-      "sunset-boulevard-2024/nytimes--jesse-green.json"
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--unknown.json",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+      "the-encounter-2016/nytimes--unknown.json",
+      "the-hills-of-california-2024/nytimes--houman-barekat.json",
+      "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+      "the-humans-2016/nytimes--unknown.json",
+      "the-inheritance-2019/nytimes--ben-brantley.json",
+      "the-inheritance-2019/nytimes--jesse-green.json",
+      "the-lehman-trilogy-2021/nytimes--unknown.json"
     ]
   },
   "startTime": "2026-02-16T19:36:53.003Z",
-  "lastProcessed": "sunset-boulevard-2024/nytimes--jesse-green.json",
-  "log": []
+  "lastProcessed": "the-lehman-trilogy-2021/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-16T19:43:14.609Z",
+      "event": "bb-session",
+      "session": "4fe03a1b",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T19:43:16.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
