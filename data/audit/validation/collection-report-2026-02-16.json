@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-02-16T06:53:49.105Z",
+  "runDate": "2026-02-16T07:04:57.101Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dead-outlaw-2025",
+    "showFilter": "beetlejuice-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 11,
+    "processed": 5,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "26.7%"
+    "successRate": "55.6%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 6,
+    "tier1Attempts": 7,
+    "tier1Success": 7,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
-    "tier4Attempts": 9,
-    "tier4Success": 7,
-    "totalFailed": 10,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,38 +43,40 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "dead-outlaw-2025/observer--david-cote.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json",
-    "dead-outlaw-2025/latimes--charles-mcnulty.json",
-    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "beetlejuice-2025/musical-theatre-review--ron-cohen.json",
+    "beetlejuice-2025/theatermania--david-gordon.json",
+    "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+    "beetlejuice-2025/stagezine--scott-harrah.json",
+    "beetlejuice-2025/thestage--giselle.json"
   ],
   "failed": [
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "dead-outlaw-2025/variety--frank-rizzo.json",
-    "dead-outlaw-2025/variety--unknown.json",
-    "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--unknown.json",
-    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/dailybeast--unknown.json",
-    "dead-outlaw-2025/usatoday--patrick-ryan.json"
+    "beetlejuice-2025/timeout--adam-feldman.json",
+    "beetlejuice-2025/wsj--edward-rothstein.json",
+    "beetlejuice-2025/artsfuse--chris-caggiano.json",
+    "beetlejuice-2025/theater-scene--victor-gluck.json"
   ],
   "tierDetails": {
     "playwright": [
-      "dead-outlaw-2025/variety--unknown.json",
-      "dead-outlaw-2025/observer--david-cote.json",
-      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+      "beetlejuice-2025/theatermania--david-gordon.json",
+      "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+      "beetlejuice-2025/stagezine--scott-harrah.json",
+      "beetlejuice-2025/thestage--giselle.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "dead-outlaw-2025/theatermania--zachary-stewart.json",
-      "dead-outlaw-2025/latimes--charles-mcnulty.json"
+      "beetlejuice-2025/musical-theatre-review--ron-cohen.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
