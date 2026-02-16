@@ -12,7 +12,9 @@
     "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
     "a-christmas-carol-2019/wsj--charles-isherwood.json",
     "a-soldiers-play-2020/wsj--terry-teachout.json",
-    "a-strange-loop-2022/wsj--charles-isherwood.json"
+    "a-strange-loop-2022/wsj--charles-isherwood.json",
+    "almost-famous-2022/wsj--charles-isherwood.json",
+    "american-buffalo-2008/wsj--charles-isherwood.json"
   ],
   "failed": [
     "bug-2026/wsj--charles-isherwood.json",
@@ -31,13 +33,19 @@
     "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
     "act-one-2014/wsj--terry-teachout.json",
     "after-midnight-2013/wsj--terry-teachout.json",
-    "aint-no-mo-2022/wsj--charles-isherwood.json"
+    "aint-no-mo-2022/wsj--charles-isherwood.json",
+    "airline-highway-2015/wsj--terry-teachout.json",
+    "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
+    "all-my-sons-2008/wsj--terry-teachout.json",
+    "allegiance-2015/wsj--terry-teachout.json",
+    "almost-famous-2022/wsj--terry-teachout.json",
+    "amazing-grace-2015/wsj--terry-teachout.json",
+    "amelie-a-new-musical-2017/wsj--terry-teachout.json",
+    "american-buffalo-2008/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -46,7 +54,8 @@
       "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
       "a-christmas-carol-2019/wsj--charles-isherwood.json",
       "a-soldiers-play-2020/wsj--terry-teachout.json",
-      "a-strange-loop-2022/wsj--charles-isherwood.json"
+      "a-strange-loop-2022/wsj--charles-isherwood.json",
+      "almost-famous-2022/wsj--charles-isherwood.json"
     ],
     "archive": [
       "aladdin-2014/wsj--terry-teachout.json",
@@ -55,11 +64,12 @@
       "harry-potter-2021/wsj--terry-teachout.json",
       "operation-mincemeat-2025/wsj--charles-isherwood.json",
       "ragtime-2025/wsj--charles-isherwood.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json"
+      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+      "american-buffalo-2008/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T11:12:38.928Z",
-  "lastProcessed": "aint-no-mo-2022/wsj--charles-isherwood.json",
+  "lastProcessed": "american-buffalo-2008/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-02-16T11:13:09.540Z",
@@ -278,6 +288,117 @@
       "event": "bb-login-fail",
       "domain": "wsj.com",
       "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T11:45:36.962Z",
+      "event": "bb-session",
+      "session": "e1a27830",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-16T11:46:19.113Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:48:21.945Z",
+      "event": "bb-session",
+      "session": "c781c78c",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-16T11:49:03.909Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:49:41.400Z",
+      "event": "bb-session",
+      "session": "2e4196e3",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-16T11:50:23.504Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:51:31.000Z",
+      "event": "bb-session",
+      "session": "3ddaf92b",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T11:52:12.730Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:52:37.621Z",
+      "event": "bb-session",
+      "session": "7d29fe1d",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T11:53:19.039Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:53:41.894Z",
+      "event": "bb-session",
+      "session": "56bcf519",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T11:54:23.599Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:55:00.429Z",
+      "event": "bb-session",
+      "session": "cfec5040",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T11:55:41.880Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:57:33.023Z",
+      "event": "bb-session",
+      "session": "6e8b6f33",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T11:58:15.032Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:58:36.727Z",
+      "event": "bb-session",
+      "session": "a03eaf01",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
+    },
+    {
+      "t": "2026-02-16T11:59:15.975Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771243125303\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAKRIadRxJR0AANA1qtA==&cid=W_ue5wY8CrQa~aZ_naBN7gUs6mYI5uSBshvgadCxLAM6~BE3X6QQgnd8k5JhOJhKlJR1XGfrdOUjFUZ4eHOTHr778Met2VofNtht_ksPQX~tv7GiYwFPeChLFIhqgwO2&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771243125303\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771243125303\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAKRIadRxJR0AANA1qtA==&cid=W_ue5wY8CrQa~aZ_naBN7gUs6mYI5uSBshvgadCxLAM6~BE3X6QQgnd8k5JhOJhKlJR1XGfrdOUjFUZ4eHOTHr778Met2VofNtht_ksPQX~tv7GiYwFPeChLFIhqgwO2&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771243125303\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771243125303\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAKRIadRxJR0AANA1qtA==&cid=W_ue5wY8CrQa~aZ_naBN7gUs6mYI5uSBshvgadCxLAM6~BE3X6QQgnd8k5JhOJhKlJR1XGfrdOUjFUZ4eHOTHr778Met2VofNtht_ksPQX~tv7GiYwFPeChLFIhqgwO2&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771243125303\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+    },
+    {
+      "t": "2026-02-16T11:59:39.225Z",
+      "event": "bb-session",
+      "session": "ff07b203",
+      "url": "https://www.wsj.com/articles/SB122404440509358685"
+    },
+    {
+      "t": "2026-02-16T12:00:21.141Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
