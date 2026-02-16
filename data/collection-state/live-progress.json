@@ -1,15 +1,127 @@
 {
-  "updatedAt": "2026-02-16T08:31:31.840Z",
-  "processed": 52,
-  "failed": 28,
-  "successRate": "65.0%",
+  "updatedAt": "2026-02-16T08:32:59.492Z",
+  "processed": 23,
+  "failed": 77,
+  "successRate": "23.0%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 16,
     "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T07:37:35.709Z",
+      "event": "bb-session",
+      "session": "bf2d03e0",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-16T07:38:25.779Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:39:39.796Z",
+      "event": "bb-session",
+      "session": "9c732ce7",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-16T07:40:29.895Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:40:52.174Z",
+      "event": "bb-session",
+      "session": "08ba6e0b",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-16T07:41:42.266Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:43:45.829Z",
+      "event": "bb-session",
+      "session": "f0573da6",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-16T07:44:29.172Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227838274\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaqvpjh4Un4cANA1qtA==&cid=bObB2D96iZt1UeENpBpiH54ciBsV92EozY4RQgC1s9a1OlN21eGi0oHzjCukvpCyyRKY5AbbSoT9O~tJeiCS8TWjfGBkc9qmWUSftYxvqGhQwR_sjg6UUwyGsWul802R&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227838274\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227838274\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaqvpjh4Un4cANA1qtA==&cid=bObB2D96iZt1UeENpBpiH54ciBsV92EozY4RQgC1s9a1OlN21eGi0oHzjCukvpCyyRKY5AbbSoT9O~tJeiCS8TWjfGBkc9qmWUSftYxvqGhQwR_sjg6UUwyGsWul802R&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227838274\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227838274\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaqvpjh4Un4cANA1qtA==&cid=bObB2D96iZt1UeENpBpiH54ciBsV92EozY4RQgC1s9a1OlN21eGi0oHzjCukvpCyyRKY5AbbSoT9O~tJeiCS8TWjfGBkc9qmWUSftYxvqGhQwR_sjg6UUwyGsWul802R&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227838274\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-16T07:45:06.423Z",
+      "event": "bb-session",
+      "session": "39878403",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-16T07:45:56.009Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:47:55.912Z",
+      "event": "bb-session",
+      "session": "2bd509c0",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T07:48:46.145Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:49:09.688Z",
+      "event": "bb-session",
+      "session": "76fe6a4c",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T07:49:59.759Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:50:21.558Z",
+      "event": "bb-session",
+      "session": "3bb97866",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T07:51:12.460Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:51:48.798Z",
+      "event": "bb-session",
+      "session": "f933fae3",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T07:52:39.420Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:54:44.525Z",
+      "event": "bb-session",
+      "session": "714681b4",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T07:55:36.681Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
