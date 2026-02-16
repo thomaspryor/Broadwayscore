@@ -181,6 +181,24 @@ const TRAILING_JUNK_PATTERNS = [
 
   // === Newsday: unrelated article links appended to review text ===
   /\s*Advertising Opportunities\s*\|\s*FAQ\s*\|\s*Sitemap.*$/is,
+
+  // === Observer: ad blocker message ===
+  /\s*But advertising revenue helps support our journalism\.\s*To read our full stories.*$/is,
+  /\s*Click the AdBlock button on your browser.*$/is,
+
+  // === Time Out: contentpass ad-removal promo ===
+  /\s*Pay to remove ads with contentpass.*$/is,
+  /\s*Access Time Out and over \d+ other websites.*$/is,
+  /\s*Already have a contentpass account\?.*$/is,
+  /\s*More information about our ads.*$/is,
+
+  // === Chelsea Community News: donation CTA ===
+  /\s*Our Promise:\s*Never a paywall.*$/is,
+  /\s*With that in mind, if circumstances allow.*$/is,
+
+  // === Generic: trailing paywall/subscription junk ===
+  /\s*(?:Subscribe|Sign up)\s+(?:now|today)\s+(?:to|for)\s+(?:continue|read|access|unlock).*$/is,
+  /\s*(?:Already a (?:member|subscriber)\?|Become a (?:member|subscriber)).*$/is,
 ];
 
 /**
