@@ -1,27 +1,27 @@
 {
-  "updatedAt": "2026-02-16T07:14:36.099Z",
-  "processed": 18,
-  "failed": 2,
-  "successRate": "90.0%",
+  "updatedAt": "2026-02-16T11:52:02.822Z",
+  "processed": 17,
+  "failed": 13,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 6
+    "archive": 17
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-16T07:13:07.395Z",
+      "t": "2026-02-16T11:49:23.292Z",
       "event": "bb-session",
-      "session": "8a40f450",
-      "url": "https://observer.com/2013/06/pretty-happy-neil-labute-takes-his-listless-charact"
+      "session": "3ce0494e",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-16T07:13:09.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
+      "t": "2026-02-16T11:50:12.330Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     }
   ]
 }
