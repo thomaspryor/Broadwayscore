@@ -1,126 +1,71 @@
 {
-  "updatedAt": "2026-02-16T13:11:08.398Z",
-  "processed": 57,
-  "failed": 28,
-  "successRate": "67.1%",
+  "updatedAt": "2026-02-16T13:11:55.694Z",
+  "processed": 44,
+  "failed": 36,
+  "successRate": "55.0%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 3,
     "scrapingbee": 0,
-    "brightdata": 19,
-    "archive": 37
+    "brightdata": 1,
+    "archive": 42
   },
-  "browserbaseSessions": 35,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T13:01:59.944Z",
+      "t": "2026-02-16T13:01:23.714Z",
       "event": "bb-session",
-      "session": "e56294e7",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/rotten-supremely-silly-br"
+      "session": "21c35922",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-16T13:02:01.967Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "t": "2026-02-16T13:01:59.902Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-16T13:02:45.364Z",
+      "t": "2026-02-16T13:03:51.420Z",
       "event": "bb-session",
-      "session": "5adba00f",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/matthew-broderick-annaleig"
+      "session": "deb7b918",
+      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shi"
     },
     {
-      "t": "2026-02-16T13:02:47.317Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "t": "2026-02-16T13:04:39.508Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-16T13:03:59.182Z",
+      "t": "2026-02-16T13:05:16.895Z",
       "event": "bb-session",
-      "session": "c96d416e",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/diane-lane-leads-fruitless"
+      "session": "089ed433",
+      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
     },
     {
-      "t": "2026-02-16T13:04:01.283Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "t": "2026-02-16T13:05:52.838Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-16T13:04:41.843Z",
+      "t": "2026-02-16T13:06:51.411Z",
       "event": "bb-session",
-      "session": "71c224e0",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/encounter-head-not-skin-ar"
+      "session": "3b531499",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
     },
     {
-      "t": "2026-02-16T13:04:43.866Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "t": "2026-02-16T13:07:27.479Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-16T13:05:21.929Z",
+      "t": "2026-02-16T13:08:17.969Z",
       "event": "bb-session",
-      "session": "56daee54",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/theater-review-fran-lange"
+      "session": "eab7f06a",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
     },
     {
-      "t": "2026-02-16T13:05:23.763Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
-    },
-    {
-      "t": "2026-02-16T13:06:08.300Z",
-      "event": "bb-session",
-      "session": "58e30080",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/gin-game-outstanding-reviv"
-    },
-    {
-      "t": "2026-02-16T13:06:10.540Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
-    },
-    {
-      "t": "2026-02-16T13:07:40.175Z",
-      "event": "bb-session",
-      "session": "d8be0610",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/cate-blanchett-richard-ro"
-    },
-    {
-      "t": "2026-02-16T13:07:42.441Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
-    },
-    {
-      "t": "2026-02-16T13:08:20.453Z",
-      "event": "bb-session",
-      "session": "cd317a8b",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/price-not-theater-review-"
-    },
-    {
-      "t": "2026-02-16T13:08:22.732Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
-    },
-    {
-      "t": "2026-02-16T13:09:06.237Z",
-      "event": "bb-session",
-      "session": "b8fb4b8c",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/price-not-theater-review-"
-    },
-    {
-      "t": "2026-02-16T13:09:07.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
-    },
-    {
-      "t": "2026-02-16T13:10:43.800Z",
-      "event": "bb-session",
-      "session": "054b4108",
-      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-reviv"
-    },
-    {
-      "t": "2026-02-16T13:10:45.792Z",
-      "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "t": "2026-02-16T13:09:06.152Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     }
   ]
 }
