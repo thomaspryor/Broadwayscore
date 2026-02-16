@@ -3,7 +3,8 @@
     "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
     "cyrano-de-bergerac-2007/vulture--scott-brown.json",
     "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json",
-    "magicbird-2012/vulture--scott-brown.json"
+    "magicbird-2012/vulture--scott-brown.json",
+    "sunday-in-the-park-with-george-2017/vulture--jesse-green.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -81,7 +82,16 @@
     "punch-2025/vulture--sara-holdren.json",
     "romeo-and-juliet-2013/vulture--jesse-green.json",
     "romeo-juliet-2024/vulture--helen-shaw.json",
-    "stephen-sondheims-old-friends-2025/vulture--unknown.json"
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "straight-white-men-2018/vulture--jesse-green.json",
+    "swept-away-2024/vulture--helen-shaw.json",
+    "the-anarchist-2012/vulture--jesse-green.json",
+    "the-boys-in-the-band-2018/vulture--jesse-green.json",
+    "the-bridges-of-madison-county-2014/vulture--jesse-green.json",
+    "the-glass-menagerie-2013/vulture--jesse-green.json",
+    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+    "the-lifespan-of-a-fact-2018/vulture--sara-holdren.json",
+    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -91,7 +101,9 @@
     "brightdata": [
       "a-view-from-the-bridge-2010/vulture--jesse-green.json",
       "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
-      "punch-2025/vulture--sara-holdren.json"
+      "punch-2025/vulture--sara-holdren.json",
+      "sunday-in-the-park-with-george-2017/vulture--jesse-green.json",
+      "the-anarchist-2012/vulture--jesse-green.json"
     ],
     "archive": [
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
@@ -101,7 +113,7 @@
     ]
   },
   "startTime": "2026-02-16T02:47:40.813Z",
-  "lastProcessed": "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+  "lastProcessed": "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
   "log": [
     {
       "t": "2026-02-16T02:51:07.754Z",
@@ -188,6 +200,39 @@
     },
     {
       "t": "2026-02-16T03:06:59.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:09:55.971Z",
+      "event": "bb-session",
+      "session": "e8f065ab",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
+    },
+    {
+      "t": "2026-02-16T03:09:58.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:10:22.160Z",
+      "event": "bb-session",
+      "session": "f9bac33d",
+      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
+    },
+    {
+      "t": "2026-02-16T03:10:24.387Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:13:58.185Z",
+      "event": "bb-session",
+      "session": "c4db69ab",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
+    },
+    {
+      "t": "2026-02-16T03:14:00.437Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
