@@ -1,60 +1,27 @@
 {
-  "updatedAt": "2026-02-16T16:43:59.591Z",
-  "processed": 29,
-  "failed": 21,
-  "successRate": "58.0%",
+  "updatedAt": "2026-02-16T16:44:45.614Z",
+  "processed": 12,
+  "failed": 38,
+  "successRate": "24.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
+    "playwright": 8,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archive": 25
+    "brightdata": 0,
+    "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-02-16T16:35:52.763Z",
+      "t": "2026-02-16T16:29:46.825Z",
       "event": "bb-session",
-      "session": "cd40a16f",
-      "url": "https://www.nytimes.com/2008/04/18/theater/reviews/18cate.html"
+      "session": "06b86e91",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T16:35:55.199Z",
+      "t": "2026-02-16T16:29:48.951Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T16:37:26.268Z",
-      "event": "bb-session",
-      "session": "8ac8e5a5",
-      "url": "https://www.nytimes.com/2015/04/24/theater/review-airline-highway-is-a-portrait-"
-    },
-    {
-      "t": "2026-02-16T16:37:28.560Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T16:39:27.088Z",
-      "event": "bb-session",
-      "session": "4ed8c83d",
-      "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-"
-    },
-    {
-      "t": "2026-02-16T16:39:29.429Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T16:43:19.979Z",
-      "event": "bb-session",
-      "session": "3131308c",
-      "url": "https://www.nytimes.com/2022/11/27/theater/kpop-review-broadway.html"
-    },
-    {
-      "t": "2026-02-16T16:43:22.225Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
     }
   ]
 }
