@@ -1,84 +1,80 @@
 {
-  "runDate": "2026-02-16T07:04:57.101Z",
+  "runDate": "2026-02-16T07:45:49.996Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "beetlejuice-2025",
+    "showFilter": "stephen-sondheims-old-friends-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 4,
+    "processed": 4,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "55.6%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 7,
+    "tier1Attempts": 11,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 2,
     "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 4,
+    "tier3Success": 2,
+    "tier4Attempts": 6,
+    "tier4Success": 6,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 16,
-    "browserbaseMinutesUsed": 4.8,
-    "urlDiscoveryAttempts": 24,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "beetlejuice-2025/musical-theatre-review--ron-cohen.json",
-    "beetlejuice-2025/theatermania--david-gordon.json",
-    "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
-    "beetlejuice-2025/stagezine--scott-harrah.json",
-    "beetlejuice-2025/thestage--giselle.json"
+    "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+    "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "beetlejuice-2025/timeout--adam-feldman.json",
-    "beetlejuice-2025/wsj--edward-rothstein.json",
-    "beetlejuice-2025/artsfuse--chris-caggiano.json",
-    "beetlejuice-2025/theater-scene--victor-gluck.json"
+    "stephen-sondheims-old-friends-2025/nytg--caroline-cao.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "stephen-sondheims-old-friends-2025/new-york-sun--elysa-gardner.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--unknown.json",
+    "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+    "stephen-sondheims-old-friends-2025/timeout--adam-feldman.json",
+    "stephen-sondheims-old-friends-2025/culturesauce--thom-geier.json",
+    "stephen-sondheims-old-friends-2025/talkinbroadway--howard-miller.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
   ],
   "tierDetails": {
     "playwright": [
-      "beetlejuice-2025/theatermania--david-gordon.json",
-      "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
-      "beetlejuice-2025/stagezine--scott-harrah.json",
-      "beetlejuice-2025/thestage--giselle.json"
+      "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+      "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-wiz-2024/washpost--gloria-oladipo.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "beetlejuice-2025/musical-theatre-review--ron-cohen.json"
+      "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
