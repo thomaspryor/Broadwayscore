@@ -81,6 +81,16 @@ DOMAIN_GROUPS = {
         "output": "hollywoodreporter.json",
         "secret_name": "THR_COOKIES",
     },
+    "variety": {
+        "domains": [".variety.com", "variety.com", ".pmc.com"],
+        "output": "variety.json",
+        "secret_name": "VARIETY_COOKIES",
+    },
+    "indiewire": {
+        "domains": [".indiewire.com", "indiewire.com", ".pmc.com"],
+        "output": "indiewire.json",
+        "secret_name": "INDIEWIRE_COOKIES",
+    },
     "ew": {
         "domains": [".ew.com", "ew.com"],
         "output": "ew.json",

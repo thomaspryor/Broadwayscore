@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-02-16T00:26:45.122Z",
+  "runDate": "2026-02-16T04:08:53.994Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "punch-2025",
+    "showFilter": "beetlejuice-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 5,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "55.6%"
   },
   "tierBreakdown": {
-    "playwright": 80,
+    "playwright": 4,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 10,
+    "tier1Attempts": 8,
+    "tier1Success": 8,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 5,
-    "tier4Success": 4,
-    "totalFailed": 2,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,59 +43,32 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "punch-2025/nyt-theater--jonathan-mandell.json",
-    "punch-2025/nytg--caroline-cao.json",
-    "punch-2025/nytimes--elisabeth-vincentelli.json",
-    "punch-2025/vulture--sara-holdren.json",
-    "punch-2025/ew--emlyn-travis.json",
-    "punch-2025/theatermania--david-gordon.json",
-    "punch-2025/theatre-reviews-limited--david-roberts.json",
-    "punch-2025/culturesauce--thom-geier.json",
-    "punch-2025/pages-on-stages--mason-pilevsky.json",
-    "punch-2025/talkinbroadway--howard-miller.json",
-    "punch-2025/the-interested-bystander--cary-wong.json",
-    "punch-2025/theater-life--samuel-l-leiter.json"
+    "beetlejuice-2025/musical-theatre-review--ron-cohen.json",
+    "beetlejuice-2025/theatermania--david-gordon.json",
+    "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+    "beetlejuice-2025/stagezine--scott-harrah.json",
+    "beetlejuice-2025/thestage--giselle.json"
   ],
   "failed": [
-    "punch-2025/timeout--adam-feldman.json",
-    "punch-2025/theater-scene--darryl-reilly.json"
+    "beetlejuice-2025/timeout--adam-feldman.json",
+    "beetlejuice-2025/wsj--edward-rothstein.json",
+    "beetlejuice-2025/artsfuse--chris-caggiano.json",
+    "beetlejuice-2025/theater-scene--victor-gluck.json"
   ],
   "tierDetails": {
     "playwright": [
-      "punch-2025/nyt-theater--jonathan-mandell.json",
-      "punch-2025/nytg--caroline-cao.json",
-      "punch-2025/theatermania--david-gordon.json",
-      "punch-2025/theatre-reviews-limited--david-roberts.json",
-      "punch-2025/culturesauce--thom-geier.json",
-      "punch-2025/pages-on-stages--mason-pilevsky.json",
-      "punch-2025/the-interested-bystander--cary-wong.json",
-      "punch-2025/theater-life--samuel-l-leiter.json"
+      "beetlejuice-2025/theatermania--david-gordon.json",
+      "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+      "beetlejuice-2025/stagezine--scott-harrah.json",
+      "beetlejuice-2025/thestage--giselle.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "punch-2025/nytimes--elisabeth-vincentelli.json",
-      "punch-2025/vulture--sara-holdren.json",
-      "punch-2025/ew--emlyn-travis.json",
-      "punch-2025/talkinbroadway--howard-miller.json"
+      "beetlejuice-2025/musical-theatre-review--ron-cohen.json"
     ]
   },
-  "failuresByOutlet": {
-    "Observer": {
-      "count": 3,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Observer": {
-      "count": 2,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
