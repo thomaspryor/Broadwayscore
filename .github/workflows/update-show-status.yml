@@ -221,12 +221,13 @@ jobs:
           opened_slugs="${{ needs.update-shows.outputs.opened_slugs }}"
 
           # Combine both sources, dedup
+          # Include open + closed shows (they have reviews to gather)
+          # Skip previews (no reviews published yet)
           all_slugs=""
           for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
             [ -z "$slug" ] && continue
-            # Verify show is open (not previews)
             status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.status || 'unknown');")
-            if [ "$status" = "open" ]; then
+            if [ "$status" = "open" ] || [ "$status" = "closed" ]; then
               [ -n "$all_slugs" ] && all_slugs="$all_slugs,$slug" || all_slugs="$slug"
             fi
           done

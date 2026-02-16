@@ -88,6 +88,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     <Link
       href={`/show/${show.slug}`}
       role="listitem"
+      data-testid="show-card"
       className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
@@ -571,10 +572,7 @@ function HomePageInner() {
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
-          Every show. Every review. One score.
-        </p>
-        <p className="text-gray-500 text-sm mt-1">
-          Aggregating <span className="text-gray-400 font-medium">{getDataStats().totalReviews.toLocaleString()}</span> critic reviews and counting...
+          {shows.length.toLocaleString()} shows. {getDataStats().totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
