@@ -1,39 +1,17 @@
 {
-  "updatedAt": "2026-02-16T16:06:44.027Z",
+  "updatedAt": "2026-02-16T16:25:39.070Z",
   "processed": 74,
-  "failed": 176,
-  "successRate": "29.6%",
+  "failed": 186,
+  "successRate": "28.5%",
   "tierBreakdown": {
     "playwright": 32,
-    "browserbase": 4,
+    "browserbase": 5,
     "scrapingbee": 0,
-    "brightdata": 20,
+    "brightdata": 21,
     "archive": 24
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-02-16T15:22:25.364Z",
-      "event": "bb-session",
-      "session": "65ff84d6",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-02-16T15:22:27.873Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T15:29:02.685Z",
-      "event": "bb-session",
-      "session": "818c2a78",
-      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
-    },
-    {
-      "t": "2026-02-16T15:29:04.821Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-02-16T15:30:06.535Z",
       "event": "bb-session",
@@ -121,6 +99,28 @@
       "t": "2026-02-16T16:06:23.989Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:10:13.099Z",
+      "event": "bb-session",
+      "session": "c58caef3",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-16T16:10:15.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-16T16:10:16.699Z",
+      "event": "bb-session",
+      "session": "1056bffe",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+    },
+    {
+      "t": "2026-02-16T16:10:18.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
