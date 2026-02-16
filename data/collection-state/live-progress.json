@@ -1,126 +1,51 @@
 {
-  "updatedAt": "2026-02-16T07:10:47.459Z",
-  "processed": 6,
-  "failed": 94,
-  "successRate": "6.0%",
+  "updatedAt": "2026-02-16T07:23:13.784Z",
+  "processed": 172,
+  "failed": 248,
+  "successRate": "41.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 120,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 7,
-    "archive": 6
+    "brightdata": 22,
+    "archive": 45
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T06:40:18.612Z",
+      "t": "2026-02-16T03:42:23.497Z",
       "event": "bb-session",
-      "session": "80f502e5",
-      "url": "https://www.vulture.com/article/theater-review-james-graham-punch-play.html"
+      "session": "10b7fa45",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
     },
     {
-      "t": "2026-02-16T06:40:20.589Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:43:16.079Z",
+      "t": "2026-02-16T03:44:01.098Z",
       "event": "bb-session",
-      "session": "999ee5b4",
-      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
+      "session": "5674d6ed",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
     },
     {
-      "t": "2026-02-16T06:43:18.073Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:46:27.457Z",
+      "t": "2026-02-16T03:53:40.147Z",
       "event": "bb-session",
-      "session": "56f8e1fd",
-      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
+      "session": "1a9ad6f4",
+      "url": "https://fordhamobserver.com/36668/recent/arts-and-culture/review-the-prom-is-a-c"
     },
     {
-      "t": "2026-02-16T06:46:29.527Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:49:30.247Z",
+      "t": "2026-02-16T03:56:16.947Z",
       "event": "bb-session",
-      "session": "32324362",
-      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
+      "session": "ef0ba4ff",
+      "url": "https://www.thewrap.com/violet-theater-review"
     },
     {
-      "t": "2026-02-16T06:49:32.227Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:52:30.380Z",
+      "t": "2026-02-16T04:11:10.922Z",
       "event": "bb-session",
-      "session": "f59bfbd4",
-      "url": "http://www.vulture.com/2017/03/theater-review-sally-field-in-a-reimagined-glass-"
+      "session": "77e505a2",
+      "url": "https://www.usatoday.com/story/life/theater/2014/04/17/broadway-review-act-one/7"
     },
     {
-      "t": "2026-02-16T06:52:32.141Z",
+      "t": "2026-02-16T04:11:13.072Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:55:40.416Z",
-      "event": "bb-session",
-      "session": "66c7c7ec",
-      "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-"
-    },
-    {
-      "t": "2026-02-16T06:55:42.413Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T06:58:42.187Z",
-      "event": "bb-session",
-      "session": "2d310f1d",
-      "url": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
-    },
-    {
-      "t": "2026-02-16T06:58:43.931Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T07:01:43.814Z",
-      "event": "bb-session",
-      "session": "1e4b46cf",
-      "url": "https://www.vulture.com/2014/11/theater-review-the-river.html"
-    },
-    {
-      "t": "2026-02-16T07:01:45.985Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T07:04:44.543Z",
-      "event": "bb-session",
-      "session": "0e4b068d",
-      "url": "https://www.vulture.com/2019/10/theater-review-marisa-tomei-in-the-rose-tattoo-o"
-    },
-    {
-      "t": "2026-02-16T07:04:46.914Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-16T07:07:46.519Z",
-      "event": "bb-session",
-      "session": "ae5421bc",
-      "url": "https://www.vulture.com/2023/04/theater-review-sign-sidney-brusteins-window-isaa"
-    },
-    {
-      "t": "2026-02-16T07:07:48.760Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "usatoday.com"
     }
   ]
 }
