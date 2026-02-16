@@ -1,99 +1,79 @@
 {
-  "runDate": "2026-02-16T06:20:38.639Z",
+  "runDate": "2026-02-16T06:23:32.840Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "stephen-sondheims-old-friends-2025",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 17,
+    "processed": 4,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "29.2%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 2
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 0,
-    "tier1_5Attempts": 19,
+    "tier1Attempts": 11,
+    "tier1Success": 11,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 19,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 19,
-    "tier3Success": 9,
-    "tier4Attempts": 10,
-    "tier4Success": 1,
-    "totalFailed": 17,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier4Attempts": 6,
+    "tier4Success": 5,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 19,
-    "browserbaseMinutesUsed": 5.1,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+    "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+    "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "1776-2022/newyorker--naomi-fry.json",
-    "1984-2017/newyorker--hilton-als.json",
-    "a-christmas-carol-2019/newyorker--jesse-green.json",
-    "a-christmas-carol-2022/newyorker--naomi-fry.json",
-    "a-free-man-of-color-2010/newyorker--hilton-als.json",
-    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
-    "act-one-2014/newyorker--hilton-als.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
+    "stephen-sondheims-old-friends-2025/nytg--caroline-cao.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "stephen-sondheims-old-friends-2025/new-york-sun--elysa-gardner.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--unknown.json",
+    "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+    "stephen-sondheims-old-friends-2025/timeout--adam-feldman.json",
+    "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/culturesauce--thom-geier.json",
+    "stephen-sondheims-old-friends-2025/talkinbroadway--howard-miller.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+      "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+      "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
-    ],
-    "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "lombardi-2010/newyorker--uncredited.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 8,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
