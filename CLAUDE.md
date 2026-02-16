@@ -163,10 +163,15 @@ data/
   id, title, slug, venue, openingDate, closingDate, status, type, runtime, intermissions,
   images: { hero, thumbnail, poster }, synopsis, ageRecommendation, tags,
   previewsStartDate, ticketLinks: [{ platform, url, priceFrom }],
-  creativeTeam: [{ name, role }], officialUrl, trailerUrl, theaterAddress
+  creativeTeam: [{ name, role }], cast: [{ name, role }],
+  officialUrl, trailerUrl, theaterAddress
 }
 ```
 **Status:** `"open"` | `"previews"` | `"closed"`
+
+**What's displayed on show pages vs. stored-only:**
+- **`creativeTeam`**: Only **principal roles** are rendered — filtered by regex in `show/[slug]/page.tsx`: Director, Co-Director, Book, Music, Lyrics, Playwright, Composer, Lyricist, Author, Translator, Adaptation. Design roles (Scenic, Costume, Lighting, Sound) are stored but **not displayed**. Don't prioritize enriching design credits.
+- **`cast`**: **Not displayed anywhere yet.** Stored in shows.json for future use. The `CastUpdatesCard` on show pages uses a separate data source (`data-cast.ts`), not this field. Don't spend time enriching cast data until the site renders it.
 
 ### Grosses Schema
 ```typescript
