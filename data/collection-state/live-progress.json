@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T02:50:55.652Z",
-  "processed": 28,
-  "failed": 2,
-  "successRate": "93.3%",
+  "updatedAt": "2026-02-16T02:51:34.061Z",
+  "processed": 3,
+  "failed": 27,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T02:51:07.754Z",
+      "event": "bb-session",
+      "session": "705f0098",
+      "url": "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html#"
+    },
+    {
+      "t": "2026-02-16T02:51:10.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
