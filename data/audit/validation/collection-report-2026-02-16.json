@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T03:30:53.868Z",
+  "runDate": "2026-02-16T03:34:41.127Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -11,16 +11,16 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 32,
-    "failed": 33,
+    "processed": 31,
+    "failed": 34,
     "skipped": 0,
-    "successRate": "49.2%"
+    "successRate": "47.7%"
   },
   "tierBreakdown": {
     "playwright": 29,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archive": 2
   },
   "statistics": {
@@ -31,10 +31,10 @@
     "tier2Attempts": 3,
     "tier2Success": 0,
     "tier3Attempts": 3,
-    "tier3Success": 3,
+    "tier3Success": 0,
     "tier4Attempts": 4,
     "tier4Success": 1,
-    "totalFailed": 3,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 3,
     "browserbaseMinutesUsed": 1.8,
@@ -73,8 +73,7 @@
     "the-prom-2018/diandra-reviews-it-all--diandra-rivera.json",
     "the-prom-2018/theatre-reviews-limited--joseph-verlezza.json",
     "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-    "death-of-a-salesman-2026/nytimes--jesse-green.json",
-    "wicked-2003/nytimes--charles-isherwood.json"
+    "aladdin-2014/wsj--terry-teachout.json"
   ],
   "failed": [
     "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
@@ -107,9 +106,10 @@
     "the-cher-show-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
     "the-prom-2018/broadwaynews--elizabeth-bradley.json",
     "the-prom-2018/fordham-observer--michael-appler.json",
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "13-2008/nytimes--ben-brantley.json"
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "chess-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -145,14 +145,20 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "death-of-a-salesman-2026/nytimes--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
       "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/abc-news--unknown.json",
-      "wicked-2003/nytimes--charles-isherwood.json"
+      "aladdin-2014/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 3,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
