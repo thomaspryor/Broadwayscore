@@ -809,11 +809,6 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         </div>
       </div>
 
-      {/* Email Capture */}
-      <div id="subscribe" className="mt-8 max-w-md mx-auto">
-        <FooterEmailCapture />
-      </div>
-
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow
@@ -851,6 +846,11 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           shows={jukeboxMusicals}
           viewAllHref="/browse/jukebox-musicals-on-broadway"
         />
+      </div>
+
+      {/* Email Capture */}
+      <div id="subscribe" className="mt-8 max-w-md mx-auto">
+        <FooterEmailCapture />
       </div>
 
     </div>

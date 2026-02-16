@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { getAllShows, getAllBrowseSlugs, getBrowseList } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { BROWSE_PAGES } from '@/config/browse-pages';
+import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Find the Best Broadway Shows - Rankings & Lists',
@@ -286,6 +287,7 @@ export default function RankingsPage() {
         </section>
 
         {/* Discount Tickets */}
+        {featureFlags.discountTickets && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
             <TicketIcon />
@@ -322,6 +324,7 @@ export default function RankingsPage() {
             />
           </div>
         </section>
+        )}
 
         {/* By Timing */}
         <section className="mb-10">
@@ -427,6 +430,7 @@ export default function RankingsPage() {
             <h2 className="text-lg font-bold text-white">Data & Scorecards</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {featureFlags.boxOffice && (
             <RankingCard
               href="/box-office"
               title="Box Office Scorecard"
@@ -434,6 +438,8 @@ export default function RankingsPage() {
               icon={<span className="text-lg">💵</span>}
               color="text-green-400"
             />
+            )}
+            {featureFlags.commercial && (
             <RankingCard
               href="/biz-buzz"
               title="Commercial Scorecard"
@@ -441,6 +447,7 @@ export default function RankingsPage() {
               icon={<span className="text-lg">📊</span>}
               color="text-blue-400"
             />
+            )}
             <RankingCard
               href="/audience-buzz"
               title="Audience Scorecard"
