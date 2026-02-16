@@ -1,99 +1,97 @@
 {
-  "runDate": "2026-02-16T15:32:22.239Z",
+  "runDate": "2026-02-16T15:43:56.138Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "punch-2025",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 7,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "29.2%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 5,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 10,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 18,
+    "tier1Success": 0,
+    "tier1_5Attempts": 15,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 18,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 5,
-    "tier4Success": 5,
-    "totalFailed": 2,
+    "tier3Attempts": 18,
+    "tier3Success": 8,
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 17,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 15,
-    "browserbaseMinutesUsed": 5.7,
-    "urlDiscoveryAttempts": 11,
+    "browserbaseMinutesUsed": 4.4,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "punch-2025/nyt-theater--jonathan-mandell.json",
-    "punch-2025/nytg--caroline-cao.json",
-    "punch-2025/nytimes--elisabeth-vincentelli.json",
-    "punch-2025/vulture--sara-holdren.json",
-    "punch-2025/ew--emlyn-travis.json",
-    "punch-2025/theatermania--david-gordon.json",
-    "punch-2025/theatre-reviews-limited--david-roberts.json",
-    "punch-2025/culturesauce--thom-geier.json",
-    "punch-2025/pages-on-stages--mason-pilevsky.json",
-    "punch-2025/talkinbroadway--howard-miller.json",
-    "punch-2025/the-interested-bystander--cary-wong.json",
-    "punch-2025/theater-life--samuel-l-leiter.json"
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "punch-2025/timeout--adam-feldman.json",
-    "punch-2025/theater-scene--darryl-reilly.json"
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "aint-no-mo-2022/newyorker--naomi-fry.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "king-kong-2018/newyorker--vinson-cunningham.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "punch-2025/nyt-theater--jonathan-mandell.json",
-      "punch-2025/nytg--caroline-cao.json",
-      "punch-2025/theatermania--david-gordon.json",
-      "punch-2025/theatre-reviews-limited--david-roberts.json",
-      "punch-2025/culturesauce--thom-geier.json",
-      "punch-2025/pages-on-stages--mason-pilevsky.json",
-      "punch-2025/the-interested-bystander--cary-wong.json",
-      "punch-2025/theater-life--samuel-l-leiter.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    ],
     "archive": [
-      "punch-2025/nytimes--elisabeth-vincentelli.json",
-      "punch-2025/vulture--sara-holdren.json",
-      "punch-2025/ew--emlyn-travis.json",
-      "punch-2025/talkinbroadway--howard-miller.json"
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "lombardi-2010/newyorker--uncredited.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 7,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "NY Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+    "The New Yorker": {
+      "count": 8,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": true
     }
   },
