@@ -1,44 +1,44 @@
 {
-  "runDate": "2026-02-16T03:25:11.766Z",
+  "runDate": "2026-02-16T03:30:22.667Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "stephen-sondheims-old-friends-2025",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 52,
-    "failed": 13,
+    "processed": 50,
+    "failed": 15,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "76.9%"
   },
   "tierBreakdown": {
     "playwright": 34,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 6,
-    "archive": 14
+    "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 4,
-    "totalFailed": 3,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -92,9 +92,7 @@
     "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
     "illinoise-2024/talkinbroadway--matthew-murray.json",
     "ink-2019/the-stage-uk--naveen-kumar.json",
-    "kiss-me-kate-2019/front-row-center--tulis-mccall.json",
-    "a-behanding-in-spokane-2010/nydailynews--joe-dziemianowicz.json",
-    "a-bronx-tale-the-musical-2016/nydailynews--joe-dziemianowicz.json"
+    "kiss-me-kate-2019/front-row-center--tulis-mccall.json"
   ],
   "failed": [
     "a-strange-loop-2022/thewrap--robert-hofler.json",
@@ -107,9 +105,11 @@
     "between-riverside-and-crazy-2022/theater-scene--joseph-pisano.json",
     "fences-2010/talkinbroadway--matthew-murray.json",
     "glengarry-glen-ross-2012/talkinbroadway--matthew-murray.json",
-    "chicago-1996/nydailynews--joe-dziemianowicz.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--new-york-daily-news.json",
-    "a-bronx-tale-2007/nydailynews--joe-dziemianowicz.json"
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "33-variations-2009/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/backstage--david-sheward.json",
+    "a-life-in-the-theatre-2010/backstage--david-sheward.json",
+    "a-little-night-music-2009/backstage--erik-haagensen.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -170,18 +170,16 @@
       "dont-dress-for-dinner-2012/amny--matt-windman.json",
       "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
       "godspell-2011/northjerseycom--robert-feldberg.json",
-      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
-      "a-behanding-in-spokane-2010/nydailynews--joe-dziemianowicz.json",
-      "a-bronx-tale-the-musical-2016/nydailynews--joe-dziemianowicz.json"
+      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
+    "Backstage": {
+      "count": 2,
+      "domain": "backstage.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
