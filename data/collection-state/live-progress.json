@@ -1,49 +1,126 @@
 {
-  "updatedAt": "2026-02-16T06:56:35.835Z",
-  "processed": 27,
-  "failed": 23,
-  "successRate": "54.0%",
+  "updatedAt": "2026-02-16T06:57:51.627Z",
+  "processed": 14,
+  "failed": 86,
+  "successRate": "14.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 26
+    "brightdata": 9,
+    "archive": 5
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 18,
   "recentActivity": [
     {
-      "t": "2026-02-16T06:50:15.839Z",
+      "t": "2026-02-16T06:50:55.799Z",
       "event": "bb-session",
-      "session": "b758dd4a",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "2cc8d0fb",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
     },
     {
-      "t": "2026-02-16T06:51:03.565Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T06:50:57.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-16T06:52:33.565Z",
+      "t": "2026-02-16T06:51:42.980Z",
       "event": "bb-session",
-      "session": "58f7f8db",
-      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+      "session": "6cec5256",
+      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
     },
     {
-      "t": "2026-02-16T06:53:21.552Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T06:51:45.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-16T06:54:33.977Z",
+      "t": "2026-02-16T06:52:25.591Z",
       "event": "bb-session",
-      "session": "1a389aa7",
-      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+      "session": "bd12fd14",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
     },
     {
-      "t": "2026-02-16T06:55:21.614Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T06:52:27.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:53:07.356Z",
+      "event": "bb-session",
+      "session": "fa95e067",
+      "url": "http://www.vulture.com/2017/03/theater-review-sally-field-in-a-reimagined-glass-"
+    },
+    {
+      "t": "2026-02-16T06:53:09.562Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:53:55.884Z",
+      "event": "bb-session",
+      "session": "bb449ecd",
+      "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-"
+    },
+    {
+      "t": "2026-02-16T06:53:57.895Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:54:37.504Z",
+      "event": "bb-session",
+      "session": "03adc6ef",
+      "url": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
+    },
+    {
+      "t": "2026-02-16T06:54:39.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:55:19.846Z",
+      "event": "bb-session",
+      "session": "e75f5859",
+      "url": "https://www.vulture.com/2014/11/theater-review-the-river.html"
+    },
+    {
+      "t": "2026-02-16T06:55:21.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:56:02.159Z",
+      "event": "bb-session",
+      "session": "24de3b1d",
+      "url": "https://www.vulture.com/2019/10/theater-review-marisa-tomei-in-the-rose-tattoo-o"
+    },
+    {
+      "t": "2026-02-16T06:56:04.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:56:44.620Z",
+      "event": "bb-session",
+      "session": "1b5ab5ca",
+      "url": "https://www.vulture.com/2023/04/theater-review-sign-sidney-brusteins-window-isaa"
+    },
+    {
+      "t": "2026-02-16T06:56:46.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T06:57:26.933Z",
+      "event": "bb-session",
+      "session": "734b9859",
+      "url": "https://www.vulture.com/2013/10/theater-review-the-snow-geese.html"
+    },
+    {
+      "t": "2026-02-16T06:57:28.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
