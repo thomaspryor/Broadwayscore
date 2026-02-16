@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 15093,
-      "skippedNoScore": 2566,
+      "totalReviews": 15082,
+      "skippedNoScore": 2565,
       "skippedDuplicate": 96,
       "skippedDuplicateUrl": 408,
-      "skippedCrossOutletDuplicateUrl": 31,
-      "skippedDuplicateText": 485,
+      "skippedCrossOutletDuplicateUrl": 30,
+      "skippedDuplicateText": 491,
       "skippedFingerprintDedup": 78,
-      "skippedWrongProduction": 1950,
+      "skippedWrongProduction": 1951,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 4,
@@ -20,14 +20,14 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1665,
-        "llmScore": 10605,
+        "llmScore": 10600,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2677,
+        "llmScore-lowconf": 2674,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 56
+        "thumb": 54
       }
     }
   },
@@ -67729,7 +67729,7 @@
       "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 69,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Richard Seff",
@@ -67739,7 +67739,7 @@
       "pullQuote": "I recommend this clearly sincere play to anyone interested in learning more about this underworld activity...But I warn that I found it more disturbing than moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "eclipsed-2016",
@@ -76393,7 +76393,7 @@
       "pullQuote": "It's at best a treasure chest of only mixed delights...It's not that the present cast and production creative team aren't working up to high levels...to gussy up the proceedings, the writers and director Diane Paulus turn to all sorts of diversions...since this is a musical, the score is the biggest disappointment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "finding-neverland-2015",
@@ -95962,7 +95962,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamilton-2015",
@@ -115381,7 +115381,7 @@
       "pullQuote": "Little wonder that so many are so eager to salute Sondheim; we can only hope for more homages as lovely as this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -192157,23 +192157,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "significant-other-2017",
-      "outletId": "as-her-world-turns",
-      "outlet": "As Her World Turns",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Erica Meyer",
-      "url": "http://www.asherworldturns.com/theater-recap-june-2015/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's a special show and I'm glad I caught it.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "significant-other-2017",
