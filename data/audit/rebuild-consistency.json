@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-15T22:30:44.459Z",
+  "generatedAt": "2026-02-16T00:53:15.112Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -10,16 +10,18 @@
       "detail": "Critics_Pick but score=41 (source: llmScore)"
     },
     {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "a-dolls-house-part-2-2017",
-      "detail": "24/58 reviews (41%) scored exactly 82"
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "wicked-2003",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "Critics_Choice but score=20 (source: originalScore-priority0)"
     },
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "call-me-izzy-2025",
-      "detail": "14/33 reviews (42%) scored exactly 60"
+      "showId": "a-dolls-house-part-2-2017",
+      "detail": "24/57 reviews (42%) scored exactly 82"
     },
     {
       "type": "score-clustering",
@@ -49,13 +51,13 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "home-2024",
-      "detail": "11/29 reviews (38%) scored exactly 82"
+      "detail": "11/30 reviews (37%) scored exactly 82"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "little-bear-ridge-road-2025",
-      "detail": "14/30 reviews (47%) scored exactly 80"
+      "detail": "14/31 reviews (45%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -67,7 +69,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "shucked-2023",
-      "detail": "21/53 reviews (40%) scored exactly 80"
+      "detail": "20/52 reviews (38%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -79,7 +81,13 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "waiting-for-godot-2025",
-      "detail": "12/23 reviews (52%) scored exactly 60"
+      "detail": "11/24 reviews (46%) scored exactly 60"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "yellow-face-2024",
+      "detail": "6/16 reviews (38%) scored exactly 80"
     }
   ]
 }
