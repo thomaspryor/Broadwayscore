@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-16T17:00:41.192Z",
+  "updatedAt": "2026-02-16T17:01:09.133Z",
   "processed": 6,
-  "failed": 54,
-  "successRate": "10.0%",
+  "failed": 64,
+  "successRate": "8.6%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
@@ -10,29 +10,18 @@
     "brightdata": 0,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-16T16:54:47.530Z",
+      "t": "2026-02-16T16:59:24.155Z",
       "event": "bb-session",
-      "session": "e6c32688",
-      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
+      "session": "a422437f",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T16:54:49.363Z",
+      "t": "2026-02-16T16:59:26.351Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T16:56:48.793Z",
-      "event": "bb-session",
-      "session": "48756b54",
-      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
-    },
-    {
-      "t": "2026-02-16T16:56:50.719Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
     }
   ]
 }
