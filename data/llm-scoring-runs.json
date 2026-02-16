@@ -229773,19 +229773,25 @@
       "output": 12036,
       "total": 956159
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-02-16T17:30:26.098Z",
-    "completedAt": "2026-02-16T18:48:45.526Z",
+    "startedAt": "2026-02-16T19:00:31.589Z",
+    "completedAt": "2026-02-16T19:50:26.835Z",
     "totalReviews": 23293,
-    "processed": 40,
-    "skipped": 22373,
-    "errors": 0,
+    "processed": 12,
+    "skipped": 22713,
+    "errors": 1,
     "tokensUsed": {
-      "input": 479709,
-      "output": 14110,
-      "total": 1130493
+      "input": 229446,
+      "output": 5167,
+      "total": 574275
     },
     "errorDetails": []
   },
