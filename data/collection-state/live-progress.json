@@ -1,15 +1,38 @@
 {
-  "updatedAt": "2026-02-16T17:32:01.106Z",
-  "processed": 58,
-  "failed": 26,
-  "successRate": "69.0%",
+  "updatedAt": "2026-02-16T17:29:32.826Z",
+  "processed": 68,
+  "failed": 41,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 120,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 16,
-    "archive": 34
+    "brightdata": 0,
+    "archive": 67
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T17:26:20.620Z",
+      "event": "bb-session",
+      "session": "f67df292",
+      "url": "https://variety.com/2023/digital/news/warner-bros-discoverycelebrity-chef-aaron-"
+    },
+    {
+      "t": "2026-02-16T17:26:22.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-16T17:29:42.735Z",
+      "event": "bb-session",
+      "session": "14a79735",
+      "url": "https://variety.com/2007/film/reviews/unni-life-is-all-about-friends-1200557845/"
+    },
+    {
+      "t": "2026-02-16T17:29:44.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
