@@ -187,6 +187,14 @@
       "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Post": {
+      "count": 2,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
