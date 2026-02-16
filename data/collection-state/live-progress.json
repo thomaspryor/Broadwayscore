@@ -1,27 +1,38 @@
 {
-  "updatedAt": "2026-02-16T18:12:34.080Z",
-  "processed": 42,
-  "failed": 28,
-  "successRate": "60.0%",
+  "updatedAt": "2026-02-16T18:14:56.444Z",
+  "processed": 185,
+  "failed": 175,
+  "successRate": "51.4%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
+    "playwright": 135,
+    "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 41
+    "archive": 50
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T18:11:18.598Z",
+      "t": "2026-02-16T18:11:12.762Z",
       "event": "bb-session",
-      "session": "bc0eaf67",
-      "url": "https://www.nytimes.com/2015/10/07/theater/review-old-times-where-the-past-is-a-"
+      "session": "65229058",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
     },
     {
-      "t": "2026-02-16T18:11:20.705Z",
+      "t": "2026-02-16T18:11:14.916Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:13:21.955Z",
+      "event": "bb-session",
+      "session": "c820896b",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
+    },
+    {
+      "t": "2026-02-16T18:13:24.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
