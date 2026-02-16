@@ -11,7 +11,9 @@
     "a-christmas-carol-2019/wsj--charles-isherwood.json",
     "a-little-night-music-2009/wsj--terry-teachout.json",
     "a-soldiers-play-2020/wsj--terry-teachout.json",
-    "a-strange-loop-2022/wsj--charles-isherwood.json"
+    "a-strange-loop-2022/wsj--charles-isherwood.json",
+    "almost-famous-2022/wsj--charles-isherwood.json",
+    "american-buffalo-2022/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/wsj--charles-isherwood.json",
@@ -41,28 +43,19 @@
     "aint-no-mo-2022/wsj--charles-isherwood.json",
     "airline-highway-2015/wsj--terry-teachout.json",
     "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
-    "all-my-sons-2008/wsj--terry-teachout.json"
+    "all-my-sons-2008/wsj--terry-teachout.json",
+    "allegiance-2015/wsj--terry-teachout.json",
+    "almost-famous-2022/wsj--terry-teachout.json",
+    "amazing-grace-2015/wsj--terry-teachout.json",
+    "amelie-a-new-musical-2017/wsj--terry-teachout.json",
+    "american-buffalo-2008/wsj--charles-isherwood.json",
+    "american-buffalo-2008/wsj--terry-teachout.json",
+    "american-idiot-2010/wsj--terry-teachout.json",
+    "american-psycho-2016/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "punch-2025/nytg--caroline-cao.json",
-      "the-father-2016/act-three-the-reviews--doug-marino.json",
-      "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
-      "good-night-and-good-luck-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "gypsy-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "indecent-2017/theatre-reviews-limited--david-roberts.json",
-      "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
-      "jajas-african-hair-braiding-2023/theatre-reviews-limited--joseph-verlezza.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "lobby-hero-2018/theatre-reviews-limited--david-roberts.json",
-      "long-days-journey-into-night-2016/theatre-reviews-limited--michele-willens.json",
-      "mary-jane-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -74,17 +67,19 @@
       "a-christmas-carol-2019/wsj--charles-isherwood.json",
       "a-little-night-music-2009/wsj--terry-teachout.json",
       "a-soldiers-play-2020/wsj--terry-teachout.json",
-      "a-strange-loop-2022/wsj--charles-isherwood.json"
+      "a-strange-loop-2022/wsj--charles-isherwood.json",
+      "almost-famous-2022/wsj--charles-isherwood.json"
     ],
     "archive": [
       "aladdin-2014/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
       "ragtime-2025/wsj--charles-isherwood.json",
-      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json"
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "american-buffalo-2022/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T06:46:53.988Z",
-  "lastProcessed": "all-my-sons-2008/wsj--terry-teachout.json",
+  "lastProcessed": "american-psycho-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-02-16T06:47:13.008Z",
@@ -473,6 +468,61 @@
     },
     {
       "t": "2026-02-16T07:45:56.009Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:47:55.912Z",
+      "event": "bb-session",
+      "session": "2bd509c0",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T07:48:46.145Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:49:09.688Z",
+      "event": "bb-session",
+      "session": "76fe6a4c",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T07:49:59.759Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:50:21.558Z",
+      "event": "bb-session",
+      "session": "3bb97866",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T07:51:12.460Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:51:48.798Z",
+      "event": "bb-session",
+      "session": "f933fae3",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T07:52:39.420Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:54:44.525Z",
+      "event": "bb-session",
+      "session": "714681b4",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T07:55:36.681Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }

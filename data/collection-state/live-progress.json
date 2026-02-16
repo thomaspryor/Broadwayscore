@@ -1,73 +1,17 @@
 {
-  "updatedAt": "2026-02-16T07:47:46.766Z",
-  "processed": 12,
-  "failed": 28,
-  "successRate": "30.0%",
+  "updatedAt": "2026-02-16T07:58:31.914Z",
+  "processed": 14,
+  "failed": 36,
+  "successRate": "28.0%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archive": 4
+    "brightdata": 10,
+    "archive": 5
   },
-  "browserbaseSessions": 35,
+  "browserbaseSessions": 40,
   "recentActivity": [
-    {
-      "t": "2026-02-16T07:27:29.562Z",
-      "event": "bb-session",
-      "session": "ff9ad5a8",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
-    },
-    {
-      "t": "2026-02-16T07:28:19.371Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T07:28:41.356Z",
-      "event": "bb-session",
-      "session": "0a5d9119",
-      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
-    },
-    {
-      "t": "2026-02-16T07:29:34.365Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T07:31:37.062Z",
-      "event": "bb-session",
-      "session": "904d5941",
-      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
-    },
-    {
-      "t": "2026-02-16T07:32:22.384Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227111325\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAivHVVmwBeNUANA1qtA==&cid=0P5JpicTfa_30WYWmKULDpEqadNbzqgw1m6Rerg9ZLMHiNBPZAvrxVrUScyh81T09rBbtoNXdr~wOPmpHCDnOqvxHPAyudXenY8NsPod~I0R7pmxhlmgGokkNykurcEZ&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227111325\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227111325\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAivHVVmwBeNUANA1qtA==&cid=0P5JpicTfa_30WYWmKULDpEqadNbzqgw1m6Rerg9ZLMHiNBPZAvrxVrUScyh81T09rBbtoNXdr~wOPmpHCDnOqvxHPAyudXenY8NsPod~I0R7pmxhlmgGokkNykurcEZ&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227111325\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771227111325\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAivHVVmwBeNUANA1qtA==&cid=0P5JpicTfa_30WYWmKULDpEqadNbzqgw1m6Rerg9ZLMHiNBPZAvrxVrUScyh81T09rBbtoNXdr~wOPmpHCDnOqvxHPAyudXenY8NsPod~I0R7pmxhlmgGokkNykurcEZ&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771227111325\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T07:34:37.676Z",
-      "event": "bb-session",
-      "session": "bc2ff590",
-      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-se"
-    },
-    {
-      "t": "2026-02-16T07:35:27.727Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T07:36:08.622Z",
-      "event": "bb-session",
-      "session": "e45c27e8",
-      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
-    },
-    {
-      "t": "2026-02-16T07:36:58.494Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-02-16T07:37:35.709Z",
       "event": "bb-session",
@@ -121,6 +65,61 @@
     },
     {
       "t": "2026-02-16T07:45:56.009Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:47:55.912Z",
+      "event": "bb-session",
+      "session": "2bd509c0",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T07:48:46.145Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:49:09.688Z",
+      "event": "bb-session",
+      "session": "76fe6a4c",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T07:49:59.759Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:50:21.558Z",
+      "event": "bb-session",
+      "session": "3bb97866",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T07:51:12.460Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:51:48.798Z",
+      "event": "bb-session",
+      "session": "f933fae3",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T07:52:39.420Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:54:44.525Z",
+      "event": "bb-session",
+      "session": "714681b4",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T07:55:36.681Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
