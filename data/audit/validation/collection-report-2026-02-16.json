@@ -17,7 +17,7 @@
     "successRate": "85.7%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -36,9 +36,9 @@
     "tier4Success": 5,
     "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 15,
+    "browserbaseMinutesUsed": 5.7,
+    "urlDiscoveryAttempts": 11,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -81,6 +81,21 @@
       "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Daily News": {
+      "count": 7,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "NY Daily News": {
+      "count": 2,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
