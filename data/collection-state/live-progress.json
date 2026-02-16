@@ -1,82 +1,38 @@
 {
-  "updatedAt": "2026-02-16T16:20:07.595Z",
-  "processed": 9,
-  "failed": 21,
-  "successRate": "30.0%",
+  "updatedAt": "2026-02-16T17:06:41.018Z",
+  "processed": 14,
+  "failed": 86,
+  "successRate": "14.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 14
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T16:15:05.016Z",
+      "t": "2026-02-16T16:59:24.155Z",
       "event": "bb-session",
-      "session": "3df50b47",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+      "session": "a422437f",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T16:15:07.220Z",
+      "t": "2026-02-16T16:59:26.351Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-16T16:15:39.522Z",
+      "t": "2026-02-16T17:05:06.481Z",
       "event": "bb-session",
-      "session": "64baff55",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
+      "session": "2d7f75ef",
+      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
     },
     {
-      "t": "2026-02-16T16:15:41.848Z",
+      "t": "2026-02-16T17:05:08.625Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-16T16:16:13.918Z",
-      "event": "bb-session",
-      "session": "e2ac8d09",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
-    },
-    {
-      "t": "2026-02-16T16:16:16.335Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-16T16:16:32.404Z",
-      "event": "bb-session",
-      "session": "0331d5f5",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
-    },
-    {
-      "t": "2026-02-16T16:16:34.657Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-16T16:17:07.757Z",
-      "event": "bb-session",
-      "session": "b585f81a",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
-    },
-    {
-      "t": "2026-02-16T16:17:10.191Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-16T16:17:52.365Z",
-      "event": "bb-session",
-      "session": "69de3bb8",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
-    },
-    {
-      "t": "2026-02-16T16:17:54.606Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "vulture.com"
     }
   ]
 }
