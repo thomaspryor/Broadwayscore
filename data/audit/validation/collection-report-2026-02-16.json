@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T07:04:57.101Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "beetlejuice-2025",
     "aggressive": false,
@@ -36,9 +36,9 @@
     "tier4Success": 1,
     "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 16,
+    "browserbaseMinutesUsed": 4.8,
+    "urlDiscoveryAttempts": 24,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -64,7 +64,9 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-wiz-2024/washpost--gloria-oladipo.json"
+    ],
     "archive": [
       "beetlejuice-2025/musical-theatre-review--ron-cohen.json"
     ]
