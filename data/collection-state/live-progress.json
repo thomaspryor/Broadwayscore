@@ -1,15 +1,49 @@
 {
-  "updatedAt": "2026-02-16T06:53:46.390Z",
-  "processed": 4,
-  "failed": 11,
-  "successRate": "26.7%",
+  "updatedAt": "2026-02-16T06:56:35.835Z",
+  "processed": 27,
+  "failed": 23,
+  "successRate": "54.0%",
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T06:50:15.839Z",
+      "event": "bb-session",
+      "session": "b758dd4a",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T06:51:03.565Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:52:33.565Z",
+      "event": "bb-session",
+      "session": "58f7f8db",
+      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T06:53:21.552Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:54:33.977Z",
+      "event": "bb-session",
+      "session": "1a389aa7",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-16T06:55:21.614Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
