@@ -229822,5 +229822,25 @@
       "total": 651454
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-16T19:52:22.832Z",
+    "completedAt": "2026-02-16T20:20:13.327Z",
+    "totalReviews": 23293,
+    "processed": 12,
+    "skipped": 22793,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 89820,
+      "output": 2130,
+      "total": 317035
+    },
+    "errorDetails": [
+      {
+        "showId": "west-side-story-2020",
+        "outletId": "nypost",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
