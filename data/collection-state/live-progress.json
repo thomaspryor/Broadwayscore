@@ -1,51 +1,126 @@
 {
-  "updatedAt": "2026-02-16T05:05:55.960Z",
-  "processed": 76,
-  "failed": 104,
-  "successRate": "42.2%",
+  "updatedAt": "2026-02-16T05:06:43.085Z",
+  "processed": 25,
+  "failed": 75,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 64,
-    "browserbase": 1,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 8,
-    "archive": 9
+    "brightdata": 14,
+    "archive": 11
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 40,
   "recentActivity": [
     {
-      "t": "2026-02-16T03:36:45.635Z",
+      "t": "2026-02-16T03:39:46.224Z",
       "event": "bb-session",
-      "session": "d45ef09d",
-      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
+      "session": "1743077b",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
     },
     {
-      "t": "2026-02-16T03:37:01.013Z",
-      "event": "bb-session",
-      "session": "ebdbf615",
-      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
-    },
-    {
-      "t": "2026-02-16T03:37:23.038Z",
-      "event": "bb-session",
-      "session": "6accf90e",
-      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
-    },
-    {
-      "t": "2026-02-16T03:40:16.483Z",
-      "event": "bb-session",
-      "session": "ea8135a5",
-      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
-    },
-    {
-      "t": "2026-02-16T04:32:24.008Z",
-      "event": "bb-session",
-      "session": "c58fcfaa",
-      "url": "https://www.thestage.co.uk/reviews/a-wonderful-world-the-louis-armstrong-musical"
-    },
-    {
-      "t": "2026-02-16T04:32:25.949Z",
+      "t": "2026-02-16T03:39:48.295Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:41:55.985Z",
+      "event": "bb-session",
+      "session": "7b765ecf",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-16T03:41:58.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:43:19.048Z",
+      "event": "bb-session",
+      "session": "68ec93d4",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-16T03:43:21.394Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:45:12.439Z",
+      "event": "bb-session",
+      "session": "1ce62abf",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-16T03:45:14.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:46:37.098Z",
+      "event": "bb-session",
+      "session": "0f9e7ae9",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-16T03:46:39.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:49:23.073Z",
+      "event": "bb-session",
+      "session": "a086026a",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T03:49:25.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:50:34.392Z",
+      "event": "bb-session",
+      "session": "9100286f",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T03:50:36.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:51:43.056Z",
+      "event": "bb-session",
+      "session": "4215aa26",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T03:51:45.276Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:53:06.509Z",
+      "event": "bb-session",
+      "session": "7d1b552e",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T03:53:08.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:55:48.416Z",
+      "event": "bb-session",
+      "session": "6e9eaf62",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T03:55:50.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
