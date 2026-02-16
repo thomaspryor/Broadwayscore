@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 14612,
+      "totalReviews": 14611,
       "skippedNoScore": 3078,
       "skippedDuplicate": 96,
       "skippedDuplicateUrl": 407,
       "skippedCrossOutletDuplicateUrl": 29,
-      "skippedDuplicateText": 486,
+      "skippedDuplicateText": 485,
       "skippedFingerprintDedup": 79,
       "skippedWrongProduction": 1939,
       "recoveredFromGarbage": 138,
@@ -20,9 +20,9 @@
         "explicit-letterGrade": 15,
         "human-review": 68,
         "originalScore-priority0": 1666,
-        "llmScore": 10548,
+        "llmScore": 10549,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2235,
+        "llmScore-lowconf": 2233,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -12022,7 +12022,7 @@
       "outletId": "artsdesk",
       "outlet": "The Arts Desk",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Matt Wolf",
@@ -12032,7 +12032,7 @@
       "pullQuote": "One could argue that so ramped-up an arena aesthetic turns the play into one long extended climax, and there are times when proceedings do get a bit shouty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-view-from-the-bridge-2015",
@@ -16540,7 +16540,7 @@
       "pullQuote": "When by the end all is revealed, the play explodes into three powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -27812,6 +27812,23 @@
       "publishDate": "December 18, 2023",
       "originalRating": null,
       "pullQuote": "“Appropriate,” for all its deeply considered metaphorical work, doesn’t always manage its internal logic, and you can sense Jacobs",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "appropriate-2023",
+      "outletId": "thestage",
+      "outlet": "The Stage",
+      "assignedScore": 64,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Patrick A Bradford",
+      "url": "https://www.thestage.co.uk/reviews/appropriate-review-helen-hayes-theater-broadway-sarah-paulson-corey-stoll-elle-fanning",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The play’s use of race to imbue the text with social significance seems detached from its primary mission, to entertain.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -62899,7 +62916,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Frank Rizzo",
@@ -62909,7 +62926,7 @@
       "pullQuote": "Following its well-received Off Broadway run produced by Audible last year, the musical retains its wickedness, vibrancy and nerve, as well as its extraordinary ensemble of actors. It also has Arnulfo Maldonado's giant cube of a set, housing its kick-ass band, honkytonk ambiance and much of the action.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "dead-outlaw-2025",
@@ -101864,23 +101881,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "heisenberg-2016",
-      "outletId": "ap",
-      "outlet": "Associated Press",
-      "assignedScore": 91,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Mark Kennedy",
-      "url": "https://www.washingtontimes.com/news/2016/oct/13/review-broadways-bare-play-heisenberg-is-sumptuous/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "He captures new love and old love at the same time, hope and fear, the new world and the old.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "heisenberg-2016",
@@ -172757,23 +172757,6 @@
     },
     {
       "showId": "present-laughter-2017",
-      "outletId": "thestage",
-      "outlet": "The Stage",
-      "assignedScore": 44,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Mark Shenton",
-      "url": "https://www.thestage.co.uk/reviews/present-laughter-starring-kevin-kline--review-at-st-james-theatre-new-york--lugubrious",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It feels lugubrious and weighty rather effortless.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "present-laughter-2017",
       "outletId": "theater-life",
       "outlet": "Theater Life",
       "assignedScore": 70,
@@ -236157,10 +236140,10 @@
       "url": "https://www.broadwaynews.com/2021/10/13/review-thoughts-of-a-colored-man-asks-the-audience-to-listen/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "The costumes, by Toni-Leslie James and Devario D. Simmons, help bring some pop to the proceedings with their sharp emphasis on just black, white and red. One of the liveliest presences is Forrest McClendon, who portrays with biting humor a man working at a Whole Foods store.",
+      "pullQuote": "Written in a mixture of styles — monologues and dialogues, rhymed poetry, song and traditional staged dramatic scenes — the play, at the Golden Theatre, serves up a kaleidoscopic if occasionally didactic portrait of Black men’s lives as they are lived today in the city.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
