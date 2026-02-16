@@ -572,10 +572,7 @@ function HomePageInner() {
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
-          Every show. Every review. One score.
-        </p>
-        <p className="text-gray-500 text-sm mt-1">
-          Aggregating <span className="text-gray-400 font-medium">{getDataStats().totalReviews.toLocaleString()}</span> critic reviews and counting...
+          {shows.length.toLocaleString()} shows. {getDataStats().totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
