@@ -59,6 +59,7 @@ jobs:
           node scripts/scrape-playbill-verdict.js $SHOWS_FLAG
 
       - name: Commit and push changes
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -126,6 +127,7 @@ jobs:
           node scripts/scrape-nyc-theatre-roundups.js $SHOWS_FLAG
 
       - name: Commit and push changes
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -185,6 +187,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Commit and push rebuilt reviews.json
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

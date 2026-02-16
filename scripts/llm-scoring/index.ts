@@ -325,7 +325,7 @@ function parseArgs(): ScoringPipelineOptions & {
   const rateLimitMs = rateLimitArg ? parseInt(rateLimitArg.split('=')[1]) : 100;
 
   const checkpointArg = args.find(a => a.startsWith('--checkpoint='));
-  const checkpointInterval = checkpointArg ? parseInt(checkpointArg.split('=')[1]) : (process.env.GITHUB_ACTIONS ? 100 : 0);
+  const checkpointInterval = checkpointArg ? parseInt(checkpointArg.split('=')[1]) : (process.env.GITHUB_ACTIONS ? 50 : 0);
 
   const shardArg = args.find(a => a.startsWith('--shard='));
   const shard = shardArg ? parseInt(shardArg.split('=')[1]) : undefined;

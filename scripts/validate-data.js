@@ -1405,8 +1405,52 @@ function validateCrossFileKeys(shows) {
     }
   }
 
+  // 4. Grosses keys must be show slugs
+  const grossesKeyFile = path.join(__dirname, '..', 'data', 'grosses.json');
+  if (fs.existsSync(grossesKeyFile)) {
+    try {
+      const grosses = JSON.parse(fs.readFileSync(grossesKeyFile, 'utf8'));
+      const grossesKeys = Object.keys(grosses.shows || {});
+
+      for (const key of grossesKeys) {
+        if (!slugSet.has(key)) {
+          if (idSet.has(key)) {
+            warn(`grosses.json key "${key}" is a show ID, not a slug. Should be "${idToSlug.get(key)}"`);
+          } else {
+            warn(`grosses.json key "${key}" not found in shows.json (orphan entry)`);
+          }
+          issues++;
+        }
+      }
+    } catch (e) {
+      // Parse errors handled in validateGrossesJson
+    }
+  }
+
+  // 5. Grosses-history keys must be show slugs
+  const grossesHistFile = path.join(__dirname, '..', 'data', 'grosses-history.json');
+  if (fs.existsSync(grossesHistFile)) {
+    try {
+      const history = JSON.parse(fs.readFileSync(grossesHistFile, 'utf8'));
+      const historyKeys = Object.keys(history).filter(k => !k.startsWith('_') && k !== 'weeks');
+
+      for (const key of historyKeys) {
+        if (!slugSet.has(key)) {
+          if (idSet.has(key)) {
+            warn(`grosses-history.json key "${key}" is a show ID, not a slug`);
+          } else {
+            warn(`grosses-history.json key "${key}" not found in shows.json (orphan entry)`);
+          }
+          issues++;
+        }
+      }
+    } catch (e) {
+      // Parse errors handled elsewhere
+    }
+  }
+
   if (issues === 0) {
-    ok('All cross-file keys are consistent (commercial=slug, awards=ID, audience=ID)');
+    ok('All cross-file keys are consistent (commercial=slug, awards=ID, audience=ID, grosses=slug)');
   } else {
     warn(`${issues} cross-file key issue(s) found — run audit scripts for details`);
   }
