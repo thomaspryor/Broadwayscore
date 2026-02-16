@@ -2820,6 +2820,7 @@ async function discoverCorrectUrl(review) {
 
   try {
     // Provider chain: ScrapingBee → Bright Data
+    // null = provider failure (down/exhausted), [] = searched but no results
     let results = await _serpViaScrapingBee(query);
     let provider = 'scrapingbee';
     if (!results) {
@@ -2827,7 +2828,13 @@ async function discoverCorrectUrl(review) {
       provider = 'brightdata';
     }
 
-    if (!results || !results.length) {
+    // Both providers down — return sentinel so caller doesn't penalize the review
+    if (results === null) {
+      console.log(`    ✗ All SERP providers unavailable — skipping URL discovery (will NOT count as failure)`);
+      return '__SERP_UNAVAILABLE__';
+    }
+
+    if (!results.length) {
       console.log(`    ✗ No search results found (via ${provider})`);
       return null;
     }
@@ -4808,6 +4815,16 @@ async function processReview(review) {
     } catch (e) {}
 
     const discoveredUrl = await discoverCorrectUrl(review);
+    // SERP providers down — don't mark as attempted, let it retry next run
+    if (discoveredUrl === '__SERP_UNAVAILABLE__') {
+      try {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        delete fileData._showNotMentionedDiscoveryAttempted;
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      } catch (e) {}
+      stats.totalFailed++;
+      return { success: false, error: 'serp_unavailable' };
+    }
     if (discoveredUrl && discoveredUrl !== review.url) {
       console.log(`  [showNotMentioned] Discovered: ${review.url} → ${discoveredUrl}`);
       review._previousUrl = review.url;
@@ -4943,6 +4960,13 @@ async function processReview(review) {
       if (!discoveredUrl) {
         console.log('  [URL Discovery] Attempting to find correct URL via Google...');
         discoveredUrl = await discoverCorrectUrl(review);
+      }
+
+      // SERP providers all down — don't penalize this review, just skip it for this run
+      if (discoveredUrl === '__SERP_UNAVAILABLE__') {
+        console.log('  [URL Discovery] SERP unavailable — will retry next run without penalty');
+        stats.totalFailed++;
+        return { success: false, error: 'serp_unavailable' };
       }
 
       if (discoveredUrl) {
