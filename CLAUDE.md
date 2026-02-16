@@ -65,6 +65,48 @@ Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore` to
 When finishing: update the issue body (move item to "Recently Done") and post a comment summarizing what was done.
 **Rabbit hole prevention:** If you discover a new issue mid-task, add it to Backlog via a comment and continue your current work. Do NOT context-switch unless the user explicitly asks.
 
+### 10. Pipeline Operations — Test, Monitor, Parallelize
+**Every session that launches workflows MUST follow this protocol:**
+
+#### Before Launching
+1. **Verify secrets work** before launching overnight runs. Run a single test workflow, wait for it to complete (~15 min), check logs for errors like `Failed to parse`, `Unexpected end of JSON input`, or `auth failed`. Never assume secrets are correct — validate them.
+2. **Check slot availability**: `gh api "/repos/thomaspryor/Broadwayscore/actions/runs?status=in_progress" --jq '.total_count'` — must be <35 before launching a batch.
+3. **Use 10+ second spacing** between `gh workflow run` calls. GitHub silently drops runs launched faster. Use `scripts/launch-domain-runs.sh` pattern.
+4. **Parallelize scoring aggressively**: Always use `-f shard=N -f total_shards=10` for LLM scoring. Never run unsharded — one sequential shard takes 40+ hours for the full corpus.
+
+#### While Running
+5. **Check within 15 minutes** of launch. Don't wait hours. Verify: (a) runs actually started (`gh api .../runs?status=in_progress`), (b) no parse/auth errors in early logs, (c) cookies loading correctly.
+6. **Monitor chaining**: After a run completes, verify the chain dispatch created a new run. Chain dispatch can silently fail if inputs are wrong.
+
+#### Standard Launch Patterns
+```bash
+# Scoring (ALWAYS 10 shards)
+for i in $(seq 0 9); do
+  gh workflow run "LLM Ensemble Score Reviews" -f shard=$i -f total_shards=10 -f chain=true -f remaining_batches=5 -f run_calibration=false -f run_validation=false
+  sleep 11
+done
+
+# Collection (ALWAYS chained, specify remaining_batches)
+gh workflow run "Collect Review Texts" -f chain=true -f remaining_batches=10 -f browserbase_enabled=true
+
+# Bulk collection (parallel jobs)
+gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=5 -f max_rounds=3 -f browserbase_enabled=true -f aggressive=true
+
+# Per-domain (test cookies)
+gh workflow run "Collect Review Texts" -f domain_filter=DOMAIN -f max_reviews=5 -f browserbase_enabled=true
+```
+
+#### After Runs Complete
+7. **Trigger a rebuild** if collection ran but no rebuild followed: `gh workflow run "Rebuild Reviews Data"`
+8. **Verify data landed**: Check `reviews.json` was updated, content tiers improved, scores assigned.
+
+#### Known Pitfalls
+- **GitHub drops runs launched <10s apart** — no error returned, run silently never created
+- **Cookie secrets can be corrupted** during upload — always verify by checking logs for `🍪 Loaded N cookies` vs `⚠ Failed to parse`
+- **ScrapingBee credits exhaust** around 3.25M calls/month (renewal March 2) — other tiers still work
+- **Unsharded scoring = days** — ALWAYS shard to 10. 5,000 reviews ÷ 10 shards = hours, not days
+- **`remaining_batches` defaults to 0** = NO CHAINING — must set explicitly
+
 ---
 
 ## Project Overview
@@ -121,10 +163,15 @@ data/
   id, title, slug, venue, openingDate, closingDate, status, type, runtime, intermissions,
   images: { hero, thumbnail, poster }, synopsis, ageRecommendation, tags,
   previewsStartDate, ticketLinks: [{ platform, url, priceFrom }],
-  creativeTeam: [{ name, role }], officialUrl, trailerUrl, theaterAddress
+  creativeTeam: [{ name, role }], cast: [{ name, role }],
+  officialUrl, trailerUrl, theaterAddress
 }
 ```
 **Status:** `"open"` | `"previews"` | `"closed"`
+
+**What's displayed on show pages vs. stored-only:**
+- **`creativeTeam`**: Only **principal roles** are rendered — filtered by regex in `show/[slug]/page.tsx`: Director, Co-Director, Book, Music, Lyrics, Playwright, Composer, Lyricist, Author, Translator, Adaptation. Design roles (Scenic, Costume, Lighting, Sound) are stored but **not displayed**. Don't prioritize enriching design credits.
+- **`cast`**: **Not displayed anywhere yet.** Stored in shows.json for future use. The `CastUpdatesCard` on show pages uses a separate data source (`data-cast.ts`), not this field. Don't spend time enriching cast data until the site renders it.
 
 ### Grosses Schema
 ```typescript
