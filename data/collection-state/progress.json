@@ -29,7 +29,11 @@
     "on-your-feet-2015/musical-theatre-review--ron-cohen.json",
     "on-your-feet-2015/theatre-reviews-limited--david-roberts.json",
     "oslo-2017/edge-new-york--wickham-boyle.json",
-    "tammy-faye-2024/theatre-reviews-limited--david-roberts.json"
+    "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "the-lion-king-1997/vulture--john-simon.json"
   ],
   "failed": [
     "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
@@ -61,7 +65,13 @@
     "pippin-2013/new-jersey-newsroom--michael-sommers.json",
     "priscilla-queen-of-the-desert-2011/njnewsroom--michael-sommers.json",
     "promises-promises-2010/nj-newsroom--michael-sommers.json",
-    "tammy-faye-2024/this-week-in-new-york--mark-rifkin.json"
+    "tammy-faye-2024/this-week-in-new-york--mark-rifkin.json",
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "wicked-2003/newyorker--.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -100,10 +110,26 @@
       "lempicka-2024/broadwaynews--brittani-samuel.json",
       "machinal-2014/thewrap--robert-hofler.json",
       "miss-saigon-2017/musical-theatre-review--ron-cohen.json",
-      "on-your-feet-2015/musical-theatre-review--ron-cohen.json"
+      "on-your-feet-2015/musical-theatre-review--ron-cohen.json",
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "the-lion-king-1997/vulture--john-simon.json"
     ]
   },
   "startTime": "2026-02-16T00:03:27.907Z",
-  "lastProcessed": "tammy-faye-2024/this-week-in-new-york--mark-rifkin.json",
-  "log": []
+  "lastProcessed": "wicked-2003/newyorker--.json",
+  "log": [
+    {
+      "t": "2026-02-16T00:13:58.827Z",
+      "event": "bb-session",
+      "session": "deec2e3f",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T00:14:47.717Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
