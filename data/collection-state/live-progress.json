@@ -1,15 +1,106 @@
 {
-  "updatedAt": "2026-02-16T18:08:18.848Z",
-  "processed": 9,
-  "failed": 11,
-  "successRate": "45.0%",
+  "updatedAt": "2026-02-16T18:15:23.153Z",
+  "processed": 88,
+  "failed": 112,
+  "successRate": "44.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 64,
+    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 9
+    "brightdata": 16,
+    "archiveToday": 0,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 8,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T18:07:40.657Z",
+      "event": "bb-session",
+      "session": "7784b9ea",
+      "url": "https://www.usatoday.com/story/life/theater/2008/10/06/thirteen-broadway-review/"
+    },
+    {
+      "t": "2026-02-16T18:07:42.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:08:54.287Z",
+      "event": "bb-session",
+      "session": "d47ae4fe",
+      "url": "https://www.usatoday.com/life/movies/reviews/story/2011-12-15/carnage/51987038/1"
+    },
+    {
+      "t": "2026-02-16T18:08:56.484Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:09:58.144Z",
+      "event": "bb-session",
+      "session": "6436a5e7",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-04-23/nice-work-if-you-"
+    },
+    {
+      "t": "2026-02-16T18:10:00.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:10:45.143Z",
+      "event": "bb-session",
+      "session": "8a7e32cd",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2022/12/09/ohio-state-murde"
+    },
+    {
+      "t": "2026-02-16T18:10:47.017Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:12:07.216Z",
+      "event": "bb-session",
+      "session": "b5966d39",
+      "url": "https://www.usatoday.com/story/entertainment/music/2025/03/24/othello-denzel-was"
+    },
+    {
+      "t": "2026-02-16T18:12:09.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:12:45.617Z",
+      "event": "bb-session",
+      "session": "f7ec1e9c",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-citi"
+    },
+    {
+      "t": "2026-02-16T18:12:47.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:13:47.064Z",
+      "event": "bb-session",
+      "session": "b8ab9c5b",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-citi"
+    },
+    {
+      "t": "2026-02-16T18:13:49.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T18:14:48.949Z",
+      "event": "bb-session",
+      "session": "bf740aae",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-bro"
+    },
+    {
+      "t": "2026-02-16T18:14:50.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
