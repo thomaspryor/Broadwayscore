@@ -54,7 +54,13 @@
     "the-encounter-2016/nytimes--unknown.json",
     "the-hills-of-california-2024/nytimes--houman-barekat.json",
     "the-hills-of-california-2024/nytimes--jesse-michaels.json",
-    "the-humans-2016/nytimes--unknown.json"
+    "the-humans-2016/nytimes--unknown.json",
+    "the-inheritance-2019/nytimes--ben-brantley.json",
+    "the-lehman-trilogy-2021/nytimes--unknown.json",
+    "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -91,7 +97,11 @@
     "something-rotten-2015/nytimes--unknown.json",
     "soul-doctor-2013/nytimes--charles-isherwood.json",
     "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
-    "summer-2018/nytimes--ben-brantley.json"
+    "summer-2018/nytimes--ben-brantley.json",
+    "the-little-foxes-2017/nytimes--alexis-soloski.json",
+    "the-little-foxes-2017/nytimes--unknown.json",
+    "the-road-to-mecca-2012/nytimes--ben-brantley.json",
+    "the-scottsboro-boys-2010/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -161,11 +171,17 @@
       "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
       "the-encounter-2016/nytimes--unknown.json",
       "the-hills-of-california-2024/nytimes--houman-barekat.json",
-      "the-hills-of-california-2024/nytimes--jesse-michaels.json"
+      "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+      "the-inheritance-2019/nytimes--ben-brantley.json",
+      "the-lehman-trilogy-2021/nytimes--unknown.json",
+      "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-02-16T13:01:53.962Z",
-  "lastProcessed": "the-humans-2016/nytimes--unknown.json",
+  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-16T13:02:01.250Z",
@@ -241,6 +257,28 @@
     },
     {
       "t": "2026-02-16T13:15:12.617Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:16:13.662Z",
+      "event": "bb-session",
+      "session": "bbfd8976",
+      "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-amer"
+    },
+    {
+      "t": "2026-02-16T13:16:58.247Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:17:35.683Z",
+      "event": "bb-session",
+      "session": "6a45bdf1",
+      "url": "https://www.nytimes.com/2010/11/13/theater/reviews/13scottsboro.html"
+    },
+    {
+      "t": "2026-02-16T13:18:20.095Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
