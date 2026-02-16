@@ -811,8 +811,8 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         <FooterEmailCapture />
       </div>
 
-      {/* Featured Rows — content-visibility defers rendering until near viewport */}
-      <div className="mt-8 pt-8 border-t border-white/5" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 1600px' } as React.CSSProperties}>
+      {/* Featured Rows */}
+      <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow
           title="Best Recent Plays"
           shows={bestNewPlays}
