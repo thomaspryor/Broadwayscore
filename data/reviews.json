@@ -4,13 +4,13 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 15088,
+      "totalReviews": 15083,
       "skippedNoScore": 2564,
       "skippedDuplicate": 96,
       "skippedDuplicateUrl": 408,
       "skippedCrossOutletDuplicateUrl": 30,
-      "skippedDuplicateText": 491,
-      "skippedFingerprintDedup": 78,
+      "skippedDuplicateText": 492,
+      "skippedFingerprintDedup": 79,
       "skippedWrongProduction": 1951,
       "recoveredFromGarbage": 138,
       "scoreSources": {
@@ -18,9 +18,9 @@
         "explicit-outOf": 0,
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
-        "human-review": 68,
+        "human-review": 67,
         "originalScore-priority0": 1665,
-        "llmScore": 10605,
+        "llmScore": 10601,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 2674,
         "llmScore-review": 2,
@@ -11962,23 +11962,6 @@
       "publishDate": "November 15, 2015",
       "originalRating": null,
       "pullQuote": "This production proves that van Hove's attempts to untether A View From the Bridge have only locked it away further, behind an opaque cube that, like that of his set, he'",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "outletId": "artsdesk",
-      "outlet": "The Arts Desk",
-      "assignedScore": 64,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Matt Wolf",
-      "url": "https://www.theartsdesk.com/theatre/view-bridge-young-vic",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The cold and stripped-down production has enough textual cuts that it can be called \"A Abridged,\"",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -48244,7 +48227,7 @@
       "outletId": "thestage",
       "outlet": "The Stage",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Shenton",
@@ -48254,7 +48237,7 @@
       "pullQuote": "Jack O'Brien's production balances these competing, problematic tensions with some grit, playing the dramatic scenes with intense feeling.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "carousel-2018",
@@ -96013,7 +95996,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamilton-2015",
@@ -101524,23 +101507,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "hedwig-and-the-angry-inch-2014",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
-      "publishDate": "April 23, 2014",
-      "originalRating": null,
-      "pullQuote": "His boots and the show are much kinkier than anything else on Broadway.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
@@ -115449,7 +115415,7 @@
       "pullQuote": "Little wonder that so many are so eager to salute Sondheim; we can only hope for more homages as lovely as this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -178294,7 +178260,7 @@
       "pullQuote": "The moments of Kline and Burton together represent the production's peak of civilized high comedy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "present-laughter-2017",
@@ -192211,23 +192177,6 @@
     },
     {
       "showId": "significant-other-2017",
-      "outletId": "as-her-world-turns",
-      "outlet": "As Her World Turns",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Erica Meyer",
-      "url": "http://www.asherworldturns.com/theater-recap-june-2015/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's a special show and I'm glad I caught it.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "significant-other-2017",
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 81,
@@ -199059,23 +199008,6 @@
       "originalRating": null,
       "pullQuote": "Watching this play by David Adjmi made me think of the last (and possibly the only other) play I’ve seen that was set in a recording studio, “Million Dollar Quartet,” not because there were any similarities between the two, but precisely because their differences made me realize how I could be impressed by the writing and acting in “Stereophonic...",
       "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "complete"
-    },
-    {
-      "showId": "stereophonic-2024",
-      "outletId": "nytg",
-      "outlet": "New York Theatre Guide",
-      "assignedScore": 82,
-      "scoreSource": "human-review",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Allison Considine",
-      "url": "https://www.newyorktheatreguide.com/reviews/stereophonic-broadway-review",
-      "publishDate": "2024-04-19T23:58:03-04:00",
-      "originalRating": null,
-      "pullQuote": "The naturalistic, overlapping dialogue ranges from slow meditations on donuts to fiery, violent spats between bandmates, and it’s completely absorbing.",
-      "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
     },
@@ -220847,23 +220779,6 @@
       "showId": "the-house-of-blue-leaves-2011",
       "outletId": "village-voice",
       "outlet": "Village Voice",
-      "assignedScore": 70,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Alexis Soloski",
-      "url": "https://www.villagevoice.com/2011-04-27/theater/the-house-of-blue-leaves-visits-unsunnyside-queens/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Yet together they somehow harmonize, ably conveying Guare's gentle, genial take on the pathos of unremarkable, everyday lives.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "the-house-of-blue-leaves-2011",
-      "outletId": "village-voice",
-      "outlet": "Village Voice",
       "assignedScore": 64,
       "scoreSource": "llmScore",
       "bucket": "Mixed",
@@ -231790,7 +231705,7 @@
       "pullQuote": "The script, which in 1990 earned the Pulitzer Prize for Drama, remains a thing of lyrical beauty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -236381,7 +236296,7 @@
       "pullQuote": "Unfortunately, even Tomei’s vivifying, staunchly committed performance isn’t enough to keep this ripe comedy at the emotional heights it needs to sustain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-rose-tattoo-2019",
@@ -243518,10 +243433,10 @@
       "url": "https://www.broadwaynews.com/2021/10/13/review-thoughts-of-a-colored-man-asks-the-audience-to-listen/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Written in a mixture of styles — monologues and dialogues, rhymed poetry, song and traditional staged dramatic scenes — the play, at the Golden Theatre, serves up a kaleidoscopic if occasionally didactic portrait of Black men’s lives as they are lived today in the city.",
+      "pullQuote": "The costumes, by Toni-Leslie James and Devario D. Simmons, help bring some pop to the proceedings with their sharp emphasis on just black, white and red. One of the liveliest presences is Forrest McClendon, who portrays with biting humor a man working at a Whole Foods store.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
