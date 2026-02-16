@@ -1,15 +1,127 @@
 {
-  "updatedAt": "2026-02-16T13:17:20.344Z",
-  "processed": 71,
-  "failed": 109,
-  "successRate": "39.4%",
+  "updatedAt": "2026-02-16T13:19:01.833Z",
+  "processed": 29,
+  "failed": 71,
+  "successRate": "29.0%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 11,
-    "archive": 20
+    "brightdata": 16,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T12:27:30.670Z",
+      "event": "bb-session",
+      "session": "4771db63",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
+    },
+    {
+      "t": "2026-02-16T12:28:12.550Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T12:28:51.262Z",
+      "event": "bb-session",
+      "session": "261a21db",
+      "url": "https://www.wsj.com/articles/american-son-review-living-while-black-1541711143"
+    },
+    {
+      "t": "2026-02-16T12:29:38.397Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:30:01.132Z",
+      "event": "bb-session",
+      "session": "76463b4f",
+      "url": "https://www.wsj.com/articles/an-american-in-paris-review-not-since-robbins-14289"
+    },
+    {
+      "t": "2026-02-16T12:31:14.242Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:31:35.655Z",
+      "event": "bb-session",
+      "session": "91966db0",
+      "url": "https://www.wsj.com/articles/SB10000872396390444620104578014550867896632"
+    },
+    {
+      "t": "2026-02-16T12:32:22.119Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:33:32.720Z",
+      "event": "bb-session",
+      "session": "b9a65a92",
+      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
+    },
+    {
+      "t": "2026-02-16T12:34:45.906Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:35:33.110Z",
+      "event": "bb-session",
+      "session": "0875e6ff",
+      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
+    },
+    {
+      "t": "2026-02-16T12:36:46.132Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:37:18.972Z",
+      "event": "bb-session",
+      "session": "5522aa3d",
+      "url": "https://www.wsj.com/articles/anastasia-review-a-lavish-spectacle-thats-easier-on"
+    },
+    {
+      "t": "2026-02-16T12:38:31.585Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:39:04.096Z",
+      "event": "bb-session",
+      "session": "fde3e648",
+      "url": "https://www.wsj.com/articles/SB10001424127887324735104578147043471091112"
+    },
+    {
+      "t": "2026-02-16T12:40:16.869Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:42:04.976Z",
+      "event": "bb-session",
+      "session": "724f8ee2",
+      "url": "https://www.wsj.com/articles/SB10001424052748704461304576216513166750690"
+    },
+    {
+      "t": "2026-02-16T12:43:17.991Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T12:45:05.514Z",
+      "event": "bb-session",
+      "session": "79253a84",
+      "url": "https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6d"
+    },
+    {
+      "t": "2026-02-16T12:46:18.522Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    }
+  ]
 }
