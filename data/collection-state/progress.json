@@ -52,7 +52,11 @@
     "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
     "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
     "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
-    "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json"
+    "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+    "war-horse-2011/nydailynews--joe-dziemianowicz.json",
+    "cabaret-2024/advertisement--chris-jones.json"
   ],
   "failed": [
     "a-beautiful-noise-the-neil-diamond-musical-2022/nydailynews--new-york-daily-news.json",
@@ -81,34 +85,13 @@
     "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
     "the-present-2017/nydailynews--joe-dziemianowicz.json",
     "the-price-2017/nydailynews--chris-jones.json",
-    "the-price-2017/nydailynews--joe-dziemianowicz.json"
+    "the-price-2017/nydailynews--joe-dziemianowicz.json",
+    "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "bug-2026/theatre-reviews-limited--david-roberts.json",
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "days-of-wine-and-roses-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/edge-new-york--daniel-neiden.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/theatre-reviews-limited--michele-willens.json",
-      "indecent-2017/theatre-reviews-limited--david-roberts.json",
-      "jajas-african-hair-braiding-2023/theatre-reviews-limited--joseph-verlezza.json",
-      "once-upon-a-mattress-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "saint-joan-2018/theatre-reviews-limited--david-roberts.json",
-      "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
-      "the-children-2017/theatre-reviews-limited--david-roberts.json",
-      "the-nap-2018/theatre-reviews-limited--david-roberts.json",
-      "the-notebook-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "torch-song-2018/theatre-reviews-limited--david-roberts.json",
-      "waiting-for-godot-2013/theatre-reviews-limited--david-roberts.json",
-      "a-bronx-tale-2007/broadway-and-me--janice-c-simpson.json",
-      "a-bronx-tale-2007/more-than-the-play-blog--domenick-danza.json",
-      "a-christmas-carol-2019/front-row-center--tulis-mccall.json",
-      "a-view-from-the-bridge-2015/broadway-and-me--janice-c-simpson.json",
-      "aint-too-proud-2019/front-row-center--donna-herman.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -130,7 +113,8 @@
       "sylvia-2015/nydailynews--joe-dziemianowicz.json",
       "the-cherry-orchard-2016/nydailynews--joe-dziemianowicz.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json"
+      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+      "cabaret-2024/advertisement--chris-jones.json"
     ],
     "archive": [
       "a-behanding-in-spokane-2010/nydailynews--joe-dziemianowicz.json",
@@ -167,11 +151,13 @@
       "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
       "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
       "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
-      "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json"
+      "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+      "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+      "war-horse-2011/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-02-16T12:39:32.017Z",
-  "lastProcessed": "the-price-2017/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "cabaret-2024/advertisement--chris-jones.json",
   "log": [
     {
       "t": "2026-02-16T12:41:27.900Z",
@@ -544,6 +530,17 @@
     },
     {
       "t": "2026-02-16T13:09:07.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T13:10:43.800Z",
+      "event": "bb-session",
+      "session": "054b4108",
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-reviv"
+    },
+    {
+      "t": "2026-02-16T13:10:45.792Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
