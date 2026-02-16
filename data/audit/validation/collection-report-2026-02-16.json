@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T03:20:56.655Z",
+  "runDate": "2026-02-16T03:25:49.273Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 50,
-    "failed": 15,
+    "processed": 51,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "76.9%"
+    "successRate": "78.5%"
   },
   "tierBreakdown": {
     "playwright": 34,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 6,
-    "archive": 12
+    "archive": 13
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -32,13 +32,13 @@
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 5,
-    "totalFailed": 5,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -92,7 +92,8 @@
     "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
     "illinoise-2024/talkinbroadway--matthew-murray.json",
     "ink-2019/the-stage-uk--naveen-kumar.json",
-    "kiss-me-kate-2019/front-row-center--tulis-mccall.json"
+    "kiss-me-kate-2019/front-row-center--tulis-mccall.json",
+    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
   ],
   "failed": [
     "a-strange-loop-2022/thewrap--robert-hofler.json",
@@ -105,11 +106,10 @@
     "between-riverside-and-crazy-2022/theater-scene--joseph-pisano.json",
     "fences-2010/talkinbroadway--matthew-murray.json",
     "glengarry-glen-ross-2012/talkinbroadway--matthew-murray.json",
-    "buena-vista-social-club-2025/amny--matt-windman.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "mean-girls-2018/am-newyork--matt-windman.json",
-    "9-to-5-2009/amny--unknown.json",
-    "a-bronx-tale-2007/amny--matt-windman.json"
+    "1984-2017/bloomberg-news--jason-zinoman.json",
+    "a-life-in-the-theatre-2010/bloomberg-news--john-simon.json",
+    "after-midnight-2013/bloomberg-news--unknown.json",
+    "big-fish-2013/bloomberg-news--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -170,7 +170,8 @@
       "dont-dress-for-dinner-2012/amny--matt-windman.json",
       "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
       "godspell-2011/northjerseycom--robert-feldberg.json",
-      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json"
+      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
+      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
     ]
   },
   "failuresByOutlet": {},
