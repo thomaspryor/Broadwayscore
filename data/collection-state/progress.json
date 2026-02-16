@@ -1,39 +1,103 @@
 {
   "processed": [
-    "dead-outlaw-2025/observer--david-cote.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json",
-    "dead-outlaw-2025/latimes--charles-mcnulty.json",
-    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "700-sundays-2013/nytimes--ben-brantley.json",
+    "a-catered-affair-2008/nytimes--ben-brantley.json",
+    "airline-highway-2015/nytimes--charles-isherwood.json",
+    "allegiance-2015/nytimes--ben-brantley.json",
+    "allegiance-2015/nytimes--charles-isherwood.json",
+    "an-enemy-of-the-people-2012/nytimes--unknown.json",
+    "anything-goes-2011/nytimes--ben-brantley.json",
+    "bad-cinderella-2023/nytimes--unknown.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json"
   ],
   "failed": [
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "dead-outlaw-2025/variety--frank-rizzo.json",
-    "dead-outlaw-2025/variety--unknown.json",
-    "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--unknown.json",
-    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/dailybeast--unknown.json",
-    "dead-outlaw-2025/usatoday--patrick-ryan.json"
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "13-2008/nytimes--ben-brantley.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "american-buffalo-2022/nytimes--jesse-green.json",
+    "an-act-of-god-2016/nytimes--ben-brantley.json",
+    "anastasia-2017/nytimes--ben-brantley.json",
+    "baby-its-you-2011/nytimes--ben-brantley.json",
+    "baby-its-you-2011/nytimes--charles-isherwood.json",
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "dead-outlaw-2025/variety--unknown.json",
-      "dead-outlaw-2025/observer--david-cote.json",
-      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/allegiance-2015/nytimes--ben-brantley.json",
+      "allegiance-2015/nytimes--ben-brantley.json",
+      "data/review-texts/allegiance-2015/nytimes--charles-isherwood.json",
+      "allegiance-2015/nytimes--charles-isherwood.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "dead-outlaw-2025/theatermania--zachary-stewart.json",
-      "dead-outlaw-2025/latimes--charles-mcnulty.json"
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "700-sundays-2013/nytimes--ben-brantley.json",
+      "a-catered-affair-2008/nytimes--ben-brantley.json",
+      "airline-highway-2015/nytimes--charles-isherwood.json",
+      "an-enemy-of-the-people-2012/nytimes--unknown.json",
+      "anything-goes-2011/nytimes--ben-brantley.json",
+      "bad-cinderella-2023/nytimes--unknown.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "cats-1982/nytimes--charles-isherwood.json"
     ]
   },
-  "startTime": "2026-02-16T06:47:54.290Z",
-  "lastProcessed": "dead-outlaw-2025/usatoday--patrick-ryan.json",
-  "log": []
+  "startTime": "2026-02-16T06:50:04.099Z",
+  "lastProcessed": "cats-1982/nytimes--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-02-16T06:50:12.240Z",
+      "event": "bb-session",
+      "session": "3f81b336",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T06:50:58.719Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:51:59.589Z",
+      "event": "bb-session",
+      "session": "b7e0d3ac",
+      "url": "http://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-le"
+    },
+    {
+      "t": "2026-02-16T06:52:45.610Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:53:49.005Z",
+      "event": "bb-session",
+      "session": "d1bc0156",
+      "url": "https://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-l"
+    },
+    {
+      "t": "2026-02-16T06:54:35.210Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
