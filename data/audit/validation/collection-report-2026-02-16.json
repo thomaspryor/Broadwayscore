@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T12:12:21.182Z",
+  "runDate": "2026-02-16T12:23:21.869Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,88 +11,73 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 17,
+    "processed": 2,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "29.2%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 18,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier1_5Attempts": 18,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 18,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 18,
-    "tier3Success": 8,
-    "tier4Attempts": 10,
+    "tier3Attempts": 6,
+    "tier3Success": 2,
+    "tier4Attempts": 4,
     "tier4Success": 2,
-    "totalFailed": 17,
+    "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 18,
-    "browserbaseMinutesUsed": 5.1,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "1776-2022/newyorker--naomi-fry.json",
-    "1984-2017/newyorker--hilton-als.json",
-    "a-christmas-carol-2019/newyorker--jesse-green.json",
-    "a-christmas-carol-2022/newyorker--naomi-fry.json",
-    "a-free-man-of-color-2010/newyorker--hilton-als.json",
-    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
-    "act-one-2014/newyorker--hilton-als.json",
-    "aint-no-mo-2022/newyorker--naomi-fry.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "finding-neverland-2015/telegraph--matt-wolf.json",
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "mean-girls-2018/the-telegraph-uk--diane-snyder.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+      "west-side-story-2020/telegraph--diane-snyder.json"
     ],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "lombardi-2010/newyorker--uncredited.json"
+      "matilda-the-musical-2013/telegraph--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 8,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+    "Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
