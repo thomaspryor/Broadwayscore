@@ -1,27 +1,49 @@
 {
-  "updatedAt": "2026-02-16T17:01:09.133Z",
-  "processed": 6,
-  "failed": 64,
-  "successRate": "8.6%",
+  "updatedAt": "2026-02-16T17:02:10.156Z",
+  "processed": 26,
+  "failed": 42,
+  "successRate": "38.2%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 24,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 6
+    "brightdata": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-16T16:59:24.155Z",
+      "t": "2026-02-16T16:44:47.904Z",
       "event": "bb-session",
-      "session": "a422437f",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+      "session": "81e4f687",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
     },
     {
-      "t": "2026-02-16T16:59:26.351Z",
+      "t": "2026-02-16T16:44:49.764Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T16:45:13.646Z",
+      "event": "bb-session",
+      "session": "2b0f57b1",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
+    },
+    {
+      "t": "2026-02-16T16:45:15.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T16:45:47.647Z",
+      "event": "bb-session",
+      "session": "b49caca4",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-02-16T16:45:49.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
