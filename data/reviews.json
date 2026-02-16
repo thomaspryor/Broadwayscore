@@ -4,14 +4,14 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 15393,
-      "skippedNoScore": 2244,
+      "totalReviews": 15790,
+      "skippedNoScore": 1841,
       "skippedDuplicate": 96,
       "skippedDuplicateUrl": 407,
       "skippedCrossOutletDuplicateUrl": 30,
-      "skippedDuplicateText": 491,
-      "skippedFingerprintDedup": 77,
-      "skippedWrongProduction": 1960,
+      "skippedDuplicateText": 492,
+      "skippedFingerprintDedup": 79,
+      "skippedWrongProduction": 1962,
       "recoveredFromGarbage": 138,
       "scoreSources": {
         "explicit-stars": 4,
@@ -20,14 +20,14 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1666,
-        "llmScore": 10626,
+        "llmScore": 10649,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 2977,
+        "llmScore-lowconf": 3362,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 35
+        "thumb": 24
       }
     }
   },
@@ -194711,7 +194711,7 @@
       "showId": "significant-other-2017",
       "outletId": "broadway-blog",
       "outlet": "Broadway Blog",
-      "assignedScore": 61,
+      "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
@@ -194719,7 +194719,7 @@
       "url": "https://thebroadwayblog.com/2017/03/03/16107-significant-other-broadway-review",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "It's attractive, it has some wit and a decent personality, but there's just not enough substance for a full-fledged commitment of time or money.",
+      "pullQuote": "'Significant Other' translates simply to a good date: It's attractive, it has some wit and a decent personality, but there's just not enough substance for a full-fledged commitment of time or money.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -218261,7 +218261,7 @@
       "showId": "the-country-girl-2008",
       "outletId": "nypost",
       "outlet": "New York Post",
-      "assignedScore": 61,
+      "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
@@ -220892,6 +220892,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-encounter-2016",
+      "outletId": "nypost",
+      "outlet": "New York Post",
+      "assignedScore": 42,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Unknown",
+      "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podcast-like-encounter/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "'The Encounter' would work better as a podcast, where a listener can focus on the words, and pause and rewind in private.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-encounter-2016",
@@ -227576,6 +227593,23 @@
     },
     {
       "showId": "the-hills-of-california-2024",
+      "outletId": "deadline",
+      "outlet": "Deadline",
+      "assignedScore": 81,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Unknown",
+      "url": null,
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "A superbly performed reckoning with old traumas and those family squabbles that can seem so petty on the surface.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "stub"
+    },
+    {
+      "showId": "the-hills-of-california-2024",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
       "assignedScore": 87,
@@ -229882,23 +229916,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "At that point it is an extraordinary performance.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-iceman-cometh-2018",
-      "outletId": "zeal-nyc",
-      "outlet": "Zeal NYC",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jil Picariello",
-      "url": "https://www.zealnyc.com/review-the-iceman-cometh-and-denzel-delivers/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The entire cast, under the energetic direction of Wolfe, simmers and stews, drinks and dreams, brilliantly.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -261831,7 +261848,7 @@
       "pullQuote": "Enjoyable as it is, with the comedy in particular honed to a slashing sharpness, Randolph-Wright's production has some shaky aspects.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "trouble-in-mind-2021",
