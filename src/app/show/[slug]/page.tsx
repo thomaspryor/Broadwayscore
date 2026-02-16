@@ -14,6 +14,7 @@ import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
+import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -737,7 +738,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               )}
 
               {/* Lottery/Rush Quick Link */}
-              {lotteryRush && show.status !== 'closed' && (
+              {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                 <a
                   href="#discount-tickets"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs font-medium transition-colors border border-emerald-500/30"
@@ -751,7 +752,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Gold List Badges */}
-        {goldListMemberships.length > 0 && (
+        {featureFlags.goldLists && goldListMemberships.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {goldListMemberships.map(m => {
               const listConfig = GOLD_LIST_MAP[m.listType];
@@ -886,37 +887,41 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Awards - above Box Office */}
-        <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />
+        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
 
         {/* Box Office Stats */}
-        {grosses && (show.status !== 'previews' || grosses.thisWeek) ? (
-          <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-        ) : show.status === 'previews' && (
-          <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
-            <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
-          </section>
+        {featureFlags.boxOffice && (
+          grosses && (show.status !== 'previews' || grosses.thisWeek) ? (
+            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
+          ) : show.status === 'previews' ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
+              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
+            </section>
+          ) : null
         )}
 
         {/* Commercial Scorecard */}
-        {commercial ? (
-          <BizBuzzCard
-            commercial={commercial}
-            showTitle={show.title}
-            trend={getRecoupmentTrend(show.slug)}
-            weeklyGross={grosses?.thisWeek?.gross}
-            showStatus={show.status as 'open' | 'closed' | 'previews'}
-            allTimeGross={grosses?.allTime?.gross}
-          />
-        ) : show.status === 'previews' && (
-          <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
-            <p className="text-gray-400 text-sm">Financial data not available yet.</p>
-          </section>
+        {featureFlags.commercial && (
+          commercial ? (
+            <BizBuzzCard
+              commercial={commercial}
+              showTitle={show.title}
+              trend={getRecoupmentTrend(show.slug)}
+              weeklyGross={grosses?.thisWeek?.gross}
+              showStatus={show.status as 'open' | 'closed' | 'previews'}
+              allTimeGross={grosses?.allTime?.gross}
+            />
+          ) : show.status === 'previews' ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
+              <p className="text-gray-400 text-sm">Financial data not available yet.</p>
+            </section>
+          ) : null
         )}
 
         {/* Lottery/Rush Tickets - below Commercial Performance, only show after previews start */}
-        {lotteryRush && (() => {
+        {featureFlags.discountTickets && lotteryRush && (() => {
           // Don't show until previews have started
           if (show.previewsStartDate) {
             const previewsStart = new Date(show.previewsStartDate);
@@ -927,7 +932,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Cast Updates - below Lottery/Rush */}
-        {castChangesData && (
+        {featureFlags.castChanges && castChangesData && (
           <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
         )}
 
@@ -944,7 +949,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   const creativeLink = getCreativeLink(member.name, member.role);
                   return (
                   <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
-                    {creativeLink ? (
+                    {featureFlags.creativePages && creativeLink ? (
                       <Link href={creativeLink} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
                     ) : (
                       <span className="text-white font-medium">{member.name}</span>

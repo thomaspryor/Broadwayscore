@@ -6,6 +6,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
+import { featureFlags } from '@/config/feature-flags';
 
 const currentYear = new Date().getFullYear();
 
@@ -282,11 +283,13 @@ export default function CheapBroadwayTicketsGuide() {
               </ul>
             </div>
 
+            {featureFlags.discountTickets && (
             <p className="text-gray-400 text-sm">
               <Link href="/standing-room" className="text-brand hover:text-brand-hover">
                 See all shows with standing room options →
               </Link>
             </p>
+            )}
           </div>
         </section>
 
@@ -434,6 +437,8 @@ export default function CheapBroadwayTicketsGuide() {
           <div>
             <h3 className="text-base sm:text-lg font-bold text-white mb-3">Related Pages</h3>
             <div className="flex flex-wrap gap-2">
+              {featureFlags.discountTickets && (
+              <>
               <Link href="/lotteries" className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center">
                 All Lotteries
               </Link>
@@ -446,6 +451,8 @@ export default function CheapBroadwayTicketsGuide() {
               <Link href="/best-value" className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center">
                 Best Value Shows
               </Link>
+              </>
+              )}
               <Link href="/guides/best-broadway-shows" className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center">
                 Best Broadway Shows
               </Link>
