@@ -1,27 +1,60 @@
 {
-  "updatedAt": "2026-02-16T16:53:32.564Z",
-  "processed": 55,
-  "failed": 85,
-  "successRate": "39.3%",
+  "updatedAt": "2026-02-16T18:22:35.878Z",
+  "processed": 222,
+  "failed": 208,
+  "successRate": "51.6%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 170,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 5
+    "brightdata": 2,
+    "archive": 50
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-16T16:29:46.825Z",
+      "t": "2026-02-16T18:11:12.762Z",
       "event": "bb-session",
-      "session": "06b86e91",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+      "session": "65229058",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
     },
     {
-      "t": "2026-02-16T16:29:48.951Z",
+      "t": "2026-02-16T18:11:14.916Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:13:21.955Z",
+      "event": "bb-session",
+      "session": "c820896b",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
+    },
+    {
+      "t": "2026-02-16T18:13:24.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:16:27.368Z",
+      "event": "bb-session",
+      "session": "ec45ad13",
+      "url": "https://www.theatermania.com/broadway/reviews/take-me-out_91234"
+    },
+    {
+      "t": "2026-02-16T18:16:29.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:20:56.855Z",
+      "event": "bb-session",
+      "session": "936c53fb",
+      "url": "https://www.theatermania.com/broadway/news/the-norman-conquests-round-and-round-"
+    },
+    {
+      "t": "2026-02-16T18:20:59.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
