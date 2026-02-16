@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T09:55:24.453Z",
-  "processed": 75,
-  "failed": 75,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-16T09:57:38.541Z",
+  "processed": 31,
+  "failed": 29,
+  "successRate": "51.7%",
   "tierBreakdown": {
-    "playwright": 51,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 15
+    "brightdata": 1,
+    "archive": 29
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-02-16T09:47:45.383Z",
@@ -42,6 +42,28 @@
     },
     {
       "t": "2026-02-16T09:52:47.607Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:53:56.913Z",
+      "event": "bb-session",
+      "session": "178552e9",
+      "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T09:54:33.218Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:55:48.089Z",
+      "event": "bb-session",
+      "session": "ef7131b4",
+      "url": "https://www.nytimes.com/2015/01/16/theater/honeymoon-in-vegas-with-tony-danza-op"
+    },
+    {
+      "t": "2026-02-16T09:56:39.495Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
