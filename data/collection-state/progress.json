@@ -1,56 +1,43 @@
 {
   "processed": [
-    "call-me-izzy-2025/nytg--austin-fimmano.json",
-    "call-me-izzy-2025/nytimes--jesse-green.json",
-    "call-me-izzy-2025/nypost--johnny-oleksinski.json",
-    "call-me-izzy-2025/theatermania--david-gordon.json",
-    "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-    "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
-    "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
-    "call-me-izzy-2025/theater-life--barry-gordin.json",
-    "call-me-izzy-2025/theater-scene--joseph-pisano.json",
-    "call-me-izzy-2025/washpost--naveen-kumar.json"
+    "punch-2025/nyt-theater--jonathan-mandell.json",
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json",
+    "punch-2025/talkinbroadway--howard-miller.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "punch-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
-    "call-me-izzy-2025/vulture--jackson-mchenry.json",
-    "call-me-izzy-2025/wsj--charles-isherwood.json"
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theater-scene--darryl-reilly.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-      "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
-      "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
-      "call-me-izzy-2025/theater-life--barry-gordin.json",
-      "call-me-izzy-2025/theater-scene--joseph-pisano.json",
-      "call-me-izzy-2025/washpost--naveen-kumar.json"
+      "punch-2025/nyt-theater--jonathan-mandell.json",
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json",
+      "punch-2025/the-interested-bystander--cary-wong.json",
+      "punch-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "call-me-izzy-2025/nytg--austin-fimmano.json",
-      "call-me-izzy-2025/nytimes--jesse-green.json",
-      "call-me-izzy-2025/nypost--johnny-oleksinski.json",
-      "call-me-izzy-2025/theatermania--david-gordon.json"
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
-  "startTime": "2026-02-16T14:08:34.421Z",
-  "lastProcessed": "call-me-izzy-2025/washpost--naveen-kumar.json",
-  "log": [
-    {
-      "t": "2026-02-16T14:10:35.743Z",
-      "event": "bb-session",
-      "session": "cc3c4565",
-      "url": "https://www.wsj.com/articles/call-me-izzy-review-jean-smart-on-broadway-d8d6cce7"
-    },
-    {
-      "t": "2026-02-16T14:10:37.941Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-02-16T14:11:21.443Z",
+  "lastProcessed": "punch-2025/theater-scene--darryl-reilly.json",
+  "log": []
 }
