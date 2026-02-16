@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T13:43:17.189Z",
-  "processed": 1,
-  "failed": 91,
-  "successRate": "1.1%",
+  "updatedAt": "2026-02-16T13:43:39.056Z",
+  "processed": 59,
+  "failed": 41,
+  "successRate": "59.0%",
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 57
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T13:42:00.204Z",
+      "event": "bb-session",
+      "session": "964c0a6e",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T13:42:02.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
