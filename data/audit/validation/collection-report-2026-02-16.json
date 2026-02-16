@@ -1,90 +1,78 @@
 {
-  "runDate": "2026-02-16T01:23:11.687Z",
+  "runDate": "2026-02-16T01:39:03.658Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "punch-2025",
+    "showFilter": "dead-outlaw-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 3,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
-    "browserbase": 0,
+    "playwright": 2,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 10,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 6,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 5,
-    "tier4Success": 5,
-    "totalFailed": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 9,
+    "tier4Success": 3,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.5,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "punch-2025/nyt-theater--jonathan-mandell.json",
-    "punch-2025/nytg--caroline-cao.json",
-    "punch-2025/nytimes--elisabeth-vincentelli.json",
-    "punch-2025/vulture--sara-holdren.json",
-    "punch-2025/ew--emlyn-travis.json",
-    "punch-2025/theatermania--david-gordon.json",
-    "punch-2025/theatre-reviews-limited--david-roberts.json",
-    "punch-2025/culturesauce--thom-geier.json",
-    "punch-2025/pages-on-stages--mason-pilevsky.json",
-    "punch-2025/talkinbroadway--howard-miller.json",
-    "punch-2025/the-interested-bystander--cary-wong.json",
-    "punch-2025/theater-life--samuel-l-leiter.json"
+    "dead-outlaw-2025/observer--david-cote.json",
+    "dead-outlaw-2025/latimes--charles-mcnulty.json",
+    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
   ],
   "failed": [
-    "punch-2025/timeout--adam-feldman.json",
-    "punch-2025/theater-scene--darryl-reilly.json"
+    "dead-outlaw-2025/nytg--gillian-russo.json",
+    "dead-outlaw-2025/variety--frank-rizzo.json",
+    "dead-outlaw-2025/variety--unknown.json",
+    "dead-outlaw-2025/nydailynews--chris-jones.json",
+    "dead-outlaw-2025/theatermania--unknown.json",
+    "dead-outlaw-2025/theatermania--zachary-stewart.json",
+    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "dead-outlaw-2025/timeout--adam-feldman.json",
+    "dead-outlaw-2025/chicagotribune--chris-jones.json",
+    "dead-outlaw-2025/dailybeast--tim-teeman.json",
+    "dead-outlaw-2025/dailybeast--unknown.json",
+    "dead-outlaw-2025/usatoday--patrick-ryan.json"
   ],
   "tierDetails": {
     "playwright": [
-      "punch-2025/nyt-theater--jonathan-mandell.json",
-      "punch-2025/nytg--caroline-cao.json",
-      "punch-2025/theatermania--david-gordon.json",
-      "punch-2025/theatre-reviews-limited--david-roberts.json",
-      "punch-2025/culturesauce--thom-geier.json",
-      "punch-2025/pages-on-stages--mason-pilevsky.json",
-      "punch-2025/the-interested-bystander--cary-wong.json",
-      "punch-2025/theater-life--samuel-l-leiter.json"
+      "dead-outlaw-2025/observer--david-cote.json",
+      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dead-outlaw-2025/variety--unknown.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "punch-2025/nytimes--elisabeth-vincentelli.json",
-      "punch-2025/vulture--sara-holdren.json",
-      "punch-2025/ew--emlyn-travis.json",
-      "punch-2025/talkinbroadway--howard-miller.json"
+      "dead-outlaw-2025/latimes--charles-mcnulty.json"
     ]
   },
   "failuresByOutlet": {},
