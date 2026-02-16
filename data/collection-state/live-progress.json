@@ -1,27 +1,27 @@
 {
-  "updatedAt": "2026-02-16T12:35:54.132Z",
-  "processed": 39,
-  "failed": 41,
-  "successRate": "48.8%",
+  "updatedAt": "2026-02-16T12:37:03.470Z",
+  "processed": 1,
+  "failed": 19,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archive": 10
+    "brightdata": 0,
+    "archive": 1
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-16T12:30:46.143Z",
+      "t": "2026-02-16T12:36:54.220Z",
       "event": "bb-session",
-      "session": "6d5db888",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "1d5e24e5",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T12:31:35.246Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T12:36:56.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
