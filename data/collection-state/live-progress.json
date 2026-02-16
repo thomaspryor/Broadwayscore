@@ -1,15 +1,40 @@
 {
-  "updatedAt": "2026-02-16T04:00:37.917Z",
-  "processed": 43,
-  "failed": 7,
-  "successRate": "86.0%",
+  "updatedAt": "2026-02-16T04:04:16.726Z",
+  "processed": 37,
+  "failed": 33,
+  "successRate": "52.9%",
   "tierBreakdown": {
-    "playwright": 33,
-    "browserbase": 0,
+    "playwright": 25,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 9
+    "brightdata": 10,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:45:48.553Z",
+      "event": "bb-session",
+      "session": "c0319bb7",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+    },
+    {
+      "t": "2026-02-16T03:57:23.659Z",
+      "event": "bb-session",
+      "session": "8db5ee37",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    },
+    {
+      "t": "2026-02-16T04:03:14.331Z",
+      "event": "bb-session",
+      "session": "7ae222af",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+    },
+    {
+      "t": "2026-02-16T04:03:30.221Z",
+      "event": "bb-session",
+      "session": "e760f80d",
+      "url": "http://www.thewrap.com/something-rotten-theater-review-or-how-a-musical-called-o"
+    }
+  ]
 }
