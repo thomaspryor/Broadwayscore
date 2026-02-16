@@ -48,11 +48,14 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
     const fuseResults = fuse.search(query, { limit: 8 }).map(result => result.item);
 
     // Ensure exact substring matches in title always appear (Fuse can miss multi-word partials)
+    // Only apply for 2+ char queries to match Fuse's minMatchCharLength
     const q = query.toLowerCase();
-    const substringMatches = shows.filter(show =>
-      show.title.toLowerCase().includes(q) &&
-      !fuseResults.some(r => r.id === show.id)
-    );
+    const substringMatches = query.length >= 2
+      ? shows.filter(show =>
+          show.title.toLowerCase().includes(q) &&
+          !fuseResults.some(r => r.id === show.id)
+        )
+      : [];
 
     // Merge: Fuse results first (ranked by relevance), then substring matches
     const merged = [...fuseResults, ...substringMatches];
