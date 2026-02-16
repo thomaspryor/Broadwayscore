@@ -233454,16 +233454,36 @@
     ]
   },
   {
-    "startedAt": "2026-02-16T13:54:56.861Z",
-    "completedAt": "2026-02-16T16:46:20.732Z",
+    "startedAt": "2026-02-16T13:44:20.150Z",
+    "completedAt": "2026-02-16T17:14:57.086Z",
     "totalReviews": 23293,
-    "processed": 131,
-    "skipped": 21575,
+    "processed": 127,
+    "skipped": 21512,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 1005781,
+      "output": 35610,
+      "total": 2435210
+    },
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-16T17:41:53.657Z",
+    "completedAt": "2026-02-16T18:36:11.493Z",
+    "totalReviews": 23293,
+    "processed": 32,
+    "skipped": 22429,
     "errors": 1,
     "tokensUsed": {
-      "input": 986250,
-      "output": 35441,
-      "total": 2347655
+      "input": 396252,
+      "output": 11426,
+      "total": 923940
     },
     "errorDetails": [
       {
