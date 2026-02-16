@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T04:32:55.190Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "stephen-sondheims-old-friends-2025",
     "aggressive": false,
@@ -17,7 +17,7 @@
     "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 66,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -28,7 +28,7 @@
     "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 26,
     "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 2,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -70,11 +70,69 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "torch-song-2018/cititour--brian-scott-lipton.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "fences-2010/talkinbroadway--matthew-murray.json",
+      "heisenberg-2016/ap--mark-kennedy.json",
+      "machinal-2014/broadwayworld--michael-dale.json",
+      "sweeney-todd-2023/bloomberg-mark-leydorf--mark-leydorf.json",
+      "the-assembled-parties-2013/talkinbroadway--matthew-murray.json"
+    ],
     "archive": [
       "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 7,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Daily Beast": {
+      "count": 3,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 1,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 2,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
