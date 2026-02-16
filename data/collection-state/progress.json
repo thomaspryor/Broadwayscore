@@ -146,7 +146,11 @@
     "maybe-happy-ending-2024/theatermania--jesse-green.json",
     "moulin-rouge-2019/theatermania--zachary-stewart.json",
     "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json"
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "operation-mincemeat-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "failed": [
     "bob-fosses-dancin-2023/nytg--gillian-russo.json",
@@ -381,7 +385,13 @@
     "moulin-rouge-2019/theatermania--jesse-green.json",
     "moulin-rouge-2019/timeout--adam-feldman.json",
     "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/timeout--adam-feldman.json"
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "six-2021/observer--david-cote.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "stranger-things-2024/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -463,7 +473,9 @@
       "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
       "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
       "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json"
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "operation-mincemeat-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "browserbase": [
       "data/review-texts/the-ferryman-2018/fordham-observer--michael-appler.json",
@@ -508,7 +520,8 @@
       "hadestown-2019/wsj--terry-teachout.json",
       "maybe-happy-ending-2024/theatermania--jesse-green.json",
       "moulin-rouge-2019/theatermania--zachary-stewart.json",
-      "moulin-rouge-2019/wsj--terry-teachout.json"
+      "moulin-rouge-2019/wsj--terry-teachout.json",
+      "operation-mincemeat-2025/wsj--charles-isherwood.json"
     ],
     "archive": [
       "all-my-sons-2019/nyt-theater--raven-snook.json",
@@ -555,42 +568,72 @@
       "hamilton-2015/timeout--adam-feldman.json",
       "hamilton-2015/timeout--david-cote.json",
       "hamilton-2015/wsj--terry-teachout.json",
-      "harry-potter-2021/wsj--terry-teachout.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-15T22:18:35.713Z",
-  "lastProcessed": "oh-mary-2024/timeout--adam-feldman.json",
+  "lastProcessed": "stranger-things-2024/timeout--adam-feldman.json",
   "log": [
     {
-      "t": "2026-02-16T01:47:38.860Z",
+      "t": "2026-02-15T22:23:13.400Z",
       "event": "bb-session",
-      "session": "d4208d15",
-      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
+      "session": "7efcd3b3",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
     },
     {
-      "t": "2026-02-16T01:47:40.779Z",
+      "t": "2026-02-15T22:25:30.577Z",
+      "event": "bb-session",
+      "session": "20fac40c",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+    },
+    {
+      "t": "2026-02-15T22:30:16.394Z",
+      "event": "bb-session",
+      "session": "4b5e036b",
+      "url": "https://fordhamobserver.com/36258/recent/arts-and-culture/torch-song-2/"
+    },
+    {
+      "t": "2026-02-15T23:02:13.078Z",
+      "event": "bb-session",
+      "session": "45a9e064",
+      "url": "https://www.thestage.co.uk/reviews/a-wonderful-world-the-louis-armstrong-musical"
+    },
+    {
+      "t": "2026-02-15T23:02:15.059Z",
+      "event": "bb-session",
+      "session": "a43593cf",
+      "url": "https://www.usatoday.com/life/theater/reviews/2010-01-25-bridge25_ST_N.htm?csp=3"
+    },
+    {
+      "t": "2026-02-15T23:02:15.307Z",
       "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-02-16T01:48:25.457Z",
-      "event": "bb-session",
-      "session": "3734dce4",
-      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
-    },
-    {
-      "t": "2026-02-16T01:48:27.485Z",
+      "t": "2026-02-15T23:02:17.270Z",
       "event": "bb-cookie-inject",
-      "domain": "nydailynews.com"
+      "domain": "usatoday.com"
     },
     {
-      "t": "2026-02-16T01:49:58.411Z",
+      "t": "2026-02-15T23:46:02.507Z",
       "event": "bb-session",
-      "session": "cd97b00e",
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/honeymoon-vegas-theater-r"
+      "session": "e04a27a7",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/theater-review-disgra"
     },
     {
-      "t": "2026-02-16T01:50:00.532Z",
+      "t": "2026-02-15T23:46:04.364Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-16T00:09:39.308Z",
+      "event": "bb-session",
+      "session": "211ce46e",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/revival-of-gigi-missi"
+    },
+    {
+      "t": "2026-02-16T00:09:41.240Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     },
@@ -865,6 +908,34 @@
       "t": "2026-02-16T01:52:03.404Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T01:55:08.086Z",
+      "event": "bb-session",
+      "session": "15dd787b",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-02-16T01:55:54.716Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T01:57:25.519Z",
+      "event": "bb-session",
+      "session": "23edf684",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-02-16T01:58:12.583Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T01:58:35.831Z",
+      "event": "bb-session",
+      "session": "a7a18284",
+      "url": "https://observer.com/2021/10/six-broadway-review/"
     }
   ]
 }
