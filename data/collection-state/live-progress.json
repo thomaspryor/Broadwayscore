@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T16:35:22.062Z",
-  "processed": 100,
-  "failed": 31,
-  "successRate": "76.3%",
+  "updatedAt": "2026-02-16T17:14:58.024Z",
+  "processed": 162,
+  "failed": 178,
+  "successRate": "47.6%",
   "tierBreakdown": {
-    "playwright": 83,
+    "playwright": 156,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 11
+    "brightdata": 1,
+    "archive": 5
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-16T16:29:46.825Z",
+      "event": "bb-session",
+      "session": "06b86e91",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+    },
+    {
+      "t": "2026-02-16T16:29:48.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
