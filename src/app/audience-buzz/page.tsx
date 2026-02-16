@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
+import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Audience Scorecard - What Real Theatergoers Think',
@@ -248,12 +249,16 @@ export default function AudienceBuzzPage() {
         <div className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">Related</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Box Office Scorecard →
-            </Link>
-            <Link href="/biz-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Commercial Scorecard →
-            </Link>
+            {featureFlags.boxOffice && (
+              <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors text-sm">
+                Box Office Scorecard →
+              </Link>
+            )}
+            {featureFlags.commercial && (
+              <Link href="/biz-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
+                Commercial Scorecard →
+              </Link>
+            )}
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
               How Scoring Works →
             </Link>
