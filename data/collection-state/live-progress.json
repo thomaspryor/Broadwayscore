@@ -1,29 +1,27 @@
 {
-  "updatedAt": "2026-02-16T19:03:00.786Z",
-  "processed": 17,
-  "failed": 103,
-  "successRate": "14.2%",
+  "updatedAt": "2026-02-16T19:03:31.393Z",
+  "processed": 57,
+  "failed": 43,
+  "successRate": "57.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 17
+    "brightdata": 3,
+    "archive": 54
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-16T19:02:21.089Z",
+      "t": "2026-02-16T18:54:41.806Z",
       "event": "bb-session",
-      "session": "64d18d8a",
-      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+      "session": "af7a9cf1",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
     },
     {
-      "t": "2026-02-16T19:02:23.230Z",
+      "t": "2026-02-16T18:54:44.153Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "nytimes.com"
     }
   ]
 }
