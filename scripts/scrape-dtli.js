@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isJunkOutlet } = require('./lib/review-normalization');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -293,6 +294,9 @@ function extractDTLIReviews(html, showId, dtliUrl) {
 
     if (outletMatch && urlMatch) {
       const outlet = outletMatch[1].trim();
+      if (isJunkOutlet(outlet)) {
+        continue; // Skip ads, tracking pixels, etc.
+      }
       const outletId = slugify(outlet);
       const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
       let criticName = criticMatch ? criticMatch[1].replace(/<br\s*\/?>/gi, ' ').trim() : 'Unknown';
