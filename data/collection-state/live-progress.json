@@ -1,15 +1,49 @@
 {
-  "updatedAt": "2026-02-16T01:48:47.919Z",
-  "processed": 39,
-  "failed": 51,
-  "successRate": "43.3%",
+  "updatedAt": "2026-02-16T01:50:59.295Z",
+  "processed": 25,
+  "failed": 15,
+  "successRate": "62.5%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 22,
-    "archive": 16
+    "brightdata": 1,
+    "archive": 24
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T01:47:38.860Z",
+      "event": "bb-session",
+      "session": "d4208d15",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
+    },
+    {
+      "t": "2026-02-16T01:47:40.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T01:48:25.457Z",
+      "event": "bb-session",
+      "session": "3734dce4",
+      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
+    },
+    {
+      "t": "2026-02-16T01:48:27.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T01:49:58.411Z",
+      "event": "bb-session",
+      "session": "cd97b00e",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/honeymoon-vegas-theater-r"
+    },
+    {
+      "t": "2026-02-16T01:50:00.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    }
+  ]
 }
