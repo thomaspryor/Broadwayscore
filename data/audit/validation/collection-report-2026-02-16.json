@@ -1,81 +1,83 @@
 {
-  "runDate": "2026-02-16T06:48:58.685Z",
+  "runDate": "2026-02-16T07:04:57.101Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "beetlejuice-2025",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 6,
+    "processed": 5,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "14.3%"
+    "successRate": "55.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 0
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 7,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 6,
-    "tier3Success": 2,
-    "tier4Attempts": 4,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 1,
-    "totalFailed": 6,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 16,
+    "browserbaseMinutesUsed": 4.8,
+    "urlDiscoveryAttempts": 24,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "west-side-story-2020/telegraph--diane-snyder.json"
+    "beetlejuice-2025/musical-theatre-review--ron-cohen.json",
+    "beetlejuice-2025/theatermania--david-gordon.json",
+    "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+    "beetlejuice-2025/stagezine--scott-harrah.json",
+    "beetlejuice-2025/thestage--giselle.json"
   ],
   "failed": [
-    "betrayal-2013/telegraph--matt-wolf.json",
-    "butley-2006/telegraph--matt-wolf.json",
-    "finding-neverland-2015/telegraph--matt-wolf.json",
-    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
-    "matilda-the-musical-2013/telegraph--unknown.json",
-    "mean-girls-2018/the-telegraph-uk--diane-snyder.json"
+    "beetlejuice-2025/timeout--adam-feldman.json",
+    "beetlejuice-2025/wsj--edward-rothstein.json",
+    "beetlejuice-2025/artsfuse--chris-caggiano.json",
+    "beetlejuice-2025/theater-scene--victor-gluck.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "beetlejuice-2025/theatermania--david-gordon.json",
+      "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
+      "beetlejuice-2025/stagezine--scott-harrah.json",
+      "beetlejuice-2025/thestage--giselle.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "west-side-story-2020/telegraph--diane-snyder.json"
+      "the-wiz-2024/washpost--gloria-oladipo.json"
     ],
-    "archive": []
+    "archive": [
+      "beetlejuice-2025/musical-theatre-review--ron-cohen.json"
+    ]
   },
   "failuresByOutlet": {
-    "Telegraph": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 2,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
