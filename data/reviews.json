@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-16",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16291,
-      "skippedNoScore": 1121,
+      "totalReviews": 16282,
+      "skippedNoScore": 1120,
       "skippedDuplicate": 95,
-      "skippedDuplicateUrl": 319,
+      "skippedDuplicateUrl": 318,
       "skippedCrossOutletDuplicateUrl": 28,
-      "skippedDuplicateText": 499,
-      "skippedFingerprintDedup": 58,
-      "skippedUnknownCriticDedup": 249,
-      "skippedWrongProduction": 1993,
+      "skippedDuplicateText": 504,
+      "skippedFingerprintDedup": 59,
+      "skippedUnknownCriticDedup": 248,
+      "skippedWrongProduction": 1994,
       "recoveredFromGarbage": 102,
       "scoreSources": {
         "explicit-stars": 4,
@@ -20,10 +20,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 65,
-        "originalScore-priority0": 1685,
-        "llmScore": 10756,
+        "originalScore-priority0": 1690,
+        "llmScore": 10765,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3749,
+        "llmScore-lowconf": 3726,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -58274,7 +58274,7 @@
       "outletId": "broadway-blog",
       "outlet": "Broadway Blog",
       "assignedScore": 86,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Billy McEntee",
@@ -58284,7 +58284,7 @@
       "pullQuote": "'Cost of Living' intentionally and wisely takes its time, showing audiences the quotidian lives of its extraordinary characters...there may be nothing more captivating on Broadway at the moment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "cost-of-living-2022",
@@ -60018,7 +60018,7 @@
       "pullQuote": "When the decidedly minor \"Beguine\" in the second act literally stops Dames at Sea in its tracks, you know that something is off kilter.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "dames-at-sea-2015",
@@ -87926,7 +87926,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 91,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "David Cote",
@@ -87936,7 +87936,7 @@
       "pullQuote": "In a fall already steeped in excellent revivals—Who's Afraid of Virginia Woolf?, The Heiress and Glengarry Glen Ross—Golden Boy is the champion.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "golden-boy-2012",
@@ -88589,7 +88589,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Adam Feldman",
@@ -88599,7 +88599,7 @@
       "pullQuote": "It is well designed and full of fine actors doing their jobs. Its subject is timely and its message is on point, and there’s no good reason to see it",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -89466,7 +89466,7 @@
       "pullQuote": "Frances McDormand delivers a powerhouse performance as Margie, a working-class Boston woman struggling to get by.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "good-people-2011",
@@ -90067,18 +90067,18 @@
       "showId": "grand-horizons-2020",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/grand-horizons-broadway-review",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "But in Leigh Silverman's production for Second Stage, the gifted cast keeps the energy high.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "grand-horizons-2020",
@@ -90894,7 +90894,7 @@
       "pullQuote": "Amid such excellent atmospherics, you may not care when the play itself creaks.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "grey-house-2023",
@@ -93000,23 +93000,6 @@
       "publishDate": "March 27, 2008",
       "originalRating": null,
       "pullQuote": "Patti LuPone's Rose is a force of nature, delivering one of the most powerful performances Broadway has seen in years.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "gypsy-2008",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 85,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/gypsy-broadway-revival-review-audra-mcdonald-rose",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "She's a revelation. So, too, is the rest of George C. Wolfe's deeply intelligent and beautifully mounted production, which comes as a happy surprise.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -95496,31 +95479,14 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/hamlet-4",
-      "publishDate": "October 6, 2009",
-      "originalRating": 60,
-      "pullQuote": "Law brings intelligence and charisma to the role, but his Hamlet feels more like a modern neurotic than a Renaissance prince wrestling with cosmic questions.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "hamlet-2009",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 65,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
       "criticName": "Raven Snook",
       "url": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "It's an ambitious undertaking, and her passion for the play is evident.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamlet-2009",
@@ -96988,18 +96954,18 @@
       "showId": "hangmen-2022",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 46,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/hangmen-broadway-review-martin-mcdonagh",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "But the twists wind up forming a sloppy noose that is strong enough only to leave the play dangling, without a lethal snap, when the bottom falls out in the end.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hangmen-2022",
@@ -100724,7 +100690,7 @@
       "pullQuote": "Neil Patrick Harris delivers a tour de force performance that's both hilarious and heartbreaking, transforming what could have been a Broadway stunt into something genuinely transcendent.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
@@ -105067,18 +105033,18 @@
       "showId": "hillary-and-clinton-2019",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/hillary-and-clinton-review-broadway",
       "publishDate": "April 18, 2019",
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "Hillary and Clinton is cogent, snappy and perceptive about political and emotional realities.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "hillary-and-clinton-2019",
@@ -105826,7 +105792,7 @@
       "pullQuote": "Corbin Bleu has a winning muscularity and grace in various tap and ballroom sequences.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -106818,18 +106784,18 @@
       "showId": "home-2024",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/home-play-broadway-revival-review",
       "publishDate": "June 5, 2024",
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "By the end it has won you over into joy.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "home-2024",
@@ -107680,7 +107646,7 @@
       "pullQuote": "This revival of Paula Vogel's Pulitzer Prize-winning drama about sexual abuse is sensitively staged and superbly acted.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "how-i-learned-to-drive-2022",
@@ -108587,35 +108553,18 @@
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Alice Saville",
       "url": "https://www.timeout.com/london/theatre/how-to-succeed-in-business-without-really-trying-review",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "It's the kind of show that'll hopefully never be 'timely' again, but is still a hell of a lot of fun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "how-to-succeed-in-business-without-really-trying-2011",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/how-to-succeed-in-business-without-really-trying",
-      "publishDate": "March 27, 2011",
-      "originalRating": 80,
-      "pullQuote": "Daniel Radcliffe brings boyish charm and surprising comic timing to the role of J. Pierrepont Finch, the window washer who climbs the corporate ladder through cunning and luck.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
@@ -109998,18 +109947,18 @@
       "showId": "i-need-that-2023",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
       "publishDate": "November 2, 2023",
-      "originalRating": null,
+      "originalRating": "3/5",
       "pullQuote": "If only this treasure weren't so often lost in the piles that surround it.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "i-need-that-2023",
@@ -110281,7 +110230,7 @@
       "pullQuote": "Menzel's powerhouse vocals and committed performance can't quite overcome the show's structural problems and overly complex plot mechanics.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "ifthen-2014",
@@ -110502,7 +110451,7 @@
       "pullQuote": "But the play itself feels more like an extended celebrity impression than a fully realized theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
@@ -111919,25 +111868,8 @@
       "showId": "in-transit-2016",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/in-transit",
-      "publishDate": "December 8, 2016",
-      "originalRating": 60,
-      "pullQuote": "In Transit is an a cappella musical that takes place entirely on the New York City subway system, and while it has some genuinely touching moments, it feels more like a series of vignettes than a fully realized story.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "in-transit-2016",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Cote",
@@ -111947,7 +111879,7 @@
       "pullQuote": "\"This Broadway iteration, sprucely directed and choreographed by Kathleen Marshall and with a charming ensemble, better showcases the book and score. But the central problem remains: harmonic overload. If you listen to Pentatonix on repeat and own the box set of 'Glee,' you might spend 100 minutes in bliss.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "in-transit-2016",
@@ -112413,7 +112345,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 66,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Michael Glitz",
@@ -112423,24 +112355,7 @@
       "pullQuote": "'Indecent' is never uninteresting but it's more panorama than play.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "indecent-2017",
-      "outletId": "huffpost",
-      "outlet": "HuffPost",
-      "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Steven Suskin",
-      "url": "https://www.huffpost.com/entry/58f6921fe4b0f5cf16c7ba60",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "'Indecent' is given an impeccable production by director Rebecca Taichman, a very-much-in-tune team of designers, and an excellent and enthusiastic cast.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "indecent-2017",
@@ -114096,7 +114011,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 30,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Helen Shaw",
@@ -114106,7 +114021,7 @@
       "pullQuote": "“Graham labors hard to humanize Lamb with shadows of self-doubt, this psychological element is oversold and unconvincing, and we’re left with a long show about a foregone conclusion...Goold knows that ‘Ink’ needs ginning up, and boy, he ladles on the gin. This production is loud, and it’s lit like a rock show...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "ink-2019",
@@ -114225,7 +114140,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -114707,18 +114622,18 @@
       "showId": "into-the-woods-2022",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/into-the-woods-broadway-review-revival-sara-bareilles-stephen-sondheim",
       "publishDate": "July 12, 2022",
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "The emphasis is on Sondheim's twisting, punning, verbose score and on the easy charisma of the performers, who seem to be having an infectiously good time.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -115302,18 +115217,18 @@
       "showId": "is-this-a-room-2021",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/is-this-a-room-broadway-review-reality-winner",
       "publishDate": "October 14, 2021",
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "It demands to be taken seriously, and the questions it raises about power, surveillance and sacrifice are worthy of the platform.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "is-this-a-room-2021",
@@ -117456,7 +117371,7 @@
       "pullQuote": "Accenting Jekyll & Hyde’s best asset",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "jekyll-and-hyde-2013",
@@ -118001,23 +117916,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "jerusalem-2011",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/jerusalem",
-      "publishDate": "April 21, 2011",
-      "originalRating": 80,
-      "pullQuote": "This is theater at its most primal and affecting.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "jerusalem-2011",
@@ -120252,7 +120150,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Finkle",
@@ -120262,14 +120160,14 @@
       "pullQuote": "His irresistible affability that's all but palpable throughout the two-act piece.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Tereschuck",
@@ -120279,7 +120177,7 @@
       "pullQuote": "Gratifyingly, his 'Stories By Heart' is written and staged with deceptive simplicity, and entirely avoids any air of the didactic.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -126195,7 +126093,7 @@
       "pullQuote": "Several elements of the production distract us from the devastation of that world, by adding distractingly fascinating sign language.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "king-lear-2019",
@@ -142779,7 +142677,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Steven Suskin",
@@ -142789,7 +142687,7 @@
       "pullQuote": "'Marvin's Room' is certainly a room to visit. A rewarding and funny one at that.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "marvins-room-2017",
@@ -142872,23 +142770,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "“Nbswjo’t Sppn” tuboet pvu dpnqbsfe xjui tp nboz puifs gbnjmz esbnbt cfdbvtf pg jut sfgsftijoh pqujnjtn boe mpwf pg mjgf (fwfo eftqjuf tfsjpvt jmmoftt, qiztjdbm ejtbcjmjuz, ftusbohfnfou boe uif offe up nblf nbkps qfstpobm tbdsjgjdft), cvu jut fnpujpobm sfbdi nptumz hfut mptu jo uijt qspevdujpo.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "marvins-room-2017",
-      "outletId": "njcom",
-      "outlet": "NJ.com",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Christopher Kelly",
-      "url": "https://www.nj.com/entertainment/index.ssf/2017/06/marvins_room_broadway_review_lili_taylor_janeane_g.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The new Broadway revival does 'Marvin's Room' extraordinary justice—it makes the case that a mostly forgotten play might just be a modern classic.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -171992,7 +171873,7 @@
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Johnny Oleksinski",
@@ -172002,7 +171883,7 @@
       "pullQuote": "The audience giggles a fair amount at this story that ends in brutal deaths.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "othello-2025",
@@ -191448,23 +191329,6 @@
       "showId": "scandalous-2012",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 53,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2012/11/16/theater/reviews/scandalous-a-musical-about-aimee-semple-mcpherson.html",
-      "publishDate": "November 15, 2012",
-      "originalRating": null,
-      "pullQuote": "The new musical about the evangelist Aimee Semple McPherson is less a coherent biographical portrait than a grab bag of flashy moments that don't quite add up to a satisfying whole.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "scandalous-2012",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
       "assignedScore": 45,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -201497,17 +201361,17 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 53,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2013/08/16/theater/reviews/soul-doctor-a-musical-about-rabbi-shlomo-carlebach.html",
+      "url": "https://www.nytimes.com/2013/08/16/theater/reviews/soul-doctor-a-musical-about-rabbi-shlomo-carlebach.html#:~:text=Those%20with%20affectionate%20memories%20of,found%20it%20disappointing%20that%20this",
       "publishDate": "August 15, 2013",
       "originalRating": null,
       "pullQuote": "The show's earnest intentions are admirable, but 'Soul Doctor' never quite finds its theatrical footing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "soul-doctor-2013",
@@ -231097,23 +230961,6 @@
     },
     {
       "showId": "the-humans-2016",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 93,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html?_r=0",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The finest new play of the Broadway season so far — by a long shot — Mr. Karam's drama has been beautifully transferred from Off Broadway.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-humans-2016",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 40,
@@ -244541,7 +244388,7 @@
       "pullQuote": "The script, which in 1990 earned the Pulitzer Prize for Drama, remains a thing of lyrical beauty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -259363,10 +259210,10 @@
       "url": "https://www.broadwaynews.com/2021/10/13/review-thoughts-of-a-colored-man-asks-the-audience-to-listen/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Written in a mixture of styles — monologues and dialogues, rhymed poetry, song and traditional staged dramatic scenes — the play, at the Golden Theatre, serves up a kaleidoscopic if occasionally didactic portrait of Black men’s lives as they are lived today in the city.",
+      "pullQuote": "The costumes, by Toni-Leslie James and Devario D. Simmons, help bring some pop to the proceedings with their sharp emphasis on just black, white and red. One of the liveliest presences is Forrest McClendon, who portrays with biting humor a man working at a Whole Foods store.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
@@ -276389,7 +276236,7 @@
       "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "yellow-face-2024",
