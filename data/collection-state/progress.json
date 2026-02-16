@@ -43,7 +43,11 @@
     "something-rotten-2015/nytimes--unknown.json",
     "spring-awakening-2006/nytimes--charles-isherwood.json",
     "sunset-boulevard-2024/nytimes--jesse-green.json",
-    "sunset-boulevard-2024/nytimes--unknown.json"
+    "sunset-boulevard-2024/nytimes--unknown.json",
+    "the-encounter-2016/nytimes--unknown.json",
+    "the-hills-of-california-2024/nytimes--houman-barekat.json",
+    "the-lehman-trilogy-2021/nytimes--unknown.json",
+    "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -91,7 +95,13 @@
     "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
     "summer-2018/nytimes--ben-brantley.json",
     "superior-donuts-2009/nytimes--charles-isherwood.json",
-    "take-me-out-2022/nytimes--jesse-green.json"
+    "take-me-out-2022/nytimes--jesse-green.json",
+    "the-anarchist-2012/nytimes--ben-brantley.json",
+    "the-big-knife-2013/nytimes--ben-brantley.json",
+    "the-constant-wife-2005/nytimes--ben-brantley.json",
+    "the-glass-menagerie-2017/nytimes--ben-brantley.json",
+    "the-history-boys-2006/nytimes--ben-brantley.json",
+    "the-little-foxes-2017/nytimes--alexis-soloski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -113,7 +123,11 @@
       "something-rotten-2015/nytimes--unknown.json",
       "spring-awakening-2006/nytimes--charles-isherwood.json",
       "sunset-boulevard-2024/nytimes--jesse-green.json",
-      "sunset-boulevard-2024/nytimes--unknown.json"
+      "sunset-boulevard-2024/nytimes--unknown.json",
+      "the-encounter-2016/nytimes--unknown.json",
+      "the-hills-of-california-2024/nytimes--houman-barekat.json",
+      "the-lehman-trilogy-2021/nytimes--unknown.json",
+      "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -148,7 +162,7 @@
     ]
   },
   "startTime": "2026-02-16T03:19:41.223Z",
-  "lastProcessed": "take-me-out-2022/nytimes--jesse-green.json",
+  "lastProcessed": "the-little-foxes-2017/nytimes--alexis-soloski.json",
   "log": [
     {
       "t": "2026-02-16T03:20:36.237Z",
@@ -488,6 +502,105 @@
     },
     {
       "t": "2026-02-16T03:59:15.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:00:31.068Z",
+      "event": "bb-session",
+      "session": "9fcdfe3d",
+      "url": "https://www.nytimes.com/2012/12/04/theater/reviews/the-anarchist-with-patti-lupo"
+    },
+    {
+      "t": "2026-02-16T04:00:33.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:01:53.895Z",
+      "event": "bb-session",
+      "session": "8e78fbae",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cann"
+    },
+    {
+      "t": "2026-02-16T04:01:56.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:03:04.964Z",
+      "event": "bb-session",
+      "session": "c7657e44",
+      "url": "https://www.nytimes.com/2005/03/16/theater/reviews/16cons.html"
+    },
+    {
+      "t": "2026-02-16T04:03:06.905Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:04:29.016Z",
+      "event": "bb-session",
+      "session": "82d4072a",
+      "url": "http://www.nytimes.com/2016/09/30/theater/the-encounter-review.html?_r=0"
+    },
+    {
+      "t": "2026-02-16T04:04:30.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:05:37.823Z",
+      "event": "bb-session",
+      "session": "8256245c",
+      "url": "https://www.nytimes.com/2017/03/10/theater/the-glass-menagerie-review-sally-fiel"
+    },
+    {
+      "t": "2026-02-16T04:05:39.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:06:58.268Z",
+      "event": "bb-session",
+      "session": "3ffc58e5",
+      "url": "https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html"
+    },
+    {
+      "t": "2026-02-16T04:07:00.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:08:06.655Z",
+      "event": "bb-session",
+      "session": "9024a473",
+      "url": "https://www.nytimes.com/2006/04/24/theater/reviews/24hist.html"
+    },
+    {
+      "t": "2026-02-16T04:08:08.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:09:29.289Z",
+      "event": "bb-session",
+      "session": "7127bd33",
+      "url": "https://www.nytimes.com/2021/10/14/theater/the-lehman-trilogy-review.html"
+    },
+    {
+      "t": "2026-02-16T04:09:31.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T04:10:37.895Z",
+      "event": "bb-session",
+      "session": "4d366650",
+      "url": "https://www.nytimes.com/2006/05/04/theater/reviews/04inis.html"
+    },
+    {
+      "t": "2026-02-16T04:10:39.973Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
