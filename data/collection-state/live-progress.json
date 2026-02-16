@@ -1,40 +1,29 @@
 {
-  "updatedAt": "2026-02-16T19:01:55.598Z",
-  "processed": 44,
-  "failed": 36,
-  "successRate": "55.0%",
+  "updatedAt": "2026-02-16T19:03:00.786Z",
+  "processed": 17,
+  "failed": 103,
+  "successRate": "14.2%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 0,
-    "archive": 42
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 17
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-16T18:56:06.400Z",
+      "t": "2026-02-16T19:02:21.089Z",
       "event": "bb-session",
-      "session": "75f1fafa",
-      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+      "session": "64d18d8a",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
     },
     {
-      "t": "2026-02-16T18:56:08.278Z",
+      "t": "2026-02-16T19:02:23.230Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T18:58:13.320Z",
-      "event": "bb-session",
-      "session": "91686774",
-      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
-    },
-    {
-      "t": "2026-02-16T18:58:15.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "bloomberg.com"
     }
   ]
 }
