@@ -1,39 +1,39 @@
 {
-  "runDate": "2026-02-16T17:08:13.648Z",
+  "runDate": "2026-02-16T17:14:37.516Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "",
-    "aggressive": true,
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 4,
+    "failed": 41,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "8.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 6,
-    "tier3Success": 3,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 3,
     "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
@@ -43,30 +43,71 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "matilda-the-musical-2013/telegraph--unknown.json",
-    "west-side-story-2020/telegraph--diane-snyder.json"
+    "a-view-from-the-bridge-2010/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+    "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
-    "betrayal-2013/telegraph--matt-wolf.json",
-    "butley-2006/telegraph--matt-wolf.json",
-    "finding-neverland-2015/telegraph--matt-wolf.json",
-    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
-    "mean-girls-2018/the-telegraph-uk--diane-snyder.json"
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1984-2017/vulture--jesse-green.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-bronx-tale-2007/vulture--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-christmas-carol-2022/vulture--jackson-mchenry.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "allegiance-2015/vulture--jesse-green.json",
+    "almost-famous-2022/vulture--helen-shaw.json",
+    "anastasia-2017/vulture--jesse-green.json",
+    "bernhardthamlet-2018/vulture--jesse-green.json",
+    "betrayal-2019/vulture--jesse-green.json",
+    "between-riverside-and-crazy-2022/vulture--jackson-mchenry.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "carousel-2018/vulture--jesse-green.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "elf-2012/vulture--jesse-green.json",
+    "elf-2024/vulture--jackson-mchenry.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json",
+    "floyd-collins-2025/vulture--sara-holdren.json",
+    "flying-over-sunset-2021/vulture--sara-holdren.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--helen-shaw.json",
+    "frozen-2018/vulture--jesse-green.json",
+    "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gypsy-2024/vulture--jackson-mchenry.json",
+    "1776-2022/nysr--michael-dale.json",
+    "a-dolls-house-2023/nysr--frank-scheck.json",
+    "guys-and-dolls-2009/nysr--melissa-rose-bernardo.json",
+    "peter-pan-goes-wrong-2023/david-finkle--stage-review.json",
+    "purlie-victorious-2023/nysr--frank-scheck.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "matilda-the-musical-2013/telegraph--unknown.json",
-      "west-side-story-2020/telegraph--diane-snyder.json"
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json"
     ],
-    "archive": []
+    "archive": [
+      "a-view-from-the-bridge-2010/vulture--jesse-green.json",
+      "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+      "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json"
+    ]
   },
   "failuresByOutlet": {
-    "Telegraph": {
+    "New York Stage Review": {
       "count": 1,
-      "domain": "telegraph.co.uk",
+      "domain": "nystagereview.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
