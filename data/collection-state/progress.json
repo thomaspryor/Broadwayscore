@@ -31,7 +31,14 @@
     "les-miserables-2006/nytimes--charles-isherwood.json",
     "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json",
     "parade-2023/nytimes--unknown.json",
-    "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json"
+    "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+    "peter-pan-goes-wrong-2023/nytimes--unknown.json",
+    "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
+    "present-laughter-2017/nytimes--ben-brantley.json",
+    "prince-of-broadway-2017/nytimes--unknown.json",
+    "promises-promises-2010/nytimes--ben-brantley.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "rock-n-roll-2007/nytimes--ben-brantley.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -71,7 +78,10 @@
     "old-times-2015/nytimes--unknown.json",
     "oleanna-2009/nytimes--ben-brantley.json",
     "once-upon-a-one-more-time-2023/nytimes--elisabeth-vincentelli.json",
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "prince-of-broadway-2017/nytimes--ben-brantley.json",
+    "ragtime-2009/nytimes--laura-collins-hughes.json",
+    "scandalous-2012/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -81,7 +91,14 @@
     "brightdata": [
       "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json",
       "parade-2023/nytimes--unknown.json",
-      "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json"
+      "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+      "peter-pan-goes-wrong-2023/nytimes--unknown.json",
+      "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
+      "present-laughter-2017/nytimes--ben-brantley.json",
+      "prince-of-broadway-2017/nytimes--unknown.json",
+      "promises-promises-2010/nytimes--ben-brantley.json",
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "rock-n-roll-2007/nytimes--ben-brantley.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -116,7 +133,7 @@
     ]
   },
   "startTime": "2026-02-16T03:19:41.223Z",
-  "lastProcessed": "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+  "lastProcessed": "scandalous-2012/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-16T03:20:36.237Z",
@@ -258,6 +275,105 @@
     },
     {
       "t": "2026-02-16T03:38:07.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:39:30.850Z",
+      "event": "bb-session",
+      "session": "56cee898",
+      "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html"
+    },
+    {
+      "t": "2026-02-16T03:39:32.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:40:39.430Z",
+      "event": "bb-session",
+      "session": "25d183cf",
+      "url": "https://www.nytimes.com/2025/04/24/theater/pirates-penzance-musical-review.html"
+    },
+    {
+      "t": "2026-02-16T03:40:41.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:41:48.246Z",
+      "event": "bb-session",
+      "session": "4b961726",
+      "url": "https://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soig"
+    },
+    {
+      "t": "2026-02-16T03:41:50.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:42:56.246Z",
+      "event": "bb-session",
+      "session": "755fb9a3",
+      "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html"
+    },
+    {
+      "t": "2026-02-16T03:42:58.006Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:44:03.291Z",
+      "event": "bb-session",
+      "session": "624d6f6a",
+      "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html"
+    },
+    {
+      "t": "2026-02-16T03:44:05.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:45:11.576Z",
+      "event": "bb-session",
+      "session": "61e570e1",
+      "url": "https://www.nytimes.com/2010/04/26/theater/reviews/26promises.html"
+    },
+    {
+      "t": "2026-02-16T03:45:13.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:46:20.131Z",
+      "event": "bb-session",
+      "session": "6263deb3",
+      "url": "https://www.nytimes.com/2025/09/29/theater/punch-review-james-graham.html"
+    },
+    {
+      "t": "2026-02-16T03:46:22.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:47:28.342Z",
+      "event": "bb-session",
+      "session": "504e8221",
+      "url": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html"
+    },
+    {
+      "t": "2026-02-16T03:47:30.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:48:35.878Z",
+      "event": "bb-session",
+      "session": "3febf681",
+      "url": "https://www.nytimes.com/2007/11/05/theater/reviews/05rock.html"
+    },
+    {
+      "t": "2026-02-16T03:48:38.168Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
