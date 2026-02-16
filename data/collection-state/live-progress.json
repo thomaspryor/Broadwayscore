@@ -1,15 +1,56 @@
 {
-  "updatedAt": "2026-02-16T11:14:30.663Z",
-  "processed": 9,
-  "failed": 71,
-  "successRate": "11.3%",
+  "updatedAt": "2026-02-16T11:19:29.860Z",
+  "processed": 178,
+  "failed": 352,
+  "successRate": "33.6%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 110,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 9
+    "brightdata": 48,
+    "archive": 39
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T06:29:17.988Z",
+      "event": "bb-session",
+      "session": "4b0954f3",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-16T06:30:28.500Z",
+      "event": "bb-session",
+      "session": "18608f2d",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    },
+    {
+      "t": "2026-02-16T06:42:41.999Z",
+      "event": "bb-session",
+      "session": "b1955446",
+      "url": "https://www.thewrap.com/oscar-isaac-rachel-brosnahan-sign-in-sidney-brusteins-wi"
+    },
+    {
+      "t": "2026-02-16T07:26:57.755Z",
+      "event": "bb-session",
+      "session": "b25ee0f9",
+      "url": "https://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-peo"
+    },
+    {
+      "t": "2026-02-16T07:26:59.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-16T07:28:33.760Z",
+      "event": "bb-session",
+      "session": "7db85f05",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/03/18/enemy-people-broad"
+    },
+    {
+      "t": "2026-02-16T07:28:35.799Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
