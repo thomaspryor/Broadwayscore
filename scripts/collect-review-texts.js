@@ -2,10 +2,12 @@
  * Collect Review Texts - Multi-Tier Fallback System
  *
  * TIER 0: Archive.org (for archiveFirstSites - paywalled domains where Archive.org excels)
- * TIER 1: Playwright-extra with stealth plugin + login for paywalls
+ * TIER 1: Playwright-extra with stealth plugin + login for paywalls + Google referrer header
+ * TIER 1.1: AMP page variant (/amp/ URL — many soft paywalls serve full text on AMP)
  * TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving) - SPENDING LIMITS APPLY
  * TIER 2: ScrapingBee API
  * TIER 3: Bright Data Web Unlocker
+ * TIER 3.6: Archive.today (archive.ph — community-archived paywall bypasses)
  * TIER 4: Archive.org Wayback Machine (final fallback)
  *
  * SUCCESS RATES (Jan 2026 data):
@@ -526,8 +528,12 @@ const stats = {
   tier2Success: 0,
   tier3Attempts: 0,
   tier3Success: 0,
+  tier3_6Attempts: 0,  // Archive.today
+  tier3_6Success: 0,
   tier4Attempts: 0,
   tier4Success: 0,
+  ampAttempts: 0,      // AMP variant
+  ampSuccess: 0,
   totalFailed: 0,
   scrapingBeeCreditsUsed: 0,
   browserbaseSessionsUsed: 0,
@@ -548,9 +554,11 @@ let state = {
   skipped: [],
   tierBreakdown: {
     playwright: [],
+    amp: [],
     browserbase: [],
     scrapingbee: [],
     brightdata: [],
+    archiveToday: [],
     archive: [],
   },
   startTime: new Date().toISOString(),
@@ -722,6 +730,9 @@ async function fetchWithPlaywright(url, review) {
           throw new Error('Browser unavailable after crash');
         }
       }
+
+      // Set Google referrer to bypass metered paywalls (many soft paywalls allow search traffic)
+      await page.setExtraHTTPHeaders({ 'Referer': 'https://www.google.com/' });
 
       await page.goto(url, {
         waitUntil: 'domcontentloaded',
@@ -2317,6 +2328,133 @@ async function fetchWithBrightData(url) {
 }
 
 // ============================================================================
+// AMP VARIANT: Try /amp/ version of URL (many soft paywalls serve full text on AMP)
+// ============================================================================
+
+/**
+ * Domains known to have AMP versions with full article text
+ */
+const AMP_SUPPORTED_DOMAINS = [
+  'variety.com', 'hollywoodreporter.com', 'deadline.com',  // PMC network
+  'ew.com', 'usatoday.com', 'time.com',
+  'vulture.com', 'nymag.com',  // Vox Media
+  'washingtonpost.com', 'nypost.com',
+  'thewrap.com', 'thedailybeast.com', 'dailybeast.com',
+  'huffpost.com', 'huffingtonpost.com',
+  'timeout.com', 'newsday.com', 'amny.com',
+  'nydailynews.com', 'chicagotribune.com',
+];
+
+function getAmpUrl(url) {
+  try {
+    const parsed = new URL(url);
+    const domain = parsed.hostname.replace(/^www\./, '');
+    if (!AMP_SUPPORTED_DOMAINS.includes(domain)) return null;
+    // Skip if already an AMP URL
+    if (parsed.pathname.includes('/amp') || parsed.pathname.endsWith('/amp/')) return null;
+    // Append /amp/ to the path
+    const ampPath = parsed.pathname.endsWith('/') ? parsed.pathname + 'amp/' : parsed.pathname + '/amp/';
+    return `${parsed.protocol}//${parsed.host}${ampPath}${parsed.search}`;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchAmpVariant(url, review) {
+  stats.ampAttempts++;
+  const ampUrl = getAmpUrl(url);
+  if (!ampUrl) throw new Error('No AMP variant available for this domain');
+
+  console.log(`    → Trying AMP: ${ampUrl.substring(0, 80)}...`);
+
+  // Use Playwright with the AMP URL
+  const browserOk = await ensureBrowserHealthy();
+  if (!browserOk) throw new Error('Browser unavailable');
+
+  await page.setExtraHTTPHeaders({ 'Referer': 'https://www.google.com/' });
+  await page.goto(ampUrl, { waitUntil: 'domcontentloaded', timeout: CONFIG.pageTimeout });
+
+  await Promise.race([
+    page.waitForSelector('article', { timeout: 10000 }),
+    page.waitForSelector('.article-body', { timeout: 10000 }),
+    page.waitForSelector('amp-story', { timeout: 10000 }),
+    page.waitForTimeout(8000),
+  ]).catch(() => {});
+
+  const html = await page.content();
+  if (isBlocked(html)) throw new Error('AMP page blocked');
+
+  const text = await extractArticleText(page);
+  if (text && text.length > 500) {
+    stats.ampSuccess++;
+    return { html, text, ampUrl };
+  }
+  throw new Error(`AMP insufficient text: ${text?.length || 0} chars`);
+}
+
+// ============================================================================
+// TIER 3.6: Archive.today (archive.ph) — community-archived paywall bypasses
+// ============================================================================
+
+async function fetchFromArchiveToday(url) {
+  stats.tier3_6Attempts++;
+
+  const encodedUrl = encodeURIComponent(url);
+  const checkUrl = `https://archive.ph/newest/${encodedUrl}`;
+  console.log(`    → Checking archive.today...`);
+
+  try {
+    const axios = require('axios');
+    // First, check if the URL has been archived (follows redirect to archived page)
+    const resp = await axios.get(checkUrl, {
+      timeout: 15000,
+      maxRedirects: 5,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+      },
+      validateStatus: (s) => s < 500,
+    });
+
+    if (resp.status === 404 || resp.status === 302 && !resp.headers.location) {
+      throw new Error('No archive.today snapshot found');
+    }
+
+    // Extract text from the archived page HTML
+    const html = typeof resp.data === 'string' ? resp.data : '';
+    if (html.length < 500) throw new Error('Empty archive.today response');
+
+    // Extract text from the archived HTML (strip scripts, styles, tags)
+    let text = html
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
+      .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, '')
+      .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#\d+;/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (text && text.length > 500) {
+      stats.tier3_6Success++;
+      console.log(`    ✓ Archive.today: ${text.length} chars`);
+      return { html, text, archiveTodayUrl: resp.request?.res?.responseUrl || checkUrl };
+    }
+
+    throw new Error(`Insufficient text from archive.today: ${text?.length || 0} chars`);
+  } catch (error) {
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      throw new Error('Archive.today timeout');
+    }
+    throw error;
+  }
+}
+
+// ============================================================================
 // TIER 4: Archive.org Wayback Machine
 // ============================================================================
 
@@ -2837,6 +2975,24 @@ function buildTierChain(ctx, review) {
       },
     },
 
+    // TIER 1.1: AMP variant (many soft paywalls serve full text on /amp/ pages)
+    {
+      id: 'amp-variant',
+      tierNumber: 1.1,
+      method: 'amp',
+      label: 'AMP page variant (paywall bypass)',
+      shouldRun: () => {
+        // Only try AMP if Playwright got blocked/paywalled/insufficient AND domain has AMP
+        if (!ctx.anyTierFailed && !ctx.sawPaywall) return false;
+        return !!getAmpUrl(ctx.url);
+      },
+      execute: (url) => fetchAmpVariant(url, review),
+      onSuccess: (review, result) => {
+        state.tierBreakdown.amp.push(review.filePath);
+      },
+      onFailure: (error) => { /* AMP failed, continue to next tier */ },
+    },
+
     // TIER 4 (early): Archive.org 404 recovery
     {
       id: 'archive-404-recovery',
@@ -2919,6 +3075,20 @@ function buildTierChain(ctx, review) {
       execute: (url) => fetchFromArchiveCDX(url),
       onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
       onFailure: (error) => { ctx._archiveCdxRan = true; },
+    },
+
+    // TIER 3.6: Archive.today (community-archived paywall content)
+    {
+      id: 'archive-today',
+      tierNumber: 3.6,
+      method: 'archive-today',
+      label: 'Archive.today (community archive)',
+      shouldRun: () => ctx.anyTierFailed, // Only try if everything else failed
+      execute: (url) => fetchFromArchiveToday(url),
+      onSuccess: (review, result) => {
+        state.tierBreakdown.archiveToday.push(review.filePath);
+      },
+      onFailure: (error) => { /* Archive.today failed, continue to Archive.org */ },
     },
 
     // TIER 4: Archive.org (last resort)
@@ -4829,17 +4999,22 @@ function generateReport() {
       browserbase: state.tierBreakdown.browserbase?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee.length,
       brightdata: state.tierBreakdown.brightdata.length,
+      archiveToday: state.tierBreakdown.archiveToday.length,
       archive: state.tierBreakdown.archive.length,
     },
     statistics: {
       tier1Attempts: stats.tier1Attempts,
       tier1Success: stats.tier1Success,
+      ampAttempts: stats.ampAttempts,
+      ampSuccess: stats.ampSuccess,
       tier1_5Attempts: stats.tier1_5Attempts,
       tier1_5Success: stats.tier1_5Success,
       tier2Attempts: stats.tier2Attempts,
       tier2Success: stats.tier2Success,
       tier3Attempts: stats.tier3Attempts,
       tier3Success: stats.tier3Success,
+      tier3_6Attempts: stats.tier3_6Attempts,
+      tier3_6Success: stats.tier3_6Success,
       tier4Attempts: stats.tier4Attempts,
       tier4Success: stats.tier4Success,
       totalFailed: stats.totalFailed,
@@ -4871,9 +5046,11 @@ function generateReport() {
   console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
   console.log(`║ TIER BREAKDOWN                                           ║`);
   console.log(`║ ├─ Tier 1 (Playwright):  ${String(report.tierBreakdown.playwright).padStart(31)} ║`);
+  console.log(`║ ├─ Tier 1.1 (AMP):       ${String(report.tierBreakdown.amp).padStart(31)} ║`);
   console.log(`║ ├─ Tier 1.5 (Browserbase):${String(report.tierBreakdown.browserbase).padStart(30)} ║`);
   console.log(`║ ├─ Tier 2 (ScrapingBee): ${String(report.tierBreakdown.scrapingbee).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3 (Bright Data): ${String(report.tierBreakdown.brightdata).padStart(31)} ║`);
+  console.log(`║ ├─ Tier 3.6 (archive.ph):${String(report.tierBreakdown.archiveToday).padStart(31)} ║`);
   console.log(`║ └─ Tier 4 (Archive.org): ${String(report.tierBreakdown.archive).padStart(31)} ║`);
   console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
   console.log(`║ API USAGE                                                ║`);
