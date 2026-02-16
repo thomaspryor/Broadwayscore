@@ -1,27 +1,38 @@
 {
-  "updatedAt": "2026-02-16T12:41:14.019Z",
-  "processed": 29,
-  "failed": 21,
-  "successRate": "58.0%",
+  "updatedAt": "2026-02-16T12:41:39.033Z",
+  "processed": 9,
+  "failed": 71,
+  "successRate": "11.3%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 29
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T12:36:48.316Z",
+      "t": "2026-02-16T12:36:54.220Z",
       "event": "bb-session",
-      "session": "2fef5a86",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "1d5e24e5",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
     },
     {
-      "t": "2026-02-16T12:37:33.943Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T12:36:56.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T12:41:21.945Z",
+      "event": "bb-session",
+      "session": "6061a9f2",
+      "url": "https://www.vulture.com/2017/11/theater-amy-schumer-in-steve-martins-meteor-show"
+    },
+    {
+      "t": "2026-02-16T12:41:22.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
