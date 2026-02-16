@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T15:39:10.494Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "call-me-izzy-2025",
     "aggressive": false,
@@ -20,15 +20,15 @@
     "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 15,
+    "archive": 13
   },
   "statistics": {
     "tier1Attempts": 7,
     "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 46,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 1,
@@ -70,7 +70,23 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "a-bronx-tale-2007/thewrap--robert-hofler.json",
+      "cats-1982/guardian--emma-brockes.json",
+      "funny-girl-2022/thewrap--robert-hofler.json",
+      "gypsy-2008/guardian--adrian-horton.json",
+      "the-glass-menagerie-2013/guardian--alexis-soloski.json",
+      "walking-with-ghosts-2022/cititour--brian-scott-lipton.json",
+      "american-son-2018/latimes--unknown.json",
+      "an-enemy-of-the-people-2012/usatoday--patrick-ryan.json",
+      "beetlejuice-2022/orlando-weekly--seth-kubersky.json",
+      "betrayal-2019/latimes--unknown.json",
+      "betrayal-2019/the-independent--paul-taylor.json",
+      "bright-star-2016/ap--mark-kennedy.json",
+      "bright-star-2016/njcom--christopher-kelly.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "cats-1982/ap--mark-kennedy.json"
+    ],
     "archive": [
       "call-me-izzy-2025/nytg--austin-fimmano.json",
       "call-me-izzy-2025/nytimes--jesse-green.json",
