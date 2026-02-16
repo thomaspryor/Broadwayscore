@@ -306,15 +306,23 @@ export default function TonyAwardsPage() {
         </div>
 
         {/* Category Sections */}
-        {categories.map(cat => (
-          <TonyPredictionsTable
-            key={cat.key}
-            title={cat.title}
-            description={cat.description}
-            shows={cat.shows}
-            upcoming={cat.upcoming}
-          />
-        ))}
+        {categories.reduce<{ elements: React.ReactNode[]; runningIndex: number }>(
+          (acc, cat) => {
+            acc.elements.push(
+              <TonyPredictionsTable
+                key={cat.key}
+                title={cat.title}
+                description={cat.description}
+                shows={cat.shows}
+                upcoming={cat.upcoming}
+                startIndex={acc.runningIndex}
+              />
+            );
+            acc.runningIndex += cat.shows.length + cat.upcoming.length;
+            return acc;
+          },
+          { elements: [], runningIndex: 0 }
+        ).elements}
 
         {/* Historical Winners */}
         {historicalWinners.length > 0 && (

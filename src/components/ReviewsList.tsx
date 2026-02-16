@@ -142,7 +142,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
   else scoreLabel = 'Stay Away';
 
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} aria-label={`Review from ${review.outlet}`}>
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       <div className="flex items-start gap-2.5">
         {/* Score on LEFT - Metacritic style - smaller on mobile */}
         <div
@@ -156,50 +156,50 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
 
-        {/* Outlet logo - own column so all text aligns */}
-        <OutletLogo outlet={review.outlet} />
-
         {/* Content */}
         <div className="min-w-0 flex-1">
-          {/* Outlet name + date + badge */}
-          <div className="flex items-center justify-between gap-2 mb-1">
-            <div className="flex items-center gap-1.5 min-w-0">
-              {review.outletSlug ? (
-                <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
-              ) : (
-                <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
-              )}
-              {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
-              {review.designation && review.designation !== 'Critics_Pick' && (
-                <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
-                  {review.designation.replace('_', ' ')}
-                </span>
+          {/* Logo + outlet name + date — vertically centered */}
+          <div className="flex items-center gap-2 mb-1.5">
+            <OutletLogo outlet={review.outlet} />
+            <div className="flex items-baseline justify-between gap-2 flex-1 min-w-0">
+              <div className="flex items-baseline gap-1.5 min-w-0">
+                {review.outletSlug ? (
+                  <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
+                ) : (
+                  <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
+                )}
+                {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
+                {review.designation && review.designation !== 'Critics_Pick' && (
+                  <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
+                    {review.designation.replace('_', ' ')}
+                  </span>
+                )}
+              </div>
+              {formatDate(review.publishDate) && (
+                <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
               )}
             </div>
-            {formatDate(review.publishDate) && (
-              <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
-            )}
           </div>
 
-          {/* Quote/Summary - larger text */}
+          {/* Quote/Summary - indented past logo */}
           {review.quote && (
-            <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1">
+            <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1 pl-10">
               &ldquo;{review.quote}&rdquo;
             </p>
           )}
           {review.summary && !review.quote && (
-            <p className="text-sm sm:text-base text-gray-400 leading-snug mb-1">
+            <p className="text-sm sm:text-base text-gray-400 leading-snug mb-1 pl-10">
               {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}
             </p>
           )}
           {review.pullQuote && !review.quote && !review.summary && (
-            <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1">
+            <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1 pl-10">
               &ldquo;{review.pullQuote}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
             </p>
           )}
 
           {/* Author at BOTTOM + Full Review link */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pl-10">
             {review.criticName && (
               <span className="text-sm text-gray-500">By {review.criticSlug ? (
                 <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
@@ -233,7 +233,7 @@ export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListPr
   const hiddenCount = reviews.length - initialCount;
 
   return (
-    <div className="space-y-3" role="feed" aria-label="Critic reviews">
+    <div className="space-y-3" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
       {displayedReviews.map((review) => (
         <ReviewCard
           key={`${review.outletId}-${review.publishDate}`}
