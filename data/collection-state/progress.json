@@ -13,7 +13,10 @@
     "a-little-night-music-2009/wsj--terry-teachout.json",
     "a-soldiers-play-2020/wsj--terry-teachout.json",
     "a-strange-loop-2022/wsj--charles-isherwood.json",
-    "airline-highway-2015/wsj--terry-teachout.json"
+    "airline-highway-2015/wsj--terry-teachout.json",
+    "almost-famous-2022/wsj--charles-isherwood.json",
+    "american-buffalo-2008/wsj--charles-isherwood.json",
+    "american-buffalo-2022/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/wsj--charles-isherwood.json",
@@ -41,7 +44,14 @@
     "after-midnight-2013/wsj--terry-teachout.json",
     "aint-no-mo-2022/wsj--charles-isherwood.json",
     "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
-    "all-my-sons-2008/wsj--terry-teachout.json"
+    "all-my-sons-2008/wsj--terry-teachout.json",
+    "allegiance-2015/wsj--terry-teachout.json",
+    "almost-famous-2022/wsj--terry-teachout.json",
+    "amazing-grace-2015/wsj--terry-teachout.json",
+    "amelie-a-new-musical-2017/wsj--terry-teachout.json",
+    "american-buffalo-2008/wsj--terry-teachout.json",
+    "american-idiot-2010/wsj--terry-teachout.json",
+    "american-psycho-2016/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -55,7 +65,8 @@
       "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
       "a-little-night-music-2009/wsj--terry-teachout.json",
       "a-soldiers-play-2020/wsj--terry-teachout.json",
-      "a-strange-loop-2022/wsj--charles-isherwood.json"
+      "a-strange-loop-2022/wsj--charles-isherwood.json",
+      "almost-famous-2022/wsj--charles-isherwood.json"
     ],
     "archive": [
       "aladdin-2014/wsj--terry-teachout.json",
@@ -64,11 +75,13 @@
       "harry-potter-2021/wsj--terry-teachout.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
       "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-      "airline-highway-2015/wsj--terry-teachout.json"
+      "airline-highway-2015/wsj--terry-teachout.json",
+      "american-buffalo-2008/wsj--charles-isherwood.json",
+      "american-buffalo-2022/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T02:45:58.306Z",
-  "lastProcessed": "all-my-sons-2008/wsj--terry-teachout.json",
+  "lastProcessed": "american-psycho-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-02-16T02:46:51.956Z",
@@ -452,6 +465,61 @@
     },
     {
       "t": "2026-02-16T03:46:39.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:49:23.073Z",
+      "event": "bb-session",
+      "session": "a086026a",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T03:49:25.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:50:34.392Z",
+      "event": "bb-session",
+      "session": "9100286f",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T03:50:36.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:51:43.056Z",
+      "event": "bb-session",
+      "session": "4215aa26",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T03:51:45.276Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:53:06.509Z",
+      "event": "bb-session",
+      "session": "7d1b552e",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T03:53:08.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T03:55:48.416Z",
+      "event": "bb-session",
+      "session": "6e9eaf62",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T03:55:50.439Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
