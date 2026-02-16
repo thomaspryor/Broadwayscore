@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T16:30:11.962Z",
-  "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "updatedAt": "2026-02-16T16:31:27.464Z",
+  "processed": 4,
+  "failed": 26,
+  "successRate": "13.3%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-16T16:29:46.825Z",
@@ -20,6 +20,17 @@
     },
     {
       "t": "2026-02-16T16:29:48.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T16:30:52.262Z",
+      "event": "bb-session",
+      "session": "62ab1d1d",
+      "url": "http://www.vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof.html"
+    },
+    {
+      "t": "2026-02-16T16:30:54.520Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
