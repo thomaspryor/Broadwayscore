@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T18:11:36.368Z",
-  "processed": 120,
-  "failed": 180,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-16T18:12:30.314Z",
+  "processed": 174,
+  "failed": 166,
+  "successRate": "51.2%",
   "tierBreakdown": {
-    "playwright": 90,
+    "playwright": 124,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 24,
-    "archive": 15
+    "brightdata": 0,
+    "archive": 50
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T18:11:12.762Z",
+      "event": "bb-session",
+      "session": "65229058",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-02-16T18:11:14.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    }
+  ]
 }
