@@ -1,15 +1,60 @@
 {
-  "updatedAt": "2026-02-16T16:35:22.062Z",
-  "processed": 100,
-  "failed": 31,
-  "successRate": "76.3%",
+  "updatedAt": "2026-02-16T18:21:36.593Z",
+  "processed": 217,
+  "failed": 203,
+  "successRate": "51.7%",
   "tierBreakdown": {
-    "playwright": 83,
+    "playwright": 165,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archive": 11
+    "brightdata": 2,
+    "archive": 50
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T18:11:12.762Z",
+      "event": "bb-session",
+      "session": "65229058",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-02-16T18:11:14.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:13:21.955Z",
+      "event": "bb-session",
+      "session": "c820896b",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
+    },
+    {
+      "t": "2026-02-16T18:13:24.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:16:27.368Z",
+      "event": "bb-session",
+      "session": "ec45ad13",
+      "url": "https://www.theatermania.com/broadway/reviews/take-me-out_91234"
+    },
+    {
+      "t": "2026-02-16T18:16:29.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:20:56.855Z",
+      "event": "bb-session",
+      "session": "936c53fb",
+      "url": "https://www.theatermania.com/broadway/news/the-norman-conquests-round-and-round-"
+    },
+    {
+      "t": "2026-02-16T18:20:59.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    }
+  ]
 }
