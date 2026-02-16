@@ -7,7 +7,14 @@
     "airline-highway-2015/nytimes--charles-isherwood.json",
     "an-enemy-of-the-people-2012/nytimes--unknown.json",
     "anything-goes-2011/nytimes--ben-brantley.json",
-    "bad-cinderella-2023/nytimes--unknown.json"
+    "bad-cinderella-2023/nytimes--unknown.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -21,12 +28,18 @@
     "baby-its-you-2011/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--charles-isherwood.json",
     "bernhardthamlet-2018/nytimes--ben-brantley.json",
-    "bernhardthamlet-2018/nytimes--jesse-green.json"
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-2016/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cats-1982/nytimes--charles-isherwood.json",
+      "data/review-texts/cats-2016/nytimes--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -37,11 +50,18 @@
       "airline-highway-2015/nytimes--charles-isherwood.json",
       "an-enemy-of-the-people-2012/nytimes--unknown.json",
       "anything-goes-2011/nytimes--ben-brantley.json",
-      "bad-cinderella-2023/nytimes--unknown.json"
+      "bad-cinderella-2023/nytimes--unknown.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-16T09:47:38.091Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--jesse-green.json",
+  "lastProcessed": "cats-2016/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-16T09:47:45.383Z",
@@ -51,6 +71,28 @@
     },
     {
       "t": "2026-02-16T09:48:21.616Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:50:14.895Z",
+      "event": "bb-session",
+      "session": "08b2f663",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-16T09:51:06.923Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:51:55.073Z",
+      "event": "bb-session",
+      "session": "c64a5896",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-16T09:52:47.607Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
