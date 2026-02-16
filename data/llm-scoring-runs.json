@@ -227917,33 +227917,25 @@
       "output": 12036,
       "total": 956159
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-02-16T17:38:46.141Z",
-    "completedAt": "2026-02-16T18:55:22.052Z",
+    "startedAt": "2026-02-16T18:43:07.913Z",
+    "completedAt": "2026-02-16T19:37:18.973Z",
     "totalReviews": 23293,
-    "processed": 33,
-    "skipped": 22419,
+    "processed": 18,
+    "skipped": 22584,
     "errors": 0,
     "tokensUsed": {
-      "input": 427645,
-      "output": 11967,
-      "total": 989965
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-16T17:41:29.802Z",
-    "completedAt": "2026-02-16T18:55:36.514Z",
-    "totalReviews": 23293,
-    "processed": 35,
-    "skipped": 22459,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 457985,
-      "output": 12307,
-      "total": 1076333
+      "input": 327588,
+      "output": 8175,
+      "total": 765659
     },
     "errorDetails": []
   },
