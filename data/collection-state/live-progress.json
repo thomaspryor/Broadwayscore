@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T13:12:43.514Z",
-  "processed": 47,
-  "failed": 33,
-  "successRate": "58.8%",
+  "updatedAt": "2026-02-16T13:15:33.701Z",
+  "processed": 55,
+  "failed": 35,
+  "successRate": "61.1%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 43
+    "brightdata": 1,
+    "archive": 49
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-02-16T13:02:01.250Z",
@@ -64,6 +64,28 @@
     },
     {
       "t": "2026-02-16T13:11:06.429Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:13:07.030Z",
+      "event": "bb-session",
+      "session": "b55e6ab4",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T13:13:51.784Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:14:28.139Z",
+      "event": "bb-session",
+      "session": "3fdaf7c6",
+      "url": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-an"
+    },
+    {
+      "t": "2026-02-16T13:15:12.617Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
