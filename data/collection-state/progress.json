@@ -38,7 +38,12 @@
     "prince-of-broadway-2017/nytimes--unknown.json",
     "promises-promises-2010/nytimes--ben-brantley.json",
     "punch-2025/nytimes--elisabeth-vincentelli.json",
-    "rock-n-roll-2007/nytimes--ben-brantley.json"
+    "rock-n-roll-2007/nytimes--ben-brantley.json",
+    "shucked-2023/nytimes--jesse-green.json",
+    "something-rotten-2015/nytimes--unknown.json",
+    "spring-awakening-2006/nytimes--charles-isherwood.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--unknown.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -81,7 +86,12 @@
     "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
     "prince-of-broadway-2017/nytimes--ben-brantley.json",
     "ragtime-2009/nytimes--laura-collins-hughes.json",
-    "scandalous-2012/nytimes--ben-brantley.json"
+    "scandalous-2012/nytimes--ben-brantley.json",
+    "soul-doctor-2013/nytimes--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "summer-2018/nytimes--ben-brantley.json",
+    "superior-donuts-2009/nytimes--charles-isherwood.json",
+    "take-me-out-2022/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -98,7 +108,12 @@
       "prince-of-broadway-2017/nytimes--unknown.json",
       "promises-promises-2010/nytimes--ben-brantley.json",
       "punch-2025/nytimes--elisabeth-vincentelli.json",
-      "rock-n-roll-2007/nytimes--ben-brantley.json"
+      "rock-n-roll-2007/nytimes--ben-brantley.json",
+      "shucked-2023/nytimes--jesse-green.json",
+      "something-rotten-2015/nytimes--unknown.json",
+      "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -133,7 +148,7 @@
     ]
   },
   "startTime": "2026-02-16T03:19:41.223Z",
-  "lastProcessed": "scandalous-2012/nytimes--ben-brantley.json",
+  "lastProcessed": "take-me-out-2022/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-16T03:20:36.237Z",
@@ -374,6 +389,105 @@
     },
     {
       "t": "2026-02-16T03:48:38.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:49:56.430Z",
+      "event": "bb-session",
+      "session": "2b857bad",
+      "url": "https://www.nytimes.com/2023/04/04/theater/shucked-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T03:49:58.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:51:04.464Z",
+      "event": "bb-session",
+      "session": "89993234",
+      "url": "https://www.nytimes.com/2015/04/23/theater/review-something-rotten-an-over-the-t"
+    },
+    {
+      "t": "2026-02-16T03:51:06.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:52:13.888Z",
+      "event": "bb-session",
+      "session": "dc536a81",
+      "url": "http://www.nytimes.com/2015/09/28/theater/review-spring-awakening-by-deaf-west-t"
+    },
+    {
+      "t": "2026-02-16T03:52:16.150Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:53:23.153Z",
+      "event": "bb-session",
+      "session": "a121e4be",
+      "url": "https://www.nytimes.com/2025/04/08/theater/old-friends-review-sondheim-peters-sa"
+    },
+    {
+      "t": "2026-02-16T03:53:26.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:54:31.947Z",
+      "event": "bb-session",
+      "session": "f5549f3d",
+      "url": "https://www.nytimes.com/2018/04/23/theater/review-summer-the-donna-summer-musica"
+    },
+    {
+      "t": "2026-02-16T03:54:33.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:55:39.380Z",
+      "event": "bb-session",
+      "session": "c6941bff",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-16T03:55:41.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:56:48.003Z",
+      "event": "bb-session",
+      "session": "a90c7a83",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-16T03:56:49.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:57:56.670Z",
+      "event": "bb-session",
+      "session": "2dc7b039",
+      "url": "https://www.nytimes.com/2009/10/02/theater/reviews/02donut.html"
+    },
+    {
+      "t": "2026-02-16T03:57:58.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:59:13.017Z",
+      "event": "bb-session",
+      "session": "50116575",
+      "url": "https://www.nytimes.com/2022/04/05/theater/take-me-out-review.html"
+    },
+    {
+      "t": "2026-02-16T03:59:15.209Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
