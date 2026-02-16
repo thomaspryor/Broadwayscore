@@ -41,7 +41,10 @@
     "rock-n-roll-2007/nytimes--ben-brantley.json",
     "shucked-2023/nytimes--jesse-green.json",
     "something-rotten-2015/nytimes--unknown.json",
-    "spring-awakening-2006/nytimes--charles-isherwood.json"
+    "spring-awakening-2006/nytimes--charles-isherwood.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--unknown.json",
+    "the-encounter-2016/nytimes--unknown.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -91,7 +94,14 @@
     "soul-doctor-2013/nytimes--charles-isherwood.json",
     "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
     "summer-2018/nytimes--ben-brantley.json",
-    "summer-2018/nytimes--jesse-green.json"
+    "summer-2018/nytimes--jesse-green.json",
+    "superior-donuts-2009/nytimes--charles-isherwood.json",
+    "take-me-out-2022/nytimes--jesse-green.json",
+    "the-anarchist-2012/nytimes--ben-brantley.json",
+    "the-big-knife-2013/nytimes--ben-brantley.json",
+    "the-constant-wife-2005/nytimes--ben-brantley.json",
+    "the-glass-menagerie-2017/nytimes--ben-brantley.json",
+    "the-history-boys-2006/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -111,7 +121,10 @@
       "rock-n-roll-2007/nytimes--ben-brantley.json",
       "shucked-2023/nytimes--jesse-green.json",
       "something-rotten-2015/nytimes--unknown.json",
-      "spring-awakening-2006/nytimes--charles-isherwood.json"
+      "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--unknown.json",
+      "the-encounter-2016/nytimes--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -146,7 +159,7 @@
     ]
   },
   "startTime": "2026-02-15T23:13:25.795Z",
-  "lastProcessed": "summer-2018/nytimes--jesse-green.json",
+  "lastProcessed": "the-history-boys-2006/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-15T23:14:16.622Z",
@@ -486,6 +499,105 @@
     },
     {
       "t": "2026-02-15T23:52:59.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:54:12.447Z",
+      "event": "bb-session",
+      "session": "b5f5ab5c",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-15T23:54:14.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:55:20.984Z",
+      "event": "bb-session",
+      "session": "a423ac2a",
+      "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+    },
+    {
+      "t": "2026-02-15T23:55:23.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:56:29.647Z",
+      "event": "bb-session",
+      "session": "66b03abf",
+      "url": "https://www.nytimes.com/2009/10/02/theater/reviews/02donut.html"
+    },
+    {
+      "t": "2026-02-15T23:56:31.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:57:38.056Z",
+      "event": "bb-session",
+      "session": "c9e3f4f5",
+      "url": "https://www.nytimes.com/2022/04/05/theater/take-me-out-review.html"
+    },
+    {
+      "t": "2026-02-15T23:57:40.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-15T23:59:01.516Z",
+      "event": "bb-session",
+      "session": "4948dccc",
+      "url": "https://www.nytimes.com/2012/12/04/theater/reviews/the-anarchist-with-patti-lupo"
+    },
+    {
+      "t": "2026-02-15T23:59:03.632Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T00:00:26.431Z",
+      "event": "bb-session",
+      "session": "7bd1ad3a",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cann"
+    },
+    {
+      "t": "2026-02-16T00:00:28.617Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T00:01:54.559Z",
+      "event": "bb-session",
+      "session": "a7b7c643",
+      "url": "https://www.nytimes.com/2005/03/16/theater/reviews/16cons.html"
+    },
+    {
+      "t": "2026-02-16T00:01:56.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T00:03:17.801Z",
+      "event": "bb-session",
+      "session": "29b699c0",
+      "url": "http://www.nytimes.com/2016/09/30/theater/the-encounter-review.html?_r=0"
+    },
+    {
+      "t": "2026-02-16T00:03:19.909Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T00:04:26.652Z",
+      "event": "bb-session",
+      "session": "9de93096",
+      "url": "https://www.nytimes.com/2017/03/10/theater/the-glass-menagerie-review-sally-fiel"
+    },
+    {
+      "t": "2026-02-16T00:04:28.812Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
