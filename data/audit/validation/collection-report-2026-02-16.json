@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-02-16T15:02:20.216Z",
+  "runDate": "2026-02-16T16:14:46.606Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "little-bear-ridge-road-2025",
+    "showFilter": "punch-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 7,
+    "processed": 12,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "56.3%"
+    "successRate": "85.7%"
   },
   "tierBreakdown": {
     "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 11,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 4,
-    "totalFailed": 5,
+    "tier4Attempts": 5,
+    "tier4Success": 5,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,53 +43,44 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "little-bear-ridge-road-2025/nytg--gillian-russo.json",
-    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
-    "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
-    "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json",
-    "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
-    "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
-    "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
-    "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json"
+    "punch-2025/nyt-theater--jonathan-mandell.json",
+    "punch-2025/nytg--caroline-cao.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "punch-2025/vulture--sara-holdren.json",
+    "punch-2025/ew--emlyn-travis.json",
+    "punch-2025/theatermania--david-gordon.json",
+    "punch-2025/theatre-reviews-limited--david-roberts.json",
+    "punch-2025/culturesauce--thom-geier.json",
+    "punch-2025/pages-on-stages--mason-pilevsky.json",
+    "punch-2025/talkinbroadway--howard-miller.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "punch-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
-    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
-    "little-bear-ridge-road-2025/variety--daniel-daddario.json",
-    "little-bear-ridge-road-2025/theatre-reviews-limited--david-roberts.json",
-    "little-bear-ridge-road-2025/timeout--adam-feldman.json",
-    "little-bear-ridge-road-2025/talkinbroadway--howard-miller.json",
-    "little-bear-ridge-road-2025/theater-scene--samuel-l-leiter.json"
+    "punch-2025/timeout--adam-feldman.json",
+    "punch-2025/theater-scene--darryl-reilly.json"
   ],
   "tierDetails": {
     "playwright": [
-      "little-bear-ridge-road-2025/hollywood-reporter--david-rooney.json",
-      "little-bear-ridge-road-2025/nytg--gillian-russo.json",
-      "little-bear-ridge-road-2025/variety--daniel-daddario.json",
-      "little-bear-ridge-road-2025/la-voce-di-new-york--elise-nussbaum.json",
-      "little-bear-ridge-road-2025/theatermania--zachary-stewart.json",
-      "little-bear-ridge-road-2025/culturesauce--thom-geier.json",
-      "little-bear-ridge-road-2025/lighting-and-sound-america--david-barbour.json",
-      "little-bear-ridge-road-2025/pages-on-stages--mason-pilevsky.json"
+      "punch-2025/nyt-theater--jonathan-mandell.json",
+      "punch-2025/nytg--caroline-cao.json",
+      "punch-2025/theatermania--david-gordon.json",
+      "punch-2025/theatre-reviews-limited--david-roberts.json",
+      "punch-2025/culturesauce--thom-geier.json",
+      "punch-2025/pages-on-stages--mason-pilevsky.json",
+      "punch-2025/the-interested-bystander--cary-wong.json",
+      "punch-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
-      "little-bear-ridge-road-2025/nypost--johnny-oleksinski.json"
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "punch-2025/vulture--sara-holdren.json",
+      "punch-2025/ew--emlyn-travis.json",
+      "punch-2025/talkinbroadway--howard-miller.json"
     ]
   },
-  "failuresByOutlet": {
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
