@@ -1,93 +1,340 @@
 {
   "processed": [
-    "hells-kitchen-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "a-dolls-house-2023/observer--david-cote.json",
-    "a-strange-loop-2022/observer--david-cote.json",
-    "all-my-sons-2019/observer--rex-reed.json",
-    "american-son-2018/observer--rex-reed.json",
-    "appropriate-2023/observer--rex-reed.json",
-    "art-2025/observer--david-cote.json",
-    "back-to-the-future-2023/observer--david-cote.json",
-    "bad-cinderella-2023/observer--david-cote.json",
-    "bernhardthamlet-2018/observer--david-cote.json",
-    "burn-this-2019/observer--rex-reed.json",
-    "cabaret-2024/observer--jesse-green.json",
-    "cabaret-2024/observer--rex-reed.json",
-    "camelot-2023/observer--david-cote.json",
-    "caroline-or-change-2021/observer--david-cote.json",
-    "dana-h-2021/observer--david-cote.json",
-    "dead-outlaw-2025/observer--david-cote.json",
-    "english-2025/observer--david-cote.json",
-    "eureka-day-2024/observer--david-cote.json",
-    "eureka-day-2024/observer--harry-haun.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/observer--david-cote.json",
-    "funny-girl-2022/observer--david-cote.json",
-    "funny-girl-2022/observer--rex-reed.json",
-    "gary-a-sequel-to-titus-andronicus-2019/observer--david-cote.json",
-    "glengarry-glen-ross-2025/observer--david-cote.json",
-    "good-night-oscar-2023/observer--rex-reed.json",
-    "gypsy-2008/observer--david-cote.json",
-    "gypsy-2024/observer--david-cote.json",
-    "hangmen-2022/observer--david-cote.json",
-    "high-2011/observer--jesse-oxfeld.json",
-    "home-2024/observer--david-cote.json",
-    "how-to-dance-in-ohio-2023/observer--jesse-green.json",
-    "illinoise-2024/observer--jesse-green.json"
+    "aladdin-2014/wsj--terry-teachout.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "operation-mincemeat-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "1776-2022/wsj--charles-isherwood.json",
+    "a-christmas-carol-2019/wsj--charles-isherwood.json",
+    "a-little-night-music-2009/wsj--terry-teachout.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json"
   ],
   "failed": [
-    "hadestown-2019/observer--david-cote.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
-    "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json",
-    "a-bronx-tale-2007/observer--rex-reed.json",
-    "carousel-2018/observer--rex-reed.json",
-    "gettin-the-band-back-together-2018/observer--david-cote.json"
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "chess-2025/wsj--charles-isherwood.json",
+    "chess-2025/wsj--christopher-isherwood.json",
+    "chicago-1996/wsj--terry-teachout.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+    "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+    "a-christmas-story-the-musical-2012/wsj--terry-teachout.json",
+    "a-delicate-balance-2014/wsj--terry-teachout.json",
+    "a-delicate-balance-2014/wsj--unknown.json",
+    "a-dolls-house-2023/wsj--charles-isherwood.json",
+    "a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+    "a-life-in-the-theatre-2010/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "hells-kitchen-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/observer--david-cote.json",
-      "a-dolls-house-2023/observer--david-cote.json",
-      "a-strange-loop-2022/observer--david-cote.json",
-      "all-my-sons-2019/observer--rex-reed.json",
-      "american-son-2018/observer--rex-reed.json",
-      "appropriate-2023/observer--rex-reed.json",
-      "art-2025/observer--david-cote.json",
-      "back-to-the-future-2023/observer--david-cote.json",
-      "bad-cinderella-2023/observer--david-cote.json",
-      "bernhardthamlet-2018/observer--david-cote.json",
-      "burn-this-2019/observer--rex-reed.json",
-      "cabaret-2024/observer--jesse-green.json",
-      "cabaret-2024/observer--rex-reed.json",
-      "camelot-2023/observer--david-cote.json",
-      "caroline-or-change-2021/observer--david-cote.json",
-      "dana-h-2021/observer--david-cote.json",
-      "dead-outlaw-2025/observer--david-cote.json",
-      "english-2025/observer--david-cote.json",
-      "eureka-day-2024/observer--david-cote.json",
-      "eureka-day-2024/observer--harry-haun.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/observer--david-cote.json",
-      "funny-girl-2022/observer--david-cote.json",
-      "funny-girl-2022/observer--rex-reed.json",
-      "gary-a-sequel-to-titus-andronicus-2019/observer--david-cote.json",
-      "glengarry-glen-ross-2025/observer--david-cote.json",
-      "good-night-oscar-2023/observer--rex-reed.json",
-      "gypsy-2008/observer--david-cote.json",
-      "gypsy-2024/observer--david-cote.json",
-      "hangmen-2022/observer--david-cote.json",
-      "home-2024/observer--david-cote.json",
-      "how-to-dance-in-ohio-2023/observer--jesse-green.json",
-      "illinoise-2024/observer--jesse-green.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "hadestown-2019/wsj--terry-teachout.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "moulin-rouge-2019/wsj--terry-teachout.json",
+      "operation-mincemeat-2025/wsj--charles-isherwood.json",
+      "1776-2022/wsj--charles-isherwood.json",
+      "a-christmas-carol-2019/wsj--charles-isherwood.json",
+      "a-little-night-music-2009/wsj--terry-teachout.json",
+      "a-soldiers-play-2020/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "high-2011/observer--jesse-oxfeld.json"
+      "aladdin-2014/wsj--terry-teachout.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json"
     ]
   },
-  "startTime": "2026-02-16T07:04:59.208Z",
-  "lastProcessed": "illinoise-2024/observer--jesse-green.json",
-  "log": []
+  "startTime": "2026-02-16T06:46:53.988Z",
+  "lastProcessed": "a-soldiers-play-2020/wsj--terry-teachout.json",
+  "log": [
+    {
+      "t": "2026-02-16T06:47:13.008Z",
+      "event": "bb-session",
+      "session": "02ec5f9c",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-16T06:48:02.828Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:48:27.957Z",
+      "event": "bb-session",
+      "session": "00f466dc",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-16T06:49:18.016Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:49:59.718Z",
+      "event": "bb-session",
+      "session": "39eaa611",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-16T06:50:49.525Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:51:10.242Z",
+      "event": "bb-session",
+      "session": "c40338a6",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-16T06:51:59.935Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:52:37.224Z",
+      "event": "bb-session",
+      "session": "904bbae1",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-16T06:53:29.966Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:53:59.405Z",
+      "event": "bb-session",
+      "session": "9da939a6",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-16T06:54:49.084Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T06:55:11.244Z",
+      "event": "bb-session",
+      "session": "a6c237c2",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-16T06:55:56.194Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771224925153\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA00e2fitXo_oANA1qtA==&cid=93D92YNOKxqvZ~slSDCcC9AwdB7h5nfm9XLfFEcG1lQhuQfK1GtQQjpb3ZNIzmb19LdaNR~br5TxNdS3i~jpVRiqJ03aN9zwgzg1vxn5BjAjmIzshKepl2OXJysuG5vL&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771224925153\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771224925153\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA00e2fitXo_oANA1qtA==&cid=93D92YNOKxqvZ~slSDCcC9AwdB7h5nfm9XLfFEcG1lQhuQfK1GtQQjpb3ZNIzmb19LdaNR~br5TxNdS3i~jpVRiqJ03aN9zwgzg1vxn5BjAjmIzshKepl2OXJysuG5vL&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771224925153\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771224925153\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA00e2fitXo_oANA1qtA==&cid=93D92YNOKxqvZ~slSDCcC9AwdB7h5nfm9XLfFEcG1lQhuQfK1GtQQjpb3ZNIzmb19LdaNR~br5TxNdS3i~jpVRiqJ03aN9zwgzg1vxn5BjAjmIzshKepl2OXJysuG5vL&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771224925153\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T06:56:31.066Z",
+      "event": "bb-session",
+      "session": "6d911a56",
+      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
+    },
+    {
+      "t": "2026-02-16T06:57:15.892Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771225004899\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA1mmgnJ_L2-0ANA1qtA==&cid=XodnRdsfOFtraxjYIRuJGLmWbYzyBba1p~CrYiKR7NjpQRstUVrqnCrwQ16MgrVUKEWUmBM290Co_bdA2ViZTMp7LlN0AqUhIERlaIp2yfsKxT8HVdOqsT_h8NuPG6j1&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771225004899\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771225004899\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA1mmgnJ_L2-0ANA1qtA==&cid=XodnRdsfOFtraxjYIRuJGLmWbYzyBba1p~CrYiKR7NjpQRstUVrqnCrwQ16MgrVUKEWUmBM290Co_bdA2ViZTMp7LlN0AqUhIERlaIp2yfsKxT8HVdOqsT_h8NuPG6j1&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771225004899\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771225004899\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA1mmgnJ_L2-0ANA1qtA==&cid=XodnRdsfOFtraxjYIRuJGLmWbYzyBba1p~CrYiKR7NjpQRstUVrqnCrwQ16MgrVUKEWUmBM290Co_bdA2ViZTMp7LlN0AqUhIERlaIp2yfsKxT8HVdOqsT_h8NuPG6j1&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771225004899\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T06:58:33.207Z",
+      "event": "bb-session",
+      "session": "e465aa90",
+      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
+    },
+    {
+      "t": "2026-02-16T06:59:22.994Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:00:00.487Z",
+      "event": "bb-session",
+      "session": "7f845104",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-16T07:00:52.568Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:01:14.343Z",
+      "event": "bb-session",
+      "session": "06d90c31",
+      "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-o"
+    },
+    {
+      "t": "2026-02-16T07:02:06.589Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:02:27.336Z",
+      "event": "bb-session",
+      "session": "6e16693e",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-02-16T07:03:17.864Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:03:41.167Z",
+      "event": "bb-session",
+      "session": "587b8b13",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-16T07:04:33.522Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:05:10.633Z",
+      "event": "bb-session",
+      "session": "be20c0c4",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-02-16T07:06:03.571Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:08:03.385Z",
+      "event": "bb-session",
+      "session": "938aa9be",
+      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
+    },
+    {
+      "t": "2026-02-16T07:08:55.546Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:09:17.601Z",
+      "event": "bb-session",
+      "session": "a536e6d4",
+      "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-b"
+    },
+    {
+      "t": "2026-02-16T07:10:07.617Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:10:51.127Z",
+      "event": "bb-session",
+      "session": "f1e41042",
+      "url": "http://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-14"
+    },
+    {
+      "t": "2026-02-16T07:11:41.036Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:13:51.803Z",
+      "event": "bb-session",
+      "session": "cd447735",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-lo"
+    },
+    {
+      "t": "2026-02-16T07:14:44.347Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:15:05.238Z",
+      "event": "bb-session",
+      "session": "0cb2c4e4",
+      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
+    },
+    {
+      "t": "2026-02-16T07:15:57.769Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:17:15.520Z",
+      "event": "bb-session",
+      "session": "a6c0d161",
+      "url": "https://online.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balan"
+    },
+    {
+      "t": "2026-02-16T07:18:05.852Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:19:03.845Z",
+      "event": "bb-session",
+      "session": "83321255",
+      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
+    },
+    {
+      "t": "2026-02-16T07:19:56.460Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:20:39.451Z",
+      "event": "bb-session",
+      "session": "3c1dddce",
+      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
+    },
+    {
+      "t": "2026-02-16T07:21:29.299Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:21:58.425Z",
+      "event": "bb-session",
+      "session": "da2d7dfe",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-16T07:22:48.289Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T07:24:18.834Z",
+      "event": "bb-session",
+      "session": "6c177eb6",
+      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
+    },
+    {
+      "t": "2026-02-16T07:25:02.885Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771226671871\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJrcwHSFMOKsANA1qtA==&cid=0OMBb8pUTCeT_4YqhZIK2mo871EG9nhC8gjvGVv0pNuSFpsytyUr2aRz3WcZh4i5~U0dZG4h3EqEI6ctGiwR3Maf8S~zKWC~RjEEsFhNzx8ryvmRSxXADo53qUGNxGKc&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771226671871\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771226671871\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJrcwHSFMOKsANA1qtA==&cid=0OMBb8pUTCeT_4YqhZIK2mo871EG9nhC8gjvGVv0pNuSFpsytyUr2aRz3WcZh4i5~U0dZG4h3EqEI6ctGiwR3Maf8S~zKWC~RjEEsFhNzx8ryvmRSxXADo53qUGNxGKc&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771226671871\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771226671871\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJrcwHSFMOKsANA1qtA==&cid=0OMBb8pUTCeT_4YqhZIK2mo871EG9nhC8gjvGVv0pNuSFpsytyUr2aRz3WcZh4i5~U0dZG4h3EqEI6ctGiwR3Maf8S~zKWC~RjEEsFhNzx8ryvmRSxXADo53qUGNxGKc&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771226671871\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T07:26:10.712Z",
+      "event": "bb-session",
+      "session": "6a514ec2",
+      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
+    },
+    {
+      "t": "2026-02-16T07:27:00.428Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
