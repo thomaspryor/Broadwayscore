@@ -94,7 +94,9 @@ function extractTimeOutScore(html, text) {
     };
   }
 
-  // Try star rating icons in HTML
+  // Try star rating icons in HTML — these are unreliable (often from listing page
+  // templates, not actual review scores). Always marked low-confidence so the
+  // rebuild gate skips them in favor of LLM scoring.
   const starIconMatch = html.match(/class="[^"]*star[^"]*"[^>]*>.*?(\d+)/i);
   if (starIconMatch) {
     const rating = parseInt(starIconMatch[1]);
@@ -102,7 +104,8 @@ function extractTimeOutScore(html, text) {
       return {
         originalScore: `${rating}/5`,
         normalizedScore: starsToNumeric(rating, 5),
-        source: 'star-icon'
+        source: 'star-icon',
+        confidence: 'low'
       };
     }
   }
