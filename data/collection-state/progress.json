@@ -1,72 +1,39 @@
 {
   "processed": [
-    "death-of-a-salesman-2026/nytimes--jesse-green.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "13-2008/nytimes--ben-brantley.json",
-    "700-sundays-2013/nytimes--ben-brantley.json",
-    "a-catered-affair-2008/nytimes--ben-brantley.json",
-    "airline-highway-2015/nytimes--charles-isherwood.json",
-    "an-enemy-of-the-people-2012/nytimes--unknown.json",
-    "anything-goes-2011/nytimes--ben-brantley.json",
-    "bad-cinderella-2023/nytimes--unknown.json"
+    "a-view-from-the-bridge-2010/vulture--jesse-green.json"
   ],
   "failed": [
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "9-to-5-2009/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--charles-isherwood.json",
-    "american-buffalo-2022/nytimes--jesse-green.json",
-    "an-act-of-god-2016/nytimes--ben-brantley.json",
-    "anastasia-2017/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json"
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "1776-2022/vulture--frankie-thomas.json",
+    "1776-2022/vulture--helen-shaw.json",
+    "1984-2017/vulture--jesse-green.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-bronx-tale-2007/vulture--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-christmas-carol-2022/vulture--jackson-mchenry.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "allegiance-2015/vulture--jesse-green.json",
+    "almost-famous-2022/vulture--helen-shaw.json",
+    "anastasia-2017/vulture--jesse-green.json",
+    "bernhardthamlet-2018/vulture--jesse-green.json",
+    "betrayal-2019/vulture--jesse-green.json",
+    "between-riverside-and-crazy-2022/vulture--jackson-mchenry.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "bullets-over-broadway-2014/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/13-2008/nytimes--ben-brantley.json",
-      "13-2008/nytimes--ben-brantley.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "death-of-a-salesman-2026/nytimes--jesse-green.json",
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "700-sundays-2013/nytimes--ben-brantley.json",
-      "a-catered-affair-2008/nytimes--ben-brantley.json",
-      "airline-highway-2015/nytimes--charles-isherwood.json",
-      "an-enemy-of-the-people-2012/nytimes--unknown.json",
-      "anything-goes-2011/nytimes--ben-brantley.json",
-      "bad-cinderella-2023/nytimes--unknown.json"
+      "a-view-from-the-bridge-2010/vulture--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-16T09:13:38.833Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--ben-brantley.json",
-  "log": [
-    {
-      "t": "2026-02-16T09:13:42.236Z",
-      "event": "bb-session",
-      "session": "83bd978c",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-16T09:14:28.052Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T09:15:26.046Z",
-      "event": "bb-session",
-      "session": "ff6c2452",
-      "url": "https://theater.nytimes.com/2010/11/19/theater/reviews/19free.html?ref=theater&p"
-    },
-    {
-      "t": "2026-02-16T09:16:11.848Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-02-16T09:19:00.195Z",
+  "lastProcessed": "bullets-over-broadway-2014/vulture--jesse-green.json",
+  "log": []
 }
