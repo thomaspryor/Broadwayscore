@@ -144,6 +144,31 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: 'false'
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
+          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
+          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
+          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
+          THR_COOKIES: ${{ secrets.THR_COOKIES }}
+          EW_COOKIES: ${{ secrets.EW_COOKIES }}
+          THEATERMANIA_COOKIES: ${{ secrets.THEATERMANIA_COOKIES }}
+          HUFFPOST_COOKIES: ${{ secrets.HUFFPOST_COOKIES }}
+          USATODAY_COOKIES: ${{ secrets.USATODAY_COOKIES }}
+          NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
+          BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
+          THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
+          TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
+          BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
+          AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
+          FRONTMEZZJUNKIES_COOKIES: ${{ secrets.FRONTMEZZJUNKIES_COOKIES }}
+          VARIETY_COOKIES: ${{ secrets.VARIETY_COOKIES }}
+          INDIEWIRE_COOKIES: ${{ secrets.INDIEWIRE_COOKIES }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -413,6 +438,31 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: 'false'
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
+          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
+          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
+          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
+          THR_COOKIES: ${{ secrets.THR_COOKIES }}
+          EW_COOKIES: ${{ secrets.EW_COOKIES }}
+          THEATERMANIA_COOKIES: ${{ secrets.THEATERMANIA_COOKIES }}
+          HUFFPOST_COOKIES: ${{ secrets.HUFFPOST_COOKIES }}
+          USATODAY_COOKIES: ${{ secrets.USATODAY_COOKIES }}
+          NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
+          BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
+          THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
+          TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
+          BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
+          AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
+          FRONTMEZZJUNKIES_COOKIES: ${{ secrets.FRONTMEZZJUNKIES_COOKIES }}
+          VARIETY_COOKIES: ${{ secrets.VARIETY_COOKIES }}
+          INDIEWIRE_COOKIES: ${{ secrets.INDIEWIRE_COOKIES }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
