@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T11:27:46.830Z",
+  "runDate": "2026-02-16T11:33:44.416Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -20,8 +20,8 @@
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 6,
@@ -31,8 +31,8 @@
     "tier2Attempts": 6,
     "tier2Success": 0,
     "tier3Attempts": 6,
-    "tier3Success": 4,
-    "tier4Attempts": 2,
+    "tier3Success": 3,
+    "tier4Attempts": 1,
     "tier4Success": 1,
     "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
@@ -58,19 +58,12 @@
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "matilda-the-musical-2013/telegraph--unknown.json",
       "west-side-story-2020/telegraph--diane-snyder.json"
     ],
-    "archive": []
+    "archive": [
+      "matilda-the-musical-2013/telegraph--unknown.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
