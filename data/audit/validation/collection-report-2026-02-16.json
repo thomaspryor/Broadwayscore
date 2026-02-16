@@ -2,9 +2,9 @@
   "runDate": "2026-02-16T03:25:49.273Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "call-me-izzy-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,18 +17,18 @@
     "successRate": "78.5%"
   },
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 6,
     "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 8,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -113,40 +113,14 @@
   ],
   "tierDetails": {
     "playwright": [
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "the-great-gatsby-2024/thestage--lane-williamson.json",
-      "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-      "back-to-the-future-2023/theatre-reviews-limited--joseph-verlezza.json",
-      "carousel-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/theatre-reviews-limited--david-roberts.json",
-      "oklahoma-2019/theatre-reviews-limited--david-roberts.json",
-      "saint-joan-2018/theatre-reviews-limited--david-roberts.json",
-      "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
-      "the-children-2017/theatre-reviews-limited--david-roberts.json",
-      "the-humans-2016/theatre-reviews-limited--david-roberts.json",
-      "the-nap-2018/theatre-reviews-limited--david-roberts.json",
-      "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
-      "torch-song-2018/theatre-reviews-limited--david-roberts.json",
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
-      "a-view-from-the-bridge-2015/broadway-and-me--janice-c-simpson.json",
-      "bernhardthamlet-2018/the-stage-uk--nicole-serratore.json",
-      "betrayal-2019/the-independent--paul-taylor.json",
-      "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json",
-      "betrayal-2019/front-row-center--tulis-mccall.json",
-      "carousel-2018/the-stage-uk--mark-shenton.json",
-      "cat-on-a-hot-tin-roof-2008/boston-globe--don-aucoin.json",
-      "dames-at-sea-2015/ny1--david-cote.json",
-      "dear-evan-hansen-2016/ny1--roma-torre.json",
-      "glengarry-glen-ross-2012/the-times--harriet-alexander.json",
-      "harmony-2023/thestage--lane-williamson.json",
-      "hello-dolly-2017/more-than-the-play-blog--domenick-danza.json",
-      "hello-dolly-2017/the-stage-uk--mark-shenton.json",
-      "ink-2019/the-stage-uk--naveen-kumar.json",
-      "kiss-me-kate-2019/front-row-center--tulis-mccall.json"
+      "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
+      "call-me-izzy-2025/nytg--austin-fimmano.json",
+      "call-me-izzy-2025/theatermania--david-gordon.json",
+      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
+      "call-me-izzy-2025/lighting-and-sound-america--david-barbour.json",
+      "call-me-izzy-2025/pages-on-stages--mason-pilevsky.json",
+      "call-me-izzy-2025/theater-scene--joseph-pisano.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -174,6 +148,14 @@
       "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
