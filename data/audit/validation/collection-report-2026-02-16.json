@@ -21,7 +21,7 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
     "tier1Attempts": 11,
@@ -70,11 +70,26 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "spongebob-squarepants-2017/thewrap--robert-hofler.json",
+      "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json",
+      "torch-song-2018/cititour--brian-scott-lipton.json",
+      "betrayal-2019/broadwayworld--michael-dale.json",
+      "dear-evan-hansen-2016/talkinbroadway--matthew-murray.json",
+      "illinoise-2024/talkinbroadway--matthew-murray.json"
+    ],
     "archive": [
       "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
