@@ -44,7 +44,19 @@
     "sylvia-2015/nydailynews--joe-dziemianowicz.json",
     "the-addams-family-2010/ny-daily-news--joe-dziemianowicz.json",
     "the-addams-family-2010/nydailynews--joe-dziemianowicz.json",
-    "the-big-knife-2013/nydailynews--joe-dziemianowicz.json"
+    "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+    "the-cherry-orchard-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+    "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
+    "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
+    "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
+    "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
+    "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
+    "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+    "war-horse-2011/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "chicago-1996/nydailynews--joe-dziemianowicz.json",
@@ -71,7 +83,12 @@
     "prince-of-broadway-2017/nydailynews--joe-dziemianowicz.json",
     "rent-1996/nydailynews--joe-dziemianowicz.json",
     "something-rotten-2015/nydailynews--joe-dziemianowicz.json",
-    "that-championship-season-2011/nydailynews--joe-dziemianowicz.json"
+    "that-championship-season-2011/nydailynews--joe-dziemianowicz.json",
+    "the-father-2016/nydailynews--joe-dziemianowicz.json",
+    "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
+    "the-present-2017/nydailynews--joe-dziemianowicz.json",
+    "the-price-2017/nydailynews--chris-jones.json",
+    "the-price-2017/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -81,7 +98,8 @@
     "brightdata": [
       "casa-valentina-2014/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
-      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json"
+      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
     ],
     "archive": [
       "a-bronx-tale-the-musical-2016/nydailynews--joe-dziemianowicz.json",
@@ -125,11 +143,22 @@
       "sylvia-2015/nydailynews--joe-dziemianowicz.json",
       "the-addams-family-2010/ny-daily-news--joe-dziemianowicz.json",
       "the-addams-family-2010/nydailynews--joe-dziemianowicz.json",
-      "the-big-knife-2013/nydailynews--joe-dziemianowicz.json"
+      "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+      "the-cherry-orchard-2016/nydailynews--joe-dziemianowicz.json",
+      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+      "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
+      "the-mountaintop-2011/nydailynews--joe-dziemianowicz.json",
+      "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
+      "the-people-in-the-picture-2011/nydailynews--joe-dziemianowicz.json",
+      "the-pitmen-painters-2010/nydailynews--joe-dziemianowicz.json",
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
+      "the-snow-geese-2013/nydailynews--joe-dziemianowicz.json",
+      "war-horse-2011/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-02-16T02:30:31.282Z",
-  "lastProcessed": "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "war-horse-2011/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-02-16T02:32:13.105Z",
@@ -172,6 +201,17 @@
     },
     {
       "t": "2026-02-16T02:37:12.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:39:50.902Z",
+      "event": "bb-session",
+      "session": "8ddfbc89",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/encounter-head-not-skin-ar"
+    },
+    {
+      "t": "2026-02-16T02:39:53.078Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
