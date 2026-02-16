@@ -1,116 +1,15 @@
 {
-  "updatedAt": "2026-02-16T13:19:05.479Z",
-  "processed": 61,
-  "failed": 39,
-  "successRate": "61.0%",
+  "updatedAt": "2026-02-16T13:24:06.951Z",
+  "processed": 68,
+  "failed": 102,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 10,
+    "playwright": 40,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 55
+    "brightdata": 14,
+    "archive": 22
   },
-  "browserbaseSessions": 9,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T12:27:30.670Z",
-      "event": "bb-session",
-      "session": "4771db63",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-16T12:28:12.550Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771244861665\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAaVJG4vf-u9YANA1qtA==&cid=0rYrYKe9XmCCvsV_1ZGJTHhi~5JlYZcvY2oLpX~HtHsgHdtPA6KJwESh_y_pK6918zFy6pF12QAYBWwgz6D2ygDbbCk2RV6RcdIDj_N1FTBFzKmthf3TV__NP2V85Ebt&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771244861665\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T12:28:51.262Z",
-      "event": "bb-session",
-      "session": "261a21db",
-      "url": "https://www.wsj.com/articles/american-son-review-living-while-black-1541711143"
-    },
-    {
-      "t": "2026-02-16T12:29:38.397Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T12:30:01.132Z",
-      "event": "bb-session",
-      "session": "76463b4f",
-      "url": "https://www.wsj.com/articles/an-american-in-paris-review-not-since-robbins-14289"
-    },
-    {
-      "t": "2026-02-16T12:31:14.242Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T12:31:35.655Z",
-      "event": "bb-session",
-      "session": "91966db0",
-      "url": "https://www.wsj.com/articles/SB10000872396390444620104578014550867896632"
-    },
-    {
-      "t": "2026-02-16T12:32:22.119Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T12:33:32.720Z",
-      "event": "bb-session",
-      "session": "b9a65a92",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-16T12:34:45.906Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T13:13:07.030Z",
-      "event": "bb-session",
-      "session": "b55e6ab4",
-      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
-    },
-    {
-      "t": "2026-02-16T13:13:51.784Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T13:14:28.139Z",
-      "event": "bb-session",
-      "session": "3fdaf7c6",
-      "url": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-an"
-    },
-    {
-      "t": "2026-02-16T13:15:12.617Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T13:16:13.662Z",
-      "event": "bb-session",
-      "session": "bbfd8976",
-      "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-amer"
-    },
-    {
-      "t": "2026-02-16T13:16:58.247Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T13:17:35.683Z",
-      "event": "bb-session",
-      "session": "6a45bdf1",
-      "url": "https://www.nytimes.com/2010/11/13/theater/reviews/13scottsboro.html"
-    },
-    {
-      "t": "2026-02-16T13:18:20.095Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
