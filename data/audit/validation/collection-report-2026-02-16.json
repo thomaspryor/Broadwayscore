@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T13:26:38.201Z",
+  "runDate": "2026-02-16T13:28:19.091Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -11,34 +11,34 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 47,
-    "failed": 38,
+    "processed": 49,
+    "failed": 36,
     "skipped": 0,
-    "successRate": "55.3%"
+    "successRate": "57.6%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 9,
+    "browserbase": 8,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 43
+    "archive": 45
   },
   "statistics": {
     "tier1Attempts": 1,
     "tier1Success": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 1,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 4,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 3,
-    "totalFailed": 5,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -89,7 +89,9 @@
     "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
     "shucked-2023/nytimes--jesse-green.json",
     "shucked-2023/nytimes--unknown.json",
-    "spring-awakening-2006/nytimes--charles-isherwood.json"
+    "spring-awakening-2006/nytimes--charles-isherwood.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "hadestown-2019/wsj--terry-teachout.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -125,14 +127,16 @@
     "scandalous-2012/nytimes--ben-brantley.json",
     "something-rotten-2015/nytimes--unknown.json",
     "soul-doctor-2013/nytimes--charles-isherwood.json",
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "9-to-5-2009/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--charles-isherwood.json"
+    "bug-2026/wsj--charles-isherwood.json",
+    "chicago-1996/wsj--terry-teachout.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "stranger-things-2024/thestage--dave-fargnoli.json",
+      "the-great-gatsby-2024/thestage--lane-williamson.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json"
+    ],
     "browserbase": [
       "data/review-texts/casa-valentina-2014/nytimes--ben-brantley.json",
       "casa-valentina-2014/nytimes--ben-brantley.json",
@@ -141,8 +145,7 @@
       "data/review-texts/honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
       "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
       "data/review-texts/honeymoon-in-vegas-2015/nytimes--unknown.json",
-      "honeymoon-in-vegas-2015/nytimes--unknown.json",
-      "data/review-texts/all-out-2025/nytimes--elisabeth-vincentelli.json"
+      "honeymoon-in-vegas-2015/nytimes--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -189,7 +192,9 @@
       "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
       "shucked-2023/nytimes--jesse-green.json",
       "shucked-2023/nytimes--unknown.json",
-      "spring-awakening-2006/nytimes--charles-isherwood.json"
+      "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "hadestown-2019/wsj--terry-teachout.json"
     ]
   },
   "failuresByOutlet": {},
