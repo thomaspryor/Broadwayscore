@@ -44,7 +44,16 @@
     "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
     "shucked-2023/nytimes--jesse-green.json",
     "shucked-2023/nytimes--unknown.json",
-    "spring-awakening-2006/nytimes--charles-isherwood.json"
+    "spring-awakening-2006/nytimes--charles-isherwood.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--unknown.json",
+    "the-big-knife-2013/nytimes--charles-isherwood.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+    "the-encounter-2016/nytimes--unknown.json",
+    "the-hills-of-california-2024/nytimes--houman-barekat.json",
+    "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+    "the-humans-2016/nytimes--unknown.json",
+    "the-inheritance-2019/nytimes--ben-brantley.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -81,12 +90,16 @@
     "scandalous-2012/nytimes--ben-brantley.json",
     "something-rotten-2015/nytimes--unknown.json",
     "soul-doctor-2013/nytimes--charles-isherwood.json",
-    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json"
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "summer-2018/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-big-knife-2013/nytimes--charles-isherwood.json",
+      "the-big-knife-2013/nytimes--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -134,10 +147,30 @@
       "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
       "shucked-2023/nytimes--jesse-green.json",
       "shucked-2023/nytimes--unknown.json",
-      "spring-awakening-2006/nytimes--charles-isherwood.json"
+      "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--unknown.json",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+      "the-encounter-2016/nytimes--unknown.json",
+      "the-hills-of-california-2024/nytimes--houman-barekat.json",
+      "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+      "the-humans-2016/nytimes--unknown.json",
+      "the-inheritance-2019/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-16T15:03:23.502Z",
-  "lastProcessed": "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
-  "log": []
+  "lastProcessed": "the-inheritance-2019/nytimes--ben-brantley.json",
+  "log": [
+    {
+      "t": "2026-02-16T15:10:11.218Z",
+      "event": "bb-session",
+      "session": "e14b3865",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T15:10:13.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
