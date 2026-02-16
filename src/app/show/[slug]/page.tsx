@@ -565,28 +565,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 {show.title}
               </h1>
 
-              {/* Meta line */}
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-400 text-xs sm:text-sm mb-4">
+              {/* Meta line — inline text so it wraps naturally on mobile */}
+              <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed">
                 <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 {show.runtime && (
-                  <>
-                    <span className="text-gray-500">•</span>
-                    <span>{show.runtime}</span>
-                  </>
+                  <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
-                <span className="text-gray-500">•</span>
                 {show.status === 'previews' ? (
-                  <span>Opens {formatDate(show.openingDate)}</span>
+                  <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
                 ) : show.closingDate ? (
                   <>
-                    <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span>
-                    <span className="text-gray-500">•</span>
-                    <span>Opened {formatDate(show.openingDate)}</span>
+                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
+                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
                   </>
                 ) : (
-                  <span>Opened {formatDate(show.openingDate)}</span>
+                  <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
                 )}
-              </div>
+              </p>
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
