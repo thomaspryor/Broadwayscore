@@ -1,17 +1,73 @@
 {
-  "updatedAt": "2026-02-16T19:20:34.497Z",
-  "processed": 269,
-  "failed": 206,
-  "successRate": "56.6%",
+  "updatedAt": "2026-02-16T19:23:03.729Z",
+  "processed": 29,
+  "failed": 39,
+  "successRate": "42.6%",
   "tierBreakdown": {
-    "playwright": 248,
+    "playwright": 24,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 14,
-    "archiveToday": 11,
-    "archive": 8
+    "brightdata": 1,
+    "archiveToday": 12,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T19:06:21.399Z",
+      "event": "bb-session",
+      "session": "bf96aeca",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-16T19:06:23.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T19:06:57.615Z",
+      "event": "bb-session",
+      "session": "a6943c15",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
+    },
+    {
+      "t": "2026-02-16T19:06:59.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T19:07:26.608Z",
+      "event": "bb-session",
+      "session": "b27d1cad",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-02-16T19:07:28.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T19:07:45.555Z",
+      "event": "bb-session",
+      "session": "a24c1f72",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-02-16T19:07:47.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T19:08:12.784Z",
+      "event": "bb-session",
+      "session": "27952d54",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-02-16T19:08:14.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
