@@ -383,6 +383,8 @@ const COOKIE_DOMAIN_MAP = {
   'deadline.com': { envVar: 'DEADLINE_COOKIES', fileKey: 'deadline' },
   'observer.com': { envVar: 'OBSERVER_COOKIES', fileKey: 'observer' },
   'hollywoodreporter.com': { envVar: 'THR_COOKIES', fileKey: 'hollywoodreporter' },
+  'variety.com': { envVar: 'VARIETY_COOKIES', fileKey: 'variety' },
+  'indiewire.com': { envVar: 'INDIEWIRE_COOKIES', fileKey: 'indiewire' },
   'ew.com': { envVar: 'EW_COOKIES', fileKey: 'ew' },
   // Free-site domains (anti-bot bypass, metered paywalls, GDPR walls)
   'theatermania.com': { envVar: 'THEATERMANIA_COOKIES', fileKey: 'theatermania' },
