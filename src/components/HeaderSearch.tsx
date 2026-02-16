@@ -42,11 +42,22 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
     minMatchCharLength: 2,
   }), [shows]);
 
-  // Filter shows based on query
+  // Filter shows based on query — Fuse.js fuzzy search + substring match fallback
   const filteredShows = useMemo(() => {
     if (query.length < 1) return [];
-    return fuse.search(query, { limit: 8 }).map(result => result.item);
-  }, [query, fuse]);
+    const fuseResults = fuse.search(query, { limit: 8 }).map(result => result.item);
+
+    // Ensure exact substring matches in title always appear (Fuse can miss multi-word partials)
+    const q = query.toLowerCase();
+    const substringMatches = shows.filter(show =>
+      show.title.toLowerCase().includes(q) &&
+      !fuseResults.some(r => r.id === show.id)
+    );
+
+    // Merge: Fuse results first (ranked by relevance), then substring matches
+    const merged = [...fuseResults, ...substringMatches];
+    return merged.slice(0, 8);
+  }, [query, fuse, shows]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
