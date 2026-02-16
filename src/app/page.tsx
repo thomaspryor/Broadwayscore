@@ -88,6 +88,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     <Link
       href={`/show/${show.slug}`}
       role="listitem"
+      data-testid="show-card"
       className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
