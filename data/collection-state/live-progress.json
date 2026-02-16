@@ -1,27 +1,17 @@
 {
-  "updatedAt": "2026-02-16T20:38:12.558Z",
-  "processed": 26,
-  "failed": 74,
-  "successRate": "26.0%",
+  "updatedAt": "2026-02-16T20:41:28.495Z",
+  "processed": 14,
+  "failed": 16,
+  "successRate": "46.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 9,
+    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 20,
-    "archive": 6
+    "brightdata": 2,
+    "archiveToday": 2,
+    "archive": 3
   },
-  "browserbaseSessions": 1,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T18:38:45.725Z",
-      "event": "bb-session",
-      "session": "ad33189c",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-16T18:38:47.512Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
