@@ -53,7 +53,12 @@
     "the-hills-of-california-2024/nytimes--houman-barekat.json",
     "the-hills-of-california-2024/nytimes--jesse-michaels.json",
     "the-humans-2016/nytimes--unknown.json",
-    "the-inheritance-2019/nytimes--ben-brantley.json"
+    "the-inheritance-2019/nytimes--ben-brantley.json",
+    "the-lehman-trilogy-2021/nytimes--unknown.json",
+    "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -91,7 +96,12 @@
     "something-rotten-2015/nytimes--unknown.json",
     "soul-doctor-2013/nytimes--charles-isherwood.json",
     "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
-    "summer-2018/nytimes--ben-brantley.json"
+    "summer-2018/nytimes--ben-brantley.json",
+    "the-little-foxes-2017/nytimes--alexis-soloski.json",
+    "the-little-foxes-2017/nytimes--unknown.json",
+    "the-year-of-magical-thinking-2007/nytimes--unknown.json",
+    "topdog-underdog-2022/nytimes--jesse-green.json",
+    "topdog-underdog-2022/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -102,14 +112,7 @@
     ],
     "scrapingbee": [],
     "brightdata": [
-      "a-bronx-tale-2007/thewrap--robert-hofler.json",
-      "cats-1982/guardian--emma-brockes.json",
-      "funny-girl-2022/thewrap--robert-hofler.json",
-      "gypsy-2008/guardian--adrian-horton.json",
-      "the-glass-menagerie-2013/guardian--alexis-soloski.json",
-      "walking-with-ghosts-2022/cititour--brian-scott-lipton.json",
-      "american-son-2018/latimes--unknown.json",
-      "an-enemy-of-the-people-2012/usatoday--patrick-ryan.json"
+      "the-notebook-2024/nytimes--jesse-green.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -164,11 +167,15 @@
       "the-hills-of-california-2024/nytimes--houman-barekat.json",
       "the-hills-of-california-2024/nytimes--jesse-michaels.json",
       "the-humans-2016/nytimes--unknown.json",
-      "the-inheritance-2019/nytimes--ben-brantley.json"
+      "the-inheritance-2019/nytimes--ben-brantley.json",
+      "the-lehman-trilogy-2021/nytimes--unknown.json",
+      "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-02-16T15:03:23.502Z",
-  "lastProcessed": "the-inheritance-2019/nytimes--ben-brantley.json",
+  "lastProcessed": "topdog-underdog-2022/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-02-16T15:10:11.218Z",
@@ -178,6 +185,17 @@
     },
     {
       "t": "2026-02-16T15:10:13.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T15:12:23.139Z",
+      "event": "bb-session",
+      "session": "41b286e0",
+      "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical."
+    },
+    {
+      "t": "2026-02-16T15:12:25.235Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
