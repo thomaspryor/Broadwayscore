@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-02-16T05:05:28.304Z",
+  "runDate": "2026-02-16T05:13:33.068Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dead-outlaw-2025",
+    "showFilter": "stephen-sondheims-old-friends-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 11,
+    "processed": 3,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "26.7%"
+    "successRate": "18.8%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 7,
+    "tier1Attempts": 11,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 8,
-    "tier3Success": 8,
-    "tier4Attempts": 7,
-    "tier4Success": 3,
-    "totalFailed": 11,
+    "tier3Attempts": 4,
+    "tier3Success": 4,
+    "tier4Attempts": 6,
+    "tier4Success": 6,
+    "totalFailed": 13,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,37 +43,35 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "dead-outlaw-2025/observer--david-cote.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json",
-    "dead-outlaw-2025/latimes--charles-mcnulty.json",
-    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+    "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
   ],
   "failed": [
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "dead-outlaw-2025/variety--frank-rizzo.json",
-    "dead-outlaw-2025/variety--unknown.json",
-    "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--unknown.json",
-    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/dailybeast--unknown.json",
-    "dead-outlaw-2025/usatoday--patrick-ryan.json"
+    "stephen-sondheims-old-friends-2025/nytg--caroline-cao.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "stephen-sondheims-old-friends-2025/variety--frank-rizzo.json",
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "stephen-sondheims-old-friends-2025/new-york-sun--elysa-gardner.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--unknown.json",
+    "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+    "stephen-sondheims-old-friends-2025/timeout--adam-feldman.json",
+    "stephen-sondheims-old-friends-2025/wsj--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/culturesauce--thom-geier.json",
+    "stephen-sondheims-old-friends-2025/talkinbroadway--howard-miller.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
   ],
   "tierDetails": {
     "playwright": [
-      "dead-outlaw-2025/observer--david-cote.json",
-      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+      "stephen-sondheims-old-friends-2025/observer--rex-reed.json",
+      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
+      "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "dead-outlaw-2025/latimes--charles-mcnulty.json"
-    ],
-    "archive": [
-      "dead-outlaw-2025/theatermania--zachary-stewart.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
