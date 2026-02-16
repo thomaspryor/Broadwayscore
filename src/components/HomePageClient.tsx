@@ -128,8 +128,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
           ]}
           alt={`${show.title} Broadway ${show.type}`}
-          priority={index < 4}
-          loading={index < 4 ? "eager" : "lazy"}
+          priority={index < 2}
+          loading={index < 2 ? "eager" : "lazy"}
           width={112}
           height={112}
           decoding="async"
@@ -307,7 +307,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
       </div>
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show, index) => (
-          <MiniShowCard key={show.id} show={show} priority={index < 4} />
+          <MiniShowCard key={show.id} show={show} />
         ))}
       </div>
     </section>
@@ -615,7 +615,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
             {bestNewMusicals.map((show, index) => (
-              <MiniShowCard key={show.id} show={show} priority={index < 4} />
+              <MiniShowCard key={show.id} show={show} priority={index < 2} />
             ))}
           </div>
         </section>
