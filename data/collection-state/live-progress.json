@@ -1,15 +1,127 @@
 {
-  "updatedAt": "2026-02-16T08:57:42.404Z",
-  "processed": 26,
-  "failed": 24,
-  "successRate": "52.0%",
+  "updatedAt": "2026-02-16T08:58:26.509Z",
+  "processed": 23,
+  "failed": 77,
+  "successRate": "23.0%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 14,
     "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T08:05:15.268Z",
+      "event": "bb-session",
+      "session": "34f664b2",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-16T08:06:06.848Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:06:43.282Z",
+      "event": "bb-session",
+      "session": "33c88ce0",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-16T08:07:29.291Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771229218189\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMASjmI856fZQIANA1qtA==&cid=PUeeO5F1FKn1lfijq_MUCF4gHsEqZ3KpqRRL1NTgVTJCI5a6BnILjcXfZJ_K82glJNO8ynl8BaY9erUKwSFT3HP9H_6h6HbxLvuW_9V9fPb1fbhsCC3TnVK3ugjdQoZh&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771229218189\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771229218189\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMASjmI856fZQIANA1qtA==&cid=PUeeO5F1FKn1lfijq_MUCF4gHsEqZ3KpqRRL1NTgVTJCI5a6BnILjcXfZJ_K82glJNO8ynl8BaY9erUKwSFT3HP9H_6h6HbxLvuW_9V9fPb1fbhsCC3TnVK3ugjdQoZh&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771229218189\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    14 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771229218189\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMASjmI856fZQIANA1qtA==&cid=PUeeO5F1FKn1lfijq_MUCF4gHsEqZ3KpqRRL1NTgVTJCI5a6BnILjcXfZJ_K82glJNO8ynl8BaY9erUKwSFT3HP9H_6h6HbxLvuW_9V9fPb1fbhsCC3TnVK3ugjdQoZh&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771229218189\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T08:09:28.947Z",
+      "event": "bb-session",
+      "session": "798ef0c9",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-16T08:10:21.186Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:11:01.199Z",
+      "event": "bb-session",
+      "session": "98caa052",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-16T08:11:55.309Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:13:36.064Z",
+      "event": "bb-session",
+      "session": "d3eb0ee5",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-16T08:14:28.842Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:15:09.301Z",
+      "event": "bb-session",
+      "session": "ad21bfaa",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-16T08:16:02.726Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:16:24.515Z",
+      "event": "bb-session",
+      "session": "21c77f7e",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-16T08:17:16.202Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:17:53.131Z",
+      "event": "bb-session",
+      "session": "9118990d",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-02-16T08:18:46.950Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:20:36.829Z",
+      "event": "bb-session",
+      "session": "782ddad2",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-16T08:21:29.371Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T08:21:56.023Z",
+      "event": "bb-session",
+      "session": "9b5cee67",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
+    },
+    {
+      "t": "2026-02-16T08:22:47.694Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
