@@ -3587,7 +3587,10 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
       data.originalScore = scoreResult.originalScore;
       data.originalScoreNormalized = scoreResult.normalizedScore;
       data.scoreSource = scoreResult.source;
-      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+      if (scoreResult.confidence) {
+        data.scoreConfidence = scoreResult.confidence;
+      }
+      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)${scoreResult.confidence === 'low' ? ' [low confidence]' : ''}`);
     }
   }
 
