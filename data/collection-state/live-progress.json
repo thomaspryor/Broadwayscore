@@ -1,15 +1,38 @@
 {
-  "updatedAt": "2026-02-16T16:15:11.336Z",
-  "processed": 44,
-  "failed": 46,
-  "successRate": "48.9%",
+  "updatedAt": "2026-02-16T16:58:22.583Z",
+  "processed": 29,
+  "failed": 21,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 4,
-    "archive": 5
+    "brightdata": 2,
+    "archive": 27
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T16:54:47.530Z",
+      "event": "bb-session",
+      "session": "e6c32688",
+      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
+    },
+    {
+      "t": "2026-02-16T16:54:49.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:56:48.793Z",
+      "event": "bb-session",
+      "session": "48756b54",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-16T16:56:50.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
