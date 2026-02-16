@@ -1,44 +1,44 @@
 {
-  "runDate": "2026-02-16T03:25:49.273Z",
+  "runDate": "2026-02-16T03:30:59.541Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "stephen-sondheims-old-friends-2025",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 51,
-    "failed": 14,
+    "processed": 50,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "78.5%"
+    "successRate": "82.0%"
   },
   "tierBreakdown": {
     "playwright": 34,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 6,
-    "archive": 13
+    "archive": 12
   },
   "statistics": {
     "tier1Attempts": 1,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 4,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 1,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -92,8 +92,7 @@
     "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
     "illinoise-2024/talkinbroadway--matthew-murray.json",
     "ink-2019/the-stage-uk--naveen-kumar.json",
-    "kiss-me-kate-2019/front-row-center--tulis-mccall.json",
-    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
+    "kiss-me-kate-2019/front-row-center--tulis-mccall.json"
   ],
   "failed": [
     "a-strange-loop-2022/thewrap--robert-hofler.json",
@@ -106,10 +105,7 @@
     "between-riverside-and-crazy-2022/theater-scene--joseph-pisano.json",
     "fences-2010/talkinbroadway--matthew-murray.json",
     "glengarry-glen-ross-2012/talkinbroadway--matthew-murray.json",
-    "1984-2017/bloomberg-news--jason-zinoman.json",
-    "a-life-in-the-theatre-2010/bloomberg-news--john-simon.json",
-    "after-midnight-2013/bloomberg-news--unknown.json",
-    "big-fish-2013/bloomberg-news--unknown.json"
+    "the-wiz-2024/indiewire--sarah-shachat.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -170,14 +166,13 @@
       "dont-dress-for-dinner-2012/amny--matt-windman.json",
       "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
       "godspell-2011/northjerseycom--robert-feldberg.json",
-      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json",
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json"
+      "how-to-succeed-in-business-without-really-trying-2011/ny1--roma-torre.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
+    "IndieWire": {
       "count": 1,
-      "domain": "nydailynews.com",
+      "domain": "indiewire.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
