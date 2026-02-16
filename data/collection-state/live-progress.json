@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T13:15:33.701Z",
-  "processed": 55,
-  "failed": 35,
-  "successRate": "61.1%",
+  "updatedAt": "2026-02-16T13:19:05.479Z",
+  "processed": 61,
+  "failed": 39,
+  "successRate": "61.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 10,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 49
+    "archive": 55
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-02-16T13:02:01.250Z",
@@ -86,6 +86,28 @@
     },
     {
       "t": "2026-02-16T13:15:12.617Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:16:13.662Z",
+      "event": "bb-session",
+      "session": "bbfd8976",
+      "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-amer"
+    },
+    {
+      "t": "2026-02-16T13:16:58.247Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T13:17:35.683Z",
+      "event": "bb-session",
+      "session": "6a45bdf1",
+      "url": "https://www.nytimes.com/2010/11/13/theater/reviews/13scottsboro.html"
+    },
+    {
+      "t": "2026-02-16T13:18:20.095Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
