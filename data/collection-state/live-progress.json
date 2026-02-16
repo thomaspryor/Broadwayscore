@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-16T04:37:55.581Z",
-  "processed": 60,
-  "failed": 80,
-  "successRate": "42.9%",
+  "updatedAt": "2026-02-16T04:41:39.871Z",
+  "processed": 84,
+  "failed": 86,
+  "successRate": "49.4%",
   "tierBreakdown": {
-    "playwright": 36,
-    "browserbase": 0,
+    "playwright": 56,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 7,
-    "archive": 18
+    "brightdata": 4,
+    "archive": 25
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:42:23.497Z",
+      "event": "bb-session",
+      "session": "10b7fa45",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+    },
+    {
+      "t": "2026-02-16T03:44:01.098Z",
+      "event": "bb-session",
+      "session": "5674d6ed",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+    },
+    {
+      "t": "2026-02-16T03:53:40.147Z",
+      "event": "bb-session",
+      "session": "1a9ad6f4",
+      "url": "https://fordhamobserver.com/36668/recent/arts-and-culture/review-the-prom-is-a-c"
+    },
+    {
+      "t": "2026-02-16T03:56:16.947Z",
+      "event": "bb-session",
+      "session": "ef0ba4ff",
+      "url": "https://www.thewrap.com/violet-theater-review"
+    },
+    {
+      "t": "2026-02-16T04:11:10.922Z",
+      "event": "bb-session",
+      "session": "77e505a2",
+      "url": "https://www.usatoday.com/story/life/theater/2014/04/17/broadway-review-act-one/7"
+    },
+    {
+      "t": "2026-02-16T04:11:13.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
