@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T04:44:06.038Z",
+  "runDate": "2026-02-16T05:00:44.810Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -11,33 +11,33 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 42,
-    "failed": 13,
+    "processed": 51,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "76.4%"
+    "successRate": "78.5%"
   },
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 49,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
     "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 3,
+    "tier4Success": 1,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 2,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 6.6,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -83,8 +83,17 @@
     "king-kong-2018/observer--rex-reed.json",
     "lend-me-a-tenor-2010/observer--jesse-oxfeld.json",
     "linda-vista-2019/observer--david-cote.json",
-    "death-of-a-salesman-2026/nytimes--jesse-green.json",
-    "wicked-2003/nytimes--charles-isherwood.json"
+    "macbeth-2008/observer--david-cote.json",
+    "macbeth-2022/observer--david-cote.json",
+    "mrs-doubtfire-2021/observer--david-cote.json",
+    "my-name-is-lucy-barton-2020/observer--rex-reed.json",
+    "network-2018/observer--rex-reed.json",
+    "new-york-new-york-2023/observer--rex-reed.json",
+    "oklahoma-2019/observer--rex-reed.json",
+    "othello-2025/observer--david-cote.json",
+    "pass-over-2021/observer--david-cote.json",
+    "pictures-from-home-2023/observer--david-cote.json",
+    "aladdin-2014/wsj--terry-teachout.json"
   ],
   "failed": [
     "hadestown-2019/observer--david-cote.json",
@@ -97,9 +106,10 @@
     "into-the-woods-2022/observer--jesse-green.json",
     "job-2024/observer--david-cote.json",
     "les-liaisons-dangereuses-2016/observer--rex-reed.json",
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "13-2008/nytimes--ben-brantley.json"
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "chess-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -141,17 +151,34 @@
       "jagged-little-pill-2019/observer--david-cote.json",
       "king-kong-2018/observer--rex-reed.json",
       "lend-me-a-tenor-2010/observer--jesse-oxfeld.json",
-      "linda-vista-2019/observer--david-cote.json"
+      "linda-vista-2019/observer--david-cote.json",
+      "macbeth-2008/observer--david-cote.json",
+      "macbeth-2022/observer--david-cote.json",
+      "mrs-doubtfire-2021/observer--david-cote.json",
+      "my-name-is-lucy-barton-2020/observer--rex-reed.json",
+      "network-2018/observer--rex-reed.json",
+      "new-york-new-york-2023/observer--rex-reed.json",
+      "oklahoma-2019/observer--rex-reed.json",
+      "othello-2025/observer--david-cote.json",
+      "pass-over-2021/observer--david-cote.json",
+      "pictures-from-home-2023/observer--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "high-2011/observer--jesse-oxfeld.json",
-      "death-of-a-salesman-2026/nytimes--jesse-green.json",
-      "wicked-2003/nytimes--charles-isherwood.json"
+      "aladdin-2014/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 3,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
