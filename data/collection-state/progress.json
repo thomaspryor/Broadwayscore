@@ -8,7 +8,15 @@
     "airline-highway-2015/nytimes--charles-isherwood.json",
     "an-enemy-of-the-people-2012/nytimes--unknown.json",
     "anything-goes-2011/nytimes--ben-brantley.json",
-    "bad-cinderella-2023/nytimes--unknown.json"
+    "bad-cinderella-2023/nytimes--unknown.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -21,14 +29,18 @@
     "anastasia-2017/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json"
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [
       "data/review-texts/13-2008/nytimes--ben-brantley.json",
-      "13-2008/nytimes--ben-brantley.json"
+      "13-2008/nytimes--ben-brantley.json",
+      "data/review-texts/casa-valentina-2014/nytimes--ben-brantley.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -40,11 +52,18 @@
       "airline-highway-2015/nytimes--charles-isherwood.json",
       "an-enemy-of-the-people-2012/nytimes--unknown.json",
       "anything-goes-2011/nytimes--ben-brantley.json",
-      "bad-cinderella-2023/nytimes--unknown.json"
+      "bad-cinderella-2023/nytimes--unknown.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "cats-1982/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T09:13:38.833Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--ben-brantley.json",
+  "lastProcessed": "cats-1982/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-16T09:13:42.236Z",
@@ -65,6 +84,17 @@
     },
     {
       "t": "2026-02-16T09:16:11.848Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T09:17:44.639Z",
+      "event": "bb-session",
+      "session": "ac2c7000",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-16T09:18:30.568Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
