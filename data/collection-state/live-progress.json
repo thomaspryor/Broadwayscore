@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T16:41:47.973Z",
-  "processed": 23,
-  "failed": 17,
-  "successRate": "57.5%",
+  "updatedAt": "2026-02-16T16:43:59.591Z",
+  "processed": 29,
+  "failed": 21,
+  "successRate": "58.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 20
+    "brightdata": 3,
+    "archive": 25
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-16T16:35:52.763Z",
@@ -42,6 +42,17 @@
     },
     {
       "t": "2026-02-16T16:39:29.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:43:19.979Z",
+      "event": "bb-session",
+      "session": "3131308c",
+      "url": "https://www.nytimes.com/2022/11/27/theater/kpop-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T16:43:22.225Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
