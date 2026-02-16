@@ -1,38 +1,15 @@
 {
-  "updatedAt": "2026-02-16T12:44:07.046Z",
-  "processed": 44,
-  "failed": 36,
-  "successRate": "55.0%",
+  "updatedAt": "2026-02-16T16:27:48.210Z",
+  "processed": 41,
+  "failed": 19,
+  "successRate": "68.3%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 1,
+    "playwright": 32,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 44
+    "brightdata": 2,
+    "archive": 7
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T12:36:48.316Z",
-      "event": "bb-session",
-      "session": "2fef5a86",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-16T12:37:33.943Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T12:42:47.856Z",
-      "event": "bb-session",
-      "session": "bf1cf8e8",
-      "url": "https://www.nytimes.com/2018/08/16/theater/review-pretty-woman-the-musical-broad"
-    },
-    {
-      "t": "2026-02-16T12:43:23.758Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
