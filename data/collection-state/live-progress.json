@@ -1,131 +1,15 @@
 {
-  "updatedAt": "2026-02-16T14:45:33.788Z",
-  "processed": 25,
-  "failed": 75,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-16T14:48:46.888Z",
+  "processed": 64,
+  "failed": 56,
+  "successRate": "53.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 49,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 15,
-    "archive": 10
+    "brightdata": 4,
+    "archive": 11
   },
-  "browserbaseSessions": 40,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T14:00:17.586Z",
-      "event": "bb-session",
-      "session": "008b5577",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-16T14:00:56.013Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250425598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4QZubHurOn8ANA1qtA==&cid=KOPr5EFAbbBXZsRiRZMVvC7HfkSueIX0iPNrA_2vWwI6ecUsyHyLT9~RzN7d9kpS9t1wNRibYrPQyvgxkta_hat9J2qZc_7pdp3MewEqvwQo_a4rdK3ltwCoIqMHWURY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250425598\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250425598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4QZubHurOn8ANA1qtA==&cid=KOPr5EFAbbBXZsRiRZMVvC7HfkSueIX0iPNrA_2vWwI6ecUsyHyLT9~RzN7d9kpS9t1wNRibYrPQyvgxkta_hat9J2qZc_7pdp3MewEqvwQo_a4rdK3ltwCoIqMHWURY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250425598\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250425598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA4QZubHurOn8ANA1qtA==&cid=KOPr5EFAbbBXZsRiRZMVvC7HfkSueIX0iPNrA_2vWwI6ecUsyHyLT9~RzN7d9kpS9t1wNRibYrPQyvgxkta_hat9J2qZc_7pdp3MewEqvwQo_a4rdK3ltwCoIqMHWURY&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250425598\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T14:01:33.877Z",
-      "event": "bb-session",
-      "session": "c47d411e",
-      "url": "https://www.wsj.com/articles/SB122404440509358685"
-    },
-    {
-      "t": "2026-02-16T14:02:12.345Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250501903\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAclfNMOiM9bMANA1qtA==&cid=9d~1VTDDj2GcF5cJCTRwRd~FZ4xoFtcxUC4XlSUZfnVM6PWC8zD9uasz~k96pCbqJapeuwWzE99GF_0W24kphsr8iPwl3JHaO2cMP1Xr5b815cx2EWtC9IL4lHCgSVxC&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250501903\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250501903\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAclfNMOiM9bMANA1qtA==&cid=9d~1VTDDj2GcF5cJCTRwRd~FZ4xoFtcxUC4XlSUZfnVM6PWC8zD9uasz~k96pCbqJapeuwWzE99GF_0W24kphsr8iPwl3JHaO2cMP1Xr5b815cx2EWtC9IL4lHCgSVxC&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250501903\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250501903\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAclfNMOiM9bMANA1qtA==&cid=9d~1VTDDj2GcF5cJCTRwRd~FZ4xoFtcxUC4XlSUZfnVM6PWC8zD9uasz~k96pCbqJapeuwWzE99GF_0W24kphsr8iPwl3JHaO2cMP1Xr5b815cx2EWtC9IL4lHCgSVxC&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250501903\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T14:03:13.807Z",
-      "event": "bb-session",
-      "session": "138c7fbe",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-16T14:04:26.191Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T14:04:54.519Z",
-      "event": "bb-session",
-      "session": "cda1e3a3",
-      "url": "https://www.wsj.com/articles/american-son-review-living-while-black-1541711143"
-    },
-    {
-      "t": "2026-02-16T14:06:07.279Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T14:06:30.864Z",
-      "event": "bb-session",
-      "session": "eacc6d1e",
-      "url": "https://www.wsj.com/articles/an-american-in-paris-review-not-since-robbins-14289"
-    },
-    {
-      "t": "2026-02-16T14:07:09.038Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250798548\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMARRrZq90AuHcANA1qtA==&cid=apFZ~zb7nwqtGjGEd~BtDkzdtdSLEFZdd7lvZu~tmCwD2NSD4_qKyLPddGx5F4O8HZ5eFXsOHOd~L_nCslLtNw5Wf~RVgudrKCV3W3_PW3TGjpMyqoKqmjS3G_LJW3kI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250798548\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250798548\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMARRrZq90AuHcANA1qtA==&cid=apFZ~zb7nwqtGjGEd~BtDkzdtdSLEFZdd7lvZu~tmCwD2NSD4_qKyLPddGx5F4O8HZ5eFXsOHOd~L_nCslLtNw5Wf~RVgudrKCV3W3_PW3TGjpMyqoKqmjS3G_LJW3kI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250798548\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250798548\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMARRrZq90AuHcANA1qtA==&cid=apFZ~zb7nwqtGjGEd~BtDkzdtdSLEFZdd7lvZu~tmCwD2NSD4_qKyLPddGx5F4O8HZ5eFXsOHOd~L_nCslLtNw5Wf~RVgudrKCV3W3_PW3TGjpMyqoKqmjS3G_LJW3kI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250798548\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T14:07:36.691Z",
-      "event": "bb-session",
-      "session": "98d9ece0",
-      "url": "https://www.wsj.com/articles/SB10000872396390444620104578014550867896632"
-    },
-    {
-      "t": "2026-02-16T14:08:14.855Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250864458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJ9d6NrANfnkANA1qtA==&cid=nH3uM04ZVA4xuzLkZc3Ww1vckvQng~Ocb269LLbNFVLWVEg3LgIjE2svcxhMBSMY9ncg6kx8bFC9Ej~SF5LA6Tb2lKAQjzfyi479TL9m0nLfAJDYrqbS1q4Z~TIN0fSU&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250864458\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250864458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJ9d6NrANfnkANA1qtA==&cid=nH3uM04ZVA4xuzLkZc3Ww1vckvQng~Ocb269LLbNFVLWVEg3LgIjE2svcxhMBSMY9ncg6kx8bFC9Ej~SF5LA6Tb2lKAQjzfyi479TL9m0nLfAJDYrqbS1q4Z~TIN0fSU&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250864458\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771250864458\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAJ9d6NrANfnkANA1qtA==&cid=nH3uM04ZVA4xuzLkZc3Ww1vckvQng~Ocb269LLbNFVLWVEg3LgIjE2svcxhMBSMY9ncg6kx8bFC9Ej~SF5LA6Tb2lKAQjzfyi479TL9m0nLfAJDYrqbS1q4Z~TIN0fSU&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771250864458\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-16T14:10:10.347Z",
-      "event": "bb-session",
-      "session": "2c2520ef",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-16T14:11:23.004Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T14:11:59.504Z",
-      "event": "bb-session",
-      "session": "0ae40189",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-16T14:13:11.722Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T14:13:47.978Z",
-      "event": "bb-session",
-      "session": "85ddbc01",
-      "url": "https://www.wsj.com/articles/anastasia-review-a-lavish-spectacle-thats-easier-on"
-    },
-    {
-      "t": "2026-02-16T14:15:00.679Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T14:15:30.749Z",
-      "event": "bb-session",
-      "session": "53d669a0",
-      "url": "https://www.wsj.com/articles/SB10001424127887324735104578147043471091112"
-    },
-    {
-      "t": "2026-02-16T14:16:08.893Z",
-      "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771251338430\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAdX8trishVhUANA1qtA==&cid=jnH6j4Gci8GIwpNPzajCPsTEMay95L_gX1p_~ZxI12aHu7eecljBXp1FJCKEy6Lsrau9QX27imnY7NEZrhEsfYZbtnwtyqomKqbit9J5AVcyNCcbA5vSK4q5u8ZDBCRI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771251338430\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771251338430\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAdX8trishVhUANA1qtA==&cid=jnH6j4Gci8GIwpNPzajCPsTEMay95L_gX1p_~ZxI12aHu7eecljBXp1FJCKEy6Lsrau9QX27imnY7NEZrhEsfYZbtnwtyqomKqbit9J5AVcyNCcbA5vSK4q5u8ZDBCRI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771251338430\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    35 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771251338430\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAdX8trishVhUANA1qtA==&cid=jnH6j4Gci8GIwpNPzajCPsTEMay95L_gX1p_~ZxI12aHu7eecljBXp1FJCKEy6Lsrau9QX27imnY7NEZrhEsfYZbtnwtyqomKqbit9J5AVcyNCcbA5vSK4q5u8ZDBCRI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771251338430\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
