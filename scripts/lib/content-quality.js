@@ -639,16 +639,30 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Content too short (${trimmed.length} chars)` };
   }
 
+  // Position-aware check: for ad blocker, paywall, newsletter, and legal patterns,
+  // only flag as garbage if the pattern appears in the FRONT of the text.
+  // If the pattern is trailing junk on an otherwise valid review, cleanText() will
+  // handle it — don't reject the entire review.
+  const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
+
   // Check for ad blocker message
   const adBlocker = detectAdBlocker(text);
   if (adBlocker.detected) {
-    return { isGarbage: true, reason: `Ad blocker message: "${adBlocker.match}"` };
+    if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, adBlocker.match)) {
+      // Ad blocker message is trailing junk — let cleanText() strip it
+    } else {
+      return { isGarbage: true, reason: `Ad blocker message: "${adBlocker.match}"` };
+    }
   }
 
   // Check for paywall
   const paywall = detectPaywall(text);
   if (paywall.detected) {
-    return { isGarbage: true, reason: `Paywall/subscription prompt: "${paywall.match}"` };
+    if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, paywall.match)) {
+      // Paywall prompt is trailing junk — let cleanText() strip it
+    } else {
+      return { isGarbage: true, reason: `Paywall/subscription prompt: "${paywall.match}"` };
+    }
   }
 
   // Check for 404/error page
@@ -663,21 +677,33 @@ function isGarbageContent(text) {
   }
 
   // Check for legal/privacy page
-  // For longer texts (>1000 chars), only check the first 500 chars — real reviews
-  // often have "All Rights Reserved" or "Terms of Use" as footer boilerplate,
-  // but a genuine legal/privacy page would have these patterns near the start.
-  const legalCheckText = trimmed.length > 1000
-    ? trimmed.substring(0, 500)
-    : text;
-  const legalPage = detectLegalPage(legalCheckText);
+  // For longer texts, only flag if pattern is in the front — real reviews
+  // often have "All Rights Reserved" or copyright as footer boilerplate.
+  const legalPage = detectLegalPage(text);
   if (legalPage.detected) {
-    return { isGarbage: true, reason: `Legal/privacy page: "${legalPage.match}"` };
+    if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, legalPage.match)) {
+      // Legal/copyright is trailing junk — let cleanText() strip it
+    } else if (trimmed.length > 1000) {
+      // For long texts without review content, only check the first 500 chars
+      const legalFrontCheck = detectLegalPage(trimmed.substring(0, 500));
+      if (legalFrontCheck.detected) {
+        return { isGarbage: true, reason: `Legal/privacy page: "${legalFrontCheck.match}"` };
+      }
+    } else {
+      return { isGarbage: true, reason: `Legal/privacy page: "${legalPage.match}"` };
+    }
   }
 
   // Check for newsletter form
   const newsletter = detectNewsletter(text);
   if (newsletter.detected) {
-    return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
+    if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, newsletter.match)) {
+      // Newsletter form is trailing junk — let cleanText() strip it
+    } else if (hasSubstantialReviewContent && _isPatternInLeadingJunk(text, newsletter.match)) {
+      // Newsletter form is leading junk (e.g., TimeOut "Thanks for subscribing!" header)
+    } else {
+      return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
+    }
   }
 
   // Check for URL-only content
@@ -700,6 +726,53 @@ function isGarbageContent(text) {
 
   // Content passes all garbage checks
   return { isGarbage: false, reason: 'Content appears valid' };
+}
+
+/**
+ * Count theater keywords in text (fast heuristic for review content detection)
+ * @param {string} text
+ * @returns {number}
+ */
+function _countTheaterKeywords(text) {
+  const lower = text.toLowerCase();
+  return THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length;
+}
+
+/**
+ * Check if a matched pattern appears in the trailing portion (last 40%) of text.
+ * Used to distinguish "page IS garbage" from "review WITH trailing junk".
+ * @param {string} text - Full text
+ * @param {string} matchStr - The matched pattern string
+ * @returns {boolean}
+ */
+function _isPatternInTrailingJunk(text, matchStr) {
+  if (!matchStr) return false;
+  const idx = text.lastIndexOf(matchStr);
+  if (idx < 0) {
+    // Pattern was found via regex — search case-insensitively
+    const lowerIdx = text.toLowerCase().lastIndexOf(matchStr.toLowerCase());
+    if (lowerIdx < 0) return false;
+    return lowerIdx > text.length * 0.6;
+  }
+  return idx > text.length * 0.6;
+}
+
+/**
+ * Check if a matched pattern appears in the leading portion (first 20%) of text.
+ * Used to detect leading newsletter headers on otherwise valid reviews.
+ * @param {string} text - Full text
+ * @param {string} matchStr - The matched pattern string
+ * @returns {boolean}
+ */
+function _isPatternInLeadingJunk(text, matchStr) {
+  if (!matchStr) return false;
+  const idx = text.indexOf(matchStr);
+  if (idx < 0) {
+    const lowerIdx = text.toLowerCase().indexOf(matchStr.toLowerCase());
+    if (lowerIdx < 0) return false;
+    return lowerIdx < text.length * 0.2;
+  }
+  return idx < text.length * 0.2;
 }
 
 /**
