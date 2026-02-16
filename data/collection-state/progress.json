@@ -57,7 +57,17 @@
     "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
     "the-notebook-2024/nytimes--jesse-green.json",
     "the-notebook-2024/nytimes--unknown.json",
-    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
+    "topdog-underdog-2022/nytimes--unknown.json",
+    "translations-2007/nytimes--ben-brantley.json",
+    "translations-2007/nytimes--charles-isherwood.json",
+    "waiting-for-godot-2009/nytimes--charles-isherwood.json",
+    "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
+    "waiting-for-godot-2013/nytimes--laura-collins-hughes.json",
+    "wonderland-2011/nytimes--ben-brantley.json",
+    "wonderland-2011/nytimes--charles-isherwood.json",
+    "yellow-face-2024/nytimes--jesse-green.json",
+    "yellow-face-2024/nytimes--unknown.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -127,7 +137,17 @@
     "scrapingbee": [],
     "brightdata": [
       "eureka-day-2024/nytimes--unknown.json",
-      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
+      "topdog-underdog-2022/nytimes--unknown.json",
+      "translations-2007/nytimes--ben-brantley.json",
+      "translations-2007/nytimes--charles-isherwood.json",
+      "waiting-for-godot-2009/nytimes--charles-isherwood.json",
+      "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
+      "waiting-for-godot-2013/nytimes--laura-collins-hughes.json",
+      "wonderland-2011/nytimes--ben-brantley.json",
+      "wonderland-2011/nytimes--charles-isherwood.json",
+      "yellow-face-2024/nytimes--jesse-green.json",
+      "yellow-face-2024/nytimes--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -187,7 +207,7 @@
     ]
   },
   "startTime": "2026-02-16T09:47:38.091Z",
-  "lastProcessed": "topdog-underdog-2022/nytimes--jesse-green.json",
+  "lastProcessed": "yellow-face-2024/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-02-16T09:47:45.383Z",
@@ -395,6 +415,116 @@
     },
     {
       "t": "2026-02-16T10:15:44.516Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:16:11.994Z",
+      "event": "bb-session",
+      "session": "4603946d",
+      "url": "https://www.nytimes.com/2022/10/20/theater/topdog-underdog-review.html"
+    },
+    {
+      "t": "2026-02-16T10:17:04.089Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:17:26.106Z",
+      "event": "bb-session",
+      "session": "25c78d19",
+      "url": "https://www.nytimes.com/2007/01/26/theater/reviews/26tran.html"
+    },
+    {
+      "t": "2026-02-16T10:18:02.236Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:18:24.517Z",
+      "event": "bb-session",
+      "session": "05715c9d",
+      "url": "https://www.nytimes.com/2007/01/26/theater/reviews/26tran.html"
+    },
+    {
+      "t": "2026-02-16T10:19:16.746Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:19:39.037Z",
+      "event": "bb-session",
+      "session": "2b432ae1",
+      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01godo.html"
+    },
+    {
+      "t": "2026-02-16T10:20:15.351Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:20:37.330Z",
+      "event": "bb-session",
+      "session": "4f8e53ab",
+      "url": "https://www.nytimes.com/2025/09/28/theater/waiting-for-godot-review-keanu-reeves"
+    },
+    {
+      "t": "2026-02-16T10:21:13.352Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:21:35.494Z",
+      "event": "bb-session",
+      "session": "bd59c366",
+      "url": "https://www.nytimes.com/2025/09/28/theater/waiting-for-godot-review-keanu-reeves"
+    },
+    {
+      "t": "2026-02-16T10:22:27.658Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:22:50.179Z",
+      "event": "bb-session",
+      "session": "b2007373",
+      "url": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank"
+    },
+    {
+      "t": "2026-02-16T10:23:42.425Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:24:04.286Z",
+      "event": "bb-session",
+      "session": "3e228617",
+      "url": "https://www.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank"
+    },
+    {
+      "t": "2026-02-16T10:24:40.639Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:25:02.613Z",
+      "event": "bb-session",
+      "session": "1558222a",
+      "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.htm"
+    },
+    {
+      "t": "2026-02-16T10:25:38.809Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:26:00.751Z",
+      "event": "bb-session",
+      "session": "18dd8afd",
+      "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.htm"
+    },
+    {
+      "t": "2026-02-16T10:26:37.155Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
