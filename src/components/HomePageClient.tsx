@@ -595,7 +595,10 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
-        <p className="text-gray-400 text-base sm:text-lg">
+        <p className="text-gray-400 text-lg sm:text-xl">
+          Every show. Every review. One score.
+        </p>
+        <p className="text-gray-500 text-sm sm:text-base mt-1">
           {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
