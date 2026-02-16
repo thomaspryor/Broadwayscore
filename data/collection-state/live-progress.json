@@ -1,46 +1,38 @@
 {
-  "updatedAt": "2026-02-16T09:25:14.483Z",
-  "processed": 253,
-  "failed": 457,
-  "successRate": "35.6%",
+  "updatedAt": "2026-02-16T09:26:34.180Z",
+  "processed": 18,
+  "failed": 12,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 164,
-    "browserbase": 1,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 50,
-    "archive": 42
+    "brightdata": 1,
+    "archive": 17
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T03:45:48.553Z",
+      "t": "2026-02-16T09:24:32.120Z",
       "event": "bb-session",
-      "session": "c0319bb7",
-      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+      "session": "e17e70c8",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
     },
     {
-      "t": "2026-02-16T03:57:23.659Z",
-      "event": "bb-session",
-      "session": "8db5ee37",
-      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+      "t": "2026-02-16T09:24:34.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
     },
     {
-      "t": "2026-02-16T04:03:14.331Z",
+      "t": "2026-02-16T09:25:27.735Z",
       "event": "bb-session",
-      "session": "7ae222af",
-      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+      "session": "59e3d313",
+      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
     },
     {
-      "t": "2026-02-16T04:03:30.221Z",
-      "event": "bb-session",
-      "session": "e760f80d",
-      "url": "http://www.thewrap.com/something-rotten-theater-review-or-how-a-musical-called-o"
-    },
-    {
-      "t": "2026-02-16T04:09:25.323Z",
-      "event": "bb-session",
-      "session": "8b6fa46b",
-      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
+      "t": "2026-02-16T09:25:29.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
     }
   ]
 }
