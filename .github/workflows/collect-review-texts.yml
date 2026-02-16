@@ -359,7 +359,7 @@ jobs:
           echo "Reviews still needing full text: $REMAINING"
 
       - name: Chain next collection batch
-        if: ${{ inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10 }}
+        if: always() && inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -77,7 +77,7 @@ jobs:
           fi
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs.has_changes == 'true'
+        if: always() && steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
