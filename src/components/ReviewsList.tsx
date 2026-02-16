@@ -3,6 +3,7 @@
 import { useState, memo } from 'react';
 import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
+import { featureFlags } from '@/config/feature-flags';
 
 interface Review {
   showId: string;
@@ -158,7 +159,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
         <OutletLogo outlet={review.outlet} />
         <div className="flex items-center justify-between gap-2 flex-1 min-w-0">
           <div className="flex items-center gap-1.5 min-w-0">
-            {review.outletSlug ? (
+            {featureFlags.criticPages && review.outletSlug ? (
               <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
             ) : (
               <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
@@ -196,7 +197,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
         <div className="flex items-center justify-between">
           {review.criticName && (
-            <span className="text-sm text-gray-500">By {review.criticSlug ? (
+            <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
             ) : review.criticName}</span>
           )}

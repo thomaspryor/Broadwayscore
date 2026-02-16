@@ -6,6 +6,7 @@ import { getScoreTier } from '@/components/show-cards/ScoreBadge';
 import TonyPredictionsTable from '@/components/TonyPredictionsTable';
 import type { SerializedTonyShow } from '@/components/TonyPredictionsTable';
 import type { ComputedShow } from '@/lib/engine';
+import { featureFlags } from '@/config/feature-flags';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../../data/commercial.json';
@@ -497,12 +498,16 @@ export default function TonyAwardsPage() {
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
               Scoring methodology →
             </Link>
-            <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors">
-              Box office data →
-            </Link>
-            <Link href="/critics" className="text-brand hover:text-brand-hover transition-colors">
-              Critic profiles →
-            </Link>
+            {featureFlags.boxOffice && (
+              <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors">
+                Box office data →
+              </Link>
+            )}
+            {featureFlags.criticPages && (
+              <Link href="/critics" className="text-brand hover:text-brand-hover transition-colors">
+                Critic profiles →
+              </Link>
+            )}
           </div>
         </div>
       </div>
