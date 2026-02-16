@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T23:41:12.967Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 500,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -32,7 +32,7 @@
     "ampSuccess": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 78,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -214,9 +214,9 @@
     },
     "New York Daily News": {
       "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": true
     }
   },
