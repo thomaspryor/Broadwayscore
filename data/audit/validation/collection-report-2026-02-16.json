@@ -18,10 +18,10 @@
   },
   "tierBreakdown": {
     "playwright": 7,
-    "browserbase": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
   "statistics": {
     "tier1Attempts": 8,
@@ -30,7 +30,7 @@
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
     "tier4Attempts": 8,
     "tier4Success": 6,
@@ -70,7 +70,6 @@
       "call-me-izzy-2025/theater-scene--joseph-pisano.json",
       "call-me-izzy-2025/washpost--naveen-kumar.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -80,6 +79,14 @@
       "call-me-izzy-2025/theatermania--david-gordon.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
