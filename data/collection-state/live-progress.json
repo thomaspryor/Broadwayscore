@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-16T13:30:00.491Z",
-  "processed": 75,
-  "failed": 125,
-  "successRate": "37.5%",
+  "updatedAt": "2026-02-16T13:34:05.965Z",
+  "processed": 20,
+  "failed": 20,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archive": 8
+    "brightdata": 7,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T13:27:11.760Z",
+      "event": "bb-session",
+      "session": "259e3da5",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
+    },
+    {
+      "t": "2026-02-16T13:27:13.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    }
+  ]
 }
