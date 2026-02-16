@@ -36,9 +36,9 @@
     "tier4Success": 6,
     "totalFailed": 13,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 35,
+    "browserbaseMinutesUsed": 13.6,
+    "urlDiscoveryAttempts": 13,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -73,6 +73,28 @@
     "brightdata": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Daily News": {
+      "count": 8,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "NY Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "NY  Daily News": {
+      "count": 2,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
