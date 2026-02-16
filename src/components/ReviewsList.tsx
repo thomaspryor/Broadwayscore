@@ -143,7 +143,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} aria-label={`Review from ${review.outlet}`}>
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2.5">
         {/* Score on LEFT - Metacritic style - smaller on mobile */}
         <div
           className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreClasses(review.reviewScore)}`}
@@ -156,12 +156,14 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
 
+        {/* Outlet logo - own column so all text aligns */}
+        <OutletLogo outlet={review.outlet} />
+
         {/* Content */}
         <div className="min-w-0 flex-1">
-          {/* Outlet name + Badge - stacks on mobile */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5 sm:gap-2 mb-1">
-            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-              <OutletLogo outlet={review.outlet} />
+          {/* Outlet name + date + badge */}
+          <div className="flex items-center justify-between gap-2 mb-1">
+            <div className="flex items-center gap-1.5 min-w-0">
               {review.outletSlug ? (
                 <Link href={`/critics/outlets/${review.outletSlug}`} className="font-bold text-white text-sm sm:text-base truncate hover:text-brand transition-colors">{review.outlet}</Link>
               ) : (
@@ -175,7 +177,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
               )}
             </div>
             {formatDate(review.publishDate) && (
-              <span className="text-xs text-gray-500 flex-shrink-0 pl-10 sm:pl-0">{formatDate(review.publishDate)}</span>
+              <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
             )}
           </div>
 
