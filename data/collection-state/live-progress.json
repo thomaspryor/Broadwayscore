@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T01:54:46.667Z",
-  "processed": 54,
-  "failed": 26,
-  "successRate": "67.5%",
+  "updatedAt": "2026-02-16T01:56:03.164Z",
+  "processed": 59,
+  "failed": 29,
+  "successRate": "67.0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 53
+    "archive": 58
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-16T01:47:38.860Z",
@@ -42,6 +42,17 @@
     },
     {
       "t": "2026-02-16T01:50:00.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T01:55:24.873Z",
+      "event": "bb-session",
+      "session": "a05c8669",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/cate-blanchett-richard-ro"
+    },
+    {
+      "t": "2026-02-16T01:55:26.977Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
