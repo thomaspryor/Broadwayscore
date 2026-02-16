@@ -28,13 +28,13 @@
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 24,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 24,
-    "tier3Success": 8,
-    "tier4Attempts": 15,
-    "tier4Success": 1,
-    "totalFailed": 23,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 4,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -891,14 +891,6 @@
       "lombardi-2010/newyorker--uncredited.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 14,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
