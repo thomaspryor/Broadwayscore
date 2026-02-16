@@ -576,9 +576,15 @@ let browserbaseUsage = {
   history: [],
 };
 
-// Archive.org rate-limit tracking (auto-disables archive-first after 3 consecutive failures)
+// Archive.org rate-limit tracking (backoff with cooldown instead of permanent disable)
 let archiveOrgConsecutiveFailures = 0;
 let archiveOrgDisabledForBatch = false;
+let archiveOrgCooldownCount = 0; // How many times we've hit the cooldown threshold
+let archiveOrgLastRequestTime = 0; // Timestamp of last Archive.org API call
+const ARCHIVE_ORG_MIN_DELAY_MS = 1500; // 1.5s between requests to avoid rate limits
+const ARCHIVE_ORG_COOLDOWN_THRESHOLD = 3; // Consecutive failures before cooldown
+const ARCHIVE_ORG_COOLDOWN_MS = 15000; // 15s cooldown after hitting threshold
+const ARCHIVE_ORG_MAX_COOLDOWNS = 3; // After 3 cooldowns (9+ failures), disable for batch
 
 // Browser and context (reused)
 let browser = null;
@@ -2464,6 +2470,13 @@ async function fetchFromArchive(url) {
 
   stats.tier4Attempts++;
 
+  // Rate-limit: wait at least ARCHIVE_ORG_MIN_DELAY_MS between requests
+  const elapsed = Date.now() - archiveOrgLastRequestTime;
+  if (elapsed < ARCHIVE_ORG_MIN_DELAY_MS) {
+    await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_MIN_DELAY_MS - elapsed));
+  }
+  archiveOrgLastRequestTime = Date.now();
+
   // Check if snapshots exist
   const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
   const availability = await axios.get(availabilityUrl, { timeout: 15000 });
@@ -2509,6 +2522,13 @@ async function fetchFromArchiveCDX(url) {
   if (!axios) {
     throw new Error('axios not available');
   }
+
+  // Rate-limit: wait at least ARCHIVE_ORG_MIN_DELAY_MS between requests
+  const elapsed = Date.now() - archiveOrgLastRequestTime;
+  if (elapsed < ARCHIVE_ORG_MIN_DELAY_MS) {
+    await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_MIN_DELAY_MS - elapsed));
+  }
+  archiveOrgLastRequestTime = Date.now();
 
   // Query CDX API for snapshots
   // New Yorker articles go back to 2008+, so use wider date range for paywalled sites
@@ -2935,12 +2955,19 @@ function buildTierChain(ctx, review) {
         ctx._archiveTierRan = true;
         archiveOrgConsecutiveFailures = 0; // Reset on success
       },
-      onFailure: (error) => {
+      onFailure: async (error) => {
         ctx._archiveTierRan = true;
         archiveOrgConsecutiveFailures++;
-        if (archiveOrgConsecutiveFailures >= 3 && !archiveOrgDisabledForBatch) {
-          archiveOrgDisabledForBatch = true;
-          console.log(`    ⚠ Archive.org rate-limited (${archiveOrgConsecutiveFailures} consecutive failures) — falling back to standard tier order for remainder of batch`);
+        if (archiveOrgConsecutiveFailures >= ARCHIVE_ORG_COOLDOWN_THRESHOLD && !archiveOrgDisabledForBatch) {
+          archiveOrgCooldownCount++;
+          if (archiveOrgCooldownCount >= ARCHIVE_ORG_MAX_COOLDOWNS) {
+            archiveOrgDisabledForBatch = true;
+            console.log(`    ⚠ Archive.org disabled for batch (${archiveOrgCooldownCount} cooldowns, ${archiveOrgConsecutiveFailures} total consecutive failures)`);
+          } else {
+            console.log(`    ⚠ Archive.org cooldown #${archiveOrgCooldownCount} (${archiveOrgConsecutiveFailures} consecutive failures) — waiting ${ARCHIVE_ORG_COOLDOWN_MS / 1000}s before retrying`);
+            await new Promise(resolve => setTimeout(resolve, ARCHIVE_ORG_COOLDOWN_MS));
+            archiveOrgConsecutiveFailures = 0; // Reset after cooldown
+          }
         }
       },
     },
@@ -3156,7 +3183,7 @@ async function fetchReviewText(review) {
     } catch (error) {
       console.log(`    ✗ Failed: ${error.message}`);
       attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: error.message });
-      if (tier.onFailure) tier.onFailure(error, ctx);
+      if (tier.onFailure) await tier.onFailure(error, ctx);
       continue;
     }
 
