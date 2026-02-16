@@ -1,15 +1,128 @@
 {
-  "updatedAt": "2026-02-16T00:10:01.027Z",
-  "processed": 58,
-  "failed": 22,
-  "successRate": "72.5%",
+  "updatedAt": "2026-02-16T00:10:58.134Z",
+  "processed": 76,
+  "failed": 134,
+  "successRate": "36.2%",
   "tierBreakdown": {
-    "playwright": 36,
-    "browserbase": 0,
+    "playwright": 42,
+    "browserbase": 4,
     "scrapingbee": 0,
-    "brightdata": 8,
-    "archive": 14
+    "brightdata": 13,
+    "archive": 21
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 19,
+  "recentActivity": [
+    {
+      "t": "2026-02-15T23:51:28.003Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T23:55:04.844Z",
+      "event": "bb-session",
+      "session": "d2a7236d",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-15T23:55:51.092Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T23:56:32.538Z",
+      "event": "bb-session",
+      "session": "03cfd7c0",
+      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
+    },
+    {
+      "t": "2026-02-15T23:56:34.475Z",
+      "event": "bb-login-uncertain",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-15T23:57:57.760Z",
+      "event": "bb-session",
+      "session": "2e007002",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-15T23:58:44.002Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-15T23:59:24.458Z",
+      "event": "bb-session",
+      "session": "e8ea9da8",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-16T00:00:10.204Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T00:01:02.046Z",
+      "event": "bb-session",
+      "session": "c6016fe9",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-16T00:01:28.539Z",
+      "event": "bb-session",
+      "session": "4acd3638",
+      "url": "http://www.nydailynews.com/entertainment/arts/2011/10/28/2011-10-28_chinglish_re"
+    },
+    {
+      "t": "2026-02-16T00:01:56.553Z",
+      "event": "bb-session",
+      "session": "1843d5f2",
+      "url": "https://www.nypost.com/p/entertainment/theater/lost_in_translation_hilariously_D"
+    },
+    {
+      "t": "2026-02-16T00:03:32.155Z",
+      "event": "bb-session",
+      "session": "40b8e66c",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-16T00:04:18.065Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T00:04:55.264Z",
+      "event": "bb-session",
+      "session": "b274e5d2",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    },
+    {
+      "t": "2026-02-16T00:05:51.403Z",
+      "event": "bb-session",
+      "session": "e14f3483",
+      "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-o"
+    },
+    {
+      "t": "2026-02-16T00:07:40.034Z",
+      "event": "bb-session",
+      "session": "3f4c7aea",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
+    },
+    {
+      "t": "2026-02-16T00:08:26.221Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T00:09:03.637Z",
+      "event": "bb-session",
+      "session": "37bd1793",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-16T00:09:52.021Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
