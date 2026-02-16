@@ -1,7 +1,7 @@
 {
   "processed": [
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
     "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
     "700-sundays-2013/nytimes--ben-brantley.json",
     "a-catered-affair-2008/nytimes--ben-brantley.json",
     "airline-highway-2015/nytimes--charles-isherwood.json",
@@ -31,11 +31,37 @@
     "les-miserables-2006/nytimes--charles-isherwood.json",
     "of-mice-and-men-2014/nytimes--charles-isherwood.json",
     "once-upon-a-one-more-time-2023/nytimes--elisabeth-vincentelli.json",
-    "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json"
+    "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json",
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "parade-2023/nytimes--unknown.json",
+    "peter-pan-goes-wrong-2023/nytimes--unknown.json",
+    "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
+    "present-laughter-2017/nytimes--ben-brantley.json",
+    "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+    "promises-promises-2010/nytimes--ben-brantley.json",
+    "punch-2025/nytimes--elisabeth-vincentelli.json",
+    "rock-n-roll-2007/nytimes--ben-brantley.json",
+    "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+    "shucked-2023/nytimes--jesse-green.json",
+    "shucked-2023/nytimes--unknown.json",
+    "spring-awakening-2006/nytimes--charles-isherwood.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--unknown.json",
+    "the-big-knife-2013/nytimes--charles-isherwood.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+    "the-encounter-2016/nytimes--unknown.json",
+    "the-hills-of-california-2024/nytimes--houman-barekat.json",
+    "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+    "the-humans-2016/nytimes--unknown.json",
+    "the-inheritance-2019/nytimes--ben-brantley.json",
+    "the-lehman-trilogy-2021/nytimes--unknown.json",
+    "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
     "9-to-5-2009/nytimes--ben-brantley.json",
     "allegiance-2015/nytimes--ben-brantley.json",
     "allegiance-2015/nytimes--charles-isherwood.json",
@@ -61,18 +87,36 @@
     "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
     "mean-girls-2018/nytimes--ben-brantley.json",
     "newsies-the-musical-2012/nytimes--ben-brantley.json",
-    "old-times-2015/nytimes--unknown.json"
+    "old-times-2015/nytimes--unknown.json",
+    "peter-and-the-starcatcher-2012/nytimes--ben-brantley.json",
+    "prince-of-broadway-2017/nytimes--ben-brantley.json",
+    "prince-of-broadway-2017/nytimes--unknown.json",
+    "ragtime-2009/nytimes--laura-collins-hughes.json",
+    "scandalous-2012/nytimes--ben-brantley.json",
+    "something-rotten-2015/nytimes--unknown.json",
+    "soul-doctor-2013/nytimes--charles-isherwood.json",
+    "stephen-sondheims-old-friends-2025/nytimes--jesse-green.json",
+    "summer-2018/nytimes--ben-brantley.json",
+    "the-little-foxes-2017/nytimes--alexis-soloski.json",
+    "the-little-foxes-2017/nytimes--unknown.json",
+    "the-year-of-magical-thinking-2007/nytimes--unknown.json",
+    "topdog-underdog-2022/nytimes--jesse-green.json",
+    "topdog-underdog-2022/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "all-out-2025/nytimes--elisabeth-vincentelli.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/the-big-knife-2013/nytimes--charles-isherwood.json",
+      "the-big-knife-2013/nytimes--charles-isherwood.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-notebook-2024/nytimes--jesse-green.json"
+    ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
       "700-sundays-2013/nytimes--ben-brantley.json",
       "a-catered-affair-2008/nytimes--ben-brantley.json",
       "airline-highway-2015/nytimes--charles-isherwood.json",
@@ -102,10 +146,58 @@
       "les-miserables-2006/nytimes--charles-isherwood.json",
       "of-mice-and-men-2014/nytimes--charles-isherwood.json",
       "once-upon-a-one-more-time-2023/nytimes--elisabeth-vincentelli.json",
-      "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json"
+      "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json",
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "parade-2023/nytimes--unknown.json",
+      "peter-pan-goes-wrong-2023/nytimes--unknown.json",
+      "pirates-the-penzance-musical-2025/nytimes--jesse-green.json",
+      "present-laughter-2017/nytimes--ben-brantley.json",
+      "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+      "promises-promises-2010/nytimes--ben-brantley.json",
+      "punch-2025/nytimes--elisabeth-vincentelli.json",
+      "rock-n-roll-2007/nytimes--ben-brantley.json",
+      "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+      "shucked-2023/nytimes--jesse-green.json",
+      "shucked-2023/nytimes--unknown.json",
+      "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--unknown.json",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/nytimes--ben-brantley.json",
+      "the-encounter-2016/nytimes--unknown.json",
+      "the-hills-of-california-2024/nytimes--houman-barekat.json",
+      "the-hills-of-california-2024/nytimes--jesse-michaels.json",
+      "the-humans-2016/nytimes--unknown.json",
+      "the-inheritance-2019/nytimes--ben-brantley.json",
+      "the-lehman-trilogy-2021/nytimes--unknown.json",
+      "the-lieutenant-of-inishmore-2006/nytimes--ben-brantley.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-16T13:35:55.268Z",
-  "lastProcessed": "once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json",
-  "log": []
+  "startTime": "2026-02-16T15:03:23.502Z",
+  "lastProcessed": "topdog-underdog-2022/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-16T15:10:11.218Z",
+      "event": "bb-session",
+      "session": "e14b3865",
+      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/odetss-big-knife-with-bobby-c"
+    },
+    {
+      "t": "2026-02-16T15:10:13.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T15:12:23.139Z",
+      "event": "bb-session",
+      "session": "41b286e0",
+      "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical."
+    },
+    {
+      "t": "2026-02-16T15:12:25.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

@@ -8,6 +8,7 @@ export interface SerializedTonyShow {
   title: string;
   venue: string;
   openingDate: string;
+  previewsStartDate?: string;
   status: string;
   compositeScore: number | null;
   reviewCount: number;
@@ -26,6 +27,15 @@ interface TonyPredictionsTableProps {
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function getEffectiveStatus(show: SerializedTonyShow): string {
+  if (show.status !== 'previews') return show.status;
+  // If previews haven't started yet, show "announced" instead of "previews"
+  const today = new Date().toISOString().slice(0, 10);
+  const previewsStart = show.previewsStartDate || show.openingDate;
+  if (previewsStart > today) return 'announced';
+  return 'previews';
 }
 
 function TierLabel({ score, reviewCount, status }: { score: number | null; reviewCount: number; status: string }) {
@@ -52,8 +62,8 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
   if (allShows.length === 0) return null;
 
-  const isUpcoming = (show: SerializedTonyShow) =>
-    show.status === 'previews' || show.reviewCount < 5;
+  const hasNotOpened = (show: SerializedTonyShow) =>
+    getEffectiveStatus(show) === 'announced';
 
   return (
     <section className="mb-10">
@@ -64,14 +74,15 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
       <div className="space-y-3 sm:space-y-4">
         {allShows.map((show, i) => {
-          const isUpcomingShow = isUpcoming(show);
-          const rank = !isUpcomingShow ? i + 1 : null;
+          const isInUpcomingSection = upcoming.some(u => u.slug === show.slug);
+          const notYetOpen = hasNotOpened(show);
+          const rank = !isInUpcomingSection ? i + 1 : null;
           const globalIndex = startIndex + i;
           return (
             <Link
               key={show.slug}
               href={`/show/${show.slug}`}
-              className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group ${isUpcomingShow ? 'opacity-60' : ''}`}
+              className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
             >
               {/* Rank badge or empty spacer */}
               {rank ? (
@@ -100,14 +111,14 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate ${isUpcomingShow ? 'text-gray-400' : 'text-white'}`}>
+                <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
                   {show.title}
                 </h3>
                 <div className="flex flex-wrap items-center gap-1 mt-1">
-                  <StatusBadge status={show.status} />
+                  <StatusBadge status={getEffectiveStatus(show)} />
                 </div>
                 <p className="text-xs text-gray-400 mt-1.5 truncate">
-                  {isUpcomingShow
+                  {notYetOpen
                     ? `Opens ${formatDate(show.openingDate)} · ${show.venue}`
                     : show.venue}
                 </p>
