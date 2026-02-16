@@ -1,15 +1,29 @@
 {
-  "updatedAt": "2026-02-16T18:43:11.211Z",
-  "processed": 0,
-  "failed": 50,
-  "successRate": "0%",
+  "updatedAt": "2026-02-16T18:45:53.866Z",
+  "processed": 125,
+  "failed": 145,
+  "successRate": "46.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 73,
+    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 52
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T18:45:10.609Z",
+      "event": "bb-session",
+      "session": "f93afef3",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+    },
+    {
+      "t": "2026-02-16T18:45:12.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    }
+  ]
 }
