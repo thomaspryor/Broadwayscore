@@ -383,6 +383,8 @@ const COOKIE_DOMAIN_MAP = {
   'deadline.com': { envVar: 'DEADLINE_COOKIES', fileKey: 'deadline' },
   'observer.com': { envVar: 'OBSERVER_COOKIES', fileKey: 'observer' },
   'hollywoodreporter.com': { envVar: 'THR_COOKIES', fileKey: 'hollywoodreporter' },
+  'variety.com': { envVar: 'VARIETY_COOKIES', fileKey: 'variety' },
+  'indiewire.com': { envVar: 'INDIEWIRE_COOKIES', fileKey: 'indiewire' },
   'ew.com': { envVar: 'EW_COOKIES', fileKey: 'ew' },
   // Free-site domains (anti-bot bypass, metered paywalls, GDPR walls)
   'theatermania.com': { envVar: 'THEATERMANIA_COOKIES', fileKey: 'theatermania' },
@@ -397,6 +399,9 @@ const COOKIE_DOMAIN_MAP = {
   'amny.com': { envVar: 'AMNY_COOKIES', fileKey: 'amny' },
   'frontmezzjunkies.com': { envVar: 'FRONTMEZZJUNKIES_COOKIES', fileKey: 'frontmezzjunkies' },
 };
+
+// Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login
+const COOKIE_ONLY_DOMAINS = ['newyorker.com'];
 
 // Cache loaded cookies to avoid re-reading files/decoding base64 every time
 const _cookieCache = {};
@@ -692,9 +697,11 @@ async function fetchWithPlaywright(url, review) {
 
   // Check for paywall and login if needed
   // Skip login entirely if cookies exist for this domain (avoids OTC email spam)
+  // Also skip login for domains that route automated browsers to OTP (use cookies only)
   const paywallCreds = getPaywallCredentials(url);
   const hasCookiesForDomain = paywallCreds && hasCookiesForUrl(url);
-  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain) && !hasCookiesForDomain) {
+  const isCookieOnlyDomain = paywallCreds && COOKIE_ONLY_DOMAINS.includes(paywallCreds.domain);
+  if (paywallCreds && paywallCreds.email && !loggedInDomains.has(paywallCreds.domain) && !hasCookiesForDomain && !isCookieOnlyDomain) {
     const loginSuccess = await loginToSite(paywallCreds.domain, paywallCreds.email, paywallCreds.password);
     if (loginSuccess) {
       loggedInDomains.add(paywallCreds.domain);
@@ -2052,8 +2059,10 @@ async function fetchWithBrowserbase(url, review) {
     // Login to paywalled sites before navigating to the review URL
     // Browserbase has CAPTCHA solving, making it ideal for sites that block Playwright
     // Skip login if cookies were already injected for this domain
+    // Skip login for cookie-only domains (e.g., newyorker.com triggers OTC emails on login)
     const paywallCreds = getPaywallCredentials(url);
-    if (paywallCreds && paywallCreds.email && !bbCookiesInjected) {
+    const isCookieOnly = paywallCreds && COOKIE_ONLY_DOMAINS.includes(paywallCreds.domain);
+    if (paywallCreds && paywallCreds.email && !bbCookiesInjected && !isCookieOnly) {
       console.log(`    → Browserbase login to ${paywallCreds.domain}...`);
       try {
         const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
@@ -3580,7 +3589,10 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
       data.originalScore = scoreResult.originalScore;
       data.originalScoreNormalized = scoreResult.normalizedScore;
       data.scoreSource = scoreResult.source;
-      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+      if (scoreResult.confidence) {
+        data.scoreConfidence = scoreResult.confidence;
+      }
+      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)${scoreResult.confidence === 'low' ? ' [low confidence]' : ''}`);
     }
   }
 
