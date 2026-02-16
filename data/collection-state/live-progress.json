@@ -1,126 +1,82 @@
 {
-  "updatedAt": "2026-02-16T10:48:33.093Z",
-  "processed": 12,
-  "failed": 28,
+  "updatedAt": "2026-02-16T10:49:30.758Z",
+  "processed": 9,
+  "failed": 21,
   "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 40,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-02-16T09:55:44.504Z",
+      "t": "2026-02-16T10:44:14.065Z",
       "event": "bb-session",
-      "session": "3ce65b2a",
-      "url": "https://www.wsj.com/articles/SB122401234567890123"
+      "session": "00e1f8f0",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
     },
     {
-      "t": "2026-02-16T09:56:26.108Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:44:16.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T09:57:17.580Z",
+      "t": "2026-02-16T10:44:47.265Z",
       "event": "bb-session",
-      "session": "cf9b59a4",
-      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+      "session": "9d679b3f",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
     },
     {
-      "t": "2026-02-16T09:57:58.653Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:44:49.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T09:58:21.025Z",
+      "t": "2026-02-16T10:45:21.068Z",
       "event": "bb-session",
-      "session": "6f82bdda",
-      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+      "session": "d6ed28bd",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
     },
     {
-      "t": "2026-02-16T09:59:33.573Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:45:23.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T09:59:55.513Z",
+      "t": "2026-02-16T10:45:41.356Z",
       "event": "bb-session",
-      "session": "5c52924f",
-      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+      "session": "9b361289",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
     },
     {
-      "t": "2026-02-16T10:01:08.294Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:45:43.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T10:01:36.942Z",
+      "t": "2026-02-16T10:46:15.824Z",
       "event": "bb-session",
-      "session": "e9df265c",
-      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+      "session": "163f03be",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
     },
     {
-      "t": "2026-02-16T10:02:18.866Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:46:17.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T10:04:44.624Z",
+      "t": "2026-02-16T10:46:58.743Z",
       "event": "bb-session",
-      "session": "73d38f5a",
-      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+      "session": "0fed815c",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
     },
     {
-      "t": "2026-02-16T10:05:57.278Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T10:06:33.941Z",
-      "event": "bb-session",
-      "session": "92da065c",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-16T10:07:46.599Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T10:08:09.962Z",
-      "event": "bb-session",
-      "session": "596ead0d",
-      "url": "https://www.wsj.com/articles/SB122404440509358685"
-    },
-    {
-      "t": "2026-02-16T10:08:51.741Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T10:09:43.842Z",
-      "event": "bb-session",
-      "session": "52013ded",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
-    },
-    {
-      "t": "2026-02-16T10:10:56.560Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T10:11:35.210Z",
-      "event": "bb-session",
-      "session": "8f7bd93d",
-      "url": "https://www.wsj.com/articles/american-son-review-living-while-black-1541711143"
-    },
-    {
-      "t": "2026-02-16T10:12:16.974Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-16T10:47:00.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
