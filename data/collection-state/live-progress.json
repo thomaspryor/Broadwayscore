@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-16T03:24:37.182Z",
-  "processed": 4,
-  "failed": 12,
-  "successRate": "25.0%",
+  "updatedAt": "2026-02-16T03:32:56.183Z",
+  "processed": 6,
+  "failed": 94,
+  "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 7,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 16,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:02:46.509Z",
+      "event": "bb-session",
+      "session": "7ed5f820",
+      "url": "https://www.vulture.com/2011/12/theater_review_on_a_clear_day.html"
+    },
+    {
+      "t": "2026-02-16T03:02:48.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:06:57.129Z",
+      "event": "bb-session",
+      "session": "3f0b3d6f",
+      "url": "https://www.vulture.com/article/theater-review-james-graham-punch-play.html"
+    },
+    {
+      "t": "2026-02-16T03:06:59.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:09:55.971Z",
+      "event": "bb-session",
+      "session": "e8f065ab",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
+    },
+    {
+      "t": "2026-02-16T03:09:58.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:10:22.160Z",
+      "event": "bb-session",
+      "session": "f9bac33d",
+      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
+    },
+    {
+      "t": "2026-02-16T03:10:24.387Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:13:58.185Z",
+      "event": "bb-session",
+      "session": "c4db69ab",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
+    },
+    {
+      "t": "2026-02-16T03:14:00.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:16:59.347Z",
+      "event": "bb-session",
+      "session": "da3a8ab0",
+      "url": "http://www.vulture.com/2017/03/theater-review-sally-field-in-a-reimagined-glass-"
+    },
+    {
+      "t": "2026-02-16T03:17:01.618Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:20:07.980Z",
+      "event": "bb-session",
+      "session": "f4edc4e2",
+      "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-"
+    },
+    {
+      "t": "2026-02-16T03:20:09.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:23:26.940Z",
+      "event": "bb-session",
+      "session": "98e9bcac",
+      "url": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
+    },
+    {
+      "t": "2026-02-16T03:23:29.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:26:09.463Z",
+      "event": "bb-session",
+      "session": "46dfe9e6",
+      "url": "https://www.vulture.com/2014/11/theater-review-the-river.html"
+    },
+    {
+      "t": "2026-02-16T03:26:11.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-16T03:29:33.338Z",
+      "event": "bb-session",
+      "session": "e461f357",
+      "url": "https://www.vulture.com/2023/04/theater-review-sign-sidney-brusteins-window-isaa"
+    },
+    {
+      "t": "2026-02-16T03:29:35.619Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
