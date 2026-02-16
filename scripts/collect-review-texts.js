@@ -4953,6 +4953,36 @@ async function main() {
   console.log(`  Browserbase: ${CONFIG.browserbaseEnabled ? `✓ enabled (limit: ${CONFIG.browserbaseMaxSessionsPerDay}/day)` : '✗ disabled'}`);
   console.log(`  Stealth Plugin: ${stealthLoaded ? '✓ loaded' : '⚠ using fallback'}`);
 
+  // Validate cookie secrets — fail loudly if any are corrupted
+  console.log(`\nCookie Status:`);
+  let cookieErrors = 0;
+  const seenEnvVars = new Set();
+  for (const [domain, config] of Object.entries(COOKIE_DOMAIN_MAP)) {
+    if (seenEnvVars.has(config.envVar)) continue; // Skip aliases (nymag→VULTURE, huffingtonpost→HUFFPOST)
+    seenEnvVars.add(config.envVar);
+    const envVal = process.env[config.envVar];
+    if (envVal) {
+      try {
+        const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
+        const cookies = JSON.parse(decoded);
+        if (Array.isArray(cookies) && cookies.length > 0) {
+          console.log(`  🍪 ${config.envVar}: ✓ ${cookies.length} cookies`);
+        } else {
+          console.log(`  ⚠ ${config.envVar}: decoded but empty/invalid array`);
+          cookieErrors++;
+        }
+      } catch (e) {
+        console.log(`  ✗ ${config.envVar}: CORRUPTED — ${e.message}`);
+        cookieErrors++;
+      }
+    }
+    // Don't log missing — most domains won't have env vars set locally
+  }
+  if (cookieErrors > 0) {
+    console.log(`\n  ⚠ WARNING: ${cookieErrors} cookie secret(s) are CORRUPTED — they will NOT work.`);
+    console.log(`  Re-upload with: base64 < data/cookies/FILE.json | gh secret set SECRET_NAME`);
+  }
+
   // Load previous state if resuming
   loadState();
 
