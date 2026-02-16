@@ -1,15 +1,38 @@
 {
-  "updatedAt": "2026-02-16T06:51:19.220Z",
-  "processed": 1,
-  "failed": 91,
-  "successRate": "1.1%",
+  "updatedAt": "2026-02-16T06:53:41.991Z",
+  "processed": 7,
+  "failed": 13,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T06:50:15.839Z",
+      "event": "bb-session",
+      "session": "b758dd4a",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-16T06:51:03.565Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:52:33.565Z",
+      "event": "bb-session",
+      "session": "58f7f8db",
+      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T06:53:21.552Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
