@@ -22,7 +22,13 @@
     "cult-of-love-2024/nytimes--jesse-green.json",
     "eureka-day-2024/nytimes--unknown.json",
     "gypsy-2024/nytimes--unknown.json",
-    "high-2011/nytimes--ben-brantley.json"
+    "high-2011/nytimes--ben-brantley.json",
+    "job-2024/nytimes--jesse-green.json",
+    "just-for-us-2023/nytimes--jesse-green.json",
+    "kpop-2022/nytimes--unknown.json",
+    "left-on-tenth-2024/nytimes--jesse-green.json",
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+    "les-miserables-2006/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -41,7 +47,11 @@
     "fela-2009/nytimes--ben-brantley.json",
     "fela-2012/nytimes--.json",
     "fun-home-2015/nytimes--ben-brantley.json",
-    "honeymoon-in-vegas-2015/nytimes--ben-brantley.json"
+    "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
+    "honeymoon-in-vegas-2015/nytimes--unknown.json",
+    "la-bete-2010/nytimes--ben-brantley.json",
+    "little-bear-ridge-road-2025/nytimes--laura-collins-hughes.json",
+    "macbeth-2008/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -53,7 +63,8 @@
     "scrapingbee": [],
     "brightdata": [
       "airline-highway-2015/nytimes--charles-isherwood.json",
-      "an-enemy-of-the-people-2012/nytimes--unknown.json"
+      "an-enemy-of-the-people-2012/nytimes--unknown.json",
+      "kpop-2022/nytimes--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -75,11 +86,16 @@
       "cult-of-love-2024/nytimes--jesse-green.json",
       "eureka-day-2024/nytimes--unknown.json",
       "gypsy-2024/nytimes--unknown.json",
-      "high-2011/nytimes--ben-brantley.json"
+      "high-2011/nytimes--ben-brantley.json",
+      "job-2024/nytimes--jesse-green.json",
+      "just-for-us-2023/nytimes--jesse-green.json",
+      "left-on-tenth-2024/nytimes--jesse-green.json",
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+      "les-miserables-2006/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T16:34:26.791Z",
-  "lastProcessed": "honeymoon-in-vegas-2015/nytimes--ben-brantley.json",
+  "lastProcessed": "macbeth-2008/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-16T16:35:52.763Z",
@@ -111,6 +127,17 @@
     },
     {
       "t": "2026-02-16T16:39:29.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:43:19.979Z",
+      "event": "bb-session",
+      "session": "3131308c",
+      "url": "https://www.nytimes.com/2022/11/27/theater/kpop-review-broadway.html"
+    },
+    {
+      "t": "2026-02-16T16:43:22.225Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
