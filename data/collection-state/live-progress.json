@@ -1,15 +1,60 @@
 {
-  "updatedAt": "2026-02-16T02:37:26.441Z",
-  "processed": 32,
-  "failed": 8,
-  "successRate": "80.0%",
+  "updatedAt": "2026-02-16T02:38:23.933Z",
+  "processed": 38,
+  "failed": 22,
+  "successRate": "63.3%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 3,
+    "archive": 35
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T02:32:13.105Z",
+      "event": "bb-session",
+      "session": "f0b70236",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
+    },
+    {
+      "t": "2026-02-16T02:32:15.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:32:58.028Z",
+      "event": "bb-session",
+      "session": "dd61b5d1",
+      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
+    },
+    {
+      "t": "2026-02-16T02:33:00.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:35:17.782Z",
+      "event": "bb-session",
+      "session": "7a1005d6",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/holiday-inn-corbin-bleu-op"
+    },
+    {
+      "t": "2026-02-16T02:35:20.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:37:10.018Z",
+      "event": "bb-session",
+      "session": "a017dfa0",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/king-charles-iii-royal-fan"
+    },
+    {
+      "t": "2026-02-16T02:37:12.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    }
+  ]
 }
