@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, getScoreTier } from '@/components/show-cards/ScoreBadge';
+import { ScoreBadge, getScoreTier, StatusBadge } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export interface SerializedTonyShow {
   slug: string;
@@ -40,36 +41,38 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-function StatusPill({ status }: { status: string }) {
-  if (status === 'open') {
-    return <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">Playing</span>;
-  }
-  if (status === 'previews') {
-    return <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-medium">Previews</span>;
-  }
-  return <span className="text-xs px-2 py-0.5 rounded-full bg-gray-500/10 text-gray-400 font-medium">Closed</span>;
-}
-
-function TierLabel({ score }: { score: number | null }) {
+function TierLabel({ score, reviewCount, status }: { score: number | null; reviewCount: number; status: string }) {
+  if (status === 'previews' || reviewCount < 5) return null;
   const tier = getScoreTier(score);
   if (!tier) return null;
-  return <span className="text-xs text-gray-500">{tier.label}</span>;
+  return (
+    <span
+      className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+      style={{ color: tier.color }}
+    >
+      {tier.label}
+    </span>
+  );
 }
 
-function ShowThumbnail({ src, title }: { src: string | null; title: string }) {
+function ShowThumbnail({ src, title, status }: { src: string | null; title: string; status: string }) {
+  const optimizedSrc = src ? getOptimizedImageUrl(src, 'thumbnail') : null;
   return (
-    <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
       <ShowImage
-        sources={[src]}
-        alt={title}
+        sources={[optimizedSrc]}
+        alt={`${title} Broadway show`}
         fallback={
-          <div className="w-full h-full flex items-center justify-center text-gray-500 text-xs font-bold">
-            {title.charAt(0)}
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
+            <div className="text-lg mb-0.5">🎭</div>
+            {status === 'previews' && (
+              <div className="text-[8px] text-gray-500 text-center font-medium leading-tight">Images<br />soon</div>
+            )}
           </div>
         }
         className="w-full h-full object-cover"
-        width={40}
-        height={40}
+        width={64}
+        height={64}
       />
     </div>
   );
@@ -78,7 +81,6 @@ function ShowThumbnail({ src, title }: { src: string | null; title: string }) {
 export default function TonyPredictionsTable({ title, description, shows, upcoming }: TonyPredictionsTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [showUpcoming, setShowUpcoming] = useState(upcoming.length <= 4);
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
@@ -89,8 +91,9 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
     }
   };
 
-  const sortedShows = useMemo(() => {
-    return [...shows].sort((a, b) => {
+  // Combine scored and upcoming into one unified list
+  const allShows = useMemo(() => {
+    const scored = [...shows].sort((a, b) => {
       let aVal: string | number | null = null;
       let bVal: string | number | null = null;
 
@@ -123,9 +126,19 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
       return sortDirection === 'asc' ? cmp : -cmp;
     });
-  }, [shows, sortColumn, sortDirection]);
 
-  if (shows.length === 0 && upcoming.length === 0) return null;
+    // Upcoming shows after scored, sorted by opening date
+    const upcomingSorted = [...upcoming].sort((a, b) =>
+      (a.openingDate || '').localeCompare(b.openingDate || '')
+    );
+
+    return [...scored, ...upcomingSorted];
+  }, [shows, upcoming, sortColumn, sortDirection]);
+
+  if (allShows.length === 0) return null;
+
+  const isUpcoming = (show: SerializedTonyShow) =>
+    show.status === 'previews' || show.reviewCount < 5;
 
   return (
     <section className="mb-10">
@@ -134,147 +147,123 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
         <p className="text-sm text-gray-400 mt-1">{description}</p>
       </div>
 
-      {shows.length > 0 && (
-        <>
-          {/* Desktop table */}
-          <div className="hidden sm:block overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-xs text-gray-500 uppercase tracking-wide border-b border-white/5">
-                  <th className="pb-3 pr-2 w-8">#</th>
-                  <th
-                    className="pb-3 pr-4 cursor-pointer group"
-                    onClick={() => handleSort('title')}
-                  >
-                    Show
-                    <SortIcon active={sortColumn === 'title'} direction={sortColumn === 'title' ? sortDirection : null} />
-                  </th>
-                  <th
-                    className="pb-3 pr-4 cursor-pointer group text-right"
-                    onClick={() => handleSort('score')}
-                  >
-                    Score
-                    <SortIcon active={sortColumn === 'score'} direction={sortColumn === 'score' ? sortDirection : null} />
-                  </th>
-                  <th
-                    className="pb-3 pr-4 cursor-pointer group text-right"
-                    onClick={() => handleSort('reviews')}
-                  >
-                    Reviews
-                    <SortIcon active={sortColumn === 'reviews'} direction={sortColumn === 'reviews' ? sortDirection : null} />
-                  </th>
-                  <th className="pb-3 pr-4">Status</th>
-                  <th
-                    className="pb-3 cursor-pointer group"
-                    onClick={() => handleSort('openingDate')}
-                  >
-                    Opened
-                    <SortIcon active={sortColumn === 'openingDate'} direction={sortColumn === 'openingDate' ? sortDirection : null} />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedShows.map((show, i) => (
-                  <tr key={show.slug} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3 pr-2 text-sm text-gray-500 font-medium">{i + 1}</td>
-                    <td className="py-3 pr-4">
-                      <Link href={`/show/${show.slug}`} className="flex items-center gap-3 group/link">
-                        <ShowThumbnail src={show.thumbnailPath} title={show.title} />
-                        <div className="min-w-0">
-                          <div className="text-sm font-medium text-white group-hover/link:text-brand transition-colors truncate">
-                            {show.title}
-                          </div>
-                          <div className="text-xs text-gray-500 truncate">{show.venue}</div>
-                        </div>
-                      </Link>
-                    </td>
-                    <td className="py-3 pr-4 text-right">
-                      <div className="inline-flex flex-col items-end gap-0.5">
-                        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-                        <TierLabel score={show.compositeScore} />
-                      </div>
-                    </td>
-                    <td className="py-3 pr-4 text-right text-sm text-gray-400">{show.reviewCount}</td>
-                    <td className="py-3 pr-4"><StatusPill status={show.status} /></td>
-                    <td className="py-3 text-sm text-gray-400">{formatDate(show.openingDate)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile cards */}
-          <div className="sm:hidden space-y-3">
-            {sortedShows.map((show, i) => (
-              <Link
-                key={show.slug}
-                href={`/show/${show.slug}`}
-                className="flex items-center gap-3 p-3 rounded-xl bg-surface-overlay border border-white/5 hover:border-brand/30 transition-colors"
+      {/* Desktop table */}
+      <div className="hidden sm:block overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="text-left text-xs text-gray-500 uppercase tracking-wide border-b border-white/5">
+              <th className="pb-3 pr-2 w-8">#</th>
+              <th
+                className="pb-3 pr-4 cursor-pointer group"
+                onClick={() => handleSort('title')}
               >
-                <span className="text-sm text-gray-500 font-medium w-5 text-center flex-shrink-0">{i + 1}</span>
-                <ShowThumbnail src={show.thumbnailPath} title={show.title} />
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                  <div className="text-xs text-gray-500">{show.venue}</div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <StatusPill status={show.status} />
-                    <span className="text-xs text-gray-500">{show.reviewCount} reviews</span>
-                  </div>
-                </div>
-                <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
-
-      {/* Upcoming / Coming Soon */}
-      {upcoming.length > 0 && (
-        <div className="mt-4">
-          {upcoming.length > 4 && !showUpcoming ? (
-            <button
-              onClick={() => setShowUpcoming(true)}
-              className="text-sm text-brand hover:text-brand-hover transition-colors font-medium"
-            >
-              Show {upcoming.length} upcoming shows →
-            </button>
-          ) : (
-            <>
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-                Coming Soon ({upcoming.length})
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {upcoming.map(show => (
-                  <Link
-                    key={show.slug}
-                    href={`/show/${show.slug}`}
-                    className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:border-brand/30 transition-colors"
-                  >
-                    <ShowThumbnail src={show.thumbnailPath} title={show.title} />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                      <div className="text-xs text-gray-500">
-                        Opens {formatDate(show.openingDate)} · {show.venue}
+                Show
+                <SortIcon active={sortColumn === 'title'} direction={sortColumn === 'title' ? sortDirection : null} />
+              </th>
+              <th
+                className="pb-3 pr-4 cursor-pointer group text-center"
+                onClick={() => handleSort('score')}
+              >
+                Score
+                <SortIcon active={sortColumn === 'score'} direction={sortColumn === 'score' ? sortDirection : null} />
+              </th>
+              <th
+                className="pb-3 pr-4 cursor-pointer group text-right"
+                onClick={() => handleSort('reviews')}
+              >
+                Reviews
+                <SortIcon active={sortColumn === 'reviews'} direction={sortColumn === 'reviews' ? sortDirection : null} />
+              </th>
+              <th className="pb-3 pr-4">Status</th>
+              <th
+                className="pb-3 cursor-pointer group"
+                onClick={() => handleSort('openingDate')}
+              >
+                Opened
+                <SortIcon active={sortColumn === 'openingDate'} direction={sortColumn === 'openingDate' ? sortDirection : null} />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {allShows.map((show, i) => {
+              const upcoming = isUpcoming(show);
+              // Scored shows (first N items) get numbered ranks; upcoming get no rank
+              const rank = !upcoming ? i + 1 : null;
+              return (
+                <tr key={show.slug} className={`border-b border-white/5 hover:bg-white/[0.02] transition-colors ${upcoming ? 'opacity-60' : ''}`}>
+                  <td className="py-3 pr-2 text-sm text-gray-500 font-medium">
+                    {rank ?? ''}
+                  </td>
+                  <td className="py-3 pr-4">
+                    <Link href={`/show/${show.slug}`} className="flex items-center gap-3 group/link">
+                      <ShowThumbnail src={show.thumbnailPath} title={show.title} status={show.status} />
+                      <div className="min-w-0">
+                        <div className={`text-sm font-semibold group-hover/link:text-brand transition-colors truncate ${upcoming ? 'text-gray-400' : 'text-white'}`}>
+                          {show.title}
+                        </div>
+                        <div className="text-xs text-gray-500 truncate">
+                          {upcoming ? `Opens ${formatDate(show.openingDate)} · ${show.venue}` : show.venue}
+                        </div>
                       </div>
+                    </Link>
+                  </td>
+                  <td className="py-3 pr-4">
+                    <div className="flex flex-col items-center gap-0.5">
+                      <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
+                      <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
                     </div>
-                    <div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-xs text-gray-500 font-bold flex-shrink-0">
-                      TBD
-                    </div>
-                  </Link>
-                ))}
+                  </td>
+                  <td className="py-3 pr-4 text-right text-sm text-gray-400">
+                    {upcoming ? '—' : show.reviewCount}
+                  </td>
+                  <td className="py-3 pr-4"><StatusBadge status={show.status} /></td>
+                  <td className="py-3 text-sm text-gray-400">
+                    {upcoming ? `Opens ${formatDate(show.openingDate)}` : formatDate(show.openingDate)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="sm:hidden space-y-2">
+        {allShows.map((show, i) => {
+          const upcoming = isUpcoming(show);
+          const rank = !upcoming ? i + 1 : null;
+          return (
+            <Link
+              key={show.slug}
+              href={`/show/${show.slug}`}
+              className={`flex items-center gap-3 p-3 rounded-xl bg-surface-overlay border border-white/5 hover:border-brand/30 transition-colors ${upcoming ? 'opacity-60' : ''}`}
+            >
+              <span className="text-sm text-gray-500 font-medium w-5 text-center flex-shrink-0">
+                {rank ?? ''}
+              </span>
+              <ShowThumbnail src={show.thumbnailPath} title={show.title} status={show.status} />
+              <div className="flex-1 min-w-0">
+                <div className={`text-sm font-semibold truncate ${upcoming ? 'text-gray-400' : 'text-white'}`}>
+                  {show.title}
+                </div>
+                <div className="text-xs text-gray-500 truncate">
+                  {upcoming ? `Opens ${formatDate(show.openingDate)}` : show.venue}
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <StatusBadge status={show.status} />
+                  {!upcoming && (
+                    <span className="text-xs text-gray-500">{show.reviewCount} reviews</span>
+                  )}
+                </div>
               </div>
-              {upcoming.length > 4 && showUpcoming && (
-                <button
-                  onClick={() => setShowUpcoming(false)}
-                  className="text-sm text-gray-500 hover:text-gray-300 transition-colors mt-2"
-                >
-                  Hide upcoming
-                </button>
-              )}
-            </>
-          )}
-        </div>
-      )}
+              <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
+                <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </section>
   );
 }
