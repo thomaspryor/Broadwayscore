@@ -1,23 +1,31 @@
 {
-  "timestamp": "2026-02-16T15:10:28.993Z",
-  "totalDrifted": 2,
+  "timestamp": "2026-02-16T15:15:19.315Z",
+  "totalDrifted": 3,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "punch-2025",
-      "outlet": "New York Theater",
-      "critic": null,
-      "oldScore": 80,
-      "newScore": 64,
-      "delta": 16
+      "showId": "smash-2025",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "oldScore": 60,
+      "newScore": 42,
+      "delta": 18
     },
     {
       "showId": "punch-2025",
-      "outlet": "One-Minute Critic",
+      "outlet": "The Daily Beast",
       "critic": null,
       "oldScore": 60,
-      "newScore": 76,
-      "delta": 16
+      "newScore": 43,
+      "delta": 17
+    },
+    {
+      "showId": "shucked-2023",
+      "outlet": "BroadwayWorld",
+      "critic": "Krista Garver",
+      "oldScore": 60,
+      "newScore": 75,
+      "delta": 15
     }
   ]
 }
