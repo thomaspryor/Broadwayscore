@@ -1,127 +1,51 @@
 {
-  "updatedAt": "2026-02-16T05:01:22.486Z",
-  "processed": 68,
-  "failed": 92,
-  "successRate": "42.5%",
+  "updatedAt": "2026-02-16T05:05:22.940Z",
+  "processed": 72,
+  "failed": 118,
+  "successRate": "37.9%",
   "tierBreakdown": {
     "playwright": 50,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 10,
-    "archive": 18
+    "brightdata": 15,
+    "archive": 12
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T03:00:02.249Z",
+      "t": "2026-02-16T03:36:38.216Z",
+      "event": "bb-session",
+      "session": "3d122529",
+      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+    },
+    {
+      "t": "2026-02-16T03:37:02.237Z",
+      "event": "bb-session",
+      "session": "b5a62071",
+      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+    },
+    {
+      "t": "2026-02-16T03:38:18.065Z",
+      "event": "bb-session",
+      "session": "d519d035",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aNekI98AswaA"
+    },
+    {
+      "t": "2026-02-16T03:38:19.995Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "bloomberg.com"
     },
     {
-      "t": "2026-02-16T03:02:19.279Z",
+      "t": "2026-02-16T03:44:43.293Z",
       "event": "bb-session",
-      "session": "44ae78dd",
-      "url": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+      "session": "21bd3f37",
+      "url": "https://www.thewrap.com/is-this-a-room-broadway-review-reality-winner/"
     },
     {
-      "t": "2026-02-16T03:03:55.733Z",
+      "t": "2026-02-16T03:47:59.444Z",
       "event": "bb-session",
-      "session": "aaeb8b2d",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
-    },
-    {
-      "t": "2026-02-16T03:03:57.806Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:10:55.288Z",
-      "event": "bb-session",
-      "session": "4a1aa0e6",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-02-16T03:10:55.365Z",
-      "event": "bb-session",
-      "session": "1c7cb5b8",
-      "url": "https://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/"
-    },
-    {
-      "t": "2026-02-16T03:10:57.401Z",
-      "event": "bb-login-uncertain",
-      "domain": "nymag.com"
-    },
-    {
-      "t": "2026-02-16T03:10:59.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:13:31.999Z",
-      "event": "bb-session",
-      "session": "9967a2a6",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-16T03:13:33.752Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:14:58.064Z",
-      "event": "bb-session",
-      "session": "a260f89a",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-16T03:15:00.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:15:39.960Z",
-      "event": "bb-session",
-      "session": "f9bf9b43",
-      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
-    },
-    {
-      "t": "2026-02-16T03:18:26.798Z",
-      "event": "bb-session",
-      "session": "760c7af5",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-16T03:18:28.755Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:20:18.484Z",
-      "event": "bb-session",
-      "session": "051681a2",
-      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
-    },
-    {
-      "t": "2026-02-16T03:23:07.910Z",
-      "event": "bb-session",
-      "session": "cbff21af",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
-    },
-    {
-      "t": "2026-02-16T03:23:09.937Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T03:24:17.718Z",
-      "event": "bb-session",
-      "session": "49848ce6",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-16T03:24:19.564Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "e0d2195a",
+      "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cove"
     }
   ]
 }
