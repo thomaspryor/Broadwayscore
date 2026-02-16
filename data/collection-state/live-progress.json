@@ -1,15 +1,128 @@
 {
-  "updatedAt": "2026-02-16T11:28:02.891Z",
-  "processed": 6,
-  "failed": 64,
-  "successRate": "8.6%",
+  "updatedAt": "2026-02-16T11:45:28.013Z",
+  "processed": 13,
+  "failed": 17,
+  "successRate": "43.3%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 6
+    "brightdata": 6,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T11:27:34.384Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:28:19.279Z",
+      "event": "bb-session",
+      "session": "7ebdab35",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-16T11:29:00.607Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:30:27.407Z",
+      "event": "bb-session",
+      "session": "11f68f25",
+      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
+    },
+    {
+      "t": "2026-02-16T11:31:08.718Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:32:58.097Z",
+      "event": "bb-session",
+      "session": "10992476",
+      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
+    },
+    {
+      "t": "2026-02-16T11:33:39.995Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:34:11.406Z",
+      "event": "bb-session",
+      "session": "871a65bf",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
+    },
+    {
+      "t": "2026-02-16T11:34:53.361Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:35:15.879Z",
+      "event": "bb-session",
+      "session": "a1ccef7c",
+      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
+    },
+    {
+      "t": "2026-02-16T11:37:07.885Z",
+      "event": "bb-session",
+      "session": "480933d2",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
+    },
+    {
+      "t": "2026-02-16T11:37:46.501Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771241835952\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA50vzfinXpl4ANA1qtA==&cid=4lg2~FFvZRU99AUc0wgpMRW1lTj8vTgEwiCS~~ltzCuCyZyhA8bdcLpFirxFXcuXRxlOGtgB0nFT8NVLgY2cL599EWGx_3Zzvo~WY9yHnyRxoZQs1Hp0NYZ6HfQduW55&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771241835952\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771241835952\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA50vzfinXpl4ANA1qtA==&cid=4lg2~FFvZRU99AUc0wgpMRW1lTj8vTgEwiCS~~ltzCuCyZyhA8bdcLpFirxFXcuXRxlOGtgB0nFT8NVLgY2cL599EWGx_3Zzvo~WY9yHnyRxoZQs1Hp0NYZ6HfQduW55&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771241835952\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771241835952\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMA50vzfinXpl4ANA1qtA==&cid=4lg2~FFvZRU99AUc0wgpMRW1lTj8vTgEwiCS~~ltzCuCyZyhA8bdcLpFirxFXcuXRxlOGtgB0nFT8NVLgY2cL599EWGx_3Zzvo~WY9yHnyRxoZQs1Hp0NYZ6HfQduW55&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771241835952\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-16T11:39:49.161Z",
+      "event": "bb-session",
+      "session": "d52b38b0",
+      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-se"
+    },
+    {
+      "t": "2026-02-16T11:40:30.938Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:41:23.859Z",
+      "event": "bb-session",
+      "session": "363c220e",
+      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
+    },
+    {
+      "t": "2026-02-16T11:42:05.298Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:42:32.487Z",
+      "event": "bb-session",
+      "session": "d4b5fc1e",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-16T11:43:14.027Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-16T11:44:26.396Z",
+      "event": "bb-session",
+      "session": "82c3bf53",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-16T11:45:05.518Z",
+      "event": "bb-login-fail",
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    32 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1771242274999\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAm06PaLD6ZPAANA1qtA==&cid=zs4NU4zvzt_3DF0jMFgQg2~zNucYXP_ONiZS21PBoL_UTvqIQU2W0n8cO07UnFRhekwbN7MoXnGEm11s30~AMK1fGWz5mbiwc30x1OUUGpI5EJbUgoJbChjbTVezyW5m&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1771242274999\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    }
+  ]
 }
