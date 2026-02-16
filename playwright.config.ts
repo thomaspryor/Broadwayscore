@@ -53,7 +53,15 @@ export default defineConfig({
   // Expect timeout
   expect: {
     timeout: 10000,
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.03,
+      threshold: 0.3,
+      animations: 'disabled',
+    },
   },
+
+  // Snapshot path organization
+  snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}',
 
   // Configure projects for different browsers
   projects: [

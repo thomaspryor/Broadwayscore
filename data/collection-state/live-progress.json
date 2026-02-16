@@ -1,33 +1,60 @@
 {
-  "updatedAt": "2026-02-15T22:59:04.575Z",
-  "processed": 90,
-  "failed": 170,
-  "successRate": "34.6%",
+  "updatedAt": "2026-02-16T02:39:16.221Z",
+  "processed": 45,
+  "failed": 25,
+  "successRate": "64.3%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 19,
-    "archive": 30
+    "brightdata": 3,
+    "archive": 42
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-15T22:23:13.400Z",
+      "t": "2026-02-16T02:32:13.105Z",
       "event": "bb-session",
-      "session": "7efcd3b3",
-      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+      "session": "f0b70236",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
     },
     {
-      "t": "2026-02-15T22:54:39.923Z",
-      "event": "bb-session",
-      "session": "2aa0e357",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-15T22:54:42.126Z",
+      "t": "2026-02-16T02:32:15.290Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:32:58.028Z",
+      "event": "bb-session",
+      "session": "dd61b5d1",
+      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
+    },
+    {
+      "t": "2026-02-16T02:33:00.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:35:17.782Z",
+      "event": "bb-session",
+      "session": "7a1005d6",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/holiday-inn-corbin-bleu-op"
+    },
+    {
+      "t": "2026-02-16T02:35:20.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T02:37:10.018Z",
+      "event": "bb-session",
+      "session": "a017dfa0",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/king-charles-iii-royal-fan"
+    },
+    {
+      "t": "2026-02-16T02:37:12.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
     }
   ]
 }
