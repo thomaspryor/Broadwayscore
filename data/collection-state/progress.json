@@ -233,7 +233,13 @@
     "tootsie-2019/theatermania--hayley-levitt.json",
     "topdog-underdog-2022/theatermania--david-gordon.json",
     "torch-song-2018/theatermania--zachary-stewart.json",
-    "tuck-everlasting-2016/theatermania--zachary-stewart.json"
+    "tuck-everlasting-2016/theatermania--zachary-stewart.json",
+    "twelfth-night-2013/theatermania--charles-isherwood.json",
+    "waiting-for-godot-2025/theatermania--david-gordon.json",
+    "waitress-2016/theatermania--zachary-stewart.json",
+    "walking-with-ghosts-2022/theatermania--kenji-fujishima.json",
+    "war-paint-2017/theatermania--adelaide-lee.json",
+    "war-paint-2017/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -451,7 +457,11 @@
     "tootsie-2019/theatermania--jesse-green.json",
     "topdog-underdog-2022/theatermania--adam-feldman.json",
     "torch-song-2018/theatermania--jesse-oxfeld.json",
-    "travesties-2018/theatermania--jesse-green.json"
+    "travesties-2018/theatermania--jesse-green.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/theatermania--charles-isherwood.json",
+    "waiting-for-godot-2013/theatermania--charles-isherwood.json",
+    "waiting-for-godot-2013/theatermania--david-finkle.json",
+    "walking-with-ghosts-2022/theatermania--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -635,7 +645,12 @@
       "tootsie-2019/theatermania--hayley-levitt.json",
       "topdog-underdog-2022/theatermania--david-gordon.json",
       "torch-song-2018/theatermania--zachary-stewart.json",
-      "tuck-everlasting-2016/theatermania--zachary-stewart.json"
+      "tuck-everlasting-2016/theatermania--zachary-stewart.json",
+      "waiting-for-godot-2025/theatermania--david-gordon.json",
+      "waitress-2016/theatermania--zachary-stewart.json",
+      "walking-with-ghosts-2022/theatermania--kenji-fujishima.json",
+      "war-paint-2017/theatermania--adelaide-lee.json",
+      "war-paint-2017/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -644,7 +659,8 @@
       "take-me-out-2022/theatermania--jesse-green.json",
       "the-norman-conquests-2009/theatermania--brian-scott-lipton.json",
       "the-thanksgiving-play-2023/theatermania--adam-feldman.json",
-      "the-wiz-2024/theatermania--jesse-green.json"
+      "the-wiz-2024/theatermania--jesse-green.json",
+      "twelfth-night-2013/theatermania--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
@@ -704,7 +720,7 @@
     ]
   },
   "startTime": "2026-02-16T17:22:04.924Z",
-  "lastProcessed": "tuck-everlasting-2016/theatermania--zachary-stewart.json",
+  "lastProcessed": "war-paint-2017/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-02-16T18:11:12.762Z",
@@ -769,6 +785,17 @@
     },
     {
       "t": "2026-02-16T18:24:22.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-16T18:26:02.435Z",
+      "event": "bb-session",
+      "session": "d3d42fa4",
+      "url": "https://www.theatermania.com/broadway/news/twelfth-night_62324.html"
+    },
+    {
+      "t": "2026-02-16T18:26:04.495Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
