@@ -1,15 +1,38 @@
 {
-  "updatedAt": "2026-02-16T03:57:31.909Z",
-  "processed": 8,
-  "failed": 22,
-  "successRate": "26.7%",
+  "updatedAt": "2026-02-16T03:58:36.293Z",
+  "processed": 23,
+  "failed": 17,
+  "successRate": "57.5%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:55:34.745Z",
+      "event": "bb-session",
+      "session": "62c66bfb",
+      "url": "https://www.nydailynews.com/2014/04/23/casa-valentina-theater-review/"
+    },
+    {
+      "t": "2026-02-16T03:55:36.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T03:56:40.239Z",
+      "event": "bb-session",
+      "session": "a2c42a3e",
+      "url": "https://www.nydailynews.com/2012/04/20/review-pulitzer-winner-clybourne-park-tac"
+    },
+    {
+      "t": "2026-02-16T03:56:42.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    }
+  ]
 }
