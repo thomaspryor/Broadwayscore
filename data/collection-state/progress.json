@@ -6,7 +6,15 @@
     "a-catered-affair-2008/nytimes--ben-brantley.json",
     "airline-highway-2015/nytimes--charles-isherwood.json",
     "an-enemy-of-the-people-2012/nytimes--unknown.json",
-    "anything-goes-2011/nytimes--ben-brantley.json"
+    "anything-goes-2011/nytimes--ben-brantley.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "all-out-2025/nytimes--elisabeth-vincentelli.json",
@@ -21,12 +29,17 @@
     "baby-its-you-2011/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--charles-isherwood.json",
     "bad-cinderella-2023/nytimes--unknown.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json"
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/bronx-bombers-2014/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -36,11 +49,18 @@
       "a-catered-affair-2008/nytimes--ben-brantley.json",
       "airline-highway-2015/nytimes--charles-isherwood.json",
       "an-enemy-of-the-people-2012/nytimes--unknown.json",
-      "anything-goes-2011/nytimes--ben-brantley.json"
+      "anything-goes-2011/nytimes--ben-brantley.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "cats-1982/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-16T06:50:02.523Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--ben-brantley.json",
+  "lastProcessed": "cats-1982/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-16T06:50:15.839Z",
@@ -61,6 +81,17 @@
     },
     {
       "t": "2026-02-16T06:53:21.552Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:54:33.977Z",
+      "event": "bb-session",
+      "session": "1a389aa7",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-16T06:55:21.614Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
