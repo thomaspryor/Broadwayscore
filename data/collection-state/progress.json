@@ -1,81 +1,124 @@
 {
   "processed": [
-    "death-of-a-salesman-2026/nytimes--jesse-green.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "700-sundays-2013/nytimes--ben-brantley.json",
-    "a-catered-affair-2008/nytimes--ben-brantley.json",
-    "airline-highway-2015/nytimes--charles-isherwood.json",
-    "an-enemy-of-the-people-2012/nytimes--unknown.json",
-    "anything-goes-2011/nytimes--ben-brantley.json"
+    "a-view-from-the-bridge-2015/washingtion-post--peter-marks.json",
+    "call-me-izzy-2025/washpost--naveen-kumar.json",
+    "cat-on-a-hot-tin-roof-2008/washpost--peter-marks.json",
+    "company-2021/washpost--peter-marks.json",
+    "dana-h-2021/washpost--peter-marks.json",
+    "flying-over-sunset-2021/washpost--peter-marks.json",
+    "girl-from-the-north-country-2022/washpost--peter-marks.json",
+    "ink-2019/washpost--peter-marks.json",
+    "junk-2017/washpost--peter-marks.json"
   ],
   "failed": [
-    "all-out-2025/nytimes--elisabeth-vincentelli.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "9-to-5-2009/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--charles-isherwood.json",
-    "american-buffalo-2022/nytimes--jesse-green.json",
-    "an-act-of-god-2016/nytimes--ben-brantley.json",
-    "anastasia-2017/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "bad-cinderella-2023/nytimes--unknown.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json",
-    "bernhardthamlet-2018/nytimes--jesse-green.json"
+    "hadestown-2019/washpost--peter-marks.json",
+    "hells-kitchen-2024/washpost--peter-marks.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "700-sundays-2013/washpost--peter-marks.json",
+    "a-chorus-line-2006/washpost--peter-marks.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "a-dolls-house-2023/washpost--peter-marks.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
+    "american-psycho-2016/washpost--peter-marks.json",
+    "beetlejuice-2019/washpost--peter-marks.json",
+    "catch-me-if-you-can-2011/washpost--peter-marks.json",
+    "cult-of-love-2024/washpost--naveen-kumar.json",
+    "diana-the-musical-2021/washpost--peter-marks.json",
+    "disaster-2016/washpost--peter-marks.json",
+    "frozen-2018/washpost--peter-marks.json",
+    "glengarry-glen-ross-2025/washpost--naveen-kumar.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "in-the-heights-2008/washpost--nelson-pressley.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "jagged-little-pill-2019/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/baby-its-you-2011/nytimes--charles-isherwood.json"
+    "playwright": [
+      "a-view-from-the-bridge-2015/washingtion-post--peter-marks.json",
+      "call-me-izzy-2025/washpost--naveen-kumar.json",
+      "cat-on-a-hot-tin-roof-2008/washpost--peter-marks.json",
+      "company-2021/washpost--peter-marks.json",
+      "dana-h-2021/washpost--peter-marks.json",
+      "flying-over-sunset-2021/washpost--peter-marks.json",
+      "girl-from-the-north-country-2022/washpost--peter-marks.json",
+      "ink-2019/washpost--peter-marks.json",
+      "junk-2017/washpost--peter-marks.json"
     ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "death-of-a-salesman-2026/nytimes--jesse-green.json",
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "700-sundays-2013/nytimes--ben-brantley.json",
-      "a-catered-affair-2008/nytimes--ben-brantley.json",
-      "airline-highway-2015/nytimes--charles-isherwood.json",
-      "an-enemy-of-the-people-2012/nytimes--unknown.json",
-      "anything-goes-2011/nytimes--ben-brantley.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-16T13:01:10.854Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--jesse-green.json",
+  "startTime": "2026-02-16T13:01:23.573Z",
+  "lastProcessed": "junk-2017/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-16T13:01:23.714Z",
+      "t": "2026-02-16T13:02:06.544Z",
       "event": "bb-session",
-      "session": "21c35922",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "9c53bab3",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
     },
     {
-      "t": "2026-02-16T13:01:59.902Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T13:02:08.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T13:03:51.420Z",
+      "t": "2026-02-16T13:02:40.218Z",
       "event": "bb-session",
-      "session": "deb7b918",
-      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shi"
+      "session": "ec764e5b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
     },
     {
-      "t": "2026-02-16T13:04:39.508Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T13:02:42.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-16T13:05:16.895Z",
+      "t": "2026-02-16T13:02:58.529Z",
       "event": "bb-session",
-      "session": "089ed433",
-      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+      "session": "c8b4de7a",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
     },
     {
-      "t": "2026-02-16T13:05:52.838Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-16T13:03:00.448Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T13:03:31.853Z",
+      "event": "bb-session",
+      "session": "63c516f8",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-02-16T13:03:33.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T13:04:07.093Z",
+      "event": "bb-session",
+      "session": "cbb0a315",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-02-16T13:04:09.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-16T13:04:49.920Z",
+      "event": "bb-session",
+      "session": "a5d8f51c",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-02-16T13:04:51.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
