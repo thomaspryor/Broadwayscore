@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-16T06:53:41.991Z",
-  "processed": 7,
-  "failed": 13,
-  "successRate": "35.0%",
+  "updatedAt": "2026-02-16T06:55:48.439Z",
+  "processed": 15,
+  "failed": 15,
+  "successRate": "50.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 7
+    "archive": 14
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-16T06:50:15.839Z",
@@ -31,6 +31,17 @@
     },
     {
       "t": "2026-02-16T06:53:21.552Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T06:54:33.977Z",
+      "event": "bb-session",
+      "session": "1a389aa7",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-16T06:55:21.614Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     }
