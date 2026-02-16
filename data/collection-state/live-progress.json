@@ -1,27 +1,51 @@
 {
-  "updatedAt": "2026-02-16T04:56:25.771Z",
-  "processed": 8,
-  "failed": 12,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-16T05:05:55.960Z",
+  "processed": 76,
+  "failed": 104,
+  "successRate": "42.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 64,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 8
+    "brightdata": 8,
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T04:55:00.084Z",
+      "t": "2026-02-16T03:36:45.635Z",
       "event": "bb-session",
-      "session": "d00037f5",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+      "session": "d45ef09d",
+      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
     },
     {
-      "t": "2026-02-16T04:55:02.116Z",
+      "t": "2026-02-16T03:37:01.013Z",
+      "event": "bb-session",
+      "session": "ebdbf615",
+      "url": "https://www.thewrap.com/american-buffalo-broadway-review-sam-rockwell-and-lauren"
+    },
+    {
+      "t": "2026-02-16T03:37:23.038Z",
+      "event": "bb-session",
+      "session": "6accf90e",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-16T03:40:16.483Z",
+      "event": "bb-session",
+      "session": "ea8135a5",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+    },
+    {
+      "t": "2026-02-16T04:32:24.008Z",
+      "event": "bb-session",
+      "session": "c58fcfaa",
+      "url": "https://www.thestage.co.uk/reviews/a-wonderful-world-the-louis-armstrong-musical"
+    },
+    {
+      "t": "2026-02-16T04:32:25.949Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thestage.co.uk"
     }
   ]
 }
