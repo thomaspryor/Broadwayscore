@@ -2399,8 +2399,7 @@ async function fetchAmpVariant(url, review) {
 async function fetchFromArchiveToday(url) {
   stats.tier3_6Attempts++;
 
-  const encodedUrl = encodeURIComponent(url);
-  const checkUrl = `https://archive.ph/newest/${encodedUrl}`;
+  const checkUrl = `https://archive.ph/newest/${url}`;
   console.log(`    → Checking archive.today...`);
 
   try {
@@ -2415,7 +2414,7 @@ async function fetchFromArchiveToday(url) {
       validateStatus: (s) => s < 500,
     });
 
-    if (resp.status === 404 || resp.status === 302 && !resp.headers.location) {
+    if (resp.status === 404 || (resp.status === 302 && !resp.headers.location)) {
       throw new Error('No archive.today snapshot found');
     }
 
@@ -2898,6 +2897,14 @@ async function executeForcedTier(tier, url, review) {
       case 3: {
         const r = await fetchWithBrightData(url);
         return { html: r.html, text: r.text, method: 'brightdata', attempts: [{ tier: 3, method: 'brightdata', success: true }] };
+      }
+      case 1.1: {
+        const r = await fetchAmpVariant(url, review);
+        return { html: r.html, text: r.text, method: 'amp', attempts: [{ tier: 1.1, method: 'amp', success: true }] };
+      }
+      case 3.6: {
+        const r = await fetchFromArchiveToday(url);
+        return { html: r.html, text: r.text, method: 'archive-today', attempts: [{ tier: 3.6, method: 'archive-today', success: true }] };
       }
       case 4: {
         const r = await fetchFromArchive(url);
@@ -3710,6 +3717,8 @@ function mapSourceMethod(method) {
     'archive.org': 'archive',
     'archive': 'archive',
     'webfetch': 'webfetch',
+    'amp': 'amp',
+    'archive-today': 'archive-today',
   };
   return map[method] || method;
 }
@@ -4079,9 +4088,11 @@ function saveState() {
       : '0%',
     tierBreakdown: {
       playwright: state.tierBreakdown?.playwright?.length || 0,
+      amp: state.tierBreakdown?.amp?.length || 0,
       browserbase: state.tierBreakdown?.browserbase?.length || 0,
       scrapingbee: state.tierBreakdown?.scrapingbee?.length || 0,
       brightdata: state.tierBreakdown?.brightdata?.length || 0,
+      archiveToday: state.tierBreakdown?.archiveToday?.length || 0,
       archive: state.tierBreakdown?.archive?.length || 0,
     },
     browserbaseSessions: stats.browserbaseSessionsUsed || 0,
@@ -4996,10 +5007,11 @@ function generateReport() {
     },
     tierBreakdown: {
       playwright: state.tierBreakdown.playwright.length,
+      amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee.length,
       brightdata: state.tierBreakdown.brightdata.length,
-      archiveToday: state.tierBreakdown.archiveToday.length,
+      archiveToday: state.tierBreakdown.archiveToday?.length || 0,
       archive: state.tierBreakdown.archive.length,
     },
     statistics: {
