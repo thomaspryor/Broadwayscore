@@ -1,126 +1,46 @@
 {
-  "updatedAt": "2026-02-16T05:48:22.797Z",
-  "processed": 47,
-  "failed": 53,
-  "successRate": "47.0%",
+  "updatedAt": "2026-02-16T05:51:43.561Z",
+  "processed": 113,
+  "failed": 197,
+  "successRate": "36.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 80,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 19,
-    "archive": 28
+    "brightdata": 23,
+    "archive": 12
   },
-  "browserbaseSessions": 40,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-16T05:34:42.151Z",
+      "t": "2026-02-16T03:45:48.553Z",
       "event": "bb-session",
-      "session": "bd4ba4e3",
-      "url": "https://www.nytimes.com/2022/04/05/theater/take-me-out-review.html"
+      "session": "c0319bb7",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
     },
     {
-      "t": "2026-02-16T05:34:44.484Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:36:05.334Z",
+      "t": "2026-02-16T03:57:23.659Z",
       "event": "bb-session",
-      "session": "f14b9461",
-      "url": "https://www.nytimes.com/2012/12/04/theater/reviews/the-anarchist-with-patti-lupo"
+      "session": "8db5ee37",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
     },
     {
-      "t": "2026-02-16T05:36:07.501Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:37:33.312Z",
+      "t": "2026-02-16T04:03:14.331Z",
       "event": "bb-session",
-      "session": "f11f450f",
-      "url": "https://www.nytimes.com/2013/04/17/theater/reviews/the-big-knife-with-bobby-cann"
+      "session": "7ae222af",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
     },
     {
-      "t": "2026-02-16T05:37:35.433Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:38:52.035Z",
+      "t": "2026-02-16T04:03:30.221Z",
       "event": "bb-session",
-      "session": "2c87d3ba",
-      "url": "https://www.nytimes.com/2005/03/16/theater/reviews/16cons.html"
+      "session": "e760f80d",
+      "url": "http://www.thewrap.com/something-rotten-theater-review-or-how-a-musical-called-o"
     },
     {
-      "t": "2026-02-16T05:38:53.921Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:40:00.776Z",
+      "t": "2026-02-16T04:09:25.323Z",
       "event": "bb-session",
-      "session": "01810df9",
-      "url": "http://www.nytimes.com/2016/09/30/theater/the-encounter-review.html?_r=0"
-    },
-    {
-      "t": "2026-02-16T05:40:03.066Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:41:11.167Z",
-      "event": "bb-session",
-      "session": "c93c5f5d",
-      "url": "https://www.nytimes.com/2017/03/10/theater/the-glass-menagerie-review-sally-fiel"
-    },
-    {
-      "t": "2026-02-16T05:41:13.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:42:34.155Z",
-      "event": "bb-session",
-      "session": "89590493",
-      "url": "https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html"
-    },
-    {
-      "t": "2026-02-16T05:42:36.033Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:43:42.386Z",
-      "event": "bb-session",
-      "session": "d9a75f03",
-      "url": "https://www.nytimes.com/2006/04/24/theater/reviews/24hist.html"
-    },
-    {
-      "t": "2026-02-16T05:43:44.428Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:45:05.208Z",
-      "event": "bb-session",
-      "session": "4d68685f",
-      "url": "https://www.nytimes.com/2021/10/14/theater/the-lehman-trilogy-review.html"
-    },
-    {
-      "t": "2026-02-16T05:45:07.335Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-16T05:46:13.568Z",
-      "event": "bb-session",
-      "session": "4d2f53ca",
-      "url": "https://www.nytimes.com/2006/05/04/theater/reviews/04inis.html"
-    },
-    {
-      "t": "2026-02-16T05:46:15.529Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "session": "8b6fa46b",
+      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
     }
   ]
 }
