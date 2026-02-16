@@ -524,7 +524,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         ]} />
 
         {/* Metacritic-style Header: Poster + Title/Score integrated */}
-        <div className="card p-5 sm:p-6 mb-6">
+        <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card - fetchpriority high for LCP optimization */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
@@ -553,7 +553,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             {/* Right side: Title, Meta, Score Box, and Breakdown */}
             <div className="flex-1 min-w-0">
               {/* Pills row */}
-              <div className="flex flex-wrap items-center gap-1.5 mb-2">
+              <div className="flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
@@ -566,7 +566,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </h1>
 
               {/* Meta line — inline text so it wraps naturally on mobile */}
-              <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed">
+              <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
                 <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
@@ -623,7 +623,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 );
 
                 return (
-                  <div className="space-y-3">
+                  <div className="space-y-3" data-testid="show-score-section">
                     {/* Score row */}
                     <div className="flex items-center gap-3 sm:gap-4">
                       {scoreBox}

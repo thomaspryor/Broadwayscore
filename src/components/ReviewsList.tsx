@@ -142,7 +142,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
   else scoreLabel = 'Stay Away';
 
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} aria-label={`Review from ${review.outlet}`}>
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       <div className="flex items-start gap-2.5">
         {/* Score on LEFT - Metacritic style - smaller on mobile */}
         <div
@@ -233,7 +233,7 @@ export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListPr
   const hiddenCount = reviews.length - initialCount;
 
   return (
-    <div className="space-y-3" role="feed" aria-label="Critic reviews">
+    <div className="space-y-3" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
       {displayedReviews.map((review) => (
         <ReviewCard
           key={`${review.outletId}-${review.publishDate}`}
