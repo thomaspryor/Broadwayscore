@@ -1,38 +1,38 @@
 {
-  "updatedAt": "2026-02-16T12:41:39.033Z",
-  "processed": 9,
-  "failed": 71,
-  "successRate": "11.3%",
+  "updatedAt": "2026-02-16T12:43:41.457Z",
+  "processed": 38,
+  "failed": 32,
+  "successRate": "54.3%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 9
+    "archive": 38
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-16T12:36:54.220Z",
+      "t": "2026-02-16T12:36:48.316Z",
       "event": "bb-session",
-      "session": "1d5e24e5",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+      "session": "2fef5a86",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
     },
     {
-      "t": "2026-02-16T12:36:56.208Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "t": "2026-02-16T12:37:33.943Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-16T12:41:21.945Z",
+      "t": "2026-02-16T12:42:47.856Z",
       "event": "bb-session",
-      "session": "6061a9f2",
-      "url": "https://www.vulture.com/2017/11/theater-amy-schumer-in-steve-martins-meteor-show"
+      "session": "bf1cf8e8",
+      "url": "https://www.nytimes.com/2018/08/16/theater/review-pretty-woman-the-musical-broad"
     },
     {
-      "t": "2026-02-16T12:41:22.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "t": "2026-02-16T12:43:23.758Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     }
   ]
 }
