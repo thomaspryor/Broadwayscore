@@ -81,18 +81,18 @@ const MAJOR_CATEGORIES = [
   'Best Direction of a Play',
   'Best Choreography',
   'Best Orchestrations',
-  'Best Scenic Design',
   'Best Scenic Design of a Musical',
   'Best Scenic Design of a Play',
-  'Best Costume Design',
+  'Best Scenic Design',
   'Best Costume Design of a Musical',
   'Best Costume Design of a Play',
-  'Best Lighting Design',
+  'Best Costume Design',
   'Best Lighting Design of a Musical',
   'Best Lighting Design of a Play',
-  'Best Sound Design',
+  'Best Lighting Design',
   'Best Sound Design of a Musical',
   'Best Sound Design of a Play',
+  'Best Sound Design',
 ];
 
 // Categories that are ONLY for plays (musicals cannot win these)
