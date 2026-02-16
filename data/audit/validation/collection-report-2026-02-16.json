@@ -1,80 +1,99 @@
 {
-  "runDate": "2026-02-16T06:17:28.336Z",
+  "runDate": "2026-02-16T06:20:38.639Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "dead-outlaw-2025",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 10,
+    "processed": 7,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "29.2%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 0
+    "brightdata": 5,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 9,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 19,
+    "tier1Success": 0,
+    "tier1_5Attempts": 19,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 7,
-    "tier3Success": 7,
-    "tier4Attempts": 5,
-    "tier4Success": 2,
-    "totalFailed": 10,
+    "tier3Attempts": 19,
+    "tier3Success": 9,
+    "tier4Attempts": 10,
+    "tier4Success": 1,
+    "totalFailed": 17,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 19,
+    "browserbaseMinutesUsed": 5.1,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "dead-outlaw-2025/variety--frank-rizzo.json",
-    "dead-outlaw-2025/variety--unknown.json",
-    "dead-outlaw-2025/observer--david-cote.json",
-    "dead-outlaw-2025/latimes--charles-mcnulty.json",
-    "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "dead-outlaw-2025/nydailynews--chris-jones.json",
-    "dead-outlaw-2025/theatermania--unknown.json",
-    "dead-outlaw-2025/theatermania--zachary-stewart.json",
-    "dead-outlaw-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "dead-outlaw-2025/chicagotribune--chris-jones.json",
-    "dead-outlaw-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/dailybeast--unknown.json",
-    "dead-outlaw-2025/usatoday--patrick-ryan.json"
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "aint-no-mo-2022/newyorker--naomi-fry.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "king-kong-2018/newyorker--vinson-cunningham.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "dead-outlaw-2025/variety--frank-rizzo.json",
-      "dead-outlaw-2025/variety--unknown.json",
-      "dead-outlaw-2025/observer--david-cote.json",
-      "dead-outlaw-2025/oneminutecritic--matthew-wexler.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "dead-outlaw-2025/latimes--charles-mcnulty.json"
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
     ],
-    "archive": []
+    "archive": [
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "lombardi-2010/newyorker--uncredited.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 8,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
