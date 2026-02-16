@@ -231609,19 +231609,87 @@
       "output": 35610,
       "total": 2435210
     },
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-16T17:38:46.665Z",
+    "completedAt": "2026-02-16T18:44:39.112Z",
+    "totalReviews": 23293,
+    "processed": 35,
+    "skipped": 22469,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 407315,
+      "output": 12036,
+      "total": 956159
+    },
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-16T18:43:07.913Z",
+    "completedAt": "2026-02-16T19:37:18.973Z",
+    "totalReviews": 23293,
+    "processed": 18,
+    "skipped": 22584,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 327588,
+      "output": 8175,
+      "total": 765659
+    },
     "errorDetails": []
   },
   {
-    "startedAt": "2026-02-16T16:43:40.784Z",
-    "completedAt": "2026-02-16T18:24:59.989Z",
+    "startedAt": "2026-02-16T19:02:07.281Z",
+    "completedAt": "2026-02-16T19:40:18.369Z",
     "totalReviews": 23293,
-    "processed": 52,
-    "skipped": 22251,
+    "processed": 13,
+    "skipped": 22790,
     "errors": 0,
     "tokensUsed": {
-      "input": 544418,
-      "output": 16681,
-      "total": 1277008
+      "input": 204397,
+      "output": 5417,
+      "total": 486516
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-16T19:05:55.391Z",
+    "completedAt": "2026-02-16T19:46:38.013Z",
+    "totalReviews": 23293,
+    "processed": 9,
+    "skipped": 22822,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 164155,
+      "output": 3752,
+      "total": 424973
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-16T18:55:39.593Z",
+    "completedAt": "2026-02-16T19:47:25.582Z",
+    "totalReviews": 23293,
+    "processed": 19,
+    "skipped": 22710,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 253242,
+      "output": 6323,
+      "total": 633807
     },
     "errorDetails": []
   },
