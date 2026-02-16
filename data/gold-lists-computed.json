@@ -83,14 +83,30 @@
           "thumbnail": "/images/shows/marjorie-prime-2025/thumbnail.webp",
           "openingDate": "2025-12-08",
           "closingDate": "2026-02-15",
-          "status": "open",
+          "status": "closed",
           "isRevival": true
+        },
+        {
+          "showId": "little-bear-ridge-road-2025",
+          "title": "Little Bear Ridge Road",
+          "slug": "little-bear-ridge-road",
+          "rank": 4,
+          "value": 77.4,
+          "displayValue": "77.4",
+          "season": "2025-2026",
+          "venue": "Booth Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/little-bear-ridge-road-2025/thumbnail.jpg",
+          "openingDate": "2025-10-30",
+          "closingDate": "2025-12-21",
+          "status": "closed",
+          "isRevival": false
         },
         {
           "showId": "oedipus-2025",
           "title": "Oedipus",
           "slug": "oedipus",
-          "rank": 4,
+          "rank": 5,
           "value": 77.3,
           "displayValue": "77.3",
           "season": "2025-2026",
@@ -99,22 +115,6 @@
           "thumbnail": "/images/shows/oedipus-2025/thumbnail.webp",
           "openingDate": "2025-11-13",
           "closingDate": "2026-02-08",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
-          "showId": "little-bear-ridge-road-2025",
-          "title": "Little Bear Ridge Road",
-          "slug": "little-bear-ridge-road",
-          "rank": 5,
-          "value": 77,
-          "displayValue": "77.0",
-          "season": "2025-2026",
-          "venue": "Booth Theatre",
-          "type": "play",
-          "thumbnail": null,
-          "openingDate": "2025-10-30",
-          "closingDate": "2025-12-21",
           "status": "closed",
           "isRevival": false
         },
@@ -249,26 +249,10 @@
           "isRevival": false
         },
         {
-          "showId": "yellow-face-2024",
-          "title": "Yellow Face",
-          "slug": "yellow-face-2024",
-          "rank": 7,
-          "value": 79.5,
-          "displayValue": "79.5",
-          "season": "2024-2025",
-          "venue": "Todd Haimes Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/yellow-face-2024/thumbnail.webp",
-          "openingDate": "2024-10-01",
-          "closingDate": "2024-11-24",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "sunset-boulevard-2024",
           "title": "Sunset Boulevard",
           "slug": "sunset-boulevard-2024",
-          "rank": 8,
+          "rank": 7,
           "value": 79.2,
           "displayValue": "79.2",
           "season": "2024-2025",
@@ -284,7 +268,7 @@
           "showId": "real-women-have-curves-2025",
           "title": "Real Women Have Curves",
           "slug": "real-women-have-curves",
-          "rank": 9,
+          "rank": 8,
           "value": 78.7,
           "displayValue": "78.7",
           "season": "2024-2025",
@@ -297,12 +281,28 @@
           "isRevival": false
         },
         {
+          "showId": "yellow-face-2024",
+          "title": "Yellow Face",
+          "slug": "yellow-face-2024",
+          "rank": 9,
+          "value": 78.6,
+          "displayValue": "78.6",
+          "season": "2024-2025",
+          "venue": "Todd Haimes Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/yellow-face-2024/thumbnail.webp",
+          "openingDate": "2024-10-01",
+          "closingDate": "2024-11-24",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
           "showId": "john-proctor-is-the-villain-2025",
           "title": "John Proctor is the Villain",
           "slug": "john-proctor-is-the-villain-2025",
           "rank": 10,
-          "value": 78.4,
-          "displayValue": "78.4",
+          "value": 78.5,
+          "displayValue": "78.5",
           "season": "2024-2025",
           "venue": "Booth Theatre",
           "type": "play",
@@ -319,8 +319,8 @@
           "title": "Stereophonic",
           "slug": "stereophonic",
           "rank": 1,
-          "value": 87.4,
-          "displayValue": "87.4",
+          "value": 87.2,
+          "displayValue": "87.2",
           "season": "2023-2024",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -463,8 +463,8 @@
           "title": "Here Lies Love",
           "slug": "here-lies-love",
           "rank": 10,
-          "value": 76,
-          "displayValue": "76.0",
+          "value": 76.1,
+          "displayValue": "76.1",
           "season": "2023-2024",
           "venue": "Broadway Theatre",
           "type": "musical",
@@ -481,8 +481,8 @@
           "title": "Kimberly Akimbo",
           "slug": "kimberly-akimbo-2022",
           "rank": 1,
-          "value": 84.8,
-          "displayValue": "84.8",
+          "value": 84.9,
+          "displayValue": "84.9",
           "season": "2022-2023",
           "venue": "Booth Theatre",
           "type": "musical",
@@ -513,8 +513,8 @@
           "title": "Topdog / Underdog",
           "slug": "topdog-underdog-2022",
           "rank": 3,
-          "value": 83.3,
-          "displayValue": "83.3",
+          "value": 83.2,
+          "displayValue": "83.2",
           "season": "2022-2023",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -529,8 +529,8 @@
           "title": "Just for Us",
           "slug": "just-for-us",
           "rank": 4,
-          "value": 82.3,
-          "displayValue": "82.3",
+          "value": 82.2,
+          "displayValue": "82.2",
           "season": "2022-2023",
           "venue": "Hudson Theatre",
           "type": "play",
@@ -625,8 +625,8 @@
           "title": "Leopoldstadt",
           "slug": "leopoldstadt-2022",
           "rank": 10,
-          "value": 80.7,
-          "displayValue": "80.7",
+          "value": 80.8,
+          "displayValue": "80.8",
           "season": "2022-2023",
           "venue": "Longacre Theatre",
           "type": "play",
@@ -739,8 +739,8 @@
           "title": "How I Learned to Drive",
           "slug": "how-i-learned-to-drive-2022",
           "rank": 7,
-          "value": 80.8,
-          "displayValue": "80.8",
+          "value": 81,
+          "displayValue": "81.0",
           "season": "2021-2022",
           "venue": "Samuel J. Friedman Theatre",
           "type": "play",
@@ -787,8 +787,8 @@
           "title": "Is This a Room",
           "slug": "is-this-a-room-2021",
           "rank": 10,
-          "value": 79.4,
-          "displayValue": "79.4",
+          "value": 79.2,
+          "displayValue": "79.2",
           "season": "2021-2022",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -853,8 +853,8 @@
           "title": "The Inheritance",
           "slug": "the-inheritance-2019",
           "rank": 4,
-          "value": 76.2,
-          "displayValue": "76.2",
+          "value": 77.2,
+          "displayValue": "77.2",
           "season": "2019-2020",
           "venue": "Ethel Barrymore Theatre",
           "type": "play",
@@ -869,8 +869,8 @@
           "title": "Tina",
           "slug": "tina-2019",
           "rank": 5,
-          "value": 74.9,
-          "displayValue": "74.9",
+          "value": 74.5,
+          "displayValue": "74.5",
           "season": "2019-2020",
           "venue": "Lunt-Fontanne Theatre",
           "type": "musical",
@@ -895,6 +895,22 @@
           "closingDate": "2020-01-05",
           "status": "closed",
           "isRevival": false
+        },
+        {
+          "showId": "west-side-story-2020",
+          "title": "West Side Story",
+          "slug": "west-side-story-2020",
+          "rank": 7,
+          "value": 73.2,
+          "displayValue": "73.2",
+          "season": "2019-2020",
+          "venue": "Broadway Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/west-side-story-2020/thumbnail.webp",
+          "openingDate": "2020-02-20",
+          "closingDate": "2020-03-11",
+          "status": "closed",
+          "isRevival": true
         }
       ],
       "2018-2019": [
@@ -919,8 +935,8 @@
           "title": "What the Constitution Means to Me",
           "slug": "what-the-constitution-means-to-me-2019",
           "rank": 2,
-          "value": 85.5,
-          "displayValue": "85.5",
+          "value": 85.3,
+          "displayValue": "85.3",
           "season": "2018-2019",
           "venue": "Helen Hayes Theater",
           "type": "play",
@@ -967,8 +983,8 @@
           "title": "The Waverly Gallery",
           "slug": "the-waverly-gallery-2018",
           "rank": 5,
-          "value": 80.2,
-          "displayValue": "80.2",
+          "value": 80,
+          "displayValue": "80.0",
           "season": "2018-2019",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -983,8 +999,8 @@
           "title": "Kiss Me, Kate",
           "slug": "kiss-me-kate-2019",
           "rank": 6,
-          "value": 79.4,
-          "displayValue": "79.4",
+          "value": 79.5,
+          "displayValue": "79.5",
           "season": "2018-2019",
           "venue": "Harold and Miriam Steinberg Center for Theatre",
           "type": "musical",
@@ -1097,8 +1113,8 @@
           "title": "Three Tall Women",
           "slug": "three-tall-women-2018",
           "rank": 3,
-          "value": 85.8,
-          "displayValue": "85.8",
+          "value": 85.7,
+          "displayValue": "85.7",
           "season": "2017-2018",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -1303,26 +1319,10 @@
           "isRevival": true
         },
         {
-          "showId": "hello-dolly-2017",
-          "title": "Hello, Dolly!",
-          "slug": "hello-dolly-2017",
-          "rank": 6,
-          "value": 80.9,
-          "displayValue": "80.9",
-          "season": "2016-2017",
-          "venue": "Shubert Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/hello-dolly-2017/thumbnail.webp",
-          "openingDate": "2017-04-20",
-          "closingDate": "2018-08-25",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "falsettos-2016",
           "title": "Falsettos",
           "slug": "falsettos-2016",
-          "rank": 7,
+          "rank": 6,
           "value": 80.8,
           "displayValue": "80.8",
           "season": "2016-2017",
@@ -1331,6 +1331,22 @@
           "thumbnail": "/images/shows/falsettos-2016/thumbnail.webp",
           "openingDate": "2016-10-27",
           "closingDate": "2017-01-08",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
+          "showId": "hello-dolly-2017",
+          "title": "Hello, Dolly!",
+          "slug": "hello-dolly-2017",
+          "rank": 7,
+          "value": 80.6,
+          "displayValue": "80.6",
+          "season": "2016-2017",
+          "venue": "Shubert Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/hello-dolly-2017/thumbnail.webp",
+          "openingDate": "2017-04-20",
+          "closingDate": "2018-08-25",
           "status": "closed",
           "isRevival": true
         },
@@ -1371,8 +1387,8 @@
           "title": "Natasha, Pierre & The Great Comet of 1812",
           "slug": "natasha-pierre-and-the-great-comet-of-1812-2016",
           "rank": 10,
-          "value": 78.5,
-          "displayValue": "78.5",
+          "value": 78,
+          "displayValue": "78.0",
           "season": "2016-2017",
           "venue": "Imperial Theatre",
           "type": "musical",
@@ -1453,8 +1469,8 @@
           "title": "Eclipsed",
           "slug": "eclipsed-2016",
           "rank": 5,
-          "value": 81.3,
-          "displayValue": "81.3",
+          "value": 80.7,
+          "displayValue": "80.7",
           "season": "2015-2016",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -1465,28 +1481,12 @@
           "isRevival": false
         },
         {
-          "showId": "king-charles-iii-2015",
-          "title": "King Charles III",
-          "slug": "king-charles-iii-2015",
-          "rank": 6,
-          "value": 80,
-          "displayValue": "80.0",
-          "season": "2015-2016",
-          "venue": "Music Box Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/king-charles-iii-2015/thumbnail.jpg",
-          "openingDate": "2015-11-01",
-          "closingDate": "2016-01-31",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "a-view-from-the-bridge-2015",
           "title": "A View From the Bridge",
           "slug": "a-view-from-the-bridge-2015",
-          "rank": 7,
-          "value": 79.9,
-          "displayValue": "79.9",
+          "rank": 6,
+          "value": 80.4,
+          "displayValue": "80.4",
           "season": "2015-2016",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -1500,7 +1500,7 @@
           "showId": "blackbird-2016",
           "title": "Blackbird",
           "slug": "blackbird-2016",
-          "rank": 8,
+          "rank": 7,
           "value": 79.9,
           "displayValue": "79.9",
           "season": "2015-2016",
@@ -1516,7 +1516,7 @@
           "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
           "title": "Shuffle Along, Or The Making of the Musical Sensation of 1921 and All That Followed",
           "slug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
-          "rank": 9,
+          "rank": 8,
           "value": 79.8,
           "displayValue": "79.8",
           "season": "2015-2016",
@@ -1525,6 +1525,22 @@
           "thumbnail": "/images/shows/shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/thumbnail.jpg",
           "openingDate": "2016-04-28",
           "closingDate": "2016-07-24",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "king-charles-iii-2015",
+          "title": "King Charles III",
+          "slug": "king-charles-iii-2015",
+          "rank": 9,
+          "value": 78.8,
+          "displayValue": "78.8",
+          "season": "2015-2016",
+          "venue": "Music Box Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/king-charles-iii-2015/thumbnail.jpg",
+          "openingDate": "2015-11-01",
+          "closingDate": "2016-01-31",
           "status": "closed",
           "isRevival": false
         },
@@ -1675,26 +1691,10 @@
           "isRevival": false
         },
         {
-          "showId": "wolf-hall-parts-one-and-two-2015",
-          "title": "Wolf Hall Parts One & Two",
-          "slug": "wolf-hall-parts-one-and-two-2015",
-          "rank": 9,
-          "value": 77.8,
-          "displayValue": "77.8",
-          "season": "2014-2015",
-          "venue": "Winter Garden Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/wolf-hall-parts-one-and-two-2015/thumbnail.jpg",
-          "openingDate": "2015-04-09",
-          "closingDate": "2015-07-05",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "disgraced-2014",
           "title": "Disgraced",
           "slug": "disgraced-2014",
-          "rank": 10,
+          "rank": 9,
           "value": 77.5,
           "displayValue": "77.5",
           "season": "2014-2015",
@@ -1705,6 +1705,22 @@
           "closingDate": "2015-03-01",
           "status": "closed",
           "isRevival": false
+        },
+        {
+          "showId": "on-the-twentieth-century-2015",
+          "title": "On the Twentieth Century",
+          "slug": "on-the-twentieth-century-2015",
+          "rank": 10,
+          "value": 77.4,
+          "displayValue": "77.4",
+          "season": "2014-2015",
+          "venue": "Todd Haimes Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/on-the-twentieth-century-2015/thumbnail.jpg",
+          "openingDate": "2015-03-15",
+          "closingDate": "2015-07-19",
+          "status": "closed",
+          "isRevival": true
         }
       ],
       "2013-2014": [
@@ -1809,8 +1825,8 @@
           "title": "700 Sundays",
           "slug": "700-sundays-2013",
           "rank": 7,
-          "value": 80.6,
-          "displayValue": "80.6",
+          "value": 80.7,
+          "displayValue": "80.7",
           "season": "2013-2014",
           "venue": "Imperial Theatre",
           "type": "play",
@@ -2165,8 +2181,8 @@
           "title": "Wit",
           "slug": "wit-2012",
           "rank": 9,
-          "value": 76,
-          "displayValue": "76.0",
+          "value": 76.9,
+          "displayValue": "76.9",
           "season": "2011-2012",
           "venue": "Samuel J. Friedman Theatre",
           "type": "play",
@@ -2227,26 +2243,10 @@
           "isRevival": true
         },
         {
-          "showId": "jerusalem-2011",
-          "title": "Jerusalem",
-          "slug": "jerusalem-2011",
-          "rank": 3,
-          "value": 83.7,
-          "displayValue": "83.7",
-          "season": "2010-2011",
-          "venue": "Music Box Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/jerusalem-2011/thumbnail.jpg",
-          "openingDate": "2011-04-21",
-          "closingDate": "2011-08-21",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "book-of-mormon-2011",
           "title": "The Book of Mormon",
           "slug": "book-of-mormon",
-          "rank": 4,
+          "rank": 3,
           "value": 83.6,
           "displayValue": "83.6",
           "season": "2010-2011",
@@ -2256,6 +2256,22 @@
           "openingDate": "2011-03-24",
           "closingDate": null,
           "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "jerusalem-2011",
+          "title": "Jerusalem",
+          "slug": "jerusalem-2011",
+          "rank": 4,
+          "value": 82.5,
+          "displayValue": "82.5",
+          "season": "2010-2011",
+          "venue": "Music Box Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/jerusalem-2011/thumbnail.jpg",
+          "openingDate": "2011-04-21",
+          "closingDate": "2011-08-21",
+          "status": "closed",
           "isRevival": false
         },
         {
@@ -2485,18 +2501,18 @@
           "isRevival": false
         },
         {
-          "showId": "come-fly-away-2010",
-          "title": "Come Fly Away",
-          "slug": "come-fly-away-2010",
+          "showId": "everyday-rapture-2010",
+          "title": "Everyday Rapture",
+          "slug": "everyday-rapture-2010",
           "rank": 10,
-          "value": 73.5,
-          "displayValue": "73.5",
+          "value": 73.3,
+          "displayValue": "73.3",
           "season": "2009-2010",
-          "venue": "Marquis Theatre",
+          "venue": "Todd Haimes Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/come-fly-away-2010/thumbnail.jpg",
-          "openingDate": "2010-03-25",
-          "closingDate": "2010-09-05",
+          "thumbnail": "/images/shows/everyday-rapture-2010/thumbnail.jpg",
+          "openingDate": "2010-04-29",
+          "closingDate": "2010-07-11",
           "status": "closed",
           "isRevival": false
         }
@@ -2717,8 +2733,8 @@
           "title": "In the Heights",
           "slug": "in-the-heights-2008",
           "rank": 6,
-          "value": 80.4,
-          "displayValue": "80.4",
+          "value": 77,
+          "displayValue": "77.0",
           "season": "2007-2008",
           "venue": "Richard Rodgers Theatre",
           "type": "musical",
@@ -2817,8 +2833,8 @@
           "title": "Jersey Boys",
           "slug": "jersey-boys-2005",
           "rank": 2,
-          "value": 77.5,
-          "displayValue": "77.5",
+          "value": 78.4,
+          "displayValue": "78.4",
           "season": "2005-2006",
           "venue": "August Wilson Theatre",
           "type": "musical",
@@ -2853,8 +2869,8 @@
           "title": "Chicago",
           "slug": "chicago",
           "rank": 1,
-          "value": 79.6,
-          "displayValue": "79.6",
+          "value": 79.5,
+          "displayValue": "79.5",
           "season": "1996-1997",
           "venue": "Ambassador Theatre",
           "type": "musical",
@@ -2987,8 +3003,8 @@
           "title": "Stereophonic",
           "slug": "stereophonic",
           "rank": 6,
-          "value": 87.4,
-          "displayValue": "87.4",
+          "value": 87.2,
+          "displayValue": "87.2",
           "season": "2023-2024",
           "venue": "John Golden Theatre",
           "type": "play",
@@ -3079,26 +3095,10 @@
           "isRevival": true
         },
         {
-          "showId": "three-tall-women-2018",
-          "title": "Three Tall Women",
-          "slug": "three-tall-women-2018",
-          "rank": 12,
-          "value": 85.8,
-          "displayValue": "85.8",
-          "season": "2017-2018",
-          "venue": "John Golden Theatre",
-          "type": "play",
-          "thumbnail": "/images/shows/three-tall-women-2018/thumbnail.webp",
-          "openingDate": "2018-03-29",
-          "closingDate": "2018-06-24",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "the-normal-heart-2011",
           "title": "The Normal Heart",
           "slug": "the-normal-heart-2011",
-          "rank": 13,
+          "rank": 12,
           "value": 85.8,
           "displayValue": "85.8",
           "season": "2010-2011",
@@ -3114,7 +3114,7 @@
           "showId": "liberation-2025",
           "title": "Liberation",
           "slug": "liberation",
-          "rank": 14,
+          "rank": 13,
           "value": 85.7,
           "displayValue": "85.7",
           "season": "2025-2026",
@@ -3123,6 +3123,22 @@
           "thumbnail": "/images/shows/liberation-2025/thumbnail.webp",
           "openingDate": "2025-10-28",
           "closingDate": "2026-02-01",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "three-tall-women-2018",
+          "title": "Three Tall Women",
+          "slug": "three-tall-women-2018",
+          "rank": 14,
+          "value": 85.7,
+          "displayValue": "85.7",
+          "season": "2017-2018",
+          "venue": "John Golden Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/three-tall-women-2018/thumbnail.webp",
+          "openingDate": "2018-03-29",
+          "closingDate": "2018-06-24",
           "status": "closed",
           "isRevival": false
         },
@@ -3175,26 +3191,10 @@
           "isRevival": false
         },
         {
-          "showId": "what-the-constitution-means-to-me-2019",
-          "title": "What the Constitution Means to Me",
-          "slug": "what-the-constitution-means-to-me-2019",
-          "rank": 18,
-          "value": 85.5,
-          "displayValue": "85.5",
-          "season": "2018-2019",
-          "venue": "Helen Hayes Theater",
-          "type": "play",
-          "thumbnail": "/images/shows/what-the-constitution-means-to-me-2019/thumbnail.webp",
-          "openingDate": "2019-03-31",
-          "closingDate": "2019-08-24",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "the-color-purple-2015",
           "title": "The Color Purple",
           "slug": "the-color-purple-2015",
-          "rank": 19,
+          "rank": 18,
           "value": 85.4,
           "displayValue": "85.4",
           "season": "2015-2016",
@@ -3210,7 +3210,7 @@
           "showId": "the-importance-of-being-earnest-2011",
           "title": "The Importance of Being Earnest",
           "slug": "the-importance-of-being-earnest-2011",
-          "rank": 20,
+          "rank": 19,
           "value": 85.4,
           "displayValue": "85.4",
           "season": "2010-2011",
@@ -3226,7 +3226,7 @@
           "showId": "maybe-happy-ending-2024",
           "title": "Maybe Happy Ending",
           "slug": "maybe-happy-ending",
-          "rank": 21,
+          "rank": 20,
           "value": 85.3,
           "displayValue": "85.3",
           "season": "2024-2025",
@@ -3236,6 +3236,22 @@
           "openingDate": "2024-11-12",
           "closingDate": null,
           "status": "open",
+          "isRevival": false
+        },
+        {
+          "showId": "what-the-constitution-means-to-me-2019",
+          "title": "What the Constitution Means to Me",
+          "slug": "what-the-constitution-means-to-me-2019",
+          "rank": 21,
+          "value": 85.3,
+          "displayValue": "85.3",
+          "season": "2018-2019",
+          "venue": "Helen Hayes Theater",
+          "type": "play",
+          "thumbnail": "/images/shows/what-the-constitution-means-to-me-2019/thumbnail.webp",
+          "openingDate": "2019-03-31",
+          "closingDate": "2019-08-24",
+          "status": "closed",
           "isRevival": false
         },
         {
@@ -3287,20 +3303,20 @@
           "isRevival": false
         },
         {
-          "showId": "she-loves-me-2016",
-          "title": "She Loves Me",
-          "slug": "she-loves-me-2016",
+          "showId": "kimberly-akimbo-2022",
+          "title": "Kimberly Akimbo",
+          "slug": "kimberly-akimbo-2022",
           "rank": 25,
           "value": 84.9,
           "displayValue": "84.9",
-          "season": "2015-2016",
-          "venue": "Harold and Miriam Steinberg Center for Theatre",
+          "season": "2022-2023",
+          "venue": "Booth Theatre",
           "type": "musical",
-          "thumbnail": "/images/shows/she-loves-me-2016/thumbnail.jpg",
-          "openingDate": "2016-03-17",
-          "closingDate": "2016-07-10",
+          "thumbnail": "/images/shows/kimberly-akimbo-2022/thumbnail.webp",
+          "openingDate": "2022-11-10",
+          "closingDate": "2024-04-28",
           "status": "closed",
-          "isRevival": true
+          "isRevival": false
         }
       ]
     },
@@ -3383,6 +3399,22 @@
           "thumbnail": "/images/shows/liberation-2025/thumbnail.webp",
           "openingDate": "2025-10-28",
           "closingDate": "2026-02-01",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "little-bear-ridge-road-2025",
+          "title": "Little Bear Ridge Road",
+          "slug": "little-bear-ridge-road",
+          "rank": 6,
+          "value": 80,
+          "displayValue": "80",
+          "season": "2025-2026",
+          "venue": "Booth Theatre",
+          "type": "play",
+          "thumbnail": "/images/shows/little-bear-ridge-road-2025/thumbnail.jpg",
+          "openingDate": "2025-10-30",
+          "closingDate": "2025-12-21",
           "status": "closed",
           "isRevival": false
         }
@@ -10911,7 +10943,7 @@
           "thumbnail": "/images/shows/marjorie-prime-2025/thumbnail.webp",
           "openingDate": "2025-12-08",
           "closingDate": "2026-02-15",
-          "status": "open",
+          "status": "closed",
           "isRevival": true
         },
         {
@@ -11267,7 +11299,7 @@
           "thumbnail": "/images/shows/marjorie-prime-2025/thumbnail.webp",
           "openingDate": "2025-12-08",
           "closingDate": "2026-02-15",
-          "status": "open",
+          "status": "closed",
           "isRevival": true
         },
         {
@@ -11363,7 +11395,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 14
+        "rank": 13
       },
       {
         "listType": "audience-gold",
@@ -11420,11 +11452,23 @@
         "rank": 11
       }
     ],
-    "oedipus-2025": [
+    "little-bear-ridge-road-2025": [
       {
         "listType": "critical-gold",
         "season": "2025-2026",
         "rank": 4
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2025-2026",
+        "rank": 6
+      }
+    ],
+    "oedipus-2025": [
+      {
+        "listType": "critical-gold",
+        "season": "2025-2026",
+        "rank": 5
       },
       {
         "listType": "audience-gold",
@@ -11445,13 +11489,6 @@
         "listType": "hot-ticket-gold",
         "season": "all-time",
         "rank": 10
-      }
-    ],
-    "little-bear-ridge-road-2025": [
-      {
-        "listType": "critical-gold",
-        "season": "2025-2026",
-        "rank": 5
       }
     ],
     "bug-2026": [
@@ -11497,7 +11534,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 21
+        "rank": 20
       },
       {
         "listType": "audience-gold",
@@ -11580,18 +11617,11 @@
         "rank": 6
       }
     ],
-    "yellow-face-2024": [
-      {
-        "listType": "critical-gold",
-        "season": "2024-2025",
-        "rank": 7
-      }
-    ],
     "sunset-boulevard-2024": [
       {
         "listType": "critical-gold",
         "season": "2024-2025",
-        "rank": 8
+        "rank": 7
       },
       {
         "listType": "audience-gold",
@@ -11600,6 +11630,13 @@
       }
     ],
     "real-women-have-curves-2025": [
+      {
+        "listType": "critical-gold",
+        "season": "2024-2025",
+        "rank": 8
+      }
+    ],
+    "yellow-face-2024": [
       {
         "listType": "critical-gold",
         "season": "2024-2025",
@@ -11753,6 +11790,11 @@
         "listType": "critical-gold",
         "season": "2022-2023",
         "rank": 1
+      },
+      {
+        "listType": "critical-gold",
+        "season": "all-time",
+        "rank": 25
       }
     ],
     "into-the-woods-2022": [
@@ -12060,6 +12102,23 @@
         "rank": 6
       }
     ],
+    "west-side-story-2020": [
+      {
+        "listType": "critical-gold",
+        "season": "2019-2020",
+        "rank": 7
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "2019-2020",
+        "rank": 1
+      },
+      {
+        "listType": "box-office-gold",
+        "season": "all-time",
+        "rank": 9
+      }
+    ],
     "the-ferryman-2018": [
       {
         "listType": "critical-gold",
@@ -12091,7 +12150,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 18
+        "rank": 21
       },
       {
         "listType": "audience-gold",
@@ -12248,7 +12307,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 12
+        "rank": 14
       },
       {
         "listType": "audience-gold",
@@ -12420,11 +12479,23 @@
         "rank": 7
       }
     ],
-    "hello-dolly-2017": [
+    "falsettos-2016": [
       {
         "listType": "critical-gold",
         "season": "2016-2017",
         "rank": 6
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2016-2017",
+        "rank": 10
+      }
+    ],
+    "hello-dolly-2017": [
+      {
+        "listType": "critical-gold",
+        "season": "2016-2017",
+        "rank": 7
       },
       {
         "listType": "audience-gold",
@@ -12445,18 +12516,6 @@
         "listType": "box-office-gold",
         "season": "all-time",
         "rank": 5
-      }
-    ],
-    "falsettos-2016": [
-      {
-        "listType": "critical-gold",
-        "season": "2016-2017",
-        "rank": 7
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2016-2017",
-        "rank": 10
       }
     ],
     "oslo-2017": [
@@ -12531,7 +12590,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 19
+        "rank": 18
       },
       {
         "listType": "audience-gold",
@@ -12568,11 +12627,6 @@
         "rank": 4
       },
       {
-        "listType": "critical-gold",
-        "season": "all-time",
-        "rank": 25
-      },
-      {
         "listType": "audience-gold",
         "season": "2015-2016",
         "rank": 4
@@ -12590,18 +12644,11 @@
         "rank": 9
       }
     ],
-    "king-charles-iii-2015": [
-      {
-        "listType": "critical-gold",
-        "season": "2015-2016",
-        "rank": 6
-      }
-    ],
     "a-view-from-the-bridge-2015": [
       {
         "listType": "critical-gold",
         "season": "2015-2016",
-        "rank": 7
+        "rank": 6
       },
       {
         "listType": "audience-gold",
@@ -12618,10 +12665,17 @@
       {
         "listType": "critical-gold",
         "season": "2015-2016",
-        "rank": 8
+        "rank": 7
       }
     ],
     "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016": [
+      {
+        "listType": "critical-gold",
+        "season": "2015-2016",
+        "rank": 8
+      }
+    ],
+    "king-charles-iii-2015": [
       {
         "listType": "critical-gold",
         "season": "2015-2016",
@@ -12746,19 +12800,14 @@
         "rank": 25
       }
     ],
-    "wolf-hall-parts-one-and-two-2015": [
+    "disgraced-2014": [
       {
         "listType": "critical-gold",
         "season": "2014-2015",
         "rank": 9
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2014-2015",
-        "rank": 8
       }
     ],
-    "disgraced-2014": [
+    "on-the-twentieth-century-2015": [
       {
         "listType": "critical-gold",
         "season": "2014-2015",
@@ -13129,7 +13178,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 13
+        "rank": 12
       },
       {
         "listType": "audience-gold",
@@ -13151,7 +13200,7 @@
       {
         "listType": "critical-gold",
         "season": "all-time",
-        "rank": 20
+        "rank": 19
       },
       {
         "listType": "audience-gold",
@@ -13159,23 +13208,11 @@
         "rank": 7
       }
     ],
-    "jerusalem-2011": [
-      {
-        "listType": "critical-gold",
-        "season": "2010-2011",
-        "rank": 3
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2010-2011",
-        "rank": 8
-      }
-    ],
     "book-of-mormon-2011": [
       {
         "listType": "critical-gold",
         "season": "2010-2011",
-        "rank": 4
+        "rank": 3
       },
       {
         "listType": "audience-gold",
@@ -13186,6 +13223,18 @@
         "listType": "box-office-gold",
         "season": "2010-2011",
         "rank": 1
+      }
+    ],
+    "jerusalem-2011": [
+      {
+        "listType": "critical-gold",
+        "season": "2010-2011",
+        "rank": 4
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2010-2011",
+        "rank": 8
       }
     ],
     "war-horse-2011": [
@@ -13366,16 +13415,11 @@
         "rank": 9
       }
     ],
-    "come-fly-away-2010": [
+    "everyday-rapture-2010": [
       {
         "listType": "critical-gold",
         "season": "2009-2010",
         "rank": 10
-      },
-      {
-        "listType": "box-office-gold",
-        "season": "2009-2010",
-        "rank": 9
       }
     ],
     "exit-the-king-2009": [
@@ -14234,6 +14278,13 @@
         "rank": 6
       }
     ],
+    "wolf-hall-parts-one-and-two-2015": [
+      {
+        "listType": "audience-gold",
+        "season": "2014-2015",
+        "rank": 8
+      }
+    ],
     "constellations-2015": [
       {
         "listType": "audience-gold",
@@ -15074,18 +15125,6 @@
         "rank": 10
       }
     ],
-    "west-side-story-2020": [
-      {
-        "listType": "box-office-gold",
-        "season": "2019-2020",
-        "rank": 1
-      },
-      {
-        "listType": "box-office-gold",
-        "season": "all-time",
-        "rank": 9
-      }
-    ],
     "my-name-is-lucy-barton-2020": [
       {
         "listType": "box-office-gold",
@@ -15400,6 +15439,13 @@
         "listType": "box-office-gold",
         "season": "2009-2010",
         "rank": 4
+      }
+    ],
+    "come-fly-away-2010": [
+      {
+        "listType": "box-office-gold",
+        "season": "2009-2010",
+        "rank": 9
       }
     ],
     "bye-bye-birdie-2009": [
