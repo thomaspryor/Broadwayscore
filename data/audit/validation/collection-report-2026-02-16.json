@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T04:33:43.974Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -227,7 +227,15 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "torch-song-2018/cititour--brian-scott-lipton.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "fences-2010/talkinbroadway--matthew-murray.json",
+      "heisenberg-2016/ap--mark-kennedy.json",
+      "machinal-2014/broadwayworld--michael-dale.json",
+      "sweeney-todd-2023/bloomberg-mark-leydorf--mark-leydorf.json",
+      "the-assembled-parties-2013/talkinbroadway--matthew-murray.json"
+    ],
     "archive": [
       "high-2011/observer--jesse-oxfeld.json"
     ]
