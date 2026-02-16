@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-16T02:37:31.136Z",
+  "runDate": "2026-02-16T02:42:41.312Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -24,21 +24,21 @@
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 5,
     "tier1Success": 0,
-    "tier1_5Attempts": 3,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 5,
     "tier3Success": 0,
     "tier4Attempts": 5,
-    "tier4Success": 1,
+    "tier4Success": 0,
     "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.8,
-    "urlDiscoveryAttempts": 4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -145,11 +145,11 @@
     "cost-of-living-2022/wsj--charles-isherwood.json",
     "cult-of-love-2024/wsj--charles-isherwood.json",
     "curtains-2007/wsj--terry-teachout.json",
-    "american-psycho-2016/bergen-record--robert-feldberg.json",
-    "bonnie-and-clyde-2011/northjerseycom--robert-feldberg.json",
-    "burn-the-floor-2009/bergen-record--robert-feldberg.json",
-    "casa-valentina-2014/bergen-record--robert-feldberg.json",
-    "cat-on-a-hot-tin-roof-2013/bergen-record--robert-feldberg.json"
+    "13-2008/talkinbroadway--matthew-murray.json",
+    "33-variations-2009/talkinbroadway--matthew-murray.json",
+    "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json",
+    "a-christmas-story-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "a-life-in-the-theatre-2010/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -187,18 +187,11 @@
     ]
   },
   "failuresByOutlet": {
-    "NorthJersey.com": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Bergen Record": {
-      "count": 3,
-      "domain": "northjersey.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
+    "Talkin' Broadway": {
+      "count": 5,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
