@@ -2,7 +2,7 @@
   "runDate": "2026-02-16T02:20:06.439Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "call-me-izzy-2025",
     "aggressive": false,
@@ -20,8 +20,8 @@
     "playwright": 10,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 22,
+    "archive": 32
   },
   "statistics": {
     "tier1Attempts": 11,
@@ -74,11 +74,280 @@
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "a-bronx-tale-2007/thewrap--robert-hofler.json",
+      "is-this-a-room-2021/thewrap--robert-hofler.json",
+      "a-dolls-house-part-2-2017/latimes--charles-mcnulty.json",
+      "a-dolls-house-part-2-2017/latimes--unknown.json",
+      "an-enemy-of-the-people-2012/usatoday--patrick-ryan.json",
+      "beetlejuice-2022/orlando-weekly--seth-kubersky.json",
+      "death-of-a-salesman-2022/latimes--charles-mcnulty.json",
+      "finding-neverland-2015/showbiz411--roger-friedman.json",
+      "girl-from-the-north-country-2022/broadwayworld--michael-dale.json",
+      "head-over-heels-2018/medium--christian-lewis.json",
+      "honeymoon-in-vegas-2015/broadwayworld--michael-dale.json",
+      "its-only-a-play-2014/amny--matt-windman.json",
+      "kinky-boots-2013/latimes--charles-mcnulty.json",
+      "kinky-boots-2013/talkinbroadway--matthew-murray.json",
+      "oklahoma-2019/broadwayworld--michael-dale.json",
+      "oklahoma-2019/medium--christian-lewis.json",
+      "oklahoma-2019/talkinbroadway--matthew-murray.json",
+      "slave-play-2021/broadwayworld--michael-dale.json",
+      "slave-play-2021/njcom--christopher-kelly.json",
+      "slave-play-2021/the-independent--alice-saville.json",
+      "some-like-it-hot-2022/ap--mark-kennedy.json",
+      "spring-awakening-2006/nj-advance--christopher-kelly.json"
+    ],
     "archive": [
       "call-me-izzy-2025/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Broadway News": {
+      "count": 2,
+      "domain": "broadway.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "National Review": {
+      "count": 1,
+      "domain": "nationalreview.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "onandoffbroadwaytheaterreviews": {
+      "count": 2,
+      "domain": "onandoffbroadwaytheaterreviews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 8,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Off Script with Dan Dwyer": {
+      "count": 3,
+      "domain": "dandwyeroffscript.tumblr.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Broadway Blog": {
+      "count": 3,
+      "domain": "thebroadwayblog.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "bsonarts": {
+      "count": 1,
+      "domain": "bsonarts.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 3,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Village Voice": {
+      "count": 2,
+      "domain": "villagevoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Times Union": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Billboard": {
+      "count": 1,
+      "domain": "billboard.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 4,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 3,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Playbill On-Line Message Board": {
+      "count": 1,
+      "domain": "205.229.215.203",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "ScheckOnTheater": {
+      "count": 3,
+      "domain": "scheckonthearts.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage and Cinema": {
+      "count": 2,
+      "domain": "stageandcinema.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "BroadwayWorld.com": {
+      "count": 2,
+      "domain": "broadwayworld.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Bergen Record": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Associated Press": {
+      "count": 4,
+      "domain": "huffpost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Philadelphia Inquirer": {
+      "count": 2,
+      "domain": "articles.philly.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 3,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The Philadelphia Inquirer": {
+      "count": 1,
+      "domain": "philly.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "BroadwayWorld": {
+      "count": 2,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "labor-press": {
+      "count": 1,
+      "domain": "laborpress.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "amNY": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Arts Fuse": {
+      "count": 1,
+      "domain": "artsfuse.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "MammaMiaBway.com": {
+      "count": 1,
+      "domain": "mammamiabway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Stage Review": {
+      "count": 1,
+      "domain": "didtheylikeit.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Back Stage": {
+      "count": 1,
+      "domain": "backstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
