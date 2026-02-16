@@ -251,7 +251,17 @@
     "1984-2017/newyorker--hilton-als.json",
     "1984-2017/vulture--jesse-green.json",
     "700-sundays-2013/nytimes--ben-brantley.json",
-    "9-to-5-2009/nytimes--ben-brantley.json"
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-2007/vulture--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/hollywood-reporter--frank-scheck.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-catered-affair-2008/nytimes--ben-brantley.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -293,7 +303,8 @@
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
       "data/review-texts/1984-2017/hollywood-reporter--david-rooney.json",
-      "1984-2017/hollywood-reporter--david-rooney.json"
+      "1984-2017/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -316,7 +327,8 @@
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "book-of-mormon-2011/the-independent-uk--peter-marks.json",
       "moulin-rouge-2019/njcom--christoher-kelly.json",
-      "700-sundays-2013/nytimes--ben-brantley.json"
+      "700-sundays-2013/nytimes--ben-brantley.json",
+      "a-catered-affair-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "aladdin-2014/wsj--terry-teachout.json",
@@ -346,7 +358,7 @@
     ]
   },
   "startTime": "2026-02-16T13:01:31.619Z",
-  "lastProcessed": "9-to-5-2009/nytimes--ben-brantley.json",
+  "lastProcessed": "a-christmas-carol-2022/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-02-16T13:01:44.504Z",
@@ -934,6 +946,28 @@
       "t": "2026-02-16T16:06:23.989Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T16:10:13.099Z",
+      "event": "bb-session",
+      "session": "c58caef3",
+      "url": "https://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-16T16:10:15.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-16T16:10:16.699Z",
+      "event": "bb-session",
+      "session": "1056bffe",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+    },
+    {
+      "t": "2026-02-16T16:10:18.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
