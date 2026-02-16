@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-16T03:24:43.788Z",
-  "processed": 48,
-  "failed": 12,
-  "successRate": "80.0%",
+  "updatedAt": "2026-02-16T03:38:35.825Z",
+  "processed": 32,
+  "failed": 38,
+  "successRate": "45.7%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 3,
+    "archive": 29
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 13,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T03:26:43.771Z",
+      "event": "bb-session",
+      "session": "56132836",
+      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
+    },
+    {
+      "t": "2026-02-16T03:26:45.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:28:11.135Z",
+      "event": "bb-session",
+      "session": "1c5f76ba",
+      "url": "https://www.nytimes.com/2010/04/12/theater/reviews/12quartet.html"
+    },
+    {
+      "t": "2026-02-16T03:28:13.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:29:34.504Z",
+      "event": "bb-session",
+      "session": "ac8e27d9",
+      "url": "https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html"
+    },
+    {
+      "t": "2026-02-16T03:29:36.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:30:45.721Z",
+      "event": "bb-session",
+      "session": "34bacc29",
+      "url": "https://www.nytimes.com/2015/10/07/theater/review-old-times-where-the-past-is-a-"
+    },
+    {
+      "t": "2026-02-16T03:30:47.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:32:09.025Z",
+      "event": "bb-session",
+      "session": "b272f22b",
+      "url": "https://www.nytimes.com/2009/10/12/theater/reviews/12oleanna.html"
+    },
+    {
+      "t": "2026-02-16T03:32:11.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:33:31.976Z",
+      "event": "bb-session",
+      "session": "1495ffaf",
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+    },
+    {
+      "t": "2026-02-16T03:33:33.841Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:34:39.197Z",
+      "event": "bb-session",
+      "session": "8a6cc47c",
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+    },
+    {
+      "t": "2026-02-16T03:34:43.027Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:35:50.055Z",
+      "event": "bb-session",
+      "session": "40de26eb",
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+    },
+    {
+      "t": "2026-02-16T03:35:51.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:36:57.003Z",
+      "event": "bb-session",
+      "session": "58a3616c",
+      "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html"
+    },
+    {
+      "t": "2026-02-16T03:36:59.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T03:38:05.520Z",
+      "event": "bb-session",
+      "session": "12e0c078",
+      "url": "https://www.nytimes.com/2012/04/16/theater/reviews/peter-and-the-starcatcher-wit"
+    },
+    {
+      "t": "2026-02-16T03:38:07.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
