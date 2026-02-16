@@ -3368,34 +3368,80 @@
       "recoupedWeeks": null,
       "recoupedSource": null,
       "nonprofitOrg": "Manhattan Theatre Club",
-      "notes": "MTC production at Samuel J. Friedman Theatre. New musical by James Graham and Toby Marlow/Lucy Moss. Closed Nov 2, 2025.",
-      "lastUpdated": "2026-02-15"
+      "notes": "MTC production at Samuel J. Friedman Theatre. Play by James Graham, directed by Adam Penford. Presented in association with Nottingham Playhouse. Total gross: $2.33M. Avg capacity: 82.76%. Closed Nov 2, 2025 after 23 previews + 40 performances.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/punch-broadway-samuel-j-friedman-theatre-2025",
+          "date": "2026-02-16"
+        }
+      ],
+      "lastUpdated": "2026-02-16"
     },
     "call-me-izzy": {
-      "designation": "Nonprofit",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "designation": "Fizzle",
+      "capitalization": 4900000,
+      "capitalizationSource": "Trade-reported capitalization; $5.4M figure also cited (may include overcall/reserve)",
+      "costMethodology": "trade-reported",
       "weeklyRunningCost": null,
-      "recouped": null,
+      "weeklyRunningCostRange": "$250K-$350K (industry estimate for solo show)",
+      "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "nonprofitOrg": "Roundabout Theatre Company",
-      "notes": "Roundabout Theatre Company production at Studio 54. Solo show written and performed by Alexandra Billings. Closed Aug 24, 2025.",
-      "lastUpdated": "2026-02-15"
+      "estimatedRecoupmentPct": [20, 30],
+      "notes": "Commercial production at Studio 54 (NOT a Roundabout production — rented the venue). Solo play by Jamie Wax starring Jean Smart, directed by Sarna Lapine. Produced by Robert Ahrens with P3 Productions/Ben Holtzman, Sammy Lopez, and Fiona Howe Rudin. Total gross: $5.19M. Avg capacity: 61.6%. Jean Smart knee injury (Jul 7-21) caused devastating box office drop to 28-30% capacity. Closed Aug 24, 2025.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/call-me-izzy-broadway-studio-54-2025",
+          "date": "2026-02-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2025/06/good-night-and-good-luck-othello-broadway-box-office-1236429403/",
+          "date": "2025-06-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/call-me-izzy-542346",
+          "date": "2026-02-16"
+        }
+      ],
+      "lastUpdated": "2026-02-16",
+      "firstAdded": "2026-02-15"
     },
     "little-bear-ridge-road": {
-      "designation": "Nonprofit",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "recouped": null,
+      "designation": "Flop",
+      "capitalization": 4100000,
+      "capitalizationSource": "NYT reported $4.1 million capitalization, described as 'a relative bargain on today's Broadway'",
+      "costMethodology": "trade-reported",
+      "weeklyRunningCost": 500000,
+      "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "recoupedSource": null,
-      "nonprofitOrg": "Manhattan Theatre Club",
-      "notes": "MTC production at Booth Theatre. New play by Samuel D. Hunter. Closed Dec 21, 2025.",
-      "lastUpdated": "2026-02-15"
+      "recoupedSource": "NYT reported show 'has not recouped those costs, but with the help of a New York state tax credit will get part way there'",
+      "estimatedRecoupmentPct": [10, 20],
+      "notes": "Commercial production at Booth Theatre (NOT MTC). Produced by Scott Rudin and Barry Diller (no other investors). Play by Samuel D. Hunter, directed by Joe Mantello, starring Laurie Metcalf. Rudin's first Broadway production since 2021 workplace bullying allegations. Steppenwolf removed its name from the transfer. Total gross: $4.81M. Avg capacity: 79.1%. Originally scheduled through Feb 15, 2026 but closed Dec 21, 2025 — eight weeks early.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://variety.com/2025/film/news/scott-rudin-broadway-return-little-bear-ridge-road-1236448608/",
+          "date": "2025-07-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/",
+          "date": "2025-12-12"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/little-bear-ridge-road-543250",
+          "date": "2026-02-16"
+        }
+      ],
+      "lastUpdated": "2026-02-16",
+      "firstAdded": "2026-02-15"
     }
   }
 }
