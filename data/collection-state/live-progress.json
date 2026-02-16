@@ -1,49 +1,17 @@
 {
-  "updatedAt": "2026-02-16T18:47:02.298Z",
-  "processed": 26,
-  "failed": 74,
-  "successRate": "26.0%",
+  "updatedAt": "2026-02-16T18:48:37.599Z",
+  "processed": 97,
+  "failed": 53,
+  "successRate": "64.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 82,
+    "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 17,
-    "archive": 9
+    "brightdata": 8,
+    "archiveToday": 9,
+    "archive": 8
   },
-  "browserbaseSessions": 3,
-  "recentActivity": [
-    {
-      "t": "2026-02-16T16:44:01.665Z",
-      "event": "bb-session",
-      "session": "537b86da",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-16T16:44:04.028Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T16:45:30.460Z",
-      "event": "bb-session",
-      "session": "dca1ed92",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-16T16:45:32.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-16T16:47:05.974Z",
-      "event": "bb-session",
-      "session": "9b39af0b",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-02-16T16:47:08.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
