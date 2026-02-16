@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -186,6 +186,14 @@
       "carousel-2018/wsj--terry-teachout.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Post": {
+      "count": 2,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
