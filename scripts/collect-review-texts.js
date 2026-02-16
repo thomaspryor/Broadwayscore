@@ -181,7 +181,8 @@ const CONFIG = {
     'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD', altPassVar: 'NYTIMES_PASSWORD' },
     'vulture.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'nymag.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
-    'newyorker.com': { emailVar: 'NEW_YORKER_EMAIL', passVar: 'NEW_YORKER_PASSWORD' },
+    // newyorker.com REMOVED — Condé Nast id.condenast.com routes automated browsers to OTP flow,
+    // which spams the user with one-time-code emails. Archive.org is the working path for this domain.
     'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD', altPassVar: 'WASHPOST_PASSWORD' },
     'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
     'bloomberg.com': { emailVar: 'BLOOMBERG_EMAIL', passVar: 'BLOOMBERG_PASSWORD' },
