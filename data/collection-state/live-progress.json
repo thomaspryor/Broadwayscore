@@ -1,15 +1,126 @@
 {
-  "updatedAt": "2026-02-16T10:01:37.766Z",
-  "processed": 48,
-  "failed": 12,
-  "successRate": "80.0%",
+  "updatedAt": "2026-02-16T10:16:04.555Z",
+  "processed": 58,
+  "failed": 52,
+  "successRate": "52.7%",
   "tierBreakdown": {
-    "playwright": 30,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 6,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 16
+    "archive": 54
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 19,
+  "recentActivity": [
+    {
+      "t": "2026-02-16T10:04:08.097Z",
+      "event": "bb-session",
+      "session": "8bc390e3",
+      "url": "https://www.nytimes.com/2010/12/08/theater/reviews/08pitmen.html"
+    },
+    {
+      "t": "2026-02-16T10:05:00.037Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:05:21.925Z",
+      "event": "bb-session",
+      "session": "08bdda21",
+      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
+    },
+    {
+      "t": "2026-02-16T10:05:58.416Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:06:20.765Z",
+      "event": "bb-session",
+      "session": "0b46d985",
+      "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-amer"
+    },
+    {
+      "t": "2026-02-16T10:07:12.598Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:07:36.291Z",
+      "event": "bb-session",
+      "session": "b3c4720e",
+      "url": "https://www.nytimes.com/2010/11/13/theater/reviews/13scottsboro.html"
+    },
+    {
+      "t": "2026-02-16T10:08:28.539Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:08:52.337Z",
+      "event": "bb-session",
+      "session": "37fc11a4",
+      "url": "https://www.nytimes.com/2023/05/05/theater/the-sign-in-sidney-brusteins-window-r"
+    },
+    {
+      "t": "2026-02-16T10:09:44.114Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:10:07.904Z",
+      "event": "bb-session",
+      "session": "7a908516",
+      "url": "https://www.nytimes.com/2018/10/25/theater/the-waverly-gallery-review-elaine-may"
+    },
+    {
+      "t": "2026-02-16T10:10:44.144Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:11:13.152Z",
+      "event": "bb-session",
+      "session": "34376af6",
+      "url": "https://www.nytimes.com/2005/11/18/theater/reviews/the-woman-in-white-a-musical-"
+    },
+    {
+      "t": "2026-02-16T10:12:04.895Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:12:26.860Z",
+      "event": "bb-session",
+      "session": "ef624a01",
+      "url": "https://www.nytimes.com/2007/03/30/theater/reviews/30magi.html"
+    },
+    {
+      "t": "2026-02-16T10:13:18.216Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:13:39.619Z",
+      "event": "bb-session",
+      "session": "4af88ccc",
+      "url": "https://www.nytimes.com/2008/05/01/theater/reviews/01thur.html"
+    },
+    {
+      "t": "2026-02-16T10:14:16.116Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-16T10:14:52.717Z",
+      "event": "bb-session",
+      "session": "3a97500a",
+      "url": "https://www.nytimes.com/2022/10/20/theater/topdog-underdog-review.html"
+    },
+    {
+      "t": "2026-02-16T10:15:44.516Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    }
+  ]
 }
