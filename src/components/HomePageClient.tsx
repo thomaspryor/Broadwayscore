@@ -287,6 +287,33 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
   );
 });
 
+const INITIAL_SHOW_COUNT = 12;
+
+// Show card list with progressive loading — renders first 12 immediately, rest on demand
+function ShowCardList({ shows, hideStatus, scoreMode }: { shows: HomepageShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
+  const [showAll, setShowAll] = useState(false);
+  const displayedShows = showAll ? shows : shows.slice(0, INITIAL_SHOW_COUNT);
+  const hasMore = shows.length > INITIAL_SHOW_COUNT;
+
+  return (
+    <>
+      <div className="space-y-3" role="list" aria-label="Broadway shows">
+        {displayedShows.map((show, index) => (
+          <ShowCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
+        ))}
+      </div>
+      {hasMore && !showAll && (
+        <button
+          onClick={() => setShowAll(true)}
+          className="w-full mt-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white bg-surface-overlay hover:bg-white/10 transition-colors"
+        >
+          Show all {shows.length} shows
+        </button>
+      )}
+    </>
+  );
+}
+
 // Featured row with horizontal scroll
 function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: HomepageShow[]; viewAllHref?: string }) {
   if (shows.length === 0) return null;
@@ -595,7 +622,10 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
-        <p className="text-gray-400 text-base sm:text-lg">
+        <p className="text-gray-400 text-lg sm:text-xl">
+          Every show. Every review. One score.
+        </p>
+        <p className="text-gray-500 text-sm sm:text-base mt-1">
           {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
@@ -721,11 +751,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
 
       {/* Show List */}
       <h2 className="sr-only">Broadway Shows</h2>
-      <div className="space-y-3" role="list" aria-label="Broadway shows">
-        {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
-        ))}
-      </div>
+      <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
       {filteredAndSortedShows.length === 0 && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
