@@ -1,49 +1,126 @@
 {
-  "updatedAt": "2026-02-16T15:25:31.951Z",
-  "processed": 5,
-  "failed": 65,
-  "successRate": "7.1%",
+  "updatedAt": "2026-02-16T15:29:14.278Z",
+  "processed": 53,
+  "failed": 32,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 5
+    "brightdata": 19,
+    "archive": 33
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 15,
   "recentActivity": [
     {
-      "t": "2026-02-16T15:18:00.870Z",
+      "t": "2026-02-16T15:11:52.501Z",
       "event": "bb-session",
-      "session": "982dc262",
-      "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html"
+      "session": "9a7ccc7f",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/farinelli-king-review-mar"
     },
     {
-      "t": "2026-02-16T15:18:02.930Z",
+      "t": "2026-02-16T15:11:54.850Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nydailynews.com"
     },
     {
-      "t": "2026-02-16T15:22:17.296Z",
+      "t": "2026-02-16T15:12:37.678Z",
       "event": "bb-session",
-      "session": "bbe8069c",
-      "url": "https://www.vulture.com/2022/10/theater-review-tom-stoppards-leopoldstadt-on-bro"
+      "session": "c07f9d85",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/sam-rockwell-nina-arianda-"
     },
     {
-      "t": "2026-02-16T15:22:19.275Z",
+      "t": "2026-02-16T15:12:39.943Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nydailynews.com"
     },
     {
-      "t": "2026-02-16T15:25:20.883Z",
+      "t": "2026-02-16T15:13:20.018Z",
       "event": "bb-session",
-      "session": "8e642893",
-      "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-litt"
+      "session": "dda5159a",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/gigi-review-vanessa-hudge"
     },
     {
-      "t": "2026-02-16T15:25:23.038Z",
+      "t": "2026-02-16T15:13:22.386Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:14:11.523Z",
+      "event": "bb-session",
+      "session": "6cef5513",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/mary-louise-parker-go-big-"
+    },
+    {
+      "t": "2026-02-16T15:14:13.868Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:14:48.520Z",
+      "event": "bb-session",
+      "session": "aeb1a6c7",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/mary-louise-parker-go-big-"
+    },
+    {
+      "t": "2026-02-16T15:14:50.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:15:21.990Z",
+      "event": "bb-session",
+      "session": "af3417bd",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/mary-louise-parker-go-big-"
+    },
+    {
+      "t": "2026-02-16T15:15:24.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:15:57.120Z",
+      "event": "bb-session",
+      "session": "1260a4b4",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/dolly-review-bernadette-pe"
+    },
+    {
+      "t": "2026-02-16T15:15:59.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:16:34.385Z",
+      "event": "bb-session",
+      "session": "db49d7c6",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/holiday-inn-corbin-bleu-op"
+    },
+    {
+      "t": "2026-02-16T15:16:36.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:17:11.750Z",
+      "event": "bb-session",
+      "session": "6e7706b8",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/honeymoon-vegas-theater-r"
+    },
+    {
+      "t": "2026-02-16T15:17:14.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-02-16T15:17:52.724Z",
+      "event": "bb-session",
+      "session": "961efa8c",
+      "url": "https://www.nydailynews.com/entertainment/play-hit-article-1.1967217"
+    },
+    {
+      "t": "2026-02-16T15:17:54.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
     }
   ]
 }
