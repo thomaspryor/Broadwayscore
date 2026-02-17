@@ -166,16 +166,20 @@ export function convertStarRating(stars: number, maxStars: number): number {
 }
 
 // ===========================================
-// AUDIENCE PLATFORM WEIGHTS
+// AUDIENCE WEIGHTING
 // ===========================================
+// Actual weighting logic is in scripts/lib/audience-weighting.js:
+// All sources (Show Score, Mezzanine, Reddit) weighted proportionally
+// by review count volume, with 80% cap per source.
+// The constants below are kept for backward compatibility (engine.ts import)
+// but are NOT used by the active audience scoring pipeline.
+/** @deprecated Use scripts/lib/audience-weighting.js instead */
 export const AUDIENCE_PLATFORM_WEIGHTS: Record<string, number> = {
   'showscore': 0.50,
-  'google': 0.30,
   'mezzanine': 0.20,
   'other': 0.10,
 };
 
-// Minimum reviews required for full weight
 export const AUDIENCE_MIN_REVIEWS = 50;
 
 // ===========================================

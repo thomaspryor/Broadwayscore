@@ -57,7 +57,7 @@ const articleSchema = {
     },
   },
   datePublished: '2024-01-01',
-  dateModified: '2026-02-07',
+  dateModified: '2026-02-16',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `${BASE_URL}/methodology`,
@@ -108,10 +108,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What is Audience Buzz?',
+      name: 'What is the Audience Scorecard?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is AI-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
+        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is AI-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
       },
     },
     {
@@ -297,9 +297,9 @@ export default function MethodologyPage() {
 
         {/* Audience Buzz */}
         <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Audience Buzz</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Audience Scorecard</h2>
           <p className="text-gray-300 mb-4">
-            Audience Buzz captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single sentiment designation.
+            The Audience Scorecard captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single letter grade.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Grade Scale</h3>
@@ -514,7 +514,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span><strong className="text-white">Audience Buzz tracking:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
+              <span><strong className="text-white">Audience Scorecard:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
             </li>
           </ul>
         </section>
