@@ -20,12 +20,12 @@ function ScoreOverlay({ score }: { score: number | null | undefined }) {
   );
 }
 
-export default function RelatedShows({ shows }: { shows: ComputedShow[] }) {
-  if (shows.length < 3) return null;
+export default function RelatedShows({ shows, title = 'You Might Also Like' }: { shows: ComputedShow[]; title?: string }) {
+  if (shows.length === 0) return null;
 
   return (
     <section className="mt-8 pt-6 border-t border-white/5">
-      <h2 className="text-base font-bold text-white mb-3">You Might Also Like</h2>
+      <h2 className="text-base font-bold text-white mb-3">{title}</h2>
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show) => (
           <Link
