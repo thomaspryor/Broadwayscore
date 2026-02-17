@@ -1,118 +1,478 @@
 {
-  "timestamp": "2026-02-17T22:01:26.678Z",
-  "totalDrifted": 11,
+  "timestamp": "2026-02-17T22:29:34.985Z",
+  "totalDrifted": 59,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "back-to-the-future-2023",
+      "showId": "diana-the-musical-2021",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "oldScore": 63,
+      "newScore": 17,
+      "delta": 46
+    },
+    {
+      "showId": "elling-2010",
+      "outlet": "Talkin' Broadway",
+      "critic": "Matthew Murray",
+      "oldScore": 82,
+      "newScore": 39,
+      "delta": 43
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "outlet": "The New York Times",
+      "critic": "Jesse Green",
+      "oldScore": 75,
+      "newScore": 39,
+      "delta": 36
+    },
+    {
+      "showId": "finding-neverland-2015",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 78,
+      "newScore": 44,
+      "delta": 34
+    },
+    {
+      "showId": "come-from-away-2017",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 76,
+      "newScore": 43,
+      "delta": 33
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
       "outlet": "Theatre Reviews Limited",
       "critic": "Joseph Verlezza",
-      "oldScore": 42,
-      "newScore": 70,
-      "delta": 28
+      "oldScore": 44,
+      "newScore": 77,
+      "delta": 33
     },
     {
-      "showId": "art-2025",
-      "outlet": "Observer",
-      "critic": "David Cote",
-      "oldScore": 38,
+      "showId": "dana-h-2021",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 62,
+      "newScore": 93,
+      "delta": 31
+    },
+    {
+      "showId": "falsettos-2016",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 92,
       "newScore": 61,
-      "delta": 23
+      "delta": 31
     },
     {
-      "showId": "blackbird-2016",
-      "outlet": "NJ.com",
-      "critic": "Christopher Kelly",
+      "showId": "disgraced-2014",
+      "outlet": "New York Post",
+      "critic": "Elisabeth Vincentelli",
+      "oldScore": 76,
+      "newScore": 46,
+      "delta": 30
+    },
+    {
+      "showId": "evita-2012",
+      "outlet": "Stage and Cinema",
+      "critic": "Steven Suskin",
+      "oldScore": 73,
+      "newScore": 43,
+      "delta": 30
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "outlet": "Broadway News",
+      "critic": "Brittani Samuel",
+      "oldScore": 64,
+      "newScore": 93,
+      "delta": 29
+    },
+    {
+      "showId": "constellations-2015",
+      "outlet": "Deadline",
+      "critic": "Jeremy Gerard",
+      "oldScore": 64,
+      "newScore": 85,
+      "delta": 21
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
       "oldScore": 82,
-      "newScore": 64,
+      "newScore": 61,
+      "delta": 21
+    },
+    {
+      "showId": "fat-ham-2023",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 82,
+      "newScore": 61,
+      "delta": 21
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "outlet": "DC Theatre Scene",
+      "critic": "Jonathan Mandell",
+      "oldScore": 64,
+      "newScore": 44,
+      "delta": 20
+    },
+    {
+      "showId": "romeo-juliet",
+      "outlet": "New York Stage Review",
+      "critic": "David Finkle",
+      "oldScore": 60,
+      "newScore": 40,
+      "delta": 20
+    },
+    {
+      "showId": "company-2021",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 82,
+      "newScore": 63,
+      "delta": 19
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 23,
+      "newScore": 42,
+      "delta": 19
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "outlet": "Vulture",
+      "critic": "Justin Davidson",
+      "oldScore": 63,
+      "newScore": 44,
+      "delta": 19
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 81,
+      "newScore": 63,
       "delta": 18
     },
     {
-      "showId": "betrayal-2019",
-      "outlet": "The Hollywood Reporter",
-      "critic": "David Rooney",
-      "oldScore": 76,
-      "newScore": 93,
+      "showId": "crybaby-2008",
+      "outlet": "Talkin' Broadway",
+      "critic": "Matthew Murray",
+      "oldScore": 37,
+      "newScore": 55,
+      "delta": 18
+    },
+    {
+      "showId": "elf-2024",
+      "outlet": "New York Theatre Guide",
+      "critic": "Jonathan Mandell",
+      "oldScore": 42,
+      "newScore": 60,
+      "delta": 18
+    },
+    {
+      "showId": "eureka-day-2024",
+      "outlet": "Observer",
+      "critic": "David Cote",
+      "oldScore": 81,
+      "newScore": 63,
+      "delta": 18
+    },
+    {
+      "showId": "evita-2012",
+      "outlet": "The Record (Bergen)",
+      "critic": "Robert Feldberg",
+      "oldScore": 63,
+      "newScore": 45,
+      "delta": 18
+    },
+    {
+      "showId": "curtains-2007",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
+      "oldScore": 45,
+      "newScore": 62,
       "delta": 17
     },
     {
-      "showId": "beetlejuice-2019",
-      "outlet": "New York Daily News",
-      "critic": "Chris Jones",
-      "oldScore": 34,
-      "newScore": 18,
+      "showId": "death-becomes-her-2024",
+      "outlet": "Chelsea Community News",
+      "critic": "Michael Musto",
+      "oldScore": 63,
+      "newScore": 80,
+      "delta": 17
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "outlet": "HuffPost",
+      "critic": "David Finkle",
+      "oldScore": 44,
+      "newScore": 60,
       "delta": 16
     },
     {
-      "showId": "bandstand-2017",
-      "outlet": "Theater Scene",
-      "critic": "Joel Benjamin",
-      "oldScore": 62,
-      "newScore": 76,
-      "delta": 14
+      "showId": "elling-2010",
+      "outlet": "Reuters",
+      "critic": "David Rooney",
+      "oldScore": 60,
+      "newScore": 44,
+      "delta": 16
     },
     {
-      "showId": "bernhardthamlet-2018",
-      "outlet": "Variety",
-      "critic": "Marilyn Stasio",
-      "oldScore": 77,
+      "showId": "everyday-rapture-2010",
+      "outlet": "On Off Broadway",
+      "critic": "Matt Windman",
+      "oldScore": 70,
+      "newScore": 86,
+      "delta": 16
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "outlet": "Broadway News",
+      "critic": "Elizabeth Bradley",
+      "oldScore": 63,
+      "newScore": 79,
+      "delta": 16
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outlet": "Broadway News",
+      "critic": "Brittani Samuel",
+      "oldScore": 76,
+      "newScore": 91,
+      "delta": 15
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 64,
+      "newScore": 79,
+      "delta": 15
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 58,
+      "newScore": 43,
+      "delta": 15
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "outlet": "Observer",
+      "critic": "Rex Reed",
+      "oldScore": 69,
+      "newScore": 54,
+      "delta": 15
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 63,
+      "newScore": 78,
+      "delta": 15
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "outlet": "Newsday",
+      "critic": "Linda Winer",
+      "oldScore": 44,
+      "newScore": 59,
+      "delta": 15
+    },
+    {
+      "showId": "eclipsed-2016",
+      "outlet": "Talkin' Broadway",
+      "critic": "Matthew Murray",
+      "oldScore": 64,
+      "newScore": 79,
+      "delta": 15
+    },
+    {
+      "showId": "end-of-the-rainbow-2012",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 78,
       "newScore": 63,
+      "delta": 15
+    },
+    {
+      "showId": "evita-2012",
+      "outlet": "TheaterMania",
+      "critic": "David Rooney",
+      "oldScore": 75,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "outlet": "TheWrap",
+      "critic": "Thom Geier",
+      "oldScore": 63,
+      "newScore": 78,
+      "delta": 15
+    },
+    {
+      "showId": "company-2021",
+      "outlet": "Slant Magazine",
+      "critic": "Dan Rubins",
+      "oldScore": 63,
+      "newScore": 77,
       "delta": 14
     },
     {
-      "showId": "bob-fosses-dancin-2023",
-      "outlet": "The Daily Beast",
-      "critic": "Tim Teeman",
+      "showId": "dead-outlaw-2025",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 78,
+      "newScore": 64,
+      "delta": 14
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "outlet": "Stage Buddy",
+      "critic": "Mark Dundas Wood",
       "oldScore": 64,
       "newScore": 78,
       "delta": 14
     },
     {
-      "showId": "appropriate-2023",
-      "outlet": "Culture Sauce",
-      "critic": "Thom Geier",
+      "showId": "diana-the-musical-2021",
+      "outlet": "Theatrely",
+      "critic": "Juan A. Ramirez",
+      "oldScore": 63,
+      "newScore": 77,
+      "delta": 14
+    },
+    {
+      "showId": "company-2021",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 63,
+      "newScore": 76,
+      "delta": 13
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "outlet": "The New Yorker",
+      "critic": "John Lahr",
+      "oldScore": 82,
+      "newScore": 95,
+      "delta": 13
+    },
+    {
+      "showId": "fences-2010",
+      "outlet": "USA Today",
+      "critic": "Elysa Gardner",
+      "oldScore": 63,
+      "newScore": 76,
+      "delta": 13
+    },
+    {
+      "showId": "come-from-away-2017",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "oldScore": 81,
+      "newScore": 93,
+      "delta": 12
+    },
+    {
+      "showId": "come-from-away-2017",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 42,
+      "newScore": 30,
+      "delta": 12
+    },
+    {
+      "showId": "dana-h-2021",
+      "outlet": "Observer",
+      "critic": "David Cote",
       "oldScore": 82,
       "newScore": 94,
       "delta": 12
     },
     {
-      "showId": "be-more-chill-2019",
-      "outlet": "DC Theatre Scene",
-      "critic": "Deb Miller",
-      "oldScore": 82,
-      "newScore": 93,
-      "delta": 11
+      "showId": "english-2025",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 76,
+      "newScore": 64,
+      "delta": 12
     },
     {
-      "showId": "breakfast-at-tiffanys-2013",
+      "showId": "escape-to-margaritaville-2018",
       "outlet": "Vulture",
-      "critic": "Jesse Green",
-      "oldScore": 53,
+      "critic": "Sara Holdren",
+      "oldScore": 30,
       "newScore": 42,
-      "delta": 11
+      "delta": 12
     },
     {
-      "showId": "a-strange-loop-2022",
-      "outlet": "Slant Magazine",
-      "critic": "Dan Rubins",
+      "showId": "come-from-away-2017",
+      "outlet": "Theater Life",
+      "critic": "Paulanne Simmons",
       "oldScore": 82,
       "newScore": 93,
       "delta": 11
     },
     {
-      "showId": "after-midnight-2013",
-      "outlet": "Vulture",
-      "critic": "Jesse Green",
+      "showId": "constellations-2015",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
       "oldScore": 82,
       "newScore": 93,
       "delta": 11
     },
     {
-      "showId": "all-the-way-2014",
-      "outlet": "NY1",
-      "critic": "Roma Torre",
+      "showId": "crybaby-2008",
+      "outlet": "Variety",
+      "critic": "Charles Isherwood",
+      "oldScore": 52,
+      "newScore": 41,
+      "delta": 11
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
       "oldScore": 82,
       "newScore": 93,
+      "delta": 11
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 43,
+      "newScore": 54,
+      "delta": 11
+    },
+    {
+      "showId": "driving-miss-daisy-2010",
+      "outlet": "New York Daily News",
+      "critic": "Joe Dziemianowicz",
+      "oldScore": 73,
+      "newScore": 62,
+      "delta": 11
+    },
+    {
+      "showId": "elf-2012",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "oldScore": 72,
+      "newScore": 61,
       "delta": 11
     }
   ]
