@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-17T04:09:46.254Z",
+  "runDate": "2026-02-17T04:21:17.287Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 5,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 32,
-    "failed": 23,
+    "processed": 30,
+    "failed": 25,
     "skipped": 0,
-    "successRate": "58.2%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
     "playwright": 20,
@@ -22,28 +22,28 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 9,
-    "archive": 12
+    "archiveToday": 11,
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 5,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
+    "tier1_5Attempts": 5,
+    "tier1_5Success": 0,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
+    "tier3_6Attempts": 5,
+    "tier3_6Success": 5,
     "tier4Attempts": 5,
-    "tier4Success": 2,
-    "totalFailed": 3,
+    "tier4Success": 0,
+    "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.6,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -78,9 +78,7 @@
     "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
     "mcneal-2024/theatre-reviews-limited--david-roberts.json",
     "patriots-2024/broadwaynews--brittani-samuel.json",
-    "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "bug-2026/wsj--charles-isherwood.json"
+    "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json"
   ],
   "failed": [
     "harry-potter-2021/broadwayworld--michael-dale.json",
@@ -103,9 +101,11 @@
     "no-mans-land-2013/thewrap--robert-hofler.json",
     "patriots-2024/guardian--adrian-horton.json",
     "pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "chess-2025/wsj--charles-isherwood.json"
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "mj-2022/newyorker--naomi-fry.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -143,9 +143,11 @@
       "data/review-texts/collected-stories-2010/bloombeg-news--jeremy-gerard.json",
       "data/review-texts/lobby-hero-2018/broadwaynews--elizabeth-bradley.json",
       "data/review-texts/pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
-      "data/review-texts/chess-2025/wsj--charles-isherwood.json"
+      "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
+      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
+      "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "data/review-texts/mj-2022/newyorker--naomi-fry.json"
     ],
     "archive": [
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
@@ -157,11 +159,38 @@
       "into-the-woods-2022/new-york-sun--elysa-gardner.json",
       "jitney-2017/thewrap--robert-hofler.json",
       "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "bug-2026/wsj--charles-isherwood.json"
+      "patriots-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "AM New York": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
