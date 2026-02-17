@@ -273,8 +273,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'tony-winners-on-broadway': {
     slug: 'tony-winners-on-broadway',
-    title: 'Tony Winners Now on Broadway',
-    h1: 'Tony Winners Now on Broadway',
+    title: 'Tony Winning Shows Now on Broadway',
+    h1: 'Tony Winning Shows Now on Broadway',
     metaTitle: 'Tony Award Winners on Broadway (2026)',
     metaDescription: 'See Tony Award-winning shows currently playing on Broadway. The best of the best, as recognized by the theater industry\'s highest honors.',
     intro: 'The Tony Awards represent the highest honors in American theater, and these shows have earned Broadway\'s most prestigious accolades. Whether they won Best Musical, Best Play, or collected multiple awards for their creative teams, these productions represent the pinnacle of theatrical achievement. Seeing a Tony winner is a chance to experience shows that have been recognized as the very best Broadway has to offer.',
