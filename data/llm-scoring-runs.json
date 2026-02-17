@@ -205851,5 +205851,25 @@
         "error": "Review text too short or missing"
       }
     ]
+  },
+  {
+    "startedAt": "2026-02-17T05:41:08.889Z",
+    "completedAt": "2026-02-17T05:42:37.633Z",
+    "totalReviews": 23294,
+    "processed": 1,
+    "skipped": 22958,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 108036,
+      "output": 2056,
+      "total": 164561
+    },
+    "errorDetails": [
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
