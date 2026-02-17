@@ -41,6 +41,7 @@ const CONFIG = {
   reviewTextsDir: path.join(process.cwd(), 'data/review-texts'),
   failedFetchesPath: path.join(process.cwd(), 'data/review-texts/failed-fetches.json'),
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
+  brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
   isCI: !!process.env.CI || !!process.env.GITHUB_ACTIONS,
   phase2Limit: 10000,
   phase3Limit: 10000,
@@ -420,8 +421,8 @@ async function runPhase3(candidates) {
   console.log(`═══════════════════════════════════════════════════════════`);
   console.log(`  Limit: ${CONFIG.phase3Limit} searches\n`);
 
-  if (!CONFIG.scrapingBeeKey && !CONFIG.dryRun) {
-    console.log('  ⚠ SCRAPINGBEE_API_KEY not set — skipping Phase 3');
+  if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey && !CONFIG.dryRun) {
+    console.log('  ⚠ No SERP providers configured (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN) — skipping Phase 3');
     return 0;
   }
 
@@ -479,8 +480,14 @@ async function runPhase3(candidates) {
     try {
       const newUrl = await discoverCorrectUrl(
         { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url },
-        CONFIG.scrapingBeeKey
+        CONFIG.scrapingBeeKey,
+        { brightDataKey: CONFIG.brightDataKey }
       );
+
+      if (newUrl === '__SERP_UNAVAILABLE__') {
+        console.log('  ⚠ All SERP providers unavailable — stopping Phase 3');
+        break;
+      }
 
       if (newUrl) {
         updateReviewUrl(c, newUrl, 'google-serp');
