@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-17",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 15993,
-      "skippedNoScore": 1039,
+      "totalReviews": 15980,
+      "skippedNoScore": 1032,
       "skippedDuplicate": 98,
-      "skippedDuplicateUrl": 316,
-      "skippedCrossOutletDuplicateUrl": 31,
-      "skippedDuplicateText": 533,
-      "skippedFingerprintDedup": 81,
-      "skippedUnknownCriticDedup": 246,
-      "skippedWrongProduction": 2058,
+      "skippedDuplicateUrl": 314,
+      "skippedCrossOutletDuplicateUrl": 29,
+      "skippedDuplicateText": 540,
+      "skippedFingerprintDedup": 78,
+      "skippedUnknownCriticDedup": 245,
+      "skippedWrongProduction": 2067,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
@@ -20,10 +20,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 66,
-        "originalScore-priority0": 1728,
-        "llmScore": 10740,
+        "originalScore-priority0": 1727,
+        "llmScore": 10752,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3427,
+        "llmScore-lowconf": 3402,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3856,7 +3856,7 @@
       "pullQuote": "The chorus is having such a good time you are tempted to join them.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -4043,7 +4043,7 @@
       "pullQuote": "What it lacks, just a little, is cheer.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -4526,17 +4526,17 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Sara Holdren",
-      "url": "https://www.vulture.com/2022/11/theater-review-a-christmas-carol-on-broadway.html",
+      "url": "https://www.vulture.com/article/this-christmas-carol-tries-to-put-scrooge-on-the-couch.html#:~:text=If%20you%20want%20a%20big%2Dhearted%2C,community%2Dminded%2C%20UK%2Ddeveloped%20musical&amp;text=Theater%20Review%3A%20A%20Christmas%20Carol,Tags%3A",
       "publishDate": "November 21, 2022",
       "originalRating": null,
       "pullQuote": "This Christmas Carol is built around spectacle, and the spectacle is genuinely spectacular. But spectacle alone cannot carry a show, and when the bells and whistles quiet down, what's left feels oddly hollow.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-story-the-musical-2012",
@@ -5993,6 +5993,23 @@
       "thumb": "Up",
       "criticName": "David Finkle",
       "url": "https://www.huffpost.com/entry/julie-white-and-new-cast-retain-the-sparkle-of-lucas_us_59aaa963e4b0bef3378cd8ce",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "As Hnath ends his eventually wise and even conciliatory parable, that’s the gnawing question Hnath leaves the ticket buyers pondering.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "outletId": "huffpost",
+      "outlet": "HuffPost",
+      "assignedScore": 75,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Michael Glitz",
+      "url": "https://www.huffpost.com/entry/aisle-view-back-to-the-dolls-house-part-2_us_598dd536e4b063e2ae057f27",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "As Hnath ends his eventually wise and even conciliatory parable, that’s the gnawing question Hnath leaves the ticket buyers pondering.",
@@ -13070,7 +13087,7 @@
       "pullQuote": "Whether or not you grew up listening to their music, it is impossible not to be engaged and happy hearing the music and story of The Temptations currently at Theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -22256,23 +22273,6 @@
     },
     {
       "showId": "an-american-in-paris-2015",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Cote",
-      "url": "http://www.timeout.com/newyork/theater/an-american-in-paris",
-      "publishDate": null,
-      "originalRating": "3/5",
-      "pullQuote": "There's much gorgeous ballet to admire but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "an-american-in-paris-2015",
       "outletId": "towleroad",
       "outlet": "Towleroad",
       "assignedScore": 82,
@@ -23442,7 +23442,7 @@
       "pullQuote": "He's played by Ramin Karimloo with impressive authority and strong vocals.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "anastasia-2017",
@@ -29939,7 +29939,7 @@
       "pullQuote": "Perhaps if the main character of Jeremy was a little more interesting than a whiny kid who can't see beyond his own misery, the show might attract more sophisticated viewers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "be-more-chill-2019",
@@ -47014,7 +47014,7 @@
       "pullQuote": "In this production only Ms. Johansson suggests the tempest in the human heart.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
@@ -64322,7 +64322,7 @@
       "pullQuote": "Was it really four years ago that Camoletti’s Boeing-Boeing brought the house down with howls of laughter, with Mark Rylance’s bizarre antics and the sight of color-coordinated stewardesses tumbling in and out of doors? Don’t Dress is technically a sequel, bringing back horny Bernard and comparatively guileless Robert for more girl trouble and e...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "dont-dress-for-dinner-2012",
@@ -66210,7 +66210,7 @@
       "pullQuote": "In its latest Broadway outing, starring an exuberant Grey Henson in the title role, 'Elf the Musical' has gotten Buddy delightfully, entirely right.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "elf-2024",
@@ -73287,23 +73287,6 @@
     },
     {
       "showId": "fiddler-on-the-roof-2015",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "David Cote",
-      "url": "https://www.timeout.com/newyork/theater/fiddler-on-the-roof-1",
-      "publishDate": null,
-      "originalRating": "5/5",
-      "pullQuote": "Bartlett Sher's magnificent, life-affirming revival",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "fiddler-on-the-roof-2015",
       "outletId": "usatoday",
       "outlet": "USA Today",
       "assignedScore": 100,
@@ -78298,7 +78281,7 @@
       "pullQuote": "These highly gifted actors keep a sensitive focus on the gawky humanity of their characters, holding steady through the ups and downs.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
@@ -88549,7 +88532,7 @@
       "pullQuote": "Amid such excellent atmospherics, you may not care when the play itself creaks.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "grey-house-2023",
@@ -94484,7 +94467,7 @@
       "pullQuote": "But the twists wind up forming a sloppy noose that is strong enough only to leave the play dangling, without a lethal snap, when the bottom falls out in the end.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hangmen-2022",
@@ -102427,7 +102410,7 @@
       "pullQuote": "Hillary and Clinton is cogent, snappy and perceptive about political and emotional realities.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hillary-and-clinton-2019",
@@ -103158,7 +103141,7 @@
       "pullQuote": "Corbin Bleu has a winning muscularity and grace in various tap and ballroom sequences.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -109143,7 +109126,7 @@
       "pullQuote": "\"This Broadway iteration, sprucely directed and choreographed by Kathleen Marshall and with a charming ensemble, better showcases the book and score. But the central problem remains: harmonic overload. If you listen to Pentatonix on repeat and own the box set of 'Glee,' you might spend 100 minutes in bliss.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "in-transit-2016",
@@ -111404,7 +111387,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -127669,7 +127652,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Clive Davis",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/legally-blonde-theatre-review-regents-park-open-air-theatre-8lrrmg3fs",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/legally-blonde-theatre-review-regents-park-open-air-theatre-8lrrmg3fs#:~:text=Legally%20Blonde%20review%20%E2%80%94%20go,and%20you'll%20be%20blown%20away&amp;text=%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86&amp;text=Get%20in%20touch&amp;text=More%20from%20The%20Times%20and,The%20Sunday%20Times",
       "publishDate": null,
       "originalRating": "4/5 stars",
       "pullQuote": "Go with an open mind and you'll be blown away. True, the show by Laurence O'Keefe, Nell Benjamin and bookwriter Heather Hach - which first reached Broadway in 2007 - has a head start on the movie. It's far wittier, with insidious melodies and lyrics that are cheeky enough to rhyme \"snobs\" with \"Thomas Hobbes\".",
@@ -141499,7 +141482,7 @@
       "pullQuote": "But the tremendous heart and intelligence of the piece remains undimmed",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "matilda-the-musical-2013",
@@ -143806,13 +143789,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ann Treneman",
-      "url": "https://www.thetimes.com/article/mean-girls-august-wilson-theatre-new-york-review-qhk6j8vqz",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mean-girls-the-musical-review-tina-fey-bt3wvz7j2",
       "publishDate": "April 13, 2018",
       "originalRating": 80,
       "pullQuote": "This is a smart, funny musical that manages to be both true to the film and fresh in its own right.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "mean-girls-2018",
@@ -146754,7 +146737,7 @@
       "pullQuote": "Willis's weirdly narcotized and passive Broadway debut goes above and beyond the drugged, physically diminished circumstances of his character.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "misery-2015",
@@ -147468,7 +147451,7 @@
       "pullQuote": "This Miss Saigon is a handsome, well-performed revival of a show that remains problematic at its core.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "miss-saigon-2017",
@@ -159762,7 +159745,7 @@
       "pullQuote": "Kenny Leon's production is spare and elegant, with a simple but effective design.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "ohio-state-murders-2022",
@@ -166077,7 +166060,7 @@
       "outletId": "theater-pizzazz",
       "outlet": "Theater Pizzazz",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Carole Di Tosti",
@@ -166087,7 +166070,7 @@
       "pullQuote": "Final kudos go to the creative teams, the fine ensemble work and outstanding performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -167192,7 +167175,7 @@
       "pullQuote": "Kessler’s play is certainly a springboard for actors, but for audiences, it sags and slumps.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "orphans-2013",
@@ -171767,23 +171750,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "passing-strange-2008",
-      "outletId": "artsdesk",
-      "outlet": "The Arts Desk",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Helen Hawkins",
-      "url": "https://theartsdesk.com/theatre/passing-strange-young-vic-review-exuberant-pocket-musical-thoughtful-core",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "a lovely show, rather like watching best mates strutting their stuff and having a ball.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "passing-strange-2008",
@@ -177053,23 +177019,6 @@
       "publishDate": "August 16, 2018",
       "originalRating": 40,
       "pullQuote": "Pretty Woman: The Musical is a show that feels like it was assembled by committee, with songs that rarely rise above the serviceable and a book that adds little depth to the familiar story.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "pretty-woman-the-musical-2018",
-      "outletId": "usatoday",
-      "outlet": "USA Today",
-      "assignedScore": 43,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Elysa Gardner",
-      "url": "https://www.usatoday.com/story/entertainment/2021/10/13/review-pretty-woman-musical-entertaining-problematic-romantic-comedy-adam-pascal-olivia-valli-stage/8433908002/#:~:text=Review%3A%20'Pretty%20Woman'%20stage%20musical,entertaining%20rom%2Dcom%2C%20but%20still%20problematic&text=What%3A%20%E2%80%9CPretty%20Woman%20the%20Musical%E2%80%9D&text=Written%20by%3A%20Garry%20Marshall%20and",
-      "publishDate": "August 16, 2018",
-      "originalRating": null,
-      "pullQuote": "The musical's formulaic approach and lack of emotional depth make it feel more like a glossy corporate product than a meaningful theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -191525,7 +191474,7 @@
       "url": "https://www.timeout.com/newyork/theater/side-show-1#:~:text=At%20the%20time%2C%20many%20people,is%20better%20than%20it%20was.",
       "publishDate": "October 28, 2014",
       "originalRating": 60,
-      "pullQuote": "A first-rate production of a second-rate show.",
+      "pullQuote": "The new production of Side Show is a mixed bag: It has a beautiful score and fine performances, but the show's fundamental problems remain unresolved.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -191790,7 +191739,7 @@
       "outletId": "motherhood-later",
       "outlet": "Motherhood Later",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Robin Gorman Newman",
@@ -191800,7 +191749,7 @@
       "pullQuote": "With smarts, sass (literally) and sensitivity, playwright Joshua Harmon tackles the subject of singlehood and tugs at you winningly with humor and heart.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "significant-other-2017",
@@ -202843,7 +202792,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Steven Suskin",
@@ -202853,7 +202802,7 @@
       "pullQuote": "He, Ashford and the rest—including, most certainly, Sondheim—make this a 'Sunday' to see.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
@@ -202885,23 +202834,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Every once in a rare while, the theater rewards us with a kind of transcendent experience.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
-      "outletId": "njcom",
-      "outlet": "NJ.com",
-      "assignedScore": 94,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Christopher Kelly",
-      "url": "https://www.nj.com/entertainment/index.ssf/2017/02/sunday_in_the_park_jake_gyllenhaal_broadway_review.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "\"We get not just humanity and warmth, but intimacy, tenderness, bursts of humor, and flashes of tremendous beauty -- we get, in effect, as accomplished a production of 'Sunday in the Park with George' as we are likely to ever see...What could be a mere exercise in coy postmodernism becomes something moving and true...",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -211602,7 +211534,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Merryn Johns",
-      "url": "https://www.curvemag.com/Culture/Review-The-Cher-Show-2516/",
+      "url": "https://www.curvemag.com/blog/performing-arts/review-the-cher-show/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "There is a lot to love about 'The Cher Show,' which will have your head bopping and leave you with a smile on your face.",
@@ -239696,7 +239628,7 @@
       "pullQuote": "The script, which in 1990 earned the Pulitzer Prize for Drama, remains a thing of lyrical beauty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -256492,7 +256424,7 @@
       "url": "https://variety.com/2010/legit/reviews/time-stands-still-1117942018/",
       "publishDate": "January 28, 2010",
       "originalRating": null,
-      "pullQuote": "Donald Margulies' new play is a thoughtful, absorbing work, its strengths maximized in the crystalline naturalism of Daniel Sullivan's production.",
+      "pullQuote": "There's a ring of truth to the emotional experience being thrashed out onstage that keeps it compelling.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -267741,7 +267673,7 @@
       "showId": "west-side-story-2009",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
-      "assignedScore": 63,
+      "assignedScore": 64,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
