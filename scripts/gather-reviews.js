@@ -1407,6 +1407,10 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
         } else if (posting.headline && posting.headline.includes(' - ')) {
           // LiveBlogPosting entries: "Outlet - Review Title"
           outletRaw = posting.headline.split(' - ')[0].trim();
+          // Validate: real outlet names are 1-5 words. 6+ words = headline fragment, not outlet
+          if (outletRaw.split(/\s+/).length > 5) {
+            outletRaw = null;
+          }
         }
 
         if (!outletRaw) continue;
