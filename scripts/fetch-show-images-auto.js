@@ -90,6 +90,10 @@ const PINNED_IMAGES = new Set([
   'the-outsiders-2024',
   'two-strangers-bway-2025',
   'wicked-2003',
+  // Historical shows — manually fixed after wrong-image contamination
+  'the-cripple-of-inishmaan-2014', // Google SERP returned Wicked TodayTix page
+  'november-2008',                  // Google SERP returned In The Heights TodayTix page
+  'private-lives-2011',             // TodayTix returned generic "Coming Soon" placeholders
 ]);
 
 // ============================================================
