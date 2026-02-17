@@ -187,7 +187,7 @@ export default function ReviewPage({ params }: { params: { slug: string } }) {
       {/* Disclaimer */}
       <div className="border-t border-white/5 pt-6">
         <p className="text-xs text-gray-500">
-          Broadway Scorecard aggregates critic scores from 50+ outlets. These personal reviews are separate from those scores.
+          Broadway Scorecard aggregates critic scores from 400+ outlets. These personal reviews are separate from those scores.
         </p>
       </div>
     </div>
