@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { LotteryTable } from '@/components/SortableLotteryRushTables';
+import { ScoreBadge } from '@/components/show-cards';
 
 export const metadata: Metadata = {
   title: 'Broadway Lottery Tickets - Win Cheap Broadway Tickets',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Broadway Lottery Tickets - Win Cheap Seats',
-    description: 'Enter digital lotteries for discounted Broadway tickets. Hamilton $10, Wicked $55, and many more shows offering lottery programs.',
+    description: 'Enter digital lotteries for discounted Broadway tickets. Popular shows like Hamilton, Wicked, and The Lion King all offer digital lottery programs.',
     url: `${BASE_URL}/lotteries`,
     type: 'article',
   },
@@ -40,7 +41,7 @@ const faqSchema = {
       name: 'What is the cheapest way to get Broadway tickets?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The cheapest Broadway tickets are through lotteries ($10-60) and rush tickets ($30-50). Hamilton\'s lottery offers $10 tickets, while most other shows range from $40-60. Rush tickets are first-come, first-served at the box office on the day of the show.',
+        text: 'The cheapest Broadway tickets are through lotteries and rush tickets. Lottery tickets are typically $10-40 per ticket, while rush tickets are usually $30-50. Rush tickets are first-come, first-served at the box office on the day of the show.',
       },
     },
     {
@@ -48,7 +49,7 @@ const faqSchema = {
       name: 'Which Broadway shows have lotteries?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Most popular Broadway shows offer digital lotteries including Hamilton ($10), Wicked ($55-65), The Lion King ($60), Hadestown ($49), Six ($45), and many more. Lottery tickets are typically for orchestra seats at a fraction of full price.',
+        text: 'Most popular Broadway shows offer digital lotteries. Popular shows like Hamilton, Wicked, and The Lion King all offer digital lotteries. Lottery tickets are typically for orchestra seats at a fraction of full price.',
       },
     },
   ],
@@ -153,16 +154,7 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
-        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-lg sm:text-xl font-bold ${
-          score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-          score >= 85 ? 'score-must-see' :
-          score >= 75 ? 'score-great' :
-          score >= 65 ? 'score-good' :
-          score >= 55 ? 'score-tepid' :
-          'score-skip'
-        }`}>
-          {score !== undefined && score !== null ? Math.round(score) : '—'}
-        </div>
+        <ScoreBadge score={score} size="md" />
         <span className="text-xs text-gray-500 hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
