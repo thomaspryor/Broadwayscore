@@ -173,8 +173,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                   alt={showA.title}
                   className="w-full h-full object-cover"
                   fallback={
-                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-2xl font-bold">
-                      {showA.title.charAt(0)}
+                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                      <span className="text-3xl text-gray-500">🎭</span>
                     </div>
                   }
                 />
@@ -209,8 +209,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                   alt={showB.title}
                   className="w-full h-full object-cover"
                   fallback={
-                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-2xl font-bold">
-                      {showB.title.charAt(0)}
+                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                      <span className="text-3xl text-gray-500">🎭</span>
                     </div>
                   }
                 />

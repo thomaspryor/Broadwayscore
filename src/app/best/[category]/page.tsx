@@ -6,6 +6,7 @@ import type { BestOfCategory } from '@/lib/data-types';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import Breadcrumb from '@/components/Breadcrumb';
+import { ScoreBadge } from '@/components/show-cards';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
@@ -36,36 +37,6 @@ export function generateMetadata({ params }: { params: { category: string } }): 
       description: list.description,
     },
   };
-}
-
-function ScoreBadge({ score }: { score?: number | null }) {
-  if (score === undefined || score === null) {
-    return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
-        —
-      </div>
-    );
-  }
-
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-  if (roundedScore >= 85) {
-    colorClass = 'score-must-see';
-  } else if (roundedScore >= 75) {
-    colorClass = 'score-great';
-  } else if (roundedScore >= 65) {
-    colorClass = 'score-good';
-  } else if (roundedScore >= 55) {
-    colorClass = 'score-tepid';
-  } else {
-    colorClass = 'score-skip';
-  }
-
-  return (
-    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
-      {roundedScore}
-    </div>
-  );
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -190,7 +161,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
                 </div>
 
                 {/* Score */}
-                <ScoreBadge score={show.criticScore?.score} />
+                <ScoreBadge score={show.criticScore?.score} size="sm" />
               </Link>
             ))}
           </div>
