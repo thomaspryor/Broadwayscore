@@ -51,7 +51,10 @@
     "time-stands-still-2010/bloomberg-news--john-simon.json",
     "torch-song-2018/theatre-reviews-limited--david-roberts.json",
     "water-for-elephants-2024/theatre-reviews-limited--david-roberts.json",
-    "torch-song-2018/cititour--brian-scott-lipton.json"
+    "torch-song-2018/cititour--brian-scott-lipton.json",
+    "a-chorus-line-2006/the-stage-uk--david-benedict.json",
+    "a-life-in-the-theatre-2010/talkinbroadway--matthew-murray.json",
+    "a-little-night-music-2009/theater-life--eric-march.json"
   ],
   "failed": [
     "bug-2026/oneminutecritic--matthew-wexler.json",
@@ -141,7 +144,14 @@
     "9-to-5-2009/amny--unknown.json",
     "9-to-5-2009/bloomberg--unknown.json",
     "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
-    "9-to-5-2009/nbcny--unknown.json"
+    "9-to-5-2009/nbcny--unknown.json",
+    "a-life-in-the-theatre-2010/ap--mark-kennedy.json",
+    "a-life-in-the-theatre-2010/backstage--david-sheward.json",
+    "a-life-in-the-theatre-2010/broadwayworld--michael-dale.json",
+    "a-life-in-the-theatre-2010/village-voice--michael-feingold.json",
+    "a-little-night-music-2009/backstage--erik-haagensen.json",
+    "a-little-night-music-2009/times-union--steve-barnes.json",
+    "a-raisin-in-the-sun-2014/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -179,19 +189,19 @@
       "the-prom-2018/diandra-reviews-it-all--diandra-rivera.json",
       "the-prom-2018/theatre-reviews-limited--joseph-verlezza.json",
       "torch-song-2018/theatre-reviews-limited--david-roberts.json",
-      "water-for-elephants-2024/theatre-reviews-limited--david-roberts.json"
+      "water-for-elephants-2024/theatre-reviews-limited--david-roberts.json",
+      "a-chorus-line-2006/the-stage-uk--david-benedict.json",
+      "a-little-night-music-2009/theater-life--eric-march.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/bright-star-2016/nytimes--charles-isherwood.json",
-      "bright-star-2016/nytimes--charles-isherwood.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
       "funny-girl-2022/thewrap--robert-hofler.json",
       "is-this-a-room-2021/thewrap--robert-hofler.json",
       "junk-2017/timeout--christopher-kelly.json",
-      "torch-song-2018/cititour--brian-scott-lipton.json"
+      "torch-song-2018/cititour--brian-scott-lipton.json",
+      "a-life-in-the-theatre-2010/talkinbroadway--matthew-murray.json"
     ],
     "archiveToday": [
       "data/review-texts/chicago-1996/ap--mark-kennedy.json",
@@ -226,7 +236,13 @@
       "data/review-texts/wonderland-2011/bloomberg-news--phillip-boroff.json",
       "data/review-texts/harmony-2023/theatrely--juan-a-ramirez.json",
       "data/review-texts/once-upon-a-one-more-time-2023/theatrely--olivia-clement.json",
-      "data/review-texts/33-variations-2009/talkinbroadway--matthew-murray.json"
+      "data/review-texts/33-variations-2009/talkinbroadway--matthew-murray.json",
+      "data/review-texts/a-life-in-the-theatre-2010/ap--mark-kennedy.json",
+      "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json",
+      "data/review-texts/a-life-in-the-theatre-2010/broadwayworld--michael-dale.json",
+      "data/review-texts/a-little-night-music-2009/backstage--erik-haagensen.json",
+      "data/review-texts/a-little-night-music-2009/times-union--steve-barnes.json",
+      "data/review-texts/a-raisin-in-the-sun-2014/ap--mark-kennedy.json"
     ],
     "archive": [
       "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
@@ -246,6 +262,6 @@
     ]
   },
   "startTime": "2026-02-17T04:20:37.041Z",
-  "lastProcessed": "9-to-5-2009/nbcny--unknown.json",
+  "lastProcessed": "a-raisin-in-the-sun-2014/ap--mark-kennedy.json",
   "log": []
 }
