@@ -59,8 +59,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     shortLabel: 'Skippable',
     minScore: 55,
     maxScore: 64,
-    color: 'text-orange-400',     // Orange
-    bgColor: 'bg-orange-400/20',
+    color: 'text-orange-500',     // Orange (darker, distinct from Must-See gold)
+    bgColor: 'bg-orange-500/20',
     description: 'Optional. Fine to miss unless you\'re a completist or super fan.',
   },
   {
