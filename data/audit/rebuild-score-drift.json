@@ -1,15 +1,31 @@
 {
-  "timestamp": "2026-02-17T03:58:00.627Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-02-17T09:04:30.752Z",
+  "totalDrifted": 3,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "betrayal-2013",
+      "showId": "aladdin-2014",
+      "outlet": "NBC New York",
+      "critic": "Dave Quinn",
+      "oldScore": 60,
+      "newScore": 79,
+      "delta": 19
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
       "outlet": "New York Theater",
-      "critic": "Scott Proudfit",
-      "oldScore": 80,
-      "newScore": 100,
-      "delta": 20
+      "critic": "Jonathan Mandell",
+      "oldScore": 79,
+      "newScore": 62,
+      "delta": 17
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "oldScore": 77,
+      "newScore": 64,
+      "delta": 13
     }
   ]
 }
