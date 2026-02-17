@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-17T12:42:28.377Z",
+  "runDate": "2026-02-17T13:04:38.427Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -22,7 +22,7 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 4,
-    "archiveToday": 86,
+    "archiveToday": 88,
     "archive": 1
   },
   "statistics": {
@@ -30,33 +30,32 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 6,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 95,
     "tier2Success": 0,
     "tier3Attempts": 95,
     "tier3Success": 6,
     "tier3_6Attempts": 88,
-    "tier3_6Success": 86,
-    "tier4Attempts": 13,
-    "tier4Success": 1,
+    "tier3_6Success": 88,
+    "tier4Attempts": 11,
+    "tier4Success": 0,
     "totalFailed": 95,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "gypsy-2024/newyorker--naomi-fry.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-    "lombardi-2010/newyorker--uncredited.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
   ],
   "failed": [
-    "book-of-mormon-2011/newyorker--hilton-als.json",
     "hadestown-2019/newyorker--hilton-als.json",
     "hells-kitchen-2024/newyorker--naomi-fry.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
@@ -79,7 +78,6 @@
     "all-my-sons-2019/newyorker--hilton-als.json",
     "all-the-way-2014/newyorker--hilton-als.json",
     "almost-famous-2022/newyorker--naomi-fry.json",
-    "american-psycho-2016/newyorker--hilton-als.json",
     "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
     "anastasia-2017/newyorker--hilton-als.json",
     "angels-in-america-2018/newyorker--hilton-als.json",
@@ -88,7 +86,6 @@
     "beetlejuice-2019/newyorker--hilton-als.json",
     "bernhardthamlet-2018/newyorker--hilton-als.json",
     "betrayal-2013/newyorker--john-lahr.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "cabaret-2014/newyorker--hilton-als.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
@@ -137,6 +134,7 @@
     "leopoldstadt-2022/newyorker--vinson-cunningham.json",
     "les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
     "linda-vista-2019/newyorker--hilton-als.json",
+    "lombardi-2010/newyorker--uncredited.json",
     "long-days-journey-into-night-2016/newyorker--hilton-als.json",
     "machinal-2014/newyorker--hilton-als.json",
     "mcneal-2024/newyorker--naomi-fry.json",
@@ -150,7 +148,9 @@
     "ohio-state-murders-2022/newyorker--naomi-fry.json",
     "ohio-state-murders-2022/newyorker--vinson-cunningham.json",
     "oklahoma-2019/newyorker--hilton-als.json",
-    "old-times-2015/newyorker--hilton-als.json"
+    "old-times-2015/newyorker--hilton-als.json",
+    "on-the-town-2014/newyorker--hilton-als.json",
+    "passing-strange-2008/newyorker--hilton-als.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -184,15 +184,14 @@
       "data/review-texts/all-my-sons-2019/newyorker--hilton-als.json",
       "data/review-texts/all-the-way-2014/newyorker--hilton-als.json",
       "data/review-texts/almost-famous-2022/newyorker--naomi-fry.json",
-      "data/review-texts/american-psycho-2016/newyorker--hilton-als.json",
       "data/review-texts/an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
       "data/review-texts/anastasia-2017/newyorker--hilton-als.json",
       "data/review-texts/angels-in-america-2018/newyorker--hilton-als.json",
+      "data/review-texts/anything-goes-2011/newyorker--john-lahr.json",
       "data/review-texts/august-osage-county-2007/newyorker--hilton-als.json",
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
       "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
-      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
       "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json",
       "data/review-texts/clydes-2021/newyorker--hilton-als.json",
@@ -236,6 +235,7 @@
       "data/review-texts/leopoldstadt-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
       "data/review-texts/linda-vista-2019/newyorker--hilton-als.json",
+      "data/review-texts/lombardi-2010/newyorker--uncredited.json",
       "data/review-texts/long-days-journey-into-night-2016/newyorker--hilton-als.json",
       "data/review-texts/machinal-2014/newyorker--hilton-als.json",
       "data/review-texts/mcneal-2024/newyorker--naomi-fry.json",
@@ -249,20 +249,14 @@
       "data/review-texts/ohio-state-murders-2022/newyorker--naomi-fry.json",
       "data/review-texts/ohio-state-murders-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/oklahoma-2019/newyorker--hilton-als.json",
-      "data/review-texts/old-times-2015/newyorker--hilton-als.json"
+      "data/review-texts/old-times-2015/newyorker--hilton-als.json",
+      "data/review-texts/on-the-town-2014/newyorker--hilton-als.json",
+      "data/review-texts/passing-strange-2008/newyorker--hilton-als.json"
     ],
     "archive": [
-      "lombardi-2010/newyorker--uncredited.json"
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 2,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
