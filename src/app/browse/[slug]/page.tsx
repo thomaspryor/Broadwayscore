@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSche
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
+import { ScoreBadge } from '@/components/show-cards';
 
 export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
@@ -53,46 +54,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       }],
     },
   };
-}
-
-function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount?: number }) {
-  // Show TBD if fewer than 5 reviews
-  if (reviewCount !== undefined && reviewCount < 5) {
-    return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-xs sm:text-sm rounded-lg sm:rounded-xl">
-        TBD
-      </div>
-    );
-  }
-
-  if (score === undefined || score === null) {
-    return (
-      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
-        -
-      </div>
-    );
-  }
-
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-
-  if (roundedScore >= 85) {
-    colorClass = 'score-must-see';
-  } else if (roundedScore >= 75) {
-    colorClass = 'score-great';
-  } else if (roundedScore >= 65) {
-    colorClass = 'score-good';
-  } else if (roundedScore >= 55) {
-    colorClass = 'score-tepid';
-  } else {
-    colorClass = 'score-skip';
-  }
-
-  return (
-    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
-      {roundedScore}
-    </div>
-  );
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -270,7 +231,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                 </div>
 
                 {/* Score - slightly smaller on mobile */}
-                <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} />
+                <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} size="sm" />
               </Link>
             ))}
           </div>
