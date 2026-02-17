@@ -3946,8 +3946,17 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // POST-SCRAPE VALIDATION FLAGS (Phase 1)
   // ========================================
 
-  // 1A. Show title mention check (heuristic fallback — skipped when LLM verified)
-  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && cleanedText.length > 500) {
+  // 1A. Show title mention check
+  // If LLM verified the content → clear any stale showNotMentioned flag (LLM is a stronger signal)
+  // If no LLM verification → fall back to heuristic title check
+  if (contentVerification && contentVerification.verifiedBy?.startsWith('llm:')) {
+    // LLM confirmed content is correct — clear stale flag from previous bad fetches
+    if (data.showNotMentioned) {
+      console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
+      delete data.showNotMentioned;
+      delete data._showNotMentionedDiscoveryAttempted;
+    }
+  } else if (cleanedText.length > 500) {
     const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
     const showId = data.showId || review.showId || '';
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
@@ -4181,9 +4190,11 @@ function loadState() {
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], browserbase: [], scrapingbee: [], brightdata: [], archive: [] };
+          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
-          if (!state.tierBreakdown.browserbase) state.tierBreakdown.browserbase = [];
+          for (const key of ['playwright', 'amp', 'browserbase', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
+            if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
+          }
         }
         if (!state.log) state.log = [];
         return true;
@@ -5148,13 +5159,13 @@ function generateReport() {
         : '0%',
     },
     tierBreakdown: {
-      playwright: state.tierBreakdown.playwright.length,
+      playwright: state.tierBreakdown.playwright?.length || 0,
       amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
-      scrapingbee: state.tierBreakdown.scrapingbee.length,
-      brightdata: state.tierBreakdown.brightdata.length,
+      scrapingbee: state.tierBreakdown.scrapingbee?.length || 0,
+      brightdata: state.tierBreakdown.brightdata?.length || 0,
       archiveToday: state.tierBreakdown.archiveToday?.length || 0,
-      archive: state.tierBreakdown.archive.length,
+      archive: state.tierBreakdown.archive?.length || 0,
     },
     statistics: {
       tier1Attempts: stats.tier1Attempts,
