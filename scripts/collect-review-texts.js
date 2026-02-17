@@ -4342,14 +4342,9 @@ function commitChanges(processed) {
           throw new Error('Could not sync with remote');
         }
       } catch (syncErr) {
-        // Last resort: force push just our data changes
-        // This is safe because we're only adding/modifying data/review-texts files
-        console.log('    Attempting force push for data files only...');
-        try {
-          execSync('git push origin HEAD:main --force-with-lease', { stdio: 'pipe' });
-        } catch (forceErr) {
-          throw new Error(`Push failed: ${forceErr.message}`);
-        }
+        // Don't force push — it can overwrite parallel runs' data.
+        // The final workflow commit step will catch any uncommitted data.
+        console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${syncErr.message}`);
       }
 
       console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
