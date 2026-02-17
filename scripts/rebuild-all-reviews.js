@@ -1588,12 +1588,29 @@ showDirs.forEach(showId => {
       // Skip reviews where show title was never mentioned AND there are no aggregator excerpts
       // Reviews with valid excerpts from DTLI/BWW/ShowScore are likely legitimate even without title match
       if (data.showNotMentioned === true) {
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
-        if (!hasExcerpt) {
-          stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
-          return;
+        // Safety net: if fullText exists and mentions the show, clear the stale flag
+        // This catches cases where collect-review-texts.js fetched good content but didn't clear the flag
+        if (data.fullText && data.fullText.length > 300) {
+          const showTitle = (data.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+          const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
+          const textLower = data.fullText.substring(0, 5000).toLowerCase();
+          if (textLower.includes(showTitle) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
+            data.showNotMentioned = false;
+            delete data._showNotMentionedDiscoveryAttempted;
+            stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
+            // Write fix back to source file
+            try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          }
         }
-        stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
+
+        if (data.showNotMentioned === true) {
+          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
+          if (!hasExcerpt) {
+            stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+            return;
+          }
+          stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
+        }
       }
 
       // Cross-show duplicate text detection: skip if this fullText was already seen under a different show
@@ -2246,6 +2263,9 @@ if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
 }
 console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
+if (stats.showNotMentionedAutoCleared > 0) {
+  console.log(`  Auto-cleared stale showNotMentioned (fullText valid): ${stats.showNotMentionedAutoCleared}`);
+}
 if (stats.showNotMentionedWithExcerpts > 0) {
   console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
 }
