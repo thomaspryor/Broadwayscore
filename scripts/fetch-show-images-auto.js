@@ -39,6 +39,9 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 let dryRunMode = false;
 let dryRunResults = [];
 
+// Module-level shows data (loaded in main, referenced by processOneShow guard)
+let allShowsData = null;
+
 // ============================================================
 // PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
 // These were hand-selected or restored by human review.
@@ -1625,6 +1628,26 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     return null;
   }
 
+  // Guard: skip closed shows that have a newer production with the same title.
+  // TodayTix/SERP only return current production art — using it for older productions
+  // creates duplicate images across revivals (e.g., Ragtime 2009 gets Ragtime 2025's poster).
+  if (show.status === 'closed') {
+    const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+    const newerProduction = allShowsData.shows.find(s => {
+      if (s.id === show.id) return false;
+      const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+      if (sBase !== baseTitle) return false;
+      // Newer = has a later opening date
+      const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
+      const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
+      return sYear > showYear;
+    });
+    if (newerProduction) {
+      console.log(`   ⚠ SKIPPING ${show.id} — newer production "${newerProduction.id}" exists (would get duplicate image)`);
+      return null;
+    }
+  }
+
   // Try matching against TodayTix API data (instant, no HTTP call)
   const apiData = matchTodayTixShow(show.title, apiLookup);
 
@@ -1854,6 +1877,7 @@ async function main() {
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  allShowsData = showsData;
 
   // ============================================================
   // AUDIT-EXISTING MODE: Scan current images through Gemini (REPORT-ONLY)
@@ -1994,6 +2018,33 @@ async function main() {
 
   // Use concurrent processing for large batches, sequential for small
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData);
+
+  // Post-fetch duplicate image detection: hash all thumbnails, null out duplicates
+  if (!dryRunMode && results.success.length > 0) {
+    const crypto = require('crypto');
+    const hashMap = new Map(); // hash → first show id
+    let dupeCount = 0;
+    for (const s of showsData.shows) {
+      const thumb = s.images?.thumbnail;
+      if (!thumb || !thumb.startsWith('/images/')) continue;
+      const fullPath = path.join(__dirname, '..', 'public', thumb);
+      if (!fs.existsSync(fullPath)) continue;
+      const hash = crypto.createHash('md5').update(fs.readFileSync(fullPath)).digest('hex');
+      if (hashMap.has(hash)) {
+        const firstId = hashMap.get(hash);
+        console.log(`   ⚠ DUPLICATE IMAGE: ${s.id} has same image as ${firstId} — nulling ${s.id}`);
+        s.images.thumbnail = null;
+        s.images.poster = null;
+        s.images.hero = null;
+        dupeCount++;
+      } else {
+        hashMap.set(hash, s.id);
+      }
+    }
+    if (dupeCount > 0) {
+      console.log(`   🔍 Nulled ${dupeCount} duplicate images`);
+    }
+  }
 
   // Final save (skip in dry-run mode)
   if (results.success.length > 0 && !dryRunMode) {
