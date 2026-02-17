@@ -130,7 +130,7 @@ function TopCriticLabel() {
   return (
     <span
       className="hidden md:inline text-[10px] font-semibold uppercase tracking-wide text-blue-400"
-      title="Major national publication (Tier 1)"
+      title="Top Critic — major national publication"
     >
       Top Critic
     </span>
