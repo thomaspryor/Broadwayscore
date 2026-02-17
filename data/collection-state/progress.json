@@ -75,7 +75,8 @@
     "kpop-2022/exeunt-magazine--loren-noveck.json",
     "kpop-2022/exeunt-nyc--loren-noveck.json",
     "lackawanna-blues-2021/theater-life--barry-gordin.json",
-    "liberation-2025/pages-on-stages--mason-pilevsky.json"
+    "liberation-2025/pages-on-stages--mason-pilevsky.json",
+    "long-days-journey-into-night-2016/latimes--unknown.json"
   ],
   "failed": [
     "the-lion-king-1997/cleveland-plain-dealer--marianne-evett.json",
@@ -201,7 +202,16 @@
     "la-cage-aux-folles-2010/the-times-clive-davis--clive-davis.json",
     "long-days-journey-into-night-2016/curtainup--elyse-sommer.json",
     "long-days-journey-into-night-2016/huffpost--unknown.json",
-    "long-days-journey-into-night-2016/labor-press--leonard-golubchick.json"
+    "long-days-journey-into-night-2016/labor-press--leonard-golubchick.json",
+    "long-days-journey-into-night-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+    "lysistrata-jones-2011/backstage--david-sheward.json",
+    "master-class-2011/ap--mark-kennedy.json",
+    "master-class-2011/backstage--erik-haagensen.json",
+    "master-class-2011/broadwayworld--michael-dale.json",
+    "master-class-2011/dailybeast--john-anderson.json",
+    "master-class-2011/scheckontheater--frank-scheck.json",
+    "master-class-2011/village-voice--michael-feingold.json",
+    "master-class-2011/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -270,7 +280,9 @@
       "john-lithgow-stories-by-heart-2018/huffpost--david-tereschuck.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "long-days-journey-into-night-2016/latimes--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/collected-stories-2010/bloombeg-news--jeremy-gerard.json",
@@ -317,7 +329,11 @@
       "data/review-texts/hello-dolly-2017/peconic-public-broadcasting--david-richardson.json",
       "data/review-texts/john-lithgow-stories-by-heart-2018/curtainup--elyse-sommer.json",
       "data/review-texts/john-lithgow-stories-by-heart-2018/gotham-playgoer--robert-sholiton.json",
-      "data/review-texts/long-days-journey-into-night-2016/curtainup--elyse-sommer.json"
+      "data/review-texts/long-days-journey-into-night-2016/curtainup--elyse-sommer.json",
+      "data/review-texts/long-days-journey-into-night-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/master-class-2011/ap--mark-kennedy.json",
+      "data/review-texts/master-class-2011/dailybeast--john-anderson.json",
+      "data/review-texts/master-class-2011/scheckontheater--frank-scheck.json"
     ],
     "archive": [
       "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
@@ -342,6 +358,6 @@
     ]
   },
   "startTime": "2026-02-17T17:10:41.531Z",
-  "lastProcessed": "long-days-journey-into-night-2016/labor-press--leonard-golubchick.json",
+  "lastProcessed": "master-class-2011/village-voice--michael-musto.json",
   "log": []
 }
