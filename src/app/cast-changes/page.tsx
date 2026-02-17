@@ -6,6 +6,7 @@ import type { CastEvent } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
+import { ScoreBadge } from '@/components/show-cards';
 
 export const metadata: Metadata = {
   title: 'Broadway Cast Changes - Upcoming Departures, Arrivals & Stunt Casting',
@@ -151,17 +152,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
           </h3>
           <p className="text-xs text-gray-500">{show.venue}</p>
         </div>
-        {score !== undefined && score !== null && (
-          <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold ${
-            score >= 85 ? 'score-must-see' :
-            score >= 75 ? 'score-great' :
-            score >= 65 ? 'score-good' :
-            score >= 55 ? 'score-tepid' :
-            'score-skip'
-          }`}>
-            {Math.round(score)}
-          </div>
-        )}
+        <ScoreBadge score={score} size="sm" />
       </Link>
 
       {/* Events */}
