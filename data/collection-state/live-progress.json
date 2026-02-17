@@ -1,40 +1,17 @@
 {
-  "updatedAt": "2026-02-17T03:53:13.920Z",
-  "processed": 4,
-  "failed": 7,
-  "successRate": "36.4%",
+  "updatedAt": "2026-02-17T03:54:13.395Z",
+  "processed": 101,
+  "failed": 119,
+  "successRate": "45.9%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 66,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 3
+    "brightdata": 10,
+    "archiveToday": 48,
+    "archive": 25
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-17T03:49:15.789Z",
-      "event": "bb-session",
-      "session": "80784124",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
-    },
-    {
-      "t": "2026-02-17T03:49:17.861Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-17T03:50:55.268Z",
-      "event": "bb-session",
-      "session": "8a4f4cb3",
-      "url": "https://www.wsj.com/arts-culture/theater/maybe-happy-ending-review-broadway-musi"
-    },
-    {
-      "t": "2026-02-17T03:50:57.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
