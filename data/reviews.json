@@ -4,31 +4,31 @@
     "lastUpdated": "2026-02-17",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16070,
-      "skippedNoScore": 1091,
-      "skippedDuplicate": 96,
-      "skippedDuplicateUrl": 315,
-      "skippedCrossOutletDuplicateUrl": 28,
-      "skippedDuplicateText": 527,
-      "skippedFingerprintDedup": 69,
-      "skippedUnknownCriticDedup": 247,
-      "skippedWrongProduction": 2023,
-      "recoveredFromGarbage": 99,
+      "totalReviews": 16010,
+      "skippedNoScore": 1070,
+      "skippedDuplicate": 98,
+      "skippedDuplicateUrl": 313,
+      "skippedCrossOutletDuplicateUrl": 31,
+      "skippedDuplicateText": 538,
+      "skippedFingerprintDedup": 79,
+      "skippedUnknownCriticDedup": 245,
+      "skippedWrongProduction": 2042,
+      "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 0,
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
-        "human-review": 65,
-        "originalScore-priority0": 1715,
-        "llmScore": 10708,
+        "human-review": 67,
+        "originalScore-priority0": 1729,
+        "llmScore": 10724,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3545,
+        "llmScore-lowconf": 3457,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 12
+        "thumb": 11
       }
     }
   },
@@ -4094,7 +4094,7 @@
       "pullQuote": "What it lacks, just a little, is cheer.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -15639,7 +15639,7 @@
       "pullQuote": "When by the end all is revealed, the play explodes into three powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "all-my-sons-2019",
@@ -18989,6 +18989,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "amelie-a-new-musical-2017",
+      "outletId": "front-row-center",
+      "outlet": "Front Row Center",
+      "assignedScore": 59,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Casey Curtis",
+      "url": "https://thefrontrowcenter.com/2017/04/a-homily-for-amelie/",
+      "publishDate": "2017-04-08T11:13:49",
+      "originalRating": null,
+      "pullQuote": "If you have never seen the movie, there is much to be enjoyed in this musical.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -27087,23 +27104,6 @@
     },
     {
       "showId": "art-2025",
-      "outletId": "ap",
-      "outlet": "Associated Press",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Mark Kennedy",
-      "url": "https://apnews.com/article/art-broadway-review-2025-cad36d5e3c340bcb0101604163c7f999",
-      "publishDate": "September 16, 2025",
-      "originalRating": null,
-      "pullQuote": "Under Scott Ellis' tight and enthralling direction and with three perfectly cast actors who seem to be having a ball at the Theatre, \"Art\" frequently erupts in laughter but still has plenty to say about friendship, power dynamics and how we get on each others' nerves.",
-      "dtliThumb": "Up",
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "art-2025",
       "outletId": "chicagotribune",
       "outlet": "Chicago Tribune",
       "assignedScore": 78,
@@ -27168,23 +27168,6 @@
       "pullQuote": "This production eventually rewards our patience, even if we sometimes wish for quicker brushstrokes.",
       "dtliThumb": "Meh",
       "bwwThumb": "Up",
-      "contentTier": "complete"
-    },
-    {
-      "showId": "art-2025",
-      "outletId": "frontmezzjunkies",
-      "outlet": "Front Mezz Junkies",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Ross",
-      "url": "https://frontmezzjunkies.com/2025/11/17/art-on-broadway/",
-      "publishDate": "November 17, 2025",
-      "originalRating": null,
-      "pullQuote": "This revival offers a pleasant enough evening with three talented performers, but like Serge's prized white canvas, it ultimately left me admiring the polish more than the substance.",
-      "dtliThumb": null,
-      "bwwThumb": null,
       "contentTier": "complete"
     },
     {
@@ -27417,7 +27400,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Susie Goldsbrough",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52#:~:text=Art%20review%20%E2%80%94%20James%20Corden,in%20a%20zippy%20Broadway%20show&text=Wednesday%20September%2017%202025%2C%203.00am,The%20Times",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Corden is, unsurprisingly, the stand-out: at one point he bursts in and unleashes a rib-cracking five-minute monologue",
@@ -30031,7 +30014,7 @@
       "outletId": "broadway-blog",
       "outlet": "Broadway Blog",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Wexler",
@@ -30041,7 +30024,7 @@
       "pullQuote": "In that spirit, I’d say Be More Chill, in spite of its directorial inconsistencies, is a pill worth swallowing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "be-more-chill-2019",
@@ -33095,7 +33078,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Terry Teachout",
-      "url": "https://www.wsj.com/articles/bernhardt-hamlet-review-she-that-plays-the-prince-1537992031",
+      "url": "https://www.wsj.com/articles/brooklyn-playwright-cooks-up-dinner-theater-1532629422#:~:text=Rebeck%20is%20such%20a%20popular,Sarah%20Bernhardt's%20tackling%20of%20the",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "The result is the worst of both worlds, a preachy backstage farce.",
@@ -33464,14 +33447,14 @@
       "showId": "betrayal-2013",
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Scott Proudfit",
       "url": "https://newyorktheater.me/2013/10/27/betrayal-broadway-reviews/",
       "publishDate": "November 1, 2013",
-      "originalRating": null,
+      "originalRating": "5/5",
       "pullQuote": "Daniel Craig, Rachel Weisz and Rafe Spall deliver powerhouse performances in Harold Pinter's masterpiece",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -48751,23 +48734,6 @@
     },
     {
       "showId": "chaplin-2012",
-      "outletId": "northjerseycom",
-      "outlet": "NorthJersey.com",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Robert Feldberg",
-      "url": "https://www.northjersey.com/story/entertainment/theater/2016/08/12/theater-review-new-milfords-rob-mcclure-in-something-rotten/92943058/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "'Chaplin' is a mixture of the imaginative and the timeworn.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "chaplin-2012",
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 55,
@@ -50424,7 +50390,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Terry Teachout",
-      "url": "https://www.wsj.com/articles/review-ad-libs-ad-innitum-1512519448?gaa_at=eafs&amp;gaa_n=AWEtsqfuOS5QFPCbuOau9VD2fQeX_IUq_BPeJfmT0a4QHvhGfe0-YNodyNKu&amp;gaa_ts=6993aa80&amp;gaa_sig=EIyLRCIoTu3J7sHbRtOWJtB795Wh-97JEgbtMbQwoty8hz0ePn_BNS7mHPfs4FkJzCseMGT9c_lmfuXnh_NI4Q%3D%3D#:~:text=But%20in%20Chicago%20something%20very,up%20as%20they%20went%20along.",
+      "url": "https://www.wsj.com/articles/review-ad-libs-ad-innitum-1512519448?gaa_at=eafs&gaa_n=AWEtsqfuOS5QFPCbuOau9VD2fQeX_IUq_BPeJfmT0a4QHvhGfe0-YNodyNKu&gaa_ts=6993aa80&gaa_sig=EIyLRCIoTu3J7sHbRtOWJtB795Wh-97JEgbtMbQwoty8hz0ePn_BNS7mHPfs4FkJzCseMGT9c_lmfuXnh_NI4Q%3D%3D#:~:text=But%20in%20Chicago%20something%20very,up%20as%20they%20went%20along.",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Chinglish is a one-joke show, the joke being that none of the Chinese characters, the translators very much included, can speak English well enough to make themselves fully understood",
@@ -57435,23 +57401,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "cost-of-living-2022",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 86,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Aramide Tinubu",
-      "url": "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/",
-      "publishDate": "October 19, 2022",
-      "originalRating": null,
-      "pullQuote": "Martyna Majok's Pulitzer Prize-winning 'Cost of Living' is a deeply moving exploration of intimacy, disability and human connection that feels both universal and achingly specific.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "cost-of-living-2022",
@@ -80994,7 +80943,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2015/04/20/theater/review-fun-home-at-the-circle-in-the-square-theater.html",
+      "url": "https://www.nytimes.com/2015/04/20/theater/review-fun-home-at-the-circle-in-the-square-theater.html#:~:text=The%20focus%20keeps%20changing%20in,woman%20whose%20memory%20we%20inhabit.",
       "publishDate": "April 19, 2015",
       "originalRating": null,
       "pullQuote": "This touching and forceful musical adaptation brings an authentic new voice to Broadway.",
@@ -84723,7 +84672,7 @@
       "pullQuote": "They may be weak, craven shells of men, but they close on one of the biggest deals of the season.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "glengarry-glen-ross-2012",
@@ -94398,7 +94347,7 @@
       "pullQuote": "While not as dull as watching paint dry on a four-wheeler, Hardbody has too puny an engine to take anyone very far.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hands-on-a-hardbody-2013",
@@ -111407,6 +111356,23 @@
     },
     {
       "showId": "ink-2019",
+      "outletId": "medium",
+      "outlet": "Medium",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Christian Lewis",
+      "url": "https://clewisreviews.medium.com/review-journalism-drama-ink-is-as-sensational-as-its-subject-7c2c22bf9655#:~:text=get%20the%20free%20Medium%20app.,More%20from%20Christian%20Lewis",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Rupert Goold as director has a perfect handle on the material, making it speak to American audiences and our press culture of today without feeling forced.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "ink-2019",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 79,
@@ -111913,7 +111879,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -112186,6 +112152,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.nytimes.com/2022/07/11/theater/into-the-woods-review.html",
+      "publishDate": "July 11, 2022",
+      "originalRating": null,
+      "pullQuote": "This new revival, directed by Lear deBessonet, is both more faithful to Sondheim's original vision and more emotionally direct than many previous productions.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -114304,7 +114287,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/you-oughta-know-this-about-jagged-little-pill-its-hard-to-swallow-as-a-broadway-musical/2019/12/05/758de6c0-1702-11ea-8406-df3c54b3253e_story.html#:~:text=You%20oughta%20know%20this%20about,swallow%20as%20a%20Broadway%20musical.&amp;text=Review%20by%20Peter%20Marks,Although%20the%20songs",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/you-oughta-know-this-about-jagged-little-pill-its-hard-to-swallow-as-a-broadway-musical/2019/12/05/758de6c0-1702-11ea-8406-df3c54b3253e_story.html#:~:text=You%20oughta%20know%20this%20about,swallow%20as%20a%20Broadway%20musical.&text=Review%20by%20Peter%20Marks,Although%20the%20songs",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "'Jagged Little Pill,' the humorlessly banal new musical fashioned out of Alanis Morissette's agonized songbook, belongs to that burgeoning category of musical theater that cynically imagines any cycle of pop melodies can be repurposed for Broadway with the addition of a serviceable story.",
@@ -117372,7 +117355,7 @@
       "pullQuote": "If you don’t mind that the thrill is pointless, this one’s for you.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "job-2024",
@@ -124447,6 +124430,23 @@
       "contentTier": "truncated"
     },
     {
+      "showId": "kinky-boots-2013",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 77,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Christopher Bonanos",
+      "url": "https://www.vulture.com/2013/04/theater-review-kinky-boots.html",
+      "publishDate": "April 4, 2013",
+      "originalRating": null,
+      "pullQuote": "\"By 8:05 p.m., you can pretty much devise not only the storyline but how all the secondary characters and B plots are going to fit into it. These shoes come already broken in. Kinky Boots is a well-fitted, well-staged toe-tapper in the contemporary big-Broadway idiom.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "outletId": "adriandimanlig",
       "outlet": "Adriandimanlig",
@@ -125968,13 +125968,13 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
-      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/11/16/shorter-limit-to-limited-run-la-bete-to-close-five-weeks-early/",
+      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/05/24/la-bete-to-begin-previews-in-september/",
       "publishDate": "October 6, 2010",
       "originalRating": null,
       "pullQuote": "Mr. Hirsch turns Valere into a force of nature so torrential that you half-expect the St. James Theater to flood. This is a performance that redefines the phrase 'chewing the scenery.'",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "la-bete-2010",
@@ -131037,7 +131037,7 @@
       "url": "https://www.timeout.com/newyork/theater/les-miserables#:~:text=Les%20Mis%C3%A9rables%3A%20Theater%20review%20by,which%20ran%20for%2016%20years.",
       "publishDate": null,
       "originalRating": "3/5",
-      "pullQuote": "\"This redesigned and youthfully cast reboot, though, left me dry: It's strictly for existing fans. Digital backdrops are borrowed from Victor Hugo's own drawings, blown up and animated, giving scenes a storybook feel.",
+      "pullQuote": "It's strictly for existing fans.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -159210,7 +159210,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
-      "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/#:~:text=(L%2DR)%20Conrad%20Ricamora%20as%20Mary's,Broadway%20opening%20of%20%E2%80%9COh%2C%20Mary!",
+      "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
       "publishDate": "July 11, 2024",
       "originalRating": null,
       "pullQuote": "By the play's end, we're no wiser to the qualms of the mid-19th century (though that was hardly the point), but we are relaxed by the exercise of laughing for 75 minutes in our own beleaguered world.",
@@ -170663,6 +170663,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "outside-mullingar-2014",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2014/01/theater-review-outside-mullingar.html#:~:text=)%20To%20the%20extent%20people,Rosemary%20finally%20have%20their%20showdown.",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "There's not much to dislike about Outside Mullingar except its entirety.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
       "showId": "pal-joey-2008",
       "outletId": "nytimes",
       "outlet": "The New York Times",
@@ -175695,6 +175712,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "plaza-suite-2022",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 79,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Sara Holdren",
+      "url": "https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html",
+      "publishDate": "March 25, 2022",
+      "originalRating": null,
+      "pullQuote": "That one’s a cold cocktail frankfurter, I’ll tell you that.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
       "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
       "outletId": "cititour",
       "outlet": "Cititour",
@@ -177575,7 +177609,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Elysa Gardner",
-      "url": "https://www.usatoday.com/story/entertainment/2021/10/13/review-pretty-woman-musical-entertaining-problematic-romantic-comedy-adam-pascal-olivia-valli-stage/8433908002/#:~:text=Review%3A%20'Pretty%20Woman'%20stage%20musical,entertaining%20rom%2Dcom%2C%20but%20still%20problematic&amp;text=What%3A%20%E2%80%9CPretty%20Woman%20the%20Musical%E2%80%9D&amp;text=Written%20by%3A%20Garry%20Marshall%20and",
+      "url": "https://www.usatoday.com/story/entertainment/2021/10/13/review-pretty-woman-musical-entertaining-problematic-romantic-comedy-adam-pascal-olivia-valli-stage/8433908002/#:~:text=Review%3A%20'Pretty%20Woman'%20stage%20musical,entertaining%20rom%2Dcom%2C%20but%20still%20problematic&text=What%3A%20%E2%80%9CPretty%20Woman%20the%20Musical%E2%80%9D&text=Written%20by%3A%20Garry%20Marshall%20and",
       "publishDate": "August 16, 2018",
       "originalRating": null,
       "pullQuote": "The musical's formulaic approach and lack of emotional depth make it feel more like a glossy corporate product than a meaningful theatrical experience.",
@@ -177689,7 +177723,7 @@
       "showId": "prima-facie-2023",
       "outletId": "chelsea-community-news",
       "outlet": "Chelsea Community News",
-      "assignedScore": 82,
+      "assignedScore": 81,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
@@ -177697,7 +177731,7 @@
       "url": "https://chelseacommunitynews.com/2023/04/23/review-jodie-comer-makes-prima-facie-a-one-person-show-with-a-difference/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "And it does come as a real Broadway happening, thanks to crisp writing, a savvy physical production, and a powerhouse performance from Comer",
+      "pullQuote": "And it does come as a real Broadway happening, thanks to crisp writing, a savvy physical production, and a powerhouse performance from Comer.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -181455,7 +181489,7 @@
       "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
       "publishDate": null,
       "originalRating": "5/5",
-      "pullQuote": "Purpose is a big swing, but that’s what it takes to get a big hit.",
+      "pullQuote": "Purpose is a big swing, but that's what it takes to get a big hit.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -204801,7 +204835,7 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "George Hatza",
-      "url": "https://www.readingeagle.com/2017/03/26/lynn-nottages-sweat-about-reading-takes-its-broadway-bow/#:~:text=Stage%20review%3A%20'Sweat'%20emerges%20a,of%20our%20times%20(Dec.%2020)&amp;text=The%20Reading%20Eagle%20was%20invited,presented%20in%20a%20Broadway%20house.",
+      "url": "https://www.readingeagle.com/2017/03/26/lynn-nottages-sweat-about-reading-takes-its-broadway-bow/#:~:text=Stage%20review%3A%20'Sweat'%20emerges%20a,of%20our%20times%20(Dec.%2020)&text=The%20Reading%20Eagle%20was%20invited,presented%20in%20a%20Broadway%20house.",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Indeed, \"Sweat\" has a political message to impart, and it does so with conviction and a style teeming with grittiness and breathtaking poetry.",
@@ -217378,7 +217412,7 @@
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
       "outletId": "boston-herald",
       "outlet": "Boston Herald",
-      "assignedScore": 92,
+      "assignedScore": 93,
       "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
@@ -224444,7 +224478,7 @@
       "pullQuote": "Wendy Wasserstein's The Heidi Chronicles has always been backward-looking: It traces the journey of its heroine, feminist art historian Heidi Holland (Mad Men's Elisabeth Moss), through nearly 25 years of American cultural shifts, from the idealism of the 1960s through the self-centeredness of the late 1980s.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-heidi-chronicles-2015",
@@ -227964,7 +227998,7 @@
       "pullQuote": "A mighty, shout-it-from-the-rooftop-bars yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-inheritance-2019",
@@ -229390,6 +229424,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "But its hurried second act doesn’t deliver on the first’s more in-depth investigations of class, ethnicity, and of who gets to escape versus who must stay in a decaying country.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-kite-runner-2022",
+      "outletId": "thewrap",
+      "outlet": "TheWrap",
+      "assignedScore": 44,
+      "scoreSource": "llmScore",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Robert Hofler",
+      "url": "https://www.thewrap.com/the-kite-runner-broadway-review-khaled-hosseini/#:~:text='The%20Kite%20Runner'%20Broadway%20Review%3A,a%20play%20by%20Matthew%20Spangler",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Spangler's writing relies on the unconscionable horrors of the Taliban to keep us engaged.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -231660,15 +231711,15 @@
       "showId": "the-lion-king-1997",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
+      "assignedScore": 76,
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ben Brantley",
       "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twice-told-cosmic-tale.html#:~:text=Seen%20purely%20as%20a%20visual,Julie%20Taymor%20and%20Hans%20Zimmer.",
       "publishDate": "November 14, 1997",
       "originalRating": null,
-      "pullQuote": "There is simply nothing else like it. Julie Taymor has taken the sweet but somewhat insubstantial story of the Disney movie and transformed it into a meditation on the great cycle of life.",
+      "pullQuote": "Still, 'The Lion King' remains an important work in a way that 'Beauty and the Beast' simply is not.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -232770,13 +232821,13 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Matthew Murray",
-      "url": "https://www.talkinbroadway.com/world/LittleMermaid.html",
+      "url": "https://www.talkinbroadway.com/world/LittleMermaid.html#:~:text=Menu&amp;text=Broadway%20Reviews,Mermaid%20Music%20by%20Alan%20Menken.",
       "publishDate": "January 11, 2008",
       "originalRating": "3/5 stars",
       "pullQuote": "The Little Mermaid is a show that wants desperately to be loved, and it's hard not to feel sorry for it when it tries so very hard yet achieves so very little.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-little-mermaid-2008",
@@ -235173,7 +235224,7 @@
       "pullQuote": "Nathan Lane gives a performance of such depth and humanity that it transforms what could have been a standard backstage weepie into something genuinely moving.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-nance-2013",
@@ -251178,7 +251229,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 32,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "David Cote",
@@ -252141,23 +252192,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "outletId": "nypost",
-      "outlet": "New York Post",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Johnny Oleksinski",
-      "url": "https://nypost.com/2018/10/26/elaine-may-is-brilliant-in-the-waverly-gallery/",
-      "publishDate": "October 26, 2018",
-      "originalRating": null,
-      "pullQuote": "Elaine May is brilliant as Gladys, a woman losing her mind to dementia while trying to keep her small Greenwich Village gallery afloat.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -254449,7 +254483,7 @@
       "url": "https://www.timeout.com/newyork/things-to-do/therese-raquin",
       "publishDate": null,
       "originalRating": "4/5",
-      "pullQuote": "Evan Cabnet's production does atmospheric justice to Thérèse's desperation.",
+      "pullQuote": "Cabnet's production does atmospheric justice to Thérèse's desperation.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -256663,6 +256697,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "time-stands-still-2010",
+      "outletId": "bloomberg",
+      "outlet": "Bloomberg",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "John Simon",
+      "url": "https://www.bloomberg.com/news/articles/2010-10-08/ditzy-ricci-joins-mangled-linney-in-time-stands-still-review",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "On second viewing, I found the play even more satisfying.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "time-stands-still-2010",
@@ -259334,6 +259385,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "outletId": "theatermania",
+      "outlet": "TheaterMania",
+      "assignedScore": 79,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.theatermania.com/news/review-corey-hawkins-becomes-a-star-in-new-broadway-revival-of-topdog-underdog_94441/",
+      "publishDate": "October 21, 2022",
+      "originalRating": null,
+      "pullQuote": "Parks's writing remains as sharp and clever as ever, and the production crackles with energy under Kenny Leon's direction.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "topdog-underdog-2022",
@@ -264040,7 +264108,7 @@
       "url": "https://www.timeout.com/newyork/theater/violet#:~:text=Sutton%20Foster%20takes%20a%20trip,Doris%20Betts's%20short%20story%20%E2%80%9C",
       "publishDate": "April 17, 2014",
       "originalRating": 80,
-      "pullQuote": "Sutton Foster gives a performance of exceptional depth and nuance in this moving musical about a scarred woman's journey toward self-acceptance.",
+      "pullQuote": "Though flawed on its face, Violet provides—as Flick sings in the show's best song—reason to rejoice.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
