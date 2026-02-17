@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
-import { getAudienceBuzz } from '@/lib/data-audience';
+import { getAudienceBuzz, getShowScoreUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -195,7 +195,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const castChangesData = getCastChanges(show.id);
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
-  const relatedShows = getRelatedShows(show);
+  const relatedShowsAll = getRelatedShows(show, 12);
+  const relatedShowsOpen = relatedShowsAll.filter(s => s.status === 'open' || s.status === 'previews').slice(0, 6);
+  const relatedShowsClosed = relatedShowsAll.filter(s => s.status === 'closed').slice(0, 6);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -561,7 +563,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           return (
             <AudienceBuzzCard
               buzz={audienceBuzz}
-              showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
+              showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
               limitedSources={isHistorical && sourceCount <= 1}
             />
           );
@@ -750,7 +752,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Related Shows */}
-        <RelatedShows shows={relatedShows} />
+        <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
+        <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
 
         {/* Footer */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
