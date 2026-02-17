@@ -138,9 +138,9 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                 Show
                 <SortIcon direction={sortDirection} active={sortColumn === 'show'} />
               </th>
-              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('score')}>
-                Score
-                <SortIcon direction={sortDirection} active={sortColumn === 'score'} />
+              <th className={`text-center ${headerClass}`} onClick={() => handleSort('grade')}>
+                Grade
+                <SortIcon direction={sortDirection} active={sortColumn === 'grade'} />
               </th>
               <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('showScore')}>
                 Show Score
@@ -153,10 +153,6 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
               <th className={`text-center hidden lg:table-cell ${headerClass}`} onClick={() => handleSort('reddit')}>
                 Reddit
                 <SortIcon direction={sortDirection} active={sortColumn === 'reddit'} />
-              </th>
-              <th className={`text-center ${headerClass}`} onClick={() => handleSort('grade')}>
-                Grade
-                <SortIcon direction={sortDirection} active={sortColumn === 'grade'} />
               </th>
             </tr>
           </thead>
@@ -179,41 +175,6 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                       {item.show.title}
                     </Link>
                   </td>
-                  <td className="py-3 px-4 text-center hidden sm:table-cell">
-                    <span className="text-xl font-bold" style={gradeInfo ? { color: gradeInfo.color } : undefined}>
-                      {buzz?.combinedScore || '—'}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-center hidden sm:table-cell">
-                    {buzz?.sources.showScore ? (
-                      <div>
-                        <span className="text-white font-medium">{buzz.sources.showScore.score}</span>
-                        <span className="text-gray-500 text-xs ml-1">({buzz.sources.showScore.reviewCount.toLocaleString()})</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden md:table-cell">
-                    {buzz?.sources.mezzanine ? (
-                      <div>
-                        <span className="text-white font-medium">{buzz.sources.mezzanine.score}</span>
-                        <span className="text-gray-500 text-xs ml-1">({buzz.sources.mezzanine.reviewCount.toLocaleString()})</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 text-center hidden lg:table-cell">
-                    {buzz?.sources.reddit ? (
-                      <div>
-                        <span className="text-white font-medium">{buzz.sources.reddit.score}</span>
-                        <span className="text-gray-500 text-xs ml-1">({buzz.sources.reddit.reviewCount})</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
                   <td className="py-3 px-4 text-center">
                     {gradeInfo ? (
                       <span
@@ -222,6 +183,27 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                       >
                         {gradeInfo.grade}
                       </span>
+                    ) : (
+                      <span className="text-gray-500">—</span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 text-center hidden sm:table-cell">
+                    {buzz?.sources.showScore ? (
+                      <span className="text-gray-400 text-sm">{buzz.sources.showScore.reviewCount.toLocaleString()} reviews</span>
+                    ) : (
+                      <span className="text-gray-500">—</span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 text-center hidden md:table-cell">
+                    {buzz?.sources.mezzanine ? (
+                      <span className="text-gray-400 text-sm">{buzz.sources.mezzanine.reviewCount.toLocaleString()} reviews</span>
+                    ) : (
+                      <span className="text-gray-500">—</span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 text-center hidden lg:table-cell">
+                    {buzz?.sources.reddit ? (
+                      <span className="text-gray-400 text-sm">{buzz.sources.reddit.reviewCount} comments</span>
                     ) : (
                       <span className="text-gray-500">—</span>
                     )}
