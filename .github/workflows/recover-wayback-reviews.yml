@@ -1,0 +1,149 @@
+name: Recover Wayback Reviews
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_urls:
+        description: 'Max URLs to process (0 = all ~718)'
+        required: false
+        default: '0'
+      tier_filter:
+        description: 'Only process specific tier (1, 2, 3, or empty for all)'
+        required: false
+        default: ''
+      domain_filter:
+        description: 'Only process specific domains (comma-separated)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Discovery only - no file writes'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  recover:
+    name: Recover reviews from Wayback Machine
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run Wayback recovery
+        env:
+          MAX_URLS: ${{ inputs.max_urls }}
+          TIER_FILTER: ${{ inputs.tier_filter }}
+          DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: node scripts/recover-wayback-reviews.js
+
+      - name: Final commit and push
+        if: always()
+        run: |
+          git add data/review-texts/ data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
+
+          git commit -m "feat: Recover $RECOVERED review texts from Wayback Machine
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin main && git push origin main && break || {
+              echo "Push attempt $i failed, retrying..."
+              git rebase --abort 2>/dev/null || true
+              sleep $((RANDOM % 10 + 5))
+            }
+          done
+
+      - name: Trigger rebuild
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
+
+          if [ "$RECOVERED" -gt "0" ]; then
+            echo "Triggering rebuild for $RECOVERED recovered reviews..."
+            gh workflow run "Rebuild Reviews Data" \
+              -f reason="Post Wayback recovery ($RECOVERED reviews)"
+          else
+            echo "No recoveries, skipping rebuild."
+          fi
+
+      - name: Upload recovery report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wayback-recovery-report
+          path: data/audit/wayback-recovery-report.json
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              const lines = [
+                '## Wayback Recovery Summary',
+                '',
+                '| Metric | Count |',
+                '|--------|-------|',
+                '| Candidates | ' + (r.totalCandidates || 0) + ' |',
+                '| CDX snapshots found | ' + (r.cdxFound || 0) + ' |',
+                '| Recovered (success) | ' + (r.recovered || 0) + ' |',
+                '|   via archive.today | ' + (r.archiveTodayRecovered || 0) + ' |',
+                '| Not in archive | ' + (r.notInArchive || 0) + ' |',
+                '| Too short (<300 chars) | ' + (r.tooShort || 0) + ' |',
+                '| Garbage content | ' + (r.garbage || 0) + ' |',
+                '| Errors | ' + (r.errors || 0) + ' |',
+                '',
+                '### By Tier',
+                '| Tier | Recovered |',
+                '|------|-----------|',
+                '| Tier 1 | ' + (r.recoveredByTier?.[1] || 0) + ' |',
+                '| Tier 2 | ' + (r.recoveredByTier?.[2] || 0) + ' |',
+                '| Tier 3 | ' + (r.recoveredByTier?.[3] || 0) + ' |',
+              ];
+              console.log(lines.join('\n'));
+            } catch(e) {
+              console.log('No report generated: ' + e.message);
+            }
+          " >> $GITHUB_STEP_SUMMARY
