@@ -393,9 +393,14 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   let filteredShows = allShows.filter(config.filter);
 
   if (config.sort === 'score') {
-    filteredShows = filteredShows.sort((a, b) =>
-      (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0)
-    );
+    filteredShows = filteredShows.sort((a, b) => {
+      const aScore = a.criticScore?.score;
+      const bScore = b.criticScore?.score;
+      if (aScore != null && bScore == null) return -1;
+      if (aScore == null && bScore != null) return 1;
+      if (aScore == null && bScore == null) return 0;
+      return bScore! - aScore!;
+    });
   } else if (config.sort === 'opening-date') {
     filteredShows = filteredShows.sort((a, b) =>
       new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
@@ -444,6 +449,15 @@ export function getAllBrowseSlugs(): string[] {
 /**
  * Get related shows — LLM-generated lookup with algorithmic fallback
  */
+// Strip year suffix to get base title for same-show detection
+function baseTitle(title: string): string {
+  return title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+}
+
+function isSameShow(a: ComputedShow, b: ComputedShow): boolean {
+  return a.id === b.id || baseTitle(a.title) === baseTitle(b.title);
+}
+
 export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
   const entry = (relatedShowsData as Record<string, unknown> & { shows: Record<string, { relatedIds: string[]; relatedOpenIds?: string[]; relatedClosedIds?: string[] }> }).shows?.[show.id];
   if (entry?.relatedIds?.length) {
@@ -451,9 +465,9 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     return entry.relatedIds
-      .slice(0, limit)
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null);
+      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show))
+      .slice(0, limit);
   }
   return getRelatedShowsAlgorithmic(show, limit);
 }
@@ -465,9 +479,9 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     return entry.relatedOpenIds
-      .slice(0, limit)
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews'));
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews') && !isSameShow(s, show))
+      .slice(0, limit);
   }
   // Fallback: filter algorithmic results to open/previews
   return getRelatedShowsAlgorithmic(show, limit * 3)
@@ -482,9 +496,9 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     return entry.relatedClosedIds
-      .slice(0, limit)
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && s.status === 'closed');
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show))
+      .slice(0, limit);
   }
   // Fallback: filter algorithmic results to closed
   return getRelatedShowsAlgorithmic(show, limit * 3)
@@ -532,7 +546,7 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
   };
 
   const scored = allShows
-    .filter(s => s.id !== show.id && (s.criticScore?.reviewCount ?? 0) >= 5)
+    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5)
     .map(candidate => {
       let score = 0;
 
