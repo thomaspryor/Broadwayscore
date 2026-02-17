@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { RushTable } from '@/components/SortableLotteryRushTables';
+import { ScoreBadge } from '@/components/show-cards';
 
 export const metadata: Metadata = {
   title: 'Broadway Rush Tickets - Same-Day Discount Tickets',
@@ -172,16 +173,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
-        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-lg sm:text-xl font-bold ${
-          score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-          score >= 85 ? 'score-must-see' :
-          score >= 75 ? 'score-great' :
-          score >= 65 ? 'score-good' :
-          score >= 55 ? 'score-tepid' :
-          'score-skip'
-        }`}>
-          {score !== undefined && score !== null ? Math.round(score) : '—'}
-        </div>
+        <ScoreBadge score={score} size="md" />
         <span className="text-xs text-gray-500 hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
