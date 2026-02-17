@@ -25,7 +25,7 @@ export const SCORE_TIERS = {
     label: 'Skippable',
     tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
     range: '55-64',
-    color: '#f59e0b',
+    color: '#d97706',
     glow: false,
   },
   stayAway: {
