@@ -7,8 +7,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getGoldListSeasons } from '@/lib/data-gold-list-badges';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Broadway Gold Lists',
@@ -27,7 +26,17 @@ export default function GoldListsIndex() {
   const seasons = getGoldListSeasons();
   const currentSeason = seasons[0] || '2024-2025';
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Gold Lists', url: `${BASE_URL}/lists` },
+  ]);
+
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+    />
     <div className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         {/* Breadcrumb */}
@@ -119,5 +128,6 @@ export default function GoldListsIndex() {
         </footer>
       </div>
     </div>
+    </>
   );
 }

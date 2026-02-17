@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge } from '@/components/show-cards';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -184,16 +185,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     {lottery?.platform || special?.platform || '—'}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold ${
-                      score === undefined || score === null ? 'bg-surface-overlay text-gray-500' :
-                      score >= 85 ? 'score-must-see' :
-                      score >= 75 ? 'score-great' :
-                      score >= 65 ? 'score-good' :
-                      score >= 55 ? 'score-tepid' :
-                      'score-skip'
-                    }`}>
-                      {score !== undefined && score !== null ? Math.round(score) : '—'}
-                    </div>
+                    <ScoreBadge score={score} size="sm" />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
@@ -387,16 +379,7 @@ export function RushTable({ data }: RushTableProps) {
                     </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold ${
-                      score === undefined || score === null ? 'bg-surface-overlay text-gray-500' :
-                      score >= 85 ? 'score-must-see' :
-                      score >= 75 ? 'score-great' :
-                      score >= 65 ? 'score-good' :
-                      score >= 55 ? 'score-tepid' :
-                      'score-skip'
-                    }`}>
-                      {score !== undefined && score !== null ? Math.round(score) : '—'}
-                    </div>
+                    <ScoreBadge score={score} size="sm" />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
