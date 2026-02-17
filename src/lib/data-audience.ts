@@ -4,6 +4,7 @@
 import type { AudienceBuzzDesignation, AudienceBuzzData } from './data-types';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import showsData from '../../data/shows.json';
+import showScoreUrlsData from '../../data/show-score-urls.json';
 
 interface AudienceBuzzFile {
   _meta: {
@@ -17,6 +18,7 @@ interface AudienceBuzzFile {
 
 const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
 const rawShows = showsData.shows as Array<{ id: string; slug: string }>;
+const showScoreUrls = (showScoreUrlsData as Record<string, unknown>).shows as Record<string, string> | undefined;
 
 /**
  * Get audience buzz data for a specific show by ID
@@ -127,6 +129,13 @@ export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
         borderClass: 'border-gray-500/25',
       };
   }
+}
+
+/**
+ * Get the correct Show Score URL for a show (from show-score-urls.json lookup)
+ */
+export function getShowScoreUrl(showId: string): string | undefined {
+  return showScoreUrls?.[showId] || undefined;
 }
 
 /**
