@@ -9,7 +9,9 @@
     "an-enemy-of-the-people-2012/nytimes--unknown.json",
     "anastasia-2017/nytimes--ben-brantley.json",
     "anything-goes-2011/nytimes--ben-brantley.json",
-    "bad-cinderella-2023/nytimes--unknown.json"
+    "bad-cinderella-2023/nytimes--unknown.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "1776-2022/nytimes--jesse-green.json",
@@ -31,7 +33,15 @@
     "baby-its-you-2011/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--charles-isherwood.json",
     "bandstand-2017/nytimes--ben-brantley.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json"
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
+    "birthday-candles-2022/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json",
+    "blithe-spirit-2009/nytimes--charles-isherwood.json",
+    "bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
+    "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
+    "butley-2006/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,7 +54,9 @@
       "an-enemy-of-the-people-2012/nytimes--unknown.json",
       "anastasia-2017/nytimes--ben-brantley.json",
       "anything-goes-2011/nytimes--ben-brantley.json",
-      "bad-cinderella-2023/nytimes--unknown.json"
+      "bad-cinderella-2023/nytimes--unknown.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/1776-2022/nytimes--jesse-green.json",
@@ -59,7 +71,13 @@
       "data/review-texts/amelie-a-new-musical-2017/nytimes--ben-brantley.json",
       "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
       "data/review-texts/avenue-q-2003/nytimes--ben-brantley.json",
-      "data/review-texts/bandstand-2017/nytimes--ben-brantley.json"
+      "data/review-texts/bandstand-2017/nytimes--ben-brantley.json",
+      "data/review-texts/billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
+      "data/review-texts/birthday-candles-2022/nytimes--jesse-green.json",
+      "data/review-texts/blithe-spirit-2009/nytimes--charles-isherwood.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
+      "data/review-texts/bonnie-and-clyde-2011/nytimes--ben-brantley.json",
+      "data/review-texts/butley-2006/nytimes--ben-brantley.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -70,7 +88,7 @@
     ]
   },
   "startTime": "2026-02-17T00:21:03.366Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--ben-brantley.json",
+  "lastProcessed": "butley-2006/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-17T00:22:21.448Z",
@@ -278,6 +296,105 @@
     },
     {
       "t": "2026-02-17T00:47:18.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:48:36.878Z",
+      "event": "bb-session",
+      "session": "aa8fb306",
+      "url": "https://www.nytimes.com/2008/11/14/theater/reviews/14billy.html"
+    },
+    {
+      "t": "2026-02-17T00:48:38.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:49:46.237Z",
+      "event": "bb-session",
+      "session": "261141cb",
+      "url": "https://www.nytimes.com/2022/04/11/theater/birthday-candles-review.html"
+    },
+    {
+      "t": "2026-02-17T00:49:48.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:50:56.107Z",
+      "event": "bb-session",
+      "session": "e3c90e07",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blit.html"
+    },
+    {
+      "t": "2026-02-17T00:50:58.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:52:03.438Z",
+      "event": "bb-session",
+      "session": "a3fff476",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blithe.html"
+    },
+    {
+      "t": "2026-02-17T00:52:05.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:53:11.896Z",
+      "event": "bb-session",
+      "session": "3cb883c1",
+      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
+    },
+    {
+      "t": "2026-02-17T00:53:13.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:54:20.638Z",
+      "event": "bb-session",
+      "session": "4856d339",
+      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
+    },
+    {
+      "t": "2026-02-17T00:54:22.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:55:35.736Z",
+      "event": "bb-session",
+      "session": "c55e3b9f",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-02-17T00:55:37.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:56:44.494Z",
+      "event": "bb-session",
+      "session": "e1c875aa",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-17T00:56:46.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-17T00:58:00.663Z",
+      "event": "bb-session",
+      "session": "ddb87d25",
+      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
+    },
+    {
+      "t": "2026-02-17T00:58:02.932Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
