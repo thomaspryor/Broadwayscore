@@ -1079,7 +1079,11 @@ function isJunkOutlet(outletName) {
   if (!outletName) return true;
   const normalized = outletName.toLowerCase().trim();
   if (normalized.length < 2) return true;
-  return JUNK_OUTLETS.has(normalized);
+  if (JUNK_OUTLETS.has(normalized)) return true;
+  // Structural: reject suspiciously long names or URL-slug-style fragments (6+ hyphenated segments)
+  if (normalized.length > 50) return true;
+  if (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(normalized)) return true;
+  return false;
 }
 
 module.exports = {
