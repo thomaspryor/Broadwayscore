@@ -6,6 +6,7 @@ import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
+import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Broadway Standing Room Only (SRO) Tickets',
@@ -265,9 +266,11 @@ export default function StandingRoomPage() {
             <Link href="/rush" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Rush Tickets →
             </Link>
-            <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Best Value Tickets →
-            </Link>
+            {featureFlags.discountTickets && (
+              <Link href="/best-value" className="text-brand hover:text-brand-hover transition-colors text-sm">
+                Best Value Tickets →
+              </Link>
+            )}
           </div>
         </div>
 
