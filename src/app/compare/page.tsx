@@ -84,8 +84,8 @@ export default function ComparePage() {
                     alt={showA.title}
                     className="w-full h-full object-cover"
                     fallback={
-                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-xl font-bold">
-                        {showA.title.charAt(0)}
+                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                        <span className="text-2xl text-gray-500">🎭</span>
                       </div>
                     }
                   />
@@ -108,8 +108,8 @@ export default function ComparePage() {
                     alt={showB.title}
                     className="w-full h-full object-cover"
                     fallback={
-                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-xl font-bold">
-                        {showB.title.charAt(0)}
+                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                        <span className="text-2xl text-gray-500">🎭</span>
                       </div>
                     }
                   />
