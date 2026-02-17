@@ -117,7 +117,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
     headline: `${showA.title} vs ${showB.title}: Broadway Show Comparison`,
     description: `Compare ${showA.title} and ${showB.title} side by side. Critic scores, runtime, ticket prices, and recommendations.`,
     image: `${BASE_URL}/og/home.png`,
-    datePublished: '2025-01-01',
+    datePublished: new Date().toISOString().split('T')[0],
     dateModified: new Date().toISOString().split('T')[0],
     author: {
       '@type': 'Organization',
