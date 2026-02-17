@@ -1319,6 +1319,262 @@ function validateBlogReviews() {
 }
 
 // ===========================================
+// REVIEW TEXT QUALITY CHECKS (Pre-Launch Audit Prevention)
+// Catches garbage reviews, LLM artifacts, encoding issues
+// ===========================================
+
+function validateReviewTextQuality(shows) {
+  info('Checking review text quality (garbage detection)...');
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+
+  if (!fs.existsSync(reviewTextsDir)) {
+    info('No review-texts directory found, skipping');
+    return;
+  }
+
+  // Build per-show maps of creative team and cast names
+  const showCreativeTeam = {};  // showId -> Set of lowercase names
+  const showCast = {};          // showId -> Set of lowercase names
+  for (const show of shows) {
+    showCreativeTeam[show.id] = new Set();
+    showCast[show.id] = new Set();
+    if (show.creativeTeam) {
+      for (const member of show.creativeTeam) {
+        if (member.name) showCreativeTeam[show.id].add(member.name.toLowerCase().trim());
+      }
+    }
+    if (show.cast) {
+      for (const member of show.cast) {
+        const name = typeof member === 'string' ? member : member.name;
+        if (name) showCast[show.id].add(name.toLowerCase().trim());
+      }
+    }
+  }
+
+  let issues = 0;
+  let filesChecked = 0;
+  let htmlEntityFiles = 0;
+  let garbageOutlets = 0;
+  let headlineCritics = 0;
+  let jsonLdPullQuotes = 0;
+  let creativeAsCritic = 0;
+
+  const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory() && !d.name.startsWith('.'))
+    .map(d => d.name);
+
+  for (const showDir of showDirs) {
+    const dirPath = path.join(reviewTextsDir, showDir);
+    const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      filesChecked++;
+      let data;
+      try {
+        data = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
+      } catch (e) {
+        continue; // JSON parse errors caught elsewhere
+      }
+
+      // Skip already-flagged reviews
+      if (data.wrongShow || data.wrongProduction || data.isRoundupArticle) continue;
+
+      const critic = (data.criticName || '').trim();
+      const outlet = (data.outlet || '').trim();
+
+      // CHECK 1: Critic name matches a creative team member or cast member OF THE SAME SHOW
+      // (Global matching causes false positives — e.g., critic "Scott Brown" ≠ actor "Scott Brown")
+      const showCreative = showCreativeTeam[showDir] || new Set();
+      const showCastSet = showCast[showDir] || new Set();
+      if (critic && showCreative.has(critic.toLowerCase())) {
+        error(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a creative team member of this show — likely not a real review`);
+        creativeAsCritic++;
+        issues++;
+      } else if (critic && showCastSet.has(critic.toLowerCase())) {
+        warn(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a cast member of this show — likely not a real review`);
+        creativeAsCritic++;
+        issues++;
+      }
+
+      // CHECK 2: Outlet name is a sentence fragment (too long, contains verbs/articles)
+      if (outlet.length > 60) {
+        error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars) — likely a headline or sentence fragment`);
+        garbageOutlets++;
+        issues++;
+      } else if (/^(is |has |the show |a |an |in her |in his |but |with )/i.test(outlet)) {
+        error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet}" starts with a sentence fragment`);
+        garbageOutlets++;
+        issues++;
+      }
+
+      // CHECK 3: Critic name is too long (likely a headline)
+      if (critic.length > 60) {
+        error(`[headline-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}..." is too long (${critic.length} chars) — likely a headline`);
+        headlineCritics++;
+        issues++;
+      }
+
+      // CHECK 4: pullQuote or excerpt contains JSON-LD / structured data
+      const textFields = [data.pullQuote, data.excerpt].filter(Boolean);
+      for (const text of textFields) {
+        if (/@type|@context|schema\.org|"@id"|itemReviewed|reviewBody/i.test(text)) {
+          error(`[jsonld-artifact] ${showDir}/${file}: pullQuote/excerpt contains JSON-LD structured data`);
+          jsonLdPullQuotes++;
+          issues++;
+          break;
+        }
+      }
+
+      // CHECK 5: HTML entities in display fields (pullQuote, excerpt, criticName, outlet)
+      const displayFields = { pullQuote: data.pullQuote, excerpt: data.excerpt, criticName: data.criticName, outlet: data.outlet };
+      for (const [fieldName, value] of Object.entries(displayFields)) {
+        if (value && /&(?:eacute|egrave|euml|oacute|uacute|iacute|aacute|ntilde|ccedil|amp|quot|ldquo|rdquo|lsquo|rsquo|mdash|ndash|hellip|#\d+|#x[0-9a-f]+);/i.test(value)) {
+          warn(`[html-entity] ${showDir}/${file}: ${fieldName} contains undecoded HTML entities`);
+          htmlEntityFiles++;
+          issues++;
+          break; // Only report once per file
+        }
+      }
+    }
+  }
+
+  if (issues === 0) {
+    ok(`Review text quality: ${filesChecked} files checked, no issues`);
+  } else {
+    info(`Review text quality: ${creativeAsCritic} creative-as-critic, ${garbageOutlets} garbage outlets, ${headlineCritics} headline critics, ${jsonLdPullQuotes} JSON-LD artifacts, ${htmlEntityFiles} HTML entity files`);
+  }
+}
+
+// ===========================================
+// CONSENSUS QUALITY CHECKS
+// Catches LLM reasoning leaks in critic consensus
+// ===========================================
+
+function validateConsensusQuality() {
+  info('Checking critic consensus quality...');
+  const consensusFile = path.join(DATA_DIR, 'critic-consensus.json');
+
+  if (!fs.existsSync(consensusFile)) {
+    info('critic-consensus.json not found, skipping');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(consensusFile, 'utf8'));
+  } catch (e) {
+    error(`critic-consensus.json parse error: ${e.message}`);
+    return;
+  }
+
+  const shows = data.shows || data;
+  let issues = 0;
+
+  // LLM reasoning patterns that should never appear in consensus text
+  const LLM_LEAK_PATTERNS = [
+    /\bWAIT\b.*I need to/i,
+    /\bLet me (?:think|reconsider|analyze|re-read|check)\b/i,
+    /\bActually,?\s+(?:looking|reading|upon reflection)\b/i,
+    /\bI (?:need to|should|must) (?:clarify|reconsider|think)\b/i,
+    /\bHmm,?\s/,
+    /\bOn second thought\b/i,
+    /\bI'll (?:start|begin) (?:by|with)\b/i,
+    /^(?:OK|Okay)[,.]?\s/i,
+    /\bStep \d+:/i,
+    /\bFirst,?\s+(?:I'll|let me|I need)\b/i,
+    /\bHere'?s? (?:my|the) (?:analysis|assessment|evaluation)\b/i,
+    /\bAs an AI\b/i,
+    /\bI (?:don't|cannot|can't) (?:have|provide|access)\b/i,
+  ];
+
+  for (const [showId, entry] of Object.entries(shows)) {
+    const text = typeof entry === 'string' ? entry : entry?.text || entry?.consensus || '';
+    if (!text) continue;
+
+    for (const pattern of LLM_LEAK_PATTERNS) {
+      if (pattern.test(text)) {
+        error(`[llm-leak] Consensus for "${showId}" contains LLM reasoning: "${text.substring(0, 80)}..."`);
+        issues++;
+        break;
+      }
+    }
+
+    // Check for very short consensus (likely incomplete)
+    if (text.length < 20) {
+      warn(`[consensus-quality] "${showId}" consensus is very short (${text.length} chars)`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok(`Critic consensus: ${Object.keys(shows).length} entries, no LLM leaks detected`);
+  }
+}
+
+// ===========================================
+// RUNTIME FORMAT VALIDATION
+// Catches raw minutes instead of "Xh Ym" format
+// ===========================================
+
+function validateRuntimeFormats(shows) {
+  info('Checking runtime formats...');
+  let issues = 0;
+
+  for (const show of shows) {
+    if (!show.runtime) continue;
+
+    const runtime = String(show.runtime);
+
+    // Valid formats: "2h 15m", "1h 30m", "90m", "2h", etc.
+    if (/^\d+$/.test(runtime)) {
+      error(`[runtime-format] "${show.title}" (${show.id}) has raw numeric runtime "${runtime}" — should be formatted like "2h 15m"`);
+      issues++;
+    } else if (!/^\d+h(\s+\d+m)?$|^\d+m$/.test(runtime)) {
+      warn(`[runtime-format] "${show.title}" (${show.id}) has unusual runtime format: "${runtime}"`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok('All runtime values are properly formatted');
+  }
+}
+
+// ===========================================
+// CREATIVE TEAM DUPLICATE NAME DETECTION
+// Catches same person listed multiple times with different roles
+// (should be merged into one entry with combined role)
+// ===========================================
+
+function validateCreativeTeamDuplicateNames(shows) {
+  info('Checking for duplicate creative team names (same person, different roles)...');
+  let issues = 0;
+
+  for (const show of shows) {
+    if (!show.creativeTeam || !Array.isArray(show.creativeTeam)) continue;
+
+    const nameCount = {};
+    for (const member of show.creativeTeam) {
+      if (!member.name) continue;
+      const key = member.name.toLowerCase().trim();
+      if (!nameCount[key]) nameCount[key] = [];
+      nameCount[key].push(member.role || 'Unknown');
+    }
+
+    for (const [name, roles] of Object.entries(nameCount)) {
+      if (roles.length > 1) {
+        warn(`[creative-dup-name] "${show.title}" (${show.id}): "${name}" appears ${roles.length} times with roles: ${roles.join(', ')} — consider merging`);
+        issues++;
+      }
+    }
+  }
+
+  if (issues === 0) {
+    ok('No duplicate creative team names found');
+  }
+}
+
+// ===========================================
 // MAIN
 // ===========================================
 
@@ -1513,6 +1769,14 @@ function runValidation() {
   validateBlogReviews();
   console.log('');
   validateCrossFileKeys(shows);
+  console.log('');
+  validateReviewTextQuality(shows);
+  console.log('');
+  validateConsensusQuality();
+  console.log('');
+  validateRuntimeFormats(shows);
+  console.log('');
+  validateCreativeTeamDuplicateNames(shows);
 
   // Summary
   console.log('');

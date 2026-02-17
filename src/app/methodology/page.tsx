@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
+import { featureFlags } from '@/config/feature-flags';
 
 // Static OG image (API routes don't work with static export)
 const ogImageUrl = `${BASE_URL}/og/home.png`;
@@ -57,7 +58,7 @@ const articleSchema = {
     },
   },
   datePublished: '2024-01-01',
-  dateModified: '2026-02-07',
+  dateModified: '2026-02-16',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `${BASE_URL}/methodology`,
@@ -108,10 +109,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What is Audience Buzz?',
+      name: 'What is the Audience Scorecard?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is AI-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
+        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is LLM-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
       },
     },
     {
@@ -289,17 +290,17 @@ export default function MethodologyPage() {
             Letter grades from outlets like Entertainment Weekly are converted using a standard academic mapping (A+ at the top, F at the bottom), calibrated to align with our 0&ndash;100 scale.
           </p>
 
-          <h3 className="text-base font-semibold text-white mt-6 mb-3">AI Sentiment Analysis</h3>
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">LLM Sentiment Analysis</h3>
           <p className="text-gray-300 text-sm">
-            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading AI models to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
+            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading LLMs to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
           </p>
         </section>
 
         {/* Audience Buzz */}
         <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Audience Buzz</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Audience Scorecard</h2>
           <p className="text-gray-300 mb-4">
-            Audience Buzz captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single sentiment designation.
+            The Audience Scorecard captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single letter grade.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Grade Scale</h3>
@@ -364,7 +365,7 @@ export default function MethodologyPage() {
                 <span className="text-white font-medium">Reddit (r/Broadway)</span>
               </div>
               <p className="text-gray-300 text-sm">
-                AI-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
+                LLM-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
               </p>
             </div>
           </div>
@@ -392,7 +393,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Box Office Data */}
-        <section className="card p-5 sm:p-6">
+        {featureFlags.boxOffice && <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Box Office Data</h2>
           <p className="text-gray-300 mb-4">
             Broadway Scorecard tracks weekly box office performance and all-time statistics for every production, providing transparency into commercial success alongside critical and audience reception.
@@ -456,38 +457,7 @@ export default function MethodologyPage() {
           <p className="text-gray-300 text-sm mt-4">
             Box office data provides important context for understanding a show&apos;s commercial viability and audience appeal, complementing critical reviews and audience sentiment.
           </p>
-        </section>
-
-        {/* Confidence */}
-        <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Confidence Rating</h2>
-          <p className="text-gray-300 mb-4">
-            Each score includes a confidence indicator based on review coverage:
-          </p>
-
-          <div className="space-y-3">
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-high/10 border border-score-high/20">
-              <span className="px-2 py-0.5 rounded bg-score-high/20 text-score-high text-xs font-medium flex-shrink-0">High</span>
-              <div className="text-gray-300 text-sm">
-                15+ critic reviews with 3+ from Tier 1 outlets
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-medium/10 border border-score-medium/20">
-              <span className="px-2 py-0.5 rounded bg-score-medium/20 text-score-medium text-xs font-medium flex-shrink-0">Medium</span>
-              <div className="text-gray-300 text-sm">
-                6–14 critic reviews with at least 1 Tier 1 outlet
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-low/10 border border-score-low/20">
-              <span className="px-2 py-0.5 rounded bg-score-low/20 text-score-low text-xs font-medium flex-shrink-0">Low</span>
-              <div className="text-gray-300 text-sm">
-                Fewer than 6 critic reviews or show still in previews
-              </div>
-            </div>
-          </div>
-        </section>
+        </section>}
 
         {/* What Makes Us Different */}
         <section className="card p-5 sm:p-6">
@@ -514,7 +484,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span><strong className="text-white">Audience Buzz tracking:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
+              <span><strong className="text-white">Audience Scorecard:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
             </li>
           </ul>
         </section>

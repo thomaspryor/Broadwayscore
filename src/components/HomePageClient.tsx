@@ -299,7 +299,7 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: HomepageShow[];
 
 // Featured row with horizontal scroll
 function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: HomepageShow[]; viewAllHref?: string }) {
-  if (shows.length === 0) return null;
+  if (shows.length <= 3) return null;
 
   return (
     <section className="mb-6">
