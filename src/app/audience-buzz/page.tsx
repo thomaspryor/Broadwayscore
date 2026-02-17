@@ -41,7 +41,7 @@ const faqSchema = {
       name: 'How is the Audience Scorecard score calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'We combine three sources: Show Score and Mezzanine split 80% of the weight proportionally by sample size (more reviews = more weight), while Reddit sentiment analysis contributes a fixed 20%. This balances broad audience feedback with passionate community discussion.',
+        text: 'We combine three sources — Show Score, Mezzanine, and Reddit — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.',
       },
     },
     {
@@ -56,17 +56,17 @@ const faqSchema = {
 };
 
 const gradeScale = [
-  { grade: 'A+', range: '93-100', color: '#22c55e' },
-  { grade: 'A', range: '88-92', color: '#16a34a' },
-  { grade: 'A-', range: '83-87', color: '#14b8a6' },
-  { grade: 'B+', range: '78-82', color: '#0ea5e9' },
-  { grade: 'B', range: '73-77', color: '#f59e0b' },
-  { grade: 'B-', range: '68-72', color: '#f97316' },
-  { grade: 'C+', range: '63-67', color: '#ef4444' },
-  { grade: 'C', range: '58-62', color: '#dc2626' },
-  { grade: 'C-', range: '53-57', color: '#b91c1c' },
-  { grade: 'D', range: '48-52', color: '#991b1b' },
-  { grade: 'F', range: '<48', color: '#6b7280' },
+  { grade: 'A+', color: '#22c55e' },
+  { grade: 'A', color: '#16a34a' },
+  { grade: 'A-', color: '#14b8a6' },
+  { grade: 'B+', color: '#0ea5e9' },
+  { grade: 'B', color: '#f59e0b' },
+  { grade: 'B-', color: '#f97316' },
+  { grade: 'C+', color: '#ef4444' },
+  { grade: 'C', color: '#dc2626' },
+  { grade: 'C-', color: '#b91c1c' },
+  { grade: 'D', color: '#991b1b' },
+  { grade: 'F', color: '#6b7280' },
 ];
 
 export default function AudienceBuzzPage() {
@@ -98,10 +98,6 @@ export default function AudienceBuzzPage() {
     return acc;
   }, {} as Record<string, typeof showsWithBuzz>);
 
-  // Stats
-  const avgScore = Math.round(
-    showsWithBuzz.reduce((sum, item) => sum + (item.buzz?.combinedScore || 0), 0) / showsWithBuzz.length
-  );
   const totalReviews = showsWithBuzz.reduce((sum, item) => {
     const buzz = item.buzz;
     if (!buzz) return sum;
@@ -115,8 +111,6 @@ export default function AudienceBuzzPage() {
     { name: 'Home', url: BASE_URL },
     { name: 'Audience Scorecard', url: `${BASE_URL}/audience-buzz` },
   ]);
-
-  const aGradeCount = (byGrade['A+']?.length || 0) + (byGrade['A']?.length || 0) + (byGrade['A-']?.length || 0);
 
   return (
     <>
@@ -144,57 +138,24 @@ export default function AudienceBuzzPage() {
           </p>
         </div>
 
-        {/* Grade Scale Legend */}
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-3">Audience Grade Scale</h2>
-          <div className="flex flex-wrap gap-2">
-            {gradeScale.map(g => (
-              <div
-                key={g.grade}
-                className="card px-3 py-2 border-transparent flex items-center gap-2"
-                style={{ backgroundColor: `${g.color}15` }}
-              >
-                <span className="text-sm font-bold" style={{ color: g.color }}>{g.grade}</span>
-                <span className="text-xs text-gray-500">{g.range}</span>
-                {byGrade[g.grade] && (
-                  <span className="text-xs text-gray-500">({byGrade[g.grade].length})</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-white">{avgScore}</div>
-            <div className="text-xs text-gray-500 mt-1">Average Score</div>
-          </div>
-          <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-green-400">{aGradeCount}</div>
-            <div className="text-xs text-gray-500 mt-1">A-Range Shows</div>
-          </div>
-          <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-400">{totalReviews.toLocaleString()}</div>
-            <div className="text-xs text-gray-500 mt-1">Total Reviews</div>
-          </div>
-        </div>
-
         {/* How It Works */}
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How Audience Scorecard Works</h2>
+          <p className="text-sm text-gray-400 mb-3">
+            We combine three audience sources into a single letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+          </p>
           <div className="grid sm:grid-cols-3 gap-4 text-sm text-gray-400">
             <div>
-              <h3 className="font-semibold text-white mb-1">Show Score (40%)</h3>
-              <p>Aggregates audience reviews with detailed 0-100 scores. Large sample sizes.</p>
+              <h3 className="font-semibold text-white mb-1">Show Score</h3>
+              <p>Audience reviews with detailed 0-100 scores. Often the largest sample size.</p>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-1">Mezzanine (40%)</h3>
-              <p>iOS app with verified ticket holders rating shows 1-5 stars, converted to 0-100.</p>
+              <h3 className="font-semibold text-white mb-1">Mezzanine</h3>
+              <p>iOS app with verified ticket holders rating shows 1-5 stars.</p>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-1">Reddit (20%)</h3>
-              <p>Sentiment analysis from r/Broadway discussions. Captures passionate fan opinions.</p>
+              <h3 className="font-semibold text-white mb-1">Reddit</h3>
+              <p>Sentiment analysis from r/Broadway. Requires 50+ comments. Excluded for shows closed 3+ years.</p>
             </div>
           </div>
         </div>
@@ -224,15 +185,14 @@ export default function AudienceBuzzPage() {
                     >
                       {g.grade}
                     </span>
-                    <span className="text-gray-500 text-sm">{g.range} · {shows.length} shows</span>
+                    <span className="text-gray-500 text-sm">{shows.length} show{shows.length !== 1 ? 's' : ''}</span>
                   </div>
                   <ul className="space-y-1">
                     {shows.slice(0, 8).map(item => (
-                      <li key={item.show.slug} className="text-sm flex justify-between">
+                      <li key={item.show.slug} className="text-sm">
                         <Link href={`/show/${item.show.slug}`} className="text-gray-300 hover:text-white transition-colors truncate">
                           {item.show.title}
                         </Link>
-                        <span className="text-gray-500 ml-2 flex-shrink-0">{item.buzz?.combinedScore}</span>
                       </li>
                     ))}
                     {shows.length > 8 && (
@@ -269,7 +229,7 @@ export default function AudienceBuzzPage() {
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
             Audience data aggregated from Show Score, Mezzanine app, and Reddit r/Broadway.
-            Scores are weighted by sample size and recency. Updated weekly.
+            Sources weighted proportionally by review count (80% cap per source). Updated weekly.
           </p>
         </div>
       </div>
