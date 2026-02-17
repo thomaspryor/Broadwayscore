@@ -209543,5 +209543,25 @@
       "total": 309281
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-17T05:38:11.136Z",
+    "completedAt": "2026-02-17T05:43:08.675Z",
+    "totalReviews": 23294,
+    "processed": 2,
+    "skipped": 22949,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 126736,
+      "output": 2388,
+      "total": 222068
+    },
+    "errorDetails": [
+      {
+        "showId": "yellow-face-2024",
+        "outletId": "aaartsalliance",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
