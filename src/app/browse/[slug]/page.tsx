@@ -223,9 +223,13 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                     <p className="text-purple-400 text-xs mt-0.5 sm:mt-1">
                       Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
-                  ) : show.closingDate && (
+                  ) : show.closingDate ? (
                     <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
                       {show.status === 'closed' ? 'Closed' : 'Closes'} {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </p>
+                  ) : show.status === 'open' && (
+                    <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
+                      Now Playing
                     </p>
                   )}
                 </div>
