@@ -1261,11 +1261,18 @@ const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 
 const showDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
+const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
+  showCreativeTeamIndex[s.id] = new Set();
+  if (s.creativeTeam) {
+    for (const m of s.creativeTeam) {
+      if (m.name) showCreativeTeamIndex[s.id].add(m.name.toLowerCase().trim());
+    }
+  }
 }
 
 // Build URL-year cross-production guard for multi-production shows
@@ -1493,6 +1500,23 @@ showDirs.forEach(showId => {
       // Flagged by scripts/detect-syndicated-duplicates.js
       if (data.isSyndicatedDuplicate === true) {
         stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
+        return;
+      }
+
+      // Garbage review guard: skip reviews where critic name matches a creative team member
+      // of the SAME show (indicates scraped cast/crew info, not a real review)
+      const criticLower = (data.criticName || '').toLowerCase().trim();
+      if (criticLower && showCreativeTeamIndex[showId]?.has(criticLower)) {
+        console.log(`  [CREATIVE-AS-CRITIC] ${showId}/${file}: critic "${data.criticName}" is a creative team member`);
+        stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
+        return;
+      }
+
+      // Garbage outlet guard: skip reviews with sentence-fragment outlet names
+      const outlet = (data.outlet || '').trim();
+      if (outlet.length > 60 || /^(is |has |the show |a |an |in her |in his |but |with )/i.test(outlet)) {
+        console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
+        stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
         return;
       }
 
@@ -1852,6 +1876,11 @@ showDirs.forEach(showId => {
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none'
       };
+
+      // Sanitize display fields: decode HTML entities in critic name, outlet, pullQuote
+      if (review.criticName) review.criticName = decodeHtmlEntities(review.criticName);
+      if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
+      if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
       // Add designation if present
       if (data.designation) {
