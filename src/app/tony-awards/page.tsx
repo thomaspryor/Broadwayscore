@@ -230,7 +230,7 @@ const faqSchema = {
       name: 'How accurate are critic scores at predicting Tony Awards?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Over 10 Tony seasons (2014-2025), the top 2 shows by aggregated critic score won the Tony 95% of the time. Best Musical is the most predictable category at 90% accuracy. Only 2 winners in a decade ranked below #2: The Outsiders (2024, #4) and Take Me Out (2022, #5).',
+        text: 'Over 12 Tony seasons (2014-2025), the top 2 shows by aggregated critic score won the Tony 95% of the time. Best Musical is the most predictable category at 90% accuracy. Only 2 winners in over a decade ranked below #2: The Outsiders (2024, #4) and Take Me Out (2022, #5).',
       },
     },
     {
@@ -379,7 +379,7 @@ export default function TonyAwardsPage() {
         <section className="mb-10 mt-4">
           <h2 className="text-xl font-bold text-white mb-2">How Accurate Are Critic Scores?</h2>
           <p className="text-sm text-gray-400 mb-5">
-            We analyzed 10 Tony seasons (2014&ndash;2025) across all four main categories to test how well aggregated critic scores predict winners.
+            We analyzed 12 Tony seasons (2014&ndash;2025) across all four main categories to test how well aggregated critic scores predict winners.
           </p>
 
           {/* Hero stats */}
