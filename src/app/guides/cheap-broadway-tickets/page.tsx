@@ -368,8 +368,8 @@ export default function CheapBroadwayTicketsGuide() {
                         className="w-full h-full object-cover"
                         loading="lazy"
                         fallback={
-                          <div className="w-full h-full flex items-center justify-center bg-surface-overlay text-gray-600 text-xl font-bold">
-                            {show.title.charAt(0)}
+                          <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                            <span className="text-2xl text-gray-500">🎭</span>
                           </div>
                         }
                       />
