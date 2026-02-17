@@ -141,6 +141,9 @@ function getShowInfo(showId) {
 // ============================================================================
 
 let _scrapingBeeSerpExhausted = false;
+let _scrapingBeeConsecutiveFailures = 0;
+let _brightDataConsecutiveFailures = 0;
+const MAX_CONSECUTIVE_FAILURES = 5;
 
 /**
  * Search via ScrapingBee SERP API (returns structured JSON).
@@ -156,6 +159,7 @@ async function _serpViaScrapingBee(query, apiKey, log) {
       timeout: 30000,
     });
     const data = response.data;
+    _scrapingBeeConsecutiveFailures = 0; // Reset on success
     return (data.organic_results || data.results || []).map(r => ({
       url: r.url || r.link,
       title: r.title || '',
@@ -166,7 +170,12 @@ async function _serpViaScrapingBee(query, apiKey, log) {
       _scrapingBeeSerpExhausted = true;
       log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
     } else {
-      log(`    ✗ ScrapingBee SERP error: ${error.message}`);
+      _scrapingBeeConsecutiveFailures++;
+      log(`    ✗ ScrapingBee SERP error (${_scrapingBeeConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
+      if (_scrapingBeeConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+        _scrapingBeeSerpExhausted = true;
+        log(`    ⚠ ScrapingBee SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+      }
     }
     return null;
   }
@@ -179,7 +188,7 @@ async function _serpViaScrapingBee(query, apiKey, log) {
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
 async function _serpViaBrightData(query, apiKey, log) {
-  if (!apiKey) return null;
+  if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
   const axios = require('axios');
   const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -202,6 +211,7 @@ async function _serpViaBrightData(query, apiKey, log) {
 
     // SERP API zone returns structured JSON with organic results
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
+      _brightDataConsecutiveFailures = 0; // Reset on success
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
@@ -236,9 +246,14 @@ async function _serpViaBrightData(query, apiKey, log) {
       titleIdx++;
     }
 
+    _brightDataConsecutiveFailures = 0; // Reset on success
     return results.slice(0, 10);
   } catch (error) {
-    log(`    ✗ Bright Data SERP error: ${error.message}`);
+    _brightDataConsecutiveFailures++;
+    log(`    ✗ Bright Data SERP error (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
+    if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+      log(`    ⚠ Bright Data SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+    }
     return null;
   }
 }
