@@ -289,9 +289,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Check for running OR queued rebuilds — prevents multiple scoring shards
+          # from each triggering their own rebuild (concurrency group on rebuild-reviews.yml
+          # is the primary guard, this is defense-in-depth)
           RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ]; then
-            echo "Rebuild already running. Skipping."
+          QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
 
@@ -359,8 +364,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Scoring chain complete. Triggering rebuild and consensus..."
-          gh workflow run "Rebuild Reviews Data" -f reason="Post LLM ensemble scoring chain"
-          echo "Rebuild dispatched."
+          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
+          else
+            gh workflow run "Rebuild Reviews Data" -f reason="Post LLM ensemble scoring chain"
+            echo "Rebuild dispatched."
+          fi
           # Consensus needs the rebuild to finish first, so add a delay
           sleep 10
           gh workflow run "Update Critics' Take"
