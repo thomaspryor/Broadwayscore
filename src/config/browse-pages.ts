@@ -52,7 +52,8 @@ function getShowSeason(show: ComputedShow): string | null {
   return month >= 6 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
 }
 
-// Generate browse page configs for all Broadway seasons from 2005-2006 to present
+// Generate browse page configs for all Broadway seasons from 2006-2007 to present
+// (2005-2006 excluded — too patchy in review coverage)
 function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
   const pages: Record<string, BrowsePageConfig> = {};
   const now = new Date();
@@ -60,7 +61,7 @@ function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
   const currentMonth = now.getMonth();
   const endYear = currentMonth >= 6 ? currentYear + 1 : currentYear;
 
-  for (let secondYear = 2006; secondYear <= endYear; secondYear++) {
+  for (let secondYear = 2007; secondYear <= endYear; secondYear++) {
     const firstYear = secondYear - 1;
     const season = `${firstYear}-${secondYear}`;
     const slug = `${season}-broadway-season`;
