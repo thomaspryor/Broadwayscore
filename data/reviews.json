@@ -5,14 +5,14 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 16053,
-      "skippedNoScore": 1083,
+      "skippedNoScore": 1081,
       "skippedDuplicate": 95,
-      "skippedDuplicateUrl": 316,
+      "skippedDuplicateUrl": 315,
       "skippedCrossOutletDuplicateUrl": 28,
-      "skippedDuplicateText": 529,
+      "skippedDuplicateText": 530,
       "skippedFingerprintDedup": 74,
       "skippedUnknownCriticDedup": 248,
-      "skippedWrongProduction": 2028,
+      "skippedWrongProduction": 2029,
       "recoveredFromGarbage": 100,
       "scoreSources": {
         "explicit-stars": 4,
@@ -20,10 +20,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 65,
-        "originalScore-priority0": 1730,
-        "llmScore": 10710,
+        "originalScore-priority0": 1731,
+        "llmScore": 10711,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3514,
+        "llmScore-lowconf": 3512,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -8498,23 +8498,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "artsdesk",
-      "outlet": "The Arts Desk",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Helen Hawkins",
-      "url": "https://theartsdesk.com/theatre/night-janis-joplin-musical-peacock-theatre-review-belting-blues-singing-oddly-sanitised",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A wealth of musical talent keeps this gig musical afloat",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -103990,7 +103973,7 @@
       "pullQuote": "Corbin Bleu has a winning muscularity and grace in various tap and ballroom sequences.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -105306,14 +105289,14 @@
       "showId": "honeymoon-in-vegas-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 89,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Cote",
       "url": "http://www.timeout.com/newyork/theater/honeymoon-in-vegas",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "Broadway may be a crapshoot, but Honeymoon hits the jackpot.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -108088,7 +108071,7 @@
       "pullQuote": "If only this treasure weren't so often lost in the piles that surround it.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "i-need-that-2023",
@@ -115729,7 +115712,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
@@ -115739,7 +115722,7 @@
       "pullQuote": "With Jersey Boys, the Broadway musical has finally done right by the jukebox.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "jersey-boys-2005",
@@ -120058,7 +120041,7 @@
       "pullQuote": "Junk melds a breadth of genres—crime story, tragedy, issue play, cautionary tale—into a fast-moving, broad-ranging social thriller.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "junk-2017",
@@ -124234,13 +124217,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/king-lear-12",
+      "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
       "publishDate": "April 4, 2019",
       "originalRating": 80,
       "pullQuote": "Jackson's Lear is a compelling study in imperial decline, her voice cracking with age and authority in equal measure.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "king-lear-2019",
@@ -134626,6 +134609,23 @@
       "publishDate": "March 26, 2018",
       "originalRating": null,
       "pullQuote": "Helmer Trip Cullman does his best work with small, tight ensembles like this one, so there's no slack in the emotional tension and no escape from the sticky web that even nice people get tangled up in when they tell lies – especially the lies they tell themselves.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "lobby-hero-2018",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 76,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2018/03/theater-review-lobby-hero-comes-knocking-again.html",
+      "publishDate": "March 26, 2018",
+      "originalRating": null,
+      "pullQuote": "It’s powerful to watch him simmer and boil and wither, while Cera plays his downtrodden but still privileged foil.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
