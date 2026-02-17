@@ -1,95 +1,79 @@
 {
-  "runDate": "2026-02-17T03:53:15.333Z",
+  "runDate": "2026-02-17T04:01:26.580Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 7,
+    "processed": 2,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "36.4%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 3
+    "brightdata": 2,
+    "archiveToday": 2,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 3,
-    "ampAttempts": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 0,
+    "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 9,
-    "tier4Success": 4,
-    "totalFailed": 7,
+    "tier3Attempts": 6,
+    "tier3Success": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatermania--jesse-green.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json"
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
-    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "maybe-happy-ending-2024/culturesauce--thom-geier.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/theater-scene--victor-gluck.json"
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "finding-neverland-2015/telegraph--matt-wolf.json",
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "mean-girls-2018/the-telegraph-uk--diane-snyder.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
-      "data/review-texts/maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
+    "brightdata": [
+      "matilda-the-musical-2013/telegraph--unknown.json",
+      "west-side-story-2020/telegraph--diane-snyder.json"
     ],
-    "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "maybe-happy-ending-2024/theatermania--jesse-green.json",
-      "maybe-happy-ending-2024/timeout--adam-feldman.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/betrayal-2013/telegraph--matt-wolf.json",
+      "data/review-texts/king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json"
+    ],
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
