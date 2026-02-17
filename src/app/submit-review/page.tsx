@@ -58,19 +58,19 @@ export default function SubmitReviewPage() {
             </h2>
             <ol className="space-y-3 text-gray-300">
               <li className="flex items-start gap-3">
-                <span className="bg-purple-500/20 text-purple-400 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                <span className="bg-brand-muted text-brand font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
                 <span>You submit the review URL using the form below</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="bg-purple-500/20 text-purple-400 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                <span className="bg-brand-muted text-brand font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
                 <span>Our automated system validates the submission using AI</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="bg-purple-500/20 text-purple-400 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                <span className="bg-brand-muted text-brand font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
                 <span>If approved, the review is automatically scraped and added to our database</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="bg-purple-500/20 text-purple-400 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+                <span className="bg-brand-muted text-brand font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
                 <span>The show&apos;s score is recalculated with the new review included</span>
               </li>
             </ol>
@@ -129,7 +129,7 @@ export default function SubmitReviewPage() {
         <div className="text-center mt-8">
           <Link
             href="/"
-            className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1"
+            className="text-brand hover:text-brand-hover font-medium inline-flex items-center gap-1"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
