@@ -4,7 +4,7 @@
   "failed": 140,
   "successRate": "62.2%",
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 20,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
@@ -12,6 +12,40 @@
     "archiveToday": 49,
     "archive": 146
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-17T04:06:31.110Z",
+      "event": "bb-session",
+      "session": "83b622be",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-17T04:06:33.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T04:07:46.344Z",
+      "event": "bb-session",
+      "session": "aaa73c24",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-17T04:07:48.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T04:09:17.811Z",
+      "event": "bb-session",
+      "session": "38498e7b",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
+    },
+    {
+      "t": "2026-02-17T04:09:19.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
