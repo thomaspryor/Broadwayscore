@@ -207713,5 +207713,25 @@
         "error": "Review text too short or missing"
       }
     ]
+  },
+  {
+    "startedAt": "2026-02-17T07:05:09.816Z",
+    "completedAt": "2026-02-17T07:11:49.034Z",
+    "totalReviews": 23294,
+    "processed": 0,
+    "skipped": 23011,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 58062,
+      "output": 948,
+      "total": 132298
+    },
+    "errorDetails": [
+      {
+        "showId": "elf-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
