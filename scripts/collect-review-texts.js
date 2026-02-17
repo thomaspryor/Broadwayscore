@@ -3946,8 +3946,17 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // POST-SCRAPE VALIDATION FLAGS (Phase 1)
   // ========================================
 
-  // 1A. Show title mention check (heuristic fallback — skipped when LLM verified)
-  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && cleanedText.length > 500) {
+  // 1A. Show title mention check
+  // If LLM verified the content → clear any stale showNotMentioned flag (LLM is a stronger signal)
+  // If no LLM verification → fall back to heuristic title check
+  if (contentVerification && contentVerification.verifiedBy?.startsWith('llm:')) {
+    // LLM confirmed content is correct — clear stale flag from previous bad fetches
+    if (data.showNotMentioned) {
+      console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
+      delete data.showNotMentioned;
+      delete data._showNotMentionedDiscoveryAttempted;
+    }
+  } else if (cleanedText.length > 500) {
     const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
     const showId = data.showId || review.showId || '';
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
