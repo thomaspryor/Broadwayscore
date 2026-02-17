@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-17T05:38:58.565Z",
+  "runDate": "2026-02-17T06:47:27.635Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 95,
+    "processed": 6,
+    "failed": 94,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "6.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -22,8 +22,8 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 4,
-    "archiveToday": 88,
-    "archive": 1
+    "archiveToday": 87,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 95,
@@ -36,19 +36,20 @@
     "tier2Success": 0,
     "tier3Attempts": 95,
     "tier3Success": 6,
-    "tier3_6Attempts": 88,
-    "tier3_6Success": 88,
+    "tier3_6Attempts": 87,
+    "tier3_6Success": 87,
     "tier4Attempts": 12,
     "tier4Success": 1,
-    "totalFailed": 95,
+    "totalFailed": 94,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 40,
     "browserbaseMinutesUsed": 13.2,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "gypsy-2024/newyorker--naomi-fry.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
@@ -88,7 +89,6 @@
     "beetlejuice-2019/newyorker--hilton-als.json",
     "bernhardthamlet-2018/newyorker--hilton-als.json",
     "betrayal-2013/newyorker--john-lahr.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "cabaret-2014/newyorker--hilton-als.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
@@ -194,7 +194,6 @@
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
       "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
-      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
       "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json",
       "data/review-texts/clydes-2021/newyorker--hilton-als.json",
@@ -254,15 +253,10 @@
       "data/review-texts/old-times-2015/newyorker--hilton-als.json"
     ],
     "archive": [
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "lombardi-2010/newyorker--uncredited.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "gypsy-2024/newyorker--naomi-fry.json",
-      "oldUrl": "https://www.newyorker.com/magazine/2024/12/30/gypsy-theatre-review-broadway",
-      "newUrl": "https://www.newyorker.com/magazine/2024/12/30/gypsy-theatre-review-broadway#:~:text=Joy%20Woods%20plays%20the%20stripper,the%20fading%20world%20of%20vaudeville."
-    }
-  ]
+  "urlDiscoveries": []
 }
