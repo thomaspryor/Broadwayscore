@@ -30,6 +30,8 @@ import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
+import { StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import TicketLink from '@/components/TicketLink';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -92,101 +94,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function ScoreBadge({ score, size = 'lg', reviewCount, status }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number; status?: string }) {
-  const sizeClasses = {
-    md: 'w-14 h-14 text-2xl rounded-xl',
-    lg: 'w-20 h-20 text-4xl rounded-2xl',
-    xl: 'w-24 h-24 text-5xl rounded-2xl',
-  };
-
-  // Show TBD for previews shows
-  if (status === 'previews') {
-    return (
-      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
-        TBD
-      </div>
-    );
-  }
-
-  // Show TBD if fewer than 5 reviews
-  if (reviewCount !== undefined && reviewCount < 5) {
-    return (
-      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
-        TBD
-      </div>
-    );
-  }
-
-  if (score === undefined || score === null) {
-    return (
-      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-extrabold`}>
-        —
-      </div>
-    );
-  }
-
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-
-  if (roundedScore >= 85) {
-    // Must-See - premium gold
-    colorClass = 'score-must-see';
-  } else if (roundedScore >= 75) {
-    // Great - green
-    colorClass = 'score-great';
-  } else if (roundedScore >= 65) {
-    // Good - teal
-    colorClass = 'score-good';
-  } else if (roundedScore >= 55) {
-    // Tepid - yellow
-    colorClass = 'score-tepid';
-  } else {
-    // Skip - orange-red
-    colorClass = 'score-skip';
-  }
-
-  return (
-    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
-      {roundedScore}
-    </div>
-  );
-}
-
-// Status pill - subtle background with accent color
-function StatusBadge({ status }: { status: string }) {
-  const label = {
-    open: 'NOW PLAYING',
-    closed: 'CLOSED',
-    previews: 'IN PREVIEWS',
-  }[status] || status.toUpperCase();
-
-  const colorClass = {
-    open: 'bg-emerald-500/15 text-emerald-400',
-    closed: 'bg-gray-500/15 text-gray-400',
-    previews: 'bg-purple-500/15 text-purple-400',
-  }[status] || 'bg-gray-500/15 text-gray-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
-
-function TierBadge({ tier }: { tier: number }) {
-  const colors: Record<number, string> = {
-    1: 'bg-accent-gold/20 text-accent-gold',
-    2: 'bg-gray-500/20 text-gray-400',
-    3: 'bg-surface-overlay text-gray-500',
-  };
-
-  return (
-    <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${colors[tier] || colors[3]}`}>
-      Tier {tier}
-    </span>
-  );
-}
-
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatDate(dateStr: string | null | undefined): string {
   // Return empty string for null/undefined/empty dates
@@ -205,22 +112,6 @@ function formatDate(dateStr: string | null | undefined): string {
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-}
-
-function BackArrow() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-    </svg>
-  );
-}
-
-function ExternalLinkIcon() {
-  return (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-    </svg>
-  );
 }
 
 function MapPinIcon() {
@@ -256,75 +147,11 @@ function TicketIcon() {
   );
 }
 
-// Format pill - outline style
-function FormatPill({ type }: { type: string }) {
-  const isMusical = type === 'musical';
-  const label = isMusical ? 'MUSICAL' : 'PLAY';
-  const colorClass = isMusical
-    ? 'border-purple-500/50 text-purple-400'
-    : 'border-blue-500/50 text-blue-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
-
-// Production pill - solid muted fill
-function ProductionPill({ isRevival }: { isRevival: boolean }) {
-  const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
-  const colorClass = isRevival
-    ? 'bg-gray-500/20 text-gray-400'
-    : 'bg-amber-500/20 text-amber-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
-
 // Limited Run badge - eye-catching for shows ending soon
 function LimitedRunBadge() {
   return (
     <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
       LIMITED RUN
-    </span>
-  );
-}
-
-function ScoreLabel({ score }: { score: number }) {
-  const roundedScore = Math.round(score);
-  let label: string;
-  let bgClass: string;
-  let textClass: string;
-
-  if (roundedScore >= 85) {
-    label = 'Must-See';
-    bgClass = 'bg-score-must-see/20 border border-score-must-see/50';
-    textClass = 'text-score-must-see';
-  } else if (roundedScore >= 75) {
-    label = 'Great';
-    bgClass = 'bg-score-great/20';
-    textClass = 'text-score-great';
-  } else if (roundedScore >= 65) {
-    label = 'Good';
-    bgClass = 'bg-score-good/20';
-    textClass = 'text-score-good';
-  } else if (roundedScore >= 55) {
-    label = 'Tepid';
-    bgClass = 'bg-score-tepid/20';
-    textClass = 'text-score-tepid';
-  } else {
-    label = 'Skip';
-    bgClass = 'bg-score-skip/20';
-    textClass = 'text-score-skip';
-  }
-
-  return (
-    <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide ${bgClass} ${textClass}`}>
-      {label}
     </span>
   );
 }
@@ -338,143 +165,9 @@ function getSentimentLabel(score: number): { label: string; colorClass: string }
   return { label: 'Stay Away', colorClass: 'text-score-skip' };
 }
 
-interface ReviewForBreakdown {
-  reviewScore: number;
-}
-
-function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
-  const positive = reviews.filter(r => r.reviewScore >= 65).length;
-  const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
-  const negative = reviews.filter(r => r.reviewScore < 55).length;
-  const total = reviews.length;
-
-  if (total === 0) return null;
-
-  const positivePct = Math.round((positive / total) * 100);
-  const mixedPct = Math.round((mixed / total) * 100);
-  const negativePct = Math.round((negative / total) * 100);
-
-  return (
-    <div className="space-y-2" role="img" aria-label={`Review breakdown: ${positive} positive, ${mixed} mixed, ${negative} negative out of ${total} total reviews`}>
-      {/* Bar */}
-      <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay" aria-hidden="true">
-        {positivePct > 0 && (
-          <div
-            className="bg-score-great h-full"
-            style={{ width: `${positivePct}%` }}
-          />
-        )}
-        {mixedPct > 0 && (
-          <div
-            className="bg-score-tepid h-full"
-            style={{ width: `${mixedPct}%` }}
-          />
-        )}
-        {negativePct > 0 && (
-          <div
-            className="bg-score-skip h-full"
-            style={{ width: `${negativePct}%` }}
-          />
-        )}
-      </div>
-      {/* Legend */}
-      <div className="flex items-center gap-4 text-xs">
-        {positive > 0 && (
-          <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-great" aria-hidden="true" />
-            <span className="text-gray-400">{positive} Positive</span>
-          </div>
-        )}
-        {mixed > 0 && (
-          <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-tepid" aria-hidden="true" />
-            <span className="text-gray-400">{mixed} Mixed</span>
-          </div>
-        )}
-        {negative > 0 && (
-          <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-skip" aria-hidden="true" />
-            <span className="text-gray-400">{negative} Negative</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function CriticScoreSection({ score, reviewCount, reviews, status }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[]; status?: string }) {
-  const roundedScore = Math.round(score);
-  const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
-
-  // Show TBD for previews shows or if fewer than 5 reviews
-  const showTBD = status === 'previews' || reviewCount < 5;
-
-  let scoreColorClass: string;
-  if (roundedScore >= 85) {
-    scoreColorClass = 'score-must-see';
-  } else if (roundedScore >= 75) {
-    scoreColorClass = 'score-great';
-  } else if (roundedScore >= 65) {
-    scoreColorClass = 'score-good';
-  } else if (roundedScore >= 55) {
-    scoreColorClass = 'score-tepid';
-  } else {
-    scoreColorClass = 'score-skip';
-  }
-
-  return (
-    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="critic-score-heading">
-      <div className="flex items-start gap-4 sm:gap-6 mb-4">
-        {/* Large Score Badge */}
-        {showTBD ? (
-          <div
-            className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 bg-surface-overlay text-gray-400 border border-white/10"
-            role="status"
-            aria-label="Score to be determined - fewer than 5 reviews"
-          >
-            <span className="text-3xl sm:text-4xl font-extrabold" aria-hidden="true">TBD</span>
-          </div>
-        ) : (
-          <div
-            className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}
-            role="meter"
-            aria-valuenow={roundedScore}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={`Critic Score: ${roundedScore} out of 100 - ${sentimentLabel}`}
-          >
-            <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
-          </div>
-        )}
-
-        {/* Critic Score Label and Sentiment */}
-        <div className="flex-1 pt-1">
-          <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Critic Score</h2>
-          {showTBD ? (
-            <div className="text-lg sm:text-xl font-bold text-gray-400">Awaiting Reviews</div>
-          ) : (
-            <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
-          )}
-          <a
-            href="#critic-reviews"
-            className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
-          >
-            Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}{showTBD ? ' (5+ needed)' : ''}
-          </a>
-        </div>
-      </div>
-
-      {/* Score Breakdown Bar */}
-      <ScoreBreakdownBar reviews={reviews} />
-    </section>
-  );
-}
-
 function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
-
-
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
@@ -712,16 +405,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
               {/* Ticket Links */}
               {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
-                <a
+                <TicketLink
                   key={i}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  showName={show.title}
+                  showId={show.id}
+                  platform={link.platform}
+                  url={link.url}
+                  pageType="show"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
                 >
                   <TicketIcon />
                   {link.platform}
-                </a>
+                </TicketLink>
               ))}
 
               {/* Trailer */}

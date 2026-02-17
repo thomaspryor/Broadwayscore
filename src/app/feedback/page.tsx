@@ -32,7 +32,7 @@ export default function FeedbackPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-white mb-4">What Can You Share?</h2>
             <div className="grid sm:grid-cols-2 gap-3">
-              <div className="flex items-start gap-3 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+              <div className="flex items-start gap-3 p-4 bg-brand-muted border border-brand/20 rounded-lg">
                 <span className="text-2xl">&#x1f41b;</span>
                 <div>
                   <h3 className="font-semibold text-white">Report a Bug</h3>
@@ -78,7 +78,7 @@ export default function FeedbackPage() {
               <span className="text-3xl">&#x1f4d6;</span>
               <div>
                 <h3 className="font-semibold text-white mb-1">
-                  <Link href="/submit-review" className="text-purple-400 hover:text-purple-300">
+                  <Link href="/submit-review" className="text-brand hover:text-brand-hover">
                     Submit Missing Reviews
                   </Link>
                 </h3>
@@ -106,7 +106,7 @@ export default function FeedbackPage() {
         <div className="text-center mt-8">
           <Link
             href="/"
-            className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1"
+            className="text-brand hover:text-brand-hover font-medium inline-flex items-center gap-1"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
