@@ -158,6 +158,7 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'the-record': 'BERGENRECORD',
   'the-record-bergen': 'BERGENRECORD',
   'fort-worth-star-telgram': 'FORTWORTHST',
+  'new-york': 'VULT',                     // New York Magazine (nymag.com)
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)
