@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-17T19:28:43.748Z",
+  "runDate": "2026-02-17T19:34:23.986Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,18 +11,18 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 96,
+    "processed": 6,
+    "failed": 94,
     "skipped": 0,
-    "successRate": "4.0%"
+    "successRate": "6.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 89,
+    "archiveToday": 87,
     "archive": 2
   },
   "statistics": {
@@ -33,14 +33,14 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 95,
-    "tier2Success": 3,
-    "tier3Attempts": 92,
+    "tier2Success": 4,
+    "tier3Attempts": 91,
     "tier3Success": 0,
-    "tier3_6Attempts": 90,
-    "tier3_6Success": 89,
+    "tier3_6Attempts": 88,
+    "tier3_6Success": 87,
     "tier4Attempts": 11,
-    "tier4Success": 1,
-    "totalFailed": 96,
+    "tier4Success": 0,
+    "totalFailed": 94,
     "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -49,9 +49,11 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
     "lombardi-2010/newyorker--uncredited.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "pictures-from-home-2023/newyorker--helen-shaw.json"
   ],
   "failed": [
@@ -84,6 +86,7 @@
     "beetlejuice-2019/newyorker--hilton-als.json",
     "bernhardthamlet-2018/newyorker--hilton-als.json",
     "betrayal-2013/newyorker--john-lahr.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "cabaret-2014/newyorker--hilton-als.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
@@ -107,10 +110,8 @@
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
     "god-of-carnage-2009/newyorker--hilton-als.json",
     "grand-horizons-2020/newyorker--hilton-als.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
     "gypsy-2008/newyorker--hilton-als.json",
     "gypsy-2008/newyorker--john-lahr.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
     "hand-to-god-2015/newyorker--hilton-als.json",
     "hangmen-2022/newyorker--vinson-cunningham.json",
     "harmony-2023/newyorker--naomi-fry.json",
@@ -140,7 +141,6 @@
     "mean-girls-2018/newyorker--hilton-als.json",
     "meteor-shower-2017/newyorker--hilton-als.json",
     "motown-the-musical-2013/newyorker--hilton-als.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--hilton-als.json",
     "next-to-normal-2009/newyorker--john-lahr.json",
     "of-mice-and-men-2014/newyorker--hilton-als.json",
@@ -157,16 +157,18 @@
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "gypsy-2024/newyorker--naomi-fry.json",
       "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
       "pictures-from-home-2023/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
       "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
       "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "data/review-texts/mj-2022/newyorker--naomi-fry.json",
       "data/review-texts/six-2021/newyorker--naomi-fry.json",
+      "data/review-texts/the-lion-king-1997/newyorker--john-lahr.json",
       "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
       "data/review-texts/wicked-2003/newyorker--john-lahr.json",
       "data/review-texts/1776-2022/newyorker--naomi-fry.json",
@@ -188,6 +190,7 @@
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
       "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
       "data/review-texts/charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
       "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json",
@@ -210,10 +213,8 @@
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
       "data/review-texts/god-of-carnage-2009/newyorker--hilton-als.json",
       "data/review-texts/grand-horizons-2020/newyorker--hilton-als.json",
-      "data/review-texts/grey-house-2023/newyorker--dan-stahl.json",
       "data/review-texts/gypsy-2008/newyorker--hilton-als.json",
       "data/review-texts/gypsy-2008/newyorker--john-lahr.json",
-      "data/review-texts/gypsy-2024/newyorker--naomi-fry.json",
       "data/review-texts/hand-to-god-2015/newyorker--hilton-als.json",
       "data/review-texts/hangmen-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/harmony-2023/newyorker--naomi-fry.json",
@@ -240,7 +241,6 @@
       "data/review-texts/mean-girls-2018/newyorker--hilton-als.json",
       "data/review-texts/meteor-shower-2017/newyorker--hilton-als.json",
       "data/review-texts/motown-the-musical-2013/newyorker--hilton-als.json",
-      "data/review-texts/mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--hilton-als.json",
       "data/review-texts/next-to-normal-2009/newyorker--john-lahr.json",
       "data/review-texts/of-mice-and-men-2014/newyorker--hilton-als.json",
@@ -253,8 +253,8 @@
       "data/review-texts/passing-strange-2008/newyorker--hilton-als.json"
     ],
     "archive": [
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "lombardi-2010/newyorker--uncredited.json"
+      "lombardi-2010/newyorker--uncredited.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
     ]
   },
   "failuresByOutlet": {
