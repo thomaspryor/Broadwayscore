@@ -518,7 +518,8 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         // Only show shows with audience buzz data
         return show.audienceCombinedScore !== null;
       } else {
-        // Only show shows with at least 5 critic reviews (hides TBD shows)
+        // Show all open shows (TBD badge for <5 reviews) + scored closed shows
+        if (show.status === 'open') return true;
         return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= 5;
       }
     });
@@ -769,28 +770,53 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Score Legend */}
-      <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
-          <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
+      {scoreMode === 'audience' ? (
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 cursor-help" title="Audiences love it">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
+            <span>A+/A Loving It</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title="Strong audience reception">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#14b8a6' }}></div>
+            <span>A-/B+ Liking It</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title="Mixed audience reception">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#f59e0b' }}></div>
+            <span>B/B- Shrugging</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title="Below-average reception">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#ef4444' }}></div>
+            <span>C+/C/C- Disliking It</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title="Very poor reception">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#991b1b' }}></div>
+            <span>D/F Loathing It</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
-          <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
+      ) : (
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
+            <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
+            <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
+            <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
+            <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
+          </div>
+          <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
+            <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
-          <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
-          <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
-          <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
-        </div>
-      </div>
+      )}
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
