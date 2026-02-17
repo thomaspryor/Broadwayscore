@@ -2,6 +2,14 @@
 # This is the PRIMARY sync mechanism - runs daily and can be triggered manually
 name: Rebuild Reviews Data
 
+# Only one rebuild at a time — prevents race conditions where concurrent rebuilds
+# overwrite each other (e.g., scoring shards + collection triggering simultaneously).
+# With cancel-in-progress: false, a second trigger queues rather than cancelling.
+# GitHub keeps at most 1 pending run, so rapid-fire triggers naturally debounce.
+concurrency:
+  group: rebuild-reviews
+  cancel-in-progress: false
+
 on:
   schedule:
     # Daily at 4 AM UTC (11 PM EST) - after other workflows typically complete
