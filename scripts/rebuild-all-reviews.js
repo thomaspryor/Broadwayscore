@@ -1261,11 +1261,18 @@ const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 
 const showDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
+const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
+  showCreativeTeamIndex[s.id] = new Set();
+  if (s.creativeTeam) {
+    for (const m of s.creativeTeam) {
+      if (m.name) showCreativeTeamIndex[s.id].add(m.name.toLowerCase().trim());
+    }
+  }
 }
 
 // Build URL-year cross-production guard for multi-production shows
@@ -1496,6 +1503,23 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Garbage review guard: skip reviews where critic name matches a creative team member
+      // of the SAME show (indicates scraped cast/crew info, not a real review)
+      const criticLower = (data.criticName || '').toLowerCase().trim();
+      if (criticLower && showCreativeTeamIndex[showId]?.has(criticLower)) {
+        console.log(`  [CREATIVE-AS-CRITIC] ${showId}/${file}: critic "${data.criticName}" is a creative team member`);
+        stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
+        return;
+      }
+
+      // Garbage outlet guard: skip reviews with sentence-fragment outlet names
+      const outlet = (data.outlet || '').trim();
+      if (outlet.length > 60 || /^(is |has |the show |a |an |in her |in his |but |with )/i.test(outlet)) {
+        console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
+        stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
+        return;
+      }
+
       // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
@@ -1588,12 +1612,29 @@ showDirs.forEach(showId => {
       // Skip reviews where show title was never mentioned AND there are no aggregator excerpts
       // Reviews with valid excerpts from DTLI/BWW/ShowScore are likely legitimate even without title match
       if (data.showNotMentioned === true) {
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
-        if (!hasExcerpt) {
-          stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
-          return;
+        // Safety net: if fullText exists and mentions the show, clear the stale flag
+        // This catches cases where collect-review-texts.js fetched good content but didn't clear the flag
+        if (data.fullText && data.fullText.length > 300) {
+          const showTitle = (data.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+          const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
+          const textLower = data.fullText.substring(0, 5000).toLowerCase();
+          if (textLower.includes(showTitle) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
+            data.showNotMentioned = false;
+            delete data._showNotMentionedDiscoveryAttempted;
+            stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
+            // Write fix back to source file
+            try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          }
         }
-        stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
+
+        if (data.showNotMentioned === true) {
+          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
+          if (!hasExcerpt) {
+            stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+            return;
+          }
+          stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
+        }
       }
 
       // Cross-show duplicate text detection: skip if this fullText was already seen under a different show
@@ -1835,6 +1876,11 @@ showDirs.forEach(showId => {
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none'
       };
+
+      // Sanitize display fields: decode HTML entities in critic name, outlet, pullQuote
+      if (review.criticName) review.criticName = decodeHtmlEntities(review.criticName);
+      if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
+      if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
       // Add designation if present
       if (data.designation) {
@@ -2246,6 +2292,9 @@ if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
 }
 console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
+if (stats.showNotMentionedAutoCleared > 0) {
+  console.log(`  Auto-cleared stale showNotMentioned (fullText valid): ${stats.showNotMentionedAutoCleared}`);
+}
 if (stats.showNotMentionedWithExcerpts > 0) {
   console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
 }

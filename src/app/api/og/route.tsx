@@ -24,10 +24,10 @@ function getScoreColor(score: number | null, reviewCount: number) {
 
 function getScoreLabel(score: number): string {
   if (score >= 85) return 'Must-See';
-  if (score >= 75) return 'Great';
-  if (score >= 65) return 'Good';
-  if (score >= 55) return 'Tepid';
-  return 'Skip';
+  if (score >= 75) return 'Recommended';
+  if (score >= 65) return 'Worth Seeing';
+  if (score >= 55) return 'Skippable';
+  return 'Stay Away';
 }
 
 export async function GET(request: NextRequest) {
