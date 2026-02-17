@@ -47,7 +47,7 @@ export default function ReviewsPage() {
       {/* Disclaimer */}
       <div className="card p-4 mb-8 border-l-4 border-brand/20">
         <p className="text-sm text-gray-400">
-          Broadway Scorecard aggregates critic scores from 50+ outlets. These personal reviews are separate from those scores.
+          Broadway Scorecard aggregates critic scores from 400+ outlets. These personal reviews are separate from those scores.
         </p>
       </div>
 
