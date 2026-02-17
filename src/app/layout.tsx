@@ -167,7 +167,7 @@ export default function RootLayout({
                   <li><Link href="/browse/best-broadway-dramas" className="hover:text-white transition-colors">Best Dramas</Link></li>
                   <li><Link href="/browse/best-broadway-comedies" className="hover:text-white transition-colors">Comedies</Link></li>
                   <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
-                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
+                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winning Shows</Link></li>
                   <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
                 </ul>
               </div>
