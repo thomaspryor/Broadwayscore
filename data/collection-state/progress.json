@@ -6,7 +6,13 @@
     "anastasia-2017/vulture--jesse-green.json",
     "betrayal-2019/vulture--jesse-green.json",
     "between-riverside-and-crazy-2022/vulture--jackson-mchenry.json",
-    "bullets-over-broadway-2014/vulture--jesse-green.json"
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "carousel-2018/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+    "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -31,17 +37,25 @@
     "bright-star-2016/vulture--jesse-green.json",
     "burn-this-2019/vulture--jesse-green.json",
     "cabaret-2024/vulture--helen-shaw.json",
-    "call-me-izzy-2025/vulture--jackson-mchenry.json"
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "caroline-or-change-2021/vulture--helen-shaw.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "betrayal-2019/vulture--jesse-green.json"
+      "betrayal-2019/vulture--jesse-green.json",
+      "come-from-away-2017/vulture--jesse-green.json"
     ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+      "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json"
+    ],
     "archiveToday": [
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
       "data/review-texts/a-christmas-carol-2019/vulture--jesse-green.json",
@@ -56,7 +70,9 @@
       "data/review-texts/bandstand-2017/vulture--jesse-green.json",
       "data/review-texts/bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
       "data/review-texts/burn-this-2019/vulture--jesse-green.json",
-      "data/review-texts/cabaret-2024/vulture--helen-shaw.json"
+      "data/review-texts/cabaret-2024/vulture--helen-shaw.json",
+      "data/review-texts/caroline-or-change-2021/vulture--helen-shaw.json",
+      "data/review-texts/catch-me-if-you-can-2011/vulture--jesse-green.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
@@ -64,11 +80,14 @@
       "almost-famous-2022/vulture--helen-shaw.json",
       "anastasia-2017/vulture--jesse-green.json",
       "between-riverside-and-crazy-2022/vulture--jackson-mchenry.json",
-      "bullets-over-broadway-2014/vulture--jesse-green.json"
+      "bullets-over-broadway-2014/vulture--jesse-green.json",
+      "carousel-2018/vulture--jesse-green.json",
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "company-2021/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-02-17T02:38:15.901Z",
-  "lastProcessed": "call-me-izzy-2025/vulture--jackson-mchenry.json",
+  "lastProcessed": "death-of-a-salesman-2012/vulture--rob-weinert-kendt.json",
   "log": [
     {
       "t": "2026-02-17T02:39:16.940Z",
@@ -221,6 +240,61 @@
     },
     {
       "t": "2026-02-17T02:52:24.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-17T02:53:25.104Z",
+      "event": "bb-session",
+      "session": "95968f4e",
+      "url": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html"
+    },
+    {
+      "t": "2026-02-17T02:53:27.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-17T02:54:48.648Z",
+      "event": "bb-session",
+      "session": "86ba6812",
+      "url": "https://www.vulture.com/2014/04/theater-review-casa-valentina.html#:~:text=So%20"
+    },
+    {
+      "t": "2026-02-17T02:54:50.436Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-17T02:55:38.977Z",
+      "event": "bb-session",
+      "session": "f9f4f5d4",
+      "url": "https://www.vulture.com/2011/04/theater_review_catch_me_if_yo.html"
+    },
+    {
+      "t": "2026-02-17T02:55:40.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-17T02:57:30.322Z",
+      "event": "bb-session",
+      "session": "bfa1076f",
+      "url": "http://www.vulture.com/2012/10/theater-review-cyrano.html"
+    },
+    {
+      "t": "2026-02-17T02:57:32.524Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-17T02:58:22.781Z",
+      "event": "bb-session",
+      "session": "c61e83d5",
+      "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-bro"
+    },
+    {
+      "t": "2026-02-17T02:58:24.684Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
