@@ -95,7 +95,16 @@
     "finding-neverland-2015/timeout--david-cote.json",
     "floyd-collins-2025/timeout--adam-feldman.json",
     "flying-over-sunset-2021/timeout--adam-feldman.json",
-    "follies-2011/timeout--adam-feldman.json"
+    "follies-2011/timeout--adam-feldman.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "funny-girl-2022/timeout--adam-feldman.json",
+    "gary-a-sequel-to-titus-andronicus-2019/timeout--adam-feldman.json",
+    "glengarry-glen-ross-2012/timeout--david-cote.json",
+    "glengarry-glen-ross-2025/timeout--adam-feldman.json",
+    "godspell-2011/timeout--adam-feldman.json",
+    "golden-boy-2012/timeout--david-cote.json",
+    "good-night-and-good-luck-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "book-of-mormon-2011/financialtimes--brendan-lemon.json",
@@ -202,42 +211,18 @@
     "disgraced-2014/timeout--david-cote.json",
     "disgraced-2014/timeout--unknown.json",
     "driving-miss-daisy-2010/timeout--adam-feldman.json",
-    "elf-2012/timeout--david-cote.json"
+    "elf-2012/timeout--david-cote.json",
+    "god-of-carnage-2009/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-encounter-2016/financial-times-uk--ian-shuttleworth.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "chicago-1996/wsj--terry-teachout.json",
-      "moulin-rouge-2019/wsj--terry-teachout.json",
-      "1776-2022/wsj--charles-isherwood.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
-      "a-christmas-carol-2019/wsj--charles-isherwood.json",
-      "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
-      "a-little-night-music-2009/wsj--terry-teachout.json",
-      "a-soldiers-play-2020/wsj--terry-teachout.json",
-      "a-strange-loop-2022/wsj--charles-isherwood.json",
-      "a-view-from-the-bridge-2010/wsj--terry-teachout.json",
-      "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
-      "airline-highway-2015/wsj--terry-teachout.json",
-      "almost-famous-2022/wsj--charles-isherwood.json",
-      "american-buffalo-2022/wsj--charles-isherwood.json",
-      "american-idiot-2010/wsj--terry-teachout.json",
-      "american-psycho-2016/wsj--terry-teachout.json",
-      "american-son-2018/wsj--terry-teachout.json",
-      "an-american-in-paris-2015/wsj--terry-teachout.json",
-      "appropriate-2023/wsj--charles-isherwood.json",
-      "back-to-the-future-2023/wsj--charles-isherwood.json",
-      "bad-cinderella-2023/wsj--charles-isherwood.json",
-      "be-more-chill-2019/wsj--terry-teachout.json",
-      "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
-      "bright-star-2016/wsj--terry-teachout.json",
-      "camelot-2023/wsj--charles-isherwood.json",
-      "carousel-2018/wsj--terry-teachout.json"
-    ],
+    "brightdata": [],
     "archiveToday": [
       "data/review-texts/choir-boy-2019/financial-times-uk--max-mcguinness.json",
       "data/review-texts/elf-2012/timeout--david-cote.json"
@@ -337,451 +322,31 @@
       "finding-neverland-2015/timeout--david-cote.json",
       "floyd-collins-2025/timeout--adam-feldman.json",
       "flying-over-sunset-2021/timeout--adam-feldman.json",
-      "follies-2011/timeout--adam-feldman.json"
+      "follies-2011/timeout--adam-feldman.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "funny-girl-2022/timeout--adam-feldman.json",
+      "gary-a-sequel-to-titus-andronicus-2019/timeout--adam-feldman.json",
+      "glengarry-glen-ross-2012/timeout--david-cote.json",
+      "glengarry-glen-ross-2025/timeout--adam-feldman.json",
+      "godspell-2011/timeout--adam-feldman.json",
+      "golden-boy-2012/timeout--david-cote.json",
+      "good-night-and-good-luck-2025/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-02-17T07:34:05.588Z",
-  "lastProcessed": "follies-2011/timeout--adam-feldman.json",
+  "lastProcessed": "good-night-and-good-luck-2025/timeout--adam-feldman.json",
   "log": [
     {
-      "t": "2026-02-17T05:50:18.559Z",
+      "t": "2026-02-17T07:36:21.204Z",
       "event": "bb-session",
-      "session": "48270d6a",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "session": "06bf36d8",
+      "url": "https://www.ft.com/content/d912fc0c-1330-11e9-a168-d45595ad076d"
     },
     {
-      "t": "2026-02-17T05:50:20.605Z",
+      "t": "2026-02-17T07:36:23.190Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:51:30.012Z",
-      "event": "bb-session",
-      "session": "1f477184",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-02-17T05:51:31.856Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:52:56.504Z",
-      "event": "bb-session",
-      "session": "7af16add",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-17T05:52:58.758Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:54:39.946Z",
-      "event": "bb-session",
-      "session": "bb7f7d8d",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-17T05:54:41.835Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:56:04.795Z",
-      "event": "bb-session",
-      "session": "f0ee33e3",
-      "url": "https://www.wsj.com/articles/review-ad-libs-ad-innitum-1512519448?gaa_at=eafs&ga"
-    },
-    {
-      "t": "2026-02-17T05:56:06.850Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:57:20.813Z",
-      "event": "bb-session",
-      "session": "526a78de",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-17T05:57:22.844Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T05:58:31.935Z",
-      "event": "bb-session",
-      "session": "bf34e270",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-folk-musical-of-mythic-proportio"
-    },
-    {
-      "t": "2026-02-17T05:58:33.929Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:00:04.976Z",
-      "event": "bb-session",
-      "session": "79e5e4df",
-      "url": "https://www.wsj.com/arts-culture/theater/maybe-happy-ending-review-broadway-musi"
-    },
-    {
-      "t": "2026-02-17T06:00:07.037Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:01:27.222Z",
-      "event": "bb-session",
-      "session": "b2712fd5",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-02-17T06:01:29.269Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:03:08.457Z",
-      "event": "bb-session",
-      "session": "8972d78a",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-17T06:03:10.544Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:04:26.015Z",
-      "event": "bb-session",
-      "session": "62012a09",
-      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
-    },
-    {
-      "t": "2026-02-17T06:04:28.168Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:05:38.817Z",
-      "event": "bb-session",
-      "session": "a602594e",
-      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
-    },
-    {
-      "t": "2026-02-17T06:05:40.872Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:07:02.727Z",
-      "event": "bb-session",
-      "session": "8dc3c43e",
-      "url": "https://www.wsj.com/articles/SB117961869834728582"
-    },
-    {
-      "t": "2026-02-17T06:07:04.716Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:08:51.338Z",
-      "event": "bb-session",
-      "session": "80bd2863",
-      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
-    },
-    {
-      "t": "2026-02-17T06:08:53.359Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:10:02.439Z",
-      "event": "bb-session",
-      "session": "6819d7c6",
-      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
-    },
-    {
-      "t": "2026-02-17T06:10:04.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:11:11.244Z",
-      "event": "bb-session",
-      "session": "c4895640",
-      "url": "https://www.wsj.com/articles/SB123788676543210987"
-    },
-    {
-      "t": "2026-02-17T06:11:13.774Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:13:08.895Z",
-      "event": "bb-session",
-      "session": "933bfed9",
-      "url": "https://www.wsj.com/articles/SB10001424052702304470504579162943094099658"
-    },
-    {
-      "t": "2026-02-17T06:13:10.902Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:15:09.801Z",
-      "event": "bb-session",
-      "session": "a9097456",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
-    },
-    {
-      "t": "2026-02-17T06:15:11.565Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:17:29.567Z",
-      "event": "bb-session",
-      "session": "ee4cb1b5",
-      "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-b"
-    },
-    {
-      "t": "2026-02-17T06:17:31.680Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:18:37.683Z",
-      "event": "bb-session",
-      "session": "a553f4d8",
-      "url": "https://www.wsj.com/articles/SB10001424052748704682604575130943020916946"
-    },
-    {
-      "t": "2026-02-17T06:18:39.809Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:20:46.032Z",
-      "event": "bb-session",
-      "session": "982b1eba",
-      "url": "http://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-14"
-    },
-    {
-      "t": "2026-02-17T06:20:48.171Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:23:54.055Z",
-      "event": "bb-session",
-      "session": "b992acaa",
-      "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-lo"
-    },
-    {
-      "t": "2026-02-17T06:23:55.966Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:25:01.599Z",
-      "event": "bb-session",
-      "session": "fc47bf76",
-      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
-    },
-    {
-      "t": "2026-02-17T06:25:03.767Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:27:18.005Z",
-      "event": "bb-session",
-      "session": "e611e2d8",
-      "url": "https://online.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balan"
-    },
-    {
-      "t": "2026-02-17T06:27:19.934Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:29:19.525Z",
-      "event": "bb-session",
-      "session": "6f3fd7d7",
-      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
-    },
-    {
-      "t": "2026-02-17T06:29:21.262Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:30:44.524Z",
-      "event": "bb-session",
-      "session": "b55da88c",
-      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
-    },
-    {
-      "t": "2026-02-17T06:30:46.481Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:32:02.344Z",
-      "event": "bb-session",
-      "session": "d14ccaa9",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-17T06:32:04.400Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:34:35.554Z",
-      "event": "bb-session",
-      "session": "dc81b8ad",
-      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
-    },
-    {
-      "t": "2026-02-17T06:34:37.584Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:37:10.276Z",
-      "event": "bb-session",
-      "session": "360b69c6",
-      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
-    },
-    {
-      "t": "2026-02-17T06:37:12.179Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:38:17.876Z",
-      "event": "bb-session",
-      "session": "52b1eff6",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
-    },
-    {
-      "t": "2026-02-17T06:38:20.017Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:39:36.781Z",
-      "event": "bb-session",
-      "session": "44171000",
-      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
-    },
-    {
-      "t": "2026-02-17T06:39:38.957Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:41:50.692Z",
-      "event": "bb-session",
-      "session": "f69c9174",
-      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
-    },
-    {
-      "t": "2026-02-17T06:41:52.665Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:44:15.213Z",
-      "event": "bb-session",
-      "session": "e8042846",
-      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-se"
-    },
-    {
-      "t": "2026-02-17T06:44:17.172Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:45:22.951Z",
-      "event": "bb-session",
-      "session": "23e424f4",
-      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
-    },
-    {
-      "t": "2026-02-17T06:45:24.766Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:46:32.099Z",
-      "event": "bb-session",
-      "session": "a6dba787",
-      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
-    },
-    {
-      "t": "2026-02-17T06:46:33.920Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:48:56.510Z",
-      "event": "bb-session",
-      "session": "7c270da5",
-      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
-    },
-    {
-      "t": "2026-02-17T06:48:58.792Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:50:06.013Z",
-      "event": "bb-session",
-      "session": "7f17ff8c",
-      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
-    },
-    {
-      "t": "2026-02-17T06:50:08.131Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:52:31.476Z",
-      "event": "bb-session",
-      "session": "e8cc9976",
-      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
-    },
-    {
-      "t": "2026-02-17T06:52:33.433Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:53:52.826Z",
-      "event": "bb-session",
-      "session": "11760d87",
-      "url": "https://www.wsj.com/articles/SB122401234567890123"
-    },
-    {
-      "t": "2026-02-17T06:53:54.793Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-17T06:55:55.742Z",
-      "event": "bb-session",
-      "session": "ccc5a5aa",
-      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
-    },
-    {
-      "t": "2026-02-17T06:55:57.649Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "ft.com"
     }
   ]
 }
