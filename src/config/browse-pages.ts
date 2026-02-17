@@ -41,6 +41,56 @@ function openedInYear(show: ComputedShow, year: number): boolean {
   return openDate.getFullYear() === year;
 }
 
+// Compute Broadway season (Jul-Jun) from opening date.
+// Keep in sync with getSeason() in data-commercial.ts:95
+function getShowSeason(show: ComputedShow): string | null {
+  if (!show.openingDate) return null;
+  const date = new Date(show.openingDate);
+  if (isNaN(date.getTime())) return null;
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  return month >= 6 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+}
+
+// Generate browse page configs for all Broadway seasons from 2005-2006 to present
+function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
+  const pages: Record<string, BrowsePageConfig> = {};
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const endYear = currentMonth >= 6 ? currentYear + 1 : currentYear;
+
+  for (let secondYear = 2006; secondYear <= endYear; secondYear++) {
+    const firstYear = secondYear - 1;
+    const season = `${firstYear}-${secondYear}`;
+    const slug = `${season}-broadway-season`;
+
+    // Build related pages: prev/next season + category pages
+    const related: string[] = [];
+    if (firstYear > 2005) {
+      related.push(`${firstYear - 1}-${secondYear - 1}-broadway-season`);
+    }
+    if (secondYear < endYear) {
+      related.push(`${firstYear + 1}-${secondYear + 1}-broadway-season`);
+    }
+    related.push('best-broadway-musicals', 'best-broadway-plays');
+
+    pages[slug] = {
+      slug,
+      title: `${season} Broadway Season`,
+      h1: `${season} Broadway Season`,
+      metaTitle: `${season} Broadway Season \u2014 All Shows Ranked by Critics`,
+      metaDescription: `Every show from the ${season} Broadway season ranked by critic score. ${firstYear}\u2013${secondYear} musicals, plays, and revivals compared side by side.`,
+      intro: `Every show that opened on Broadway during the ${season} season (July ${firstYear} through June ${secondYear}), ranked by aggregated critic scores from dozens of outlets. This includes musicals, plays, and revivals \u2014 whether still running or closed.`,
+      filter: (show) => getShowSeason(show) === season,
+      sort: 'score',
+      relatedPages: related,
+    };
+  }
+
+  return pages;
+}
+
 export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
   'broadway-shows-for-kids': {
     slug: 'broadway-shows-for-kids',
@@ -141,7 +191,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.status === 'open' && openedInYear(show, 2025);
     },
     sort: 'opening-date',
-    relatedPages: ['best-broadway-show-right-now', 'broadway-shows-closing-soon', 'tony-nominated-2025'],
+    relatedPages: ['2024-2025-broadway-season', 'best-broadway-show-right-now', 'broadway-shows-closing-soon', 'tony-nominated-2025'],
   },
 
   'best-broadway-revivals': {
@@ -473,7 +523,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.status === 'open' && openedInYear(show, 2026);
     },
     sort: 'opening-date',
-    relatedPages: ['new-broadway-shows-2025', 'upcoming-broadway-shows', 'best-broadway-show-right-now'],
+    relatedPages: ['2025-2026-broadway-season', 'new-broadway-shows-2025', 'upcoming-broadway-shows', 'best-broadway-show-right-now'],
   },
 
   'new-broadway-shows-2024': {
@@ -487,7 +537,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.status === 'open' && openedInYear(show, 2024);
     },
     sort: 'score',
-    relatedPages: ['new-broadway-shows-2025', 'new-broadway-shows-2026', 'best-broadway-show-right-now'],
+    relatedPages: ['2023-2024-broadway-season', 'new-broadway-shows-2025', 'new-broadway-shows-2026', 'best-broadway-show-right-now'],
   },
 
   'long-broadway-shows': {
@@ -505,6 +555,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'score',
     relatedPages: ['short-broadway-shows', 'best-broadway-musicals', 'best-broadway-dramas'],
   },
+
+  // Season browse pages (generated programmatically)
+  ...generateSeasonBrowsePages(),
 };
 
 // Get all browse page slugs for static generation
