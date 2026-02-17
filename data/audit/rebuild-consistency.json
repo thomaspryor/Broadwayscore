@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-17T05:47:21.973Z",
+  "generatedAt": "2026-02-17T09:12:05.605Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -16,6 +16,14 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "seminar-2011",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 84 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
