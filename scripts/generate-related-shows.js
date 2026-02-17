@@ -105,7 +105,8 @@ for (const s of showsData.shows) {
 }
 
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
-function algorithmicCandidates(show, limit = 15) {
+// statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all
+function algorithmicCandidates(show, limit = 15, statusFilter = null) {
   const currentCreatives = new Map();
   for (const m of show.creativeTeam || []) {
     currentCreatives.set(m.name.toLowerCase(), m.role.toLowerCase());
@@ -134,8 +135,16 @@ function algorithmicCandidates(show, limit = 15) {
     return 2;
   };
 
+  const isOpen = (s) => s.status === 'open' || s.status === 'previews';
+
   const scored = showsData.shows
-    .filter(s => s.id !== show.id && (reviewCountMap.get(s.id) || 0) >= 5)
+    .filter(s => {
+      if (s.id === show.id) return false;
+      if ((reviewCountMap.get(s.id) || 0) < 5) return false;
+      if (statusFilter === 'open' && !isOpen(s)) return false;
+      if (statusFilter === 'closed' && isOpen(s)) return false;
+      return true;
+    })
     .map(candidate => {
       let score = 0;
       if (candidate.type === show.type) score += 10;
@@ -158,7 +167,7 @@ function algorithmicCandidates(show, limit = 15) {
       const yearDiff = Math.abs(currentYear - candidateYear);
       if (yearDiff <= 2) score += 3;
       else if (yearDiff <= 5) score += 1;
-      if (candidate.status === 'open' || candidate.status === 'previews') score += 3;
+      if (isOpen(candidate)) score += 3;
 
       return { show: candidate, score };
     })
@@ -305,16 +314,20 @@ function buildCandidateList(candidates) {
 }
 
 // ─── Build batch prompt ───
-function buildBatchPrompt(batch) {
-  // batch = [{ show, candidates, comparisonIds, isOpen }]
+function buildBatchPrompt(batch, pool) {
+  // pool: 'open' or 'closed'
+  // batch = [{ show, openCandidates, closedCandidates, comparisonIds }]
+  const candidates = pool === 'open' ? 'openCandidates' : 'closedCandidates';
+  const poolLabel = pool === 'open' ? 'CURRENTLY OPEN/PREVIEWS' : 'CLOSED';
+
   let prompt = `You are a Broadway recommendation engine. For each show below, pick the 6 best "if you liked this, you'd also like..." recommendations from its candidate list.
+
+ALL candidates are ${poolLabel} shows. Pick the 6 best matches.
 
 RULES:
 - Consider tone, vibe, creative team connections, audience overlap, and genre feel
 - Do NOT just match on type — a dark irreverent comedy fan doesn't want a family musical
 - Never recommend two productions of the same title
-- For OPEN/PREVIEWS shows: at least 4 of 6 picks must be currently open/previews
-- For CLOSED shows: at least 2 of 6 picks must be currently open/previews
 - Some shows have "MUST INCLUDE" IDs — these are editorially curated comparisons that MUST appear in the 6 (fill remaining slots from candidates)
 
 Return a JSON object mapping each show's ID to an array of 6 recommended IDs:
@@ -325,13 +338,21 @@ Return a JSON object mapping each show's ID to an array of 6 recommended IDs:
 
 Return ONLY the JSON object, no other text.\n\n`;
 
-  for (const { show, candidates, comparisonIds } of batch) {
+  for (const item of batch) {
+    const show = item.show;
+    const cands = item[candidates];
+    if (cands.length === 0) continue;
+
+    // Filter comparison IDs to ones in this pool
+    const candIds = new Set(cands.map(c => c.id));
+    const poolCompIds = (item.comparisonIds || []).filter(id => candIds.has(id));
+
     prompt += `═══ SHOW: ${show.id} ═══\n`;
     prompt += buildShowProfile(show) + '\n';
-    if (comparisonIds.length > 0) {
-      prompt += `MUST INCLUDE (up to 2): ${comparisonIds.join(', ')}\n`;
+    if (poolCompIds.length > 0) {
+      prompt += `MUST INCLUDE (up to 2): ${poolCompIds.join(', ')}\n`;
     }
-    prompt += `\nCANDIDATES:\n${buildCandidateList(candidates)}\n\n`;
+    prompt += `\nCANDIDATES:\n${buildCandidateList(cands)}\n\n`;
   }
 
   return prompt;
@@ -407,13 +428,53 @@ async function main() {
   let failed = 0;
   let usedAlgorithmic = 0;
 
+  // Helper: process LLM results for a pool and fill from candidates
+  function processPoolResults(result, batchInput, pool) {
+    const candKey = pool === 'open' ? 'openCandidates' : 'closedCandidates';
+    const resultKey = pool === 'open' ? 'relatedOpenIds' : 'relatedClosedIds';
+    const recommendations = result ? result.parsed : null;
+
+    for (const item of batchInput) {
+      const show = item.show;
+      const candidates = item[candKey];
+      let recs = recommendations?.[show.id];
+
+      if (Array.isArray(recs) && recs.length > 0) {
+        recs = recs.filter(id => showById.has(id) && id !== show.id);
+        recs = deduplicateProductions(recs);
+        if (recs.length < 6) {
+          const recsSet = new Set(recs);
+          for (const c of candidates) {
+            if (recs.length >= 6) break;
+            if (!recsSet.has(c.id)) { recs.push(c.id); recsSet.add(c.id); }
+          }
+        }
+        recs = recs.slice(0, 6);
+      } else {
+        // Algorithmic fallback
+        recs = candidates.slice(0, 6).map(c => c.id);
+      }
+
+      if (!existingData.shows[show.id]) {
+        existingData.shows[show.id] = { lastUpdated: today };
+      }
+      existingData.shows[show.id][resultKey] = recs;
+      existingData.shows[show.id].lastUpdated = today;
+      // Maintain backward-compat relatedIds (mix of open + closed)
+      const openIds = existingData.shows[show.id].relatedOpenIds || [];
+      const closedIds = existingData.shows[show.id].relatedClosedIds || [];
+      existingData.shows[show.id].relatedIds = [...openIds.slice(0, 4), ...closedIds.slice(0, 2)];
+    }
+  }
+
   for (let bi = 0; bi < batches.length; bi++) {
     const batch = batches[bi];
     console.log(`\nBatch ${bi + 1}/${batches.length} (${batch.length} shows):`);
 
-    // Pre-filter candidates for each show
+    // Pre-filter candidates for each show — separate open and closed pools
     const batchInput = batch.map(show => {
-      const candidates = algorithmicCandidates(show, 15);
+      const openCandidates = algorithmicCandidates(show, 15, 'open');
+      const closedCandidates = algorithmicCandidates(show, 15, 'closed');
 
       // Get comparison pair IDs for this show
       const comparisonSlugs = comparisonMap.get(show.slug) || [];
@@ -421,78 +482,54 @@ async function main() {
         .map(slug => slugToId.get(slug))
         .filter(id => id && id !== show.id);
 
-      // Merge comparison pair shows into candidates if not already there
-      const candidateIds = new Set(candidates.map(c => c.id));
+      // Merge comparison pair shows into appropriate candidate pool
+      const openCandIds = new Set(openCandidates.map(c => c.id));
+      const closedCandIds = new Set(closedCandidates.map(c => c.id));
       for (const cId of comparisonIds) {
-        if (!candidateIds.has(cId)) {
-          const cShow = showById.get(cId);
-          if (cShow) candidates.push(cShow);
-        }
+        const cShow = showById.get(cId);
+        if (!cShow) continue;
+        const isOpen = cShow.status === 'open' || cShow.status === 'previews';
+        if (isOpen && !openCandIds.has(cId)) openCandidates.push(cShow);
+        if (!isOpen && !closedCandIds.has(cId)) closedCandidates.push(cShow);
       }
 
-      return { show, candidates, comparisonIds };
+      return { show, openCandidates, closedCandidates, comparisonIds };
     });
 
-    // Call LLM
-    const prompt = buildBatchPrompt(batchInput);
-    const result = await callLLM(prompt);
-
-    if (result) {
-      console.log(`  LLM responded (${result.provider})`);
-      const recommendations = result.parsed;
-
-      for (const { show, candidates, comparisonIds } of batchInput) {
-        let recs = recommendations[show.id];
-        if (Array.isArray(recs) && recs.length > 0) {
-          // Validate IDs exist
-          recs = recs.filter(id => showById.has(id) && id !== show.id);
-          // Multi-production dedup
-          recs = deduplicateProductions(recs);
-          // Ensure we have 6
-          if (recs.length < 6) {
-            // Fill from algorithmic candidates
-            const recsSet = new Set(recs);
-            for (const c of candidates) {
-              if (recs.length >= 6) break;
-              if (!recsSet.has(c.id)) {
-                recs.push(c.id);
-                recsSet.add(c.id);
-              }
-            }
-          }
-          recs = recs.slice(0, 6);
-
-          existingData.shows[show.id] = {
-            relatedIds: recs,
-            lastUpdated: today,
-          };
-          processed++;
-          if (dryRun) {
-            console.log(`  ${show.title}: ${recs.map(id => showById.get(id)?.title || id).join(', ')}`);
-          }
-        } else {
-          // LLM didn't return recs for this show — use algorithmic
-          const algRecs = candidates.slice(0, 6).map(c => c.id);
-          existingData.shows[show.id] = {
-            relatedIds: algRecs,
-            lastUpdated: today,
-          };
-          usedAlgorithmic++;
-          console.log(`  ${show.title}: ALGORITHMIC FALLBACK`);
-        }
-      }
+    // Call LLM for open pool
+    const openPrompt = buildBatchPrompt(batchInput, 'open');
+    const openResult = await callLLM(openPrompt);
+    if (openResult) {
+      console.log(`  Open pool: LLM responded (${openResult.provider})`);
     } else {
-      // Entire batch failed — use algorithmic for all
-      console.log('  LLM FAILED — using algorithmic fallback for entire batch');
-      for (const { show, candidates } of batchInput) {
-        const algRecs = candidates.slice(0, 6).map(c => c.id);
-        existingData.shows[show.id] = {
-          relatedIds: algRecs,
-          lastUpdated: today,
-        };
-        usedAlgorithmic++;
-      }
+      console.log('  Open pool: LLM FAILED — using algorithmic fallback');
       failed++;
+    }
+    processPoolResults(openResult, batchInput, 'open');
+
+    await sleep(500);
+
+    // Call LLM for closed pool
+    const closedPrompt = buildBatchPrompt(batchInput, 'closed');
+    const closedResult = await callLLM(closedPrompt);
+    if (closedResult) {
+      console.log(`  Closed pool: LLM responded (${closedResult.provider})`);
+    } else {
+      console.log('  Closed pool: LLM FAILED — using algorithmic fallback');
+      failed++;
+    }
+    processPoolResults(closedResult, batchInput, 'closed');
+
+    processed += batch.length;
+
+    for (const item of batchInput) {
+      if (dryRun) {
+        const show = item.show;
+        const entry = existingData.shows[show.id];
+        console.log(`  ${show.title}:`);
+        console.log(`    Open:   ${(entry.relatedOpenIds || []).map(id => showById.get(id)?.title || id).join(', ')}`);
+        console.log(`    Closed: ${(entry.relatedClosedIds || []).map(id => showById.get(id)?.title || id).join(', ')}`);
+      }
     }
 
     // Checkpoint every 25 shows
