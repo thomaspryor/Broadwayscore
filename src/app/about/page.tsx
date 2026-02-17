@@ -34,12 +34,12 @@ export default function AboutPage() {
               by AI trained on hundreds of critic-rated reviews, with every source linked so you can read them yourself.
             </p>
             <p>
-              Beyond critic scores, we track box office performance, audience reception, lottery and rush
-              availability, commercial outcomes, and Tony Awards history &mdash; all in one place.
+              Beyond critic scores, we track audience reception &mdash; aggregating ratings from Show Score,
+              Mezzanine, and Reddit &mdash; so you get both the critical and crowd perspective in one place.
             </p>
             <p>
-              The site updates itself automatically: new shows are discovered daily, reviews are gathered
-              continuously, and box office data refreshes weekly. The goal is a resource that&apos;s always
+              The site updates itself automatically: new shows are discovered daily and reviews are gathered
+              continuously. The goal is a resource that&apos;s always
               current and always useful, whether you&apos;re deciding what to see tonight or researching
               Broadway history.
             </p>

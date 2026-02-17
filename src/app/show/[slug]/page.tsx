@@ -31,6 +31,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
 import { StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import TicketLink from '@/components/TicketLink';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -404,16 +405,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
               {/* Ticket Links */}
               {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
-                <a
+                <TicketLink
                   key={i}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  showName={show.title}
+                  showId={show.id}
+                  platform={link.platform}
+                  url={link.url}
+                  pageType="show"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
                 >
                   <TicketIcon />
                   {link.platform}
-                </a>
+                </TicketLink>
               ))}
 
               {/* Trailer */}
