@@ -111,7 +111,7 @@ const faqSchema = {
       name: 'What is the Audience Scorecard?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is AI-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
+        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is LLM-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
       },
     },
     {
@@ -289,9 +289,9 @@ export default function MethodologyPage() {
             Letter grades from outlets like Entertainment Weekly are converted using a standard academic mapping (A+ at the top, F at the bottom), calibrated to align with our 0&ndash;100 scale.
           </p>
 
-          <h3 className="text-base font-semibold text-white mt-6 mb-3">AI Sentiment Analysis</h3>
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">LLM Sentiment Analysis</h3>
           <p className="text-gray-300 text-sm">
-            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading AI models to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
+            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading LLMs to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
           </p>
         </section>
 
@@ -364,7 +364,7 @@ export default function MethodologyPage() {
                 <span className="text-white font-medium">Reddit (r/Broadway)</span>
               </div>
               <p className="text-gray-300 text-sm">
-                AI-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
+                LLM-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
               </p>
             </div>
           </div>
