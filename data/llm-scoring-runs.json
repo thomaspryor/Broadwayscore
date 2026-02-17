@@ -211379,37 +211379,51 @@
     ]
   },
   {
-    "startedAt": "2026-02-17T05:12:27.772Z",
-    "completedAt": "2026-02-17T05:23:27.232Z",
+    "startedAt": "2026-02-17T05:41:08.889Z",
+    "completedAt": "2026-02-17T05:42:37.633Z",
     "totalReviews": 23294,
-    "processed": 2,
-    "skipped": 22950,
+    "processed": 1,
+    "skipped": 22958,
     "errors": 1,
     "tokensUsed": {
-      "input": 105000,
-      "output": 1972,
-      "total": 237141
+      "input": 108036,
+      "output": 2056,
+      "total": 164561
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-17T05:41:27.175Z",
+    "completedAt": "2026-02-17T05:43:03.324Z",
+    "totalReviews": 23294,
+    "processed": 1,
+    "skipped": 22946,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 122667,
+      "output": 2310,
+      "total": 187058
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-17T05:38:11.136Z",
+    "completedAt": "2026-02-17T05:43:08.675Z",
+    "totalReviews": 23294,
+    "processed": 2,
+    "skipped": 22949,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 126736,
+      "output": 2388,
+      "total": 222068
     },
     "errorDetails": [
       {
-        "showId": "la-cage-aux-folles-2010",
-        "outletId": "newsday",
+        "showId": "yellow-face-2024",
+        "outletId": "aaartsalliance",
         "error": "Review text too short or missing"
       }
     ]
-  },
-  {
-    "startedAt": "2026-02-17T05:17:33.537Z",
-    "completedAt": "2026-02-17T05:31:53.031Z",
-    "totalReviews": 23294,
-    "processed": 1,
-    "skipped": 22965,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 112941,
-      "output": 2115,
-      "total": 259689
-    },
-    "errorDetails": []
   }
 ]
