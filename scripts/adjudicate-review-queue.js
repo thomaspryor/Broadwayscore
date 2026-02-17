@@ -187,19 +187,32 @@ function parseResponse(text) {
  * Call Claude Sonnet for adjudication
  */
 async function adjudicateReview(review, sourceData, showTitle) {
-  const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 300,
-    temperature: 0.3,
-    system: buildSystemPrompt(),
-    messages: [{
-      role: 'user',
-      content: buildUserPrompt(review, sourceData, showTitle),
-    }],
-  });
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const message = await anthropic.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 300,
+        temperature: 0.3,
+        system: buildSystemPrompt(),
+        messages: [{
+          role: 'user',
+          content: buildUserPrompt(review, sourceData, showTitle),
+        }],
+      });
 
-  const responseText = message.content[0].text;
-  return parseResponse(responseText);
+      const responseText = message.content[0].text;
+      return parseResponse(responseText);
+    } catch (err) {
+      const isRetryable = err.status === 429 || err.status >= 500 ||
+        err.message?.includes('overloaded') || err.message?.includes('ECONNRESET');
+      if (isRetryable && attempt < 2) {
+        console.log(`    API error (${err.status || err.message}), retrying in ${(attempt + 1) * 5}s...`);
+        await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+        continue;
+      }
+      throw err;
+    }
+  }
 }
 
 /**
@@ -330,13 +343,7 @@ async function main() {
       }
 
       try {
-        const message = await anthropic.messages.create({
-          model: 'claude-sonnet-4-5-20250929',
-          max_tokens: 300,
-          temperature: 0.2,
-          messages: [{
-            role: 'user',
-            content: `You are a Broadway review classifier. Determine if this review is about a BROADWAY production or a NON-BROADWAY production (national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special).
+        const contaminationPrompt = `You are a Broadway review classifier. Determine if this review is about a BROADWAY production or a NON-BROADWAY production (national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special).
 
 **Show:** ${sourceData.showId}
 **Outlet:** ${sourceData.outlet || review.outletId}
@@ -351,9 +358,30 @@ Respond with ONLY this JSON (no markdown fences):
   "confidence": "high" or "medium" or "low",
   "reasoning": "1-2 sentence explanation",
   "productionType": "broadway" or "national-tour" or "regional" or "pre-broadway" or "film-tv" or "other"
-}` }],
-        });
-        const resp = message.content[0].text;
+}`;
+        let resp;
+        for (let attempt = 0; attempt < 3; attempt++) {
+          try {
+            const message = await anthropic.messages.create({
+              model: 'claude-sonnet-4-5-20250929',
+              max_tokens: 300,
+              temperature: 0.2,
+              messages: [{ role: 'user', content: contaminationPrompt }],
+            });
+            resp = message.content[0].text;
+            break;
+          } catch (apiErr) {
+            const isRetryable = apiErr.status === 429 || apiErr.status >= 500 ||
+              apiErr.message?.includes('overloaded') || apiErr.message?.includes('ECONNRESET');
+            if (isRetryable && attempt < 2) {
+              console.log(`    API error (${apiErr.status || apiErr.message}), retrying in ${(attempt + 1) * 5}s...`);
+              await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+              continue;
+            }
+            throw apiErr;
+          }
+        }
+        if (!resp) throw new Error('All retry attempts failed');
 
         const result = JSON.parse(resp);
 

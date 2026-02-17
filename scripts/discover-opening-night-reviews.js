@@ -96,12 +96,30 @@ function slugify(str) {
 async function searchGoogle(query, apiKey, nbResults = 5) {
   const url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
 
-  const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
-  if (!res.ok) {
-    throw new Error(`SERP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+      if (!res.ok) {
+        const status = res.status;
+        if ((status === 429 || status >= 500) && attempt < 2) {
+          console.log(`    SERP ${status}, retrying in ${(attempt + 1) * 5}s...`);
+          await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+          continue;
+        }
+        throw new Error(`SERP ${status}: ${(await res.text()).slice(0, 200)}`);
+      }
+      const data = await res.json();
+      return data.organic_results || data.results || [];
+    } catch (err) {
+      if (attempt < 2 && (err.name === 'TimeoutError' || err.message.includes('timeout') || err.message.includes('ECONNRESET'))) {
+        console.log(`    SERP timeout, retrying in ${(attempt + 1) * 5}s...`);
+        await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+        continue;
+      }
+      throw err;
+    }
   }
-  const data = await res.json();
-  return data.organic_results || data.results || [];
+  return [];
 }
 
 /**
@@ -299,10 +317,28 @@ async function main() {
     // Use tbs=qdr:d for past 24 hours
     const newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
 
-    const res = await fetch(newsUrl, { signal: AbortSignal.timeout(30000) });
-    if (!res.ok) throw new Error(`SERP ${res.status}`);
-    const data = await res.json();
-    const results = data.organic_results || data.news_results || data.results || [];
+    let results = [];
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const res = await fetch(newsUrl, { signal: AbortSignal.timeout(30000) });
+        if (!res.ok) {
+          if ((res.status === 429 || res.status >= 500) && attempt < 2) {
+            await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+            continue;
+          }
+          throw new Error(`SERP ${res.status}`);
+        }
+        const data = await res.json();
+        results = data.organic_results || data.news_results || data.results || [];
+        break;
+      } catch (err) {
+        if (attempt < 2 && (err.name === 'TimeoutError' || err.message.includes('timeout'))) {
+          await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+          continue;
+        }
+        throw err;
+      }
+    }
     searched++;
 
     for (const result of results) {
