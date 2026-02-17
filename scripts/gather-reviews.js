@@ -162,40 +162,54 @@ If you FIND a review, respond with JSON only:
 
 Important: Only report a review if you actually find one via web search. Do not guess or make up URLs.`;
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`API error ${response.status}: ${error.substring(0, 200)}`);
+      if (!response.ok) {
+        const error = await response.text();
+        const status = response.status;
+        if ((status === 429 || status >= 500) && attempt < 2) {
+          console.log(`    ⚠️  API ${status}, retrying in ${(attempt + 1) * 5}s...`);
+          await sleep((attempt + 1) * 5000);
+          continue;
+        }
+        throw new Error(`API error ${status}: ${error.substring(0, 200)}`);
+      }
+
+      const data = await response.json();
+      const content = data.content[0].text;
+
+      // Parse JSON from response
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const result = JSON.parse(jsonMatch[0]);
+        return result.found ? result : null;
+      }
+      return null;
+    } catch (error) {
+      if (attempt < 2 && (error.message.includes('ECONNRESET') || error.message.includes('fetch failed'))) {
+        console.log(`    ⚠️  Network error, retrying in ${(attempt + 1) * 5}s...`);
+        await sleep((attempt + 1) * 5000);
+        continue;
+      }
+      console.log(`    ⚠️  Search error: ${error.message}`);
+      return null;
     }
-
-    const data = await response.json();
-    const content = data.content[0].text;
-
-    // Parse JSON from response
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
-      return result.found ? result : null;
-    }
-    return null;
-  } catch (error) {
-    console.log(`    ⚠️  Search error: ${error.message}`);
-    return null;
   }
+  return null;
 }
 
 /**
@@ -211,7 +225,7 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
       return;
     }
 
-    const req = https.get(searchUrl, { timeout: 15000 }, (res) => {
+    const req = https.get(searchUrl, { timeout: 30000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
         res.on('data', chunk => data += chunk);
@@ -2155,7 +2169,13 @@ async function main() {
   const results = [];
 
   for (const showId of showIds) {
-    const result = await gatherReviewsForShow(showId, aggregatorsOnly);
+    let result;
+    try {
+      result = await gatherReviewsForShow(showId, aggregatorsOnly);
+    } catch (err) {
+      console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
+      result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };
+    }
     results.push(result);
     await sleep(2000); // Delay between shows
   }
