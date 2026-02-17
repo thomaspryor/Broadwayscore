@@ -329,7 +329,7 @@ export default function TonyAwardsPage() {
         {/* Historical Winners */}
         {historicalWinners.length > 0 && (
           <section className="mb-10 mt-4">
-            <h2 className="text-xl font-bold text-white mb-2">Recent Tony Winners &amp; Their Scores</h2>
+            <h2 className="text-xl font-bold text-white mb-2">Recent Tony Winning Shows &amp; Their Scores</h2>
             <p className="text-sm text-gray-400 mb-4">
               How recent Tony winners scored with critics — showing the relationship between reviews and awards.
             </p>
