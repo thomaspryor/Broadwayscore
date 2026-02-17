@@ -211359,16 +211359,36 @@
     ]
   },
   {
-    "startedAt": "2026-02-17T04:22:15.623Z",
-    "completedAt": "2026-02-17T04:42:37.302Z",
+    "startedAt": "2026-02-17T03:45:35.781Z",
+    "completedAt": "2026-02-17T04:47:09.207Z",
     "totalReviews": 23294,
-    "processed": 7,
-    "skipped": 22924,
+    "processed": 2,
+    "skipped": 22949,
     "errors": 0,
     "tokensUsed": {
-      "input": 135092,
-      "output": 3298,
-      "total": 311714
+      "input": 131235,
+      "output": 2358,
+      "total": 395131
+    },
+    "errorDetails": [
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-17T05:41:08.889Z",
+    "completedAt": "2026-02-17T05:42:37.633Z",
+    "totalReviews": 23294,
+    "processed": 1,
+    "skipped": 22958,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 108036,
+      "output": 2056,
+      "total": 164561
     },
     "errorDetails": []
   },
