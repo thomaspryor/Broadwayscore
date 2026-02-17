@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge } from '@/components/show-cards';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
@@ -36,28 +37,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
     },
   };
-}
-
-function ScoreBadge({ score }: { score?: number | null }) {
-  if (score === undefined || score === null) {
-    return (
-      <div className="w-10 h-10 text-sm rounded-lg bg-surface-overlay text-gray-600 border border-white/5 flex items-center justify-center font-bold">
-        —
-      </div>
-    );
-  }
-  const r = Math.round(score);
-  let c: string;
-  if (r >= 85) c = 'score-must-see';
-  else if (r >= 75) c = 'score-great';
-  else if (r >= 65) c = 'score-good';
-  else if (r >= 55) c = 'score-tepid';
-  else c = 'score-skip';
-  return (
-    <div className={`w-10 h-10 text-sm rounded-lg ${c} flex items-center justify-center font-bold`}>
-      {r}
-    </div>
-  );
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -174,7 +153,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                       {show.type === 'musical' ? 'Musical' : 'Play'} · Opened {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
-                  <ScoreBadge score={show.criticScore?.score} />
+                  <ScoreBadge score={show.criticScore?.score} size="sm" />
                 </Link>
               ))}
             </div>
@@ -202,7 +181,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                       {new Date(show.openingDate).getFullYear()}{show.closingDate && ` – ${new Date(show.closingDate).getFullYear()}`} · {show.type === 'musical' ? 'Musical' : 'Play'}
                     </p>
                   </div>
-                  <ScoreBadge score={show.criticScore?.score} />
+                  <ScoreBadge score={show.criticScore?.score} size="sm" />
                 </Link>
               ))}
             </div>
