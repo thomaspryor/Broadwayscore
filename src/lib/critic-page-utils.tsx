@@ -25,7 +25,7 @@ export function getScoreTextColor(score: number): string {
   if (r >= 85) return '#FFD700';
   if (r >= 75) return '#22c55e';
   if (r >= 65) return '#14b8a6';
-  if (r >= 55) return '#f59e0b';
+  if (r >= 55) return '#d97706';
   return '#ef4444';
 }
 
