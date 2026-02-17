@@ -4181,9 +4181,11 @@ function loadState() {
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], browserbase: [], scrapingbee: [], brightdata: [], archive: [] };
+          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
-          if (!state.tierBreakdown.browserbase) state.tierBreakdown.browserbase = [];
+          for (const key of ['playwright', 'amp', 'browserbase', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
+            if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
+          }
         }
         if (!state.log) state.log = [];
         return true;
@@ -5148,13 +5150,13 @@ function generateReport() {
         : '0%',
     },
     tierBreakdown: {
-      playwright: state.tierBreakdown.playwright.length,
+      playwright: state.tierBreakdown.playwright?.length || 0,
       amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
-      scrapingbee: state.tierBreakdown.scrapingbee.length,
-      brightdata: state.tierBreakdown.brightdata.length,
+      scrapingbee: state.tierBreakdown.scrapingbee?.length || 0,
+      brightdata: state.tierBreakdown.brightdata?.length || 0,
       archiveToday: state.tierBreakdown.archiveToday?.length || 0,
-      archive: state.tierBreakdown.archive.length,
+      archive: state.tierBreakdown.archive?.length || 0,
     },
     statistics: {
       tier1Attempts: stats.tier1Attempts,
