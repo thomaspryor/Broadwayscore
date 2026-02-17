@@ -438,7 +438,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, twelveMonthsAgo]);
 
-  // Tony Winners - shows tagged as tony-winner
+  // Tony Winning Shows - shows tagged as tony-winner
   const tonyWinners = useMemo(() => {
     return shows
       .filter(show => {
@@ -805,7 +805,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           viewAllHref="/browse/upcoming-broadway-shows"
         />
         <FeaturedRow
-          title="Tony Winners"
+          title="Tony Winning Shows"
           shows={tonyWinners}
           viewAllHref="/browse/tony-winners-on-broadway"
         />
