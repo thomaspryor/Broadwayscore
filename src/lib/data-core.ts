@@ -445,7 +445,7 @@ export function getAllBrowseSlugs(): string[] {
  * Get related shows — LLM-generated lookup with algorithmic fallback
  */
 export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
-  const entry = (relatedShowsData as Record<string, unknown> & { shows: Record<string, { relatedIds: string[] }> }).shows?.[show.id];
+  const entry = (relatedShowsData as Record<string, unknown> & { shows: Record<string, { relatedIds: string[]; relatedOpenIds?: string[]; relatedClosedIds?: string[] }> }).shows?.[show.id];
   if (entry?.relatedIds?.length) {
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
@@ -456,6 +456,40 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
       .filter((s): s is ComputedShow => s != null);
   }
   return getRelatedShowsAlgorithmic(show, limit);
+}
+
+export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow[] {
+  const entry = (relatedShowsData as Record<string, unknown> & { shows: Record<string, { relatedOpenIds?: string[] }> }).shows?.[show.id];
+  if (entry?.relatedOpenIds?.length) {
+    const allShows = getAllShows();
+    const idMap = new Map(allShows.map(s => [s.id, s]));
+    const slugMap = new Map(allShows.map(s => [s.slug, s]));
+    return entry.relatedOpenIds
+      .slice(0, limit)
+      .map((id: string) => idMap.get(id) || slugMap.get(id))
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews'));
+  }
+  // Fallback: filter algorithmic results to open/previews
+  return getRelatedShowsAlgorithmic(show, limit * 3)
+    .filter(s => s.status === 'open' || s.status === 'previews')
+    .slice(0, limit);
+}
+
+export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedShow[] {
+  const entry = (relatedShowsData as Record<string, unknown> & { shows: Record<string, { relatedClosedIds?: string[] }> }).shows?.[show.id];
+  if (entry?.relatedClosedIds?.length) {
+    const allShows = getAllShows();
+    const idMap = new Map(allShows.map(s => [s.id, s]));
+    const slugMap = new Map(allShows.map(s => [s.slug, s]));
+    return entry.relatedClosedIds
+      .slice(0, limit)
+      .map((id: string) => idMap.get(id) || slugMap.get(id))
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed');
+  }
+  // Fallback: filter algorithmic results to closed
+  return getRelatedShowsAlgorithmic(show, limit * 3)
+    .filter(s => s.status === 'closed')
+    .slice(0, limit);
 }
 
 /**
