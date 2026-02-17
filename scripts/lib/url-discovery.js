@@ -1,8 +1,10 @@
 /**
  * URL Discovery via Google SERP (shared module)
  *
- * Extracted from collect-review-texts.js for reuse by:
- * - collect-review-texts.js (full text collection)
+ * Provider chain: ScrapingBee SERP API → Bright Data Web Unlocker (Google HTML).
+ *
+ * Used by:
+ * - collect-review-texts.js (full text collection — has its own inline copy)
  * - rediscover-review-urls.js (URL rediscovery pre-processing)
  */
 
@@ -99,6 +101,8 @@ const OUTLET_DOMAINS = {
   'financial-times-uk': 'ft.com',
   'latimes': 'latimes.com',
   'la-times': 'latimes.com',
+  'huffpost': 'huffpost.com',
+  'huffington-post': 'huffpost.com',
 };
 
 // Known domain redirects (old domain → new domain)
@@ -132,20 +136,125 @@ function getShowInfo(showId) {
   return { title: title || null, year: yearMatch ? yearMatch[1] : '' };
 }
 
+// ============================================================================
+// SERP Providers
+// ============================================================================
+
+let _scrapingBeeSerpExhausted = false;
+
 /**
- * Discover correct URL for a review via Google SERP search (ScrapingBee).
+ * Search via ScrapingBee SERP API (returns structured JSON).
+ * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
+ */
+async function _serpViaScrapingBee(query, apiKey, log) {
+  if (_scrapingBeeSerpExhausted || !apiKey) return null;
+
+  const axios = require('axios');
+  try {
+    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+      params: { api_key: apiKey, search: query },
+      timeout: 30000,
+    });
+    const data = response.data;
+    return (data.organic_results || data.results || []).map(r => ({
+      url: r.url || r.link,
+      title: r.title || '',
+    }));
+  } catch (error) {
+    const status = error.response?.status;
+    if (status === 401 || status === 403 || status === 429) {
+      _scrapingBeeSerpExhausted = true;
+      log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
+    } else {
+      log(`    ✗ ScrapingBee SERP error: ${error.message}`);
+    }
+    return null;
+  }
+}
+
+/**
+ * Search via Bright Data Web Unlocker → Google HTML.
+ * Parses organic results from Google's HTML response.
+ * Ported from collect-review-texts.js _serpViaBrightData().
+ * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
+ */
+async function _serpViaBrightData(query, apiKey, log) {
+  if (!apiKey) return null;
+
+  const axios = require('axios');
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+
+  try {
+    const response = await axios.post('https://api.brightdata.com/request', {
+      zone: zoneName,
+      url: googleUrl,
+      format: 'raw',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      timeout: 30000,
+    });
+
+    const html = typeof response.data === 'string' ? response.data : '';
+    if (!html || html.length < 500) return [];
+
+    // Parse Google organic results from HTML
+    const results = [];
+    const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
+    const titleRegex = /<h3[^>]*>([^<]+)<\/h3>/g;
+    let match;
+
+    const seenUrls = new Set();
+    while ((match = hrefRegex.exec(html)) !== null) {
+      let url = match[1];
+      // Handle Google redirect URLs: /url?q=REAL_URL&sa=...
+      if (url.includes('/url?q=')) {
+        try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
+      }
+      if (url.includes('google.com') || url.includes('googleapis.com')) continue;
+      if (url.includes('webcache.') || url.includes('translate.')) continue;
+      if (seenUrls.has(url)) continue;
+      seenUrls.add(url);
+      results.push({ url, title: '' });
+    }
+
+    // Attach titles from h3 tags (best effort)
+    let titleIdx = 0;
+    while ((match = titleRegex.exec(html)) !== null && titleIdx < results.length) {
+      results[titleIdx].title = match[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+      titleIdx++;
+    }
+
+    return results.slice(0, 10);
+  } catch (error) {
+    log(`    ✗ Bright Data SERP error: ${error.message}`);
+    return null;
+  }
+}
+
+// ============================================================================
+// Main discovery function
+// ============================================================================
+
+/**
+ * Discover correct URL for a review via Google SERP search.
+ * Provider chain: ScrapingBee → Bright Data Web Unlocker.
  *
  * @param {Object} review - Review object with showId, outletId, outlet, url
- * @param {string} scrapingBeeKey - ScrapingBee API key
+ * @param {string} scrapingBeeKey - ScrapingBee API key (can be empty)
  * @param {Object} [options] - Optional settings
+ * @param {string} [options.brightDataKey] - Bright Data API token (fallback provider)
  * @param {Function} [options.log] - Logging function (default: console.log)
- * @returns {string|null} - Discovered URL, or null if not found
+ * @returns {string|null|'__SERP_UNAVAILABLE__'} - Discovered URL, null if not found, or sentinel if all providers down
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const log = options.log || console.log;
-  const axios = require('axios');
+  const brightDataKey = options.brightDataKey || '';
 
-  if (!scrapingBeeKey) return null;
+  if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
   const showInfo = getShowInfo(review.showId);
   if (!showInfo.title) return null;
@@ -166,77 +275,78 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   log(`  [URL Discovery] Searching: ${query}`);
 
-  try {
-    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-      params: {
-        api_key: scrapingBeeKey,
-        search: query,
-      },
-      timeout: 30000,
-    });
+  // Provider chain: ScrapingBee → Bright Data
+  // null = provider failure (down/exhausted), [] = searched but no results
+  let results = await _serpViaScrapingBee(query, scrapingBeeKey, log);
+  let provider = 'scrapingbee';
+  if (!results) {
+    results = await _serpViaBrightData(query, brightDataKey, log);
+    provider = 'brightdata';
+  }
 
-    const data = response.data;
-    const results = data.organic_results || data.results || [];
+  // Both providers down
+  if (results === null) {
+    log('    ✗ All SERP providers unavailable');
+    return '__SERP_UNAVAILABLE__';
+  }
 
-    if (!results.length) {
-      log('    ✗ No search results found');
-      return null;
-    }
-
-    // Extract the old URL's domain for comparison
-    let oldDomain = '';
-    try {
-      oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
-    } catch (e) {}
-
-    const targetDomain = domain || oldDomain;
-    const showTitleLower = showInfo.title.toLowerCase();
-    const shortTitle = (review.showId || '')
-      .replace(/-\d{4}$/, '')
-      .replace(/-/g, ' ')
-      .toLowerCase();
-    const shortSlug = shortTitle.replace(/\s+/g, '-');
-
-    for (const result of results.slice(0, 5)) {
-      const url = result.url || result.link;
-      if (!url) continue;
-
-      const urlLower = url.toLowerCase();
-      try { if (new URL(url).pathname === '/') continue; } catch (e) {}
-      if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
-      if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
-
-      // Skip if same as the current URL
-      if (url === review.url) continue;
-
-      let urlDomain = '';
-      try {
-        urlDomain = new URL(url).hostname.replace(/^www\./, '');
-      } catch (e) { continue; }
-
-      if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
-
-      const title = (result.title || '').toLowerCase();
-      const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
-
-      const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
-      const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
-      const titleHasReview = title.includes('review');
-
-      if (!titleHasShow && !urlHasShow) continue;
-      const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
-      if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
-
-      log(`    ✓ Found: ${url}`);
-      return url;
-    }
-
-    log('    ✗ No matching URL found in search results');
-    return null;
-  } catch (error) {
-    log(`    ✗ URL discovery failed: ${error.message}`);
+  if (!results.length) {
+    log('    ✗ No search results found');
     return null;
   }
+
+  log(`    Using ${provider} (${results.length} results)`);
+
+  // Filter and match results
+  let oldDomain = '';
+  try {
+    oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
+  } catch (e) {}
+
+  const targetDomain = domain || oldDomain;
+  const showTitleLower = showInfo.title.toLowerCase();
+  const shortTitle = (review.showId || '')
+    .replace(/-\d{4}$/, '')
+    .replace(/-/g, ' ')
+    .toLowerCase();
+  const shortSlug = shortTitle.replace(/\s+/g, '-');
+
+  for (const result of results.slice(0, 5)) {
+    const url = result.url || result.link;
+    if (!url) continue;
+
+    const urlLower = url.toLowerCase();
+    try { if (new URL(url).pathname === '/') continue; } catch (e) {}
+    if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
+    if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
+
+    // Skip if same as the current URL
+    if (url === review.url) continue;
+
+    let urlDomain = '';
+    try {
+      urlDomain = new URL(url).hostname.replace(/^www\./, '');
+    } catch (e) { continue; }
+
+    if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
+
+    const title = (result.title || '').toLowerCase();
+    const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
+
+    const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
+    const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
+    const titleHasReview = title.includes('review');
+
+    if (!titleHasShow && !urlHasShow) continue;
+    const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
+    if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
+
+    log(`    ✓ Found via ${provider}: ${url}`);
+    return url;
+  }
+
+  log('    ✗ No matching URL found in search results');
+  return null;
 }
 
 module.exports = {
