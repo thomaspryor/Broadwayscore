@@ -117,6 +117,7 @@ function RankingCard({ href, title, description, showCount, icon, color = 'text-
 }
 
 export default function RankingsPage() {
+  const currentYear = new Date().getFullYear();
   const allShows = getAllShows();
   const openShows = allShows.filter(s => s.status === 'open');
 
@@ -342,10 +343,10 @@ export default function RankingsPage() {
               color="text-red-400"
             />
             <RankingCard
-              href="/browse/new-broadway-shows-2025"
-              title="New in 2025"
+              href={`/browse/new-broadway-shows-${currentYear}`}
+              title={`New in ${currentYear}`}
               description="Fresh productions this year"
-              showCount={getShowCount('new-broadway-shows-2025')}
+              showCount={getShowCount(`new-broadway-shows-${currentYear}`)}
               icon={<span className="text-lg">✨</span>}
             />
             <RankingCard
@@ -405,10 +406,10 @@ export default function RankingsPage() {
               color="text-yellow-400"
             />
             <RankingCard
-              href="/browse/tony-nominated-2025"
-              title="2025 Tony Nominees"
+              href={`/browse/tony-nominated-${currentYear}`}
+              title={`${currentYear} Tony Nominees`}
               description="This year's celebrated shows"
-              showCount={getShowCount('tony-nominated-2025')}
+              showCount={getShowCount(`tony-nominated-${currentYear}`)}
               icon={<span className="text-lg">🎖️</span>}
               color="text-yellow-400"
             />

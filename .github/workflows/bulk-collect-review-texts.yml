@@ -380,44 +380,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Rebuild reviews.json
-        run: node scripts/rebuild-all-reviews.js
-
-      - name: Commit and push rebuilt reviews.json
-        if: always()
+      - name: Trigger rebuild (concurrency-gated)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
-          git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
+          # Don't rebuild inline — trigger the centralized rebuild workflow which has
+          # a concurrency group to prevent races with scoring shards and other collection runs.
+          RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED))
 
-          git commit -m "data: Auto-rebuild reviews.json after bulk collection (round ${{ inputs.current_round }})"
-
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed rebuild"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
+          else
+            gh workflow run "Rebuild Reviews Data" \
+              -f reason="Auto-triggered after bulk collection (round ${{ inputs.current_round }})"
+            echo "Rebuild triggered."
+          fi
 
       - name: Count remaining reviews needing fullText
         id: count-remaining
