@@ -399,7 +399,7 @@ export default function RankingsPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <RankingCard
               href="/browse/tony-winners-on-broadway"
-              title="Tony Winners"
+              title="Tony Winning Shows"
               description="Award-winning productions"
               showCount={getShowCount('tony-winners-on-broadway')}
               icon={<span className="text-lg">🏆</span>}
