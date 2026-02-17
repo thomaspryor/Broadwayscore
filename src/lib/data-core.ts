@@ -393,9 +393,14 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   let filteredShows = allShows.filter(config.filter);
 
   if (config.sort === 'score') {
-    filteredShows = filteredShows.sort((a, b) =>
-      (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0)
-    );
+    filteredShows = filteredShows.sort((a, b) => {
+      const aScore = a.criticScore?.score;
+      const bScore = b.criticScore?.score;
+      if (aScore != null && bScore == null) return -1;
+      if (aScore == null && bScore != null) return 1;
+      if (aScore == null && bScore == null) return 0;
+      return bScore! - aScore!;
+    });
   } else if (config.sort === 'opening-date') {
     filteredShows = filteredShows.sort((a, b) =>
       new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
