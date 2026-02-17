@@ -9,6 +9,7 @@ import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/l
 import { getAllShows, getDataStats } from '@/lib/data-core';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
+import { featureFlags } from '@/config/feature-flags';
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -139,11 +140,11 @@ export default function RootLayout({
                   <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
                   <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
                 </Link>
+              </div>
+              <div className="flex items-center gap-3">
                 <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   Reviews
                 </Link>
-              </div>
-              <div className="flex items-center gap-3">
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
@@ -175,8 +176,12 @@ export default function RootLayout({
                   <li><Link href="/browse/broadway-shows-for-date-night" className="hover:text-white transition-colors">Date Night</Link></li>
                   <li><Link href="/browse/broadway-shows-for-tourists" className="hover:text-white transition-colors">For Tourists</Link></li>
                   <li><Link href="/browse/first-time-broadway" className="hover:text-white transition-colors">First-Timers</Link></li>
+                  {!featureFlags.discountTickets && (
+                    <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
+                  )}
                 </ul>
               </div>
+              {featureFlags.discountTickets && (
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
@@ -187,24 +192,25 @@ export default function RootLayout({
                   <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
                 </ul>
               </div>
+              )}
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">More</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
                   <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
-                  <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Predictions</Link></li>
-                  <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>
-                  <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>
-                  <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>
+                  {featureFlags.tonyPredictions && <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Predictions</Link></li>}
+                  {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
+                  {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
+                  {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
                   <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
-                  <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>
-                  <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>
-                  <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>
-                  <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>
-                  <li><Link href="/lyricists" className="hover:text-white transition-colors">Lyricists</Link></li>
+                  {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
+                  {featureFlags.creativePages && <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>}
+                  {featureFlags.creativePages && <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>}
+                  {featureFlags.creativePages && <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>}
+                  {featureFlags.creativePages && <li><Link href="/lyricists" className="hover:text-white transition-colors">Lyricists</Link></li>}
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>
@@ -244,6 +250,8 @@ export default function RootLayout({
                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
+                <HeaderSubscribeButton />
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>
               </div>
