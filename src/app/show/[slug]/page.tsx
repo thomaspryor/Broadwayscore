@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShows } from '@/lib/data-core';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz, getShowScoreUrl } from '@/lib/data-audience';
@@ -195,9 +195,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const castChangesData = getCastChanges(show.id);
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
-  const relatedShowsAll = getRelatedShows(show, 12);
-  const relatedShowsOpen = relatedShowsAll.filter(s => s.status === 'open' || s.status === 'previews').slice(0, 6);
-  const relatedShowsClosed = relatedShowsAll.filter(s => s.status === 'closed').slice(0, 6);
+  const relatedShowsOpen = getRelatedShowsOpen(show);
+  const relatedShowsClosed = getRelatedShowsClosed(show);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
