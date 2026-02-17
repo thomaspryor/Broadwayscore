@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-17",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16054,
-      "skippedNoScore": 1083,
+      "totalReviews": 16053,
+      "skippedNoScore": 1081,
       "skippedDuplicate": 95,
-      "skippedDuplicateUrl": 317,
+      "skippedDuplicateUrl": 315,
       "skippedCrossOutletDuplicateUrl": 28,
-      "skippedDuplicateText": 529,
+      "skippedDuplicateText": 530,
       "skippedFingerprintDedup": 74,
       "skippedUnknownCriticDedup": 248,
-      "skippedWrongProduction": 2026,
+      "skippedWrongProduction": 2029,
       "recoveredFromGarbage": 100,
       "scoreSources": {
         "explicit-stars": 4,
@@ -20,10 +20,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 65,
-        "originalScore-priority0": 1730,
-        "llmScore": 10705,
+        "originalScore-priority0": 1731,
+        "llmScore": 10711,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3520,
+        "llmScore-lowconf": 3512,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -8498,23 +8498,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "a-night-with-janis-joplin-2013",
-      "outletId": "artsdesk",
-      "outlet": "The Arts Desk",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Helen Hawkins",
-      "url": "https://theartsdesk.com/theatre/night-janis-joplin-musical-peacock-theatre-review-belting-blues-singing-oddly-sanitised",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A wealth of musical talent keeps this gig musical afloat",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -22562,6 +22545,23 @@
     },
     {
       "showId": "an-american-in-paris-2015",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "David Cote",
+      "url": "http://www.timeout.com/newyork/theater/an-american-in-paris",
+      "publishDate": null,
+      "originalRating": "3/5",
+      "pullQuote": "There's much gorgeous ballet to admire but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "an-american-in-paris-2015",
       "outletId": "towleroad",
       "outlet": "Towleroad",
       "assignedScore": 82,
@@ -31843,7 +31843,7 @@
       "pullQuote": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "beetlejuice-2019",
@@ -32354,23 +32354,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "beetlejuice-2025",
-      "outletId": "timeout",
-      "outlet": "Time Out New York",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical",
-      "publishDate": null,
-      "originalRating": "3/5",
-      "pullQuote": "It looks great, and there are strong performances and some outré laughs, but none of it quite fits together.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
@@ -39029,7 +39012,7 @@
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/breakfast-at-tiffanys#:~:text=%E2%80%9CShe%20believes%20all%20this%20crap,is%20phony%20through%20and%20through.",
+      "url": "https://www.timeout.com/newyork/theater/breakfast-at-tiffanys",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "After a long gestation and a difficult labor, including a last-minute funding scare, Breakfast at Tiffany's arrives on Broadway meager and stillborn.",
@@ -43239,7 +43222,7 @@
       "pullQuote": "The production gets a considerable boost from Adam Driver, who brings a compelling mixture of danger and vulnerability to Pale.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "burn-this-2019",
@@ -48951,7 +48934,7 @@
       "pullQuote": "'Chaplin' is a mixture of the imaginative and the timeworn.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "chaplin-2012",
@@ -54021,23 +54004,6 @@
     },
     {
       "showId": "clybourne-park-2012",
-      "outletId": "artsdesk",
-      "outlet": "The Arts Desk",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Helen Hawkins",
-      "url": "https://theartsdesk.com/theatre/clybourne-park-park-theatre-review-excellent-revival-bruce-norriss-award-winner",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "This an excellent revival of a terrific, clever play, stylishly directed by Oliver Khaderbai.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "clybourne-park-2012",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 81,
@@ -56982,17 +56948,17 @@
       "outletId": "ny1",
       "outlet": "NY1",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
-      "url": "https://www.ny1.com/content/lifestyles/theater_reviews/221857/theater-review---constellations-/",
+      "url": "https://ny1.com/nyc/bronx/theater-reviews/2015/01/14/theater-review---constellations-",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Nick Payne's compelling drama is one for the heart just as much as the mind.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "constellations-2015",
@@ -62835,13 +62801,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/death-of-a-salesman-review",
+      "url": "https://www.timeout.com/newyork/theater/death-of-a-salesman",
       "publishDate": "October 10, 2022",
       "originalRating": 80,
       "pullQuote": "This is a Death of a Salesman that feels both timeless and urgently contemporary.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "death-of-a-salesman-2022",
@@ -63392,17 +63358,17 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/diana-musical-broadway-review/2021/11/17/1403a16e-47ad-11ec-b8d9-232f4afe4d9b_story.html",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/diana-musical-broadway-review/2021/11/17/1403a16e-47ad-11ec-b8d9-232f4afe4d9b_story.html#:~:text=NEW%20YORK%20%E2%80%94%20As%20with,dull%20vulgarity%20and%20vacuous%20hero",
       "publishDate": "November 18, 2021",
       "originalRating": null,
       "pullQuote": "The Broadway musical about Princess Diana is a showcase for elaborate costumes and heartfelt performances, but the show struggles with tonal inconsistencies that undermine its emotional impact.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "diana-the-musical-2021",
@@ -64967,7 +64933,7 @@
       "pullQuote": "Was it really four years ago that Camoletti’s Boeing-Boeing brought the house down with howls of laughter, with Mark Rylance’s bizarre antics and the sight of color-coordinated stewardesses tumbling in and out of doors? Don’t Dress is technically a sequel, bringing back horny Bernard and comparatively guileless Robert for more girl trouble and e...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "dont-dress-for-dinner-2012",
@@ -72813,17 +72779,17 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Kuchwara",
-      "url": "https://www.newsvine.com/_news/2010/04/26/4208270-denzel-washington-stars-in-fences-on-broadway",
+      "url": "https://apnews.com/movies-general-news-3d6f84548f69486ca613d135aa0f4554",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Washington, last on Broadway in 2005 in a production of 'Julius Caesar,' acquits himself well in this blistering revival, directed with a sure, steady hand by Wilson veteran Kenny Leon.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fences-2010",
@@ -76933,7 +76899,7 @@
       "criticName": "Adam Feldman",
       "url": "http://newyork.timeout.com/arts-culture/theater/1938981/review-follies",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "1/5",
       "pullQuote": "But this is a show no grown-up should miss; after 40 years, it remains a piercing stare of hope and regret, longing and compromise.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -79045,7 +79011,7 @@
       "pullQuote": "These highly gifted actors keep a sensitive focus on the gawky humanity of their characters, holding steady through the ups and downs.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
@@ -85012,7 +84978,7 @@
       "pullQuote": "They may be weak, craven shells of men, but they close on one of the biggest deals of the season.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "glengarry-glen-ross-2012",
@@ -86107,17 +86073,17 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 55,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
       "url": "https://newyork.timeout.com/arts-culture/theater/2190815/review-godspell",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "1/5",
       "pullQuote": "This is Jesus as Stepford twink, and it's regrettably in keeping with a show that, in its combination of bathos and kitsch, is a model of bad faith.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "godspell-2011",
@@ -87082,7 +87048,7 @@
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/good-night-and-good-luck-broadway-play-review-george-clooney-murrow",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "It is well designed and full of fine actors doing their jobs. Its subject is timely and its message is on point, and there’s no good reason to see it",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -89296,7 +89262,7 @@
       "pullQuote": "Amid such excellent atmospherics, you may not care when the play itself creaks.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "grey-house-2023",
@@ -94721,7 +94687,7 @@
       "pullQuote": "While not as dull as watching paint dry on a four-wheeler, Hardbody has too puny an engine to take anyone very far.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hands-on-a-hardbody-2013",
@@ -95265,7 +95231,7 @@
       "pullQuote": "But the twists wind up forming a sloppy noose that is strong enough only to leave the play dangling, without a lethal snap, when the bottom falls out in the end.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hangmen-2022",
@@ -102847,7 +102813,7 @@
       "criticName": "David Cote",
       "url": "http://newyork.timeout.com/arts-culture/theater/1212165/review-high",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "1/5",
       "pullQuote": "Turner brings her patented husky swagger to the main role, but to little effect; she’s mother superior to a thin weepie that’s quite inferior.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -104007,7 +103973,7 @@
       "pullQuote": "Corbin Bleu has a winning muscularity and grace in various tap and ballroom sequences.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -105323,14 +105289,14 @@
       "showId": "honeymoon-in-vegas-2015",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 89,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Cote",
       "url": "http://www.timeout.com/newyork/theater/honeymoon-in-vegas",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "Broadway may be a crapshoot, but Honeymoon hits the jackpot.",
       "dtliThumb": null,
       "bwwThumb": null,
@@ -108105,7 +108071,7 @@
       "pullQuote": "If only this treasure weren't so often lost in the piles that surround it.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "i-need-that-2023",
@@ -115746,7 +115712,7 @@
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
@@ -115756,7 +115722,7 @@
       "pullQuote": "With Jersey Boys, the Broadway musical has finally done right by the jukebox.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "jersey-boys-2005",
@@ -120075,7 +120041,7 @@
       "pullQuote": "Junk melds a breadth of genres—crime story, tragedy, issue play, cautionary tale—into a fast-moving, broad-ranging social thriller.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "junk-2017",
@@ -124251,13 +124217,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/king-lear-12",
+      "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
       "publishDate": "April 4, 2019",
       "originalRating": 80,
       "pullQuote": "Jackson's Lear is a compelling study in imperial decline, her voice cracking with age and authority in equal measure.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "king-lear-2019",
@@ -134649,6 +134615,23 @@
     },
     {
       "showId": "lobby-hero-2018",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 76,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2018/03/theater-review-lobby-hero-comes-knocking-again.html",
+      "publishDate": "March 26, 2018",
+      "originalRating": null,
+      "pullQuote": "It’s powerful to watch him simmer and boil and wither, while Cera plays his downtrodden but still privileged foil.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "lobby-hero-2018",
       "outletId": "wolf-entertainment-guide",
       "outlet": "Wolf Entertainment Guide",
       "assignedScore": 82,
@@ -143958,7 +143941,7 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Jackson McHenry",
-      "url": "https://www.vulture.com/article/theater-review-robert-downey-jr-mcneal.html#:~:text=Downey%20carries%20off%20McNeal's%20charm,struggles%20to%20downshift%20into%20subtlety.",
+      "url": "https://www.vulture.com/article/theater-review-robert-downey-jr-mcneal.html",
       "publishDate": "September 23, 2024",
       "originalRating": null,
       "pullQuote": "McNeal is a play about artificial intelligence that feels oddly mechanical itself, despite Robert Downey Jr.'s committed performance.",
@@ -169747,18 +169730,18 @@
       "showId": "othello-2025",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 40,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
+      "assignedScore": 29,
+      "scoreSource": "llmScore",
+      "bucket": "Pan",
       "thumb": "Down",
-      "criticName": "David Fox",
+      "criticName": "Sara Holdren and Jesse David Fox",
       "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Kenny Leon's passionless new production is about as far from that overlap as it's possible to get.",
+      "pullQuote": "Kenny Leon’s passionless new production is about as far from that overlap as it’s possible to get.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "other-desert-cities-2011",
@@ -246734,7 +246717,7 @@
       "pullQuote": "Unfortunately, even Tomei’s vivifying, staunchly committed performance isn’t enough to keep this ripe comedy at the emotional heights it needs to sustain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-rose-tattoo-2019",
@@ -255673,10 +255656,10 @@
       "url": "https://www.broadwaynews.com/2021/10/13/review-thoughts-of-a-colored-man-asks-the-audience-to-listen/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "Written in a mixture of styles — monologues and dialogues, rhymed poetry, song and traditional staged dramatic scenes — the play, at the Golden Theatre, serves up a kaleidoscopic if occasionally didactic portrait of Black men’s lives as they are lived today in the city.",
+      "pullQuote": "The costumes, by Toni-Leslie James and Devario D. Simmons, help bring some pop to the proceedings with their sharp emphasis on just black, white and red. One of the liveliest presences is Forrest McClendon, who portrays with biting humor a man working at a Whole Foods store.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
@@ -272393,7 +272376,7 @@
       "pullQuote": "The answers are deliberately equivocal and powerfully and hilariously engaged in this Roundabout production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "yellow-face-2024",
