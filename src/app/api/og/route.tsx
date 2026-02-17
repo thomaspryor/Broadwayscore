@@ -8,7 +8,7 @@ const SCORE_COLORS = {
   mustSee: { bg: 'linear-gradient(135deg, #D4AF37 0%, #C5A028 50%, #D4AF37 100%)', text: '#1a1a1a' },
   great: { bg: '#22c55e', text: '#ffffff' },
   good: { bg: '#14b8a6', text: '#ffffff' },
-  tepid: { bg: '#eab308', text: '#1a1a1a' },
+  tepid: { bg: '#d97706', text: '#1a1a1a' },
   skip: { bg: '#f97316', text: '#ffffff' },
   tbd: { bg: '#2a2a2a', text: '#9ca3af' },
 };
