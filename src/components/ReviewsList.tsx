@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, memo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
@@ -126,6 +126,17 @@ function CriticsPickBadge() {
   );
 }
 
+function TopCriticLabel() {
+  return (
+    <span
+      className="hidden md:inline text-[10px] font-semibold uppercase tracking-wide text-blue-400"
+      title="Major national publication (Tier 1)"
+    >
+      Top Critic
+    </span>
+  );
+}
+
 function ExternalLinkIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -164,6 +175,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
             ) : (
               <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
             )}
+            {review.tier === 1 && <TopCriticLabel />}
             {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
             {review.designation && review.designation !== 'Critics_Pick' && (
               <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
@@ -218,17 +230,48 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
   );
 });
 
+type SortMode = 'score' | 'date';
+
 export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sortMode, setSortMode] = useState<SortMode>('score');
 
-  const shouldCollapse = reviews.length > initialCount;
+  const sortedReviews = useMemo(() => {
+    if (sortMode === 'date') {
+      return [...reviews].sort((a, b) => {
+        const da = a.publishDate ? new Date(a.publishDate).getTime() : 0;
+        const db = b.publishDate ? new Date(b.publishDate).getTime() : 0;
+        return db - da;
+      });
+    }
+    return reviews; // already sorted by score from engine
+  }, [reviews, sortMode]);
+
+  const shouldCollapse = sortedReviews.length > initialCount;
   const displayedReviews = shouldCollapse && !isExpanded
-    ? reviews.slice(0, initialCount)
-    : reviews;
-  const hiddenCount = reviews.length - initialCount;
+    ? sortedReviews.slice(0, initialCount)
+    : sortedReviews;
+  const hiddenCount = sortedReviews.length - initialCount;
 
   return (
     <div className="space-y-3" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
+      {reviews.length > 3 && (
+        <div className="flex items-center gap-3 text-xs text-gray-500 mb-1">
+          <span>Sort:</span>
+          <button
+            onClick={() => setSortMode('score')}
+            className={`font-medium transition-colors ${sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+          >
+            By Score
+          </button>
+          <button
+            onClick={() => setSortMode('date')}
+            className={`font-medium transition-colors ${sortMode === 'date' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+          >
+            By Date
+          </button>
+        </div>
+      )}
       {displayedReviews.map((review) => (
         <ReviewCard
           key={`${review.outletId}-${review.publishDate}`}
