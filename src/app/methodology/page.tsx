@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
+import { featureFlags } from '@/config/feature-flags';
 
 // Static OG image (API routes don't work with static export)
 const ogImageUrl = `${BASE_URL}/og/home.png`;
@@ -392,7 +393,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Box Office Data */}
-        <section className="card p-5 sm:p-6">
+        {featureFlags.boxOffice && <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Box Office Data</h2>
           <p className="text-gray-300 mb-4">
             Broadway Scorecard tracks weekly box office performance and all-time statistics for every production, providing transparency into commercial success alongside critical and audience reception.
@@ -456,38 +457,7 @@ export default function MethodologyPage() {
           <p className="text-gray-300 text-sm mt-4">
             Box office data provides important context for understanding a show&apos;s commercial viability and audience appeal, complementing critical reviews and audience sentiment.
           </p>
-        </section>
-
-        {/* Confidence */}
-        <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Confidence Rating</h2>
-          <p className="text-gray-300 mb-4">
-            Each score includes a confidence indicator based on review coverage:
-          </p>
-
-          <div className="space-y-3">
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-high/10 border border-score-high/20">
-              <span className="px-2 py-0.5 rounded bg-score-high/20 text-score-high text-xs font-medium flex-shrink-0">High</span>
-              <div className="text-gray-300 text-sm">
-                15+ critic reviews with 3+ from Tier 1 outlets
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-medium/10 border border-score-medium/20">
-              <span className="px-2 py-0.5 rounded bg-score-medium/20 text-score-medium text-xs font-medium flex-shrink-0">Medium</span>
-              <div className="text-gray-300 text-sm">
-                6–14 critic reviews with at least 1 Tier 1 outlet
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-3 rounded-lg bg-score-low/10 border border-score-low/20">
-              <span className="px-2 py-0.5 rounded bg-score-low/20 text-score-low text-xs font-medium flex-shrink-0">Low</span>
-              <div className="text-gray-300 text-sm">
-                Fewer than 6 critic reviews or show still in previews
-              </div>
-            </div>
-          </div>
-        </section>
+        </section>}
 
         {/* What Makes Us Different */}
         <section className="card p-5 sm:p-6">
