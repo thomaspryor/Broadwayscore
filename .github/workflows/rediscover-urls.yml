@@ -63,6 +63,7 @@ jobs:
       - name: Run URL rediscovery
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           CI: true
         run: node scripts/rediscover-review-urls.js ${{ steps.args.outputs.args }}
 
