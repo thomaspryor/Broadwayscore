@@ -39,6 +39,9 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 let dryRunMode = false;
 let dryRunResults = [];
 
+// Module-level shows data (loaded in main, referenced by processOneShow guard)
+let allShowsData = null;
+
 // ============================================================
 // PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
 // These were hand-selected or restored by human review.
@@ -1630,7 +1633,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // creates duplicate images across revivals (e.g., Ragtime 2009 gets Ragtime 2025's poster).
   if (show.status === 'closed') {
     const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
-    const newerProduction = showsData.shows.find(s => {
+    const newerProduction = allShowsData.shows.find(s => {
       if (s.id === show.id) return false;
       const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
       if (sBase !== baseTitle) return false;
@@ -1874,6 +1877,7 @@ async function main() {
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  allShowsData = showsData;
 
   // ============================================================
   // AUDIT-EXISTING MODE: Scan current images through Gemini (REPORT-ONLY)
