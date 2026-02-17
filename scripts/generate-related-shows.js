@@ -137,9 +137,12 @@ function algorithmicCandidates(show, limit = 15, statusFilter = null) {
 
   const isOpen = (s) => s.status === 'open' || s.status === 'previews';
 
+  const sourceBase = getBaseTitle(show.title);
+
   const scored = showsData.shows
     .filter(s => {
       if (s.id === show.id) return false;
+      if (getBaseTitle(s.title) === sourceBase) return false; // Exclude other productions of same show
       if ((reviewCountMap.get(s.id) || 0) < 5) return false;
       if (statusFilter === 'open' && !isOpen(s)) return false;
       if (statusFilter === 'closed' && isOpen(s)) return false;
@@ -359,16 +362,23 @@ Return ONLY the JSON object, no other text.\n\n`;
 }
 
 // ─── Multi-production dedup ───
-function deduplicateProductions(ids) {
+function getBaseTitle(title) {
+  return title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+}
+
+function deduplicateProductions(ids, sourceShow) {
   // Extract base title (remove year suffix)
+  const sourceBase = getBaseTitle(sourceShow.title);
   const seen = new Map(); // baseTitle → id
   const result = [];
   for (const id of ids) {
     const show = showById.get(id);
     if (!show) continue;
-    const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '');
-    if (seen.has(baseTitle)) continue;
-    seen.set(baseTitle, id);
+    const base = getBaseTitle(show.title);
+    // Exclude other productions of the same show
+    if (base === sourceBase) continue;
+    if (seen.has(base)) continue;
+    seen.set(base, id);
     result.push(id);
   }
   return result;
@@ -441,7 +451,7 @@ async function main() {
 
       if (Array.isArray(recs) && recs.length > 0) {
         recs = recs.filter(id => showById.has(id) && id !== show.id);
-        recs = deduplicateProductions(recs);
+        recs = deduplicateProductions(recs, show);
         if (recs.length < 6) {
           const recsSet = new Set(recs);
           for (const c of candidates) {
