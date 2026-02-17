@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-17T13:52:35.094Z",
+  "runDate": "2026-02-17T14:12:55.160Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 85,
+    "processed": 12,
+    "failed": 88,
     "skipped": 0,
-    "successRate": "15.0%"
+    "successRate": "12.0%"
   },
   "tierBreakdown": {
     "playwright": 12,
@@ -22,8 +22,8 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 70,
-    "archive": 3
+    "archiveToday": 72,
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 94,
@@ -36,16 +36,16 @@
     "tier2Success": 0,
     "tier3Attempts": 76,
     "tier3Success": 0,
-    "tier3_6Attempts": 74,
-    "tier3_6Success": 70,
-    "tier4Attempts": 17,
-    "tier4Success": 2,
-    "totalFailed": 85,
+    "tier3_6Attempts": 76,
+    "tier3_6Success": 72,
+    "tier4Attempts": 14,
+    "tier4Success": 1,
+    "totalFailed": 88,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 9,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -60,10 +60,7 @@
     "illinoise-2024/washpost--gloria-oladipo.json",
     "ink-2019/washpost--peter-marks.json",
     "jagged-little-pill-2019/washpost--peter-marks.json",
-    "jerusalem-2011/washpost--peter-marks.json",
-    "junk-2017/washpost--peter-marks.json",
-    "les-liaisons-dangereuses-2016/washpost--peter-marks.json",
-    "les-liaisons-dangereuses-2016/washpost--unknown.json"
+    "junk-2017/washpost--peter-marks.json"
   ],
   "failed": [
     "hadestown-2019/washpost--peter-marks.json",
@@ -138,6 +135,7 @@
     "is-he-dead-2007/washpost--peter-marks.json",
     "is-this-a-room-2021/washpost--peter-marks.json",
     "jersey-boys-2005/washpost--peter-marks.json",
+    "jerusalem-2011/washpost--peter-marks.json",
     "jitney-2017/washpost--peter-marks.json",
     "king-charles-iii-2015/washpost--peter-marks.json",
     "king-kong-2018/washpost--peter-marks.json",
@@ -147,6 +145,8 @@
     "left-on-tenth-2024/washpost--peter-marks.json",
     "legally-blonde-2007/washpost--peter-marks.json",
     "lennon-2005/washpost--peter-marks.json",
+    "les-liaisons-dangereuses-2016/washpost--peter-marks.json",
+    "les-liaisons-dangereuses-2016/washpost--unknown.json",
     "lestat-2006/washpost--peter-marks.json",
     "lobby-hero-2018/washpost--peter-marks.json",
     "lombardi-2010/washpost--peter-marks.json",
@@ -154,6 +154,7 @@
   ],
   "tierDetails": {
     "playwright": [
+      "a-view-from-the-bridge-2015/washingtion-post--peter-marks.json",
       "call-me-izzy-2025/washpost--naveen-kumar.json",
       "cat-on-a-hot-tin-roof-2008/washpost--peter-marks.json",
       "company-2021/washpost--peter-marks.json",
@@ -164,7 +165,6 @@
       "illinoise-2024/washpost--gloria-oladipo.json",
       "ink-2019/washpost--peter-marks.json",
       "jagged-little-pill-2019/washpost--peter-marks.json",
-      "jerusalem-2011/washpost--peter-marks.json",
       "junk-2017/washpost--peter-marks.json"
     ],
     "amp": [],
@@ -193,16 +193,12 @@
       "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
       "data/review-texts/betrayal-2013/washpost--peter-marks.json",
       "data/review-texts/betrayal-2019/washpost--peter-marks.json",
-      "data/review-texts/bring-it-on-the-musical-2012/washpost--peter-marks.json",
-      "data/review-texts/bronx-bombers-2014/ap--mark-kennedy.json",
       "data/review-texts/bronx-bombers-2014/washpost--unknown.json",
       "data/review-texts/camelot-2023/washpost--peter-marks.json",
       "data/review-texts/carousel-2018/washpost--peter-marks.json",
       "data/review-texts/cats-2016/washpost--peter-marks.json",
       "data/review-texts/china-doll-2015/washpost--peter-marks.json",
       "data/review-texts/chinglish-2011/washpost--peter-marks.json",
-      "data/review-texts/clybourne-park-2012/washpost--peter-marks.json",
-      "data/review-texts/clydes-2021/washpost--peter-marks.json",
       "data/review-texts/cost-of-living-2022/washpost--peter-marks.json",
       "data/review-texts/crybaby-2008/washpost--peter-marks.json",
       "data/review-texts/cult-of-love-2024/washpost--peter-marks.json",
@@ -233,21 +229,23 @@
       "data/review-texts/in-the-next-room-2009/washpost--peter-marks.json",
       "data/review-texts/indecent-2017/washpost--peter-marks.json",
       "data/review-texts/is-he-dead-2007/washpost--peter-marks.json",
+      "data/review-texts/jersey-boys-2005/washpost--peter-marks.json",
+      "data/review-texts/jerusalem-2011/washpost--peter-marks.json",
       "data/review-texts/jitney-2017/washpost--peter-marks.json",
       "data/review-texts/king-kong-2018/washpost--peter-marks.json",
       "data/review-texts/kinky-boots-2013/washpost--peter-marks.json",
+      "data/review-texts/kiss-me-kate-2019/washpost--peter-marks.json",
       "data/review-texts/left-on-tenth-2024/washpost--peter-marks.json",
       "data/review-texts/legally-blonde-2007/washpost--peter-marks.json",
+      "data/review-texts/lennon-2005/washpost--peter-marks.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/washpost--peter-marks.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/washpost--unknown.json",
       "data/review-texts/lestat-2006/washpost--peter-marks.json",
       "data/review-texts/lobby-hero-2018/washpost--peter-marks.json",
       "data/review-texts/lombardi-2010/washpost--peter-marks.json",
       "data/review-texts/lucky-guy-2013/washpost--peter-marks.json"
     ],
-    "archive": [
-      "a-view-from-the-bridge-2015/washingtion-post--peter-marks.json",
-      "les-liaisons-dangereuses-2016/washpost--peter-marks.json",
-      "les-liaisons-dangereuses-2016/washpost--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "The Washington Post": {
@@ -256,13 +254,14 @@
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": false
+    },
+    "Associated Press": {
+      "count": 1,
+      "domain": "washingtonpost.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "jerusalem-2011/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/lifestyle/style/jerusalems-mark-rylance-gives-an-unforgettable-performance/2011/04/22/AFpgZh6E_story.html",
-      "newUrl": "https://www.washingtonpost.com/lifestyle/style/review-of-broadways-jerusalem/2011/04/21/AF69Q3KE_story.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
