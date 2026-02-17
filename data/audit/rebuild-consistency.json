@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-17T16:49:26.808Z",
+  "generatedAt": "2026-02-17T18:31:59.139Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -32,6 +32,30 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 82 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "doubt-a-parable",
+      "detail": "9/12 reviews (75%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "purpose",
+      "detail": "17/20 reviews (85%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "tammy-faye",
+      "detail": "9/16 reviews (56%) scored exactly 35"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "the-little-prince-2022",
+      "detail": "10/11 reviews (91%) scored exactly 35"
     }
   ]
 }
