@@ -159,7 +159,7 @@ export default function RootLayout({
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             {/* Browse Categories */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-white/5">
+            <div className={`grid grid-cols-2 ${featureFlags.discountTickets ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-8 mb-8 pb-8 border-b border-white/5`}>
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
@@ -167,6 +167,8 @@ export default function RootLayout({
                   <li><Link href="/browse/best-broadway-dramas" className="hover:text-white transition-colors">Best Dramas</Link></li>
                   <li><Link href="/browse/best-broadway-comedies" className="hover:text-white transition-colors">Comedies</Link></li>
                   <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
+                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
+                  <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
                 </ul>
               </div>
               <div>
@@ -196,8 +198,6 @@ export default function RootLayout({
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">More</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
-                  <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
                   {featureFlags.tonyPredictions && <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Predictions</Link></li>}
                   {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
                   {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
