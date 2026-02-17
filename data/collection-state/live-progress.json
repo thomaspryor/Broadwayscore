@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-17T03:38:47.454Z",
-  "processed": 81,
-  "failed": 35,
-  "successRate": "69.8%",
+  "updatedAt": "2026-02-17T03:38:59.866Z",
+  "processed": 35,
+  "failed": 65,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archiveToday": 22,
-    "archive": 9
+    "brightdata": 32,
+    "archiveToday": 61,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-17T02:03:18.571Z",
+      "event": "bb-session",
+      "session": "cc3ca0ef",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-lo"
+    },
+    {
+      "t": "2026-02-17T02:03:21.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:04:25.182Z",
+      "event": "bb-session",
+      "session": "cddeb4bb",
+      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
+    },
+    {
+      "t": "2026-02-17T02:04:27.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:07:18.525Z",
+      "event": "bb-session",
+      "session": "93df1ae8",
+      "url": "https://online.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balan"
+    },
+    {
+      "t": "2026-02-17T02:07:20.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:09:19.569Z",
+      "event": "bb-session",
+      "session": "36ec9fbc",
+      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
+    },
+    {
+      "t": "2026-02-17T02:09:21.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:10:40.751Z",
+      "event": "bb-session",
+      "session": "097ca0a8",
+      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
+    },
+    {
+      "t": "2026-02-17T02:10:42.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:12:04.278Z",
+      "event": "bb-session",
+      "session": "d53bc8ab",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-17T02:12:06.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:14:43.215Z",
+      "event": "bb-session",
+      "session": "9cb30bda",
+      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
+    },
+    {
+      "t": "2026-02-17T02:14:45.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:17:18.397Z",
+      "event": "bb-session",
+      "session": "267cd2b6",
+      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
+    },
+    {
+      "t": "2026-02-17T02:17:20.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:18:26.429Z",
+      "event": "bb-session",
+      "session": "e7528aa2",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
+    },
+    {
+      "t": "2026-02-17T02:18:28.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-17T02:19:37.495Z",
+      "event": "bb-session",
+      "session": "f382c4a3",
+      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
+    },
+    {
+      "t": "2026-02-17T02:19:39.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
