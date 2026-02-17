@@ -198,10 +198,20 @@ async function _serpViaBrightData(query, apiKey, log) {
       timeout: 30000,
     });
 
-    const html = typeof response.data === 'string' ? response.data : '';
+    const data = response.data;
+
+    // SERP API zone returns structured JSON with organic results
+    if (data && typeof data === 'object' && Array.isArray(data.organic)) {
+      return data.organic.slice(0, 10).map(r => ({
+        url: r.link || r.url || '',
+        title: r.title || '',
+      }));
+    }
+
+    // Fallback: Web Unlocker zone returns raw HTML — parse it
+    const html = typeof data === 'string' ? data : '';
     if (!html || html.length < 500) return [];
 
-    // Parse Google organic results from HTML
     const results = [];
     const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
     const titleRegex = /<h3[^>]*>([^<]+)<\/h3>/g;
@@ -210,7 +220,6 @@ async function _serpViaBrightData(query, apiKey, log) {
     const seenUrls = new Set();
     while ((match = hrefRegex.exec(html)) !== null) {
       let url = match[1];
-      // Handle Google redirect URLs: /url?q=REAL_URL&sa=...
       if (url.includes('/url?q=')) {
         try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
       }
@@ -221,7 +230,6 @@ async function _serpViaBrightData(query, apiKey, log) {
       results.push({ url, title: '' });
     }
 
-    // Attach titles from h3 tags (best effort)
     let titleIdx = 0;
     while ((match = titleRegex.exec(html)) !== null && titleIdx < results.length) {
       results[titleIdx].title = match[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
