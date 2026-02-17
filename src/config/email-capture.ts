@@ -69,6 +69,6 @@ const presets: Record<string, EmailCaptureConfig> = {
 // ──────────────────────────────────────────
 // Change this to 'aggressive' when ready
 // ──────────────────────────────────────────
-const ACTIVE_PRESET = 'soft';
+const ACTIVE_PRESET = 'aggressive';
 
 export const emailCaptureConfig: EmailCaptureConfig = presets[ACTIVE_PRESET];
