@@ -66,7 +66,7 @@ Broadway review aggregator. Next.js 14, TypeScript, Tailwind CSS, static export.
 ## Scoring
 
 - **Composite = Critic Score** (tier-weighted average)
-- **Tier 1** (NYT, Vulture, Variety): 1.0 | **Tier 2** (TheaterMania, NY Post): 0.70 | **Tier 3** (blogs): 0.40
+- **Tier 1** (NYT, Vulture, Variety): 1.0 | **Tier 2** (TheaterMania, NY Post): 0.75 | **Tier 3** (blogs): 0.45
 - Letter grade map: `src/config/scoring.ts`
 - Hierarchy: P0 (explicit ratings) → P0.5 (humanReviewScore) → P0b (originalScore) → P1 (LLM high/med) → P2 (aggregator override) → P3 (LLM low)
 - Excerpt-only reviews (<100 chars) get confidence downgraded to "low". `scoreSource` tracks method.
