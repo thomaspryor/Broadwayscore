@@ -218,7 +218,7 @@ jobs:
   # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
   scrape-aggregators:
     needs: [prepare, gather-reviews]
-    if: needs.gather-reviews.result == 'success'
+    if: always() && needs.gather-reviews.result != 'cancelled'
     continue-on-error: true
     runs-on: ubuntu-latest
     timeout-minutes: 30

@@ -141,6 +141,9 @@ function getShowInfo(showId) {
 // ============================================================================
 
 let _scrapingBeeSerpExhausted = false;
+let _scrapingBeeConsecutiveFailures = 0;
+let _brightDataConsecutiveFailures = 0;
+const MAX_CONSECUTIVE_FAILURES = 5;
 
 /**
  * Search via ScrapingBee SERP API (returns structured JSON).
@@ -156,6 +159,7 @@ async function _serpViaScrapingBee(query, apiKey, log) {
       timeout: 30000,
     });
     const data = response.data;
+    _scrapingBeeConsecutiveFailures = 0; // Reset on success
     return (data.organic_results || data.results || []).map(r => ({
       url: r.url || r.link,
       title: r.title || '',
@@ -166,7 +170,12 @@ async function _serpViaScrapingBee(query, apiKey, log) {
       _scrapingBeeSerpExhausted = true;
       log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
     } else {
-      log(`    ✗ ScrapingBee SERP error: ${error.message}`);
+      _scrapingBeeConsecutiveFailures++;
+      log(`    ✗ ScrapingBee SERP error (${_scrapingBeeConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
+      if (_scrapingBeeConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+        _scrapingBeeSerpExhausted = true;
+        log(`    ⚠ ScrapingBee SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+      }
     }
     return null;
   }
@@ -179,7 +188,7 @@ async function _serpViaScrapingBee(query, apiKey, log) {
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
 async function _serpViaBrightData(query, apiKey, log) {
-  if (!apiKey) return null;
+  if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
   const axios = require('axios');
   const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
@@ -198,10 +207,21 @@ async function _serpViaBrightData(query, apiKey, log) {
       timeout: 30000,
     });
 
-    const html = typeof response.data === 'string' ? response.data : '';
+    const data = response.data;
+
+    // SERP API zone returns structured JSON with organic results
+    if (data && typeof data === 'object' && Array.isArray(data.organic)) {
+      _brightDataConsecutiveFailures = 0; // Reset on success
+      return data.organic.slice(0, 10).map(r => ({
+        url: r.link || r.url || '',
+        title: r.title || '',
+      }));
+    }
+
+    // Fallback: Web Unlocker zone returns raw HTML — parse it
+    const html = typeof data === 'string' ? data : '';
     if (!html || html.length < 500) return [];
 
-    // Parse Google organic results from HTML
     const results = [];
     const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
     const titleRegex = /<h3[^>]*>([^<]+)<\/h3>/g;
@@ -210,7 +230,6 @@ async function _serpViaBrightData(query, apiKey, log) {
     const seenUrls = new Set();
     while ((match = hrefRegex.exec(html)) !== null) {
       let url = match[1];
-      // Handle Google redirect URLs: /url?q=REAL_URL&sa=...
       if (url.includes('/url?q=')) {
         try { url = new URL(url).searchParams.get('q') || url; } catch (e) {}
       }
@@ -221,16 +240,20 @@ async function _serpViaBrightData(query, apiKey, log) {
       results.push({ url, title: '' });
     }
 
-    // Attach titles from h3 tags (best effort)
     let titleIdx = 0;
     while ((match = titleRegex.exec(html)) !== null && titleIdx < results.length) {
       results[titleIdx].title = match[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
       titleIdx++;
     }
 
+    _brightDataConsecutiveFailures = 0; // Reset on success
     return results.slice(0, 10);
   } catch (error) {
-    log(`    ✗ Bright Data SERP error: ${error.message}`);
+    _brightDataConsecutiveFailures++;
+    log(`    ✗ Bright Data SERP error (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
+    if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+      log(`    ⚠ Bright Data SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+    }
     return null;
   }
 }
