@@ -1514,7 +1514,11 @@ showDirs.forEach(showId => {
 
       // Garbage outlet guard: skip reviews with sentence-fragment outlet names
       const outlet = (data.outlet || '').trim();
-      if (outlet.length > 60 || /^(is |has |the show |a |an |in her |in his |but |with )/i.test(outlet)) {
+      if (
+        outlet.length > 50 ||
+        /^(is |has |the show |a |an |in her |in his |but |with |and |does |proves |keeps |left |enjoying |are )/i.test(outlet) ||
+        (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
+      ) {
         console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
         stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
         return;
