@@ -4,26 +4,26 @@
     "lastUpdated": "2026-02-17",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16027,
-      "skippedNoScore": 1084,
-      "skippedDuplicate": 95,
+      "totalReviews": 16023,
+      "skippedNoScore": 1082,
+      "skippedDuplicate": 94,
       "skippedDuplicateUrl": 317,
       "skippedCrossOutletDuplicateUrl": 27,
       "skippedDuplicateText": 538,
-      "skippedFingerprintDedup": 78,
+      "skippedFingerprintDedup": 79,
       "skippedUnknownCriticDedup": 246,
       "skippedWrongProduction": 2039,
-      "recoveredFromGarbage": 100,
+      "recoveredFromGarbage": 94,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 0,
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 66,
-        "originalScore-priority0": 1729,
-        "llmScore": 10726,
+        "originalScore-priority0": 1730,
+        "llmScore": 10725,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 3472,
+        "llmScore-lowconf": 3468,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3924,7 +3924,7 @@
       "pullQuote": "The chorus is having such a good time you are tempted to join them.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -6087,6 +6087,23 @@
     },
     {
       "showId": "a-dolls-house-part-2-2017",
+      "outletId": "huffpost",
+      "outlet": "HuffPost",
+      "assignedScore": 75,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Michael Glitz",
+      "url": "https://www.huffpost.com/entry/aisle-view-back-to-the-dolls-house-part-2_us_598dd536e4b063e2ae057f27",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "As Hnath ends his eventually wise and even conciliatory parable, that’s the gnawing question Hnath leaves the ticket buyers pondering.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
       "outletId": "jonathankalb",
       "outlet": "Jonathankalb",
       "assignedScore": 74,
@@ -7719,23 +7736,6 @@
     },
     {
       "showId": "a-life-in-the-theatre-2010",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Marilyn Stasio",
-      "url": "https://www.variety.com/review/VE1117943828.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Despite getting off on the wrong emotional foot, the production recovers once these hard-working thesps begin to throw themselves into their roles",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-life-in-the-theatre-2010",
       "outletId": "village-voice",
       "outlet": "Village Voice",
       "assignedScore": 43,
@@ -8192,23 +8192,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "a-little-night-music-2009",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "David Rooney",
-      "url": "https://www.variety.com/review/VE1117941777.html?categoryid=3276&cs=1&nid=2580&utm_",
-      "publishDate": "December 13, 2009",
-      "originalRating": null,
-      "pullQuote": "The wit and sophistication of the material are sufficient to withstand even this phlegmatic staging.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "a-little-night-music-2009",
@@ -25523,18 +25506,18 @@
       "showId": "angels-in-america-2018",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 93,
+      "assignedScore": 87,
       "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
-      "criticName": "Marilyn Stasio (Pt. 2)",
-      "url": "https://variety.com/2018/legit/reviews/angels-in-america-perestroika-review-broadway-1202737916/",
+      "criticName": "Marilyn Stasio",
+      "url": "http://variety.com/2018/legit/reviews/angels-in-america-review-andrew-garfield-broadway-1202735842/",
       "publishDate": "March 25, 2018",
       "originalRating": null,
-      "pullQuote": "This production of 'Perestroika' is every bit as magnificent as 'Millennium Approaches,' completing Tony Kushner's epic masterwork",
+      "pullQuote": "In fact, experiencing this revival of the 25-year-old play feels more like picking up a scorching hot ember from a fire that won't burn out.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "angels-in-america-2018",
@@ -27988,23 +27971,6 @@
     },
     {
       "showId": "baby-its-you-2011",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 43,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Steven Suskin",
-      "url": "https://www.variety.com/review/VE1117945106",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Imagine \"Jersey Boys\" without the carefully integrated character development of Frankie Valli and Bob Gaudio, and with a tunestack only one quarter as imperishable.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "baby-its-you-2011",
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 42,
@@ -29055,7 +29021,7 @@
       "pullQuote": "Despite Lloyd Webber's soaring melodies and Emerald Fennell's witty book, 'Bad Cinderella' feels overstuffed and underdeveloped, struggling to find its footing between satire and sincerity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "bad-cinderella-2023",
@@ -36539,23 +36505,6 @@
     },
     {
       "showId": "bloody-bloody-andrew-jackson-2010",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Steven Suskin",
-      "url": "https://www.variety.com/review/VE1117943836.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "With their bloody-good 'Andrew Jackson,' director-librettist Alex Timbers and composer-lyricist Michael Friedman have woven a scathing and topical satire on matters patriotic and political",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "bloody-bloody-andrew-jackson-2010",
       "outletId": "village-voice",
       "outlet": "Village Voice",
       "assignedScore": 45,
@@ -43450,17 +43399,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
-      "url": "http://variety.com/2014/legit/reviews/broadway-review-woody-allens-bullets-over-broadway-1201155406/",
+      "url": "https://variety.com/2006/legit/reviews/butley-3-1200512392/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "\"Bullets Over Broadway\" is the show everyone hoped would get those flickering Broadway lights blazing again.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "bye-bye-birdie-2009",
@@ -46684,7 +46633,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Shenton",
-      "url": "https://www.thestage.co.uk/reviews/carousel-review-at-imperial-theatre-new-york--a-classy-revival",
+      "url": "https://www.thestage.co.uk/reviews/carousel-review-at-imperial-theatre-new-york--a-classy-revival#:~:text=It's%20no%20longer%20just%20the,man%20who%20serially%20hits%20her.",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Jack O'Brien's production balances these competing, problematic tensions with some grit, playing the dramatic scenes with intense feeling.",
@@ -57520,23 +57469,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "cost-of-living-2022",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 86,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Aramide Tinubu",
-      "url": "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/",
-      "publishDate": "October 19, 2022",
-      "originalRating": null,
-      "pullQuote": "Martyna Majok's Pulitzer Prize-winning 'Cost of Living' is a deeply moving exploration of intimacy, disability and human connection that feels both universal and achingly specific.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "cost-of-living-2022",
@@ -123832,7 +123764,7 @@
       "pullQuote": "Glenda Jackson was great fun, but, really, Lear shouldn't be great fun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "king-lear-2019",
@@ -124013,7 +123945,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+      "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html#:~:text=Blurry%20and%20superficial%2C%20the%20shape,is%20at%20the%20Cort%20Theatre.",
       "publishDate": "April 4, 2019",
       "originalRating": null,
       "pullQuote": "Jackson's Lear is not just a king losing his kingdom but a person losing their grip on reality, and the performance is both heartbreaking and terrifying.",
@@ -142471,23 +142403,6 @@
     },
     {
       "showId": "maybe-happy-ending-2024",
-      "outletId": "nydailynews",
-      "outlet": "New York Daily News",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Chris Jones",
-      "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
-      "publishDate": "2024-11-12T14:05:31-05:00",
-      "originalRating": null,
-      "pullQuote": "Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments. There's nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
       "outletId": "nypost",
       "outlet": "New York Post",
       "assignedScore": 89,
@@ -153996,7 +153911,7 @@
       "pullQuote": "\"The sung-through show creates a beautiful, soaring and anachronistic world, even if the music remains aloof...The complicated narrative, with overwrought romantic plot, is kept in check by delightfully self-aware humour in the direction.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
@@ -192167,7 +192082,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/side-show-1",
+      "url": "https://www.timeout.com/newyork/theater/side-show-1#:~:text=At%20the%20time%2C%20many%20people,is%20better%20than%20it%20was.",
       "publishDate": "October 28, 2014",
       "originalRating": 60,
       "pullQuote": "The new production of Side Show is a mixed bag: It has a beautiful score and fine performances, but the show's fundamental problems remain unresolved.",
@@ -192853,7 +192768,7 @@
       "pullQuote": "Joshua Harmon's comedy-drama about gay friendship and straight weddings is sharp and heartfelt, but it doesn't quite achieve the full emotional impact it's reaching for.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "significant-other-2017",
@@ -207153,7 +207068,7 @@
       "pullQuote": "What a joy to see Ashford unleashed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "sylvia-2015",
@@ -211437,7 +211352,7 @@
       "pullQuote": "The Big Knife’s first Broadway revival is muscular, moody and stylish, with a mostly solid cast under Doug Hughes’s shrewd direction.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-big-knife-2013",
@@ -216085,14 +216000,14 @@
       "showId": "the-cottage-2023",
       "outletId": "timeout",
       "outlet": "Time Out New York",
-      "assignedScore": 74,
-      "scoreSource": "llmScore",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Feldman",
       "url": "https://www.timeout.com/newyork/theater/the-cottage-broadway-comedy-review",
       "publishDate": "July 21, 2023",
-      "originalRating": null,
+      "originalRating": "4/5",
       "pullQuote": "While the architecture of the plot is solid, what really keeps 'The Cottage' up is the comedic industry of its cast. Directed by Jason Alexander, a seasoned hand at classic timing, the actors leap gamely into their funny business.",
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -217679,6 +217594,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+      "outletId": "boston-herald",
+      "outlet": "Boston Herald",
+      "assignedScore": 92,
+      "scoreSource": "llmScore",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Unknown",
+      "url": "https://www.bostonherald.com/2014/10/06/broadway-review-the-curious-incident-of-the-dog-in-the-night-time/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Believe the buzz. Theater Production of 'Incident of the Dog in the Night-Time' is spectacular, like Cirque du Soleil with brains.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
@@ -224342,7 +224274,7 @@
       "pullQuote": "The Great Society is a worthy sequel that doesn't quite match the original's theatrical power.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-great-society-2019",
@@ -252501,6 +252433,23 @@
     },
     {
       "showId": "the-waverly-gallery-2018",
+      "outletId": "nypost",
+      "outlet": "New York Post",
+      "assignedScore": 80,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Johnny Oleksinski",
+      "url": "https://nypost.com/2018/10/26/elaine-may-is-brilliant-in-the-waverly-gallery/",
+      "publishDate": "October 26, 2018",
+      "originalRating": null,
+      "pullQuote": "Elaine May is brilliant as Gladys, a woman losing her mind to dementia while trying to keep her small Greenwich Village gallery afloat.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "the-waverly-gallery-2018",
       "outletId": "nysr",
       "outlet": "New York Stage Review",
       "assignedScore": 80,
@@ -254789,7 +254738,7 @@
       "url": "https://www.timeout.com/newyork/things-to-do/therese-raquin",
       "publishDate": null,
       "originalRating": "4/5",
-      "pullQuote": "But it does give a sharp sense of the limited options available to women. Thér&egrave;se may be a shark—the word in French is requin—but you pity her the way you might a shark in an aquarium.",
+      "pullQuote": "Evan Cabnet's production does atmospheric justice to Thérèse's desperation.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -270201,23 +270150,6 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "wicked-2003",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 64,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Debruge",
-      "url": "https://variety.com/2003/legit/reviews/wicked-7-1200538236/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed production.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "wicked-2003",
