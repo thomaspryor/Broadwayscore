@@ -162,6 +162,35 @@
       "patriots-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "AM New York": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
