@@ -89,6 +89,7 @@ const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent } = require('./lib/content-quality');
+const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
 // Parse CLI arguments
@@ -4163,6 +4164,18 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     data.tierReason = tierResult.tierReason;
   }
 
+  // Set incompleteReason if content is not complete
+  if (data.contentTier && data.contentTier !== 'complete') {
+    const reasonResult = classifyIncompleteReason(data, null);
+    if (reasonResult) {
+      data.incompleteReason = reasonResult.incompleteReason;
+      data.incompleteDetail = reasonResult.incompleteDetail;
+    }
+  } else {
+    delete data.incompleteReason;
+    delete data.incompleteDetail;
+  }
+
   // NOTE: Do NOT extract years from URLs to flag wrong production.
   // URL patterns are inconsistent across outlets (republished content, migrated URLs,
   // article IDs that resemble years, etc.). Use publish date or review text content instead.
@@ -4757,6 +4770,22 @@ function recordFailedFetch(review, reason, details = {}) {
     fs.writeFileSync(failedFetchesPath, JSON.stringify(failedFetches, null, 2));
   } catch (e) {
     // Non-fatal — don't crash the run over tracking
+  }
+
+  // Set incompleteReason on the review source file
+  try {
+    const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
+    if (fs.existsSync(reviewFilePath)) {
+      const reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+      const reasonResult = classifyIncompleteReason(reviewData, entry);
+      if (reasonResult) {
+        reviewData.incompleteReason = reasonResult.incompleteReason;
+        reviewData.incompleteDetail = reasonResult.incompleteDetail;
+        fs.writeFileSync(reviewFilePath, JSON.stringify(reviewData, null, 2) + '\n');
+      }
+    }
+  } catch (e) {
+    // Non-fatal
   }
 
   const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
