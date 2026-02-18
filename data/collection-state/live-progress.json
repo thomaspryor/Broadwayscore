@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T02:00:48.145Z",
-  "processed": 52,
-  "failed": 8,
-  "successRate": "86.7%",
+  "updatedAt": "2026-02-18T02:03:45.440Z",
+  "processed": 41,
+  "failed": 59,
+  "successRate": "41.0%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 14
+    "archiveToday": 48,
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T01:07:07.235Z",
+      "event": "bb-session",
+      "session": "c5272ece",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T01:07:09.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:08:37.998Z",
+      "event": "bb-session",
+      "session": "7abefc1f",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T01:08:39.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:09:57.880Z",
+      "event": "bb-session",
+      "session": "7a3ab702",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T01:09:59.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:11:18.251Z",
+      "event": "bb-session",
+      "session": "05bdeda7",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T01:11:20.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:12:50.881Z",
+      "event": "bb-session",
+      "session": "d2d06ada",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T01:12:53.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:14:11.937Z",
+      "event": "bb-session",
+      "session": "f62e2783",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T01:14:14.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:16:03.978Z",
+      "event": "bb-session",
+      "session": "57c22cb7",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T01:16:06.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:17:25.012Z",
+      "event": "bb-session",
+      "session": "4df28848",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T01:17:27.153Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:18:56.076Z",
+      "event": "bb-session",
+      "session": "501ca4ed",
+      "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html?smtyp=cu"
+    },
+    {
+      "t": "2026-02-18T01:18:57.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:20:19.803Z",
+      "event": "bb-session",
+      "session": "5df59697",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-18T01:20:21.824Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
