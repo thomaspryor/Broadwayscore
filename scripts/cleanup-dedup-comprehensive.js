@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeUrl } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -124,14 +125,7 @@ function parseFilename(f) {
   const b = f.replace('.json',''); const i = b.indexOf('--');
   return i === -1 ? { outlet: b, critic: '' } : { outlet: b.substring(0,i), critic: b.substring(i+2) };
 }
-function normalizeUrl(url) {
-  if (!url) return '';
-  try {
-    let u = url.toLowerCase().trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').replace(/#.*$/, '');
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r)=[^&]*/g, '').replace(/\?$/, '');
-    return u;
-  } catch(e) { return url.toLowerCase().trim(); }
-}
+// normalizeUrl imported from ./lib/review-normalization
 function getBaseTitle(showId) { return showId.replace(/-\d{4}$/, ''); }
 function areRelatedShows(a, b) {
   const ba = getBaseTitle(a), bb = getBaseTitle(b);
