@@ -4,16 +4,16 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16241,
-      "skippedNoScore": 946,
-      "skippedDuplicate": 111,
-      "skippedDuplicateUrl": 366,
+      "totalReviews": 16237,
+      "skippedNoScore": 938,
+      "skippedDuplicate": 112,
+      "skippedDuplicateUrl": 363,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 601,
-      "skippedFingerprintDedup": 78,
-      "skippedUnknownCriticDedup": 293,
-      "skippedWrongProduction": 2161,
-      "recoveredFromGarbage": 93,
+      "skippedDuplicateText": 605,
+      "skippedFingerprintDedup": 81,
+      "skippedUnknownCriticDedup": 292,
+      "skippedWrongProduction": 2169,
+      "recoveredFromGarbage": 94,
       "scoreSources": {
         "explicit-stars": 5,
         "explicit-outOf": 0,
@@ -21,14 +21,14 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1721,
-        "llmScore": 10785,
+        "llmScore": 10804,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3482,
+        "llmScore-lowconf": 3487,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 155
+        "thumb": 128
       }
     }
   },
@@ -6939,16 +6939,16 @@
       "showId": "a-free-man-of-color-2010",
       "outletId": "vanityfair",
       "outlet": "Vanity Fair",
-      "assignedScore": 62,
+      "assignedScore": 61,
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Marnie Hanel",
-      "url": "https://www.vanityfair.com/online/daily/2010/11/the-jeffrey-wright-stuff.html",
-      "publishDate": null,
+      "criticName": null,
+      "url": "http://www.vanityfair.com/online/daily/2010/11/the-jeffrey-wright-stuff.html",
+      "publishDate": "November 18, 2010",
       "originalRating": null,
       "pullQuote": "Despite the production’s clever direction, gorgeous costumes, inventive sets, and skilled cast, it's a toughie.",
-      "dtliThumb": null,
+      "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "truncated"
     },
@@ -65568,6 +65568,23 @@
       "contentTier": "excerpt"
     },
     {
+      "showId": "doubt-a-parable",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 63,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Sara Holdren",
+      "url": "https://www.vulture.com/article/theater-review-doubt-returns-broadway.html",
+      "publishDate": "March 7, 2024",
+      "originalRating": null,
+      "pullQuote": "Speeches like that one were built to shake audiences up, but nearly two decades on, and in this production, Doubt feels conspicuously steady.",
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
       "showId": "driving-miss-daisy-2010",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -102362,7 +102379,7 @@
       "pullQuote": "‘Here Lies Love’ bets that glamour can make up for narrative — or, rather, that in a show about the dangers of political demagogy, glamour itself is the narrative. It’s a case of form follows function into the fire. We are drawn to cultural and political excitement in much the same, often dangerous way.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "here-lies-love-2023",
@@ -138389,7 +138406,7 @@
       "pullQuote": "It’s a grizzly and unearned grasp for thrills from a production without a cohesive life force of its own.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "macbeth-2022",
@@ -138763,7 +138780,7 @@
       "pullQuote": "It's not ideal, but it is often riveting nonetheless.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "macbeth-2022",
@@ -182754,7 +182771,7 @@
       "pullQuote": "Despite all the downed crockery, Purpose is a feast.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "purpose",
@@ -183127,23 +183144,6 @@
       "originalRating": null,
       "pullQuote": "Purpose is less about the purpose of life and more about the purpose of family; the purpose of family, as portrayed here, is the continuity of people who know you, judge you, but, at the end of the day, love you.",
       "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "purpose-2025",
-      "outletId": "dailybeast",
-      "outlet": "The Daily Beast",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Tim Teeman",
-      "url": "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
-      "publishDate": "March 17, 2025",
-      "originalRating": null,
-      "pullQuote": "Despite all the downed crockery, Purpose is a feast.",
-      "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -209626,23 +209626,6 @@
     },
     {
       "showId": "tammy-faye",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 61,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Steven Suskin",
-      "url": "https://nystagereview.com/2024/11/14/tammy-faye-brit-tuner-sings-the-red-white-and-boo-hoo-blues/",
-      "publishDate": "November 14, 2024",
-      "originalRating": null,
-      "pullQuote": "John's music is OK, though without the effectiveness of Billy Elliot or The Lion King.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "tammy-faye",
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
       "assignedScore": 42,
@@ -230705,7 +230688,7 @@
       "pullQuote": "A mighty, shout-it-from-the-rooftop-bars yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-inheritance-2019",
@@ -235755,7 +235738,7 @@
       "pullQuote": "Never did I imagine that the theatrical adaptation of a childhood favorite would require the most adultlike patience to endure",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-little-prince-2022",
@@ -235874,7 +235857,7 @@
       "pullQuote": "And what’s on stage with this “Little Prince” is terrible storytelling.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-little-prince-2022",
@@ -243405,7 +243388,7 @@
       "pullQuote": "The script, which in 1990 earned the Pulitzer Prize for Drama, remains a thing of lyrical beauty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -258299,7 +258282,7 @@
       "pullQuote": "But while one may acknowledge its incidental flaws, the cumulative power of “Thoughts of a Colored Man” is what remains with you after the curtain falls. “But you don’t hear us though!” is the collective refrain all but shouted in the play’s final moments.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
@@ -264201,6 +264184,23 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "outletId": "cititour",
+      "outlet": "Cititour",
+      "assignedScore": 80,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Brian Lipton",
+      "url": "https://cititour.com/NYC_Broadway/Trouble-In-Mind/1055",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "LaChanze deftly uses her superb comic timing, unerring dramatic instincts, and even her almost supernatural singing chops to create a truly three-dimensional character.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "trouble-in-mind-2021",

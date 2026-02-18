@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-18T13:34:52.278Z",
+  "runDate": "2026-02-18T13:44:15.826Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 200,
@@ -11,23 +11,23 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 79,
-    "failed": 19,
+    "processed": 78,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "80.6%"
+    "successRate": "79.6%"
   },
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 71,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 10,
-    "archive": 7
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 90,
-    "tier1Success": 72,
+    "tier1Attempts": 93,
+    "tier1Success": 75,
     "ampAttempts": 3,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,13 +38,13 @@
     "tier3Success": 0,
     "tier3_6Attempts": 10,
     "tier3_6Success": 10,
-    "tier4Attempts": 21,
-    "tier4Success": 3,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 74,
+    "tier4Attempts": 17,
+    "tier4Success": 2,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 75,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -95,10 +95,8 @@
     "children-of-a-lesser-god-2018/showbiz411--roger-friedman.json",
     "children-of-a-lesser-god-2018/thestage--mark-shenton.json",
     "cost-of-living-2022/theater-pizzazz--samuel-l-leiter.json",
-    "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
     "fool-for-love-2015/amny--matt-windman.json",
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
-    "good-people-2011/ny1--roma-torre.json",
     "ink-2019/medium--christian-lewis.json",
     "king-lear-2019/show-showdown--wendy-caster.json",
     "king-lear-2019/walterthinnes--walter-thinnes.json",
@@ -127,7 +125,8 @@
     "war-paint-2017/lilith-aileen-jacobson--aileen-jacobson.json",
     "war-paint-2017/thestage--mark-shenton.json",
     "war-paint-2017/wnyc--jennifer-vanasco.json",
-    "west-side-story-2020/the-times-uk-jesse-oxfeld--jesse-oxfeld.json"
+    "west-side-story-2020/the-times-uk-jesse-oxfeld--jesse-oxfeld.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
   ],
   "failed": [
     "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
@@ -136,6 +135,8 @@
     "airline-highway-2015/huffpost--michael-giltz.json",
     "cost-of-living-2022/talkinbroadway--matthew-murray.json",
     "dont-dress-for-dinner-2012/amny--matt-windman.json",
+    "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
+    "good-people-2011/ny1--roma-torre.json",
     "ink-2019/talkinbroadway--matthew-murray.json",
     "king-lear-2019/stagezine--david-nounou.json",
     "mike-birbiglia-the-old-man-and-the-pool-2022/talkinbroadway--nancy-grossman.json",
@@ -147,7 +148,6 @@
     "the-waverly-gallery-2018/talkinbroadway--matthew-murray.json",
     "tootsie-2019/talkinbroadway--matthew-murray.json",
     "waitress-2016/talkinbroadway--matthew-murray.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
@@ -161,9 +161,12 @@
       "gutenberg-2023/theatre-reviews-limited--joseph-verlezza.json",
       "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
       "jajas-african-hair-braiding-2023/theatre-reviews-limited--joseph-verlezza.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
       "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
       "my-fair-lady-2018/theatre-reviews-limited--joseph-verlezza.json",
       "once-upon-a-mattress-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "romeo-juliet/broadwaynews--brittani-samuel.json",
       "stereophonic-2024/broadwaynews--brittani-samuel.json",
       "sunset-boulevard-2017/theatre-reviews-limited--david-roberts.json",
       "tammy-faye-2024/broadwaynews--brittani-samuel.json",
@@ -246,11 +249,7 @@
     "archive": [
       "cabaret-2024/broadwaynews--brittani-samuel.json",
       "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "romeo-juliet/broadwaynews--brittani-samuel.json",
-      "dont-dress-for-dinner-2012/northjerseycom--robert-feldberg.json",
-      "good-people-2011/ny1--roma-torre.json"
+      "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
     ]
   },
   "failuresByOutlet": {
@@ -261,14 +260,21 @@
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "amNY": {
+    "NorthJersey.com": {
       "count": 1,
-      "domain": "amny.com",
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
-    "am New York": {
+    "amNY": {
       "count": 1,
       "domain": "amny.com",
       "hasCredentials": false,
