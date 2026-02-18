@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T01:10:18.057Z",
-  "processed": 27,
-  "failed": 23,
-  "successRate": "54.0%",
+  "updatedAt": "2026-02-18T01:23:38.015Z",
+  "processed": 16,
+  "failed": 24,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 11
+    "archiveToday": 15,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 30,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T01:10:33.952Z",
+      "event": "bb-session",
+      "session": "b09d4c28",
+      "url": "https://www.nytimes.com/2003/07/31/theater/theater-review-puppet-musical-for-adu"
+    },
+    {
+      "t": "2026-02-18T01:10:36.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:11:52.236Z",
+      "event": "bb-session",
+      "session": "2f0a90ff",
+      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shi"
+    },
+    {
+      "t": "2026-02-18T01:11:54.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:13:23.530Z",
+      "event": "bb-session",
+      "session": "51dfaa83",
+      "url": "https://www.nytimes.com/2023/03/24/theater/bad-cinderella-review-broadway.html"
+    },
+    {
+      "t": "2026-02-18T01:13:25.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:14:47.615Z",
+      "event": "bb-session",
+      "session": "c2eb9ce2",
+      "url": "https://www.nytimes.com/2017/04/27/theater/bandstand-review.html"
+    },
+    {
+      "t": "2026-02-18T01:14:49.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:16:25.573Z",
+      "event": "bb-session",
+      "session": "1f7d4659",
+      "url": "https://www.nytimes.com/2008/11/14/theater/reviews/14billy.html"
+    },
+    {
+      "t": "2026-02-18T01:16:27.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:17:46.121Z",
+      "event": "bb-session",
+      "session": "02a83a31",
+      "url": "https://www.nytimes.com/2022/04/11/theater/birthday-candles-review.html"
+    },
+    {
+      "t": "2026-02-18T01:17:48.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:19:00.698Z",
+      "event": "bb-session",
+      "session": "0277e849",
+      "url": "https://www.nytimes.com/2022/04/10/theater/birthday-candles-review.html"
+    },
+    {
+      "t": "2026-02-18T01:19:02.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:20:21.952Z",
+      "event": "bb-session",
+      "session": "03e96011",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blit.html"
+    },
+    {
+      "t": "2026-02-18T01:20:24.228Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:21:35.824Z",
+      "event": "bb-session",
+      "session": "a6332500",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blithe.html"
+    },
+    {
+      "t": "2026-02-18T01:21:37.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:23:03.236Z",
+      "event": "bb-session",
+      "session": "09e8d610",
+      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
+    },
+    {
+      "t": "2026-02-18T01:23:05.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
