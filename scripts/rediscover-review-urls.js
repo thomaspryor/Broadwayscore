@@ -38,6 +38,7 @@ const CONFIG = {
   limit: getArg('limit') ? parseInt(getArg('limit')) : null,
   showFilter: getArg('show') || null,
   domainFilter: getArg('domain') || null,
+  reasonFilter: getArg('reason') ? getArg('reason').split(',').map(s => s.trim().toLowerCase()) : null,
   reviewTextsDir: path.join(process.cwd(), 'data/review-texts'),
   failedFetchesPath: path.join(process.cwd(), 'data/review-texts/failed-fetches.json'),
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -94,17 +95,19 @@ function loadCandidates() {
         const filePath = path.join(showDir, file);
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Skip flagged reviews
-        if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.isRoundupArticle) continue;
-
-        // Only process reviews missing fullText
-        if (data.fullText && data.fullText.length > 100) continue;
-
-        // Must have a URL
-        if (!data.url) continue;
-
-        // Skip already processed by rediscovery
-        if (data.urlDiscoveryMethod) continue;
+        // When reason filter is active, use it as the primary filter
+        if (CONFIG.reasonFilter) {
+          const reason = data.incompleteReason || '';
+          if (!CONFIG.reasonFilter.includes(reason)) continue;
+          // Reason filter overrides the default guards below
+          // (no_url reviews have no URL, wrong_content reviews are flagged)
+        } else {
+          // Default filters: skip flagged, skip if has text, require URL
+          if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.isRoundupArticle) continue;
+          if (data.fullText && data.fullText.length > 100) continue;
+          if (!data.url) continue;
+          if (data.urlDiscoveryMethod) continue;
+        }
 
         // Domain filter
         if (CONFIG.domainFilter) {
@@ -122,6 +125,7 @@ function loadCandidates() {
           outlet: data.outlet,
           url: data.url,
           fetchAttempts: data.fetchAttempts || [],
+          incompleteReason: data.incompleteReason || '',
           data,
         });
       } catch (e) {
@@ -148,6 +152,27 @@ function updateReviewUrl(candidate, newUrl, method) {
   data.url = newUrl;
   data.urlDiscoveredAt = new Date().toISOString();
   data.urlDiscoveryMethod = method;
+
+  // Clear wrong-content flags when rediscovering URL (so collection will re-scrape)
+  if (data.wrongProduction || data.wrongShow) {
+    data._previousWrongFlags = {
+      wrongProduction: data.wrongProduction,
+      wrongShow: data.wrongShow,
+    };
+    delete data.wrongProduction;
+    delete data.wrongShow;
+    delete data.wrongProductionReason;
+    delete data.wrongShowReason;
+    delete data.showNotMentioned;
+    delete data.contentMismatchNote;
+    delete data.incompleteReason;
+    delete data.incompleteDetail;
+    // Clear stale text so collection will re-scrape with new URL
+    delete data.fullText;
+    delete data.isFullReview;
+    delete data.textQuality;
+    delete data.contentTier;
+  }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
 
@@ -436,8 +461,11 @@ async function runPhase3(candidates) {
     try {
       const fresh = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
       if (fresh.urlDiscoveryMethod) continue;
-      if (fresh.fullText && fresh.fullText.length > 100) continue;
-      if (!fresh.url) continue;
+      // When filtering by reason, skip default guards (no_url has no URL, wrong_content has text)
+      if (!CONFIG.reasonFilter) {
+        if (fresh.fullText && fresh.fullText.length > 100) continue;
+        if (!fresh.url) continue;
+      }
       c.url = fresh.url;
       c.data = fresh;
 
@@ -542,20 +570,26 @@ async function main() {
   console.log(`  Phase: ${CONFIG.phase || 'all'}`);
   console.log(`  Show filter: ${CONFIG.showFilter || 'none'}`);
   console.log(`  Domain filter: ${CONFIG.domainFilter || 'none'}`);
+  console.log(`  Reason filter: ${CONFIG.reasonFilter ? CONFIG.reasonFilter.join(',') : 'none'}`);
   console.log('');
 
   const candidates = loadCandidates();
-  console.log(`Loaded ${candidates.length} candidates (missing fullText, has URL, not flagged)\n`);
+  console.log(`Loaded ${candidates.length} candidates\n`);
 
   let totalFixed = 0;
 
+  // Skip Phases 1-2 for reason filters that don't need URL transforms (no_url, wrong_content)
+  const serpOnlyReasons = ['no_url', 'wrong_content'];
+  const isSerpOnly = CONFIG.reasonFilter &&
+    CONFIG.reasonFilter.every(r => serpOnlyReasons.includes(r));
+
   // Phase 1
-  if (!CONFIG.phase || CONFIG.phase === 1) {
+  if ((!CONFIG.phase || CONFIG.phase === 1) && !isSerpOnly) {
     totalFixed += runPhase1(candidates);
   }
 
   // Phase 2
-  if (!CONFIG.phase || CONFIG.phase === 2) {
+  if ((!CONFIG.phase || CONFIG.phase === 2) && !isSerpOnly) {
     totalFixed += await runPhase2(candidates);
   }
 
