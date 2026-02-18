@@ -653,16 +653,31 @@ async function main(): Promise<void> {
 
   // Pre-filter: skip reviews already flagged as unscorable
   let dataQualitySkipped = 0;
+  let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
-    if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.showNotMentioned || d.contentTier === 'invalid') {
+    if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') {
       dataQualitySkipped++;
       return false;
+    }
+    // Allow showNotMentioned reviews through if they have valid aggregator excerpts
+    // The flag means "collected fullText didn't mention the show" but aggregator excerpts
+    // ARE curated for this show and are valid for scoring
+    if (d.showNotMentioned) {
+      const hasExcerpt = d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt || (d as any).nycTheatreExcerpt;
+      if (!hasExcerpt) {
+        dataQualitySkipped++;
+        return false;
+      }
+      showNotMentionedWithExcerpts++;
     }
     return true;
   });
   if (dataQualitySkipped > 0) {
-    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/showNotMentioned/invalid)\n`);
+    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/showNotMentioned-no-excerpts/invalid)\n`);
+  }
+  if (showNotMentionedWithExcerpts > 0) {
+    console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);
   }
 
   // Apply text length filter - now includes reviews with excerpts
