@@ -24,42 +24,38 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Get repo info
-        id: repo
-        run: |
-          REPO_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/thomaspryor/Broadwayscore" | jq '.id')
-          echo "repo_id=$REPO_ID" >> $GITHUB_OUTPUT
-          echo "sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+      - name: Checkout staging
+        uses: actions/checkout@v4
 
-      - name: Create Vercel deployment from Git
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=$VERCEL_TOKEN
+
+      - name: Deploy Preview
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          RESPONSE=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
-            -H "Authorization: Bearer $VERCEL_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "name": "broadwayscore",
-              "gitSource": {
-                "type": "github",
-                "repoId": ${{ steps.repo.outputs.repo_id }},
-                "ref": "staging",
-                "sha": "${{ steps.repo.outputs.sha }}"
-              },
-              "target": "staging"
-            }')
-          echo "Response: $RESPONSE"
-          URL=$(echo "$RESPONSE" | jq -r '.url // empty')
-          if [ -n "$URL" ]; then
-            echo "Preview URL: https://$URL"
-            echo "url=https://$URL" >> $GITHUB_OUTPUT
-          else
-            ERROR=$(echo "$RESPONSE" | jq -r '.error.message // .message // "Unknown error"')
-            echo "Error: $ERROR"
-            exit 1
-          fi
+          URL=$(vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
+          echo "Preview URL: $URL"
+          echo "url=$URL" >> $GITHUB_OUTPUT
 
       - name: Write deploy summary
         if: always()
