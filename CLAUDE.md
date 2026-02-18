@@ -17,7 +17,7 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. If push touches `src/` etc., Vercel deploys automatically (~13 min). Otherwise trigger manually (see 3a).
+**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
@@ -29,70 +29,11 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - The workflow builds on GitHub Actions (`vercel build --prod`), then uploads prebuilt output (`vercel deploy --prebuilt --prod`). This completely bypasses Vercel's git integration.
 - Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically** (~13 min)
 - Pushes changing only `data/review-texts/`, `data/archives/`, etc. → **no deploy** (intentional)
+- To force a manual deploy: `gh workflow run "Deploy to Vercel"`
 - **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks 30+ checkpoint builds per hour.
 - **DO NOT add `ignoreCommand` to `vercel.json`** — it has NO ignoreCommand. Dashboard only.
 - **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
-- **Secret:** `VERCEL_TOKEN` (GitHub secret + local `.env`)
-
-**How to manually trigger a deploy:**
-```bash
-# Preferred (REST API — immune to GitHub GraphQL rate limits):
-gh api repos/thomaspryor/Broadwayscore/actions/workflows/vercel-deploy.yml/dispatches -f ref=main
-
-# Alternative (may fail if GitHub API rate-limited):
-gh workflow run "Deploy to Vercel"
-```
-
-**How to verify a deploy succeeded:**
-```bash
-# Check workflow run status:
-gh api repos/thomaspryor/Broadwayscore/actions/workflows/vercel-deploy.yml/runs --jq '.workflow_runs[0] | {status, conclusion, created_at}'
-
-# Check production site headers (age should be low after fresh deploy):
-curl -sI "https://broadwayscorecard.com" | grep -i 'age:'
-```
-
-**CRITICAL: Both build AND deploy steps MUST use `--prod` flag.** A past bug where `--prod` was missing from the deploy step caused all deploys to fail with "prebuilt environment mismatch" error. The workflow on remote main is now correct — do not remove `--prod` from either step.
-
-**Emergency deploy (if CLI workflow is broken or queued):**
-Use the Vercel API to allow a selective git-triggered build. This bypasses the CLI upload path entirely (no rate limit risk). Steps:
-```bash
-VERCEL_TOKEN=$(grep '^VERCEL_TOKEN=' .env | cut -d= -f2)
-VERCEL_API="https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo"
-
-# Step 1: Set selective filter (only builds commits with "DEPLOY" in the message)
-curl -s -X PATCH "$VERCEL_API" \
-  -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
-  -d '{"commandForIgnoringBuildStep": "[[ \"$VERCEL_GIT_COMMIT_MESSAGE\" == *DEPLOY* ]] && exit 1 || exit 0"}'
-
-# Step 2: Push a commit with DEPLOY in the message
-git commit --allow-empty -m "chore: DEPLOY to production" && git push origin main
-
-# Step 3: Restore exit 0 (safe to do immediately — build already accepted)
-curl -s -X PATCH "$VERCEL_API" \
-  -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
-  -d '{"commandForIgnoringBuildStep": "exit 0"}'
-```
-Build takes ~9-10 min on Vercel. Monitor at: `curl -s "https://api.vercel.com/v6/deployments?projectId=prj_wmBnDUrCQCwabIAYPbnMiIP3wg15&teamId=team_zvgatcxkXdPbfhtHQMOnjpXo&limit=3" -H "Authorization: Bearer $VERCEL_TOKEN" | jq '.deployments[] | {state, msg: .meta.githubCommitMessage}'`
-**Confirmed working (Feb 18, 2026).** Build takes ~9 min on Vercel's servers. Safe for repeated use — checkpoint commits are ignored, only your DEPLOY commit triggers a build.
-
-**Vercel API — Environment Variables & Feature Flags:**
-Manage env vars via API — never ask the user to go to the Vercel dashboard.
-```bash
-VERCEL_TOKEN=$(grep '^VERCEL_TOKEN=' .env | cut -d= -f2)
-PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
-# List env vars:
-curl -s -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$PROJECT_ID/env?decrypt=true"
-# Create env var:
-curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
-  "https://api.vercel.com/v10/projects/$PROJECT_ID/env" \
-  -d '{"key":"KEY","value":"VAL","target":["production","preview","development"],"type":"plain"}'
-# Trigger production deploy (after env var change):
-curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
-  "https://api.vercel.com/v13/deployments" \
-  -d '{"name":"broadwayscore","project":"prj_wmBnDUrCQCwabIAYPbnMiIP3wg15","gitSource":{"type":"github","repoId":1132314463,"ref":"main"},"target":"production"}'
-```
-**Feature flags** are controlled by `NEXT_PUBLIC_FEATURES` env var (comma-separated list). See `src/config/feature-flags.ts` for the full list. To enable a new feature, update the env var via API and trigger a redeploy.
+- **Secret:** `VERCEL_TOKEN` (CLI auth)
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
