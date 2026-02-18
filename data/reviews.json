@@ -5,15 +5,15 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 16246,
-      "skippedNoScore": 947,
-      "skippedDuplicate": 111,
+      "skippedNoScore": 949,
+      "skippedDuplicate": 110,
       "skippedDuplicateUrl": 367,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 595,
-      "skippedFingerprintDedup": 75,
-      "skippedUnknownCriticDedup": 295,
-      "skippedWrongProduction": 2160,
-      "recoveredFromGarbage": 94,
+      "skippedDuplicateText": 594,
+      "skippedFingerprintDedup": 76,
+      "skippedUnknownCriticDedup": 294,
+      "skippedWrongProduction": 2161,
+      "recoveredFromGarbage": 95,
       "scoreSources": {
         "explicit-stars": 5,
         "explicit-outOf": 0,
@@ -21,14 +21,14 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1721,
-        "llmScore": 10772,
+        "llmScore": 10779,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3500,
+        "llmScore-lowconf": 3494,
         "llmScore-review": 2,
         "assignedScore": 1,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 155
+        "thumb": 154
       }
     }
   },
@@ -3873,7 +3873,7 @@
       "pullQuote": "The chorus is having such a good time you are tempted to join them.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -11972,7 +11972,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 59,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Ben Brantley",
@@ -11982,7 +11982,7 @@
       "pullQuote": "Laughing in the middle of a yawn produces a peculiar sensation, rather like swallowing wind.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "act-one-2014",
@@ -14260,7 +14260,7 @@
       "pullQuote": "This is one of the better Disney stage musicals, complete with several eye-popping production numbers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aladdin-2014",
@@ -17156,23 +17156,6 @@
     },
     {
       "showId": "allegiance-2015",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-lesson-about-interned-japanese-americans.html?ref=theater&_r=1",
-      "publishDate": "November 8, 2015",
-      "originalRating": null,
-      "pullQuote": "While well-intentioned and polished, “Allegiance” struggles to balance both ambitions, and doesn’t always find an equilibrium.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "allegiance-2015",
       "outletId": "the-rafu-shimpo",
       "outlet": "The Rafu Shimpo",
       "assignedScore": 92,
@@ -18920,7 +18903,7 @@
       "pullQuote": "If you have never seen the movie, there is much to be enjoyed in this musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -24038,7 +24021,7 @@
       "pullQuote": "By the time Szot sings “Everything,” this musical is less kitsch than schlock.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "and-juliet-2022",
@@ -25286,7 +25269,7 @@
       "outletId": "backstage",
       "outlet": "Backstage",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Erik Haagensen",
@@ -25296,7 +25279,7 @@
       "pullQuote": "Taylor's witty, sharp-eyed script is sufficiently compelling to serve for this entertaining solo show",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "ann-2013",
@@ -31824,6 +31807,23 @@
       "publishDate": null,
       "originalRating": "4/5",
       "pullQuote": "I'm so thrilled the world has flipped enough to let it be so.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "beetlejuice-2025",
+      "outletId": "stagerightsecrets",
+      "outlet": "Stage Right Secrets",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Giselle",
+      "url": "https://www.stagerightsecrets.com/review-beetlejuice-makes-a-bang-on-broadway/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Simply, Beetlejuice is fun, fun, FUN!",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -57129,7 +57129,7 @@
       "pullQuote": "What the heck is a “Coram Boy”? This question may not be whipping around the Internet at warp speed, but it is probably tickling the minds of theater lovers who have noted the curious title of the latest and perhaps least-heralded London-born show to hit the express lane to Broadway this season.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "cost-of-living-2022",
@@ -70417,7 +70417,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": null,
@@ -70427,7 +70427,7 @@
       "pullQuote": "Just as the Broadway theater season is drawing to its close, a smashing little show has arrived to remind us of why so many of us keep going back to Broadway, even though it’s broken our heart so many times.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "everyday-rapture-2010",
@@ -72876,7 +72876,7 @@
       "pullQuote": "This portrait of the Nigerian musician and political activist Fela Anikulapo-Kuti pulses with a musical energy so vital it makes you feel more alive.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "fela-2009",
@@ -93721,7 +93721,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -142406,23 +142406,6 @@
     },
     {
       "showId": "master-class-2011",
-      "outletId": "faster-times",
-      "outlet": "Faster Times",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jonathan Mandell",
-      "url": "http://thefastertimes.com/newyorktheater/2011/07/07/master-class-review-tyne-daly-as-maria-callas/",
-      "publishDate": "July 7, 2011",
-      "originalRating": null,
-      "pullQuote": "Tyne Daly has said she didn’t think she was a fit to play the great and tragic opera diva Maria Callas, when playwright Terrence McNally asked her to take on the role in the current revival of his 1995 play, “Master Class” – she is not glamorous, too old, too ignorant about opera, she told him.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "master-class-2011",
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 62,
@@ -145538,7 +145521,7 @@
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Kevin Sherwin",
@@ -145548,7 +145531,7 @@
       "pullQuote": "...this new West End arrival is a production that pulsates with infectious energy -- the frantic choreography is excellent throughout -- and ultimately leaves its roaring audience on its feet until long after the cast has left the stage......",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "memphis-2009",
@@ -150401,7 +150384,7 @@
       "outletId": "stageandcinema",
       "outlet": "Stage and Cinema",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Dmitry Zvonkov",
@@ -150411,7 +150394,7 @@
       "pullQuote": "One of the questions at the center of Terrence McNally’s insightful and moving drama Mothers and Sons is, Why is it so difficult for a mother to love her son for who he is, and vice versa? McNally initially frames the problem in terms of a homophobic mother’s inability to accept her son’s homosexuality, even after he’s been dead for many years; ...",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "mothers-and-sons-2014",
@@ -162845,6 +162828,23 @@
     },
     {
       "showId": "old-times-2015",
+      "outletId": "talkinbroadway",
+      "outlet": "Talkin' Broadway",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Matthew Murray",
+      "url": "https://www.talkinbroadway.com/world/OldTimes.html",
+      "publishDate": "October 7, 2015",
+      "originalRating": null,
+      "pullQuote": "That universe is great for actors to play in, but hopefully real people don’t really have to live in it or speak its language.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "old-times-2015",
       "outletId": "dailybeast",
       "outlet": "The Daily Beast",
       "assignedScore": 79,
@@ -163026,6 +163026,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Unfortunately, director Douglas Hodge, best known in New York for his flamboyant Tony Award-winning performance as Albin in the 2010 revival of La Cage aux Folles but a famed interpreter of Pinter in London, has made this revival provocative for all the wrong reasons.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "old-times-2015",
+      "outletId": "theater-scene",
+      "outlet": "Theater Scene",
+      "assignedScore": 62,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Eugene Paul",
+      "url": "https://www.theaterscene.com/OldTimes.html",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "That Owens, Best and Reilly do very little to deserve this adulation is somehow beside the point.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -183485,23 +183502,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "purpose-2025",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jackson McHenry",
-      "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
-      "publishDate": "March 17, 2025",
-      "originalRating": null,
-      "pullQuote": "Much of the nearly mathematical pleasure of watching Purpose lies in watching a top-tier craftsman set up and then launch one long domino chain of familial discord.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "pygmalion-2007",
@@ -264420,7 +264420,7 @@
       "pullQuote": "The story isn’t really surprising, except that now that audiences have a chance to see the play, its combination of biting humor and moments of powerfully moving drama would seem a potent formula for popular success in any era.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "trouble-in-mind-2021",
