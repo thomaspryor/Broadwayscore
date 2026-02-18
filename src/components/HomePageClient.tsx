@@ -43,7 +43,7 @@ interface HomePageClientProps {
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
-type ScoreModeParam = 'critics' | 'audience' | 'both_a' | 'both_b' | 'both_c';
+type ScoreModeParam = 'critics' | 'audience' | 'both_c';
 
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
@@ -52,7 +52,7 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
-const DEFAULT_SCORE_MODE: ScoreModeParam = 'both_a';
+const DEFAULT_SCORE_MODE: ScoreModeParam = 'both_c';
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -84,63 +84,6 @@ function ChevronRightIcon() {
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
     </svg>
-  );
-}
-
-// Small critic score badge for dual-score variants
-function CriticBadgeSmall({ show }: { show: HomepageShow }) {
-  const score = show.criticScore?.score;
-  const reviewCount = show.criticScore?.reviewCount;
-
-  if (show.status === 'previews' || (reviewCount !== undefined && reviewCount < 5)) {
-    return (
-      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl font-bold score-none text-gray-400">
-        TBD
-      </div>
-    );
-  }
-
-  if (score === undefined || score === null) {
-    return (
-      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold score-none">—</div>
-    );
-  }
-
-  const rounded = Math.round(score);
-  const colorClass = rounded >= 85 ? 'score-must-see' : rounded >= 75 ? 'score-great' : rounded >= 65 ? 'score-good' : rounded >= 55 ? 'score-tepid' : 'score-skip';
-
-  return (
-    <div className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold ${colorClass}`}>
-      {rounded}
-    </div>
-  );
-}
-
-// Small audience grade badge for dual-score variants
-function AudienceBadgeSmall({ show }: { show: HomepageShow }) {
-  const grade = show.audienceGrade;
-
-  if (show.status === 'previews') {
-    return (
-      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl font-bold score-none text-gray-400">
-        TBD
-      </div>
-    );
-  }
-
-  if (!grade) {
-    return (
-      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold score-none text-gray-400">—</div>
-    );
-  }
-
-  return (
-    <div
-      className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
-      style={grade.grade === 'A+' ? {} : { backgroundColor: grade.color, color: grade.textColor }}
-    >
-      {grade.grade}
-    </div>
   );
 }
 
@@ -235,63 +178,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       </div>
 
       {/* Score Badge */}
-      <div className={`flex-shrink-0 flex flex-col items-center justify-center gap-1.5 ${scoreMode.startsWith('both') ? 'w-36 sm:w-44' : 'w-20 sm:w-24'}`}>
-        {scoreMode === 'both_a' ? (
-          // Variant A: Twin equal badges side by side
-          <div className="flex items-start gap-2">
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Critics</span>
-              <CriticBadgeSmall show={show} />
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Audience</span>
-              <AudienceBadgeSmall show={show} />
-            </div>
-          </div>
-        ) : scoreMode === 'both_b' ? (
-          // Variant B: Connected split badge
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center w-full justify-center gap-0">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500 w-16 sm:w-20 text-center">Critics</span>
-              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500 w-16 sm:w-20 text-center">Audience</span>
-            </div>
-            <div className="flex items-stretch rounded-xl overflow-hidden shadow-lg h-16 sm:h-20">
-              {(() => {
-                const cs = show.criticScore?.score;
-                const rc = show.criticScore?.reviewCount;
-                const isTBD = show.status === 'previews' || (rc !== undefined && rc < 5);
-                const criticRounded = cs != null ? Math.round(cs) : null;
-                const criticClass = isTBD ? 'score-none text-gray-400 text-sm' :
-                  criticRounded === null ? 'score-none' :
-                  criticRounded >= 85 ? 'score-must-see' :
-                  criticRounded >= 75 ? 'score-great' :
-                  criticRounded >= 65 ? 'score-good' :
-                  criticRounded >= 55 ? 'score-tepid' : 'score-skip';
-                const criticDisplay = isTBD ? 'TBD' : criticRounded !== null ? criticRounded : '—';
-
-                const ag = show.audienceGrade;
-                const audTBD = show.status === 'previews';
-                const audClass = audTBD ? 'score-none text-gray-400 text-sm' :
-                  !ag ? 'score-none text-gray-400' :
-                  ag.grade === 'A+' ? 'audience-top-grade' : '';
-                const audStyle = (!audTBD && ag && ag.grade !== 'A+') ? { backgroundColor: ag.color, color: ag.textColor } : {};
-                const audDisplay = audTBD ? 'TBD' : ag ? ag.grade : '—';
-
-                return (
-                  <>
-                    <div className={`w-16 sm:w-20 flex items-center justify-center text-2xl sm:text-3xl font-bold ${criticClass}`}>
-                      {criticDisplay}
-                    </div>
-                    <div className="w-px bg-black/30" />
-                    <div className={`w-16 sm:w-20 flex items-center justify-center text-2xl sm:text-3xl font-bold ${audClass}`} style={audStyle}>
-                      {audDisplay}
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-          </div>
-        ) : scoreMode === 'both_c' ? (
+      <div className={`flex-shrink-0 flex flex-col items-center justify-center gap-1.5 ${scoreMode === 'both_c' ? 'w-36 sm:w-44' : 'w-20 sm:w-24'}`}>
+        {scoreMode === 'both_c' ? (
           // Variant C: Big critic badge + small audience chip
           <>
             {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
@@ -499,7 +387,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
-    scoreMode: (['critics', 'audience', 'both_a', 'both_b', 'both_c'].includes(initialSearchParams.get('scoreMode') as string)
+    scoreMode: (['critics', 'audience', 'both_c'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
   }));
@@ -838,8 +726,6 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         {/* Score Mode Picker (Right) - Variant comparison for preview */}
         <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
           {([
-            { key: 'both_a', label: 'Twin' },
-            { key: 'both_b', label: 'Split' },
             { key: 'both_c', label: 'Chip' },
             { key: 'critics', label: 'Critics' },
             { key: 'audience', label: 'Audience' },
