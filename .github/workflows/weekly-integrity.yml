@@ -35,6 +35,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run dedup cleanup
+        id: dedup
+        run: |
+          OUTPUT=$(node scripts/cleanup-dedup-comprehensive.js 2>&1)
+          echo "$OUTPUT"
+          OUTLET=$(echo "$OUTPUT" | grep "Outlet alias duplicates merged:" | grep -oE '[0-9]+' || echo "0")
+          CRITIC=$(echo "$OUTPUT" | grep "Critic typo duplicates fixed:" | grep -oE '[0-9]+' || echo "0")
+          CROSS=$(echo "$OUTPUT" | grep "Cross-show files flagged:" | grep -oE '[0-9]+' || echo "0")
+          URL=$(echo "$OUTPUT" | grep "Same-show URL dupes flagged:" | grep -oE '[0-9]+' || echo "0")
+          TOTAL=$((OUTLET + CRITIC + CROSS + URL))
+          echo "dedup_total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "dedup_summary=Outlet:$OUTLET Critic:$CRITIC CrossShow:$CROSS URL:$URL" >> $GITHUB_OUTPUT
+
+      - name: Commit dedup cleanup
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/review-texts/
+          if git diff --staged --quiet; then
+            echo "No dedup fixes needed"
+          else
+            git commit -m "chore: Auto-cleanup duplicate review files"
+            for i in 1 2 3 4 5; do
+              git push origin main && break
+              echo "Push attempt $i failed, rebasing..."
+              sleep $((RANDOM % 10 + 5))
+              git fetch origin main
+              git rebase -X theirs origin/main
+            done
+          fi
+
       - name: Clean up junk outlet files
         run: |
           node -e "
