@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-02-01T23:17:23.787Z",
+  "timestamp": "2026-02-18T23:13:49.606Z",
   "hasIssues": true,
   "current": {
-    "date": "2026-02-01",
-    "totalReviews": 4598,
-    "unknownOutlets": 134,
-    "duplicates": 0,
-    "syncDelta": 2433
+    "date": "2026-02-18",
+    "totalReviews": 23923,
+    "unknownOutlets": 35,
+    "duplicates": 7,
+    "syncDelta": 7366
   },
   "previous": {
     "date": "2026-02-01",
@@ -19,75 +19,115 @@
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "134 reviews have unknown outlets",
+      "message": "35 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/aladdin/unknown--unknown.json",
+          "file": "data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json",
+          "outletId": "is-intense-in-a-way-ive-never-seen-on-broadway",
+          "outlet": "is-intense-in-a-way-ive-never-seen-on-broadway"
+        },
+        {
+          "file": "data/review-texts/a-chorus-line-2006/unknown--unknown.json",
           "outletId": "unknown",
           "outlet": "unknown"
         },
         {
-          "file": "data/review-texts/aladdin-2014/unknown--unknown.json",
+          "file": "data/review-texts/a-moon-for-the-misbegotten-2007/unknown--unknown.json",
           "outletId": "unknown",
           "outlet": "unknown"
         },
         {
-          "file": "data/review-texts/an-enemy-of-the-people/unknown--unknown.json",
+          "file": "data/review-texts/a-night-with-janis-joplin-2013/unknown--unknown.json",
           "outletId": "unknown",
           "outlet": "unknown"
         },
         {
-          "file": "data/review-texts/an-enemy-of-the-people-2024/unknown--unknown.json",
+          "file": "data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
+          "outletId": "its-a-brave-writer-who-would-contrive-this-show",
+          "outlet": "its-a-brave-writer-who-would-contrive-this-show"
+        },
+        {
+          "file": "data/review-texts/allegiance-2015/tackles-an-underexplored-dark-chapter-in-our-history--george-takei.json",
+          "outletId": "tackles-an-underexplored-dark-chapter-in-our-history",
+          "outlet": "tackles-an-underexplored-dark-chapter-in-our-history"
+        },
+        {
+          "file": "data/review-texts/back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
+          "outletId": "and-daryl-tofa-back-to-the-future",
+          "outlet": "and-daryl-tofa-back-to-the-future"
+        },
+        {
+          "file": "data/review-texts/beautiful-the-carole-king-musical-2014/the-canadian-talent-who-first-rose-to-fame-ondegrassi--jake-epstein.json",
+          "outletId": "the-canadian-talent-who-first-rose-to-fame-ondegrassi",
+          "outlet": "the-canadian-talent-who-first-rose-to-fame-ondegrassi"
+        },
+        {
+          "file": "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/unknown--unknown.json",
           "outletId": "unknown",
           "outlet": "unknown"
         },
         {
-          "file": "data/review-texts/and-juliet/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/and-juliet-2022/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/appropriate/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/appropriate-2023/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/back-to-the-future/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/back-to-the-future-2023/unknown--unknown.json",
+          "file": "data/review-texts/clybourne-park-2012/unknown--unknown.json",
           "outletId": "unknown",
           "outlet": "unknown"
         }
       ]
     },
     {
+      "type": "duplicates",
+      "severity": "warning",
+      "message": "7 duplicate reviews detected",
+      "examples": [
+        {
+          "file": "data/review-texts/1984-2017/newsday--elizabeth-vincentelli.json",
+          "key": "1984-2017|newsday|elizabeth vincentelli"
+        },
+        {
+          "file": "data/review-texts/august-osage-county-2007/nydailynews--unknown.json",
+          "key": "august-osage-county-2007|nydailynews|unknown"
+        },
+        {
+          "file": "data/review-texts/book-of-mormon-2011/vulture--scott-brown.json",
+          "key": "book-of-mormon-2011|newyorkmagazine|scott brown"
+        },
+        {
+          "file": "data/review-texts/buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
+          "key": "buena-vista-social-club-2025|nytimes|elizabeth vincentelli"
+        },
+        {
+          "file": "data/review-texts/fences-2010/hollywood-reporter--unknown.json",
+          "key": "fences-2010|hollywood-reporter|unknown"
+        },
+        {
+          "file": "data/review-texts/race-2009/hollywood-reporter--unknown.json",
+          "key": "race-2009|hollywood-reporter|unknown"
+        },
+        {
+          "file": "data/review-texts/the-normal-heart-2011/newsday--unknown.json",
+          "key": "the-normal-heart-2011|newsday|unknown"
+        }
+      ]
+    },
+    {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (4598) and reviews.json (2165) are out of sync by 2433 reviews"
+      "message": "review-texts (23923) and reviews.json (16557) are out of sync by 7366 reviews"
     },
     {
       "type": "unknown_outlets_degradation",
       "severity": "warning",
-      "message": "Unknown outlets increased from 0 to 134"
+      "message": "Unknown outlets increased from 0 to 35"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 0 to 7"
     }
   ],
   "summary": {
-    "totalReviews": 4598,
-    "unknownOutlets": 134,
-    "duplicates": 0,
-    "syncDelta": 2433
+    "totalReviews": 23923,
+    "unknownOutlets": 35,
+    "duplicates": 7,
+    "syncDelta": 7366
   }
 }
