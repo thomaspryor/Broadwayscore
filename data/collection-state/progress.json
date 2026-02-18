@@ -1,63 +1,50 @@
 {
-  "processed": [
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "the-father-2016/act-three-the-reviews--doug-marino.json",
-    "cabaret-2014/broadwaynews--brittani-samuel.json",
-    "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-    "good-night-and-good-luck-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/edge-new-york--daniel-neiden.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/theatre-reviews-limited--michele-willens.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "indecent-2017/theatre-reviews-limited--david-roberts.json",
-    "latin-history-for-morons-2017/thewrap--robert-hoffler.json",
-    "lobby-hero-2018/theatre-reviews-limited--david-roberts.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
-    "miss-saigon-2017/theatre-reviews-limited--joseph-verlezza.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "saint-joan-2018/theatre-reviews-limited--david-roberts.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-great-gatsby-2024/thestage--lane-williamson.json",
-    "falsettos-2016/nytg--david-roberts.json"
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
+    "american-idiot-2010/financialtimes--brendan-lemon.json",
+    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
+    "betrayal-2013/financialtimes--brendan-lemon.json",
+    "betrayal-2019/financialtimes--unknown.json",
+    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
+    "carousel-2018/financial-times-uk--max-mcguinness.json",
+    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
+    "cat-on-a-hot-tin-roof-2013/financialtimes--brendan-lemon.json",
+    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
+    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
+    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
+    "constellations-2015/financialtimes--brendan-lemon.json",
+    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
+    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
+    "enron-2010/financial-times--brandan-lemon.json",
+    "finding-neverland-2015/financial-times-uk--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "the-father-2016/act-three-the-reviews--doug-marino.json",
-      "cabaret-2014/broadwaynews--brittani-samuel.json",
-      "good-night-and-good-luck-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/edge-new-york--daniel-neiden.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/theatre-reviews-limited--michele-willens.json",
-      "indecent-2017/theatre-reviews-limited--david-roberts.json",
-      "lobby-hero-2018/theatre-reviews-limited--david-roberts.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "miss-saigon-2017/theatre-reviews-limited--joseph-verlezza.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json",
-      "saint-joan-2018/theatre-reviews-limited--david-roberts.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "latin-history-for-morons-2017/thewrap--robert-hoffler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-great-gatsby-2024/thestage--lane-williamson.json",
-      "data/review-texts/falsettos-2016/nytg--david-roberts.json"
-    ],
-    "archive": [
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json"
-    ]
+    "archiveToday": [],
+    "archive": []
   },
-  "startTime": "2026-02-18T12:53:44.910Z",
-  "lastProcessed": "saint-joan-2018/theatre-reviews-limited--david-roberts.json",
-  "log": []
+  "startTime": "2026-02-18T13:01:05.831Z",
+  "lastProcessed": "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
+  "log": [
+    {
+      "t": "2026-02-18T13:02:26.393Z",
+      "event": "bb-session",
+      "session": "aee13cc2",
+      "url": "https://www.ft.com/cms/s/0/92c0cf4c-8444-11e4-bae9-00144feabdc0.html#ixzz3VfJai0"
+    },
+    {
+      "t": "2026-02-18T13:02:28.274Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
