@@ -119,11 +119,17 @@ export function getDataStats() {
   const allShows = getAllShows();
   const totalReviews = allShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
 
+  // Count unique outlets and critics from reviews data
+  const uniqueOutlets = new Set(baseReviews.map(r => r.outletId));
+  const uniqueCritics = new Set(baseReviews.map(r => r.criticName).filter(Boolean));
+
   return {
     totalShows: shows.length,
     openShows: shows.filter(s => s.status === 'open').length,
     closedShows: shows.filter(s => s.status === 'closed').length,
     totalReviews,
+    totalOutlets: uniqueOutlets.size,
+    totalCritics: uniqueCritics.size,
     totalAudiencePlatforms: audience.length,
     totalBuzzThreads: buzz.length,
   };
