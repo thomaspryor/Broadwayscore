@@ -1,17 +1,48 @@
 {
-  "updatedAt": "2026-02-18T05:32:11.243Z",
-  "processed": 55,
-  "failed": 15,
-  "successRate": "78.6%",
+  "updatedAt": "2026-02-18T05:33:21.966Z",
+  "processed": 63,
+  "failed": 57,
+  "successRate": "52.5%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 31,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 11
+    "archiveToday": 16,
+    "archive": 29
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T05:00:40.325Z",
+      "event": "bb-session",
+      "session": "ab2c89c2",
+      "url": "https://www.thewrap.com/betrayal-daniel-craig-rachel-weisz"
+    },
+    {
+      "t": "2026-02-18T05:14:22.039Z",
+      "event": "bb-session",
+      "session": "82dfbe1f",
+      "url": "https://www.thewrap.com/merrily-we-roll-along-broadway-review-daniel-radcliffe-j"
+    },
+    {
+      "t": "2026-02-18T05:19:29.280Z",
+      "event": "bb-session",
+      "session": "cf8a5776",
+      "url": "https://www.thewrap.com/punch-broadway-review-right-from-wrong/"
+    },
+    {
+      "t": "2026-02-18T05:24:40.389Z",
+      "event": "bb-session",
+      "session": "68178a1b",
+      "url": "http://www.thewrap.com/bradley-cooper-in-the-elephant-man-offers-gorgeous-along-"
+    },
+    {
+      "t": "2026-02-18T05:25:27.889Z",
+      "event": "bb-session",
+      "session": "a83a994b",
+      "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
+    }
+  ]
 }
