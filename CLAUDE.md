@@ -54,6 +54,22 @@ curl -sI "https://broadwayscorecard.com" | grep -i 'age:'
 
 **CRITICAL: Both build AND deploy steps MUST use `--prod` flag.** A past bug where `--prod` was missing from the deploy step caused all deploys to fail with "prebuilt environment mismatch" error. The workflow on remote main is now correct — do not remove `--prod` from either step.
 
+**Emergency deploy (if CLI workflow is broken):**
+Temporarily toggle the Vercel dashboard Ignored Build Step via API to allow one git-triggered build:
+```bash
+VERCEL_TOKEN=$(grep '^VERCEL_TOKEN=' .env | cut -d= -f2)
+# Allow builds (change exit 0 → exit 1)
+curl -s -X PATCH "https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo" \
+  -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{"commandForIgnoringBuildStep": "exit 1"}'
+# Push any commit to main → triggers Vercel build (~5 min)
+# IMMEDIATELY restore exit 0:
+curl -s -X PATCH "https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo" \
+  -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{"commandForIgnoringBuildStep": "exit 0"}'
+```
+**Warning:** Any push during the brief window triggers a build. Restore `exit 0` within seconds. Checkpoint commits will get auto-canceled by Vercel in favor of the latest.
+
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
 
