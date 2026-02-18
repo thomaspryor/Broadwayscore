@@ -1,0 +1,69 @@
+name: Deploy to Vercel (gitSource)
+
+# Fallback deploy method when CLI uploads are rate-limited.
+# Uses Vercel REST API with gitSource — Vercel clones from GitHub directly,
+# no file uploads needed.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Get latest commit SHA
+        id: sha
+        run: |
+          SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/commits/main" \
+            | jq -r '.sha')
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Deploying commit: $SHA"
+
+      - name: Get repo ID
+        id: repo
+        run: |
+          REPO_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}" \
+            | jq -r '.id')
+          echo "repo_id=$REPO_ID" >> "$GITHUB_OUTPUT"
+          echo "Repo ID: $REPO_ID"
+
+      - name: Deploy via Vercel gitSource API
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          RESPONSE=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "broadwayscore",
+              "gitSource": {
+                "type": "github",
+                "repoId": ${{ steps.repo.outputs.repo_id }},
+                "ref": "main",
+                "sha": "${{ steps.sha.outputs.sha }}"
+              },
+              "target": "production"
+            }')
+
+          URL=$(echo "$RESPONSE" | jq -r '.url // empty')
+          ERROR=$(echo "$RESPONSE" | jq -r '.error.message // empty')
+
+          if [ -n "$ERROR" ]; then
+            echo "::error::Vercel API error: $ERROR"
+            echo "$RESPONSE" | jq .
+            exit 1
+          fi
+
+          if [ -z "$URL" ]; then
+            echo "::error::No URL in response"
+            echo "$RESPONSE" | jq .
+            exit 1
+          fi
+
+          echo "Deployment created: https://$URL"
+          echo "Vercel will build from Git — check Vercel dashboard for progress"
