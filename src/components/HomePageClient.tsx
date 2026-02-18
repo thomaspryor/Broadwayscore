@@ -43,7 +43,7 @@ interface HomePageClientProps {
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
-type ScoreModeParam = 'critics' | 'audience';
+type ScoreModeParam = 'critics' | 'audience' | 'both_a' | 'both_b' | 'both_c';
 
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
@@ -52,7 +52,7 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
-const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
+const DEFAULT_SCORE_MODE: ScoreModeParam = 'both_a';
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -87,6 +87,63 @@ function ChevronRightIcon() {
   );
 }
 
+// Small critic score badge for dual-score variants
+function CriticBadgeSmall({ show }: { show: HomepageShow }) {
+  const score = show.criticScore?.score;
+  const reviewCount = show.criticScore?.reviewCount;
+
+  if (show.status === 'previews' || (reviewCount !== undefined && reviewCount < 5)) {
+    return (
+      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl font-bold score-none text-gray-400">
+        TBD
+      </div>
+    );
+  }
+
+  if (score === undefined || score === null) {
+    return (
+      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold score-none">—</div>
+    );
+  }
+
+  const rounded = Math.round(score);
+  const colorClass = rounded >= 85 ? 'score-must-see' : rounded >= 75 ? 'score-great' : rounded >= 65 ? 'score-good' : rounded >= 55 ? 'score-tepid' : 'score-skip';
+
+  return (
+    <div className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold ${colorClass}`}>
+      {rounded}
+    </div>
+  );
+}
+
+// Small audience grade badge for dual-score variants
+function AudienceBadgeSmall({ show }: { show: HomepageShow }) {
+  const grade = show.audienceGrade;
+
+  if (show.status === 'previews') {
+    return (
+      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl font-bold score-none text-gray-400">
+        TBD
+      </div>
+    );
+  }
+
+  if (!grade) {
+    return (
+      <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold score-none text-gray-400">—</div>
+    );
+  }
+
+  return (
+    <div
+      className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+      style={grade.grade === 'A+' ? {} : { backgroundColor: grade.color, color: grade.textColor }}
+    >
+      {grade.grade}
+    </div>
+  );
+}
+
 const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: HomepageShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   const isRevival = show.isRevival === true;
 
@@ -108,6 +165,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   } else {
     score = show.criticScore?.score;
     tier = getScoreTier(score);
+    // Also get audience grade for "both" modes
+    if (scoreMode.startsWith('both')) {
+      audienceGrade = show.audienceGrade;
+    }
   }
 
   return (
@@ -116,7 +177,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       prefetch={false}
       role="listitem"
       data-testid="show-card"
-      className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      className="group card-interactive flex items-center gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
@@ -170,9 +231,97 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       </div>
 
       {/* Score Badge */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
-        {scoreMode === 'audience' ? (
-          // Audience mode: Show letter grade badge (matches critic score badge layout)
+      <div className={`flex-shrink-0 flex flex-col items-center justify-center gap-1.5 ${scoreMode.startsWith('both') ? 'w-36 sm:w-44' : 'w-20 sm:w-24'}`}>
+        {scoreMode === 'both_a' ? (
+          // Variant A: Twin equal badges side by side
+          <div className="flex items-start gap-2">
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Critics</span>
+              <CriticBadgeSmall show={show} />
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Audience</span>
+              <AudienceBadgeSmall show={show} />
+            </div>
+          </div>
+        ) : scoreMode === 'both_b' ? (
+          // Variant B: Connected split badge
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center w-full justify-center gap-0">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500 w-16 sm:w-20 text-center">Critics</span>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-500 w-16 sm:w-20 text-center">Audience</span>
+            </div>
+            <div className="flex items-stretch rounded-xl overflow-hidden shadow-lg h-16 sm:h-20">
+              {(() => {
+                const cs = show.criticScore?.score;
+                const rc = show.criticScore?.reviewCount;
+                const isTBD = show.status === 'previews' || (rc !== undefined && rc < 5);
+                const criticRounded = cs != null ? Math.round(cs) : null;
+                const criticClass = isTBD ? 'score-none text-gray-400 text-sm' :
+                  criticRounded === null ? 'score-none' :
+                  criticRounded >= 85 ? 'score-must-see' :
+                  criticRounded >= 75 ? 'score-great' :
+                  criticRounded >= 65 ? 'score-good' :
+                  criticRounded >= 55 ? 'score-tepid' : 'score-skip';
+                const criticDisplay = isTBD ? 'TBD' : criticRounded !== null ? criticRounded : '—';
+
+                const ag = show.audienceGrade;
+                const audTBD = show.status === 'previews';
+                const audClass = audTBD ? 'score-none text-gray-400 text-sm' :
+                  !ag ? 'score-none text-gray-400' :
+                  ag.grade === 'A+' ? 'audience-top-grade' : '';
+                const audStyle = (!audTBD && ag && ag.grade !== 'A+') ? { backgroundColor: ag.color, color: ag.textColor } : {};
+                const audDisplay = audTBD ? 'TBD' : ag ? ag.grade : '—';
+
+                return (
+                  <>
+                    <div className={`w-16 sm:w-20 flex items-center justify-center text-2xl sm:text-3xl font-bold ${criticClass}`}>
+                      {criticDisplay}
+                    </div>
+                    <div className="w-px bg-black/30" />
+                    <div className={`w-16 sm:w-20 flex items-center justify-center text-2xl sm:text-3xl font-bold ${audClass}`} style={audStyle}>
+                      {audDisplay}
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </div>
+        ) : scoreMode === 'both_c' ? (
+          // Variant C: Big critic badge + small audience chip
+          <>
+            {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
+              <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
+                Not Yet Rated
+              </span>
+            ) : tier ? (
+              <span
+                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                style={{ color: tier.color }}
+                title={tier.tooltip}
+              >
+                {tier.label}
+              </span>
+            ) : null}
+            <ScoreBadge
+              score={score}
+              size="lg"
+              reviewCount={show.criticScore?.reviewCount}
+              status={show.status}
+            />
+            {audienceGrade && (
+              <div
+                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
+                title={audienceGrade.tooltip}
+              >
+                <span className="opacity-60">Audience:</span>
+                <span>{audienceGrade.grade}</span>
+              </div>
+            )}
+          </>
+        ) : scoreMode === 'audience' ? (
+          // Audience mode: Show letter grade badge
           audienceGrade ? (
             <>
               <span
@@ -221,7 +370,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
             />
-            {show.reviewYearNote && show.status !== 'closed' && (
+            {show.reviewYearNote && (
               <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight mt-1">
                 {show.reviewYearNote}
               </span>
@@ -336,7 +485,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
-    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
+    scoreMode: (['critics', 'audience', 'both_a', 'both_b', 'both_c'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
   }));
@@ -653,15 +802,15 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Type Pills & Score Mode Toggle Row */}
-      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4">
+      <div className="flex items-center justify-between gap-4 mb-4">
         {/* Type Filter Pills (Left) */}
-        <div className="flex items-center gap-1.5 sm:gap-2" role="group" aria-label="Filter by type">
+        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
           {(['all', 'musical', 'play'] as const).map((t) => (
             <button
               key={t}
               onClick={() => updateParams({ type: t })}
               aria-pressed={type === t}
-              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
                 type === t
                   ? 'bg-brand text-gray-900 shadow-glow-sm'
                   : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
@@ -672,27 +821,32 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           ))}
         </div>
 
-        {/* Score Mode Toggle (Right) - Segmented Control Style */}
-        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
-          {(['audience', 'critics'] as const).map((mode) => (
+        {/* Score Mode Picker (Right) - Variant comparison for preview */}
+        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
+          {([
+            { key: 'both_a', label: 'Twin' },
+            { key: 'both_b', label: 'Split' },
+            { key: 'both_c', label: 'Chip' },
+            { key: 'critics', label: 'Critics' },
+            { key: 'audience', label: 'Audience' },
+          ] as const).map(({ key, label }) => (
             <button
-              key={mode}
+              key={key}
               onClick={() => {
-                // When switching to audience mode, auto-set sort to highest
-                if (mode === 'audience') {
-                  updateParams({ scoreMode: mode, sort: 'score_desc' });
+                if (key === 'audience') {
+                  updateParams({ scoreMode: key, sort: 'score_desc' });
                 } else {
-                  updateParams({ scoreMode: mode });
+                  updateParams({ scoreMode: key });
                 }
               }}
-              aria-pressed={scoreMode === mode}
-              className={`px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
-                scoreMode === mode
+              aria-pressed={scoreMode === key}
+              className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
+                scoreMode === key
                   ? 'bg-brand text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
-              {mode === 'critics' ? 'Critics' : 'Audience'}
+              {label}
             </button>
           ))}
         </div>
@@ -770,7 +924,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Score Legend */}
-      {scoreMode === 'audience' ? (
+      {scoreMode === 'audience' && !scoreMode.startsWith('both') ? (
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
           <div className="flex items-center gap-1.5 cursor-help" title="Audiences love it">
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
