@@ -54,21 +54,27 @@ curl -sI "https://broadwayscorecard.com" | grep -i 'age:'
 
 **CRITICAL: Both build AND deploy steps MUST use `--prod` flag.** A past bug where `--prod` was missing from the deploy step caused all deploys to fail with "prebuilt environment mismatch" error. The workflow on remote main is now correct — do not remove `--prod` from either step.
 
-**Emergency deploy (if CLI workflow is broken):**
-Temporarily toggle the Vercel dashboard Ignored Build Step via API to allow one git-triggered build:
+**Emergency deploy (if CLI workflow is broken or queued):**
+Use the Vercel API to allow a selective git-triggered build. This bypasses the CLI upload path entirely (no rate limit risk). Steps:
 ```bash
 VERCEL_TOKEN=$(grep '^VERCEL_TOKEN=' .env | cut -d= -f2)
-# Allow builds (change exit 0 → exit 1)
-curl -s -X PATCH "https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo" \
+VERCEL_API="https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo"
+
+# Step 1: Set selective filter (only builds commits with "DEPLOY" in the message)
+curl -s -X PATCH "$VERCEL_API" \
   -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
-  -d '{"commandForIgnoringBuildStep": "exit 1"}'
-# Push any commit to main → triggers Vercel build (~5 min)
-# IMMEDIATELY restore exit 0:
-curl -s -X PATCH "https://api.vercel.com/v9/projects/broadwayscore?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo" \
+  -d '{"commandForIgnoringBuildStep": "[[ \"$VERCEL_GIT_COMMIT_MESSAGE\" == *DEPLOY* ]] && exit 1 || exit 0"}'
+
+# Step 2: Push a commit with DEPLOY in the message
+git commit --allow-empty -m "chore: DEPLOY to production" && git push origin main
+
+# Step 3: Restore exit 0 (safe to do immediately — build already accepted)
+curl -s -X PATCH "$VERCEL_API" \
   -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
   -d '{"commandForIgnoringBuildStep": "exit 0"}'
 ```
-**Warning:** Any push during the brief window triggers a build. Restore `exit 0` within seconds. Checkpoint commits will get auto-canceled by Vercel in favor of the latest.
+Build takes ~9-10 min on Vercel. Monitor at: `curl -s "https://api.vercel.com/v6/deployments?projectId=prj_wmBnDUrCQCwabIAYPbnMiIP3wg15&teamId=team_zvgatcxkXdPbfhtHQMOnjpXo&limit=3" -H "Authorization: Bearer $VERCEL_TOKEN" | jq '.deployments[] | {state, msg: .meta.githubCommitMessage}'`
+**Safe for repeated use.** The selective filter means checkpoint commits are ignored — only your DEPLOY commit triggers a build.
 
 **Vercel API — Environment Variables & Feature Flags:**
 Manage env vars via API — never ask the user to go to the Vercel dashboard.
