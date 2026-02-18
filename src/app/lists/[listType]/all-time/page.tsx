@@ -20,6 +20,7 @@ import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards
 import { generateBreadcrumbSchema, generateItemListSchema, generateGoldListFAQSchema } from '@/lib/seo';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@/components/gold-list/GoldListCards';
+import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -119,8 +120,9 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
 
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            {config.icon} {config.title}
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 inline-flex items-center gap-2">
+            <GoldListBadge type={listType as any} size="md" />
+            <span>{config.title}</span>
           </h1>
           <p className="text-gray-300 leading-relaxed">
             {config.description}
@@ -142,7 +144,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
                   : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
               }`}
             >
-              {c.icon} {c.shortTitle}
+              <GoldListBadge type={c.type} size="sm" /> {c.shortTitle}
             </Link>
           ))}
         </div>
