@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T01:37:14.024Z",
-  "processed": 19,
-  "failed": 11,
-  "successRate": "63.3%",
+  "updatedAt": "2026-02-18T01:52:08.569Z",
+  "processed": 21,
+  "failed": 39,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 7
+    "archiveToday": 27,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 39,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T01:38:39.382Z",
+      "event": "bb-session",
+      "session": "55fa7c1d",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-18T01:38:41.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:40:12.940Z",
+      "event": "bb-session",
+      "session": "054240ab",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T01:40:14.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:41:38.759Z",
+      "event": "bb-session",
+      "session": "e1bc24f2",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T01:41:40.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:42:54.788Z",
+      "event": "bb-session",
+      "session": "ec4b5def",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T01:42:56.992Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:44:11.524Z",
+      "event": "bb-session",
+      "session": "bdae0dbb",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T01:44:13.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:45:42.911Z",
+      "event": "bb-session",
+      "session": "91c8ccfd",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T01:45:48.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:47:09.961Z",
+      "event": "bb-session",
+      "session": "82fe5d47",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T01:47:11.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:48:38.191Z",
+      "event": "bb-session",
+      "session": "1cd3dd9a",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T01:48:40.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:49:52.641Z",
+      "event": "bb-session",
+      "session": "490a884f",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T01:49:54.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:51:14.097Z",
+      "event": "bb-session",
+      "session": "afa08929",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-18T01:51:16.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
