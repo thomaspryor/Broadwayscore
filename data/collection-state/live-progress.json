@@ -1,40 +1,53 @@
 {
-  "updatedAt": "2026-02-18T09:57:49.022Z",
-  "processed": 0,
-  "failed": 60,
-  "successRate": "0%",
+  "updatedAt": "2026-02-18T10:08:43.126Z",
+  "processed": 244,
+  "failed": 326,
+  "successRate": "42.8%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
-    "scrapingbee": 5,
+    "playwright": 147,
+    "amp": 1,
+    "browserbase": 1,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 79,
-    "archive": 11
+    "archiveToday": 116,
+    "archive": 97
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-18T08:00:00.158Z",
+      "t": "2026-02-18T04:54:55.675Z",
       "event": "bb-session",
-      "session": "7961a28e",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "session": "70fbb015",
+      "url": "https://www.thewrap.com/christmas-carol-broadway-review-jefferson-mays/"
     },
     {
-      "t": "2026-02-18T08:00:03.135Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-18T08:01:32.341Z",
+      "t": "2026-02-18T05:01:16.196Z",
       "event": "bb-session",
-      "session": "6ee5c7cf",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+      "session": "25ebc63a",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
     },
     {
-      "t": "2026-02-18T08:01:35.688Z",
+      "t": "2026-02-18T05:01:18.421Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-18T05:05:05.584Z",
+      "event": "bb-session",
+      "session": "5353716f",
+      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+    },
+    {
+      "t": "2026-02-18T05:06:25.407Z",
+      "event": "bb-session",
+      "session": "a143990e",
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+    },
+    {
+      "t": "2026-02-18T05:21:21.431Z",
+      "event": "bb-session",
+      "session": "7ff37fa3",
+      "url": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-conno"
     }
   ]
 }
