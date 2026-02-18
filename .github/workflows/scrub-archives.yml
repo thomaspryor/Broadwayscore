@@ -6,6 +6,8 @@ jobs:
   scrub:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: write
     steps:
       - name: Full clone
         run: |
@@ -21,17 +23,16 @@ jobs:
         working-directory: repo
         run: |
           echo "=== Before ==="
-          git rev-list --all --objects -- data/archives/ | head -20
+          git rev-list --all --objects -- data/archives/ | wc -l
           echo "Running filter-repo..."
           git filter-repo --path data/archives/ --invert-paths --force
           echo "=== After ==="
-          git rev-list --all --objects -- data/archives/ | head -5 || echo "No archives found (good!)"
+          git rev-list --all --objects -- data/archives/ | wc -l
           echo "New commit count: $(git rev-list --count HEAD)"
 
       - name: Add data/archives/ to .gitignore
         working-directory: repo
         run: |
-          # Add data/archives/ to .gitignore if not already there
           if ! grep -q '^data/archives/' .gitignore; then
             echo "" >> .gitignore
             echo "# Raw scraped HTML archives (contain embedded API keys, tracking pixels)" >> .gitignore
@@ -49,13 +50,18 @@ jobs:
       - name: Force push rewritten history
         working-directory: repo
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push --force origin main
           echo "Force push complete!"
 
-      - name: Run git gc
-        working-directory: repo
+      - name: Verify
         run: |
-          git reflog expire --expire=now --all
-          git gc --prune=now --aggressive
-          echo "Cleanup complete. Archives removed from history."
+          git clone --depth 1 --branch main https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git verify
+          cd verify
+          if [ -d "data/archives" ]; then
+            echo "ERROR: data/archives still exists in latest commit!"
+            exit 1
+          else
+            echo "SUCCESS: data/archives/ removed from repo"
+          fi
+          grep -q "data/archives/" .gitignore && echo "SUCCESS: .gitignore updated" || echo "WARNING: .gitignore not updated"
