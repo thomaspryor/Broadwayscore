@@ -13,9 +13,9 @@
  *      - Parsed before LLM to prevent paywall/garbage text from overriding
  * P1.  llmScore.score (HIGH/MEDIUM confidence, with original fullText only)
  *      - Excerpt-only and garbage-recovered reviews are downgraded to low confidence
- * P2.  THUMB override (when LLM is low-conf/excerpt-only AND thumb exists)
- *      - Aggregator editors saw full review, more reliable than incomplete text
- * P3.  llmScore.score (low confidence, needs review, or excerpt-only - fallback when no thumb)
+ * P2.  Thumb-validated LLM (when low-conf LLM AND thumb agrees with direction)
+ *      - LLM already sees thumb data in prompt; thumbs boost confidence, not replace score
+ * P3.  llmScore.score (low confidence, needs review, or excerpt-only - when no thumb or mixed signals)
  * P4.  assignedScore (if already set and valid, with known source)
  * P5.  bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
  * P6.  dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
@@ -940,7 +940,8 @@ const stats = {
     'human-review': 0,
     'originalScore-priority0': 0,
     llmScore: 0,
-    'thumb-override-llm': 0,  // Thumb used instead of low-conf/needs-review LLM
+    'llmScore-thumb-validated': 0,  // Both thumbs agree with LLM direction
+    'llmScore-thumb-boosted': 0,   // Single thumb agrees with LLM direction
     'llmScore-lowconf': 0,
     'llmScore-review': 0,
     assignedScore: 0,
@@ -949,7 +950,7 @@ const stats = {
     thumb: 0
   },
   explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
-  thumbOverrideLlm: 0,     // Count how many times thumb overrode low-conf LLM
+  thumbValidatedLlm: 0,    // Count how many times thumb validated low-conf LLM direction
   unscoredWithText: [],     // Reviews with text but no LLM score (should be scored!)
   byShow: {}
 };
@@ -1112,7 +1113,11 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 3: Thumb override of low-confidence/needs-review/excerpt-only LLM scores
+  // Priority 3: Thumb-validated confidence upgrade for low-confidence LLM scores
+  // Instead of overriding the LLM's nuanced score with a blunt thumb value (Up=80, Down=35),
+  // use thumbs to VALIDATE the LLM score. The LLM already sees thumb data in its prompt
+  // (input-builder.ts passes "Aggregator verdicts: DTLI: Up, BWW: Up"), so its score already
+  // incorporates that signal. Thumbs boost confidence; they don't replace the score.
   const hasLowConfLlm = data.llmScore?.score &&
     (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
      !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom));
@@ -1120,15 +1125,9 @@ function getBestScore(data) {
   if (hasLowConfLlm) {
     const dtliThumbNorm = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
     const bwwThumbNorm = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
-    const dtliScore = data.dtliThumb ? THUMB_TO_SCORE[data.dtliThumb] : null;
-    const bwwScore = data.bwwThumb ? THUMB_TO_SCORE[data.bwwThumb] : null;
     const llmScore = data.llmScore.score;
     const llmBucket = scoreToBucket(llmScore);
 
-    // Helper: map thumb/bucket to broad direction for comparison
-    // Thumbs only have 3 levels (Up/Flat/Down) but scores have 5 buckets (Rave/Positive/Mixed/Negative/Pan).
-    // Up covers both Positive AND Rave; Down covers both Negative AND Pan.
-    // Comparing directions prevents false overrides (e.g., Up vs Rave = same direction, not a disagreement).
     const thumbDirection = (thumb) => {
       if (thumb === 'Up') return 'positive';
       if (thumb === 'Down') return 'negative';
@@ -1140,41 +1139,34 @@ function getBestScore(data) {
       return 'neutral'; // Mixed
     };
 
-    // Rule 3: Meh/Flat thumbs (value=60) → DO NOT override, they were wrong 83% of the time
     const dtliIsMeh = dtliThumbNorm === 'Flat';
     const bwwIsMeh = bwwThumbNorm === 'Flat';
+    const llmDir = bucketDirection(llmBucket);
 
-    if ((dtliIsMeh && !bwwScore) || (bwwIsMeh && !dtliScore) || (dtliIsMeh && bwwIsMeh)) {
-      // Both are Meh or only Meh available — don't override
-      data.mehThumbIgnored = true;
-      // Fall through to LLM fallback (Priority 4)
-    } else {
-      // Rule 1: Both thumbs agree AND disagree with LLM direction → override (high signal)
-      // Uses direction comparison (positive/negative/neutral) not exact bucket,
-      // because thumbs can't distinguish Rave from Positive (both map to Up)
-      // or Pan from Negative (both map to Down).
-      if (dtliThumbNorm && bwwThumbNorm && dtliThumbNorm === bwwThumbNorm && !dtliIsMeh) {
-        if (thumbDirection(dtliThumbNorm) !== bucketDirection(llmBucket)) {
-          const thumbScore = dtliScore; // Both agree, use dtli
-          // Auto-resolved: thumb score wins. No human review needed.
-          stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
-          return { score: thumbScore, source: 'thumb-override-llm' };
-        }
-      }
+    // Check how many non-Meh thumbs agree with LLM direction
+    const thumbDirs = [];
+    if (dtliThumbNorm && !dtliIsMeh) thumbDirs.push(thumbDirection(dtliThumbNorm));
+    if (bwwThumbNorm && !bwwIsMeh) thumbDirs.push(thumbDirection(bwwThumbNorm));
+    const agreeing = thumbDirs.filter(d => d === llmDir).length;
+    const disagreeing = thumbDirs.filter(d => d !== llmDir && d !== 'neutral').length;
 
-      // Rule 2: Single thumb, delta >25, AND LLM confidence is low/excerpt-only → override
-      const singleThumb = dtliScore && !dtliIsMeh ? dtliScore : (bwwScore && !bwwIsMeh ? bwwScore : null);
-      if (singleThumb) {
-        const delta = Math.abs(singleThumb - llmScore);
-        const isExcerptBased = data.llmMetadata?.textSource?.type === 'excerpt' ||
-          data.llmMetadata?.textSource?.status === 'excerpt-only';
-        if (delta > 25 && (data.llmScore.confidence === 'low' || isExcerptBased)) {
-          // Auto-resolved: single thumb wins. No human review needed.
-          stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
-          return { score: singleThumb, source: 'thumb-override-llm' };
-        }
-      }
+    if (agreeing > 0 && disagreeing === 0) {
+      // Thumbs validate LLM direction → upgrade to medium confidence, keep LLM's nuanced score
+      stats.thumbValidatedLlm = (stats.thumbValidatedLlm || 0) + 1;
+      return { score: llmScore, source: agreeing >= 2 ? 'llmScore-thumb-validated' : 'llmScore-thumb-boosted' };
     }
+
+    if (disagreeing > 0 && agreeing === 0) {
+      // Thumbs disagree with LLM direction → flag for review but still use LLM score
+      // Both thumbs disagreeing is stronger signal
+      if (disagreeing >= 2) {
+        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+          `LLM=${llmScore} (${llmBucket}), thumbs=${dtliThumbNorm || '-'}/${bwwThumbNorm || '-'}`);
+      }
+      // Use LLM score but keep as low confidence (thumbs couldn't validate it)
+    }
+
+    // Meh thumbs or mixed signals: don't change confidence, fall through to P4
   }
 
   // Priority 4: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
@@ -1195,6 +1187,7 @@ function getBestScore(data) {
   if (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
     // Check if this has a legitimate source
     const validSources = ['llmScore', 'originalScore', 'bucket', 'thumb',
+                          'llmScore-thumb-validated', 'llmScore-thumb-boosted',
                           'extracted-grade', 'extracted-rating', 'extracted-unicode-stars',
                           'extracted-thumbs', 'extracted-strong-positive', 'extracted-strong-negative',
                           'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
@@ -2339,10 +2332,10 @@ if (explicitCount > 0) {
   console.log(`  Overrode conflicting LLM scores: ${stats.explicitOverrideLlm}`);
 }
 
-// Thumb override summary
-if (stats.thumbOverrideLlm > 0) {
-  console.log(`\nThumb overrides of low-conf/needs-review LLM: ${stats.thumbOverrideLlm}`);
-  console.log(`  (Aggregator editors saw full review, more reliable than incomplete text)`);
+// Thumb validation summary
+if (stats.thumbValidatedLlm > 0) {
+  console.log(`\nThumb-validated LLM scores (confidence upgraded): ${stats.thumbValidatedLlm}`);
+  console.log(`  (Aggregator thumbs agreed with LLM direction, boosting confidence)`);
 }
 
 console.log('\nScore sources:');
