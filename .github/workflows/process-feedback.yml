@@ -138,4 +138,21 @@ jobs:
               });
 
               console.log(`Created issue #${issue.data.number}: ${title}`);
+
+              // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'auto-fix-feedback-bug.yml',
+                  ref: 'main',
+                  inputs: { issue_number: String(issue.data.number) }
+                });
+                console.log(`  Dispatched auto-fix for #${issue.data.number}`);
+              } catch (err) {
+                console.log(`  Failed to dispatch auto-fix: ${err.message}`);
+              }
+
+              // 10s spacing between dispatches
+              await new Promise(r => setTimeout(r, 10000));
             }
