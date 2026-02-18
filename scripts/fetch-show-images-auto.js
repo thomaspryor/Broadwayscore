@@ -651,8 +651,18 @@ async function discoverTodayTixId(showTitle) {
     if (showLinkMatch) {
       const id = parseInt(showLinkMatch[1]);
       const slug = showLinkMatch[2];
-      console.log(`   ✓ Found TodayTix ID: ${id} (${slug})`);
-      return { id, slug };
+
+      // Verify slug matches show title (prevent false positives like "fun-home" → "fun-homes-oscar-williams")
+      const slugWords1 = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
+      const titleWords1 = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
+      const overlap1 = titleWords1.length > 0 ? titleWords1.filter(w => slugWords1.includes(w)).length / titleWords1.length : 0;
+
+      if (overlap1 >= 0.5) {
+        console.log(`   ✓ Found TodayTix ID: ${id} (${slug})`);
+        return { id, slug };
+      } else {
+        console.log(`   ✗ Skipping TodayTix result: slug "${slug}" doesn't match "${showTitle}" (${Math.round(overlap1 * 100)}% overlap)`);
+      }
     }
 
     // Try alternative pattern - JSON in page
@@ -679,8 +689,18 @@ async function discoverTodayTixId(showTitle) {
       if (match) {
         const id = parseInt(match[1]);
         const slug = match[2];
-        console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
-        return { id, slug };
+
+        // Verify slug matches show title (prevent SERP false positives)
+        const slugWords2 = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
+        const titleWords2 = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
+        const overlap2 = titleWords2.length > 0 ? titleWords2.filter(w => slugWords2.includes(w)).length / titleWords2.length : 0;
+
+        if (overlap2 >= 0.5) {
+          console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
+          return { id, slug };
+        } else {
+          console.log(`   ✗ Skipping SERP result: slug "${slug}" doesn't match "${showTitle}" (${Math.round(overlap2 * 100)}% overlap)`);
+        }
       }
     }
 
