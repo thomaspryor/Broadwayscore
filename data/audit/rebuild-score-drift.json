@@ -1,31 +1,23 @@
 {
-  "timestamp": "2026-02-18T13:44:49.013Z",
-  "totalDrifted": 3,
+  "timestamp": "2026-02-18T18:14:00.547Z",
+  "totalDrifted": 2,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "collected-stories-2010",
-      "outlet": "Variety",
-      "critic": null,
+      "showId": "side-show-2014",
+      "outlet": "Time Out New York",
+      "critic": "David Cote",
+      "oldScore": 60,
+      "newScore": 80,
+      "delta": 20
+    },
+    {
+      "showId": "the-threepenny-opera-2006",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
       "oldScore": 60,
       "newScore": 43,
       "delta": 17
-    },
-    {
-      "showId": "romeo-juliet",
-      "outlet": "Vulture",
-      "critic": "Sara Holdren",
-      "oldScore": 35,
-      "newScore": 20,
-      "delta": 15
-    },
-    {
-      "showId": "dana-h-2021",
-      "outlet": "Did They Like It",
-      "critic": "Ran Xia",
-      "oldScore": 80,
-      "newScore": 94,
-      "delta": 14
     }
   ]
 }
