@@ -28,6 +28,7 @@ const {
   getOutletFromRegistry,
   getOutletTier,
   loadOutletRegistry,
+  normalizeUrl,
   OUTLET_ALIASES,
   CRITIC_ALIASES,
 } = require('../../scripts/lib/review-normalization.js');
@@ -816,5 +817,198 @@ describe('getOutletTier', () => {
     // Tier 2
     assert.strictEqual(getOutletTier('Broadway World'), 2);
     assert.strictEqual(getOutletTier('bww'), 2);
+  });
+});
+
+// ============================================================================
+// normalizeUrl tests
+// ============================================================================
+
+describe('normalizeUrl', () => {
+  test('strips http and https protocols', () => {
+    assert.strictEqual(normalizeUrl('http://example.com/page'), 'example.com/page');
+    assert.strictEqual(normalizeUrl('https://example.com/page'), 'example.com/page');
+  });
+
+  test('strips www prefix', () => {
+    assert.strictEqual(normalizeUrl('https://www.example.com/page'), 'example.com/page');
+    assert.strictEqual(normalizeUrl('http://www.nytimes.com/review'), 'nytimes.com/review');
+  });
+
+  test('strips trailing slashes', () => {
+    assert.strictEqual(normalizeUrl('https://example.com/page/'), 'example.com/page');
+    assert.strictEqual(normalizeUrl('https://example.com/page///'), 'example.com/page');
+  });
+
+  test('strips fragment identifiers', () => {
+    assert.strictEqual(normalizeUrl('https://example.com/page#section'), 'example.com/page');
+    assert.strictEqual(normalizeUrl('https://example.com/page#top'), 'example.com/page');
+  });
+
+  test('strips UTM parameters', () => {
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?utm_source=twitter&utm_medium=social'),
+      'example.com/page'
+    );
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?id=123&utm_campaign=spring'),
+      'example.com/page?id=123'
+    );
+  });
+
+  test('strips tracking parameters (fbclid, gclid, ref, source, etc.)', () => {
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?fbclid=abc123'),
+      'example.com/page'
+    );
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?ref=homepage&gclid=xyz'),
+      'example.com/page'
+    );
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?partner=rss&emc=rss'),
+      'example.com/page'
+    );
+  });
+
+  test('strips NYT-specific params (smid, _r)', () => {
+    assert.strictEqual(
+      normalizeUrl('https://nytimes.com/review?smid=tw-share'),
+      'nytimes.com/review'
+    );
+    assert.strictEqual(
+      normalizeUrl('https://nytimes.com/review?_r=0'),
+      'nytimes.com/review'
+    );
+  });
+
+  test('strips campaign, algo, nc params', () => {
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?campaign=email&algo=top'),
+      'example.com/page'
+    );
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?nc=1'),
+      'example.com/page'
+    );
+  });
+
+  test('preserves meaningful query params', () => {
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?id=123&type=review'),
+      'example.com/page?id=123&type=review'
+    );
+  });
+
+  test('lowercases the URL', () => {
+    assert.strictEqual(
+      normalizeUrl('HTTPS://WWW.EXAMPLE.COM/Page'),
+      'example.com/page'
+    );
+  });
+
+  test('keeps archive.org URLs distinct from direct URLs', () => {
+    const direct = normalizeUrl('https://www.nytimes.com/2024/review');
+    const archive = normalizeUrl('https://web.archive.org/web/2024/https://www.nytimes.com/2024/review');
+    assert.notStrictEqual(direct, archive);
+  });
+
+  test('handles empty/null input', () => {
+    assert.strictEqual(normalizeUrl(''), '');
+    assert.strictEqual(normalizeUrl(null), '');
+    assert.strictEqual(normalizeUrl(undefined), '');
+  });
+
+  test('handles malformed URLs gracefully', () => {
+    // Should not throw, just return lowercased/trimmed
+    const result = normalizeUrl('not a url at all');
+    assert.ok(typeof result === 'string');
+    assert.strictEqual(result, 'not a url at all');
+  });
+});
+
+// ============================================================================
+// New outlet alias tests (dedup prevention)
+// ============================================================================
+
+describe('New outlet aliases (dedup prevention)', () => {
+  test('bloomberg aliases normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('bloomberg'), 'bloomberg');
+    assert.strictEqual(normalizeOutlet('bloomberg-news'), 'bloomberg');
+    assert.strictEqual(normalizeOutlet('bloombeg-news'), 'bloomberg');
+    assert.strictEqual(normalizeOutlet('bloomgberg-news'), 'bloomberg');
+  });
+
+  test('variety typo aliases normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('varietycom'), 'variety');
+    assert.strictEqual(normalizeOutlet('vartiey'), 'variety');
+  });
+
+  test('guardian UK alias normalizes correctly', () => {
+    assert.strictEqual(normalizeOutlet('uk-guardian'), 'guardian');
+  });
+
+  test('ny-post alias normalizes correctly', () => {
+    assert.strictEqual(normalizeOutlet('ny-post'), 'nypost');
+  });
+
+  test('entertainment weekly typo normalizes correctly', () => {
+    assert.strictEqual(normalizeOutlet('enertainment-weekly'), 'ew');
+  });
+
+  test('associated-press alias normalizes correctly', () => {
+    assert.strictEqual(normalizeOutlet('associated-press'), 'ap');
+  });
+
+  test('amny aliases normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('amnycom'), 'amny');
+    assert.strictEqual(normalizeOutlet('am-ny-matt-windman'), 'amny');
+  });
+
+  test('village-voice aliases normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('village-voice'), 'village-voice');
+    assert.strictEqual(normalizeOutlet('villiage-voice'), 'village-voice');
+    assert.strictEqual(normalizeOutlet('the village voice'), 'village-voice');
+  });
+
+  test('4columns aliases normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('4columns'), '4columns');
+    assert.strictEqual(normalizeOutlet('4 columns'), '4columns');
+    assert.strictEqual(normalizeOutlet('four columns'), '4columns');
+  });
+
+  test('other new canonical entries normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('philadelpia-inquirer'), 'philadelphia-inquirer');
+    assert.strictEqual(normalizeOutlet('showbiz 411'), 'showbiz411');
+    assert.strictEqual(normalizeOutlet('times square chronicles'), 'times-square-chronicles');
+    assert.strictEqual(normalizeOutlet('towle road'), 'towleroad');
+    assert.strictEqual(normalizeOutlet('broadstreetreviewcom'), 'broadstreetreview');
+    assert.strictEqual(normalizeOutlet('blogcriticsorg'), 'blogcritics');
+  });
+
+  test('existing alias additions normalize correctly', () => {
+    assert.strictEqual(normalizeOutlet('1minutecritic'), 'one-minute-critic');
+    assert.strictEqual(normalizeOutlet('ny-observer'), 'observer');
+    assert.strictEqual(normalizeOutlet('thedaily-beast'), 'dailybeast');
+    assert.strictEqual(normalizeOutlet('ny-newsday'), 'newsday');
+    assert.strictEqual(normalizeOutlet('nytheatrereviewcom'), 'nytheatre');
+  });
+});
+
+// ============================================================================
+// New critic alias tests (dedup prevention)
+// ============================================================================
+
+describe('New critic aliases (dedup prevention)', () => {
+  test('chris jone (missing s) normalizes to chris-jones', () => {
+    assert.strictEqual(normalizeCritic('chris jone'), 'chris-jones');
+  });
+
+  test('jonathan mandel (missing l) normalizes to jonathan-mandell', () => {
+    assert.strictEqual(normalizeCritic('jonathan mandel'), 'jonathan-mandell');
+  });
+
+  test('leah greenblat (missing t) normalizes to leah-greenblatt', () => {
+    assert.strictEqual(normalizeCritic('leah greenblat'), 'leah-greenblatt');
   });
 });
