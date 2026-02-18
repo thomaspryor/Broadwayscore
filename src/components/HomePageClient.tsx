@@ -221,7 +221,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
             />
-            {show.reviewYearNote && (
+            {show.reviewYearNote && show.status !== 'closed' && (
               <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight mt-1">
                 {show.reviewYearNote}
               </span>
