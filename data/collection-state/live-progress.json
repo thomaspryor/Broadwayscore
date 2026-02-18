@@ -1,17 +1,62 @@
 {
-  "updatedAt": "2026-02-18T15:13:20.948Z",
-  "processed": 81,
-  "failed": 32,
-  "successRate": "71.7%",
+  "updatedAt": "2026-02-18T15:15:10.063Z",
+  "processed": 8,
+  "failed": 92,
+  "successRate": "8.0%",
   "tierBreakdown": {
-    "playwright": 61,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 15
+    "archiveToday": 85,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T13:03:26.227Z",
+      "event": "bb-session",
+      "session": "f0b8276b",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-18T13:03:28.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T13:04:59.041Z",
+      "event": "bb-session",
+      "session": "fa07f0ed",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-18T13:05:00.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T13:07:09.523Z",
+      "event": "bb-session",
+      "session": "b15032f4",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-18T13:07:11.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T13:09:08.124Z",
+      "event": "bb-session",
+      "session": "c43ee243",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-18T13:09:10.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
