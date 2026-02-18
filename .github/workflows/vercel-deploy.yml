@@ -32,27 +32,34 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-production-deploy
+      cancel-in-progress: false
     steps:
-      - name: Deploy via Vercel API
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token=$VERCEL_TOKEN
+
+      - name: Deploy Prebuilt
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          echo "Creating Vercel production deployment via API..."
-          RESPONSE=$(curl -s -X POST \
-            -H "Authorization: Bearer $VERCEL_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"name":"broadwayscore","target":"production","gitSource":{"type":"github","ref":"main","org":"thomaspryor","repo":"Broadwayscore"}}' \
-            "https://api.vercel.com/v13/deployments?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo")
-
-          DEP_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','FAILED'))")
-          DEP_URL=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('url','unknown'))")
-
-          if [ "$DEP_ID" = "FAILED" ]; then
-            echo "ERROR: Failed to create deployment"
-            echo "$RESPONSE"
-            exit 1
-          fi
-
-          echo "Deployment created: $DEP_ID"
-          echo "URL: https://$DEP_URL"
-          echo "Deploy will build and promote to production automatically."
+          URL=$(vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN)
+          echo "Deployed to: $URL"
