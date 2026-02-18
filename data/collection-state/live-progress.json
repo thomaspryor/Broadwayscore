@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T02:56:37.012Z",
-  "processed": 83,
-  "failed": 117,
-  "successRate": "41.5%",
+  "updatedAt": "2026-02-18T02:58:10.956Z",
+  "processed": 12,
+  "failed": 88,
+  "successRate": "12.0%",
   "tierBreakdown": {
-    "playwright": 59,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 39,
-    "archive": 23
+    "archiveToday": 82,
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T01:33:14.342Z",
+      "event": "bb-session",
+      "session": "26b8ef17",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-18T01:33:16.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:34:39.678Z",
+      "event": "bb-session",
+      "session": "e47b93c6",
+      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
+    },
+    {
+      "t": "2026-02-18T01:34:41.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:36:05.224Z",
+      "event": "bb-session",
+      "session": "c7541850",
+      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
+    },
+    {
+      "t": "2026-02-18T01:36:06.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:37:42.763Z",
+      "event": "bb-session",
+      "session": "e87cb7a1",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
+    },
+    {
+      "t": "2026-02-18T01:37:44.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:39:06.442Z",
+      "event": "bb-session",
+      "session": "c4450c5f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
+    },
+    {
+      "t": "2026-02-18T01:39:08.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:40:32.266Z",
+      "event": "bb-session",
+      "session": "39e354ad",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
+    },
+    {
+      "t": "2026-02-18T01:40:34.149Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:42:16.262Z",
+      "event": "bb-session",
+      "session": "e2fde65f",
+      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-se"
+    },
+    {
+      "t": "2026-02-18T01:42:18.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:43:59.722Z",
+      "event": "bb-session",
+      "session": "e3d3c01b",
+      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
+    },
+    {
+      "t": "2026-02-18T01:44:01.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:45:23.226Z",
+      "event": "bb-session",
+      "session": "7ac19cb2",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-18T01:45:25.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T01:46:57.418Z",
+      "event": "bb-session",
+      "session": "e0d45f58",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-18T01:46:59.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
