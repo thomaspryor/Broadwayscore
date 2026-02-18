@@ -31,16 +31,24 @@
     "brief-encounter-2010/newyorker--uncredited.json",
     "cabaret-2014/newyorker--hilton-als.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "clybourne-park-2012/newyorker--hilton-als.json"
+    "clybourne-park-2012/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--naomi-fry.json",
+    "come-from-away-2017/newyorker--hilton-als.json",
+    "company-2006/newyorker--john-lahr.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "curtains-2007/newyorker--john-lahr.json",
+    "death-of-a-salesman-2012/newyorker--hilton-als.json",
+    "death-of-a-salesman-2022/newyorker--naomi-fry.json",
+    "disgraced-2014/newyorker--hilton-als.json",
+    "eclipsed-2016/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "punch-2025/thewrap--robert-hofler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
@@ -67,14 +75,24 @@
       "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
       "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
-      "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json"
+      "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json",
+      "data/review-texts/clydes-2021/newyorker--hilton-als.json",
+      "data/review-texts/clydes-2021/newyorker--naomi-fry.json",
+      "data/review-texts/come-from-away-2017/newyorker--hilton-als.json",
+      "data/review-texts/company-2006/newyorker--john-lahr.json",
+      "data/review-texts/cost-of-living-2022/newyorker--vinson-cunningham.json",
+      "data/review-texts/curtains-2007/newyorker--john-lahr.json",
+      "data/review-texts/death-of-a-salesman-2012/newyorker--hilton-als.json",
+      "data/review-texts/death-of-a-salesman-2022/newyorker--naomi-fry.json",
+      "data/review-texts/disgraced-2014/newyorker--hilton-als.json",
+      "data/review-texts/eclipsed-2016/newyorker--hilton-als.json"
     ],
     "archive": [
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ]
   },
   "startTime": "2026-02-18T04:22:23.732Z",
-  "lastProcessed": "clybourne-park-2012/newyorker--hilton-als.json",
+  "lastProcessed": "eclipsed-2016/newyorker--hilton-als.json",
   "log": [
     {
       "t": "2026-02-18T04:23:55.743Z",
@@ -381,6 +399,116 @@
     },
     {
       "t": "2026-02-18T05:20:57.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:23:17.859Z",
+      "event": "bb-session",
+      "session": "95939a38",
+      "url": "https://www.newyorker.com/magazine/2021/12/13/clydes-reviewed-a-kitchen-where-dr"
+    },
+    {
+      "t": "2026-02-18T05:23:19.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:25:31.409Z",
+      "event": "bb-session",
+      "session": "184d92d1",
+      "url": "https://www.newyorker.com/magazine/2021/12/13/a-new-play-finds-hope-in-a-highway"
+    },
+    {
+      "t": "2026-02-18T05:25:33.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:27:33.802Z",
+      "event": "bb-session",
+      "session": "728b5dd6",
+      "url": "https://www.newyorker.com/magazine/2017/04/03/come-from-away-celebrates-kindness"
+    },
+    {
+      "t": "2026-02-18T05:27:36.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:29:35.023Z",
+      "event": "bb-session",
+      "session": "9f39567e",
+      "url": "https://www.newyorker.com/magazine/2006/12/18/company-2"
+    },
+    {
+      "t": "2026-02-18T05:29:37.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:31:40.575Z",
+      "event": "bb-session",
+      "session": "579810ad",
+      "url": "https://www.newyorker.com/magazine/2022/11/07/cost-of-living-review-manhattan-th"
+    },
+    {
+      "t": "2026-02-18T05:31:42.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:33:52.376Z",
+      "event": "bb-session",
+      "session": "1f99815f",
+      "url": "https://www.newyorker.com/magazine/2007/04/02/murder-mystery"
+    },
+    {
+      "t": "2026-02-18T05:33:54.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:35:52.245Z",
+      "event": "bb-session",
+      "session": "136800d6",
+      "url": "https://www.newyorker.com/magazine/2012/05/07/method-and-madness"
+    },
+    {
+      "t": "2026-02-18T05:35:54.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:37:49.992Z",
+      "event": "bb-session",
+      "session": "96392848",
+      "url": "https://www.newyorker.com/magazine/2022/10/31/death-of-a-salesman-review-wendell"
+    },
+    {
+      "t": "2026-02-18T05:37:52.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:40:02.352Z",
+      "event": "bb-session",
+      "session": "9aa7dd3e",
+      "url": "https://www.newyorker.com/magazine/2014/11/03/art-argument"
+    },
+    {
+      "t": "2026-02-18T05:40:04.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:42:21.778Z",
+      "event": "bb-session",
+      "session": "1281749d",
+      "url": "https://www.newyorker.com/magazine/2016/03/21/danai-guriras-eclipsed-reviewed"
+    },
+    {
+      "t": "2026-02-18T05:42:24.119Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
