@@ -1,17 +1,48 @@
 {
-  "updatedAt": "2026-02-18T07:06:56.129Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-02-18T07:17:09.738Z",
+  "processed": 108,
+  "failed": 152,
+  "successRate": "41.5%",
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 0,
+    "playwright": 66,
+    "amp": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 7
+    "archiveToday": 58,
+    "archive": 36
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T04:58:46.181Z",
+      "event": "bb-session",
+      "session": "613cc109",
+      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+    },
+    {
+      "t": "2026-02-18T04:59:57.294Z",
+      "event": "bb-session",
+      "session": "f123779d",
+      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+    },
+    {
+      "t": "2026-02-18T05:03:55.892Z",
+      "event": "bb-session",
+      "session": "a329f246",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-18T05:17:18.466Z",
+      "event": "bb-session",
+      "session": "25b9410d",
+      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+    },
+    {
+      "t": "2026-02-18T05:18:23.577Z",
+      "event": "bb-session",
+      "session": "9c372c3b",
+      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+    }
+  ]
 }
