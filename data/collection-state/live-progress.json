@@ -1,48 +1,128 @@
 {
-  "updatedAt": "2026-02-18T08:30:49.480Z",
-  "processed": 153,
-  "failed": 227,
-  "successRate": "40.3%",
+  "updatedAt": "2026-02-18T08:31:34.882Z",
+  "processed": 52,
+  "failed": 48,
+  "successRate": "52.0%",
   "tierBreakdown": {
-    "playwright": 102,
-    "amp": 3,
+    "playwright": 0,
+    "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 37,
     "brightdata": 0,
-    "archiveToday": 87,
-    "archive": 48
+    "archiveToday": 36,
+    "archive": 15
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 36,
   "recentActivity": [
     {
-      "t": "2026-02-18T04:58:46.181Z",
+      "t": "2026-02-18T07:24:19.675Z",
       "event": "bb-session",
-      "session": "613cc109",
-      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+      "session": "fce17879",
+      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
     },
     {
-      "t": "2026-02-18T04:59:57.294Z",
-      "event": "bb-session",
-      "session": "f123779d",
-      "url": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-"
+      "t": "2026-02-18T07:24:21.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-18T05:03:55.892Z",
+      "t": "2026-02-18T07:25:37.985Z",
       "event": "bb-session",
-      "session": "a329f246",
-      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+      "session": "698f117e",
+      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
     },
     {
-      "t": "2026-02-18T05:17:18.466Z",
-      "event": "bb-session",
-      "session": "25b9410d",
-      "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-expla"
+      "t": "2026-02-18T07:25:40.080Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-18T05:18:23.577Z",
+      "t": "2026-02-18T07:27:07.651Z",
       "event": "bb-session",
-      "session": "9c372c3b",
-      "url": "http://www.thewrap.com/machinal-theater-review-rebecca-hall-broadway-debut"
+      "session": "9b143c80",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-02-18T07:27:09.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:28:47.592Z",
+      "event": "bb-session",
+      "session": "d1fa7adb",
+      "url": "http://www.nytimes.com/2009/10/26/theater/reviews/26brighton.html?_r=1&amp;hp"
+    },
+    {
+      "t": "2026-02-18T07:28:49.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:30:12.083Z",
+      "event": "bb-session",
+      "session": "12fe8340",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-18T07:30:13.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:31:33.733Z",
+      "event": "bb-session",
+      "session": "c4f89698",
+      "url": "http://theater.nytimes.com/2009/08/03/theater/reviews/03burn.html"
+    },
+    {
+      "t": "2026-02-18T07:31:35.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:32:53.461Z",
+      "event": "bb-session",
+      "session": "31c1bc3e",
+      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
+    },
+    {
+      "t": "2026-02-18T07:32:55.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:34:18.960Z",
+      "event": "bb-session",
+      "session": "7355c5f6",
+      "url": "https://www.nytimes.com/2014/04/25/theater/reviews/cabaret-revival-with-alan-cum"
+    },
+    {
+      "t": "2026-02-18T07:34:20.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:35:57.399Z",
+      "event": "bb-session",
+      "session": "d71e1575",
+      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
+    },
+    {
+      "t": "2026-02-18T07:35:59.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T07:37:11.066Z",
+      "event": "bb-session",
+      "session": "9395ca46",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T07:37:12.979Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
