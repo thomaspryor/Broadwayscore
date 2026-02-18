@@ -198,7 +198,7 @@ async function sendThankYouEmail(email, name, category, showName) {
 
   try {
     await postJSON('https://api.resend.com/emails', {
-      from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
+      from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
       to: [email],
       subject,
       html,
