@@ -1712,6 +1712,94 @@ function validateCrossFileKeys(shows) {
   }
 }
 
+// ===========================================
+// CAST DATA VALIDATION
+// ===========================================
+
+function validateCastFiles(shows) {
+  info('Checking cast data files...');
+
+  const castDir = path.join(DATA_DIR, 'cast');
+  if (!fs.existsSync(castDir)) {
+    info('No data/cast/ directory — skipping cast validation');
+    return;
+  }
+
+  const castFiles = fs.readdirSync(castDir).filter(f => f.endsWith('.json'));
+  if (castFiles.length === 0) {
+    info('No cast files found');
+    return;
+  }
+
+  const showIdSet = new Set(shows.map(s => s.id));
+  let issues = 0;
+  let totalMembers = 0;
+  let emptyFiles = 0;
+
+  for (const file of castFiles) {
+    const filePath = path.join(castDir, file);
+    const expectedId = file.replace('.json', '');
+
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // showId must match filename
+      if (data.showId !== expectedId) {
+        warn(`cast/${file}: showId "${data.showId}" doesn't match filename "${expectedId}"`);
+        issues++;
+      }
+
+      // showId must exist in shows.json
+      if (!showIdSet.has(data.showId)) {
+        warn(`cast/${file}: showId "${data.showId}" not found in shows.json (orphan)`);
+        issues++;
+      }
+
+      // openingNightCast must be an array
+      if (!Array.isArray(data.openingNightCast)) {
+        error(`cast/${file}: openingNightCast is not an array`);
+        issues++;
+        continue;
+      }
+
+      if (data.openingNightCast.length === 0) {
+        emptyFiles++;
+      }
+
+      // Validate each cast member
+      for (let i = 0; i < data.openingNightCast.length; i++) {
+        const member = data.openingNightCast[i];
+        if (!member.name || typeof member.name !== 'string' || member.name.trim() === '') {
+          warn(`cast/${file}: OBC member [${i}] has empty/missing name`);
+          issues++;
+        }
+        if (!member.role || typeof member.role !== 'string') {
+          warn(`cast/${file}: OBC member [${i}] (${member.name || 'unnamed'}) has missing role`);
+          issues++;
+        }
+      }
+
+      totalMembers += data.openingNightCast.length;
+
+      // Warn on unusually large casts
+      if (data.openingNightCast.length > 60) {
+        warn(`cast/${file}: ${data.openingNightCast.length} OBC members — unusually large, possible parsing error`);
+      }
+
+    } catch (e) {
+      error(`cast/${file}: invalid JSON — ${e.message}`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok(`Cast data: ${castFiles.length} files, ${totalMembers} total cast members` +
+      (emptyFiles > 0 ? ` (${emptyFiles} empty/tombstone)` : ''));
+  } else {
+    warn(`Cast data: ${issues} issue(s) across ${castFiles.length} files`);
+  }
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -1777,6 +1865,8 @@ function runValidation() {
   validateRuntimeFormats(shows);
   console.log('');
   validateCreativeTeamDuplicateNames(shows);
+  console.log('');
+  validateCastFiles(shows);
 
   // Summary
   console.log('');

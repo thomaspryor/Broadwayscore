@@ -500,3 +500,23 @@ export interface UnifiedCreativeProfile {
   openShowCount: number;
   closedShowCount: number;
 }
+
+// ============================================
+// Cast Types
+// ============================================
+
+export interface CastMemberOBC {
+  name: string;
+  role: string;
+  ibdbPersonId?: string;
+  flags?: string[];  // "Broadway debut", "Alternate", "Standby", etc.
+}
+
+export interface ShowCastFile {
+  showId: string;
+  ibdbUrl?: string;
+  scrapedAt: string;
+  openingNightCast: CastMemberOBC[];
+  currentCast?: CastMemberOBC[] | null;
+  currentCastUpdatedAt?: string;
+}
