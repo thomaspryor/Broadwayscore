@@ -3,6 +3,12 @@ name: Auto-Fix Feedback Bug
 on:
   issues:
     types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
 
 concurrency:
   group: auto-fix-feedback-bug
@@ -10,11 +16,30 @@ concurrency:
 
 jobs:
   auto-fix:
-    if: contains(github.event.issue.labels.*.name, 'bug-diagnosis')
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'bug-diagnosis')
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
+      - name: Resolve issue number and body
+        id: issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            NUM="${{ inputs.issue_number }}"
+          else
+            NUM="${{ github.event.issue.number }}"
+          fi
+          echo "number=$NUM" >> $GITHUB_OUTPUT
+          BODY=$(gh api repos/${{ github.repository }}/issues/$NUM --jq '.body')
+          EOF_MARKER="EOFBODY_$(date +%s)"
+          echo "body<<$EOF_MARKER" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "$EOF_MARKER" >> $GITHUB_OUTPUT
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -37,8 +62,8 @@ jobs:
       - name: Run auto-fix
         id: fix
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           ACTION=$(node scripts/auto-fix-feedback-bug.js)
@@ -47,7 +72,7 @@ jobs:
       - name: Commit and push
         if: always() && steps.fix.outputs.action == 'fixed'
         env:
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           git add data/shows.json data/commercial.json data/audience-buzz.json
           if git diff --staged --quiet; then
@@ -76,7 +101,7 @@ jobs:
           script: |
             const fs = require('fs');
             const action = '${{ steps.fix.outputs.action }}' || 'error';
-            const issueNumber = context.issue.number;
+            const issueNumber = ${{ steps.issue.outputs.number }};
 
             let comment = '';
             try { comment = fs.readFileSync('.github-comment.md', 'utf8'); } catch {}
