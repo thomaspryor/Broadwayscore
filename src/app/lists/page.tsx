@@ -7,6 +7,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getGoldListSeasons } from '@/lib/data-gold-list-badges';
+import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -69,7 +70,7 @@ export default function GoldListsIndex() {
               className={`${config.bgClass} border ${config.borderClass} rounded-xl p-5 sm:p-6`}
             >
               <div className="flex items-start gap-3 mb-3">
-                <span className="text-2xl">{config.icon}</span>
+                <GoldListBadge type={config.type} size="md" />
                 <div>
                   <h2 className={`text-lg font-bold ${config.color}`}>
                     {config.title}
