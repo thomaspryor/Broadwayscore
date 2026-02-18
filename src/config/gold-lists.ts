@@ -14,8 +14,6 @@ export interface GoldListConfig {
   shortTitle: string;
   /** Description for index page and metadata */
   description: string;
-  /** Icon character */
-  icon: string;
   /** Tailwind text color class */
   color: string;
   /** Badge background class */
@@ -42,7 +40,6 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     title: 'Critical Gold List',
     shortTitle: 'Critics',
     description: 'The highest-rated shows by professional critics',
-    icon: '🏆',
     color: 'text-amber-400',
     bgClass: 'bg-amber-500/15',
     borderClass: 'border-amber-500/30',
@@ -58,7 +55,6 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     title: 'Audience Gold List',
     shortTitle: 'Audiences',
     description: 'The shows audiences love most, based on combined audience platform scores',
-    icon: '💛',
     color: 'text-rose-400',
     bgClass: 'bg-rose-500/15',
     borderClass: 'border-rose-500/30',
@@ -74,7 +70,6 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     title: 'Box Office Gold List',
     shortTitle: 'Box Office',
     description: 'The biggest earners on Broadway, ranked by gross per performance',
-    icon: '💰',
     color: 'text-emerald-400',
     bgClass: 'bg-emerald-500/15',
     borderClass: 'border-emerald-500/30',
@@ -90,7 +85,6 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     title: 'Hot Ticket Gold List',
     shortTitle: 'Hot Tickets',
     description: 'The hardest tickets to get on Broadway, ranked by average capacity percentage',
-    icon: '🔥',
     color: 'text-violet-400',
     bgClass: 'bg-violet-500/15',
     borderClass: 'border-violet-500/30',

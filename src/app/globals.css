@@ -107,6 +107,57 @@
     100% { left: 100%; }
   }
 
+  /* Gold List badges — gold metallic with shimmer, square shape */
+  .gold-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%);
+    box-shadow:
+      0 0 10px rgba(218, 165, 32, 0.35),
+      0 1px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid #C8960E;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+  .gold-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  .gold-badge-xs { width: 16px; height: 16px; border-width: 1px; }
+  .gold-badge-sm { width: 20px; height: 20px; border-width: 1px; }
+  .gold-badge-md {
+    width: 36px; height: 36px; border-radius: 2px;
+    box-shadow:
+      0 0 16px rgba(218, 165, 32, 0.45),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  .gold-badge-lg {
+    width: 48px; height: 48px; border-radius: 2px; border-width: 2px;
+    box-shadow:
+      0 0 24px rgba(218, 165, 32, 0.55),
+      0 0 12px rgba(255, 215, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  }
+
   /* Audience A+ - Premium green with gradient, glow, and shimmer */
   .audience-top-grade {
     background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #22c55e 100%);
