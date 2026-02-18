@@ -1,17 +1,62 @@
 {
-  "updatedAt": "2026-02-18T14:43:22.866Z",
-  "processed": 0,
-  "failed": 30,
-  "successRate": "0%",
+  "updatedAt": "2026-02-18T14:43:45.131Z",
+  "processed": 44,
+  "failed": 56,
+  "successRate": "44.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "browserbase": 1,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 0
+    "archiveToday": 41,
+    "archive": 13
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T13:02:03.449Z",
+      "event": "bb-session",
+      "session": "83c791a0",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-"
+    },
+    {
+      "t": "2026-02-18T13:02:05.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T13:03:51.395Z",
+      "event": "bb-session",
+      "session": "6b70d3f2",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
+    },
+    {
+      "t": "2026-02-18T13:03:53.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T13:05:47.038Z",
+      "event": "bb-session",
+      "session": "4f1da312",
+      "url": "https://www.nytimes.com/2008/04/18/theater/reviews/18cate.html"
+    },
+    {
+      "t": "2026-02-18T13:05:48.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T13:07:57.456Z",
+      "event": "bb-session",
+      "session": "a7d505b1",
+      "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html"
+    },
+    {
+      "t": "2026-02-18T13:07:59.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
