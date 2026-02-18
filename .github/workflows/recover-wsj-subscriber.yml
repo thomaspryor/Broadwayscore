@@ -1,60 +1,84 @@
 name: Recover WSJ Reviews (Subscriber Cookies)
 
 on:
+  # Run daily — small batch to stay under DataDome threshold
+  schedule:
+    - cron: '0 7 * * *'  # 7 AM UTC / 2 AM EST daily
   workflow_dispatch:
     inputs:
       max_urls:
         description: 'Max URLs to process (0 = all)'
         required: false
-        default: '50'
+        default: '5'
       dry_run:
         description: 'Dry run (true = no file writes)'
         required: false
         default: 'false'
-      delay_ms:
-        description: 'Delay between requests in ms'
+      delay_min_ms:
+        description: 'Min delay between requests in ms'
         required: false
-        default: '2000'
+        default: '8000'
+      delay_max_ms:
+        description: 'Max delay between requests in ms'
+        required: false
+        default: '15000'
       checkpoint_interval:
         description: 'Checkpoint every N recoveries'
         required: false
-        default: '10'
+        default: '5'
 
 jobs:
   recover:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 30
 
     steps:
+      - name: Check for WSJ cookies
+        env:
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          if [ -z "$WSJ_COOKIES" ]; then
+            echo "::warning::WSJ_COOKIES secret not set — skipping recovery"
+            echo "SKIP=true" >> $GITHUB_ENV
+          else
+            echo "SKIP=false" >> $GITHUB_ENV
+          fi
+
       - name: Checkout repository
+        if: env.SKIP != 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: env.SKIP != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
+        if: env.SKIP != 'true'
         run: npm install
 
       - name: Configure git
+        if: env.SKIP != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run WSJ subscriber recovery
+        if: env.SKIP != 'true'
         env:
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
-          MAX_URLS: ${{ inputs.max_urls }}
-          DRY_RUN: ${{ inputs.dry_run }}
-          DELAY_MS: ${{ inputs.delay_ms }}
-          CHECKPOINT_INTERVAL: ${{ inputs.checkpoint_interval }}
+          MAX_URLS: ${{ inputs.max_urls || '5' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          DELAY_MIN_MS: ${{ inputs.delay_min_ms || '8000' }}
+          DELAY_MAX_MS: ${{ inputs.delay_max_ms || '15000' }}
+          CHECKPOINT_INTERVAL: ${{ inputs.checkpoint_interval || '5' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/recover-wsj-subscriber.js
 
       - name: Final commit and push
-        if: always()
+        if: always() && env.SKIP != 'true'
         run: |
           git add data/review-texts/ data/audit/
           git diff --staged --quiet && echo "No changes to commit" && exit 0
@@ -70,18 +94,20 @@ jobs:
           done
 
       - name: Trigger rebuild
-        if: always()
+        if: always() && env.SKIP != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if [ ! -f data/audit/wsj-subscriber-recovery-report.json ]; then exit 0; fi
           RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
-          if [ "$RECOVERED" -gt "0" ] && [ "${{ inputs.dry_run }}" != "true" ]; then
+          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          if [ "$RECOVERED" -gt "0" ] && [ "$DRY_RUN" != "true" ]; then
             echo "Triggering rebuild for ${RECOVERED} recovered reviews..."
-            gh workflow run "Rebuild Reviews" --repo ${{ github.repository }} || true
+            gh workflow run "Rebuild Reviews Data" --repo ${{ github.repository }} || true
           fi
 
       - name: Upload recovery report
-        if: always()
+        if: always() && env.SKIP != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: wsj-subscriber-recovery-report
@@ -89,7 +115,7 @@ jobs:
           retention-days: 30
 
       - name: Summary
-        if: always()
+        if: always() && env.SKIP != 'true'
         run: |
           echo "## WSJ Subscriber Recovery Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

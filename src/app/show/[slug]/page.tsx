@@ -9,11 +9,13 @@ import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
 import { getCastChanges } from '@/lib/data-cast';
+import { getShowCastFile } from '@/lib/data-cast-obc';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
+import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
@@ -27,6 +29,7 @@ import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
+import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
@@ -193,6 +196,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
   const castChangesData = getCastChanges(show.id);
+  const castFile = getShowCastFile(show.id);
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
@@ -459,7 +463,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   href={`/lists/${m.listType}/${m.season}`}
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
                 >
-                  <span>{listConfig.icon}</span>
+                  <GoldListBadge type={m.listType} size="xs" />
                   <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
                   <span className="text-gray-500">({m.season})</span>
                 </Link>
@@ -659,6 +663,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
           ) : null;
         })()}
+
+        {/* Cast — OBC and current cast from IBDB */}
+        {featureFlags.castPages && castFile && castFile.openingNightCast.length > 0 && (
+          <CastSection
+            openingNightCast={castFile.openingNightCast}
+            currentCast={castFile.currentCast}
+            currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
+            showStatus={show.status}
+          />
+        )}
 
         {/* Quick Facts - Structured data for users and AI systems */}
         <div className="card p-4 sm:p-5 mb-8">

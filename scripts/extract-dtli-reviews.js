@@ -115,16 +115,19 @@ function extractReviewsFromDTLI(content, showId) {
   for (let i = 1; i < parts.length; i++) {
     const part = parts[i];
 
-    // Extract outlet - try aria-label first, then fall back to review_image div
+    // Extract outlet - try review_image div first (most reliable), then aria-label in header
     let outletRaw = null;
-    const ariaLabelMatch = part.match(/aria-label="([^"]+)"/);
-    if (ariaLabelMatch) {
-      outletRaw = ariaLabelMatch[1];
+    const divOutletMatch = part.match(/<div class="review_image"><div>([^<]+)<\/div><\/div>/);
+    if (divOutletMatch) {
+      outletRaw = divOutletMatch[1].trim();
     } else {
-      // Fallback: look for <div class="review_image"><div>Outlet Name</div></div>
-      const divOutletMatch = part.match(/<div class="review_image"><div>([^<]+)<\/div><\/div>/);
-      if (divOutletMatch) {
-        outletRaw = divOutletMatch[1].trim();
+      // Fallback: aria-label within the review header only (not the whole chunk,
+      // which can include footer ads with aria-label="Advertisement")
+      const headerEnd = part.indexOf('review-item-date');
+      const headerChunk = part.substring(0, headerEnd > 0 ? headerEnd : 500);
+      const ariaLabelMatch = headerChunk.match(/aria-label="([^"]+)"/);
+      if (ariaLabelMatch && ariaLabelMatch[1].toLowerCase() !== 'advertisement') {
+        outletRaw = ariaLabelMatch[1];
       }
     }
 
