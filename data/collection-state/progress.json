@@ -54,7 +54,13 @@
     "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
     "maybe-happy-ending-2024/theatermania--jesse-green.json",
     "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json"
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "moulin-rouge-2019/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "700-sundays-2013/nytimes--ben-brantley.json",
@@ -121,7 +127,11 @@
     "maybe-happy-ending-2024/wsj--charles-isherwood.json",
     "mj-2022/ew--joey-nolfi.json",
     "mj-2022/ew--kristen-baldwin.json",
-    "mj-2022/thewrap--steve-pond.json"
+    "mj-2022/thewrap--steve-pond.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -140,7 +150,13 @@
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
       "maybe-happy-ending-2024/theatermania--jesse-green.json",
       "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "maybe-happy-ending-2024/timeout--adam-feldman.json"
+      "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "moulin-rouge-2019/theatermania--zachary-stewart.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "moulin-rouge-2019/timeout--adam-feldman.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/timeout--adam-feldman.json",
+      "operation-mincemeat-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/wicked-2003/variety--peter-debruge.json",
@@ -192,7 +208,9 @@
       "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
       "data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
       "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
-      "data/review-texts/mj-2022/thewrap--steve-pond.json"
+      "data/review-texts/mj-2022/thewrap--steve-pond.json",
+      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
+      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -232,7 +250,7 @@
     ]
   },
   "startTime": "2026-02-18T01:56:42.684Z",
-  "lastProcessed": "mj-2022/thewrap--steve-pond.json",
+  "lastProcessed": "operation-mincemeat-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-02-18T01:57:59.592Z",
@@ -735,6 +753,28 @@
       "event": "bb-session",
       "session": "803c5aa3",
       "url": "https://www.thewrap.com/mj-the-musical-broadway-review/"
+    },
+    {
+      "t": "2026-02-18T03:42:03.488Z",
+      "event": "bb-session",
+      "session": "02a9a557",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-18T03:42:05.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T03:43:56.625Z",
+      "event": "bb-session",
+      "session": "72b91576",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-18T03:43:58.797Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
