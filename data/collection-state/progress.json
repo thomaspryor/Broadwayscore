@@ -16,7 +16,11 @@
     "something-rotten-2015/nytg--tulis-mccall.json",
     "sunset-boulevard-2017/nyt-theater--jonathan-mandell.json",
     "the-hills-of-california-2024/nyt-theater--jonathan-mandell.json",
-    "the-sign-in-sidney-brusteins-window-2023/nyt-theater--jonathan-mandell.json"
+    "the-sign-in-sidney-brusteins-window-2023/nyt-theater--jonathan-mandell.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytg--amelia-merrill.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytg--brian-scott-lipton.json",
+    "a-bronx-tale-2007/thewrap--robert-hofler.json",
+    "a-soldiers-play-2020/broadwaynews--charles-isherwood.json"
   ],
   "failed": [
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
@@ -31,7 +35,13 @@
     "bob-fosses-dancin-2023/nytg--gillian-russo.json",
     "grey-house-2023/nyt-theater--jonathan-mandell.json",
     "mr-saturday-night-2022/nyt-theater--jonathan-mandell.json",
-    "mr-saturday-night-2022/nytg--joe-dziemianowicz.json"
+    "mr-saturday-night-2022/nytg--joe-dziemianowicz.json",
+    "a-bronx-tale-2007/theatre-reviews-limited--david-roberts.json",
+    "betrayal-2013/bloomberg-news--unknown.json",
+    "betrayal-2013/thewrap--robert-hofler.json",
+    "bob-fosses-dancin-2023/broadwaynews--brittani-samuel.json",
+    "bob-fosses-dancin-2023/broadwaynews--unknown.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -53,7 +63,9 @@
     ],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "a-bronx-tale-2007/thewrap--robert-hofler.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json",
@@ -63,10 +75,13 @@
     "archive": [
       "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
       "betrayal-2013/nyt-theater--scott-proudfit.json",
-      "macbeth-2022/nytg--joe-dziemianowicz.json"
+      "macbeth-2022/nytg--joe-dziemianowicz.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytg--amelia-merrill.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytg--brian-scott-lipton.json",
+      "a-soldiers-play-2020/broadwaynews--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-18T01:32:37.477Z",
-  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
   "log": []
 }
