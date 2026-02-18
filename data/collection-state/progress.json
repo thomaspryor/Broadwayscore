@@ -1,5 +1,7 @@
 {
-  "processed": [],
+  "processed": [
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+  ],
   "failed": [
     "hells-kitchen-2024/newyorker--naomi-fry.json",
     "mj-2022/newyorker--naomi-fry.json",
@@ -20,7 +22,16 @@
     "american-psycho-2016/newyorker--hilton-als.json",
     "anastasia-2017/newyorker--hilton-als.json",
     "angels-in-america-2018/newyorker--hilton-als.json",
-    "anything-goes-2011/newyorker--john-lahr.json"
+    "anything-goes-2011/newyorker--john-lahr.json",
+    "august-osage-county-2007/newyorker--.json",
+    "august-osage-county-2007/newyorker--hilton-als.json",
+    "beetlejuice-2019/newyorker--hilton-als.json",
+    "bernhardthamlet-2018/newyorker--hilton-als.json",
+    "betrayal-2013/newyorker--john-lahr.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "cabaret-2014/newyorker--hilton-als.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "clybourne-park-2012/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -47,12 +58,21 @@
       "data/review-texts/american-psycho-2016/newyorker--hilton-als.json",
       "data/review-texts/anastasia-2017/newyorker--hilton-als.json",
       "data/review-texts/angels-in-america-2018/newyorker--hilton-als.json",
-      "data/review-texts/anything-goes-2011/newyorker--john-lahr.json"
+      "data/review-texts/anything-goes-2011/newyorker--john-lahr.json",
+      "data/review-texts/august-osage-county-2007/newyorker--.json",
+      "data/review-texts/august-osage-county-2007/newyorker--hilton-als.json",
+      "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
+      "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
+      "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
+      "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
+      "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json"
     ],
-    "archive": []
+    "archive": [
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+    ]
   },
   "startTime": "2026-02-18T04:22:23.732Z",
-  "lastProcessed": "anything-goes-2011/newyorker--john-lahr.json",
+  "lastProcessed": "clybourne-park-2012/newyorker--hilton-als.json",
   "log": [
     {
       "t": "2026-02-18T04:23:55.743Z",
@@ -260,6 +280,105 @@
     },
     {
       "t": "2026-02-18T05:02:03.923Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:04:18.416Z",
+      "event": "bb-session",
+      "session": "e6704e15",
+      "url": "http://www.newyorker.com/arts/critics/theatre/2007/12/24/071224crth_theatre_als"
+    },
+    {
+      "t": "2026-02-18T05:04:20.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:06:30.929Z",
+      "event": "bb-session",
+      "session": "10ab9b02",
+      "url": "https://www.newyorker.com/magazine/2008/01/07/family-planning"
+    },
+    {
+      "t": "2026-02-18T05:06:33.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:08:43.766Z",
+      "event": "bb-session",
+      "session": "bda89864",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/beetlejuice-brightens-up-broadway"
+    },
+    {
+      "t": "2026-02-18T05:08:46.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:11:04.967Z",
+      "event": "bb-session",
+      "session": "b1a0990a",
+      "url": "https://www.newyorker.com/magazine/2018/10/15/sarah-bernhardt-takes-on-hamlet-ag"
+    },
+    {
+      "t": "2026-02-18T05:11:07.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:13:10.618Z",
+      "event": "bb-session",
+      "session": "cce5329c",
+      "url": "https://www.newyorker.com/magazine/2013/11/18/betrayal-2"
+    },
+    {
+      "t": "2026-02-18T05:13:13.153Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:15:10.590Z",
+      "event": "bb-session",
+      "session": "57f53bfd",
+      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+    },
+    {
+      "t": "2026-02-18T05:15:12.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:17:29.949Z",
+      "event": "bb-session",
+      "session": "ce008771",
+      "url": "https://www.newyorker.com/magazine/2014/05/05/the-emcee-returns"
+    },
+    {
+      "t": "2026-02-18T05:17:32.535Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:19:05.394Z",
+      "event": "bb-session",
+      "session": "cd70e87f",
+      "url": "https://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charli"
+    },
+    {
+      "t": "2026-02-18T05:19:07.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:20:55.463Z",
+      "event": "bb-session",
+      "session": "d9ce0891",
+      "url": "https://www.newyorker.com/magazine/2012/04/30/white-flight"
+    },
+    {
+      "t": "2026-02-18T05:20:57.664Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
