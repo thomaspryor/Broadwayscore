@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16246,
-      "skippedNoScore": 948,
-      "skippedDuplicate": 110,
-      "skippedDuplicateUrl": 367,
+      "totalReviews": 16230,
+      "skippedNoScore": 938,
+      "skippedDuplicate": 112,
+      "skippedDuplicateUrl": 363,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 595,
-      "skippedFingerprintDedup": 75,
-      "skippedUnknownCriticDedup": 295,
-      "skippedWrongProduction": 2160,
+      "skippedDuplicateText": 611,
+      "skippedFingerprintDedup": 82,
+      "skippedUnknownCriticDedup": 290,
+      "skippedWrongProduction": 2172,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
@@ -20,15 +20,15 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 67,
-        "originalScore-priority0": 1721,
-        "llmScore": 10776,
+        "originalScore-priority0": 1722,
+        "llmScore": 10802,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3497,
+        "llmScore-lowconf": 3488,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 154
+        "thumb": 121
       }
     }
   },
@@ -12311,18 +12311,18 @@
       "showId": "act-one-2014",
       "outletId": "usatoday",
       "outlet": "USA Today",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "assignedScore": 74,
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Elysa Gardner",
+      "criticName": "Unknown",
       "url": "https://www.usatoday.com/story/life/theater/2014/04/17/broadway-review-act-one/7770965/",
-      "publishDate": "April 18, 2014",
+      "publishDate": null,
       "originalRating": null,
-      "pullQuote": "The production, directed by James Lapine, is both ambitious and intimate, and it succeeds more often than not in bringing Hart's story to vivid life.",
+      "pullQuote": "The new Broadway production is rather an appreciation, most notable for its deep affection and almost deferential reverence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "act-one-2014",
@@ -13308,7 +13308,7 @@
       "pullQuote": "Whether or not you grew up listening to their music, it is impossible not to be engaged and happy hearing the music and story of The Temptations currently at Theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -19380,23 +19380,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "american-buffalo-2022",
-      "outletId": "wsj",
-      "outlet": "The Wall Street Journal",
-      "assignedScore": 64,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686",
-      "publishDate": "April 22, 2022",
-      "originalRating": null,
-      "pullQuote": "The three actors bring distinct energy and interpretive approaches to their roles.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "american-buffalo-2022",
@@ -27128,7 +27111,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Susie Goldsbrough",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqcOU5zPyoEieAbKLpomnbS687voTp3-XBKN_1gYv9JsH6NRhHgg2trl&gaa_ts=69959bc7&gaa_sig=c4piyVtQywEWSmnY37FZtSxRzEP_tEbxY_0yc5y1gGkNRB5VxbcBtId6Gnf6il4o1yTNCc8eh5xhpJpYhzhVWw%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqfM2xv4jWmSqrRrXaWbyXYt3G2Pu5opcQAJC4jQTtg9xuVv7dvh3HmU&gaa_ts=6995a355&gaa_sig=49-3aT4toViIv24H5sBehirui4RpwJG4qeDiCY8yMPTuTgL5LT8Ynm7V0fOkpHQBODJJtpi7bhVzuFLJyZ2a-A%3D%3D",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Corden is, unsurprisingly, the stand-out: at one point he bursts in and unleashes a rib-cracking five-minute monologue",
@@ -33139,23 +33122,6 @@
     },
     {
       "showId": "betrayal-2013",
-      "outletId": "ap",
-      "outlet": "Associated Press",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Mark Kennedy",
-      "url": "https://abcnews.go.com/Entertainment/wireStory/review-revival-pinters-betrayal-stunning-20698907",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Superbly acted by Rachel Weisz, Daniel Craig and Rafe Spall, the production sparkles in its simple, powerful beauty.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "betrayal-2013",
       "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
@@ -34156,23 +34122,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "between-riverside-and-crazy-2022",
-      "outletId": "stagebuddy",
-      "outlet": "Stage Buddy",
-      "assignedScore": 73,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Elyse Trevers",
-      "url": "https://stagebuddy.com/theater/theater-review/between-riverside-and-crazy",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Stephen McKinley Henderson finally plays the leading man, presenting a master class in acting.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "between-riverside-and-crazy-2022",
@@ -40381,7 +40330,7 @@
       "pullQuote": "As a character in a Neil Simon play might observe, it has not been a great season for menschen on Broadway. From the haughty heroine of After Miss Julie to the ranting student and teacher in Oleanna, few leading characters in drama have aspired to the agreeability and overt decency suggested by that Yiddish word.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "brighton-beach-memoirs-2009",
@@ -57146,7 +57095,7 @@
       "pullQuote": "What the heck is a “Coram Boy”? This question may not be whipping around the Internet at warp speed, but it is probably tickling the minds of theater lovers who have noted the curious title of the latest and perhaps least-heralded London-born show to hit the express lane to Broadway this season.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "cost-of-living-2022",
@@ -58132,7 +58081,7 @@
       "pullQuote": "Still, Headland leaves you, wrung out with laughter and horror, wondering: Should it?",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "cult-of-love-2024",
@@ -65518,23 +65467,6 @@
     },
     {
       "showId": "doubt-a-parable",
-      "outletId": "nytg",
-      "outlet": "New York Theatre Guide",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Gillian Russo",
-      "url": "https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber",
-      "publishDate": "March 7, 2024",
-      "originalRating": null,
-      "pullQuote": "One thing of which I have no doubt, though, is that Doubt delivers a riveting, well-acted, and utterly unmissable night at the theatre.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "doubt-a-parable",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
@@ -65597,23 +65529,6 @@
       "publishDate": "March 7, 2024",
       "originalRating": null,
       "pullQuote": "But Scott Ellis’ direction is slack where suffocating tension is demanded.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "doubt-a-parable",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "JD Knapp",
-      "url": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/",
-      "publishDate": "March 7, 2024",
-      "originalRating": null,
-      "pullQuote": "It’s also nice to report that the first production into the newly renamed theater is a real winner.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -92087,7 +92002,7 @@
       "pullQuote": "Most important, [Wolfe] has given us a way of seeing a star who had to be seen in this role.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "gypsy-2024",
@@ -93738,7 +93653,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "hamilton-2015",
@@ -97348,6 +97263,24 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-parts-one-and-two",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 94,
+      "scoreSource": "llmScore",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+      "publishDate": "April 22, 2018",
+      "originalRating": null,
+      "pullQuote": "This inspired team bends time to its will with an imagination and discipline that leave room for nary a glitch, making five hours of performance pass in a wizardly wink of an eye.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete",
+      "designation": "Critics_Pick"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-parts-one-and-two",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
@@ -99113,23 +99046,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "hedwig-and-the-angry-inch-2014",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
-      "publishDate": "April 23, 2014",
-      "originalRating": null,
-      "pullQuote": "His boots and the show are much kinkier than anything else on Broadway.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
@@ -102412,7 +102328,7 @@
       "pullQuote": "‘Here Lies Love’ bets that glamour can make up for narrative — or, rather, that in a show about the dangers of political demagogy, glamour itself is the narrative. It’s a case of form follows function into the fire. We are drawn to cultural and political excitement in much the same, often dangerous way.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "here-lies-love-2023",
@@ -107020,7 +106936,7 @@
       "pullQuote": "Producing 'Hughie' as a stand-alone drama on Broadway is pretty questionable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hughie-2016",
@@ -142389,6 +142305,23 @@
     },
     {
       "showId": "master-class-2011",
+      "outletId": "faster-times",
+      "outlet": "Faster Times",
+      "assignedScore": 35,
+      "scoreSource": "thumb",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Jonathan Mandell",
+      "url": "http://thefastertimes.com/newyorktheater/2011/07/07/master-class-review-tyne-daly-as-maria-callas/",
+      "publishDate": "July 7, 2011",
+      "originalRating": null,
+      "pullQuote": "Tyne Daly has said she didn’t think she was a fit to play the great and tragic opera diva Maria Callas, when playwright Terrence McNally asked her to take on the role in the current revival of his 1995 play, “Master Class” – she is not glamorous, too old, too ignorant about opera, she told him.",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "master-class-2011",
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 62,
@@ -147300,7 +147233,7 @@
       "pullQuote": "And it's beautiful: exquisitely written, performed and designed, with all of Birbiglia's characteristic ear for tone and rhythm.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "million-dollar-quartet-2010",
@@ -181919,7 +181852,7 @@
       "pullQuote": "Flawed and also powerful, Punch tells an astonishing story, and is a chastening corrective in this era of terrible human behavior.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "punch-2025",
@@ -210302,23 +210235,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "outletId": "theatrely",
-      "outlet": "Theatrely",
-      "assignedScore": 44,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Juan A. Ramirez",
-      "url": "https://www.theatrely.com/post/tammy-faye-not-ready-for-this-close-up-review",
-      "publishDate": "November 14, 2024",
-      "originalRating": null,
-      "pullQuote": "But while the musical finds in her an icon of kitsch and courage, it refuses to take her faith seriously, undermining any possible good that come out of her beliefs",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "tammy-faye-2024",
@@ -243421,7 +243337,7 @@
       "pullQuote": "The script, which in 1990 earned the Pulitzer Prize for Drama, remains a thing of lyrical beauty.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -249321,7 +249237,7 @@
       "pullQuote": "Unfortunately, even Tomei’s vivifying, staunchly committed performance isn’t enough to keep this ripe comedy at the emotional heights it needs to sustain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-rose-tattoo-2019",
@@ -264216,7 +264132,7 @@
       "pullQuote": "The story isn’t really surprising, except that now that audiences have a chance to see the play, its combination of biting humor and moments of powerfully moving drama would seem a potent formula for popular success in any era.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "trouble-in-mind-2021",
