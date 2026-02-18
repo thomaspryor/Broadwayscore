@@ -235,6 +235,16 @@ jobs:
           echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
           echo "Combined shows for data pipelines: $all_slugs"
 
+          # Also output ALL new shows (including previews) for cast backfill
+          # Cast data is available on IBDB as soon as previews begin
+          all_cast_slugs=""
+          for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            [ -n "$all_cast_slugs" ] && all_cast_slugs="$all_cast_slugs,$slug" || all_cast_slugs="$slug"
+          done
+          echo "cast_shows=$all_cast_slugs" >> $GITHUB_OUTPUT
+          echo "Shows for cast backfill (incl previews): $all_cast_slugs"
+
       - name: Trigger data agent workflow
         if: steps.filter.outputs.opened_shows != ''
         uses: actions/github-script@v7
@@ -339,6 +349,32 @@ jobs:
               console.log('Triggered image fetching workflow for newly opened shows');
             } catch (e) {
               console.log('Image fetching workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger cast backfill for new shows
+        if: steps.filter.outputs.cast_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger IBDB cast scraping for each new show (including previews)
+            const slugs = '${{ steps.filter.outputs.cast_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'backfill-cast.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug
+                  }
+                });
+                console.log(`Triggered cast backfill for: ${slug}`);
+                // 10s spacing between dispatch calls
+                await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Cast backfill trigger failed for ${slug}:`, e.message);
+              }
             }
 
       - name: Trigger social media post for opened shows
