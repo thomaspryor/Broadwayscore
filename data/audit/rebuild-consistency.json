@@ -1,6 +1,14 @@
 {
-  "generatedAt": "2026-02-18T00:27:50.342Z",
+  "generatedAt": "2026-02-18T02:33:58.730Z",
   "issues": [
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "glengarry-glen-ross-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 48 (source: llmScore-lowconf)"
+    },
     {
       "type": "rating-score-mismatch",
       "severity": "high",
@@ -28,14 +36,20 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "doubt-a-parable",
+      "detail": "9/11 reviews (82%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "purpose",
-      "detail": "17/20 reviews (85%) scored exactly 80"
+      "detail": "16/19 reviews (84%) scored exactly 80"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "tammy-faye",
-      "detail": "9/16 reviews (56%) scored exactly 35"
+      "detail": "8/16 reviews (50%) scored exactly 35"
     },
     {
       "type": "score-clustering",
