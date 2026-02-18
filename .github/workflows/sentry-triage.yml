@@ -1,0 +1,25 @@
+name: Sentry Auto-Triage
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '15 0,6,12,18 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Triage Sentry issues
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: broadway-scorecard
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/triage-sentry.js
