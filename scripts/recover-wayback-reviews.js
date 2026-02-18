@@ -39,11 +39,14 @@ const CONFIG = {
   showsPath: path.join(__dirname, '..', 'data', 'shows.json'),
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-recovery-report.json'),
 
-  // Rate limiting
-  cdxDelayMs: 2000,
-  snapshotDelayMs: 2000,
-  archiveTodayDelayMs: 3000,
-  requestTimeoutMs: 20000,
+  // Rate limiting (configurable via env vars for large runs)
+  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '5000'),
+  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '3000'),
+  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '4000'),
+  requestTimeoutMs: parseInt(process.env.REQUEST_TIMEOUT_MS || '30000'),
+
+  // Skip-list for permanently failed URLs (no CDX snapshots or all paywalled)
+  skipListPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-skip-list.json'),
 
   // Quality thresholds
   minTextLength: 300,
@@ -139,8 +142,28 @@ function httpGet(url, timeoutMs = CONFIG.requestTimeoutMs) {
 // Wayback Machine CDX API
 // ============================================================================
 
+/**
+ * Normalize URL for CDX lookup — strip tracking params that prevent archive matches.
+ */
+function normalizeUrlForCDX(url) {
+  try {
+    const u = new URL(url);
+    // Remove common tracking query params that break CDX matching
+    const trackingParams = ['gaa_at', 'gaa_n', 'gaa_ts', 'gaa_sig', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'mod', 'reflink', 'ref'];
+    for (const p of trackingParams) u.searchParams.delete(p);
+    // If all params were tracking, strip the ? entirely
+    return u.searchParams.toString() ? u.toString() : u.origin + u.pathname;
+  } catch {
+    return url;
+  }
+}
+
 async function queryCDX(url) {
-  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=10&from=2005&to=2026`;
+  const cleanUrl = normalizeUrlForCDX(url);
+  if (cleanUrl !== url) {
+    console.log(`  CDX normalized: ${cleanUrl.substring(0, 100)}...`);
+  }
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005&to=2026`;
 
   const response = await httpGet(cdxUrl, 30000);
   if (response.statusCode !== 200) {
@@ -451,8 +474,16 @@ function loadIncompleteCandidates() {
     }
   } catch {}
 
+  // Load skip-list of URLs that previously had no CDX snapshots or all-paywalled
+  let skipSet = new Set();
+  try {
+    const skipData = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8'));
+    skipSet = new Set(skipData.urls || []);
+    console.log(`  Loaded skip-list: ${skipSet.size} previously failed URLs\n`);
+  } catch {}
+
   const candidates = [];
-  let skippedComplete = 0, skippedNoUrl = 0, skippedAlreadyArchived = 0, skippedFlagged = 0, totalScanned = 0;
+  let skippedComplete = 0, skippedNoUrl = 0, skippedAlreadyArchived = 0, skippedFlagged = 0, skippedBySkipList = 0, totalScanned = 0;
 
   const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory()).map(d => d.name);
@@ -476,6 +507,7 @@ function loadIncompleteCandidates() {
         const url = data.url;
         if (!url) { skippedNoUrl++; continue; }
         if (data.archiveOrgUrl) { skippedAlreadyArchived++; continue; }
+        if (skipSet.has(url)) { skippedBySkipList++; continue; }
 
         const tier = getTierForUrl(url);
         const domain = (() => {
@@ -519,6 +551,7 @@ function loadIncompleteCandidates() {
   console.log(`  Skipped (no URL): ${skippedNoUrl}`);
   console.log(`  Skipped (already archived): ${skippedAlreadyArchived}`);
   console.log(`  Skipped (flagged wrong): ${skippedFlagged}`);
+  console.log(`  Skipped (skip-list): ${skippedBySkipList}`);
   console.log(`  Candidates after filters: ${limited.length}${CONFIG.maxUrls < Infinity ? ` (limited from ${candidates.length})` : ''}`);
 
   // Tier breakdown
@@ -622,6 +655,7 @@ async function main() {
   let consecutiveFailures = 0;
   let lastCheckpointTime = Date.now();
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
+  const permanentlyFailedUrls = []; // Track for skip-list (no CDX snapshots or all paywalled)
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
@@ -685,6 +719,7 @@ async function main() {
       }
 
       stats.notInArchive++;
+      permanentlyFailedUrls.push(c.url);
       continue;
     }
 
@@ -771,7 +806,11 @@ async function main() {
             checkpoint(stats);
             lastCheckpointTime = Date.now();
           }
+        } else {
+          permanentlyFailedUrls.push(c.url); // archive.today had content but it was garbage/too short
         }
+      } else {
+        permanentlyFailedUrls.push(c.url); // archive.today had nothing either
       }
     }
 
@@ -798,6 +837,25 @@ async function main() {
       console.log(`  Removed ${ff.length - filtered.length} entries (${filtered.length} remaining)`);
     } catch (e) {
       console.log(`  Error cleaning failed-fetches.json: ${e.message}`);
+    }
+  }
+
+  // Save skip-list (merge with existing)
+  if (!CONFIG.dryRun && permanentlyFailedUrls.length > 0) {
+    try {
+      let existing = [];
+      try { existing = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8')).urls || []; } catch {}
+      const merged = [...new Set([...existing, ...permanentlyFailedUrls])];
+      const skipDir = path.dirname(CONFIG.skipListPath);
+      if (!fs.existsSync(skipDir)) fs.mkdirSync(skipDir, { recursive: true });
+      fs.writeFileSync(CONFIG.skipListPath, JSON.stringify({
+        urls: merged,
+        lastUpdated: new Date().toISOString(),
+        count: merged.length,
+      }, null, 2) + '\n');
+      console.log(`\nSkip-list updated: ${permanentlyFailedUrls.length} new + ${existing.length} existing = ${merged.length} total`);
+    } catch (e) {
+      console.log(`\nError saving skip-list: ${e.message}`);
     }
   }
 
