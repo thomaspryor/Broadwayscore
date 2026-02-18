@@ -17,10 +17,22 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. Vercel auto-deploys in ~1 min.
+**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
+**BRANCH CHECK:** Before ANY git commit/push, run `git branch --show-current` to verify you're on the correct branch. Other sessions and stash operations frequently leave the local checkout on `staging` when you need `main` (or vice versa). Don't waste time — check first.
+
+### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
+**Git-triggered builds are BLOCKED** (`exit 0` in dashboard Ignored Build Step). This prevents data checkpoint commits from burning build minutes.
+**Deploys happen ONLY via Vercel Deployments API**, triggered by `.github/workflows/vercel-deploy.yml`:
+- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically**
+- Pushes changing only `data/review-texts/`, `data/archives/`, etc. → **no deploy** (intentional)
+- The API deployment (`POST /v13/deployments`) bypasses the ignore command — this is why it works while deploy hooks don't.
+- **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks the 30+ checkpoint builds per hour.
+- **DO NOT add `ignoreCommand` to `vercel.json`** — it's managed via dashboard only. `vercel.json` has NO ignoreCommand.
+- To force a manual deploy: `gh workflow run "Deploy to Vercel"` or use the Vercel API directly with `VERCEL_TOKEN`.
+- **Secrets:** `VERCEL_TOKEN` (API auth), `VERCEL_DEPLOY_HOOK` (legacy, not used)
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
