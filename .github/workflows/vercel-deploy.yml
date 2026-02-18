@@ -27,13 +27,32 @@ on:
       - 'data/awards.json'
       - 'data/gold-lists-computed.json'
       - 'data/critic-registry.json'
+  workflow_dispatch: # Manual trigger
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Vercel Deploy Hook
+      - name: Deploy via Vercel API
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          echo "Triggering Vercel production deploy..."
-          curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
-          echo "Deploy triggered."
+          echo "Creating Vercel production deployment via API..."
+          RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"broadwayscore","target":"production","gitSource":{"type":"github","ref":"main","org":"thomaspryor","repo":"Broadwayscore"}}' \
+            "https://api.vercel.com/v13/deployments?teamId=team_zvgatcxkXdPbfhtHQMOnjpXo")
+
+          DEP_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','FAILED'))")
+          DEP_URL=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('url','unknown'))")
+
+          if [ "$DEP_ID" = "FAILED" ]; then
+            echo "ERROR: Failed to create deployment"
+            echo "$RESPONSE"
+            exit 1
+          fi
+
+          echo "Deployment created: $DEP_ID"
+          echo "URL: https://$DEP_URL"
+          echo "Deploy will build and promote to production automatically."
