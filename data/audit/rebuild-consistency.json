@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-18T04:52:09.166Z",
+  "generatedAt": "2026-02-18T05:15:21.004Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -32,6 +32,12 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 82 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "doubt-a-parable",
+      "detail": "8/10 reviews (80%) scored exactly 80"
     },
     {
       "type": "score-clustering",
