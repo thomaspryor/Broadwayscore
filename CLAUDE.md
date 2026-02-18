@@ -21,6 +21,7 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
+**BRANCH CHECK:** Before ANY git commit/push, run `git branch --show-current` to verify you're on the correct branch. Other sessions and stash operations frequently leave the local checkout on `staging` when you need `main` (or vice versa). Don't waste time — check first.
 
 ### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
 **Two-layer deploy filtering** prevents data checkpoint commits from burning build minutes:
