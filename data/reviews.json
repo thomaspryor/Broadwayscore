@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16231,
-      "skippedNoScore": 938,
-      "skippedDuplicate": 112,
-      "skippedDuplicateUrl": 363,
+      "totalReviews": 16246,
+      "skippedNoScore": 948,
+      "skippedDuplicate": 110,
+      "skippedDuplicateUrl": 367,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 609,
-      "skippedFingerprintDedup": 82,
-      "skippedUnknownCriticDedup": 291,
-      "skippedWrongProduction": 2173,
+      "skippedDuplicateText": 595,
+      "skippedFingerprintDedup": 75,
+      "skippedUnknownCriticDedup": 295,
+      "skippedWrongProduction": 2160,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
@@ -20,15 +20,15 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 67,
-        "originalScore-priority0": 1722,
-        "llmScore": 10802,
+        "originalScore-priority0": 1721,
+        "llmScore": 10776,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3490,
+        "llmScore-lowconf": 3497,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 120
+        "thumb": 154
       }
     }
   },
@@ -13308,7 +13308,7 @@
       "pullQuote": "Whether or not you grew up listening to their music, it is impossible not to be engaged and happy hearing the music and story of The Temptations currently at Theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -57146,7 +57146,7 @@
       "pullQuote": "What the heck is a “Coram Boy”? This question may not be whipping around the Internet at warp speed, but it is probably tickling the minds of theater lovers who have noted the curious title of the latest and perhaps least-heralded London-born show to hit the express lane to Broadway this season.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cost-of-living-2022",
@@ -58132,7 +58132,7 @@
       "pullQuote": "Still, Headland leaves you, wrung out with laughter and horror, wondering: Should it?",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cult-of-love-2024",
@@ -65518,6 +65518,23 @@
     },
     {
       "showId": "doubt-a-parable",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 81,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Gillian Russo",
+      "url": "https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber",
+      "publishDate": "March 7, 2024",
+      "originalRating": null,
+      "pullQuote": "One thing of which I have no doubt, though, is that Doubt delivers a riveting, well-acted, and utterly unmissable night at the theatre.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "doubt-a-parable",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 80,
@@ -65580,6 +65597,23 @@
       "publishDate": "March 7, 2024",
       "originalRating": null,
       "pullQuote": "But Scott Ellis’ direction is slack where suffocating tension is demanded.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "doubt-a-parable",
+      "outletId": "thewrap",
+      "outlet": "TheWrap",
+      "assignedScore": 77,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "JD Knapp",
+      "url": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/",
+      "publishDate": "March 7, 2024",
+      "originalRating": null,
+      "pullQuote": "It’s also nice to report that the first production into the newly renamed theater is a real winner.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -93704,7 +93738,7 @@
       "pullQuote": "Hamilton is the best and most important Broadway musical of the past decade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -99079,6 +99113,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "hedwig-and-the-angry-inch-2014",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 82,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
+      "publishDate": "April 23, 2014",
+      "originalRating": null,
+      "pullQuote": "His boots and the show are much kinkier than anything else on Broadway.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
@@ -142338,23 +142389,6 @@
     },
     {
       "showId": "master-class-2011",
-      "outletId": "faster-times",
-      "outlet": "Faster Times",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jonathan Mandell",
-      "url": "http://thefastertimes.com/newyorktheater/2011/07/07/master-class-review-tyne-daly-as-maria-callas/",
-      "publishDate": "July 7, 2011",
-      "originalRating": null,
-      "pullQuote": "Tyne Daly has said she didn’t think she was a fit to play the great and tragic opera diva Maria Callas, when playwright Terrence McNally asked her to take on the role in the current revival of his 1995 play, “Master Class” – she is not glamorous, too old, too ignorant about opera, she told him.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "master-class-2011",
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 62,
@@ -181885,7 +181919,7 @@
       "pullQuote": "Flawed and also powerful, Punch tells an astonishing story, and is a chastening corrective in this era of terrible human behavior.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "punch-2025",
@@ -186905,6 +186939,23 @@
       "originalRating": null,
       "pullQuote": "Interactive productions aren’t likely to become dominant – they wouldn’t be right for most works – but they certainly contribute to making the theater a provocative and entertaining place.",
       "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "richard-iii-2013",
+      "outletId": "the-independent",
+      "outlet": "The Independent",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Paul Taylor",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/richard-iii-trafalgar-studios-review-martin-freeman-gives-highly-intelligent-performance-9595599.html",
+      "publishDate": "July 9, 2014",
+      "originalRating": null,
+      "pullQuote": "Director Jamie Lloyd is playing a smart and enlightened game with his Trafalgar Transformed seasons. His aim is to change the demographic of the theatre audience and last year he wooed young newcomers to his production of Macbeth through a canny combination of recruiting a star better known for his movie work (James McAvoy), a bold, in-yer-face ...",
+      "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -210254,6 +210305,23 @@
     },
     {
       "showId": "tammy-faye-2024",
+      "outletId": "theatrely",
+      "outlet": "Theatrely",
+      "assignedScore": 44,
+      "scoreSource": "llmScore",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Juan A. Ramirez",
+      "url": "https://www.theatrely.com/post/tammy-faye-not-ready-for-this-close-up-review",
+      "publishDate": "November 14, 2024",
+      "originalRating": null,
+      "pullQuote": "But while the musical finds in her an icon of kitsch and courage, it refuses to take her faith seriously, undermining any possible good that come out of her beliefs",
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "tammy-faye-2024",
       "outletId": "this-week-in-new-york",
       "outlet": "This Week in New York",
       "assignedScore": 39,
@@ -230653,7 +230721,7 @@
       "pullQuote": "A mighty, shout-it-from-the-rooftop-bars yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-inheritance-2019",
@@ -249253,7 +249321,7 @@
       "pullQuote": "Unfortunately, even Tomei’s vivifying, staunchly committed performance isn’t enough to keep this ripe comedy at the emotional heights it needs to sustain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-rose-tattoo-2019",
@@ -264148,7 +264216,7 @@
       "pullQuote": "The story isn’t really surprising, except that now that audiences have a chance to see the play, its combination of biting humor and moments of powerfully moving drama would seem a potent formula for popular success in any era.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "trouble-in-mind-2021",
