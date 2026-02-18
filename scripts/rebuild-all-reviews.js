@@ -1524,6 +1524,15 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Blocklisted outlet IDs: scraping artifacts that are never valid outlets
+      const BLOCKED_OUTLET_IDS = new Set(['advertisement', 'sponsored', 'promoted', 'ad', 'promo']);
+      const rawOutletId = (data.outletId || '').toLowerCase();
+      if (BLOCKED_OUTLET_IDS.has(rawOutletId)) {
+        console.log(`  [BLOCKED-OUTLET] ${showId}/${file}: outletId "${rawOutletId}" is a scraping artifact`);
+        stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
+        return;
+      }
+
       // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
