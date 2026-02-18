@@ -20,6 +20,10 @@ on:
         description: 'Show slug to filter (optional)'
         required: false
         default: ''
+      reason_filter:
+        description: 'Filter by incompleteReason: url_dead, no_url, wrong_content (comma-separated)'
+        required: false
+        default: ''
   schedule:
     - cron: '0 1 * * 0'  # Weekly Sunday 1 AM UTC
 
@@ -57,6 +61,9 @@ jobs:
           fi
           if [ -n "${{ inputs.show_filter }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          if [ -n "${{ inputs.reason_filter }}" ]; then
+            ARGS="$ARGS --reason=${{ inputs.reason_filter }}"
           fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 

@@ -28,6 +28,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
@@ -1358,6 +1359,19 @@ console.log(`Found ${showDirs.length} show directories\n`);
 
 const allReviews = [];
 
+// Load failed-fetches map for incompleteReason classification
+const failedFetchesPath = path.join(reviewTextsDir, 'failed-fetches.json');
+let failedFetchMap = new Map();
+try {
+  const ff = JSON.parse(fs.readFileSync(failedFetchesPath, 'utf8'));
+  for (const entry of ff) {
+    if (entry.reviewId) failedFetchMap.set(entry.reviewId, entry);
+  }
+  console.log(`Loaded ${failedFetchMap.size} failed-fetch entries for incompleteReason classification`);
+} catch (e) {
+  console.log(`Warning: Could not load failed-fetches.json: ${e.message}`);
+}
+
 // Cross-show fullText fingerprint map: detect when the same scraped text appears under different shows
 // Key: SHA-256 hash of full cleaned text (avoids false positives from shared boilerplate prefixes)
 const crossShowFingerprints = new Map();
@@ -1428,6 +1442,33 @@ showDirs.forEach(showId => {
           } catch (writeErr) {
             // Non-fatal: source file write failure doesn't block rebuild
           }
+        }
+      }
+
+      // Classify incompleteReason
+      {
+        const reviewId = `${showId}/${file}`;
+        const reasonResult = classifyIncompleteReason(data, failedFetchMap.get(reviewId));
+        const oldReason = data.incompleteReason;
+        if (reasonResult) {
+          data.incompleteReason = reasonResult.incompleteReason;
+          data.incompleteDetail = reasonResult.incompleteDetail;
+        } else {
+          delete data.incompleteReason;
+          delete data.incompleteDetail;
+        }
+        if (oldReason !== data.incompleteReason) {
+          try {
+            const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            if (reasonResult) {
+              sourceData.incompleteReason = reasonResult.incompleteReason;
+              sourceData.incompleteDetail = reasonResult.incompleteDetail;
+            } else {
+              delete sourceData.incompleteReason;
+              delete sourceData.incompleteDetail;
+            }
+            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+          } catch (writeErr) { /* Non-fatal */ }
         }
       }
 
