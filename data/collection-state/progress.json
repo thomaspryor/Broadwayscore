@@ -20,7 +20,11 @@
     "gutenberg-2023/vulture--sara-holdren.json",
     "gypsy-2024/vulture--sara-holdren.json",
     "hands-on-a-hardbody-2013/vulture--york-magazine.json",
-    "into-the-woods-2022/vulture--helen-shaw.json"
+    "into-the-woods-2022/vulture--helen-shaw.json",
+    "king-kong-2018/vulture--jesse-green.json",
+    "king-lear-2019/vulture--jesse-green.json",
+    "kinky-boots-2013/vulture--christopher-bonanos.json",
+    "kiss-me-kate-2019/vulture--jesse-green.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -61,7 +65,13 @@
     "how-i-learned-to-drive-2022/vulture--sara-holdren.json",
     "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
     "in-transit-2016/vulture--jesse-green.json",
-    "ink-2019/vulture--jesse-green.json"
+    "ink-2019/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "junk-2017/vulture--sara-holdren.json",
+    "leopoldstadt-2022/vulture--helen-shaw.json",
+    "leopoldstadt-2022/vulture--naveen-kumar.json",
+    "linda-vista-2019/vulture--jesse-green.json",
+    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -72,7 +82,8 @@
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
-      "falsettos-2016/vulture--jesse-green.json"
+      "falsettos-2016/vulture--jesse-green.json",
+      "king-kong-2018/vulture--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -95,7 +106,11 @@
       "data/review-texts/hello-dolly-2017/vulture--jesse-green.json",
       "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
       "data/review-texts/in-transit-2016/vulture--jesse-green.json",
-      "data/review-texts/ink-2019/vulture--jesse-green.json"
+      "data/review-texts/ink-2019/vulture--jesse-green.json",
+      "data/review-texts/john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+      "data/review-texts/leopoldstadt-2022/vulture--helen-shaw.json",
+      "data/review-texts/linda-vista-2019/vulture--jesse-green.json",
+      "data/review-texts/little-bear-ridge-road-2025/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
@@ -115,11 +130,14 @@
       "gutenberg-2023/vulture--sara-holdren.json",
       "gypsy-2024/vulture--sara-holdren.json",
       "hands-on-a-hardbody-2013/vulture--york-magazine.json",
-      "into-the-woods-2022/vulture--helen-shaw.json"
+      "into-the-woods-2022/vulture--helen-shaw.json",
+      "king-lear-2019/vulture--jesse-green.json",
+      "kinky-boots-2013/vulture--christopher-bonanos.json",
+      "kiss-me-kate-2019/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-02-18T03:41:41.883Z",
-  "lastProcessed": "into-the-woods-2022/vulture--helen-shaw.json",
+  "lastProcessed": "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-02-18T03:43:15.202Z",
@@ -481,6 +499,83 @@
     },
     {
       "t": "2026-02-18T04:22:20.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:24:38.365Z",
+      "event": "bb-session",
+      "session": "8e3a950c",
+      "url": "https://www.vulture.com/2018/01/theater-review-john-lithgow-stories-by-heart.htm"
+    },
+    {
+      "t": "2026-02-18T04:24:40.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:25:41.844Z",
+      "event": "bb-session",
+      "session": "883f0fc9",
+      "url": "https://www.vulture.com/2018/11/theater-review-king-kong-whos-there.html#:~:text"
+    },
+    {
+      "t": "2026-02-18T04:25:43.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:26:43.963Z",
+      "event": "bb-session",
+      "session": "04ce4494",
+      "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-kin"
+    },
+    {
+      "t": "2026-02-18T04:26:46.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:27:43.443Z",
+      "event": "bb-session",
+      "session": "896e3e98",
+      "url": "https://www.vulture.com/2013/04/theater-review-kinky-boots.html"
+    },
+    {
+      "t": "2026-02-18T04:27:45.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:28:42.200Z",
+      "event": "bb-session",
+      "session": "be628af1",
+      "url": "https://www.vulture.com/2019/03/theater-review-can-kiss-me-kate-survive-a-2019-g"
+    },
+    {
+      "t": "2026-02-18T04:28:44.087Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:31:16.623Z",
+      "event": "bb-session",
+      "session": "60b52a7c",
+      "url": "https://www.vulture.com/2022/10/theater-review-leopoldstadt-longacre-theater.htm"
+    },
+    {
+      "t": "2026-02-18T04:31:18.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:32:32.128Z",
+      "event": "bb-session",
+      "session": "d1b5edd7",
+      "url": "https://www.vulture.com/2022/10/theater-review-tom-stoppards-leopoldstadt-on-bro"
+    },
+    {
+      "t": "2026-02-18T04:32:34.003Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
