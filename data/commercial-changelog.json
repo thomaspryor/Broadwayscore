@@ -1,5 +1,150 @@
 [
   {
+    "date": "2026-02-18",
+    "timestamp": "2026-02-18T17:02:12.997Z",
+    "changesApplied": 7,
+    "changesFlagged": 4,
+    "changesSkipped": 0,
+    "deepResearchConflicts": 2,
+    "newEntries": 0,
+    "shadowDisagreements": 37,
+    "applied": [
+      {
+        "slug": "hells-kitchen",
+        "field": "notes",
+        "oldValue": "Closed Feb 22, 2026 without recouping. Returned ~60% of $22M to investors. Won 2 Tonys + Grammy. Alicia Keys had outsized insider profit participation",
+        "newValue": "Closed Feb 22, 2026 without recouping. Returned ~60% of $22M to investors. Won 2 Tonys + Grammy + Drama Desk (3) + Chita Rivera (1) + Drama League (1) + Outer Critics Circle (1). Alicia Keys had outsized insider profit participation",
+        "confidence": "high",
+        "source": "Section C: Reddit Grosses Analysis lists complete award wins"
+      },
+      {
+        "slug": "maybe-happy-ending",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          20,
+          40
+        ],
+        "newValue": [
+          20,
+          40
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis confirms 20-40% recoup estimate"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Windfall",
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis shows 80-100% recoup estimate, consistent weekly profits of $150k+"
+      },
+      {
+        "slug": "buena-vista-social-club",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          10,
+          30
+        ],
+        "newValue": [
+          10,
+          30
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis confirms 10-30% recoup estimate despite strong grosses"
+      },
+      {
+        "slug": "moulin-rouge",
+        "field": "notes",
+        "oldValue": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption loan.",
+        "newValue": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption loan. Closing July 26, 2026 after 2,265 regular performances.",
+        "confidence": "high",
+        "source": "Section F: Variety article confirms closing date of July 26, 2026"
+      },
+      {
+        "slug": "oedipus",
+        "field": "notes",
+        "oldValue": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross. C",
+        "newValue": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross (previous record $1,074,778). Closed Feb 16, 2026.",
+        "confidence": "high",
+        "source": "Section F: Deadline article confirms final week record gross and closing"
+      },
+      {
+        "slug": "stranger-things",
+        "field": "notes",
+        "oldValue": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization on record).",
+        "newValue": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization on record). Being filmed Feb 2026 for future release.",
+        "confidence": "high",
+        "source": "Section F: Deadline article confirms show being filmed this week"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "hells-kitchen",
+        "field": "designation",
+        "newValue": "Fizzle",
+        "flagReason": "Designation upgrade between non-TBD categories requires manual review"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          90,
+          100
+        ],
+        "flagReason": "Sources disagree"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          0,
+          10
+        ],
+        "flagReason": "Sources disagree"
+      },
+      {
+        "slug": "operation-mincemeat",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          15,
+          25
+        ],
+        "flagReason": "Sources disagree"
+      }
+    ],
+    "blocked": [
+      {
+        "slug": "the-great-gatsby",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          50,
+          70
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 50-70%, proposed 10-30% (40pt difference)"
+      },
+      {
+        "slug": "chess",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          10,
+          20
+        ],
+        "proposedValue": [
+          30,
+          50
+        ],
+        "severity": "high",
+        "discrepancy": "verified 10-20%, proposed 30-50% (25pt difference)"
+      }
+    ]
+  },
+  {
     "date": "2026-02-15",
     "timestamp": "2026-02-15T16:10:08.842Z",
     "changesApplied": 3,
