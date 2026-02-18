@@ -46,6 +46,7 @@ const {
   validateCriticOutlet,
   resolveOutletFromUrl,
   isJunkOutlet,
+  normalizeUrl,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
@@ -97,7 +98,7 @@ function getGlobalUrlIndex() {
       for (const f of files) {
         try {
           const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-          if (r.url) _globalUrlIndex.set(r.url, { showId: d, file: f });
+          if (r.url) _globalUrlIndex.set(normalizeUrl(r.url), { showId: d, file: f });
         } catch {}
       }
     }
@@ -1658,7 +1659,7 @@ function createReviewFile(showId, reviewData) {
   // Exception: roundup articles legitimately cover multiple shows
   if (reviewData.url) {
     const urlIndex = getGlobalUrlIndex();
-    const existing = urlIndex.get(reviewData.url);
+    const existing = urlIndex.get(normalizeUrl(reviewData.url));
     if (existing && existing.showId !== showId) {
       // Check if existing file is a roundup article — those span shows legitimately
       let isRoundup = false;
@@ -1736,7 +1737,7 @@ function createReviewFile(showId, reviewData) {
         }
 
         // Check URL match
-        if (reviewData.url && existingReview.url === reviewData.url) {
+        if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
           console.log(`    Skipping ${filename} (URL already exists in ${existingFile})`);
           return false;
         }
@@ -1812,7 +1813,7 @@ function createReviewFile(showId, reviewData) {
 
   // Register in global URL index so subsequent calls see it
   if (review.url && _globalUrlIndex) {
-    _globalUrlIndex.set(review.url, { showId, file: path.basename(filepath) });
+    _globalUrlIndex.set(normalizeUrl(review.url), { showId, file: path.basename(filepath) });
   }
 
   console.log(`    ✓ Created ${filename}`);
