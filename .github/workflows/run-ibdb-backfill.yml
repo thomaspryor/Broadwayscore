@@ -9,12 +9,12 @@ permissions:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
+      - name: Sparse checkout (only shows.json + cast/)
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git .
+          git sparse-checkout set data/shows.json data/cast scripts/backfill-ibdb-urls.js
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -32,12 +32,20 @@ jobs:
           git add data/shows.json
           git diff --staged --quiet && echo "No changes" && exit 0
           git commit -m "data: Backfill ibdbUrl from cast files into shows.json"
-          for i in 1 2 3 4 5; do
+          PUSHED=false
+          for i in $(seq 1 10); do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
+              PUSHED=true
               break
             fi
-            echo "Push failed (attempt $i), pulling and rebasing..."
+            echo "Push failed (attempt $i/10), pulling and rebasing..."
             git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
+            BACKOFF=$(( (2 ** (i - 1)) * 2 + RANDOM % 5 ))
+            if [ "$BACKOFF" -gt 30 ]; then BACKOFF=30; fi
+            sleep $BACKOFF
           done
+          if [ "$PUSHED" != "true" ]; then
+            echo "::error::Failed to push after 10 attempts"
+            exit 1
+          fi
