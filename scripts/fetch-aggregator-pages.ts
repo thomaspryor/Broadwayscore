@@ -24,6 +24,7 @@ import * as path from 'path';
 const DATA_DIR = path.join(__dirname, '../data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const SHOW_SCORE_URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
+const DTLI_SLUG_MAP_PATH = path.join(DATA_DIR, 'dtli-slug-map.json');
 const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive');
 
 // Types
@@ -55,6 +56,16 @@ function loadShows(): Record<string, Show> {
 function loadShowScoreUrls(): Record<string, string> {
   try {
     const data = JSON.parse(fs.readFileSync(SHOW_SCORE_URLS_PATH, 'utf8'));
+    return data.shows || {};
+  } catch {
+    return {};
+  }
+}
+
+// Load DTLI slug map
+function loadDtliSlugMap(): Record<string, string> {
+  try {
+    const data = JSON.parse(fs.readFileSync(DTLI_SLUG_MAP_PATH, 'utf8'));
     return data.shows || {};
   } catch {
     return {};
@@ -172,7 +183,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 //   /shows/suffs-bway/   = Broadway 2024
 // We need to search DTLI to find the correct URL for our specific production.
 
-async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>): Promise<FetchResult> {
+async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>, dtliSlugMap: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
     return { showId, aggregator: 'dtli', success: false, error: 'Show not found in shows.json' };
@@ -200,7 +211,29 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
     return true;
   };
 
-  // URL patterns to try, in order of likelihood for revivals
+  // Try slug map first (most reliable — discovered from DTLI sitemaps)
+  const mappedSlug = dtliSlugMap[showId];
+  if (mappedSlug) {
+    const mappedUrl = `https://didtheylikeit.com/shows/${mappedSlug}/`;
+    console.log(`    Trying mapped URL: ${mappedUrl}`);
+    try {
+      const response = await page.goto(mappedUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (response && response.status() === 200) {
+        await page.waitForTimeout(500);
+        const html = await page.content();
+        if (!html.includes('Page not found') && !html.includes('404') && html.includes('didtheylikeit')) {
+          if (validateProduction(html)) {
+            saveHtml('dtli', showId, html, show.title, mappedUrl);
+            return { showId, aggregator: 'dtli', success: true };
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`    Mapped URL failed: ${e}`);
+    }
+  }
+
+  // Fall back to URL guessing for unmapped shows
   const baseSlug = show.title
     .toLowerCase()
     .replace(/['']/g, '')
@@ -312,7 +345,8 @@ async function fetchAggregatorPage(
   aggregator: string,
   showId: string,
   shows: Record<string, Show>,
-  showScoreUrls: Record<string, string>
+  showScoreUrls: Record<string, string>,
+  dtliSlugMap: Record<string, string>
 ): Promise<FetchResult> {
   const page = await browser.newPage();
 
@@ -321,7 +355,7 @@ async function fetchAggregatorPage(
       case 'show-score':
         return await fetchShowScore(page, showId, shows, showScoreUrls);
       case 'dtli':
-        return await fetchDtli(page, showId, shows);
+        return await fetchDtli(page, showId, shows, dtliSlugMap);
       case 'bww-rr':
         return await fetchBwwRoundup(page, showId, shows);
       default:
@@ -391,9 +425,11 @@ async function main() {
   const { aggregators, showIds, force } = parseArgs();
   const shows = loadShows();
   const showScoreUrls = loadShowScoreUrls();
+  const dtliSlugMap = loadDtliSlugMap();
 
   console.log(`Aggregators: ${aggregators.join(', ')}`);
   console.log(`Shows: ${showIds.length} total`);
+  console.log(`DTLI slug map: ${Object.keys(dtliSlugMap).length} entries`);
   console.log(`Force re-fetch: ${force}\n`);
 
   const browser = await chromium.launch({ headless: true });
@@ -412,7 +448,7 @@ async function main() {
         }
 
         console.log(`[${showId}] Fetching...`);
-        const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls);
+        const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls, dtliSlugMap);
         results.push(result);
 
         if (result.success) {
