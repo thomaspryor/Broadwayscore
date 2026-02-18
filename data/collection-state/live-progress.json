@@ -1,17 +1,129 @@
 {
-  "updatedAt": "2026-02-18T08:33:52.164Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-02-18T08:34:30.776Z",
+  "processed": 108,
+  "failed": 55,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 9,
-    "amp": 0,
+    "playwright": 72,
+    "amp": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 8
+    "archiveToday": 34,
+    "archive": 35
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 15,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T08:09:05.169Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T08:11:01.332Z",
+      "event": "bb-session",
+      "session": "b4bf1413",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+    },
+    {
+      "t": "2026-02-18T08:11:04.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T08:17:33.841Z",
+      "event": "bb-session",
+      "session": "56571540",
+      "url": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+    },
+    {
+      "t": "2026-02-18T08:19:51.487Z",
+      "event": "bb-session",
+      "session": "ec0f2f2d",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-18T08:19:53.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:21:27.748Z",
+      "event": "bb-session",
+      "session": "1ce66a71",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-18T08:21:29.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:25:17.589Z",
+      "event": "bb-session",
+      "session": "c9ceb8c0",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-18T08:25:19.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:27:05.645Z",
+      "event": "bb-session",
+      "session": "7214a9f4",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9?ga"
+    },
+    {
+      "t": "2026-02-18T08:27:07.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:28:46.284Z",
+      "event": "bb-session",
+      "session": "0323791e",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9?ga"
+    },
+    {
+      "t": "2026-02-18T08:28:48.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:29:37.329Z",
+      "event": "bb-session",
+      "session": "10701dfc",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-02-18T08:30:50.530Z",
+      "event": "bb-session",
+      "session": "0ebdd5b7",
+      "url": "https://www.wsj.com/articles/review-ad-libs-ad-innitum-1512519448?gaa_at=eafs&ga"
+    },
+    {
+      "t": "2026-02-18T08:30:52.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:32:41.600Z",
+      "event": "bb-session",
+      "session": "435d11ef",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-18T08:32:43.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-18T08:33:38.983Z",
+      "event": "bb-session",
+      "session": "693ebd36",
+      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-"
+    }
+  ]
 }
