@@ -4,7 +4,7 @@ export const SCORE_TIERS = {
     label: 'Must-See',
     tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
     range: '85-100',
-    color: '#FFD700',
+    color: '#DAA520',
     glow: true,
   },
   recommended: {
