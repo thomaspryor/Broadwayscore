@@ -2,41 +2,44 @@
 # Vercel Ignore Build Step
 # Exit 0 = SKIP build (ignore)
 # Exit 1 = PROCEED with build
-#
-# Only rebuild when files that affect the static export change.
-# Skip builds for data/review-texts/ checkpoints, audit files,
-# aggregator archives, scripts, workflows, and tests.
-#
-# IMPORTANT: Vercel uses shallow clones (depth 1), so git diff HEAD^
-# doesn't work — HEAD^ doesn't exist. We use VERCEL_GIT_COMMIT_MESSAGE
-# (always available) to identify data-only commits by their prefix.
 
-echo "Commit message: $VERCEL_GIT_COMMIT_MESSAGE"
+echo "::Ignore Build Step::"
 
-# --- Phase 1: Fast skip via commit message prefix ---
-# These prefixes are ONLY used by automated pipelines for data-only changes.
-case "$VERCEL_GIT_COMMIT_MESSAGE" in
-  "chore: Checkpoint"*)     echo "Data checkpoint — skipping build"; exit 0 ;;
-  "health: "*)              echo "Health record — skipping build"; exit 0 ;;
-  "checkpoint: "*)          echo "Scoring checkpoint — skipping build"; exit 0 ;;
+# Get commit message — try git log first (works in any clone, even shallow),
+# then fall back to Vercel env var, then to empty string.
+MSG=$(git log -1 --format=%s 2>/dev/null)
+if [ -z "$MSG" ]; then
+  MSG="$VERCEL_GIT_COMMIT_MESSAGE"
+fi
+echo "Commit subject: $MSG"
+
+# Skip data-only commits by their prefix (set by GitHub Actions pipelines)
+case "$MSG" in
+  "chore: Checkpoint"*)  echo "SKIP: data checkpoint";  exit 0 ;;
+  "health: "*)           echo "SKIP: health record";     exit 0 ;;
+  "checkpoint: "*)       echo "SKIP: scoring checkpoint"; exit 0 ;;
+  "Merge remote-tracking branch"*) ;;
+  # Add more skip patterns here as needed
 esac
 
-# --- Phase 2: File diff (if git history is available) ---
-# Deepen the shallow clone so HEAD^ exists
+# For all other commits, try file-based detection
+# Deepen shallow clone so HEAD^ exists
 git fetch --deepen=2 2>/dev/null
-
 DIFF=$(git diff HEAD^ HEAD --name-only 2>/dev/null)
-if [ $? -ne 0 ] || [ -z "$DIFF" ]; then
-  # Can't compute diff — safe default: build
-  echo "Cannot compute diff — proceeding with build"
+
+if [ -z "$DIFF" ]; then
+  echo "BUILD: cannot compute diff, safe default"
   exit 1
 fi
 
-# Build if any build-relevant files changed
+echo "Changed files:"
+echo "$DIFF"
+
+# Build only if build-relevant files changed
 if echo "$DIFF" | grep -qE '^(src/|public/|content/|next\.config|vercel\.json|tailwind|tsconfig|package|data/(shows|reviews|grosses|grosses-history|commercial|audience-buzz|critic-consensus|lottery-rush|awards|gold-lists-computed|critic-registry)\.json)'; then
-  echo "Build-relevant files changed — proceeding with build"
+  echo "BUILD: build-relevant files changed"
   exit 1
 fi
 
-echo "Only non-build files changed — skipping build"
+echo "SKIP: only data/infra files changed"
 exit 0
