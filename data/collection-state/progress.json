@@ -20,7 +20,12 @@
     "birthday-candles-2022/nytimes--maya-phillips.json",
     "bright-star-2016/nytimes--charles-isherwood.json",
     "bronx-bombers-2014/nytimes--charles-isherwood.json",
-    "burn-the-floor-2009/nytimes--.json"
+    "burn-the-floor-2009/nytimes--.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
   ],
   "failed": [
     "33-variations-2009/nytimes--ben-brantley.json",
@@ -51,7 +56,12 @@
     "bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
     "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
     "butley-2006/nytimes--ben-brantley.json",
-    "cabaret-2014/nytimes--ben-brantley.json"
+    "cabaret-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-1982/nytimes--frank-rich.json",
+    "cats-2016/nytimes--charles-isherwood.json",
+    "children-of-a-lesser-god-2018/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -59,7 +69,10 @@
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
-      "ann-2013/nytimes--charles-isherwood.json"
+      "ann-2013/nytimes--charles-isherwood.json",
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -79,7 +92,10 @@
       "data/review-texts/bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
       "data/review-texts/bonnie-and-clyde-2011/nytimes--ben-brantley.json",
       "data/review-texts/butley-2006/nytimes--ben-brantley.json",
-      "data/review-texts/cabaret-2014/nytimes--ben-brantley.json"
+      "data/review-texts/cabaret-2014/nytimes--ben-brantley.json",
+      "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+      "data/review-texts/cats-1982/nytimes--frank-rich.json",
+      "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json"
     ],
     "archive": [
       "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
@@ -101,11 +117,13 @@
       "birthday-candles-2022/nytimes--maya-phillips.json",
       "bright-star-2016/nytimes--charles-isherwood.json",
       "bronx-bombers-2014/nytimes--charles-isherwood.json",
-      "burn-the-floor-2009/nytimes--.json"
+      "burn-the-floor-2009/nytimes--.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-18T11:05:28.661Z",
-  "lastProcessed": "cabaret-2014/nytimes--ben-brantley.json",
+  "lastProcessed": "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-18T11:06:46.040Z",
@@ -302,6 +320,100 @@
     },
     {
       "t": "2026-02-18T11:33:39.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:35:23.301Z",
+      "event": "bb-session",
+      "session": "ca929a26",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T11:35:25.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:36:41.206Z",
+      "event": "bb-session",
+      "session": "0d8bbfed",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T11:36:43.157Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:37:58.946Z",
+      "event": "bb-session",
+      "session": "b8032f26",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-18T11:39:45.778Z",
+      "event": "bb-session",
+      "session": "0bdfde94",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-18T11:39:48.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:41:04.904Z",
+      "event": "bb-session",
+      "session": "e29f81ff",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-18T11:41:06.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:42:24.343Z",
+      "event": "bb-session",
+      "session": "96c12bb8",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T11:42:26.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:43:38.300Z",
+      "event": "bb-session",
+      "session": "2d50090f",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T11:43:40.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:44:54.105Z",
+      "event": "bb-session",
+      "session": "dfbaff3b",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T11:44:56.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:46:07.225Z",
+      "event": "bb-session",
+      "session": "effed206",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T11:46:09.273Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

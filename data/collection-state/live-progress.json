@@ -1,113 +1,19 @@
 {
-  "updatedAt": "2026-02-18T11:34:06.992Z",
-  "processed": 21,
-  "failed": 29,
-  "successRate": "42.0%",
+  "updatedAt": "2026-02-18T11:46:47.933Z",
+  "processed": 26,
+  "failed": 34,
+  "successRate": "43.3%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 20
+    "archiveToday": 20,
+    "archive": 22
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 27,
   "recentActivity": [
-    {
-      "t": "2026-02-18T11:19:57.902Z",
-      "event": "bb-session",
-      "session": "c1630215",
-      "url": "https://www.nytimes.com/2017/04/04/theater/amelie-review.html"
-    },
-    {
-      "t": "2026-02-18T11:20:00.094Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:21:21.961Z",
-      "event": "bb-session",
-      "session": "77298e26",
-      "url": "https://www.nytimes.com/2008/10/17/theater/reviews/17buff.html"
-    },
-    {
-      "t": "2026-02-18T11:21:24.018Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:23:01.567Z",
-      "event": "bb-session",
-      "session": "c60dbd90",
-      "url": "http://www.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at-viv"
-    },
-    {
-      "t": "2026-02-18T11:23:03.672Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:24:27.517Z",
-      "event": "bb-session",
-      "session": "6274f9ac",
-      "url": "https://www.nytimes.com/2003/07/31/theater/theater-review-puppet-musical-for-adu"
-    },
-    {
-      "t": "2026-02-18T11:24:29.416Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:26:00.311Z",
-      "event": "bb-session",
-      "session": "29004bc1",
-      "url": "https://www.nytimes.com/2022/04/11/theater/birthday-candles-review.html"
-    },
-    {
-      "t": "2026-02-18T11:26:02.369Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:27:44.100Z",
-      "event": "bb-session",
-      "session": "37d56fa4",
-      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blithe.html"
-    },
-    {
-      "t": "2026-02-18T11:27:46.527Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:29:02.466Z",
-      "event": "bb-session",
-      "session": "6ecd54a1",
-      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
-    },
-    {
-      "t": "2026-02-18T11:29:04.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:30:35.632Z",
-      "event": "bb-session",
-      "session": "b5577b4c",
-      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
-    },
-    {
-      "t": "2026-02-18T11:30:37.515Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T11:32:03.854Z",
-      "event": "bb-session",
-      "session": "1a83fb1a",
-      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
-    },
     {
       "t": "2026-02-18T11:32:05.837Z",
       "event": "bb-cookie-inject",
@@ -121,6 +27,100 @@
     },
     {
       "t": "2026-02-18T11:33:39.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:35:23.301Z",
+      "event": "bb-session",
+      "session": "ca929a26",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T11:35:25.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:36:41.206Z",
+      "event": "bb-session",
+      "session": "0d8bbfed",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T11:36:43.157Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:37:58.946Z",
+      "event": "bb-session",
+      "session": "b8032f26",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-18T11:39:45.778Z",
+      "event": "bb-session",
+      "session": "0bdfde94",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-18T11:39:48.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:41:04.904Z",
+      "event": "bb-session",
+      "session": "e29f81ff",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-18T11:41:06.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:42:24.343Z",
+      "event": "bb-session",
+      "session": "96c12bb8",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T11:42:26.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:43:38.300Z",
+      "event": "bb-session",
+      "session": "2d50090f",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T11:43:40.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:44:54.105Z",
+      "event": "bb-session",
+      "session": "dfbaff3b",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T11:44:56.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:46:07.225Z",
+      "event": "bb-session",
+      "session": "effed206",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T11:46:09.273Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
