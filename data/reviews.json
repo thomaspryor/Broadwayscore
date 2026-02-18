@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16227,
+      "totalReviews": 16217,
       "skippedNoScore": 938,
       "skippedDuplicate": 112,
       "skippedDuplicateUrl": 363,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 612,
-      "skippedFingerprintDedup": 82,
-      "skippedUnknownCriticDedup": 288,
-      "skippedWrongProduction": 2174,
+      "skippedDuplicateText": 617,
+      "skippedFingerprintDedup": 81,
+      "skippedUnknownCriticDedup": 287,
+      "skippedWrongProduction": 2183,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
@@ -20,10 +20,10 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 67,
-        "originalScore-priority0": 1722,
-        "llmScore": 10799,
+        "originalScore-priority0": 1721,
+        "llmScore": 10797,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3488,
+        "llmScore-lowconf": 3481,
         "llmScore-review": 2,
         "assignedScore": 0,
         "originalScore": 0,
@@ -15605,7 +15605,7 @@
       "pullQuote": "When by the end all is revealed, the play explodes into three powerhouse performances.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-2019",
@@ -18852,7 +18852,7 @@
       "pullQuote": "If you have never seen the movie, there is much to be enjoyed in this musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -27083,7 +27083,7 @@
       "pullQuote": "Impeccable though both performances are, these fine actors almost seem to fade into, um, blank white canvases with a few gray streaks when Mr. Corden bounds or blusters onstage.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "art-2025",
@@ -31850,7 +31850,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 32,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Edward Rothstein",
@@ -31860,7 +31860,7 @@
       "pullQuote": "The major impression, ultimately, is not that of a clever romp wickedly testing the limits of the tasteless, but of a repetitive refrain of disgust and disdain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "beetlejuice-2025",
@@ -33748,23 +33748,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "betrayal-2019",
-      "outletId": "wsj",
-      "outlet": "The Wall Street Journal",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "http://online.wsj.com/article/AP33d95e788ba1493d9b702142144b4aac.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Nichols proves once again — as if anyone needed it — that he is brilliant at stripping away everything that is not the meaning of the play.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "betrayal-2019",
@@ -44719,7 +44702,7 @@
       "pullQuote": "It's a terrific performance, but one that nevertheless remains constrained by the material's limitations.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -65429,7 +65412,7 @@
       "pullQuote": "It is a sturdy melodrama, an infallible crowd-pleaser, a detective yarn, a character study and an inquest into the unknowable.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "doubt-a-parable",
@@ -65481,23 +65464,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "doubt-a-parable",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "JD Knapp",
-      "url": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/",
-      "publishDate": "March 7, 2024",
-      "originalRating": null,
-      "pullQuote": "It’s also nice to report that the first production into the newly renamed theater is a real winner.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "doubt-a-parable",
@@ -68318,23 +68284,6 @@
       "originalRating": null,
       "pullQuote": "But for all its undeniable inventiveness, the play is curiously uninvolving.",
       "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "enron-2010",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 44,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": null,
-      "url": "http://theater.nytimes.com/2010/04/28/theater/reviews/28enron.html?ref=theater",
-      "publishDate": "April 27, 2010",
-      "originalRating": null,
-      "pullQuote": "In Lucy Prebble’s “Enron,” the flashy but labored economics lesson that opened on Tuesday night at the Broadhurst Theater, money doesn’t just talk. It sings. It dances. It puts on funny animal costumes. And of course it blows bubbles.",
-      "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -112307,7 +112256,7 @@
       "pullQuote": "Stephen Sondheim and James Lapine’s mythical musical remains a delight.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "into-the-woods-2022",
@@ -132013,7 +131962,7 @@
       "pullQuote": "Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "liberation-2025",
@@ -140300,7 +140249,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Isherwood",
@@ -140310,7 +140259,7 @@
       "pullQuote": "People without people’s problems, humor or original insights—which is to say, hardly human at all.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "marjorie-prime-2025",
@@ -159372,7 +159321,7 @@
       "pullQuote": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "oedipus-2025",
@@ -176919,7 +176868,7 @@
       "pullQuote": "When a cast is having this much fun, it's impossible not to be in on it.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
@@ -182736,7 +182685,7 @@
       "pullQuote": "Hers is a masterful performance.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "purpose",
@@ -183145,23 +183094,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "purpose-2025",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Robert Hofler",
-      "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
-      "publishDate": "March 17, 2025",
-      "originalRating": null,
-      "pullQuote": "It’s just one of many reasons why I need, and want, to see “Purpose” again.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "purpose-2025",
@@ -184626,7 +184558,7 @@
       "pullQuote": "This sterling production, with its flawless cast and admirable trenchancy amid an extraordinarily complex plot, augurs well for her tenure.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "ragtime-2025",
@@ -235669,7 +235601,7 @@
       "pullQuote": "And what’s on stage with this “Little Prince” is terrible storytelling.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-little-prince-2022",
@@ -245360,23 +245292,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-price-2017",
-      "outletId": "amny",
-      "outlet": "amNewYork",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Matt Windman",
-      "url": "https://www.amny.com/entertainment/the-price-review-an-arthur-miller-play-revival-done-right-1.13278781",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A solid, unexpectedly compelling production…‘The Price’ can easily come off as slow and hokey today, but director Terry Kinney achieves a fine balance between Ruffalo, Shalhoub and Hecht’s raw, accusatory battling and DeVito’s spirited, minutely detailed character acting.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "the-price-2017",
