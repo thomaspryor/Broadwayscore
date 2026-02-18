@@ -1,38 +1,45 @@
 #!/bin/bash
 # Vercel Ignore Build Step
-# Exit 0 = proceed with build
-# Exit 1 = skip build
-#
-# Only rebuild when files that affect the static export change.
-# Skip builds for data/review-texts/ checkpoints, audit files,
-# aggregator archives, scripts, workflows, and tests.
+# Exit 0 = SKIP build (ignore)
+# Exit 1 = PROCEED with build
 
-# Safe default: if we can't compute a diff, always build
-DIFF=$(git diff HEAD^ HEAD --name-only 2>/dev/null) || exit 0
+echo "::Ignore Build Step::"
 
-# If no files changed, skip
+# Get commit message — try git log first (works in any clone, even shallow),
+# then fall back to Vercel env var, then to empty string.
+MSG=$(git log -1 --format=%s 2>/dev/null)
+if [ -z "$MSG" ]; then
+  MSG="$VERCEL_GIT_COMMIT_MESSAGE"
+fi
+echo "Commit subject: $MSG"
+
+# Skip data-only commits by their prefix (set by GitHub Actions pipelines)
+case "$MSG" in
+  "chore: Checkpoint"*)  echo "SKIP: data checkpoint";  exit 0 ;;
+  "health: "*)           echo "SKIP: health record";     exit 0 ;;
+  "checkpoint: "*)       echo "SKIP: scoring checkpoint"; exit 0 ;;
+  "Merge remote-tracking branch"*) ;;
+  # Add more skip patterns here as needed
+esac
+
+# For all other commits, try file-based detection
+# Deepen shallow clone so HEAD^ exists
+git fetch --deepen=2 2>/dev/null
+DIFF=$(git diff HEAD^ HEAD --name-only 2>/dev/null)
+
 if [ -z "$DIFF" ]; then
-  echo "No files changed — skipping build"
+  echo "BUILD: cannot compute diff, safe default"
   exit 1
 fi
 
-# Build if any build-relevant files changed:
-#   src/          - application code
-#   public/       - static assets
-#   content/      - blog reviews (markdown)
-#   next.config   - Next.js config
-#   vercel.json   - Vercel config
-#   tailwind      - Tailwind config
-#   tsconfig      - TypeScript config
-#   package       - dependencies
-#   data/*.json   - specific data files imported by Next.js at build time
-#     (shows, reviews, grosses, grosses-history, commercial,
-#      audience-buzz, critic-consensus, lottery-rush, awards,
-#      gold-lists-computed, critic-registry)
+echo "Changed files:"
+echo "$DIFF"
+
+# Build only if build-relevant files changed
 if echo "$DIFF" | grep -qE '^(src/|public/|content/|next\.config|vercel\.json|tailwind|tsconfig|package|data/(shows|reviews|grosses|grosses-history|commercial|audience-buzz|critic-consensus|lottery-rush|awards|gold-lists-computed|critic-registry)\.json)'; then
-  echo "Build-relevant files changed — proceeding with build"
-  exit 0
+  echo "BUILD: build-relevant files changed"
+  exit 1
 fi
 
-echo "Only non-build files changed — skipping build"
-exit 1
+echo "SKIP: only data/infra files changed"
+exit 0
