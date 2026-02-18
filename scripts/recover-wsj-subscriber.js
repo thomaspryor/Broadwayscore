@@ -41,8 +41,16 @@ const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wsj-subscriber-recovery-report.json'),
 
   // Rate limiting — be respectful, we're an authenticated subscriber
-  delayMs: parseInt(process.env.DELAY_MS || '2000'),
+  // DataDome triggers at ~7 requests with 2s delay; 8-15s with jitter avoids detection
+  delayMinMs: parseInt(process.env.DELAY_MIN_MS || '8000'),
+  delayMaxMs: parseInt(process.env.DELAY_MAX_MS || '15000'),
+  // Legacy: DELAY_MS sets a fixed delay (overrides min/max)
+  delayFixedMs: process.env.DELAY_MS ? parseInt(process.env.DELAY_MS) : null,
   requestTimeoutMs: 30000,
+
+  // Browsing break: pause every N requests to look more human
+  browsingBreakInterval: parseInt(process.env.BROWSING_BREAK_INTERVAL || '25'),
+  browsingBreakMs: 45000, // 45s pause
 
   // Quality thresholds
   minTextLength: 300,
@@ -50,7 +58,9 @@ const CONFIG = {
   // Checkpointing
   checkpointInterval: parseInt(process.env.CHECKPOINT_INTERVAL || '10'),
 
-  // Circuit breaker
+  // Circuit breaker — DataDome retries instead of hard stop
+  maxDataDomeRetries: 3,
+  dataDomeCooldownMs: 180000, // 3 minutes
   maxConsecutiveFailures: 10,
   cooldownAfterFailures: 60000,
 
@@ -490,13 +500,39 @@ async function main() {
       consecutiveFailures = 0;
     }
 
-    // Rate limiting
+    // Rate limiting — jittered delays to avoid DataDome pattern detection
     if (i > 0) {
-      await new Promise(r => setTimeout(r, CONFIG.delayMs));
+      const delay = CONFIG.delayFixedMs
+        ? CONFIG.delayFixedMs
+        : CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
+      await new Promise(r => setTimeout(r, Math.round(delay)));
+
+      // Browsing break every N requests
+      if (i % CONFIG.browsingBreakInterval === 0) {
+        const breakMs = CONFIG.browsingBreakMs + Math.random() * 15000;
+        console.log(`  [Browsing break] Pausing ${Math.round(breakMs / 1000)}s after ${i} requests...`);
+        await new Promise(r => setTimeout(r, breakMs));
+      }
     }
 
-    // Fetch
-    const result = await fetchArticle(c.url, cookieHeader);
+    // Fetch with DataDome retry
+    let result;
+    let dataDomeRetries = 0;
+
+    while (true) {
+      result = await fetchArticle(c.url, cookieHeader);
+
+      if (result.error && result.error.includes('DataDome') && dataDomeRetries < CONFIG.maxDataDomeRetries) {
+        dataDomeRetries++;
+        const cooldown = CONFIG.dataDomeCooldownMs + Math.random() * 60000;
+        console.log(`  ⚠ DataDome detected — cooling down ${Math.round(cooldown / 1000)}s (retry ${dataDomeRetries}/${CONFIG.maxDataDomeRetries})...`);
+        // Checkpoint before long pause
+        if (stats.recovered > 0 && !CONFIG.dryRun) checkpoint(stats);
+        await new Promise(r => setTimeout(r, cooldown));
+        continue;
+      }
+      break;
+    }
 
     if (result.error) {
       console.log(`  ✗ ${result.error}`);
@@ -507,9 +543,14 @@ async function main() {
       else if (result.error.includes('Not authenticated')) stats.notAuthenticated++;
       else stats.errors++;
 
-      // If we hit DataDome or auth failure, stop immediately
-      if (result.error.includes('DataDome') || result.error.includes('Not authenticated')) {
-        console.log('\n  FATAL: Bot detection or auth failure. Stopping to preserve cookies.');
+      // If auth failure, stop — cookies are dead
+      if (result.error.includes('Not authenticated')) {
+        console.log('\n  FATAL: Auth failure — cookies expired. Stopping.');
+        break;
+      }
+      // DataDome after all retries exhausted — stop
+      if (result.error.includes('DataDome')) {
+        console.log('\n  FATAL: DataDome persisted after all retries. Stopping.');
         break;
       }
       continue;
