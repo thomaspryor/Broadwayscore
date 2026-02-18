@@ -23,11 +23,12 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
 
 ### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
-**Git auto-deploy is DISABLED** to prevent data checkpoint commits from burning 30+ concurrent build minutes.
-Deploys happen via **Deploy Hook**, triggered by `.github/workflows/vercel-deploy.yml`:
-- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically**
-- Pushes changing only `data/review-texts/`, `data/archives/`, `data/collection-state/` → **no deploy** (intentional)
-- **DO NOT remove `"ignoreCommand": "exit 0"` from `vercel.json`** — it blocks git-triggered builds. Deploy Hook bypasses it via API.
+**Two-layer deploy filtering** prevents data checkpoint commits from burning build minutes:
+1. **`vercel.json` `ignoreCommand`** — Checks commit message prefix. Skips builds for `chore: Checkpoint`, `health: `, `checkpoint: ` prefixes. Uses `git log -1 --format=%s` (works in Vercel's shallow clones; `git diff HEAD^` does NOT work).
+2. **`.github/workflows/vercel-deploy.yml`** — Backup: triggers Deploy Hook only when build-relevant files change (`src/`, `public/`, config, key `data/*.json`).
+- **DO NOT change the `ignoreCommand` in `vercel.json`** without understanding: `exit 0` = skip ALL builds (freezes site), `exit 1` = build everything. The current command conditionally skips data-only commits.
+- **DO NOT set Vercel dashboard to "Don't build anything"** — it blocks deploy hooks too.
+- Vercel dashboard Ignored Build Step should be set to **Custom** with the same command as `vercel.json`.
 - To force a manual deploy: `curl -s -X POST "$VERCEL_DEPLOY_HOOK"` (stored as GitHub secret)
 
 ### 4. Automate Everything — SET AND FORGET
