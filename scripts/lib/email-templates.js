@@ -400,6 +400,83 @@ function buildBroadcastOpeningNightHtml(shows, email) {
 </body></html>`;
 }
 
+/**
+ * Build a feedback thank-you email.
+ *
+ * @param {'fixed'|'acknowledged'|'praise'|'feature'} type
+ * @param {string} name - Submitter's first name (or "there" if unknown)
+ * @param {string} [showTitle] - Show name if applicable
+ * @returns {{ subject: string, html: string }}
+ */
+function buildFeedbackThankYouEmail(type, name, showTitle) {
+  const greeting = name && name !== 'Anonymous' ? name : 'there';
+
+  const messages = {
+    fixed: {
+      subject: showTitle
+        ? `Update on your report about ${showTitle}`
+        : 'Update on your feedback',
+      heading: 'We fixed it!',
+      body: showTitle
+        ? `Thanks for letting us know about the issue with <strong>${escapeHtml(showTitle)}</strong>. We investigated and pushed a fix \u2014 it should be live now.`
+        : 'Thanks for letting us know about this issue. We investigated and pushed a fix \u2014 it should be live now.',
+    },
+    acknowledged: {
+      subject: 'Thanks for your feedback',
+      heading: 'We appreciate you reaching out',
+      body: showTitle
+        ? `Thanks for your report about <strong>${escapeHtml(showTitle)}</strong>. We\u2019ve reviewed it and will keep it in mind as we continue improving the site.`
+        : 'Thanks for reaching out. We\u2019ve reviewed your feedback and will keep it in mind as we continue improving the site.',
+    },
+    praise: {
+      subject: 'Thanks for the kind words!',
+      heading: 'You made our day',
+      body: 'We really appreciate you taking the time to share positive feedback. It means a lot and keeps us motivated to make Broadway Scorecard even better.',
+    },
+    feature: {
+      subject: 'Thanks for the suggestion!',
+      heading: 'Great idea \u2014 noted!',
+      body: 'We love hearing ideas from people who use the site. We\u2019ve logged your suggestion and will factor it into our roadmap.',
+    },
+  };
+
+  const msg = messages[type] || messages.acknowledged;
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(msg.heading)}</h1>
+  </td></tr>
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:24px;">
+        <p style="margin:0;font-size:16px;color:rgba(255,255,255,0.85);line-height:1.6;font-family:${FONT};">Hey ${escapeHtml(greeting)},</p>
+        <p style="margin:16px 0 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;font-family:${FONT};">${msg.body}</p>
+      </td></tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding:8px 0 32px;" align="center">
+    <a href="https://broadwayscorecard.com" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">Visit Broadway Scorecard</a>
+  </td></tr>
+  <tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      This is a one-time message from <a href="https://broadwayscorecard.com" style="color:#d4a574;">Broadway Scorecard</a> in response to your feedback. You won\u2019t receive further emails unless you subscribe.
+    </p>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
+
+  return { subject: msg.subject, html };
+}
+
 module.exports = {
   FONT,
   postJSON,
@@ -414,4 +491,5 @@ module.exports = {
   buildEmailHtml,
   buildOpeningNightHtml,
   buildBroadcastOpeningNightHtml,
+  buildFeedbackThankYouEmail,
 };
