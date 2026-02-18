@@ -109,6 +109,7 @@ jobs:
 
       - name: Discover reviews from outlets (SERP)
         if: steps.check.outputs.pending_shows != ''
+        continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -121,7 +122,7 @@ jobs:
           done
 
       - name: Gather reviews from aggregators
-        if: steps.check.outputs.pending_shows != ''
+        if: always() && steps.check.outputs.pending_shows != ''
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -130,7 +131,7 @@ jobs:
           node scripts/gather-reviews.js --shows=${{ steps.check.outputs.pending_shows }}
 
       - name: Rebuild reviews.json
-        if: steps.check.outputs.pending_shows != ''
+        if: always() && steps.check.outputs.pending_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -138,7 +139,7 @@ jobs:
         run: node scripts/rebuild-all-reviews.js
 
       - name: Generate consensus
-        if: steps.check.outputs.pending_shows != ''
+        if: always() && steps.check.outputs.pending_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -148,7 +149,7 @@ jobs:
           done
 
       - name: Send broadcast
-        if: steps.check.outputs.pending_shows != ''
+        if: always() && steps.check.outputs.pending_shows != ''
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -65,11 +65,11 @@ jobs:
       # Step 3: Validate data before committing
       - name: Validate data
         id: validate
+        continue-on-error: true
         run: node scripts/validate-data.js
 
       # Step 4: Check for any changes
       - name: Check for changes
-        if: steps.validate.outcome == 'success'
         id: git-check
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
@@ -79,7 +79,7 @@ jobs:
 
       # Step 5: Commit and push changes
       - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && steps.validate.outcome == 'success'
+        if: always() && steps.git-check.outputs.changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
