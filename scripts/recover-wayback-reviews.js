@@ -719,7 +719,7 @@ async function main() {
       }
 
       stats.notInArchive++;
-      permanentlyFailedUrls.push(c.url);
+      // Don't skip-list these — CDX may return empty under rate limiting (false negative)
       continue;
     }
 
