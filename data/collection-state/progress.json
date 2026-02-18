@@ -17,7 +17,10 @@
     "flying-over-sunset-2021/vulture--sara-holdren.json",
     "frozen-2018/vulture--jesse-green.json",
     "good-night-oscar-2023/vulture--jackson-mchenry.json",
-    "gutenberg-2023/vulture--sara-holdren.json"
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gypsy-2024/vulture--sara-holdren.json",
+    "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+    "into-the-woods-2022/vulture--helen-shaw.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -51,7 +54,14 @@
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
     "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
-    "gettin-the-band-back-together-2018/vulture--sara-holdren.json"
+    "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
+    "gypsy-2008/vulture--jesse-green.json",
+    "hello-dolly-2017/vulture--jesse-green.json",
+    "how-i-learned-to-drive-2022/vulture--helen-shaw.json",
+    "how-i-learned-to-drive-2022/vulture--sara-holdren.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "in-transit-2016/vulture--jesse-green.json",
+    "ink-2019/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -59,6 +69,7 @@
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
       "come-from-away-2017/vulture--jesse-green.json"
     ],
+    "amp": [],
     "browserbase": [],
     "scrapingbee": [
       "falsettos-2016/vulture--jesse-green.json"
@@ -79,7 +90,12 @@
       "data/review-texts/first-date-2013/vulture--scott-brown.json",
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
-      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json"
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+      "data/review-texts/gypsy-2008/vulture--jesse-green.json",
+      "data/review-texts/hello-dolly-2017/vulture--jesse-green.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+      "data/review-texts/in-transit-2016/vulture--jesse-green.json",
+      "data/review-texts/ink-2019/vulture--jesse-green.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
@@ -96,11 +112,14 @@
       "flying-over-sunset-2021/vulture--sara-holdren.json",
       "frozen-2018/vulture--jesse-green.json",
       "good-night-oscar-2023/vulture--jackson-mchenry.json",
-      "gutenberg-2023/vulture--sara-holdren.json"
+      "gutenberg-2023/vulture--sara-holdren.json",
+      "gypsy-2024/vulture--sara-holdren.json",
+      "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+      "into-the-woods-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-02-18T03:41:41.883Z",
-  "lastProcessed": "gutenberg-2023/vulture--sara-holdren.json",
+  "lastProcessed": "into-the-woods-2022/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-02-18T03:43:15.202Z",
@@ -374,6 +393,94 @@
     },
     {
       "t": "2026-02-18T04:14:02.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:15:02.497Z",
+      "event": "bb-session",
+      "session": "406b89eb",
+      "url": "https://www.vulture.com/2008/03/theater_gypsy.html"
+    },
+    {
+      "t": "2026-02-18T04:15:04.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:16:03.208Z",
+      "event": "bb-session",
+      "session": "9ecbce02",
+      "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.h"
+    },
+    {
+      "t": "2026-02-18T04:16:05.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:17:18.870Z",
+      "event": "bb-session",
+      "session": "abd6f53f",
+      "url": "https://www.vulture.com/2013/03/theater-review-hands-on-a-hardbody.html#:~:text="
+    },
+    {
+      "t": "2026-02-18T04:17:21.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:18:05.851Z",
+      "event": "bb-session",
+      "session": "5af3730e",
+      "url": "https://www.vulture.com/2017/04/theater-review-hello-dolly-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:18:07.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:19:11.221Z",
+      "event": "bb-session",
+      "session": "a1fe4213",
+      "url": "https://www.vulture.com/2011/03/theater_review_how_to_succeed.html"
+    },
+    {
+      "t": "2026-02-18T04:19:13.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:20:14.831Z",
+      "event": "bb-session",
+      "session": "4fdcdece",
+      "url": "http://www.vulture.com/2016/12/theater-review-in-transit.html"
+    },
+    {
+      "t": "2026-02-18T04:20:17.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:21:15.130Z",
+      "event": "bb-session",
+      "session": "0b516ae3",
+      "url": "https://www.vulture.com/2019/04/theater-review-ink-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:21:17.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:22:18.281Z",
+      "event": "bb-session",
+      "session": "809dd148",
+      "url": "https://www.vulture.com/2022/07/theater-review-into-the-woods-sondheim-lapine-ba"
+    },
+    {
+      "t": "2026-02-18T04:22:20.343Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
