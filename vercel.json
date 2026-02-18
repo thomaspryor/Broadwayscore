@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "if echo \"$VERCEL_GIT_COMMIT_MESSAGE\" | grep -qE '^(chore: Checkpoint|data:|feat: Collect|feat: Re-scrape)'; then exit 0; fi; exit 1",
+  "ignoreCommand": "exit 1",
   "redirects": [
     {
       "source": "/biz-buzz",
