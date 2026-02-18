@@ -261,17 +261,20 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Extract DTLI reviews from archives
+        continue-on-error: true
         run: node scripts/extract-dtli-reviews.js
 
       - name: Extract Show Score reviews from archives
+        continue-on-error: true
         run: |
           if [ -f scripts/extract-show-score-reviews.js ]; then
-            node scripts/extract-show-score-reviews.js
+            node --max-old-space-size=4096 scripts/extract-show-score-reviews.js
           else
             echo "Show Score extraction script not found, skipping"
           fi
 
       - name: Rebuild reviews.json
+        if: always()
         env:
           ALLOW_DRIFT: 'true'
         run: node scripts/rebuild-all-reviews.js
