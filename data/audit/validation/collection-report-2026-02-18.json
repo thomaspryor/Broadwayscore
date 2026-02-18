@@ -1,0 +1,77 @@
+{
+  "runDate": "2026-02-18T00:28:11.922Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "42.9%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "scrapingbee": 3,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 5,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 51,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
+  ],
+  "failed": [
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "finding-neverland-2015/telegraph--matt-wolf.json",
+    "mean-girls-2018/the-telegraph-uk--diane-snyder.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "scrapingbee": [
+      "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+      "matilda-the-musical-2013/telegraph--unknown.json",
+      "west-side-story-2020/telegraph--diane-snyder.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
