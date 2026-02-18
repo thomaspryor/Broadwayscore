@@ -41,7 +41,17 @@
     "death-of-a-salesman-2012/newyorker--hilton-als.json",
     "death-of-a-salesman-2022/newyorker--naomi-fry.json",
     "disgraced-2014/newyorker--hilton-als.json",
-    "eclipsed-2016/newyorker--hilton-als.json"
+    "eclipsed-2016/newyorker--hilton-als.json",
+    "faith-healer-2006/newyorker--john-lahr.json",
+    "farinelli-and-the-king-2017/newyorker--hilton-als.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "fela-2009/newyorker--hilton-als.json",
+    "fences-2010/newyorker--hilton-als.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
+    "god-of-carnage-2009/newyorker--hilton-als.json",
+    "grand-horizons-2020/newyorker--hilton-als.json",
+    "grey-house-2023/newyorker--dan-stahl.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -85,14 +95,23 @@
       "data/review-texts/death-of-a-salesman-2012/newyorker--hilton-als.json",
       "data/review-texts/death-of-a-salesman-2022/newyorker--naomi-fry.json",
       "data/review-texts/disgraced-2014/newyorker--hilton-als.json",
-      "data/review-texts/eclipsed-2016/newyorker--hilton-als.json"
+      "data/review-texts/eclipsed-2016/newyorker--hilton-als.json",
+      "data/review-texts/faith-healer-2006/newyorker--john-lahr.json",
+      "data/review-texts/farinelli-and-the-king-2017/newyorker--hilton-als.json",
+      "data/review-texts/fat-ham-2023/newyorker--vinson-cunningham.json",
+      "data/review-texts/fela-2009/newyorker--hilton-als.json",
+      "data/review-texts/fences-2010/newyorker--hilton-als.json",
+      "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
+      "data/review-texts/god-of-carnage-2009/newyorker--hilton-als.json",
+      "data/review-texts/grand-horizons-2020/newyorker--hilton-als.json",
+      "data/review-texts/grey-house-2023/newyorker--dan-stahl.json"
     ],
     "archive": [
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ]
   },
   "startTime": "2026-02-18T04:22:23.732Z",
-  "lastProcessed": "eclipsed-2016/newyorker--hilton-als.json",
+  "lastProcessed": "grey-house-2023/newyorker--dan-stahl.json",
   "log": [
     {
       "t": "2026-02-18T04:23:55.743Z",
@@ -509,6 +528,28 @@
     },
     {
       "t": "2026-02-18T05:42:24.119Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:44:43.385Z",
+      "event": "bb-session",
+      "session": "d9bcd1a9",
+      "url": "https://www.newyorker.com/magazine/2006/05/29/amazing-grace-3"
+    },
+    {
+      "t": "2026-02-18T05:44:45.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:47:05.358Z",
+      "event": "bb-session",
+      "session": "078f1023",
+      "url": "https://www.newyorker.com/magazine/2017/12/25/farinelli-and-the-king-at-the-bela"
+    },
+    {
+      "t": "2026-02-18T05:47:08.023Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
