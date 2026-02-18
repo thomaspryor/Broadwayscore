@@ -1,248 +1,632 @@
 {
   "processed": [
-    "a-christmas-carol-2019/nytg--joe-dziemianowicz.json",
-    "almost-famous-2022/nyt-theater--jonathan-mandell.json",
-    "call-me-izzy-2025/nytg--austin-fimmano.json",
-    "doubt-a-parable/nytg--gillian-russo.json",
-    "fool-for-love-2015/nytg--stanford-friedman.json",
-    "gypsy-2008/nyt-theater--jonathan-mandell.json",
-    "oslo-2017/nytg--david-gordon.json",
-    "patriots-2024/nyt-theater--jonathan-mandell.json",
-    "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-    "six-degrees-of-separation-2017/act-three-the-reviews--doug-marino.json",
-    "some-like-it-hot-2022/nytg--joe-dziemianowicz.json",
-    "something-rotten-2015/nytg--tulis-mccall.json",
-    "sunset-boulevard-2017/nyt-theater--jonathan-mandell.json",
-    "tammy-faye/nyt-theater--jonathan-mandell.json",
-    "tammy-faye/nytg--joe-dziemianowicz.json",
-    "allegiance-2015/musical-theatre-review--ron-cohen.json",
-    "allegiance-2015/theatre-reviews-limited--david-roberts.json",
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "bandstand-2017/musical-theatre-review--ron-cohen.json",
-    "call-me-izzy-2025/guardian--adrian-horton.json",
-    "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-    "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
-    "doubt-a-parable/broadwaynews--brittani-samuel.json",
-    "doubt-a-parable/thewrap--jd-knapp.json",
-    "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
-    "elf-2012/broadwaynews--brittani-samuel.json",
-    "elf-2012/new-york-theatre--jonathan-mandell.json",
-    "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-    "good-night-oscar-2023/thewrap--robert-hofler.json",
-    "gypsy-2008/guardian--adrian-horton.json",
-    "jitney-2017/thewrap--robert-hofler.json",
-    "king-kong-2018/musical-theatre-review--ron-cohen.json",
-    "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "network-2018/broadwaynews--charles-isherwood.json",
-    "new-york-new-york-2023/broadwaynews--brittani-samuel.json",
-    "oklahoma-2019/musical-theatre-review--ron-cohen.json",
-    "oklahoma-2019/theatre-reviews-limited--david-roberts.json",
-    "oslo-2017/edge-new-york--wickham-boyle.json",
-    "our-town-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "pass-over-2021/broadwaynews--charles-isherwood.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "purpose/new-york-sun--elysa-gardner.json",
-    "purpose/thewrap--robert-hofler.json",
-    "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-    "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json",
-    "romeo-juliet-2024/thewrap--robert-hofler.json",
-    "six-degrees-of-separation-2017/edge-new-york--winnie-mccroy.json",
-    "six-degrees-of-separation-2017/theatre-reviews-limited--michele-willens.json",
-    "something-rotten-2015/thewrap--robert-hofler.json",
-    "sunday-in-the-park-with-george-2008/edge-new-york--bobby-mcguire.json",
-    "sunday-in-the-park-with-george-2008/musical-theatre-review--ron-cohen.json",
-    "sunset-boulevard-2017/theatre-reviews-limited--david-roberts.json",
-    "sweeney-todd-2023/broadwaynews--brittani-samuel.json",
-    "tammy-faye/broadwaynews--brittani-samuel.json",
-    "tammy-faye/new-york-sun--elysa-gardner.json",
-    "the-cher-show-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "the-crucible-2016/theatre-reviews-limited--michele-willens.json",
-    "the-inheritance-2019/broadwaynews--charles-isherwood.json",
-    "the-piano-lesson-2022/broadwaynews--brittani-samuel.json",
-    "the-sound-inside-2019/theatre-reviews-limited--david-roberts.json",
-    "thoughts-of-a-colored-man-2021/broadwaynews--charles-isherwood.json"
+    "1984-2017/vulture--jesse-green.json",
+    "a-view-from-the-bridge-2010/vulture--jesse-green.json",
+    "almost-famous-2022/vulture--helen-shaw.json",
+    "anastasia-2017/vulture--jesse-green.json",
+    "betrayal-2019/vulture--jesse-green.json",
+    "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+    "falsettos-2016/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json",
+    "frozen-2018/vulture--jesse-green.json",
+    "good-night-oscar-2023/vulture--jackson-mchenry.json",
+    "gypsy-2024/vulture--sara-holdren.json",
+    "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+    "in-transit-2016/vulture--jesse-green.json",
+    "into-the-woods-2022/vulture--helen-shaw.json",
+    "king-kong-2018/vulture--jesse-green.json",
+    "king-lear-2019/vulture--jesse-green.json",
+    "kinky-boots-2013/vulture--christopher-bonanos.json",
+    "kiss-me-kate-2019/vulture--jesse-green.json",
+    "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+    "lobby-hero-2018/vulture--boris-kachka.json",
+    "mcneal-2024/vulture--jackson-mchenry.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+    "mothers-and-sons-2014/vulture--jesse-green.json",
+    "network-2018/vulture--jesse-green.json",
+    "outside-mullingar-2014/vulture--jesse-green.json",
+    "pictures-from-home-2023/vulture--jackson-mchenry.json",
+    "straight-white-men-2018/vulture--jesse-green.json"
   ],
   "failed": [
-    "call-me-izzy-2025/nyt-theater--jonathan-mandell.json",
-    "les-miserables-1987/nytg--tulis-mccall.json",
-    "mrs-doubtfire-2021/nytg--joe-dziemianowicz.json",
-    "purpose/nytg--joe-dziemianowicz.json",
-    "a-christmas-carol-2019/broadwaynews--brittani-samuel.json",
-    "a-christmas-carol-2019/thewrap--robert-hofler.json",
-    "a-free-man-of-color-2010/new-jersey-newsroom--.json",
-    "a-strange-loop-2022/thewrap--robert-hofler.json",
-    "all-my-sons-2008/theaterreviewsfrommyseat--joe-lombardi.json",
-    "almost-famous-2022/new-york-sun--elysa-gardner.json",
-    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
-    "collected-stories-2010/bloombeg-news--jeremy-gerard.json",
-    "elf-2012/new-york-sun--elysa-gardner.json",
-    "enron-2010/nj-newsroom--michael-sommers.json",
-    "floyd-collins-2025/broadwaynews--brittani-samuel.json",
-    "floyd-collins-2025/new-york-sun--elysa-gardner.json",
-    "floyd-collins-2025/new-york-sun--elyse-sommer.json",
-    "fool-for-love-2015/theatre-reviews-limited--david-roberts.json",
-    "fool-for-love-2015/thewrap--robert-hofler.json",
-    "frozen-2018/broadwaynews--charles-isherwood.json",
-    "godspell-2011/bloomberg-news--jeremy-gerard.json",
-    "jitney-2017/theatre-reviews-limited--michele-willens.json",
-    "john-proctor-is-the-villain-2025/broadwaynews--brittani-samuel.json",
-    "john-proctor-is-the-villain-2025/theatre-reviews-limited--david-roberts.json",
-    "just-for-us-2023/broadwaynews--brittani-samuel.json",
-    "just-for-us-2023/broadwaynews--unknown.json",
-    "just-in-time-2025/broadwaynews--brittani-samuel.json",
-    "king-kong-2018/broadwaynews--charles-isherwood.json",
-    "la-bete-2010/bloomberg-news--jeremy-gerard.json",
-    "la-bete-2010/new-jersey-newsroom--michael-sommers.json",
-    "lombardi-2010/new-jersey-newsroom--michael-sommers.json",
-    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
-    "network-2018/theatre-reviews-limited--david-roberts.json",
-    "noises-off-2016/reviewing-the-drama--robin-riegelhaupt.json",
-    "oklahoma-2019/broadwaynews--charles-isherwood.json",
-    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
-    "oslo-2017/abc-news--unknown.json",
-    "oslo-2017/reviewing-the-drama--robin-riegelhaupt.json",
-    "priscilla-queen-of-the-desert-2011/njnewsroom--michael-sommers.json",
-    "purpose/broadwaynews--brittani-samuel.json",
-    "red-2010/bloomberg-news--john-simon.json",
-    "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
-    "shucked-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "the-assembled-parties-2013/bloomberg-news--unknown.json",
-    "the-cher-show-2018/broadwaynews--charles-isherwood.json",
-    "the-heiress-2012/thewrap--steve-pond.json",
-    "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json"
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-bronx-tale-2007/vulture--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "a-soldiers-play-2020/vulture--jesse-green.json",
+    "amelie-a-new-musical-2017/vulture--jesse-green.json",
+    "angels-in-america-2018/vulture--jesse-green-pt2.json",
+    "bandstand-2017/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "burn-this-2019/vulture--jesse-green.json",
+    "cabaret-2024/vulture--helen-shaw.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "caroline-or-change-2021/vulture--helen-shaw.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "doubt-a-parable/vulture--sara-holdren.json",
+    "elf-2012/vulture--jesse-green.json",
+    "elf-2024/vulture--jackson-mchenry.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "fiddler-on-the-roof-2015/vulture--jesse-green.json",
+    "first-date-2013/vulture--scott-brown.json",
+    "flying-over-sunset-2021/vulture--sara-holdren.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--helen-shaw.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+    "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+    "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gypsy-2008/vulture--jesse-green.json",
+    "hello-dolly-2017/vulture--jesse-green.json",
+    "how-i-learned-to-drive-2022/vulture--helen-shaw.json",
+    "how-i-learned-to-drive-2022/vulture--sara-holdren.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "ink-2019/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "junk-2017/vulture--sara-holdren.json",
+    "leopoldstadt-2022/vulture--helen-shaw.json",
+    "leopoldstadt-2022/vulture--naveen-kumar.json",
+    "linda-vista-2019/vulture--jesse-green.json",
+    "matilda-the-musical-2013/vulture--jesse-green.json",
+    "meteor-shower-2017/vulture--sara-holdren.json",
+    "mr-saturday-night-2022/vulture--helen-shaw.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
+    "newsies-the-musical-2012/vulture--jesse-green.json",
+    "oklahoma-2019/vulture--jesse-green.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "once-on-this-island-2017/vulture--jesse-green.json",
+    "one-man-two-guvnors-2012/vulture--jesse-green.json",
+    "orphans-2013/vulture--jesse-green.json",
+    "othello-2025/vulture--david-fox.json",
+    "pass-over-2021/vulture--helen-shaw.json",
+    "peter-pan-goes-wrong-2023/vulture--jackson-mchenry.json",
+    "pirates-the-penzance-musical-2025/vulture--sara-holdren.json",
+    "prima-facie-2023/vulture--jackson-mchenry.json",
+    "prince-of-broadway-2017/vulture--jesse-green.json",
+    "priscilla-queen-of-the-desert-2011/vulture--jesse-green.json",
+    "purpose/vulture--jackson-mchenry.json",
+    "romeo-and-juliet-2013/vulture--jesse-green.json",
+    "spongebob-squarepants-2017/vulture--jesse-green.json",
+    "stephen-sondheims-old-friends-2025/vulture--unknown.json",
+    "summer-1976-2023/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "fool-for-love-2015/nytg--stanford-friedman.json",
-      "gypsy-2008/nyt-theater--jonathan-mandell.json",
-      "patriots-2024/nyt-theater--jonathan-mandell.json",
-      "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
-      "six-degrees-of-separation-2017/act-three-the-reviews--doug-marino.json",
-      "something-rotten-2015/nytg--tulis-mccall.json",
-      "sunset-boulevard-2017/nyt-theater--jonathan-mandell.json",
-      "allegiance-2015/theatre-reviews-limited--david-roberts.json",
-      "bandstand-2017/musical-theatre-review--ron-cohen.json",
-      "call-me-izzy-2025/guardian--adrian-horton.json",
-      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "call-me-izzy-2025/this-week-in-new-york--mark-rifkin.json",
-      "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
-      "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
-      "elf-2012/new-york-theatre--jonathan-mandell.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "gypsy-2008/guardian--adrian-horton.json",
-      "king-kong-2018/musical-theatre-review--ron-cohen.json",
-      "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "oklahoma-2019/theatre-reviews-limited--david-roberts.json",
-      "oslo-2017/edge-new-york--wickham-boyle.json",
-      "our-town-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json",
-      "six-degrees-of-separation-2017/edge-new-york--winnie-mccroy.json",
-      "six-degrees-of-separation-2017/theatre-reviews-limited--michele-willens.json",
-      "sunday-in-the-park-with-george-2008/edge-new-york--bobby-mcguire.json",
-      "sunday-in-the-park-with-george-2008/musical-theatre-review--ron-cohen.json",
-      "sunset-boulevard-2017/theatre-reviews-limited--david-roberts.json",
-      "the-cher-show-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "the-crucible-2016/theatre-reviews-limited--michele-willens.json",
-      "the-sound-inside-2019/theatre-reviews-limited--david-roberts.json"
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "come-from-away-2017/vulture--jesse-green.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/fool-for-love-2015/thewrap--robert-hofler.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [
-      "almost-famous-2022/nyt-theater--jonathan-mandell.json",
-      "good-night-oscar-2023/thewrap--robert-hofler.json",
-      "romeo-juliet-2024/thewrap--robert-hofler.json",
-      "something-rotten-2015/thewrap--robert-hofler.json"
+      "oklahoma-2019/vulture--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/les-miserables-1987/nytg--tulis-mccall.json",
-      "data/review-texts/a-christmas-carol-2019/thewrap--robert-hofler.json",
-      "data/review-texts/a-free-man-of-color-2010/new-jersey-newsroom--.json",
-      "data/review-texts/all-my-sons-2008/theaterreviewsfrommyseat--joe-lombardi.json",
-      "data/review-texts/almost-famous-2022/new-york-sun--elysa-gardner.json",
-      "data/review-texts/collected-stories-2010/bloombeg-news--jeremy-gerard.json",
-      "data/review-texts/frozen-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/king-kong-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/network-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/noises-off-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/oklahoma-2019/broadwaynews--charles-isherwood.json",
-      "data/review-texts/oslo-2017/abc-news--unknown.json",
-      "data/review-texts/oslo-2017/reviewing-the-drama--robin-riegelhaupt.json",
-      "data/review-texts/the-cher-show-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/the-heiress-2012/thewrap--steve-pond.json"
+      "data/review-texts/a-soldiers-play-2020/vulture--jesse-green.json",
+      "data/review-texts/amelie-a-new-musical-2017/vulture--jesse-green.json",
+      "data/review-texts/angels-in-america-2018/vulture--jesse-green-pt2.json",
+      "data/review-texts/bandstand-2017/vulture--jesse-green.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+      "data/review-texts/burn-this-2019/vulture--jesse-green.json",
+      "data/review-texts/cabaret-2024/vulture--helen-shaw.json",
+      "data/review-texts/caroline-or-change-2021/vulture--helen-shaw.json",
+      "data/review-texts/doubt-a-parable/vulture--sara-holdren.json",
+      "data/review-texts/escape-to-margaritaville-2018/vulture--jesse-green.json",
+      "data/review-texts/fiddler-on-the-roof-2015/vulture--jesse-green.json",
+      "data/review-texts/first-date-2013/vulture--scott-brown.json",
+      "data/review-texts/flying-over-sunset-2021/vulture--sara-holdren.json",
+      "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+      "data/review-texts/gutenberg-2023/vulture--sara-holdren.json",
+      "data/review-texts/gypsy-2008/vulture--jesse-green.json",
+      "data/review-texts/hello-dolly-2017/vulture--jesse-green.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+      "data/review-texts/ink-2019/vulture--jesse-green.json",
+      "data/review-texts/john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+      "data/review-texts/leopoldstadt-2022/vulture--helen-shaw.json",
+      "data/review-texts/linda-vista-2019/vulture--jesse-green.json",
+      "data/review-texts/matilda-the-musical-2013/vulture--jesse-green.json",
+      "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
+      "data/review-texts/network-2018/vulture--jesse-green.json",
+      "data/review-texts/newsies-the-musical-2012/vulture--jesse-green.json",
+      "data/review-texts/on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+      "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json",
+      "data/review-texts/purpose/vulture--jackson-mchenry.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/vulture--jesse-green.json",
+      "data/review-texts/spongebob-squarepants-2017/vulture--jesse-green.json"
     ],
     "archive": [
-      "a-christmas-carol-2019/nytg--joe-dziemianowicz.json",
-      "call-me-izzy-2025/nytg--austin-fimmano.json",
-      "doubt-a-parable/nytg--gillian-russo.json",
-      "oslo-2017/nytg--david-gordon.json",
-      "some-like-it-hot-2022/nytg--joe-dziemianowicz.json",
-      "tammy-faye/nyt-theater--jonathan-mandell.json",
-      "tammy-faye/nytg--joe-dziemianowicz.json",
-      "allegiance-2015/musical-theatre-review--ron-cohen.json",
-      "and-juliet-2022/thewrap--robert-hofler.json",
-      "doubt-a-parable/broadwaynews--brittani-samuel.json",
-      "doubt-a-parable/thewrap--jd-knapp.json",
-      "elf-2012/broadwaynews--brittani-samuel.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-      "jitney-2017/thewrap--robert-hofler.json",
-      "new-york-new-york-2023/broadwaynews--brittani-samuel.json",
-      "oklahoma-2019/musical-theatre-review--ron-cohen.json",
-      "pass-over-2021/broadwaynews--charles-isherwood.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json",
-      "purpose/new-york-sun--elysa-gardner.json",
-      "purpose/thewrap--robert-hofler.json",
-      "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-      "sweeney-todd-2023/broadwaynews--brittani-samuel.json",
-      "tammy-faye/broadwaynews--brittani-samuel.json",
-      "tammy-faye/new-york-sun--elysa-gardner.json",
-      "the-inheritance-2019/broadwaynews--charles-isherwood.json",
-      "the-piano-lesson-2022/broadwaynews--brittani-samuel.json",
-      "thoughts-of-a-colored-man-2021/broadwaynews--charles-isherwood.json"
+      "1984-2017/vulture--jesse-green.json",
+      "a-view-from-the-bridge-2010/vulture--jesse-green.json",
+      "almost-famous-2022/vulture--helen-shaw.json",
+      "anastasia-2017/vulture--jesse-green.json",
+      "betrayal-2019/vulture--jesse-green.json",
+      "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
+      "bullets-over-broadway-2014/vulture--jesse-green.json",
+      "company-2021/vulture--helen-shaw.json",
+      "cyrano-de-bergerac-2007/vulture--scott-brown.json",
+      "falsettos-2016/vulture--jesse-green.json",
+      "farinelli-and-the-king-2017/vulture--jesse-green.json",
+      "frozen-2018/vulture--jesse-green.json",
+      "good-night-oscar-2023/vulture--jackson-mchenry.json",
+      "gypsy-2024/vulture--sara-holdren.json",
+      "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+      "in-transit-2016/vulture--jesse-green.json",
+      "into-the-woods-2022/vulture--helen-shaw.json",
+      "king-kong-2018/vulture--jesse-green.json",
+      "king-lear-2019/vulture--jesse-green.json",
+      "kinky-boots-2013/vulture--christopher-bonanos.json",
+      "kiss-me-kate-2019/vulture--jesse-green.json",
+      "little-bear-ridge-road-2025/vulture--jackson-mchenry.json",
+      "lobby-hero-2018/vulture--boris-kachka.json",
+      "mcneal-2024/vulture--jackson-mchenry.json",
+      "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+      "mothers-and-sons-2014/vulture--jesse-green.json",
+      "one-man-two-guvnors-2012/vulture--jesse-green.json",
+      "outside-mullingar-2014/vulture--jesse-green.json",
+      "peter-pan-goes-wrong-2023/vulture--jackson-mchenry.json",
+      "pictures-from-home-2023/vulture--jackson-mchenry.json",
+      "prima-facie-2023/vulture--jackson-mchenry.json",
+      "straight-white-men-2018/vulture--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-18T04:49:09.740Z",
-  "lastProcessed": "thoughts-of-a-colored-man-2021/broadwaynews--charles-isherwood.json",
+  "startTime": "2026-02-18T04:12:26.697Z",
+  "lastProcessed": "summer-1976-2023/vulture--jackson-mchenry.json",
   "log": [
     {
-      "t": "2026-02-18T04:54:55.675Z",
+      "t": "2026-02-18T04:14:05.649Z",
       "event": "bb-session",
-      "session": "70fbb015",
-      "url": "https://www.thewrap.com/christmas-carol-broadway-review-jefferson-mays/"
+      "session": "12065e34",
+      "url": "https://www.vulture.com/2020/01/theater-review-a-soldiers-play-on-broadway.html"
     },
     {
-      "t": "2026-02-18T05:01:16.196Z",
-      "event": "bb-session",
-      "session": "25ebc63a",
-      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
-    },
-    {
-      "t": "2026-02-18T05:01:18.421Z",
+      "t": "2026-02-18T04:14:07.801Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-18T05:05:05.584Z",
+      "t": "2026-02-18T04:15:16.213Z",
       "event": "bb-session",
-      "session": "5353716f",
-      "url": "https://www.thewrap.com/fool-for-love-broadway-review-sam-shepard-sam-rockwell-n"
+      "session": "e63630e9",
+      "url": "https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html"
     },
     {
-      "t": "2026-02-18T05:06:25.407Z",
-      "event": "bb-session",
-      "session": "a143990e",
-      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-gra"
+      "t": "2026-02-18T04:15:18.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-18T05:21:21.431Z",
+      "t": "2026-02-18T04:16:10.407Z",
       "event": "bb-session",
-      "session": "7ff37fa3",
-      "url": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-conno"
+      "session": "1ccb4621",
+      "url": "https://www.vulture.com/2018/03/theater-review-angels-in-america-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-18T04:16:12.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:17:06.107Z",
+      "event": "bb-session",
+      "session": "7feb5b72",
+      "url": "https://www.vulture.com/2017/04/theater-review-bandstand-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:17:08.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:18:01.946Z",
+      "event": "bb-session",
+      "session": "b21fd9bc",
+      "url": "https://www.vulture.com/2010/10/theater_bloody_bloody_andrew_j.html"
+    },
+    {
+      "t": "2026-02-18T04:18:04.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:19:09.097Z",
+      "event": "bb-session",
+      "session": "8cfb67d1",
+      "url": "https://www.vulture.com/2019/04/theater-review-burn-this-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:19:11.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:20:08.314Z",
+      "event": "bb-session",
+      "session": "6f3d7a80",
+      "url": "https://www.vulture.com/article/cabaret-broadway-review-kit-kat-club.html"
+    },
+    {
+      "t": "2026-02-18T04:20:10.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:21:20.839Z",
+      "event": "bb-session",
+      "session": "382b6074",
+      "url": "https://www.vulture.com/2021/11/theater-review-caroline-or-change-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:21:23.028Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:29:27.687Z",
+      "event": "bb-session",
+      "session": "689ddb04",
+      "url": "https://www.vulture.com/article/theater-review-doubt-returns-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:29:29.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:29:56.743Z",
+      "event": "bb-session",
+      "session": "cb8b8edf",
+      "url": "https://www.vulture.com/2018/03/theater-review-escape-to-margaritaville.html"
+    },
+    {
+      "t": "2026-02-18T04:29:57.774Z",
+      "event": "bb-session",
+      "session": "50994364",
+      "url": "https://www.vulture.com/2015/12/theater-review-fiddler-on-the-roof.html"
+    },
+    {
+      "t": "2026-02-18T04:29:58.725Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:29:59.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:31:32.459Z",
+      "event": "bb-session",
+      "session": "92347ecd",
+      "url": "https://www.vulture.com/2013/08/theater-review-first-date.htmlway-review-first-d"
+    },
+    {
+      "t": "2026-02-18T04:31:34.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:33:26.731Z",
+      "event": "bb-session",
+      "session": "a9bbb177",
+      "url": "https://www.vulture.com/2021/12/theater-review-flying-over-sunset-vivian-beaumon"
+    },
+    {
+      "t": "2026-02-18T04:33:28.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:34:33.293Z",
+      "event": "bb-session",
+      "session": "11d8e987",
+      "url": "https://www.vulture.com/2022/04/theater-review-for-colored-girls-broadway-reviva"
+    },
+    {
+      "t": "2026-02-18T04:34:35.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:35:27.082Z",
+      "event": "bb-session",
+      "session": "cae5350f",
+      "url": "https://www.vulture.com/2019/05/frankie-and-johnny-in-the-clair-de-lune-theater-"
+    },
+    {
+      "t": "2026-02-18T04:35:29.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:36:22.368Z",
+      "event": "bb-session",
+      "session": "8cf73da2",
+      "url": "https://www.vulture.com/2019/04/theater-review-gary-a-sequel-to-titus-andronicus"
+    },
+    {
+      "t": "2026-02-18T04:36:24.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:40:23.692Z",
+      "event": "bb-session",
+      "session": "8deea9f0",
+      "url": "https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.ht"
+    },
+    {
+      "t": "2026-02-18T04:40:25.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:40:38.523Z",
+      "event": "bb-session",
+      "session": "e6ddaa60",
+      "url": "https://www.vulture.com/2008/03/theater_gypsy.html"
+    },
+    {
+      "t": "2026-02-18T04:40:41.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:42:08.118Z",
+      "event": "bb-session",
+      "session": "3d0d7d4e",
+      "url": "https://www.vulture.com/2017/04/theater-review-hello-dolly-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:42:10.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:43:12.385Z",
+      "event": "bb-session",
+      "session": "64b4f339",
+      "url": "https://www.vulture.com/2011/03/theater_review_how_to_succeed.html"
+    },
+    {
+      "t": "2026-02-18T04:43:14.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:44:11.250Z",
+      "event": "bb-session",
+      "session": "8cecf9fc",
+      "url": "https://www.vulture.com/2019/04/theater-review-ink-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:44:13.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:45:23.570Z",
+      "event": "bb-session",
+      "session": "be937104",
+      "url": "https://www.vulture.com/2018/01/theater-review-john-lithgow-stories-by-heart.htm"
+    },
+    {
+      "t": "2026-02-18T04:45:25.790Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:46:53.542Z",
+      "event": "bb-session",
+      "session": "95fbd462",
+      "url": "https://www.vulture.com/2022/10/theater-review-leopoldstadt-longacre-theater.htm"
+    },
+    {
+      "t": "2026-02-18T04:46:55.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:47:53.544Z",
+      "event": "bb-session",
+      "session": "a6fcc89b",
+      "url": "https://www.vulture.com/2019/10/theater-review-linda-vista-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:47:55.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:49:02.980Z",
+      "event": "bb-session",
+      "session": "e0433e26",
+      "url": "https://www.vulture.com/2013/04/theater-review-matilda-the-musical.html"
+    },
+    {
+      "t": "2026-02-18T04:49:05.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:50:18.213Z",
+      "event": "bb-session",
+      "session": "fdf8df2c",
+      "url": "https://www.vulture.com/2016/11/theater-review-natasha-pierre-and-the-great-come"
+    },
+    {
+      "t": "2026-02-18T04:50:20.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:51:12.743Z",
+      "event": "bb-session",
+      "session": "e559358b",
+      "url": "https://www.vulture.com/2018/12/theater-review-network-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:51:14.915Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:52:03.684Z",
+      "event": "bb-session",
+      "session": "c6e55b94",
+      "url": "https://www.vulture.com/2012/03/theater-review-newsies-the-musical.html"
+    },
+    {
+      "t": "2026-02-18T04:52:05.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:58:48.370Z",
+      "event": "bb-session",
+      "session": "0cf37329",
+      "url": "https://www.vulture.com/2019/04/the-brightness-amid-the-menace-re-reviewing-okla"
+    },
+    {
+      "t": "2026-02-18T04:58:50.364Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:58:59.772Z",
+      "event": "bb-session",
+      "session": "bf0d52d1",
+      "url": "https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html"
+    },
+    {
+      "t": "2026-02-18T04:59:01.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:59:02.867Z",
+      "event": "bb-session",
+      "session": "e0dfe0af",
+      "url": "https://www.vulture.com/2011/12/theater_review_on_a_clear_day.html"
+    },
+    {
+      "t": "2026-02-18T04:59:04.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:02:57.925Z",
+      "event": "bb-session",
+      "session": "7e3044d8",
+      "url": "https://www.vulture.com/2012/04/stage-dive-theater-review-one-man-two-guvnors.ht"
+    },
+    {
+      "t": "2026-02-18T05:03:00.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:06:19.271Z",
+      "event": "bb-session",
+      "session": "63b59013",
+      "url": "https://www.vulture.com/2014/01/theater-review-outside-mullingar.html#:~:text=)%"
+    },
+    {
+      "t": "2026-02-18T05:06:21.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:10:21.209Z",
+      "event": "bb-session",
+      "session": "2439100e",
+      "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.htm"
+    },
+    {
+      "t": "2026-02-18T05:10:23.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:10:23.734Z",
+      "event": "bb-session",
+      "session": "ae9e67e1",
+      "url": "https://www.vulture.com/2023/02/theater-review-pictures-from-home-sultan-lane-bu"
+    },
+    {
+      "t": "2026-02-18T05:10:25.953Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:17:39.885Z",
+      "event": "bb-session",
+      "session": "268cd86e",
+      "url": "https://www.vulture.com/2023/04/theater-review-jodie-comer-prima-facie-broadway."
+    },
+    {
+      "t": "2026-02-18T05:17:41.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:17:42.254Z",
+      "event": "bb-session",
+      "session": "4733e672",
+      "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.ht"
+    },
+    {
+      "t": "2026-02-18T05:17:44.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:17:52.621Z",
+      "event": "bb-session",
+      "session": "875588a7",
+      "url": "https://www.vulture.com/2011/03/theater_review_priscilla_quee.html"
+    },
+    {
+      "t": "2026-02-18T05:17:54.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:18:54.434Z",
+      "event": "bb-session",
+      "session": "6d3cdc50",
+      "url": "https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadwa"
+    },
+    {
+      "t": "2026-02-18T05:18:56.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T05:23:04.580Z",
+      "event": "bb-session",
+      "session": "71ce5e83",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
+    },
+    {
+      "t": "2026-02-18T05:23:06.633Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
