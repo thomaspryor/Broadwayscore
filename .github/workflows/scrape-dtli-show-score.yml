@@ -1,0 +1,357 @@
+name: Scrape DTLI & Show Score Pages
+
+on:
+  schedule:
+    - cron: '0 15 * * 0'  # Weekly Sundays 3 PM UTC (after BWW at 1 PM)
+  workflow_dispatch:
+    inputs:
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - dtli
+          - show-score
+        default: all
+      shows:
+        description: 'Comma-separated show IDs, "all", or "missing" (default)'
+        required: false
+        type: string
+        default: 'missing'
+      force:
+        description: 'Re-fetch even if archive exists'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  discover-dtli-slugs:
+    if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Discover DTLI slugs from sitemaps
+        run: node scripts/discover-dtli-slugs.js
+
+      - name: Commit slug map
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dtli-slug-map.json
+          git diff --staged --quiet && echo "No slug map changes" && exit 0
+
+          git commit -m "data: Update DTLI slug map from sitemaps"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  fetch-dtli:
+    needs: [discover-dtli-slugs]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'dtli') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Fetch DTLI pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          FORCE_FLAG=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows "$SHOWS_ARG" $FORCE_FLAG
+
+      - name: Commit DTLI archives
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aggregator-archive/dtli/
+          git diff --staged --quiet && echo "No DTLI archive changes" && exit 0
+
+          git commit -m "data: Fetch DTLI aggregator pages"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  fetch-show-score:
+    if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'show-score' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Fetch Show Score pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          FORCE_FLAG=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows "$SHOWS_ARG" $FORCE_FLAG
+
+      - name: Commit Show Score archives
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aggregator-archive/show-score/ data/show-score-urls.json
+          git diff --staged --quiet && echo "No Show Score archive changes" && exit 0
+
+          git commit -m "data: Fetch Show Score aggregator pages"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  extract-and-rebuild:
+    needs: [fetch-dtli, fetch-show-score]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract DTLI reviews from archives
+        run: node scripts/extract-dtli-reviews.js
+
+      - name: Extract Show Score reviews from archives
+        run: |
+          if [ -f scripts/extract-show-score-reviews.js ]; then
+            node scripts/extract-show-score-reviews.js
+          else
+            echo "Show Score extraction script not found, skipping"
+          fi
+
+      - name: Rebuild reviews.json
+        env:
+          ALLOW_DRIFT: 'true'
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit and push
+        if: always()
+        run: |
+          git add data/reviews.json data/review-texts/ data/critic-registry.json data/audit/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "data: Extract + rebuild after DTLI/Show Score scrape"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          THRESHOLD=20
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          RUNNING=$(gh run list --workflow="Collect Review Texts" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Text collection already running. Skipping."
+            exit 0
+          fi
+
+          echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+          gh workflow run "Collect Review Texts" \
+            -f max_reviews=300 \
+            -f browserbase_enabled=true \
+            -f retry_failed=true \
+            -f archive_first=true
+
+          echo "Text collection auto-triggered."

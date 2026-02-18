@@ -22,6 +22,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
 | `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (audit → parallel gather → scrape PV/NYC → rebuild) |
 | `opening-night-broadcast.yml` | ✅ | ✅ | 2x daily, discovers reviews via SERP + aggregators, rebuilds, sends broadcast email |
+| `scrape-dtli-show-score.yml` | ✅ | ✅ | Weekly DTLI + Show Score page fetching, extraction, rebuild |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -331,6 +332,21 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Checkpointing:** Every 25 shows in CI with git push retry
 - **Archives:** `data/aggregator-archive/bww-reviews/` (review pages), `data/aggregator-archive/bww-roundups/` (roundup articles)
 - **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
+
+## `scrape-dtli-show-score.yml`
+- **Runs:** Weekly on Sundays at 3 PM UTC (after BWW at 1 PM), or manually
+- **Does:** Discovers DTLI slugs from sitemaps, fetches DTLI + Show Score aggregator pages, extracts reviews, rebuilds `reviews.json`
+- **Options:** `aggregator` (all/dtli/show-score), `shows` (comma-separated/"all"/"missing", default missing), `force` (re-fetch existing)
+- **Job pipeline (4 jobs):**
+  1. `discover-dtli-slugs` — Scrapes 13 DTLI WordPress sitemaps, matches slugs to our shows, writes `data/dtli-slug-map.json`
+  2. `fetch-dtli` (needs #1) — `npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows missing` → archives to `data/aggregator-archive/dtli/`
+  3. `fetch-show-score` (parallel with #2) — `npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows missing` → archives to `data/aggregator-archive/show-score/`
+  4. `extract-and-rebuild` (needs #2 + #3) — Extracts reviews from archives, rebuilds reviews.json, auto-triggers text collection if >20 reviews need it
+- **Key data file:** `data/dtli-slug-map.json` — persistent mapping of our show IDs to DTLI URL slugs (discovered from sitemaps, 583+ entries)
+- **Scripts:** `scripts/discover-dtli-slugs.js`, `scripts/fetch-aggregator-pages.ts`, `scripts/extract-dtli-reviews.js`, `scripts/rebuild-all-reviews.js`
+- **Requires:** `SCRAPINGBEE_API_KEY` (for Show Score), Playwright (installed in CI)
+- **Parallel-safe:** Each job commits only its own data, 5-retry push with rebase
+- **Manual trigger:** `gh workflow run "Scrape DTLI & Show Score Pages" -f aggregator=dtli -f shows=hamilton-2015,cabaret-2024`
 
 ## `audit-aggregator-coverage.yml`
 - **Runs:** Weekly on Mondays at 6 AM UTC, or manually
