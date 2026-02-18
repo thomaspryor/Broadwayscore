@@ -1,53 +1,267 @@
 {
-  "processed": [
-    "an-act-of-god-2016/nytg--unknown.json",
-    "john-lithgow-stories-by-heart-2018/nytg--tulis-mccall.json",
-    "macbeth-2008/nyt-theater--jonathan-mandell.json",
-    "macbeth-2022/nytg--joe-dziemianowicz.json",
-    "mcneal-2024/nytg--joe-dziemianowicz.json",
-    "othello-2025/nytg--austin-fimmano.json",
-    "romeo-juliet/nytg--gillian-russo.json",
-    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-    "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-    "travesties-2018/nytg--tom-millward.json",
-    "a-christmas-carol-2022/guardian--alexis-soloski.json"
-  ],
+  "processed": [],
   "failed": [
-    "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
-    "a-soldiers-play-2020/nyt-theater--jonathan-mandell.json",
-    "american-buffalo-2022/nyt-theater--jonathan-mandell.json",
-    "fully-committed-2016/act-three-the-reviews--doug-marino.json",
-    "mr-saturday-night-2022/nyt-theater--jonathan-mandell.json",
-    "mr-saturday-night-2022/nytg--joe-dziemianowicz.json",
-    "pictures-from-home-2023/nyt-theater--jonathan-mandell.json",
-    "a-christmas-carol-2022/broadwaynews--brittani-samuel.json",
-    "a-dolls-house-part-2-2017/nbcnews--robert-kahn.json"
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--john-lahr.json",
+    "all-my-sons-2019/newyorker--hilton-als.json",
+    "almost-famous-2022/newyorker--naomi-fry.json",
+    "american-psycho-2016/newyorker--hilton-als.json",
+    "anastasia-2017/newyorker--hilton-als.json",
+    "angels-in-america-2018/newyorker--hilton-als.json",
+    "anything-goes-2011/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "an-act-of-god-2016/nytg--unknown.json",
-      "john-lithgow-stories-by-heart-2018/nytg--tulis-mccall.json",
-      "macbeth-2008/nyt-theater--jonathan-mandell.json",
-      "mcneal-2024/nytg--joe-dziemianowicz.json",
-      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-      "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-      "travesties-2018/nytg--tom-millward.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "a-christmas-carol-2022/guardian--alexis-soloski.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": [
-      "macbeth-2022/nytg--joe-dziemianowicz.json",
-      "othello-2025/nytg--austin-fimmano.json",
-      "romeo-juliet/nytg--gillian-russo.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
+      "data/review-texts/mj-2022/newyorker--naomi-fry.json",
+      "data/review-texts/six-2021/newyorker--naomi-fry.json",
+      "data/review-texts/the-lion-king-1997/newyorker--john-lahr.json",
+      "data/review-texts/1776-2022/newyorker--naomi-fry.json",
+      "data/review-texts/a-christmas-carol-2019/newyorker--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2022/newyorker--naomi-fry.json",
+      "data/review-texts/a-free-man-of-color-2010/newyorker--hilton-als.json",
+      "data/review-texts/a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+      "data/review-texts/act-one-2014/newyorker--hilton-als.json",
+      "data/review-texts/all-my-sons-2008/newyorker--hilton-als.json",
+      "data/review-texts/all-my-sons-2008/newyorker--john-lahr.json",
+      "data/review-texts/all-my-sons-2019/newyorker--hilton-als.json",
+      "data/review-texts/almost-famous-2022/newyorker--naomi-fry.json",
+      "data/review-texts/american-psycho-2016/newyorker--hilton-als.json",
+      "data/review-texts/anastasia-2017/newyorker--hilton-als.json",
+      "data/review-texts/angels-in-america-2018/newyorker--hilton-als.json",
+      "data/review-texts/anything-goes-2011/newyorker--john-lahr.json"
+    ],
+    "archive": []
   },
-  "startTime": "2026-02-18T04:36:35.132Z",
-  "lastProcessed": "a-dolls-house-part-2-2017/nbcnews--robert-kahn.json",
-  "log": []
+  "startTime": "2026-02-18T04:22:23.732Z",
+  "lastProcessed": "anything-goes-2011/newyorker--john-lahr.json",
+  "log": [
+    {
+      "t": "2026-02-18T04:23:55.743Z",
+      "event": "bb-session",
+      "session": "13980936",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-18T04:23:57.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:26:11.248Z",
+      "event": "bb-session",
+      "session": "176cf2e5",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-18T04:26:13.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:28:12.844Z",
+      "event": "bb-session",
+      "session": "eba6b811",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+    },
+    {
+      "t": "2026-02-18T04:28:15.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:30:12.644Z",
+      "event": "bb-session",
+      "session": "e6fa682a",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+    },
+    {
+      "t": "2026-02-18T04:30:15.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:31:56.985Z",
+      "event": "bb-session",
+      "session": "c3c9f3b1",
+      "url": "https://www.newyorker.com/magazine/2003/11/10/bitches-and-witches"
+    },
+    {
+      "t": "2026-02-18T04:31:59.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:34:20.482Z",
+      "event": "bb-session",
+      "session": "fa8c484d",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+    },
+    {
+      "t": "2026-02-18T04:34:22.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:36:19.891Z",
+      "event": "bb-session",
+      "session": "a90aa911",
+      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-t"
+    },
+    {
+      "t": "2026-02-18T04:36:22.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:38:24.251Z",
+      "event": "bb-session",
+      "session": "55f9c31d",
+      "url": "https://www.newyorker.com/magazine/2022/12/19/a-christmas-carol-theatre-review"
+    },
+    {
+      "t": "2026-02-18T04:38:26.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:40:36.868Z",
+      "event": "bb-session",
+      "session": "b1f9f19f",
+      "url": "https://www.newyorker.com/magazine/2010/11/29/in-living-color"
+    },
+    {
+      "t": "2026-02-18T04:40:39.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:42:41.488Z",
+      "event": "bb-session",
+      "session": "8bbdd13c",
+      "url": "https://www.newyorker.com/magazine/2015/12/07/views-from-the-bridge"
+    },
+    {
+      "t": "2026-02-18T04:42:43.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:44:40.088Z",
+      "event": "bb-session",
+      "session": "17851900",
+      "url": "https://www.newyorker.com/magazine/2014/05/05/act-one"
+    },
+    {
+      "t": "2026-02-18T04:44:42.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:46:38.279Z",
+      "event": "bb-session",
+      "session": "2398073e",
+      "url": "https://www.newyorker.com/magazine/2008/10/27/family-plots"
+    },
+    {
+      "t": "2026-02-18T04:46:40.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:48:41.665Z",
+      "event": "bb-session",
+      "session": "9731a493",
+      "url": "https://www.newyorker.com/magazine/2008/11/03/fathers-and-sons-2"
+    },
+    {
+      "t": "2026-02-18T04:48:43.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:50:56.028Z",
+      "event": "bb-session",
+      "session": "9dc41b49",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/all-my-sons-and-burn-this-on-broad"
+    },
+    {
+      "t": "2026-02-18T04:50:58.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:53:07.900Z",
+      "event": "bb-session",
+      "session": "08f83056",
+      "url": "https://www.newyorker.com/magazine/2022/11/21/almost-famous-the-musical-review"
+    },
+    {
+      "t": "2026-02-18T04:53:10.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:55:17.943Z",
+      "event": "bb-session",
+      "session": "9755b526",
+      "url": "https://www.newyorker.com/magazine/2016/05/09/american-psycho-the-musical-on-bro"
+    },
+    {
+      "t": "2026-02-18T04:55:20.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:57:28.300Z",
+      "event": "bb-session",
+      "session": "ba44461f",
+      "url": "https://www.newyorker.com/magazine/2017/05/08/anastasia-and-dear-evan-hansen"
+    },
+    {
+      "t": "2026-02-18T04:57:30.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T04:59:50.232Z",
+      "event": "bb-session",
+      "session": "ea8d5489",
+      "url": "https://www.newyorker.com/magazine/2018/04/09/angels-in-america-arrives-on-broad"
+    },
+    {
+      "t": "2026-02-18T04:59:52.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T05:02:01.646Z",
+      "event": "bb-session",
+      "session": "50fa0aff",
+      "url": "https://www.newyorker.com/magazine/2011/04/25/sail-away"
+    },
+    {
+      "t": "2026-02-18T05:02:03.923Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
