@@ -22,6 +22,7 @@ import {
   BUZZ_CONFIG,
   CONFIDENCE_THRESHOLDS,
   AUDIENCE_DIVERGENCE_THRESHOLD,
+  TOP_CRITICS,
   getCriticLabel,
 } from '@/config/scoring';
 import { toScoringId } from './outlet-id-mapper';
@@ -301,7 +302,8 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
 
   const computedReviews: ComputedReview[] = reviews.map(review => {
     const outletConfig = getOutletConfig(review.outletId, review.outlet);
-    const tier = outletConfig.tier;
+    const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
+    const tier = isTopCritic ? 1 : outletConfig.tier;
     const tierWeight = TIER_WEIGHTS[tier];
 
     // Determine the review score
