@@ -229022,76 +229022,76 @@
     ]
   },
   {
-    "startedAt": "2026-02-18T04:27:45.011Z",
-    "completedAt": "2026-02-18T06:08:39.275Z",
+    "startedAt": "2026-02-18T04:30:48.627Z",
+    "completedAt": "2026-02-18T06:22:33.936Z",
     "totalReviews": 23974,
-    "processed": 63,
-    "skipped": 22923,
+    "processed": 57,
+    "skipped": 22994,
     "errors": 0,
     "tokensUsed": {
-      "input": 563452,
-      "output": 18446,
-      "total": 1345933
+      "input": 518109,
+      "output": 17053,
+      "total": 1254996
     },
     "errorDetails": [],
     "calibration": {
-      "count": 15673,
-      "mae": 0.83,
-      "rmse": 3.66,
-      "meanBias": -0.11,
-      "stdDev": 3.66,
-      "bucketAccuracy": 96.3,
+      "count": 15886,
+      "mae": 0.89,
+      "rmse": 3.74,
+      "meanBias": -0.08,
+      "stdDev": 3.74,
+      "bucketAccuracy": 96.1,
       "byConfidence": {
         "high": {
-          "count": 7906,
-          "mae": 0.69
+          "count": 8014,
+          "mae": 0.75
         },
         "medium": {
-          "count": 7634,
-          "mae": 0.9
+          "count": 7738,
+          "mae": 0.97
         },
         "low": {
-          "count": 133,
-          "mae": 4.66
+          "count": 134,
+          "mae": 4.68
         }
       },
       "byTier": {
         "tier1": {
-          "count": 1931,
-          "mae": 0.45,
-          "meanBias": 0.22
+          "count": 1965,
+          "mae": 0.53,
+          "meanBias": 0.23
         },
         "tier2": {
-          "count": 1982,
-          "mae": 3.15,
-          "meanBias": -1.49
+          "count": 2006,
+          "mae": 3.17,
+          "meanBias": -1.46
         },
         "tier3": {
-          "count": 11760,
-          "mae": 0.5,
-          "meanBias": 0.08
+          "count": 11915,
+          "mae": 0.56,
+          "meanBias": 0.09
         }
       },
       "outletBias": {
         "The New York Times": {
-          "count": 551,
-          "meanBias": 0.0852994555353902
+          "count": 575,
+          "meanBias": 0.20173913043478262
         },
         "Theater Life": {
           "count": 399,
           "meanBias": 0.05764411027568922
         },
         "TheaterMania": {
-          "count": 372,
-          "meanBias": 0.0456989247311828
+          "count": 390,
+          "meanBias": 0.08717948717948718
         },
         "The Wall Street Journal": {
-          "count": 370,
-          "meanBias": 0.14054054054054055
+          "count": 374,
+          "meanBias": 0.17379679144385027
         },
         "Associated Press": {
-          "count": 240,
-          "meanBias": 0.14166666666666666
+          "count": 249,
+          "meanBias": 0.28112449799196787
         },
         "Hollywood Reporter": {
           "count": 141,
@@ -229102,72 +229102,72 @@
           "meanBias": 0.5294117647058824
         },
         "Newsday": {
-          "count": 282,
-          "meanBias": 0.18085106382978725
+          "count": 292,
+          "meanBias": 0.2808219178082192
         },
         "NorthJersey.com": {
           "count": 90,
           "meanBias": 0
         },
         "New York Daily News": {
-          "count": 340,
-          "meanBias": 0.2911764705882353
+          "count": 349,
+          "meanBias": 0.3151862464183381
         },
         "New York Post": {
-          "count": 294,
-          "meanBias": 0.30612244897959184
+          "count": 298,
+          "meanBias": 0.3389261744966443
         },
         "Broadway News": {
-          "count": 164,
-          "meanBias": 0.12195121951219512
+          "count": 178,
+          "meanBias": 0.24719101123595505
         },
         "Cititour": {
           "count": 234,
           "meanBias": 0.5598290598290598
         },
         "The Daily Beast": {
-          "count": 206,
-          "meanBias": -0.21359223300970873
+          "count": 210,
+          "meanBias": -0.20476190476190476
         },
         "Deadline": {
-          "count": 300,
-          "meanBias": -0.08333333333333333
+          "count": 307,
+          "meanBias": -0.05863192182410423
         },
         "Entertainment Weekly": {
-          "count": 431,
-          "meanBias": -6.174013921113689
+          "count": 442,
+          "meanBias": -5.997737556561086
         },
         "Front Row Center": {
           "count": 159,
           "meanBias": 0
         },
         "The Guardian": {
-          "count": 179,
-          "meanBias": 0.3016759776536313
+          "count": 181,
+          "meanBias": 0.4696132596685083
         },
         "Lighting & Sound America": {
           "count": 211,
           "meanBias": 0
         },
         "The New York Sun": {
-          "count": 16,
+          "count": 20,
           "meanBias": -0.5
         },
         "The New Yorker": {
-          "count": 171,
-          "meanBias": -0.029239766081871343
+          "count": 172,
+          "meanBias": -0.029069767441860465
         },
         "New York Stage Review": {
-          "count": 469,
-          "meanBias": -0.1812366737739872
+          "count": 471,
+          "meanBias": -0.1740976645435244
         },
         "New York Theater": {
           "count": 210,
           "meanBias": -0.06190476190476191
         },
         "New York Theatre Guide": {
-          "count": 196,
-          "meanBias": 0.07653061224489796
+          "count": 197,
+          "meanBias": 0.08629441624365482
         },
         "Talkin' Broadway": {
           "count": 302,
@@ -229178,28 +229178,28 @@
           "meanBias": 0
         },
         "TheWrap": {
-          "count": 108,
-          "meanBias": 0.4351851851851852
+          "count": 111,
+          "meanBias": 0.1981981981981982
         },
         "Time Out New York": {
-          "count": 330,
-          "meanBias": 0.4090909090909091
+          "count": 334,
+          "meanBias": 0.36826347305389223
         },
         "Variety": {
-          "count": 651,
-          "meanBias": 0.30568356374807987
+          "count": 665,
+          "meanBias": 0.24661654135338346
         },
         "The Village Voice": {
           "count": 8,
           "meanBias": 0
         },
         "Vulture": {
-          "count": 448,
-          "meanBias": 0.171875
+          "count": 452,
+          "meanBias": 0.21238938053097345
         },
         "The Washington Post": {
-          "count": 245,
-          "meanBias": 0.05714285714285714
+          "count": 248,
+          "meanBias": 0.028225806451612902
         },
         "amNY (Matt Windman)": {
           "count": 57,
@@ -229214,8 +229214,8 @@
           "meanBias": 0
         },
         "The Hollywood Reporter": {
-          "count": 288,
-          "meanBias": 0.4409722222222222
+          "count": 306,
+          "meanBias": 0.5915032679738562
         },
         "NJ.com (Christopher Kelly)": {
           "count": 16,
@@ -229230,8 +229230,8 @@
           "meanBias": 0.13191489361702127
         },
         "Backstage": {
-          "count": 78,
-          "meanBias": 0.4230769230769231
+          "count": 85,
+          "meanBias": 0.9529411764705882
         },
         "NY Daily News": {
           "count": 59,
@@ -229242,8 +229242,8 @@
           "meanBias": 0.02040816326530612
         },
         "USA Today": {
-          "count": 285,
-          "meanBias": -0.6877192982456141
+          "count": 288,
+          "meanBias": -0.6319444444444444
         },
         "AM New York": {
           "count": 52,
@@ -229254,8 +229254,8 @@
           "meanBias": 0
         },
         "NBC New York": {
-          "count": 124,
-          "meanBias": 0
+          "count": 125,
+          "meanBias": -0.064
         },
         "New York Times": {
           "count": 131,
@@ -229268,6 +229268,10 @@
         "AMNY (Matt Windman)": {
           "count": 14,
           "meanBias": 0
+        },
+        "Did They Like It": {
+          "count": 34,
+          "meanBias": 1.4411764705882353
         },
         "New York Sun": {
           "count": 51,
@@ -229286,8 +229290,8 @@
           "meanBias": 0
         },
         "Theatrely": {
-          "count": 142,
-          "meanBias": -0.11971830985915492
+          "count": 146,
+          "meanBias": -0.1643835616438356
         },
         "Washington Post": {
           "count": 75,
@@ -229302,8 +229306,8 @@
           "meanBias": 3.2
         },
         "Chicago Tribune": {
-          "count": 258,
-          "meanBias": 0.3682170542635659
+          "count": 261,
+          "meanBias": 0.37547892720306514
         },
         "New York": {
           "count": 15,
@@ -229322,8 +229326,8 @@
           "meanBias": 0
         },
         "amNewYork": {
-          "count": 63,
-          "meanBias": -0.38095238095238093
+          "count": 67,
+          "meanBias": -0.5522388059701493
         },
         "Broadway & Me": {
           "count": 18,
@@ -229394,8 +229398,8 @@
           "meanBias": 0
         },
         "Times Square Chronicles": {
-          "count": 46,
-          "meanBias": 0
+          "count": 47,
+          "meanBias": 0.0425531914893617
         },
         "Vox": {
           "count": 6,
@@ -229430,8 +229434,12 @@
           "meanBias": 0
         },
         "HuffPost": {
-          "count": 60,
-          "meanBias": 0
+          "count": 62,
+          "meanBias": 0.04838709677419355
+        },
+        "Los Angeles Times": {
+          "count": 31,
+          "meanBias": -0.41935483870967744
         },
         "Showbiz 411": {
           "count": 5,
@@ -229452,10 +229460,6 @@
         "jonathankalb": {
           "count": 3,
           "meanBias": 0
-        },
-        "Los Angeles Times": {
-          "count": 29,
-          "meanBias": -0.06896551724137931
         },
         "li-herald": {
           "count": 6,
@@ -229542,8 +229546,8 @@
           "meanBias": 0
         },
         "The Telegraph": {
-          "count": 34,
-          "meanBias": 0
+          "count": 35,
+          "meanBias": 0.11428571428571428
         },
         "amNY": {
           "count": 101,
@@ -229552,10 +229556,6 @@
         "Theater News Online": {
           "count": 10,
           "meanBias": 0
-        },
-        "Did They Like It": {
-          "count": 24,
-          "meanBias": 1.125
         },
         "Rolling Stone": {
           "count": 25,
@@ -229605,6 +229605,10 @@
           "count": 76,
           "meanBias": 0
         },
+        "Access Atlanta": {
+          "count": 3,
+          "meanBias": 1.6666666666666667
+        },
         "Time Out NY": {
           "count": 30,
           "meanBias": 0.3333333333333333
@@ -229642,8 +229646,8 @@
           "meanBias": 0
         },
         "Time": {
-          "count": 12,
-          "meanBias": 0.25
+          "count": 13,
+          "meanBias": -1.3076923076923077
         },
         "UInterview": {
           "count": 5,
@@ -229802,8 +229806,8 @@
           "meanBias": 0
         },
         "Theatre is Easy": {
-          "count": 28,
-          "meanBias": 0
+          "count": 29,
+          "meanBias": 0.06896551724137931
         },
         "Philadelphia Inquirer": {
           "count": 30,
@@ -230461,10 +230465,10 @@
       {
         "showId": "1984-2017",
         "ourDistribution": {
-          "up": 23,
+          "up": 24,
           "flat": 10,
           "down": 1,
-          "total": 34
+          "total": 35
         },
         "dtliDistribution": {
           "up": 2,
@@ -230517,8 +230521,8 @@
         "ourDistribution": {
           "up": 42,
           "flat": 17,
-          "down": 11,
-          "total": 70
+          "down": 12,
+          "total": 71
         },
         "dtliDistribution": {
           "up": 1,
@@ -230533,7 +230537,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 52% (ours: 60%, theirs: 8%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 51% (ours: 59%, theirs: 8%)"
       },
       {
         "showId": "a-behanding-in-spokane-2010",
@@ -230588,20 +230592,20 @@
       {
         "showId": "a-christmas-carol-2019",
         "ourDistribution": {
-          "up": 54,
+          "up": 55,
           "flat": 13,
           "down": 8,
-          "total": 75
+          "total": 76
         },
         "hasDisagreement": false
       },
       {
         "showId": "a-christmas-carol-2022",
         "ourDistribution": {
-          "up": 54,
+          "up": 55,
           "flat": 13,
           "down": 8,
-          "total": 75
+          "total": 76
         },
         "hasDisagreement": false
       },
@@ -230625,9 +230629,9 @@
         "showId": "a-delicate-balance-2014",
         "ourDistribution": {
           "up": 14,
-          "flat": 8,
+          "flat": 9,
           "down": 2,
-          "total": 24
+          "total": 25
         },
         "dtliDistribution": {
           "up": 2,
@@ -230636,7 +230640,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
       },
       {
         "showId": "a-dolls-house-2023",
@@ -230669,8 +230673,8 @@
         "ourDistribution": {
           "up": 4,
           "flat": 2,
-          "down": 11,
-          "total": 17
+          "down": 13,
+          "total": 19
         },
         "dtliDistribution": {
           "up": 1,
@@ -230678,7 +230682,8 @@
           "down": 3,
           "total": 7
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Down thumbs differ by 26% (ours: 68%, theirs: 43%)"
       },
       {
         "showId": "a-gentlemans-guide-to-love-and-murder-2013",
@@ -230699,10 +230704,10 @@
       {
         "showId": "a-life-in-the-theatre-2010",
         "ourDistribution": {
-          "up": 15,
-          "flat": 4,
+          "up": 17,
+          "flat": 5,
           "down": 3,
-          "total": 22
+          "total": 25
         },
         "dtliDistribution": {
           "up": 3,
@@ -230855,8 +230860,8 @@
         "ourDistribution": {
           "up": 0,
           "flat": 2,
-          "down": 4,
-          "total": 6
+          "down": 6,
+          "total": 8
         },
         "dtliDistribution": {
           "up": 0,
@@ -230864,8 +230869,7 @@
           "down": 3,
           "total": 4
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "hasDisagreement": false
       },
       {
         "showId": "a-time-to-kill-2013",
@@ -230952,9 +230956,9 @@
         "showId": "absurd-person-singular-2005",
         "ourDistribution": {
           "up": 0,
-          "flat": 0,
+          "flat": 1,
           "down": 1,
-          "total": 1
+          "total": 2
         },
         "dtliDistribution": {
           "up": 0,
@@ -230977,10 +230981,10 @@
       {
         "showId": "act-one-2014",
         "ourDistribution": {
-          "up": 14,
+          "up": 15,
           "flat": 8,
           "down": 7,
-          "total": 29
+          "total": 30
         },
         "dtliDistribution": {
           "up": 3,
@@ -230989,7 +230993,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
       },
       {
         "showId": "after-midnight-2013",
@@ -231011,9 +231015,9 @@
         "showId": "after-miss-julie-2009",
         "ourDistribution": {
           "up": 0,
-          "flat": 1,
-          "down": 1,
-          "total": 2
+          "flat": 3,
+          "down": 2,
+          "total": 5
         },
         "dtliDistribution": {
           "up": 0,
@@ -231021,7 +231025,8 @@
           "down": 2,
           "total": 4
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Flat thumbs differ by 60% (ours: 60%, theirs: 0%)"
       },
       {
         "showId": "after-the-night-and-the-music-2005",
@@ -231052,10 +231057,10 @@
       {
         "showId": "aint-too-proud-2019",
         "ourDistribution": {
-          "up": 17,
+          "up": 18,
           "flat": 8,
           "down": 3,
-          "total": 28
+          "total": 29
         },
         "dtliDistribution": {
           "up": 3,
@@ -231064,7 +231069,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
         "showId": "airline-highway-2015",
@@ -231098,6 +231103,23 @@
           "total": 5
         },
         "hasDisagreement": false
+      },
+      {
+        "showId": "all-about-me-2010",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 2,
+          "down": 1,
+          "total": 3
+        },
+        "dtliDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 1,
+          "total": 4
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Flat thumbs differ by 67% (ours: 67%, theirs: 0%)"
       },
       {
         "showId": "all-in-comedy-about-love-2024",
@@ -231424,10 +231446,10 @@
       {
         "showId": "ann-2013",
         "ourDistribution": {
-          "up": 7,
+          "up": 8,
           "flat": 6,
           "down": 5,
-          "total": 18
+          "total": 19
         },
         "dtliDistribution": {
           "up": 2,
@@ -231436,15 +231458,15 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
       },
       {
         "showId": "annie-2012",
         "ourDistribution": {
           "up": 4,
-          "flat": 5,
+          "flat": 6,
           "down": 3,
-          "total": 12
+          "total": 13
         },
         "dtliDistribution": {
           "up": 2,
@@ -231453,15 +231475,15 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 42% (ours: 42%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 46% (ours: 46%, theirs: 0%)"
       },
       {
         "showId": "anything-goes-2011",
         "ourDistribution": {
-          "up": 20,
+          "up": 23,
           "flat": 3,
           "down": 2,
-          "total": 25
+          "total": 28
         },
         "dtliDistribution": {
           "up": 7,
@@ -231536,10 +231558,10 @@
       {
         "showId": "august-osage-county-2007",
         "ourDistribution": {
-          "up": 7,
+          "up": 12,
           "flat": 0,
           "down": 0,
-          "total": 7
+          "total": 12
         },
         "dtliDistribution": {
           "up": 4,
@@ -231573,9 +231595,9 @@
         "showId": "baby-its-you-2011",
         "ourDistribution": {
           "up": 1,
-          "flat": 6,
-          "down": 9,
-          "total": 16
+          "flat": 7,
+          "down": 10,
+          "total": 18
         },
         "dtliDistribution": {
           "up": 0,
@@ -231584,7 +231606,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 39% (ours: 39%, theirs: 0%)"
       },
       {
         "showId": "back-to-the-future-2023",
@@ -231607,8 +231629,8 @@
         "ourDistribution": {
           "up": 1,
           "flat": 5,
-          "down": 28,
-          "total": 34
+          "down": 29,
+          "total": 35
         },
         "dtliDistribution": {
           "up": 0,
@@ -231670,10 +231692,10 @@
       {
         "showId": "beautiful-the-carole-king-musical-2014",
         "ourDistribution": {
-          "up": 29,
+          "up": 30,
           "flat": 9,
           "down": 3,
-          "total": 41
+          "total": 42
         },
         "dtliDistribution": {
           "up": 4,
@@ -231734,10 +231756,10 @@
       {
         "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
         "ourDistribution": {
-          "up": 15,
+          "up": 17,
           "flat": 10,
           "down": 3,
-          "total": 28
+          "total": 30
         },
         "dtliDistribution": {
           "up": 3,
@@ -231746,7 +231768,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "bernhardthamlet-2018",
@@ -231843,10 +231865,10 @@
       {
         "showId": "birthday-candles-2022",
         "ourDistribution": {
-          "up": 7,
+          "up": 8,
           "flat": 9,
-          "down": 8,
-          "total": 24
+          "down": 9,
+          "total": 26
         },
         "dtliDistribution": {
           "up": 3,
@@ -231855,7 +231877,7 @@
           "total": 10
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "blackbird-2016",
@@ -231886,10 +231908,10 @@
       {
         "showId": "bloody-bloody-andrew-jackson-2010",
         "ourDistribution": {
-          "up": 15,
+          "up": 17,
           "flat": 7,
           "down": 6,
-          "total": 28
+          "total": 30
         },
         "dtliDistribution": {
           "up": 4,
@@ -231897,8 +231919,7 @@
           "down": 0,
           "total": 5
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 26% (ours: 54%, theirs: 80%)"
+        "hasDisagreement": false
       },
       {
         "showId": "bob-fosses-dancin-2023",
@@ -231920,10 +231941,10 @@
       {
         "showId": "boeingboeing-2008",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 0,
           "down": 1,
-          "total": 5
+          "total": 6
         },
         "dtliDistribution": {
           "up": 2,
@@ -231937,9 +231958,9 @@
         "showId": "bonnie-and-clyde-2011",
         "ourDistribution": {
           "up": 3,
-          "flat": 10,
-          "down": 6,
-          "total": 19
+          "flat": 11,
+          "down": 7,
+          "total": 21
         },
         "dtliDistribution": {
           "up": 0,
@@ -231948,7 +231969,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 53% (ours: 53%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 52% (ours: 52%, theirs: 0%)"
       },
       {
         "showId": "book-of-mormon-2011",
@@ -231991,10 +232012,10 @@
       {
         "showId": "born-yesterday-2011",
         "ourDistribution": {
-          "up": 21,
+          "up": 23,
           "flat": 5,
           "down": 2,
-          "total": 28
+          "total": 30
         },
         "dtliDistribution": {
           "up": 4,
@@ -232017,10 +232038,10 @@
       {
         "showId": "bridge-and-tunnel-2006",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 0,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "dtliDistribution": {
           "up": 1,
@@ -232067,10 +232088,10 @@
       {
         "showId": "brighton-beach-memoirs-2009",
         "ourDistribution": {
-          "up": 0,
+          "up": 2,
           "flat": 1,
           "down": 1,
-          "total": 2
+          "total": 4
         },
         "dtliDistribution": {
           "up": 3,
@@ -232110,10 +232131,10 @@
       {
         "showId": "buena-vista-social-club-2025",
         "ourDistribution": {
-          "up": 19,
+          "up": 20,
           "flat": 2,
           "down": 1,
-          "total": 22
+          "total": 23
         },
         "dtliDistribution": {
           "up": 10,
@@ -232166,10 +232187,10 @@
       {
         "showId": "burn-the-floor-2009",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 6,
-          "down": 4,
-          "total": 14
+          "down": 6,
+          "total": 17
         },
         "dtliDistribution": {
           "up": 0,
@@ -232178,7 +232199,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 43% (ours: 43%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "burn-this-2019",
@@ -232272,10 +232293,10 @@
       {
         "showId": "call-me-izzy-2025",
         "ourDistribution": {
-          "up": 20,
-          "flat": 8,
+          "up": 21,
+          "flat": 10,
           "down": 8,
-          "total": 36
+          "total": 39
         },
         "dtliDistribution": {
           "up": 6,
@@ -232290,15 +232311,15 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Up thumbs differ by 36% (ours: 56%, theirs: 20%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
       },
       {
         "showId": "camelot-2023",
         "ourDistribution": {
           "up": 9,
-          "flat": 17,
-          "down": 9,
-          "total": 35
+          "flat": 18,
+          "down": 10,
+          "total": 37
         },
         "dtliDistribution": {
           "up": 4,
@@ -232346,9 +232367,9 @@
         "showId": "casa-valentina-2014",
         "ourDistribution": {
           "up": 9,
-          "flat": 10,
+          "flat": 11,
           "down": 0,
-          "total": 19
+          "total": 20
         },
         "dtliDistribution": {
           "up": 3,
@@ -232357,7 +232378,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 53% (ours: 53%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 55% (ours: 55%, theirs: 0%)"
       },
       {
         "showId": "cat-on-a-hot-tin-roof-2008",
@@ -232383,9 +232404,9 @@
         "showId": "catch-me-if-you-can-2011",
         "ourDistribution": {
           "up": 7,
-          "flat": 11,
-          "down": 8,
-          "total": 26
+          "flat": 13,
+          "down": 9,
+          "total": 29
         },
         "dtliDistribution": {
           "up": 0,
@@ -232394,7 +232415,7 @@
           "total": 8
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 42% (ours: 42%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 45% (ours: 45%, theirs: 0%)"
       },
       {
         "showId": "cats-1982",
@@ -232516,8 +232537,8 @@
         "ourDistribution": {
           "up": 11,
           "flat": 5,
-          "down": 5,
-          "total": 21
+          "down": 6,
+          "total": 22
         },
         "dtliDistribution": {
           "up": 1,
@@ -232526,7 +232547,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 32% (ours: 52%, theirs: 20%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 50%, theirs: 20%)"
       },
       {
         "showId": "children-of-a-lesser-god-2018",
@@ -232565,10 +232586,10 @@
       {
         "showId": "chinglish-2011",
         "ourDistribution": {
-          "up": 14,
+          "up": 16,
           "flat": 5,
           "down": 2,
-          "total": 21
+          "total": 23
         },
         "dtliDistribution": {
           "up": 4,
@@ -232665,10 +232686,10 @@
       {
         "showId": "collected-stories-2010",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 2,
           "down": 3,
-          "total": 17
+          "total": 18
         },
         "dtliDistribution": {
           "up": 5,
@@ -232691,10 +232712,10 @@
       {
         "showId": "come-fly-away-2010",
         "ourDistribution": {
-          "up": 14,
-          "flat": 7,
-          "down": 2,
-          "total": 23
+          "up": 15,
+          "flat": 8,
+          "down": 3,
+          "total": 26
         },
         "dtliDistribution": {
           "up": 3,
@@ -232703,7 +232724,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "come-from-away-2017",
@@ -232756,10 +232777,10 @@
       {
         "showId": "constellations-2015",
         "ourDistribution": {
-          "up": 14,
+          "up": 15,
           "flat": 2,
           "down": 2,
-          "total": 18
+          "total": 19
         },
         "dtliDistribution": {
           "up": 4,
@@ -232851,10 +232872,10 @@
       {
         "showId": "cyrano-de-bergerac-2007",
         "ourDistribution": {
-          "up": 11,
-          "flat": 13,
-          "down": 9,
-          "total": 33
+          "up": 12,
+          "flat": 15,
+          "down": 10,
+          "total": 37
         },
         "dtliDistribution": {
           "up": 0,
@@ -232868,10 +232889,10 @@
       {
         "showId": "cyrano-de-bergerac-2012",
         "ourDistribution": {
-          "up": 11,
-          "flat": 13,
-          "down": 9,
-          "total": 33
+          "up": 12,
+          "flat": 15,
+          "down": 10,
+          "total": 37
         },
         "dtliDistribution": {
           "up": 0,
@@ -233011,10 +233032,10 @@
       {
         "showId": "death-of-a-salesman-2012",
         "ourDistribution": {
-          "up": 61,
-          "flat": 10,
+          "up": 64,
+          "flat": 11,
           "down": 4,
-          "total": 75
+          "total": 79
         },
         "dtliDistribution": {
           "up": 10,
@@ -233027,10 +233048,10 @@
       {
         "showId": "death-of-a-salesman-2022",
         "ourDistribution": {
-          "up": 61,
-          "flat": 10,
+          "up": 64,
+          "flat": 11,
           "down": 4,
-          "total": 75
+          "total": 79
         },
         "dtliDistribution": {
           "up": 10,
@@ -233043,10 +233064,10 @@
       {
         "showId": "death-of-a-salesman-2026",
         "ourDistribution": {
-          "up": 61,
-          "flat": 10,
+          "up": 64,
+          "flat": 11,
           "down": 4,
-          "total": 75
+          "total": 79
         },
         "dtliDistribution": {
           "up": 10,
@@ -233095,10 +233116,10 @@
       {
         "showId": "disaster-2016",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 5,
           "down": 11,
-          "total": 28
+          "total": 29
         },
         "dtliDistribution": {
           "up": 2,
@@ -233112,10 +233133,10 @@
       {
         "showId": "disgraced-2014",
         "ourDistribution": {
-          "up": 24,
+          "up": 25,
           "flat": 3,
           "down": 1,
-          "total": 28
+          "total": 29
         },
         "dtliDistribution": {
           "up": 3,
@@ -233154,10 +233175,10 @@
       {
         "showId": "dont-dress-for-dinner-2012",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 2,
           "down": 9,
-          "total": 14
+          "total": 15
         },
         "dtliDistribution": {
           "up": 0,
@@ -233165,7 +233186,8 @@
           "down": 3,
           "total": 4
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 27% (ours: 27%, theirs: 0%)"
       },
       {
         "showId": "doubt-2024",
@@ -233192,10 +233214,10 @@
       {
         "showId": "doubt-a-parable",
         "ourDistribution": {
-          "up": 5,
-          "flat": 1,
+          "up": 9,
+          "flat": 2,
           "down": 1,
-          "total": 7
+          "total": 12
         },
         "dtliDistribution": {
           "up": 8,
@@ -233244,10 +233266,10 @@
       {
         "showId": "elf-2012",
         "ourDistribution": {
-          "up": 25,
+          "up": 28,
           "flat": 13,
           "down": 4,
-          "total": 42
+          "total": 45
         },
         "dtliDistribution": {
           "up": 5,
@@ -233256,15 +233278,15 @@
           "total": 7
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
       },
       {
         "showId": "elf-2024",
         "ourDistribution": {
-          "up": 25,
+          "up": 28,
           "flat": 13,
           "down": 4,
-          "total": 42
+          "total": 45
         },
         "dtliDistribution": {
           "up": 5,
@@ -233273,15 +233295,15 @@
           "total": 7
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
       },
       {
         "showId": "elling-2010",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 3,
-          "down": 9,
-          "total": 15
+          "down": 10,
+          "total": 17
         },
         "dtliDistribution": {
           "up": 3,
@@ -233311,10 +233333,10 @@
       {
         "showId": "english-2025",
         "ourDistribution": {
-          "up": 21,
+          "up": 22,
           "flat": 2,
           "down": 0,
-          "total": 23
+          "total": 24
         },
         "dtliDistribution": {
           "up": 8,
@@ -233328,9 +233350,9 @@
         "showId": "enron-2010",
         "ourDistribution": {
           "up": 11,
-          "flat": 10,
-          "down": 7,
-          "total": 28
+          "flat": 11,
+          "down": 9,
+          "total": 31
         },
         "dtliDistribution": {
           "up": 2,
@@ -233339,7 +233361,7 @@
           "total": 7
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "equus-2008",
@@ -233371,10 +233393,10 @@
       {
         "showId": "eureka-day-2024",
         "ourDistribution": {
-          "up": 33,
+          "up": 34,
           "flat": 5,
           "down": 2,
-          "total": 40
+          "total": 41
         },
         "dtliDistribution": {
           "up": 8,
@@ -233387,10 +233409,10 @@
       {
         "showId": "everyday-rapture-2010",
         "ourDistribution": {
-          "up": 15,
+          "up": 18,
           "flat": 2,
-          "down": 1,
-          "total": 18
+          "down": 2,
+          "total": 22
         },
         "dtliDistribution": {
           "up": 6,
@@ -233514,10 +233536,10 @@
       {
         "showId": "fences-2010",
         "ourDistribution": {
-          "up": 22,
-          "flat": 3,
+          "up": 25,
+          "flat": 4,
           "down": 1,
-          "total": 26
+          "total": 30
         },
         "dtliDistribution": {
           "up": 6,
@@ -233573,10 +233595,10 @@
       {
         "showId": "finians-rainbow-2009",
         "ourDistribution": {
-          "up": 4,
+          "up": 6,
           "flat": 0,
           "down": 0,
-          "total": 4
+          "total": 6
         },
         "dtliDistribution": {
           "up": 1,
@@ -233623,10 +233645,10 @@
       {
         "showId": "floyd-collins-2025",
         "ourDistribution": {
-          "up": 16,
+          "up": 18,
           "flat": 10,
           "down": 4,
-          "total": 30
+          "total": 32
         },
         "dtliDistribution": {
           "up": 5,
@@ -233641,7 +233663,7 @@
           "total": 14
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "flying-over-sunset-2021",
@@ -233663,10 +233685,10 @@
       {
         "showId": "follies-2011",
         "ourDistribution": {
-          "up": 22,
+          "up": 23,
           "flat": 2,
           "down": 1,
-          "total": 25
+          "total": 26
         },
         "dtliDistribution": {
           "up": 2,
@@ -233696,10 +233718,10 @@
       {
         "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
         "ourDistribution": {
-          "up": 28,
+          "up": 30,
           "flat": 3,
           "down": 1,
-          "total": 32
+          "total": 34
         },
         "dtliDistribution": {
           "up": 9,
@@ -233759,10 +233781,10 @@
       {
         "showId": "fun-home-2015",
         "ourDistribution": {
-          "up": 49,
+          "up": 50,
           "flat": 1,
           "down": 1,
-          "total": 51
+          "total": 52
         },
         "dtliDistribution": {
           "up": 3,
@@ -233820,9 +233842,9 @@
         "showId": "ghetto-klown-2011",
         "ourDistribution": {
           "up": 9,
-          "flat": 6,
+          "flat": 8,
           "down": 1,
-          "total": 16
+          "total": 18
         },
         "dtliDistribution": {
           "up": 2,
@@ -233831,7 +233853,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 44% (ours: 44%, theirs: 0%)"
       },
       {
         "showId": "ghost-the-musical-2012",
@@ -233888,10 +233910,10 @@
       {
         "showId": "glengarry-glen-ross-2012",
         "ourDistribution": {
-          "up": 23,
-          "flat": 16,
+          "up": 24,
+          "flat": 17,
           "down": 17,
-          "total": 56
+          "total": 58
         },
         "dtliDistribution": {
           "up": 10,
@@ -233905,10 +233927,10 @@
       {
         "showId": "glengarry-glen-ross-2025",
         "ourDistribution": {
-          "up": 23,
-          "flat": 16,
+          "up": 24,
+          "flat": 17,
           "down": 17,
-          "total": 56
+          "total": 58
         },
         "dtliDistribution": {
           "up": 10,
@@ -233942,10 +233964,10 @@
       {
         "showId": "godspell-2011",
         "ourDistribution": {
-          "up": 6,
+          "up": 8,
           "flat": 8,
           "down": 7,
-          "total": 21
+          "total": 23
         },
         "dtliDistribution": {
           "up": 3,
@@ -233954,15 +233976,15 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 46% (ours: 29%, theirs: 75%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 40% (ours: 35%, theirs: 75%)"
       },
       {
         "showId": "golden-boy-2012",
         "ourDistribution": {
-          "up": 14,
+          "up": 15,
           "flat": 3,
           "down": 2,
-          "total": 19
+          "total": 20
         },
         "dtliDistribution": {
           "up": 4,
@@ -233970,16 +233992,15 @@
           "down": 0,
           "total": 4
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 26% (ours: 74%, theirs: 100%)"
+        "hasDisagreement": false
       },
       {
         "showId": "good-night-and-good-luck-2025",
         "ourDistribution": {
-          "up": 14,
+          "up": 16,
           "flat": 13,
           "down": 12,
-          "total": 39
+          "total": 41
         },
         "dtliDistribution": {
           "up": 10,
@@ -233988,15 +234009,15 @@
           "total": 25
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
       },
       {
         "showId": "good-night-oscar-2023",
         "ourDistribution": {
-          "up": 24,
+          "up": 25,
           "flat": 5,
           "down": 7,
-          "total": 36
+          "total": 37
         },
         "dtliDistribution": {
           "up": 3,
@@ -234005,7 +234026,7 @@
           "total": 9
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 33% (ours: 67%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 34% (ours: 68%, theirs: 33%)"
       },
       {
         "showId": "good-people-2011",
@@ -234144,10 +234165,10 @@
       {
         "showId": "gypsy-2008",
         "ourDistribution": {
-          "up": 68,
+          "up": 70,
           "flat": 4,
           "down": 2,
-          "total": 74
+          "total": 76
         },
         "dtliDistribution": {
           "up": 14,
@@ -234160,10 +234181,10 @@
       {
         "showId": "gypsy-2024",
         "ourDistribution": {
-          "up": 68,
+          "up": 70,
           "flat": 4,
           "down": 2,
-          "total": 74
+          "total": 76
         },
         "dtliDistribution": {
           "up": 14,
@@ -234224,8 +234245,8 @@
         "ourDistribution": {
           "up": 7,
           "flat": 8,
-          "down": 1,
-          "total": 16
+          "down": 2,
+          "total": 17
         },
         "dtliDistribution": {
           "up": 0,
@@ -234238,10 +234259,10 @@
       {
         "showId": "hand-to-god-2015",
         "ourDistribution": {
-          "up": 47,
+          "up": 48,
           "flat": 2,
           "down": 0,
-          "total": 49
+          "total": 50
         },
         "dtliDistribution": {
           "up": 3,
@@ -234319,10 +234340,10 @@
       {
         "showId": "harry-potter-and-the-cursed-child",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 0,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "dtliDistribution": {
           "up": 2,
@@ -234335,10 +234356,10 @@
       {
         "showId": "harry-potter-and-the-cursed-child-parts-one-and-two",
         "ourDistribution": {
-          "up": 1,
+          "up": 3,
           "flat": 0,
           "down": 0,
-          "total": 1
+          "total": 3
         },
         "dtliDistribution": {
           "up": 4,
@@ -234456,9 +234477,9 @@
         "showId": "heisenberg-2016",
         "ourDistribution": {
           "up": 48,
-          "flat": 12,
+          "flat": 13,
           "down": 10,
-          "total": 70
+          "total": 71
         },
         "dtliDistribution": {
           "up": 2,
@@ -234522,8 +234543,8 @@
         "ourDistribution": {
           "up": 4,
           "flat": 2,
-          "down": 12,
-          "total": 18
+          "down": 13,
+          "total": 19
         },
         "dtliDistribution": {
           "up": 1,
@@ -234532,7 +234553,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 42% (ours: 67%, theirs: 25%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 43% (ours: 68%, theirs: 25%)"
       },
       {
         "showId": "high-fidelity-2006",
@@ -234632,8 +234653,8 @@
         "ourDistribution": {
           "up": 0,
           "flat": 0,
-          "down": 1,
-          "total": 1
+          "down": 2,
+          "total": 2
         },
         "dtliDistribution": {
           "up": 0,
@@ -234685,10 +234706,10 @@
       {
         "showId": "how-to-succeed-in-business-without-really-trying-2011",
         "ourDistribution": {
-          "up": 21,
+          "up": 24,
           "flat": 9,
-          "down": 5,
-          "total": 35
+          "down": 6,
+          "total": 39
         },
         "dtliDistribution": {
           "up": 3,
@@ -234696,8 +234717,7 @@
           "down": 1,
           "total": 8
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
+        "hasDisagreement": false
       },
       {
         "showId": "hughie-2016",
@@ -234816,10 +234836,10 @@
       {
         "showId": "in-the-heights-2008",
         "ourDistribution": {
-          "up": 9,
-          "flat": 0,
+          "up": 11,
+          "flat": 2,
           "down": 1,
-          "total": 10
+          "total": 14
         },
         "dtliDistribution": {
           "up": 5,
@@ -234953,10 +234973,10 @@
       {
         "showId": "is-this-a-room-2021",
         "ourDistribution": {
-          "up": 23,
+          "up": 24,
           "flat": 3,
           "down": 0,
-          "total": 26
+          "total": 27
         },
         "dtliDistribution": {
           "up": 6,
@@ -234970,9 +234990,9 @@
         "showId": "it-shoulda-been-you-2015",
         "ourDistribution": {
           "up": 19,
-          "flat": 9,
+          "flat": 10,
           "down": 8,
-          "total": 36
+          "total": 37
         },
         "dtliDistribution": {
           "up": 1,
@@ -234981,15 +235001,15 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 33% (ours: 53%, theirs: 20%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 51%, theirs: 20%)"
       },
       {
         "showId": "its-only-a-play-2014",
         "ourDistribution": {
-          "up": 10,
+          "up": 11,
           "flat": 8,
           "down": 5,
-          "total": 23
+          "total": 24
         },
         "dtliDistribution": {
           "up": 2,
@@ -234998,7 +235018,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "jagged-little-pill-2019",
@@ -235068,10 +235088,10 @@
       {
         "showId": "jerusalem-2011",
         "ourDistribution": {
-          "up": 15,
+          "up": 17,
           "flat": 2,
           "down": 0,
-          "total": 17
+          "total": 19
         },
         "dtliDistribution": {
           "up": 5,
@@ -235148,8 +235168,8 @@
         "ourDistribution": {
           "up": 25,
           "flat": 2,
-          "down": 2,
-          "total": 29
+          "down": 3,
+          "total": 30
         },
         "dtliDistribution": {
           "up": 16,
@@ -235195,10 +235215,10 @@
       {
         "showId": "just-for-us-2023",
         "ourDistribution": {
-          "up": 25,
+          "up": 26,
           "flat": 0,
           "down": 2,
-          "total": 27
+          "total": 28
         },
         "dtliDistribution": {
           "up": 9,
@@ -235267,8 +235287,8 @@
         "ourDistribution": {
           "up": 19,
           "flat": 28,
-          "down": 27,
-          "total": 74
+          "down": 28,
+          "total": 75
         },
         "dtliDistribution": {
           "up": 0,
@@ -235277,7 +235297,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 37% (ours: 37%, theirs: 0%)"
       },
       {
         "showId": "king-lear-2019",
@@ -235351,10 +235371,10 @@
       {
         "showId": "la-cage-aux-folles-2010",
         "ourDistribution": {
-          "up": 12,
+          "up": 14,
           "flat": 0,
           "down": 3,
-          "total": 15
+          "total": 17
         },
         "dtliDistribution": {
           "up": 1,
@@ -235363,15 +235383,15 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 47% (ours: 80%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 49% (ours: 82%, theirs: 33%)"
       },
       {
         "showId": "lackawanna-blues-2021",
         "ourDistribution": {
-          "up": 15,
+          "up": 16,
           "flat": 2,
           "down": 0,
-          "total": 17
+          "total": 18
         },
         "dtliDistribution": {
           "up": 5,
@@ -235394,10 +235414,10 @@
       {
         "showId": "latin-history-for-morons-2017",
         "ourDistribution": {
-          "up": 25,
+          "up": 26,
           "flat": 11,
           "down": 0,
-          "total": 36
+          "total": 37
         },
         "dtliDistribution": {
           "up": 2,
@@ -235406,15 +235426,15 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 40%)"
       },
       {
         "showId": "latinologues-2005",
         "ourDistribution": {
           "up": 0,
-          "flat": 1,
+          "flat": 2,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "dtliDistribution": {
           "up": 0,
@@ -235494,10 +235514,10 @@
       {
         "showId": "lend-me-a-tenor-2010",
         "ourDistribution": {
-          "up": 15,
+          "up": 17,
           "flat": 1,
           "down": 3,
-          "total": 19
+          "total": 21
         },
         "dtliDistribution": {
           "up": 4,
@@ -235526,10 +235546,10 @@
       {
         "showId": "leopoldstadt-2022",
         "ourDistribution": {
-          "up": 37,
+          "up": 38,
           "flat": 2,
           "down": 1,
-          "total": 40
+          "total": 41
         },
         "dtliDistribution": {
           "up": 11,
@@ -235644,10 +235664,10 @@
       {
         "showId": "life-of-pi-2023",
         "ourDistribution": {
-          "up": 33,
+          "up": 34,
           "flat": 7,
           "down": 0,
-          "total": 40
+          "total": 41
         },
         "dtliDistribution": {
           "up": 9,
@@ -235732,10 +235752,10 @@
       {
         "showId": "lombardi-2010",
         "ourDistribution": {
-          "up": 8,
+          "up": 9,
           "flat": 9,
-          "down": 8,
-          "total": 25
+          "down": 10,
+          "total": 28
         },
         "dtliDistribution": {
           "up": 3,
@@ -235744,7 +235764,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
       },
       {
         "showId": "long-days-journey-into-night-2016",
@@ -235759,10 +235779,10 @@
       {
         "showId": "looped-2010",
         "ourDistribution": {
-          "up": 5,
+          "up": 6,
           "flat": 8,
-          "down": 2,
-          "total": 15
+          "down": 3,
+          "total": 17
         },
         "dtliDistribution": {
           "up": 1,
@@ -235771,7 +235791,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 53% (ours: 53%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 47% (ours: 47%, theirs: 0%)"
       },
       {
         "showId": "losing-louie-2006",
@@ -235792,10 +235812,10 @@
       {
         "showId": "love-letters-2014",
         "ourDistribution": {
-          "up": 23,
+          "up": 24,
           "flat": 3,
           "down": 1,
-          "total": 27
+          "total": 28
         },
         "dtliDistribution": {
           "up": 2,
@@ -235863,9 +235883,9 @@
         "showId": "macbeth-2008",
         "ourDistribution": {
           "up": 14,
-          "flat": 30,
-          "down": 40,
-          "total": 84
+          "flat": 31,
+          "down": 41,
+          "total": 86
         },
         "dtliDistribution": {
           "up": 0,
@@ -235880,9 +235900,9 @@
         "showId": "macbeth-2013",
         "ourDistribution": {
           "up": 14,
-          "flat": 30,
-          "down": 40,
-          "total": 84
+          "flat": 31,
+          "down": 41,
+          "total": 86
         },
         "dtliDistribution": {
           "up": 0,
@@ -235897,9 +235917,9 @@
         "showId": "macbeth-2022",
         "ourDistribution": {
           "up": 14,
-          "flat": 30,
-          "down": 40,
-          "total": 84
+          "flat": 31,
+          "down": 41,
+          "total": 86
         },
         "dtliDistribution": {
           "up": 0,
@@ -235968,10 +235988,10 @@
       {
         "showId": "man-and-boy-2011",
         "ourDistribution": {
-          "up": 8,
+          "up": 9,
           "flat": 3,
           "down": 6,
-          "total": 17
+          "total": 18
         },
         "dtliDistribution": {
           "up": 2,
@@ -235980,7 +236000,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "marjorie-prime-2025",
@@ -236066,10 +236086,10 @@
       {
         "showId": "mary-poppins-2006",
         "ourDistribution": {
-          "up": 7,
-          "flat": 4,
-          "down": 2,
-          "total": 13
+          "up": 9,
+          "flat": 5,
+          "down": 3,
+          "total": 17
         },
         "dtliDistribution": {
           "up": 3,
@@ -236078,7 +236098,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
       },
       {
         "showId": "mary-stuart-2009",
@@ -236121,9 +236141,9 @@
         "showId": "mauritius-2007",
         "ourDistribution": {
           "up": 2,
-          "flat": 1,
+          "flat": 2,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "dtliDistribution": {
           "up": 0,
@@ -236241,10 +236261,10 @@
       {
         "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
         "ourDistribution": {
-          "up": 23,
+          "up": 24,
           "flat": 1,
           "down": 0,
-          "total": 24
+          "total": 25
         },
         "dtliDistribution": {
           "up": 12,
@@ -236257,10 +236277,10 @@
       {
         "showId": "million-dollar-quartet-2010",
         "ourDistribution": {
-          "up": 13,
+          "up": 15,
           "flat": 4,
           "down": 5,
-          "total": 22
+          "total": 24
         },
         "dtliDistribution": {
           "up": 4,
@@ -236269,7 +236289,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 41% (ours: 59%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 63%, theirs: 100%)"
       },
       {
         "showId": "misery-2015",
@@ -236395,10 +236415,10 @@
       {
         "showId": "moulin-rouge-the-musical-review",
         "ourDistribution": {
-          "up": 1,
+          "up": 3,
           "flat": 0,
-          "down": 1,
-          "total": 2
+          "down": 2,
+          "total": 5
         },
         "dtliDistribution": {
           "up": 2,
@@ -236447,8 +236467,8 @@
         "ourDistribution": {
           "up": 1,
           "flat": 0,
-          "down": 1,
-          "total": 2
+          "down": 2,
+          "total": 3
         },
         "dtliDistribution": {
           "up": 1,
@@ -236529,8 +236549,8 @@
         "ourDistribution": {
           "up": 9,
           "flat": 15,
-          "down": 15,
-          "total": 39
+          "down": 16,
+          "total": 40
         },
         "dtliDistribution": {
           "up": 1,
@@ -236564,10 +236584,10 @@
       {
         "showId": "next-to-normal-2009",
         "ourDistribution": {
-          "up": 18,
+          "up": 20,
           "flat": 2,
           "down": 1,
-          "total": 21
+          "total": 23
         },
         "dtliDistribution": {
           "up": 4,
@@ -236581,9 +236601,9 @@
         "showId": "nice-work-if-you-can-get-it-2012",
         "ourDistribution": {
           "up": 13,
-          "flat": 5,
+          "flat": 6,
           "down": 1,
-          "total": 19
+          "total": 20
         },
         "dtliDistribution": {
           "up": 3,
@@ -236592,7 +236612,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
       },
       {
         "showId": "no-mans-land-2013",
@@ -236779,10 +236799,10 @@
       {
         "showId": "on-the-town-2014",
         "ourDistribution": {
-          "up": 32,
+          "up": 33,
           "flat": 2,
           "down": 0,
-          "total": 34
+          "total": 35
         },
         "dtliDistribution": {
           "up": 3,
@@ -236795,10 +236815,10 @@
       {
         "showId": "on-the-twentieth-century-2015",
         "ourDistribution": {
-          "up": 33,
+          "up": 34,
           "flat": 4,
           "down": 2,
-          "total": 39
+          "total": 40
         },
         "dtliDistribution": {
           "up": 3,
@@ -236892,10 +236912,10 @@
       {
         "showId": "one-man-two-guvnors-2012",
         "ourDistribution": {
-          "up": 13,
-          "flat": 1,
+          "up": 16,
+          "flat": 2,
           "down": 0,
-          "total": 14
+          "total": 18
         },
         "dtliDistribution": {
           "up": 5,
@@ -236947,10 +236967,10 @@
       {
         "showId": "oslo-2017",
         "ourDistribution": {
-          "up": 56,
+          "up": 57,
           "flat": 6,
           "down": 1,
-          "total": 63
+          "total": 64
         },
         "dtliDistribution": {
           "up": 4,
@@ -236964,9 +236984,9 @@
         "showId": "othello-2025",
         "ourDistribution": {
           "up": 8,
-          "flat": 10,
-          "down": 16,
-          "total": 34
+          "flat": 11,
+          "down": 18,
+          "total": 37
         },
         "dtliDistribution": {
           "up": 2,
@@ -236975,15 +236995,15 @@
           "total": 19
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 37% (ours: 47%, theirs: 11%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 38% (ours: 49%, theirs: 11%)"
       },
       {
         "showId": "other-desert-cities-2011",
         "ourDistribution": {
-          "up": 15,
+          "up": 17,
           "flat": 1,
           "down": 0,
-          "total": 16
+          "total": 18
         },
         "dtliDistribution": {
           "up": 5,
@@ -237131,10 +237151,10 @@
       {
         "showId": "peter-and-the-starcatcher-2012",
         "ourDistribution": {
-          "up": 10,
+          "up": 11,
           "flat": 2,
           "down": 3,
-          "total": 15
+          "total": 16
         },
         "dtliDistribution": {
           "up": 1,
@@ -237147,10 +237167,10 @@
       {
         "showId": "peter-pan-goes-wrong-2023",
         "ourDistribution": {
-          "up": 22,
+          "up": 24,
           "flat": 3,
           "down": 5,
-          "total": 30
+          "total": 32
         },
         "dtliDistribution": {
           "up": 9,
@@ -237213,10 +237233,10 @@
       {
         "showId": "pirates-the-penzance-musical-2025",
         "ourDistribution": {
-          "up": 19,
-          "flat": 4,
+          "up": 22,
+          "flat": 5,
           "down": 0,
-          "total": 23
+          "total": 27
         },
         "dtliDistribution": {
           "up": 10,
@@ -237235,10 +237255,10 @@
       {
         "showId": "plaza-suite-2022",
         "ourDistribution": {
-          "up": 18,
+          "up": 19,
           "flat": 12,
-          "down": 7,
-          "total": 37
+          "down": 8,
+          "total": 39
         },
         "dtliDistribution": {
           "up": 2,
@@ -237247,15 +237267,15 @@
           "total": 11
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
         "ourDistribution": {
-          "up": 8,
+          "up": 13,
           "flat": 6,
           "down": 0,
-          "total": 14
+          "total": 19
         },
         "dtliDistribution": {
           "up": 9,
@@ -237264,7 +237284,7 @@
           "total": 17
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 43% (ours: 43%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
       },
       {
         "showId": "prayer-for-the-french-republic-2024",
@@ -237292,10 +237312,10 @@
       {
         "showId": "prelude-to-a-kiss-2007",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 1,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "dtliDistribution": {
           "up": 1,
@@ -237342,20 +237362,20 @@
       {
         "showId": "pretty-woman-the-musical-2018",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 16,
           "down": 25,
-          "total": 53
+          "total": 54
         },
         "hasDisagreement": false
       },
       {
         "showId": "prima-facie-2023",
         "ourDistribution": {
-          "up": 34,
+          "up": 35,
           "flat": 3,
           "down": 0,
-          "total": 37
+          "total": 38
         },
         "dtliDistribution": {
           "up": 12,
@@ -237401,10 +237421,10 @@
       {
         "showId": "priscilla-queen-of-the-desert-2011",
         "ourDistribution": {
-          "up": 9,
+          "up": 12,
           "flat": 1,
           "down": 8,
-          "total": 18
+          "total": 21
         },
         "dtliDistribution": {
           "up": 3,
@@ -237417,10 +237437,10 @@
       {
         "showId": "private-lives-2011",
         "ourDistribution": {
-          "up": 10,
+          "up": 12,
           "flat": 1,
-          "down": 2,
-          "total": 13
+          "down": 3,
+          "total": 16
         },
         "dtliDistribution": {
           "up": 2,
@@ -237429,15 +237449,15 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 77%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 35% (ours: 75%, theirs: 40%)"
       },
       {
         "showId": "promises-promises-2010",
         "ourDistribution": {
-          "up": 4,
+          "up": 6,
           "flat": 8,
           "down": 4,
-          "total": 16
+          "total": 18
         },
         "dtliDistribution": {
           "up": 2,
@@ -237446,15 +237466,15 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 50% (ours: 50%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 44% (ours: 44%, theirs: 0%)"
       },
       {
         "showId": "punch-2025",
         "ourDistribution": {
-          "up": 22,
-          "flat": 7,
-          "down": 6,
-          "total": 35
+          "up": 24,
+          "flat": 8,
+          "down": 7,
+          "total": 39
         },
         "dtliDistribution": {
           "up": 7,
@@ -237495,10 +237515,10 @@
       {
         "showId": "purpose",
         "ourDistribution": {
-          "up": 23,
+          "up": 32,
           "flat": 7,
           "down": 0,
-          "total": 30
+          "total": 39
         },
         "dtliDistribution": {
           "up": 30,
@@ -237511,10 +237531,10 @@
       {
         "showId": "purpose-2025",
         "ourDistribution": {
-          "up": 23,
+          "up": 32,
           "flat": 7,
           "down": 0,
-          "total": 30
+          "total": 39
         },
         "dtliDistribution": {
           "up": 30,
@@ -237740,8 +237760,8 @@
         "ourDistribution": {
           "up": 0,
           "flat": 9,
-          "down": 12,
-          "total": 21
+          "down": 13,
+          "total": 22
         },
         "dtliDistribution": {
           "up": 0,
@@ -237750,7 +237770,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 57% (ours: 57%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 59% (ours: 59%, theirs: 0%)"
       },
       {
         "showId": "rent-1996",
@@ -237772,9 +237792,9 @@
         "showId": "richard-iii-2013",
         "ourDistribution": {
           "up": 13,
-          "flat": 0,
-          "down": 0,
-          "total": 13
+          "flat": 1,
+          "down": 1,
+          "total": 15
         },
         "dtliDistribution": {
           "up": 1,
@@ -237783,7 +237803,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 75% (ours: 100%, theirs: 25%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 62% (ours: 87%, theirs: 25%)"
       },
       {
         "showId": "ring-of-fire-2006",
@@ -237814,10 +237834,10 @@
       {
         "showId": "rock-of-ages-2009",
         "ourDistribution": {
-          "up": 11,
+          "up": 12,
           "flat": 4,
           "down": 2,
-          "total": 17
+          "total": 18
         },
         "hasDisagreement": false
       },
@@ -237860,10 +237880,10 @@
       {
         "showId": "romeo-juliet",
         "ourDistribution": {
-          "up": 14,
-          "flat": 16,
-          "down": 13,
-          "total": 43
+          "up": 21,
+          "flat": 19,
+          "down": 15,
+          "total": 55
         },
         "dtliDistribution": {
           "up": 10,
@@ -237872,15 +237892,15 @@
           "total": 33
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 37% (ours: 37%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "romeo-juliet-2024",
         "ourDistribution": {
-          "up": 14,
-          "flat": 16,
-          "down": 13,
-          "total": 43
+          "up": 21,
+          "flat": 19,
+          "down": 15,
+          "total": 55
         },
         "dtliDistribution": {
           "up": 10,
@@ -237889,15 +237909,15 @@
           "total": 33
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 37% (ours: 37%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "saint-joan-2018",
         "ourDistribution": {
           "up": 24,
           "flat": 12,
-          "down": 10,
-          "total": 46
+          "down": 11,
+          "total": 47
         },
         "dtliDistribution": {
           "up": 1,
@@ -238006,10 +238026,10 @@
       {
         "showId": "shucked-2023",
         "ourDistribution": {
-          "up": 52,
+          "up": 53,
           "flat": 10,
           "down": 3,
-          "total": 65
+          "total": 66
         },
         "dtliDistribution": {
           "up": 10,
@@ -238039,9 +238059,9 @@
         "showId": "side-show-2014",
         "ourDistribution": {
           "up": 15,
-          "flat": 7,
+          "flat": 8,
           "down": 2,
-          "total": 24
+          "total": 25
         },
         "dtliDistribution": {
           "up": 1,
@@ -238050,7 +238070,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 29% (ours: 63%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
       },
       {
         "showId": "significant-other-2017",
@@ -238071,10 +238091,10 @@
       {
         "showId": "sister-act-2011",
         "ourDistribution": {
-          "up": 13,
+          "up": 14,
           "flat": 6,
           "down": 3,
-          "total": 22
+          "total": 23
         },
         "dtliDistribution": {
           "up": 1,
@@ -238083,7 +238103,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 34% (ours: 59%, theirs: 25%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 61%, theirs: 25%)"
       },
       {
         "showId": "six-2021",
@@ -238104,10 +238124,10 @@
       {
         "showId": "six-degrees-of-separation-2017",
         "ourDistribution": {
-          "up": 35,
+          "up": 36,
           "flat": 15,
           "down": 3,
-          "total": 53
+          "total": 54
         },
         "dtliDistribution": {
           "up": 3,
@@ -238218,10 +238238,10 @@
       {
         "showId": "sondheim-on-sondheim-2010",
         "ourDistribution": {
-          "up": 8,
+          "up": 11,
           "flat": 9,
           "down": 4,
-          "total": 21
+          "total": 24
         },
         "dtliDistribution": {
           "up": 2,
@@ -238230,7 +238250,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 43% (ours: 43%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
       },
       {
         "showId": "soul-doctor-2013",
@@ -238351,10 +238371,10 @@
       {
         "showId": "stephen-sondheims-old-friends-2025",
         "ourDistribution": {
-          "up": 13,
+          "up": 16,
           "flat": 5,
           "down": 1,
-          "total": 19
+          "total": 22
         },
         "dtliDistribution": {
           "up": 8,
@@ -238362,8 +238382,7 @@
           "down": 2,
           "total": 16
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
+        "hasDisagreement": false
       },
       {
         "showId": "stereophonic-2024",
@@ -238464,10 +238483,10 @@
       {
         "showId": "summer-1976-2023",
         "ourDistribution": {
-          "up": 19,
+          "up": 20,
           "flat": 7,
           "down": 2,
-          "total": 28
+          "total": 29
         },
         "dtliDistribution": {
           "up": 8,
@@ -238556,10 +238575,10 @@
       {
         "showId": "superior-donuts-2009",
         "ourDistribution": {
-          "up": 2,
+          "up": 4,
           "flat": 0,
           "down": 1,
-          "total": 3
+          "total": 5
         },
         "dtliDistribution": {
           "up": 4,
@@ -238567,8 +238586,7 @@
           "down": 0,
           "total": 4
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 33% (ours: 67%, theirs: 100%)"
+        "hasDisagreement": false
       },
       {
         "showId": "sweat-2017",
@@ -238591,9 +238609,9 @@
         "showId": "sweeney-todd-2005",
         "ourDistribution": {
           "up": 36,
-          "flat": 3,
+          "flat": 4,
           "down": 0,
-          "total": 39
+          "total": 40
         },
         "dtliDistribution": {
           "up": 10,
@@ -238607,9 +238625,9 @@
         "showId": "sweeney-todd-2023",
         "ourDistribution": {
           "up": 36,
-          "flat": 3,
+          "flat": 4,
           "down": 0,
-          "total": 39
+          "total": 40
         },
         "dtliDistribution": {
           "up": 10,
@@ -238622,10 +238640,10 @@
       {
         "showId": "swept-away-2024",
         "ourDistribution": {
-          "up": 16,
+          "up": 17,
           "flat": 15,
           "down": 7,
-          "total": 38
+          "total": 39
         },
         "dtliDistribution": {
           "up": 5,
@@ -238634,7 +238652,7 @@
           "total": 13
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 39% (ours: 39%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
       },
       {
         "showId": "sylvia-2015",
@@ -238654,12 +238672,28 @@
         "disagreementDetails": "DTLI: Up thumbs differ by 50% (ours: 75%, theirs: 25%)"
       },
       {
+        "showId": "take-me-out",
+        "ourDistribution": {
+          "up": 24,
+          "flat": 3,
+          "down": 2,
+          "total": 29
+        },
+        "dtliDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "take-me-out-2022",
         "ourDistribution": {
-          "up": 23,
+          "up": 24,
           "flat": 3,
-          "down": 1,
-          "total": 27
+          "down": 2,
+          "total": 29
         },
         "dtliDistribution": {
           "up": 1,
@@ -238688,10 +238722,10 @@
       {
         "showId": "tammy-faye",
         "ourDistribution": {
-          "up": 11,
-          "flat": 10,
-          "down": 25,
-          "total": 46
+          "up": 13,
+          "flat": 12,
+          "down": 29,
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -238704,10 +238738,10 @@
       {
         "showId": "tammy-faye-2024",
         "ourDistribution": {
-          "up": 11,
-          "flat": 10,
-          "down": 25,
-          "total": 46
+          "up": 13,
+          "flat": 12,
+          "down": 29,
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -238785,10 +238819,10 @@
       {
         "showId": "the-addams-family-2010",
         "ourDistribution": {
-          "up": 5,
+          "up": 6,
           "flat": 6,
-          "down": 14,
-          "total": 25
+          "down": 15,
+          "total": 27
         },
         "dtliDistribution": {
           "up": 0,
@@ -238819,8 +238853,8 @@
         "ourDistribution": {
           "up": 1,
           "flat": 4,
-          "down": 13,
-          "total": 18
+          "down": 14,
+          "total": 19
         },
         "dtliDistribution": {
           "up": 1,
@@ -238829,7 +238863,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 28% (ours: 6%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 28% (ours: 5%, theirs: 33%)"
       },
       {
         "showId": "the-apple-tree-2006",
@@ -238867,10 +238901,10 @@
       {
         "showId": "the-audience-2015",
         "ourDistribution": {
-          "up": 37,
+          "up": 38,
           "flat": 2,
           "down": 1,
-          "total": 40
+          "total": 41
         },
         "dtliDistribution": {
           "up": 3,
@@ -239010,9 +239044,9 @@
         "showId": "the-collaboration-2022",
         "ourDistribution": {
           "up": 14,
-          "flat": 16,
+          "flat": 15,
           "down": 11,
-          "total": 41
+          "total": 40
         },
         "dtliDistribution": {
           "up": 1,
@@ -239021,7 +239055,7 @@
           "total": 11
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 39% (ours: 39%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 38% (ours: 38%, theirs: 0%)"
       },
       {
         "showId": "the-color-purple-2005",
@@ -239135,10 +239169,10 @@
       {
         "showId": "the-cripple-of-inishmaan-2014",
         "ourDistribution": {
-          "up": 17,
+          "up": 18,
           "flat": 2,
           "down": 1,
-          "total": 20
+          "total": 21
         },
         "dtliDistribution": {
           "up": 5,
@@ -239298,9 +239332,9 @@
         "showId": "the-gin-game-2015",
         "ourDistribution": {
           "up": 26,
-          "flat": 10,
+          "flat": 11,
           "down": 2,
-          "total": 38
+          "total": 39
         },
         "dtliDistribution": {
           "up": 3,
@@ -239309,7 +239343,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
         "showId": "the-glass-menagerie-2013",
@@ -239486,9 +239520,9 @@
         "showId": "the-house-of-blue-leaves-2011",
         "ourDistribution": {
           "up": 9,
-          "flat": 8,
-          "down": 6,
-          "total": 23
+          "flat": 9,
+          "down": 7,
+          "total": 25
         },
         "dtliDistribution": {
           "up": 0,
@@ -239497,7 +239531,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 39% (ours: 39%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
       },
       {
         "showId": "the-humans-2016",
@@ -239529,10 +239563,10 @@
       {
         "showId": "the-importance-of-being-earnest-2011",
         "ourDistribution": {
-          "up": 12,
+          "up": 11,
           "flat": 1,
           "down": 0,
-          "total": 13
+          "total": 12
         },
         "dtliDistribution": {
           "up": 4,
@@ -239577,10 +239611,10 @@
       {
         "showId": "the-kite-runner-2022",
         "ourDistribution": {
-          "up": 9,
-          "flat": 9,
+          "up": 10,
+          "flat": 10,
           "down": 15,
-          "total": 33
+          "total": 35
         },
         "dtliDistribution": {
           "up": 1,
@@ -239589,7 +239623,7 @@
           "total": 9
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
       },
       {
         "showId": "the-last-five-years-2025",
@@ -239628,10 +239662,10 @@
       {
         "showId": "the-lehman-trilogy-2021",
         "ourDistribution": {
-          "up": 27,
+          "up": 26,
           "flat": 3,
           "down": 1,
-          "total": 31
+          "total": 30
         },
         "dtliDistribution": {
           "up": 3,
@@ -239754,8 +239788,8 @@
         "showId": "the-little-prince-2022",
         "ourDistribution": {
           "up": 0,
-          "flat": 1,
-          "down": 0,
+          "flat": 0,
+          "down": 1,
           "total": 1
         },
         "dtliDistribution": {
@@ -239857,8 +239891,8 @@
         "ourDistribution": {
           "up": 22,
           "flat": 12,
-          "down": 5,
-          "total": 39
+          "down": 6,
+          "total": 40
         },
         "dtliDistribution": {
           "up": 2,
@@ -239867,7 +239901,7 @@
           "total": 12
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 40% (ours: 56%, theirs: 17%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 55%, theirs: 17%)"
       },
       {
         "showId": "the-mystery-of-edwin-drood-2012",
@@ -239931,10 +239965,10 @@
       {
         "showId": "the-normal-heart-2011",
         "ourDistribution": {
-          "up": 17,
+          "up": 16,
           "flat": 1,
           "down": 0,
-          "total": 18
+          "total": 17
         },
         "dtliDistribution": {
           "up": 8,
@@ -240116,8 +240150,8 @@
         "showId": "the-phantom-of-the-opera-1988",
         "ourDistribution": {
           "up": 15,
-          "flat": 1,
-          "down": 1,
+          "flat": 2,
+          "down": 0,
           "total": 17
         },
         "dtliDistribution": {
@@ -240178,10 +240212,10 @@
       {
         "showId": "the-pitmen-painters-2010",
         "ourDistribution": {
-          "up": 13,
+          "up": 12,
           "flat": 5,
           "down": 3,
-          "total": 21
+          "total": 20
         },
         "dtliDistribution": {
           "up": 5,
@@ -240190,7 +240224,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 62%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 40% (ours: 60%, theirs: 100%)"
       },
       {
         "showId": "the-play-that-goes-wrong-2017",
@@ -240448,8 +240482,8 @@
         "ourDistribution": {
           "up": 15,
           "flat": 8,
-          "down": 3,
-          "total": 26
+          "down": 4,
+          "total": 27
         },
         "dtliDistribution": {
           "up": 7,
@@ -240458,7 +240492,7 @@
           "total": 13
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
       },
       {
         "showId": "the-snow-geese-2013",
@@ -240539,10 +240573,10 @@
       {
         "showId": "the-thanksgiving-play-2023",
         "ourDistribution": {
-          "up": 16,
+          "up": 15,
           "flat": 9,
           "down": 6,
-          "total": 31
+          "total": 30
         },
         "dtliDistribution": {
           "up": 3,
@@ -240551,7 +240585,7 @@
           "total": 10
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
       },
       {
         "showId": "the-threepenny-opera-2006",
@@ -240590,8 +240624,8 @@
         "ourDistribution": {
           "up": 6,
           "flat": 3,
-          "down": 8,
-          "total": 17
+          "down": 9,
+          "total": 18
         },
         "dtliDistribution": {
           "up": 2,
@@ -240600,7 +240634,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 30% (ours: 47%, theirs: 17%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 33% (ours: 50%, theirs: 17%)"
       },
       {
         "showId": "the-vertical-hour-2006",
@@ -240763,9 +240797,9 @@
         "showId": "therese-raquin-2015",
         "ourDistribution": {
           "up": 5,
-          "flat": 4,
+          "flat": 3,
           "down": 6,
-          "total": 15
+          "total": 14
         },
         "dtliDistribution": {
           "up": 1,
@@ -240773,8 +240807,7 @@
           "down": 2,
           "total": 5
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
+        "hasDisagreement": false
       },
       {
         "showId": "this-is-our-youth-2014",
@@ -240795,10 +240828,10 @@
       {
         "showId": "thoughts-of-a-colored-man-2021",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 11,
           "down": 2,
-          "total": 25
+          "total": 26
         },
         "dtliDistribution": {
           "up": 2,
@@ -240807,7 +240840,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 44% (ours: 44%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 42% (ours: 42%, theirs: 0%)"
       },
       {
         "showId": "three-days-of-rain-2006",
@@ -241253,8 +241286,8 @@
         "ourDistribution": {
           "up": 14,
           "flat": 9,
-          "down": 3,
-          "total": 26
+          "down": 4,
+          "total": 27
         },
         "dtliDistribution": {
           "up": 1,
@@ -241263,7 +241296,7 @@
           "total": 8
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 51% (ours: 12%, theirs: 63%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 48% (ours: 15%, theirs: 63%)"
       },
       {
         "showId": "war-horse-2011",
