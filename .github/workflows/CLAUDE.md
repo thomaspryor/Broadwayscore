@@ -263,6 +263,19 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Cost:** ~$0.15/bug diagnosis, typical week $0-0.45, max $0.75
 - **CLI test:** `node scripts/diagnose-feedback-bug.js --message "score seems wrong" --show "Hamilton"`
 
+## `auto-fix-feedback-bug.yml`
+- **Runs:** Automatically when a GitHub issue is created with the `bug-diagnosis` label (triggered by `process-feedback.yml`)
+- **Does:** Auto-applies data-level fixes for high-confidence bug diagnoses. Parses structured diagnosis JSON embedded in the issue body, calls Claude Sonnet to generate exact field edits, applies them with safety rails, validates, commits, and closes the issue.
+- **Script:** `scripts/auto-fix-feedback-bug.js`
+- **Requires:** ANTHROPIC_API_KEY
+- **Concurrency:** Serialized (queued, not cancelled) to prevent parallel data file conflicts
+- **Auto-fix criteria:** `fixType=data` + `confidence=high` + resolved show ID
+- **Allowed fields:** `shows.json` (venue, synopsis, runtime, intermissions, ageRecommendation, type, isRevival), `commercial.json` (designation, capitalization, weeklyRunningCost, capitalizationSource, notes), `audience-buzz.json` (title)
+- **Protected fields:** id, slug, status, openingDate, closingDate, previewsStartDate, images, tags, cast, creativeTeam, recouped, deepResearch
+- **Safety:** oldValue verification prevents stale-data writes, validate-data.js post-check with git rollback on failure
+- **Outcomes:** `fixed` (closes issue), `not-a-bug` (labels, leaves open), `skipped` (labels needs-manual-review), `error`/`validation-failed` (labels needs-manual-review)
+- **Cost:** ~$0.01-0.03 per fix attempt (one Claude Sonnet call)
+
 ## `update-commercial.yml`
 - **Runs:** Every Wednesday at 4 PM UTC
 - **Does:** Scrapes Reddit grosses analysis posts, searches trade press, optional SEC EDGAR filings, uses Claude Sonnet to propose commercial.json updates, multi-source validation, shadow classifier
