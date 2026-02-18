@@ -70,6 +70,24 @@ curl -s -X PATCH "https://api.vercel.com/v9/projects/broadwayscore?teamId=team_z
 ```
 **Warning:** Any push during the brief window triggers a build. Restore `exit 0` within seconds. Checkpoint commits will get auto-canceled by Vercel in favor of the latest.
 
+**Vercel API — Environment Variables & Feature Flags:**
+Manage env vars via API — never ask the user to go to the Vercel dashboard.
+```bash
+VERCEL_TOKEN=$(grep '^VERCEL_TOKEN=' .env | cut -d= -f2)
+PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
+# List env vars:
+curl -s -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$PROJECT_ID/env?decrypt=true"
+# Create env var:
+curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+  "https://api.vercel.com/v10/projects/$PROJECT_ID/env" \
+  -d '{"key":"KEY","value":"VAL","target":["production","preview","development"],"type":"plain"}'
+# Trigger production deploy (after env var change):
+curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+  "https://api.vercel.com/v13/deployments" \
+  -d '{"name":"broadwayscore","project":"prj_wmBnDUrCQCwabIAYPbnMiIP3wg15","gitSource":{"type":"github","repoId":1132314463,"ref":"main"},"target":"production"}'
+```
+**Feature flags** are controlled by `NEXT_PUBLIC_FEATURES` env var (comma-separated list). See `src/config/feature-flags.ts` for the full list. To enable a new feature, update the env var via API and trigger a redeploy.
+
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
 
