@@ -24,7 +24,6 @@ export default function AnalyticsWrapper() {
     script.src = 'https://browser.sentry-cdn.com/8.52.1/bundle.min.js';
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const SentrySDK = (window as any).Sentry;
       if (typeof SentrySDK !== 'undefined') {
         SentrySDK.init({
@@ -62,12 +61,10 @@ export default function AnalyticsWrapper() {
             /Script error\.?$/i,
             /Non-Error promise rejection captured/i,
           ],
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           beforeSend(event: any) {
             const frames =
               event?.exception?.values?.[0]?.stacktrace?.frames;
             if (!frames || frames.length === 0) return null;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const hasOurCode = frames.some((f: any) =>
               f.filename &&
               /broadwayscorecard\.(com|vercel\.app)/.test(f.filename)
