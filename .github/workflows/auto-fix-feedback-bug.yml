@@ -147,6 +147,89 @@ jobs:
               });
             }
 
+      - name: Notify Tom of issues needing manual review
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug'
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          node -e "
+          const https = require('https');
+          const resendKey = process.env.RESEND_API_KEY;
+          const ownerEmail = process.env.OWNER_EMAIL;
+          if (!resendKey || !ownerEmail) { console.log('No Resend key or owner email'); process.exit(0); }
+
+          const body = process.env.ISSUE_BODY || '';
+          const action = process.env.FIX_ACTION || 'error';
+          const issueNum = process.env.ISSUE_NUMBER;
+
+          // Extract submitter info
+          const match = body.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
+          let submitter = 'Someone';
+          let show = '';
+          let message = '';
+          if (match) {
+            try {
+              const diag = JSON.parse(match[1]);
+              submitter = diag.submitterName || 'Someone';
+              show = diag.submitterShow || '';
+              message = diag.summary || '';
+            } catch {}
+          }
+
+          // Extract original message from issue body
+          const msgMatch = body.match(/\*\*Original message:\*\* (.+)/);
+          if (msgMatch) message = msgMatch[1];
+
+          const subject = show
+            ? 'Feedback needs your attention: ' + show
+            : 'Feedback needs your attention';
+
+          const text = [
+            submitter + ' wrote in' + (show ? ' about ' + show : '') + ':',
+            '',
+            '\"' + message + '\"',
+            '',
+            'The auto-fix couldn\\'t handle this one (status: ' + action + ').',
+            '',
+            'Issue: https://github.com/thomaspryor/Broadwayscore/issues/' + issueNum,
+          ].join('\n');
+
+          const html = text.split('\n').map(l => l === '' ? '<br>' : '<p style=\"margin:0;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;\">' + l.replace(/\"/g, '') + '</p>').join('\n');
+
+          const data = JSON.stringify({
+            from: 'Broadway Scorecard Alerts <updates@broadwayscorecard.com>',
+            to: [ownerEmail],
+            subject,
+            html,
+          });
+
+          const req = https.request('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + resendKey,
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(data),
+            },
+          }, (res) => {
+            let b = '';
+            res.on('data', c => b += c);
+            res.on('end', () => {
+              if (res.statusCode >= 200 && res.statusCode < 300) {
+                console.log('Notified owner about issue #' + issueNum);
+              } else {
+                console.log('Notification failed: ' + res.statusCode + ' ' + b.slice(0, 200));
+              }
+            });
+          });
+          req.on('error', e => console.log('Email error: ' + e.message));
+          req.write(data);
+          req.end();
+          "
+
       - name: Send thank-you email to submitter
         if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'not-a-bug')
         env:
