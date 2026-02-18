@@ -1,0 +1,122 @@
+name: Auto-Fix Feedback Bug
+
+on:
+  issues:
+    types: [opened]
+
+concurrency:
+  group: auto-fix-feedback-bug
+  cancel-in-progress: false
+
+jobs:
+  auto-fix:
+    if: contains(github.event.issue.labels.*.name, 'bug-diagnosis')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run auto-fix
+        id: fix
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ACTION=$(node scripts/auto-fix-feedback-bug.js)
+          echo "action=$ACTION" >> $GITHUB_OUTPUT
+
+      - name: Commit and push
+        if: always() && steps.fix.outputs.action == 'fixed'
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          git add data/shows.json data/commercial.json data/audience-buzz.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix(data): Auto-fix feedback bug #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep $((10 + RANDOM % 20))
+              git pull --rebase -X theirs origin main
+            done
+          fi
+
+      - name: Post comment and update issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const action = '${{ steps.fix.outputs.action }}' || 'error';
+            const issueNumber = context.issue.number;
+
+            let comment = '';
+            try { comment = fs.readFileSync('.github-comment.md', 'utf8'); } catch {}
+
+            if (!comment) {
+              const defaults = {
+                'fixed': '## Fix Applied\n\nThe data fix has been applied and will be live shortly.',
+                'skipped': '## Skipped\n\nThis bug requires manual review.',
+                'not-a-bug': '## Likely Not a Bug\n\nAnalysis suggests this is working as designed. Leaving open for review.',
+                'validation-failed': '## Validation Failed\n\nAuto-fix was rolled back. Requires manual review.',
+                'error': '## Error\n\nAuto-fix encountered an error. A maintainer will review.',
+              };
+              comment = defaults[action] || defaults['error'];
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: comment
+            });
+
+            if (action === 'fixed') {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['auto-fixed']
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed', state_reason: 'completed'
+              });
+            } else if (action === 'not-a-bug') {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['not-a-bug']
+              });
+            } else {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            }

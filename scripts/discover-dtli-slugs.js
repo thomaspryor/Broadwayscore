@@ -28,7 +28,14 @@ const FORCE = args.includes('--force');
 
 function httpGet(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { timeout: 20000 }, (res) => {
+    const options = {
+      timeout: 20000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0; +https://broadwayscorecard.com)',
+        'Accept': 'text/xml, application/xml, text/html, */*'
+      }
+    };
+    const req = https.get(url, options, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         const redirectUrl = res.headers.location;
         if (redirectUrl) {
@@ -86,17 +93,34 @@ function loadSlugMap() {
 async function fetchSitemapUrls() {
   console.log('Fetching sitemap index...');
   const result = await httpGet(SITEMAP_INDEX_URL);
-  if (!result.ok) {
-    console.error(`Failed to fetch sitemap index: ${result.error || result.status}`);
-    return [];
+  if (result.ok) {
+    const urls = [];
+    const regex = /<loc>(https:\/\/didtheylikeit\.com\/shows-sitemap\d+\.xml)<\/loc>/g;
+    let match;
+    while ((match = regex.exec(result.body)) !== null) {
+      urls.push(match[1]);
+    }
+    if (urls.length > 0) {
+      console.log(`  Found ${urls.length} show sitemaps from index`);
+      return urls;
+    }
   }
+
+  // Fallback: try individual sitemap URLs directly (1-20)
+  console.log(`Sitemap index unavailable (${result.error || result.status}), trying individual sitemaps...`);
   const urls = [];
-  const regex = /<loc>(https:\/\/didtheylikeit\.com\/shows-sitemap\d+\.xml)<\/loc>/g;
-  let match;
-  while ((match = regex.exec(result.body)) !== null) {
-    urls.push(match[1]);
+  for (let i = 1; i <= 20; i++) {
+    const url = `https://didtheylikeit.com/shows-sitemap${i}.xml`;
+    const res = await httpGet(url);
+    if (res.ok && res.body && res.body.includes('<loc>')) {
+      urls.push(url);
+    } else {
+      // Once we hit a missing one, stop probing
+      if (i > 5) break;
+    }
+    await sleep(500);
   }
-  console.log(`  Found ${urls.length} show sitemaps`);
+  console.log(`  Found ${urls.length} show sitemaps via direct probe`);
   return urls;
 }
 
@@ -308,7 +332,12 @@ async function main() {
   // Step 1: Fetch all sitemaps and extract show slugs
   const sitemapUrls = await fetchSitemapUrls();
   if (sitemapUrls.length === 0) {
-    console.error('No sitemaps found!');
+    const existingCount = Object.keys(slugMap.shows || {}).length;
+    if (existingCount > 0) {
+      console.log(`No sitemaps reachable, but existing slug map has ${existingCount} entries. Keeping existing map.`);
+      process.exit(0);
+    }
+    console.error('No sitemaps found and no existing slug map!');
     process.exit(1);
   }
 
