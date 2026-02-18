@@ -1,0 +1,39 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # Application code
+      - 'src/**'
+      - 'public/**'
+      - 'content/**'
+      # Config files
+      - 'next.config.*'
+      - 'vercel.json'
+      - 'tailwind.config.*'
+      - 'tsconfig.*'
+      - 'package.json'
+      - 'package-lock.json'
+      # Build-relevant data files (imported at build time)
+      - 'data/shows.json'
+      - 'data/reviews.json'
+      - 'data/grosses.json'
+      - 'data/grosses-history.json'
+      - 'data/commercial.json'
+      - 'data/audience-buzz.json'
+      - 'data/critic-consensus.json'
+      - 'data/lottery-rush.json'
+      - 'data/awards.json'
+      - 'data/gold-lists-computed.json'
+      - 'data/critic-registry.json'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy Hook
+        run: |
+          echo "Triggering Vercel production deploy..."
+          curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
+          echo "Deploy triggered."
