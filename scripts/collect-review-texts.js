@@ -148,6 +148,7 @@ const CONFIG = {
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
   excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
+  incompleteReasonFilter: (process.env.INCOMPLETE_REASON_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by incompleteReason
   archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
 
   // API Keys
@@ -2971,8 +2972,15 @@ function buildTierContext(review) {
   }
 
   const archiveFirstExplicitlyDisabled = process.env.ARCHIVE_FIRST === 'false';
-  const isArchiveFirst = !archiveOrgDisabledForBatch &&
-    ((!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview));
+
+  // Reason-aware routing: override tier strategy based on incompleteReason
+  const reason = review.incompleteReason || '';
+  const forceArchiveFirst = ['scraper_garbage', 'paywall', 'partial_text'].includes(reason);
+  const skipDirectScrapers = reason === 'paywall';
+  const enableBrowserbase = reason === 'bot_blocked';
+
+  const isArchiveFirst = forceArchiveFirst || (!archiveOrgDisabledForBatch &&
+    ((!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview)));
   const hasPaywallCreds = !!getPaywallCredentials(url)?.email;
 
   return {
@@ -2982,6 +2990,9 @@ function buildTierContext(review) {
     hasCookiesLoaded,
     isArchiveFirst,
     hasPaywallCreds,
+    // Reason-aware routing signals
+    skipDirectScrapers,
+    enableBrowserbase,
     // Mutable signals set by onFailure hooks, read by later shouldRun predicates
     sawCaptcha: false,
     sawPaywall: false,
@@ -3092,7 +3103,10 @@ function buildTierChain(ctx, review) {
       tierNumber: 1,
       method: 'playwright',
       label: 'Playwright with stealth',
-      shouldRun: () => !ctx.isKnownBlocked || ctx.hasCookiesLoaded,
+      shouldRun: () => {
+        if (ctx.skipDirectScrapers) return false;
+        return !ctx.isKnownBlocked || ctx.hasCookiesLoaded;
+      },
       skipMessage: 'Skipped (known-blocked site, no cookies)',
       execute: (url) => fetchWithPlaywright(url, review),
       onFailure: (error) => {
@@ -3160,7 +3174,7 @@ function buildTierChain(ctx, review) {
           }
         } catch {}
         return (
-          ctx.isKnownBlocked || ctx.sawCaptcha ||
+          ctx.isKnownBlocked || ctx.sawCaptcha || ctx.enableBrowserbase ||
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
         );
       },
@@ -3177,7 +3191,10 @@ function buildTierChain(ctx, review) {
       tierNumber: 2,
       method: 'scrapingbee',
       label: 'ScrapingBee API',
-      shouldRun: () => !!CONFIG.scrapingBeeKey,
+      shouldRun: () => {
+        if (ctx.skipDirectScrapers) return false;
+        return !!CONFIG.scrapingBeeKey;
+      },
       execute: (url) => fetchWithScrapingBee(url, false),
       onFailure: (error) => {
         ctx.anyTierFailed = true;
@@ -3193,7 +3210,10 @@ function buildTierChain(ctx, review) {
       tierNumber: 3,
       method: 'brightdata',
       label: 'Bright Data Web Unlocker',
-      shouldRun: () => !!CONFIG.brightDataKey,
+      shouldRun: () => {
+        if (ctx.skipDirectScrapers) return false;
+        return !!CONFIG.brightDataKey;
+      },
       execute: (url) => fetchWithBrightData(url),
       onFailure: (error) => { ctx.anyTierFailed = true; },
     },
@@ -4449,24 +4469,29 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Skip misattributed/wrong reviews entirely
-        if (data.wrongAttribution || data.wrongProduction || data.wrongShow) {
+        // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
+        const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;
+        if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
           continue;
         }
 
-        // Skip if already has good text (unless retrying failed)
-        const textLen = data.fullText ? data.fullText.length : 0;
-        const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated'
-          || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
-        // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
-        const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
-        // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
-        if (!isTruncated && !needsUrlDiscovery && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
-          continue;
+        // Skip if already has good text (unless retrying failed or filtering by reason)
+        // When filtering by incompleteReason, trust the reason field instead of re-checking text length
+        // (important: wrong_content reviews may have long text from the *wrong* page)
+        if (CONFIG.incompleteReasonFilter.length === 0) {
+          const textLen = data.fullText ? data.fullText.length : 0;
+          const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated'
+            || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
+          // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
+          const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
+          // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
+          if (!isTruncated && !needsUrlDiscovery && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+            continue;
+          }
         }
 
-        // Skip if no URL
-        if (!data.url) continue;
+        // Skip if no URL (unless explicitly targeting no_url reviews for SERP discovery)
+        if (!data.url && !CONFIG.incompleteReasonFilter.includes('no_url')) continue;
 
         // Determine outlet tier
         const outletId = (data.outletId || '').toLowerCase();
@@ -4518,6 +4543,12 @@ function findReviewsToProcess() {
           }
         }
 
+        // Apply incompleteReason filter
+        if (CONFIG.incompleteReasonFilter.length > 0) {
+          const reason = data.incompleteReason || '';
+          if (!CONFIG.incompleteReasonFilter.includes(reason)) continue;
+        }
+
         // Parse publish date for archive-first logic
         let publishDate = null;
         if (data.publishDate) {
@@ -4541,6 +4572,7 @@ function findReviewsToProcess() {
           publishDate,
           showNotMentioned: data.showNotMentioned || false,
           isOpenShow: openShowIds.has(showId),
+          incompleteReason: data.incompleteReason || null,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -4835,6 +4867,46 @@ async function processReview(review) {
       await setupBrowser();
     } catch (restartErr) {
       console.log(`  ⚠ Browser restart failed: ${restartErr.message}`);
+    }
+  }
+
+  // Reason-aware URL discovery: no_url and wrong_content need SERP search before fetch
+  if ((review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content') && review.filePath) {
+    console.log(`  [${review.incompleteReason}] Attempting URL discovery before fetch...`);
+    const discoveredUrl = await discoverCorrectUrl(review);
+
+    if (discoveredUrl === '__SERP_UNAVAILABLE__') {
+      stats.totalFailed++;
+      return { success: false, error: 'serp_unavailable' };
+    }
+
+    if (discoveredUrl) {
+      console.log(`  [${review.incompleteReason}] Discovered: ${review.url || '(none)'} → ${discoveredUrl}`);
+      // For wrong_content: clear wrong flags on file so it can be re-scraped
+      if (review.incompleteReason === 'wrong_content') {
+        try {
+          const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+          fileData.previousUrl = fileData.url;
+          fileData.url = discoveredUrl;
+          delete fileData.wrongProduction;
+          delete fileData.wrongShow;
+          delete fileData.wrongProductionReason;
+          delete fileData.wrongShowReason;
+          delete fileData.showNotMentioned;
+          delete fileData.contentMismatchNote;
+          delete fileData.incompleteReason;
+          delete fileData.incompleteDetail;
+          fileData.urlDiscoveredAt = new Date().toISOString();
+          fileData.urlDiscoveryMethod = 'google-serp-reason-recovery';
+          fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        } catch (e) {}
+      }
+      review.url = discoveredUrl;
+      review._urlDiscovered = true;
+    } else {
+      console.log(`  [${review.incompleteReason}] No URL found via SERP, skipping`);
+      stats.totalFailed++;
+      return { success: false, error: `${review.incompleteReason}_no_url_discovered` };
     }
   }
 
