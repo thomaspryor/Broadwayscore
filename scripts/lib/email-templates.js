@@ -454,6 +454,64 @@ ${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${li
   return { subject, html };
 }
 
+/**
+ * Build a fix-approval email — plain text style, personal, from Tom's system.
+ * Includes Approve/Reject buttons as simple links.
+ *
+ * @param {object} opts
+ * @param {string} opts.submitterName - Who reported the bug
+ * @param {string} opts.showTitle - Show name if applicable
+ * @param {string} opts.originalMessage - What the user wrote
+ * @param {string} opts.planSummary - Plain-English summary of what Claude will do
+ * @param {Array<string>} opts.planSteps - List of concrete steps
+ * @param {string} opts.riskLevel - "Low" | "Medium" | "High"
+ * @param {string} opts.approveUrl - HMAC-signed approval URL
+ * @param {string} opts.rejectUrl - HMAC-signed rejection URL
+ * @param {number} opts.issueNumber - GitHub issue number
+ * @returns {{ subject: string, html: string }}
+ */
+function buildFixApprovalEmail(opts) {
+  const {
+    submitterName, showTitle, originalMessage,
+    planSummary, planSteps, riskLevel,
+    approveUrl, rejectUrl, issueNumber,
+  } = opts;
+
+  const who = submitterName && submitterName !== 'Anonymous' ? submitterName : 'Someone';
+  const showRef = showTitle ? ` about ${escapeHtml(showTitle)}` : '';
+  const subject = showTitle
+    ? `Bug Fix Plan: ${showTitle} (#${issueNumber})`
+    : `Bug Fix Plan (#${issueNumber})`;
+
+  const stepsHtml = planSteps
+    .map((s, i) => `<p style="margin:0 0 6px;padding-left:20px;">${i + 1}. ${escapeHtml(s)}</p>`)
+    .join('\n');
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+<p style="margin:0;">${escapeHtml(who)} wrote in${showRef}:</p>
+<br>
+<p style="margin:0;padding-left:16px;border-left:3px solid #ddd;color:#555;font-style:italic;">${escapeHtml(originalMessage)}</p>
+<br>
+<p style="margin:0;font-weight:600;">Here's what I'd do to fix it:</p>
+<br>
+${stepsHtml}
+<br>
+<p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)} &mdash; ${escapeHtml(planSummary)}</p>
+<br>
+<p style="margin:0;">
+  <a href="${escapeHtml(approveUrl)}" style="display:inline-block;padding:12px 28px;background-color:#22c55e;color:#fff;font-size:15px;font-weight:600;text-decoration:none;border-radius:6px;margin-right:12px;">Approve Fix</a>
+  <a href="${escapeHtml(rejectUrl)}" style="display:inline-block;padding:12px 28px;background-color:#ef4444;color:#fff;font-size:15px;font-weight:600;text-decoration:none;border-radius:6px;">Reject</a>
+</p>
+<br>
+<p style="margin:0;color:#999;font-size:13px;">This link expires in 7 days. If you do nothing, no changes are made.</p>
+<p style="margin:0;color:#999;font-size:13px;">Issue: <a href="https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}" style="color:#999;">#${issueNumber}</a></p>
+</body></html>`;
+
+  return { subject, html };
+}
+
 module.exports = {
   FONT,
   postJSON,
@@ -469,4 +527,5 @@ module.exports = {
   buildOpeningNightHtml,
   buildBroadcastOpeningNightHtml,
   buildFeedbackThankYouEmail,
+  buildFixApprovalEmail,
 };

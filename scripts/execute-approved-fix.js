@@ -1,0 +1,386 @@
+#!/usr/bin/env node
+
+/**
+ * Executes a human-approved remediation plan from data/pending-fixes/{issue}.json.
+ *
+ * Triggered by execute-approved-fix.yml after Tom clicks "Approve" in his email.
+ *
+ * Actions:
+ *   data-edit      — Field changes in shows.json, commercial.json, audience-buzz.json
+ *   run-script     — Execute allowlisted pipeline scripts
+ *   review-file-op — Move/delete/rename review files in data/review-texts/
+ *
+ * Env vars:
+ *   ISSUE_NUMBER       - GitHub issue number
+ *   ANTHROPIC_API_KEY  - For any scripts that need it
+ *   RESEND_API_KEY     - For confirmation emails
+ *   OWNER_EMAIL        - Tom's email
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+import https from 'https';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT = path.join(__dirname, '..');
+
+// --- Safety rails ---
+
+const ALLOWED_DATA_FIELDS = {
+  'shows.json': [
+    'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
+    'type', 'isRevival', 'status', 'closingDate', 'openingDate',
+    'previewDate', 'creativeTeam',
+  ],
+  'commercial.json': [
+    'designation', 'capitalization', 'weeklyRunningCost',
+    'capitalizationSource', 'notes', 'recouped', 'recoupmentSource',
+  ],
+  'audience-buzz.json': ['title'],
+};
+
+const ALLOWED_SCRIPTS = [
+  'rebuild-all-reviews.js',
+  'gather-reviews.js',
+  'collect-review-texts.js',
+  'generate-critic-consensus.js',
+  'validate-data.js',
+  'fetch-show-images-auto.js',
+];
+
+// --- Helpers ---
+
+function loadJsonFile(relPath) {
+  return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
+}
+
+function saveJsonFile(relPath, data) {
+  fs.writeFileSync(path.join(ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
+}
+
+function output(key, value) {
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
+  }
+}
+
+function runValidation() {
+  try {
+    execSync('node scripts/validate-data.js', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function rollbackDataFiles() {
+  try {
+    execSync('git checkout -- data/', { cwd: ROOT, stdio: 'pipe' });
+  } catch { /* best effort */ }
+}
+
+async function sendEmail(to, from, subject, html) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) { console.log('No RESEND_API_KEY'); return; }
+  const data = JSON.stringify({ from, to: [to], subject, html });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', c => body += c);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(body);
+        else reject(new Error(`Email ${res.statusCode}: ${body.slice(0, 200)}`));
+      });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+// --- Action executors ---
+
+function executeDataEdit(action) {
+  const { file, showId, field, oldValue, newValue } = action;
+
+  // Validate allowed
+  if (!ALLOWED_DATA_FIELDS[file]) {
+    return { ok: false, reason: `File "${file}" not allowed for data-edit` };
+  }
+  if (!ALLOWED_DATA_FIELDS[file].includes(field)) {
+    return { ok: false, reason: `Field "${field}" not allowed in ${file}` };
+  }
+
+  const relPath = `data/${file}`;
+  const data = loadJsonFile(relPath);
+
+  if (file === 'shows.json') {
+    const shows = data.shows || data;
+    const idx = shows.findIndex(s => s.id === showId);
+    if (idx === -1) return { ok: false, reason: `Show "${showId}" not found in shows.json` };
+
+    const currentVal = shows[idx][field];
+    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+      return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
+    }
+
+    shows[idx][field] = newValue;
+    saveJsonFile(relPath, Array.isArray(data) ? shows : { ...data, shows });
+    return { ok: true, msg: `shows.json: ${field} updated for ${showId}` };
+
+  } else if (file === 'commercial.json') {
+    const slug = action.showSlug || showId;
+    if (!data.shows?.[slug]) return { ok: false, reason: `No commercial entry for "${slug}"` };
+
+    const currentVal = data.shows[slug][field];
+    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+      return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
+    }
+
+    data.shows[slug][field] = newValue;
+    saveJsonFile(relPath, data);
+    return { ok: true, msg: `commercial.json: ${field} updated for ${slug}` };
+
+  } else if (file === 'audience-buzz.json') {
+    if (!data.shows?.[showId]) return { ok: false, reason: `No audience-buzz entry for "${showId}"` };
+
+    const currentVal = data.shows[showId][field];
+    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+      return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
+    }
+
+    data.shows[showId][field] = newValue;
+    saveJsonFile(relPath, data);
+    return { ok: true, msg: `audience-buzz.json: ${field} updated for ${showId}` };
+  }
+
+  return { ok: false, reason: `Unhandled file: ${file}` };
+}
+
+function executeRunScript(action) {
+  const { script, args } = action;
+
+  if (!ALLOWED_SCRIPTS.includes(script)) {
+    return { ok: false, reason: `Script "${script}" not in allowlist` };
+  }
+
+  // Sanitize: no shell metacharacters in args
+  const safeArgs = (args || '').replace(/[;&|`$(){}]/g, '');
+
+  try {
+    const cmd = `node scripts/${script} ${safeArgs}`.trim();
+    console.log(`Running: ${cmd}`);
+    execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000 }); // 5 min timeout
+    return { ok: true, msg: `Ran ${script} successfully` };
+  } catch (err) {
+    return { ok: false, reason: `Script ${script} failed: ${err.message}` };
+  }
+}
+
+function executeReviewFileOp(action) {
+  const { operation, sourcePath, destPath } = action;
+  const reviewTextsDir = path.join(ROOT, 'data/review-texts');
+
+  // Ensure paths are within review-texts/
+  const absSource = path.resolve(reviewTextsDir, sourcePath);
+  if (!absSource.startsWith(reviewTextsDir)) {
+    return { ok: false, reason: `Source path escapes review-texts/: ${sourcePath}` };
+  }
+
+  if (!fs.existsSync(absSource)) {
+    return { ok: false, reason: `Source not found: ${sourcePath}` };
+  }
+
+  if (operation === 'delete') {
+    fs.unlinkSync(absSource);
+    return { ok: true, msg: `Deleted ${sourcePath}` };
+
+  } else if (operation === 'move' || operation === 'rename') {
+    if (!destPath) return { ok: false, reason: 'No destination path for move/rename' };
+
+    const absDest = path.resolve(reviewTextsDir, destPath);
+    if (!absDest.startsWith(reviewTextsDir)) {
+      return { ok: false, reason: `Dest path escapes review-texts/: ${destPath}` };
+    }
+
+    // Ensure destination directory exists
+    fs.mkdirSync(path.dirname(absDest), { recursive: true });
+    fs.renameSync(absSource, absDest);
+    return { ok: true, msg: `Moved ${sourcePath} → ${destPath}` };
+  }
+
+  return { ok: false, reason: `Unknown operation: ${operation}` };
+}
+
+// --- Main ---
+
+async function main() {
+  const issueNumber = process.env.ISSUE_NUMBER;
+  if (!issueNumber) {
+    console.error('ISSUE_NUMBER not set');
+    output('result', 'error');
+    return;
+  }
+
+  // 1. Load plan
+  const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
+  if (!fs.existsSync(planFile)) {
+    console.error(`Plan file not found: ${planFile}`);
+    output('result', 'error');
+    return;
+  }
+
+  const planData = JSON.parse(fs.readFileSync(planFile, 'utf8'));
+
+  // 2. Check status
+  if (planData.status !== 'pending') {
+    console.log(`Plan already ${planData.status} — skipping`);
+    output('result', 'already-applied');
+    return;
+  }
+
+  console.log(`Executing plan for issue #${issueNumber}`);
+  console.log(`  Summary: ${planData.plan.summary}`);
+  console.log(`  Actions: ${planData.plan.actions.length}`);
+
+  // 3. Execute each action
+  const results = [];
+  const applied = [];
+  const failed = [];
+
+  for (const action of planData.plan.actions) {
+    console.log(`\nExecuting: ${action.type} — ${action.description || action.field || action.script || action.operation}`);
+
+    let result;
+    switch (action.type) {
+      case 'data-edit':
+        result = executeDataEdit(action);
+        break;
+      case 'run-script':
+        result = executeRunScript(action);
+        break;
+      case 'review-file-op':
+        result = executeReviewFileOp(action);
+        break;
+      default:
+        result = { ok: false, reason: `Unknown action type: ${action.type}` };
+    }
+
+    results.push({ action: action.type, ...result });
+    if (result.ok) {
+      applied.push(result.msg);
+      console.log(`  OK: ${result.msg}`);
+    } else {
+      failed.push(result.reason);
+      console.log(`  FAILED: ${result.reason}`);
+    }
+  }
+
+  // 4. Validate if we made data changes
+  const hasDataEdits = planData.plan.actions.some(a => a.type === 'data-edit');
+  if (hasDataEdits) {
+    console.log('\nRunning validation...');
+    if (!runValidation()) {
+      console.error('Validation failed — rolling back');
+      rollbackDataFiles();
+
+      // Update plan status
+      planData.status = 'validation-failed';
+      planData.executedAt = new Date().toISOString();
+      planData.results = results;
+      fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
+
+      output('result', 'validation-failed');
+
+      // Notify Tom
+      const ownerEmail = process.env.OWNER_EMAIL;
+      if (ownerEmail) {
+        try {
+          await sendEmail(
+            ownerEmail,
+            'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+            `Fix Failed: Issue #${issueNumber}`,
+            `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+<p style="margin:0;">The approved fix for issue #${issueNumber} failed validation and was rolled back.</p>
+<br>
+<p style="margin:0;">Applied: ${applied.length}, Failed: ${failed.length}</p>
+${failed.length > 0 ? `<p style="margin:0;color:#c00;">Failures: ${failed.join('; ')}</p>` : ''}
+<br>
+<p style="margin:0;"><a href="https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}">View issue #${issueNumber}</a></p>
+</body></html>`
+          );
+        } catch { /* best effort */ }
+      }
+      return;
+    }
+    console.log('Validation passed');
+  }
+
+  // 5. Success — update plan
+  planData.status = 'applied';
+  planData.executedAt = new Date().toISOString();
+  planData.results = results;
+  fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
+
+  console.log(`\nPlan executed: ${applied.length} applied, ${failed.length} failed`);
+  output('result', applied.length > 0 ? 'fixed' : 'no-changes');
+
+  // 6. Send confirmation to Tom
+  const ownerEmail = process.env.OWNER_EMAIL;
+  if (ownerEmail && applied.length > 0) {
+    try {
+      const showTitle = planData.submitter.show || '';
+      await sendEmail(
+        ownerEmail,
+        'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+        showTitle ? `Fix Applied: ${showTitle} (#${issueNumber})` : `Fix Applied: Issue #${issueNumber}`,
+        `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+<p style="margin:0;">The fix for issue #${issueNumber} has been applied and will be live shortly.</p>
+<br>
+<p style="margin:0;font-weight:600;">What was done:</p>
+${applied.map(a => `<p style="margin:0;padding-left:20px;">&bull; ${a}</p>`).join('\n')}
+${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.join('; ')}</p>` : ''}
+</body></html>`
+      );
+    } catch { /* best effort */ }
+  }
+
+  // 7. Send thank-you to submitter
+  if (planData.submitter.email && applied.length > 0) {
+    try {
+      const { subject, html } = buildFeedbackThankYouEmail(
+        'fixed',
+        planData.submitter.name,
+        planData.submitter.show
+      );
+      await sendEmail(
+        planData.submitter.email,
+        'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+        subject,
+        html
+      );
+      console.log(`Thank-you sent to ${planData.submitter.email}`);
+    } catch { /* best effort */ }
+  }
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  output('result', 'error');
+});
