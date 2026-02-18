@@ -9,6 +9,7 @@ import StressTest from '@/components/reviews/StressTest';
 import AuthorCard from '@/components/reviews/AuthorCard';
 import { AUTHOR } from '@/config/author';
 import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
+import { getDataStats } from '@/lib/data-core';
 
 export function generateStaticParams() {
   try {
@@ -55,6 +56,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function ReviewPage({ params }: { params: { slug: string } }) {
   const review = getBlogReviewBySlug(params.slug);
   if (!review) notFound();
+  const { totalOutlets } = getDataStats();
 
   const tier = getScoreTier(review.score);
   const formattedDate = new Date(review.publishDate + 'T12:00:00').toLocaleDateString('en-US', {
@@ -187,7 +189,7 @@ export default function ReviewPage({ params }: { params: { slug: string } }) {
       {/* Disclaimer */}
       <div className="border-t border-white/5 pt-6">
         <p className="text-xs text-gray-500">
-          Broadway Scorecard aggregates critic scores from 400+ outlets. These personal reviews are separate from those scores.
+          Broadway Scorecard aggregates critic scores from {totalOutlets}+ outlets. These personal reviews are separate from those scores.
         </p>
       </div>
     </div>

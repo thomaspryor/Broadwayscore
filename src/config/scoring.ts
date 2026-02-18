@@ -251,3 +251,24 @@ export function getCriticLabel(score: number): string {
 // DIVERGENCE THRESHOLDS
 // ===========================================
 export const AUDIENCE_DIVERGENCE_THRESHOLD = 20;
+
+// ===========================================
+// TOP CRITICS (individual critic-level promotion)
+// ===========================================
+// These critics receive Tier 1 weight and "Top Critic" badge
+// regardless of which outlet they write for.
+export const TOP_CRITICS: ReadonlySet<string> = new Set([
+  'Jesse Green',
+  'Ben Brantley',
+  'Charles Isherwood',
+  'David Rooney',
+  'Hilton Als',
+  'Helen Shaw',
+  'Peter Marks',
+  'Elisabeth Vincentelli',
+  'Adam Feldman',
+  'Linda Winer',
+  'Alexis Soloski',
+  'Sara Holdren',
+  'Maya Phillips',
+]);
