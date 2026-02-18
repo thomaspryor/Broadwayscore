@@ -17,17 +17,63 @@ export default function AnalyticsWrapper() {
   }, []);
 
   // Lightweight Sentry init — loads SDK from CDN, no npm dependency
+  // Filters out browser extension noise so only real site errors are reported
   useEffect(() => {
     if (isDisabled || !SENTRY_DSN) return;
     const script = document.createElement('script');
     script.src = 'https://browser.sentry-cdn.com/8.52.1/bundle.min.js';
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-      if (typeof (window as any).Sentry !== 'undefined') {
-        (window as any).Sentry.init({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const SentrySDK = (window as any).Sentry;
+      if (typeof SentrySDK !== 'undefined') {
+        SentrySDK.init({
           dsn: SENTRY_DSN,
           sampleRate: 1.0,
           tracesSampleRate: 0.1,
+          allowUrls: [
+            /https?:\/\/(www\.)?broadwayscorecard\.com/,
+            /https?:\/\/broadwayscorecard-.*\.vercel\.app/,
+          ],
+          denyUrls: [
+            /extensions?\//i,
+            /^chrome(-extension)?:\/\//i,
+            /^moz-extension:\/\//i,
+            /^safari(-web)?-extension:\/\//i,
+            /^webkit-masked-url:\/\//i,
+            /translate\.google/,
+            /clarity\.ms/,
+            /googletagmanager\.com/,
+          ],
+          ignoreErrors: [
+            /swal/i,
+            /sweetalert/i,
+            /invalid origin/i,
+            /blocked a frame with origin/i,
+            /@context/,
+            /ResizeObserver loop/,
+            /Loading chunk \d+ failed/,
+            /NetworkError when attempting to fetch/,
+            /Failed to fetch/,
+            /Load failed/,
+            /AbortError/,
+            /NotAllowedError/,
+            /webkit-masked-url/,
+            /Script error\.?$/i,
+            /Non-Error promise rejection captured/i,
+          ],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          beforeSend(event: any) {
+            const frames =
+              event?.exception?.values?.[0]?.stacktrace?.frames;
+            if (!frames || frames.length === 0) return null;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const hasOurCode = frames.some((f: any) =>
+              f.filename &&
+              /broadwayscorecard\.(com|vercel\.app)/.test(f.filename)
+            );
+            return hasOurCode ? event : null;
+          },
         });
       }
     };
