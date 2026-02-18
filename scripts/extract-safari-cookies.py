@@ -441,21 +441,6 @@ def main():
         print("Make sure you're logged into these sites in Safari first.")
         sys.exit(1)
 
-    # Print gh secret commands
-    print()
-    print("=" * 60)
-    print("  GitHub Secret Commands")
-    print("  (copy-paste each line into your terminal)")
-    print("=" * 60)
-    print()
-
-    for cmd in gh_commands:
-        # Use echo piped to gh secret set to avoid shell escaping issues
-        print(f"# {cmd['group_name']}: {cmd['count']} cookies")
-        # Write to a temp file approach to avoid issues with long base64 strings
-        print(f"echo '{cmd['b64']}' | gh secret set {cmd['name']}")
-        print()
-
     # Also note the gitignore
     gitignore_path = os.path.join(output_dir, ".gitignore")
     if not os.path.exists(gitignore_path):
@@ -463,8 +448,58 @@ def main():
             f.write("# Never commit cookies\n*.json\n")
         print(f"Created {gitignore_path} (cookies will not be committed to git)")
 
+    # Auto-push to GitHub secrets if --push flag is set
+    auto_push = "--push" in sys.argv
+    if auto_push:
+        print()
+        print("=" * 60)
+        print("  Pushing cookies to GitHub secrets...")
+        print("=" * 60)
+        print()
+
+        import subprocess
+        import tempfile
+
+        for cmd in gh_commands:
+            # IMPORTANT: Write base64 to temp file, NOT echo pipe (echo truncates long strings)
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
+                tmp.write(cmd["b64"])
+                tmp_path = tmp.name
+
+            try:
+                result = subprocess.run(
+                    ["gh", "secret", "set", cmd["name"], "--repo", "thomaspryor/Broadwayscore"],
+                    stdin=open(tmp_path, "r"),
+                    capture_output=True, text=True, timeout=30,
+                )
+                if result.returncode == 0:
+                    print(f"  ✓ {cmd['name']}: {cmd['count']} cookies pushed")
+                else:
+                    print(f"  ✗ {cmd['name']}: {result.stderr.strip()}")
+            except FileNotFoundError:
+                print(f"  ✗ {cmd['name']}: 'gh' CLI not found — install GitHub CLI first")
+                break
+            except Exception as e:
+                print(f"  ✗ {cmd['name']}: {e}")
+            finally:
+                os.unlink(tmp_path)
+    else:
+        # Print commands for manual copy-paste
+        print()
+        print("=" * 60)
+        print("  GitHub Secret Commands")
+        print("  Run with --push to auto-push, or copy-paste these:")
+        print("=" * 60)
+        print()
+
+        for cmd in gh_commands:
+            print(f"# {cmd['group_name']}: {cmd['count']} cookies")
+            # Write to temp file to avoid echo truncation
+            print(f"printf '%s' '{cmd['b64'][:20]}...' > /tmp/cookies-b64.txt && gh secret set {cmd['name']} < /tmp/cookies-b64.txt")
+            print()
+
     print()
-    print("Done! Cookies saved locally and ready for GitHub secrets.")
+    print("Done! Cookies saved locally" + (" and pushed to GitHub." if auto_push else "."))
 
 
 if __name__ == "__main__":
