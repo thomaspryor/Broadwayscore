@@ -41,6 +41,8 @@ const PAYWALL_PATTERNS = [
   /unlock\s+(this\s+)?(story|article|content)/i,
   /exclusive\s+(content|access)/i,
   /paywall/i,
+  /continue\s+reading\s+(your\s+)?article\s+with\s+a/i,
+  /with\s+a\s+\w+\s+subscription/i,
 ];
 
 /**

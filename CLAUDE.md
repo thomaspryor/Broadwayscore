@@ -17,10 +17,20 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. Vercel auto-deploys in ~1 min.
+**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
+**BRANCH CHECK:** Before ANY git commit/push, run `git branch --show-current` to verify you're on the correct branch. Other sessions and stash operations frequently leave the local checkout on `staging` when you need `main` (or vice versa). Don't waste time — check first.
+
+### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
+**Two-layer deploy filtering** prevents data checkpoint commits from burning build minutes:
+1. **`vercel.json` `ignoreCommand`** — Checks commit message prefix. Skips builds for `chore: Checkpoint`, `health: `, `checkpoint: ` prefixes. Uses `git log -1 --format=%s` (works in Vercel's shallow clones; `git diff HEAD^` does NOT work).
+2. **`.github/workflows/vercel-deploy.yml`** — Backup: triggers Deploy Hook only when build-relevant files change (`src/`, `public/`, config, key `data/*.json`).
+- **DO NOT change the `ignoreCommand` in `vercel.json`** without understanding: `exit 0` = skip ALL builds (freezes site), `exit 1` = build everything. The current command conditionally skips data-only commits.
+- **DO NOT set Vercel dashboard to "Don't build anything"** — it blocks deploy hooks too.
+- Vercel dashboard Ignored Build Step should be set to **Custom** with the same command as `vercel.json`.
+- To force a manual deploy: `curl -s -X POST "$VERCEL_DEPLOY_HOOK"` (stored as GitHub secret)
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
