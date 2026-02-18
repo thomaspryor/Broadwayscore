@@ -3,9 +3,9 @@
     "generatedAt": "2026-02-18T22:25:31.346Z",
     "totalFlagged": 109,
     "reasons": {
-      "possible-tour-fulltext": 22,
+      "possible-tour-fulltext": 23,
       "originalScore-llm-conflict": 44,
-      "both-thumbs-disagree-with-llm": 43
+      "both-thumbs-disagree-with-llm": 51
     }
   },
   "reviews": [
@@ -220,12 +220,12 @@
     {
       "showId": "dead-outlaw-2025",
       "outletId": "dailybeast",
-      "criticName": "Tim Teeman",
+      "criticName": "Unknown",
       "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=68 (Mixed), thumbs=Up/Up",
-      "llmScore": 68,
+      "detail": "LLM=64 (Flat), both thumbs=Up",
+      "llmScore": 64,
       "llmBucket": "Mixed",
-      "llmConfidence": "medium",
+      "llmConfidence": "high",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "flaggedAt": "2026-02-18T22:24:54.196Z"
@@ -1414,12 +1414,12 @@
       "flaggedAt": "2026-02-18T22:25:29.865Z"
     },
     {
-      "showId": "waitress-2021",
-      "outletId": "cititour",
-      "criticName": "Brian Scott Lipton",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 81 (bucket=positive, conf=high)",
-      "llmScore": 81,
+      "showId": "waiting-for-godot-2025",
+      "outletId": "nytimes",
+      "criticName": "Unknown",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=77 (Up), both thumbs=Meh",
+      "llmScore": 77,
       "llmBucket": "Positive",
       "llmConfidence": "high",
       "dtliThumb": null,
