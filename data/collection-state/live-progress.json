@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T12:17:14.311Z",
-  "processed": 60,
-  "failed": 20,
-  "successRate": "75.0%",
+  "updatedAt": "2026-02-18T12:18:22.047Z",
+  "processed": 49,
+  "failed": 51,
+  "successRate": "49.0%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 26,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 7
+    "archiveToday": 35,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T11:28:21.151Z",
+      "event": "bb-session",
+      "session": "33f9a15e",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T11:28:23.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:30:02.264Z",
+      "event": "bb-session",
+      "session": "9e2698f5",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T11:30:04.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:31:20.656Z",
+      "event": "bb-session",
+      "session": "16d3d11f",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T11:31:22.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:32:46.004Z",
+      "event": "bb-session",
+      "session": "0f3bf816",
+      "url": "http://theater.nytimes.com/2005/12/12/theater/reviews/12chit.html"
+    },
+    {
+      "t": "2026-02-18T11:32:48.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:34:07.089Z",
+      "event": "bb-session",
+      "session": "7d396e50",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T11:34:09.636Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:35:39.811Z",
+      "event": "bb-session",
+      "session": "f30e124d",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T11:35:41.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:37:10.673Z",
+      "event": "bb-session",
+      "session": "0924c1b4",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T11:37:12.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:38:27.974Z",
+      "event": "bb-session",
+      "session": "fa04c799",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-18T11:38:30.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:39:48.260Z",
+      "event": "bb-session",
+      "session": "c2ca16d8",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T11:39:50.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:41:09.729Z",
+      "event": "bb-session",
+      "session": "f038e4f5",
+      "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html?smtyp=cu"
+    },
+    {
+      "t": "2026-02-18T11:41:11.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
