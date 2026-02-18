@@ -188,6 +188,31 @@ jobs:
               console.log('gather-reviews workflow not found or failed to trigger:', e.message);
             }
 
+      - name: Trigger cast backfill for historical shows
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger IBDB cast scraping for each historical show
+            const slugs = '${{ needs.discover-historical.outputs.historical_slugs }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'backfill-cast.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug
+                  }
+                });
+                console.log(`Triggered cast backfill for: ${slug}`);
+                // 10s spacing between dispatch calls
+                await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Cast backfill trigger failed for ${slug}:`, e.message);
+              }
+            }
+
       - name: Trigger image fetching workflow
         uses: actions/github-script@v7
         with:

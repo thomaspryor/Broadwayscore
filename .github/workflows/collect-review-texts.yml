@@ -2,7 +2,7 @@ name: Collect Review Texts
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
 concurrency:
-  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}
+  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}
   cancel-in-progress: false
 
 on:
@@ -73,6 +73,10 @@ on:
         default: '30'
       domain_filter:
         description: 'Only process reviews from these domains (comma-separated, e.g. theatermania.com,huffpost.com)'
+        required: false
+        default: ''
+      reason_filter:
+        description: 'Filter by incompleteReason (comma-separated: paywall,scraper_garbage,not_attempted,url_dead,bot_blocked,etc.)'
         required: false
         default: ''
 
@@ -193,6 +197,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -353,6 +358,7 @@ jobs:
           AGGRESSIVE="${{ inputs.aggressive }}"
           STEALTH="${{ inputs.stealth_proxy }}"
           DOMAIN_FILTER="${{ inputs.domain_filter }}"
+          REASON_FILTER="${{ inputs.reason_filter }}"
 
           gh workflow run "Collect Review Texts" \
             -f max_reviews=${{ inputs.max_reviews }} \
@@ -366,6 +372,7 @@ jobs:
             -f archive_first=${{ inputs.archive_first }} \
             -f content_tier="$TIER_FILTER" \
             -f domain_filter="$DOMAIN_FILTER" \
+            -f reason_filter="$REASON_FILTER" \
             -f chain=true \
             -f remaining_batches="$NEXT_BATCHES" \
             -f chain_browserbase_budget="$NEXT_BB_BUDGET"
@@ -494,6 +501,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
