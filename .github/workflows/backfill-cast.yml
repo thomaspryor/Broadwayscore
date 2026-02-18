@@ -1,0 +1,122 @@
+name: Backfill Cast Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Shard index (0-based). Leave empty to process all shows.'
+        required: false
+        type: string
+      total_shards:
+        description: 'Total number of shards (default 10)'
+        required: false
+        default: '10'
+        type: string
+      show_filter:
+        description: 'Optional: specific show ID to process'
+        required: false
+        type: string
+      force:
+        description: 'Re-scrape shows with existing cast files'
+        required: false
+        default: false
+        type: boolean
+      open_only:
+        description: 'Only process open/previews shows (for current cast updates)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  backfill-cast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Run cast backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          FLAGS=""
+
+          # Shard flags
+          if [ -n "${{ inputs.shard }}" ]; then
+            FLAGS="$FLAGS --shard ${{ inputs.shard }} --total-shards ${{ inputs.total_shards }}"
+          fi
+
+          # Show filter
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            FLAGS="$FLAGS --show-filter ${{ inputs.show_filter }}"
+          fi
+
+          # Force flag
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+
+          # Open only flag
+          if [ "${{ inputs.open_only }}" = "true" ]; then
+            FLAGS="$FLAGS --open-only"
+          fi
+
+          echo "Running: node scripts/backfill-cast.js $FLAGS"
+          node scripts/backfill-cast.js $FLAGS
+
+      - name: Check for changes
+        if: always()
+        id: git-check
+        run: |
+          CAST_FILES=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          echo "Changed cast files: $CAST_FILES"
+          if [ "$CAST_FILES" -gt "0" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/cast/
+
+          SHARD_MSG=""
+          if [ -n "${{ inputs.shard }}" ]; then
+            SHARD_MSG=" (shard ${{ inputs.shard }}/${{ inputs.total_shards }})"
+          fi
+
+          SHOW_MSG=""
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            SHOW_MSG=" for ${{ inputs.show_filter }}"
+          fi
+
+          CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          git commit -m "data: Backfill cast data${SHARD_MSG}${SHOW_MSG} [${CAST_COUNT} files]"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
