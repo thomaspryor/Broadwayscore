@@ -1,0 +1,113 @@
+name: Recover WSJ Reviews (Subscriber Cookies)
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_urls:
+        description: 'Max URLs to process (0 = all)'
+        required: false
+        default: '50'
+      dry_run:
+        description: 'Dry run (true = no file writes)'
+        required: false
+        default: 'false'
+      delay_ms:
+        description: 'Delay between requests in ms'
+        required: false
+        default: '2000'
+      checkpoint_interval:
+        description: 'Checkpoint every N recoveries'
+        required: false
+        default: '10'
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run WSJ subscriber recovery
+        env:
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          MAX_URLS: ${{ inputs.max_urls }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          DELAY_MS: ${{ inputs.delay_ms }}
+          CHECKPOINT_INTERVAL: ${{ inputs.checkpoint_interval }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/recover-wsj-subscriber.js
+
+      - name: Final commit and push
+        if: always()
+        run: |
+          git add data/review-texts/ data/audit/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+
+          RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
+          git commit -m "feat: WSJ subscriber recovery - ${RECOVERED} reviews recovered"
+
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin main && git push origin main && break
+            echo "Push attempt $i failed, retrying..."
+            git rebase --abort 2>/dev/null || true
+            sleep $((3 + RANDOM % 5))
+          done
+
+      - name: Trigger rebuild
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
+          if [ "$RECOVERED" -gt "0" ] && [ "${{ inputs.dry_run }}" != "true" ]; then
+            echo "Triggering rebuild for ${RECOVERED} recovered reviews..."
+            gh workflow run "Rebuild Reviews" --repo ${{ github.repository }} || true
+          fi
+
+      - name: Upload recovery report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsj-subscriber-recovery-report
+          path: data/audit/wsj-subscriber-recovery-report.json
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## WSJ Subscriber Recovery Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/audit/wsj-subscriber-recovery-report.json ]; then
+            cat data/audit/wsj-subscriber-recovery-report.json | node -e "
+              const r = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+              console.log('| Metric | Count |');
+              console.log('|--------|-------|');
+              console.log('| Candidates | ' + r.totalCandidates + ' |');
+              console.log('| **Recovered** | **' + r.recovered + '** |');
+              console.log('| Upgraded | ' + r.upgraded + ' |');
+              console.log('| New text | ' + r.newText + ' |');
+              console.log('| HTTP 401 | ' + r.http401 + ' |');
+              console.log('| No NextData | ' + r.noNextData + ' |');
+              console.log('| Not authenticated | ' + r.notAuthenticated + ' |');
+              console.log('| Errors | ' + r.errors + ' |');
+              console.log('');
+              console.log('Dry run: ' + r.dryRun);
+              console.log('Max URLs: ' + r.maxUrls);
+            " >> $GITHUB_STEP_SUMMARY
+          fi
