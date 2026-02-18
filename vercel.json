@@ -1,5 +1,9 @@
 {
-  "ignoreCommand": "exit 1",
+<<<<<<< Updated upstream
+  "ignoreCommand": "git log -1 --format=%s | grep -qE '^(chore: Checkpoint|health: |checkpoint: )' && exit 0; exit 1",
+=======
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!data/' ':!*.json' ':!data/**' || exit 1",
+>>>>>>> Stashed changes
   "redirects": [
     {
       "source": "/biz-buzz",
