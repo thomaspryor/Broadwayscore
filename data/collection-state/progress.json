@@ -25,7 +25,12 @@
     "camelot-2023/nytimes--jesse-green.json",
     "camelot-2023/nytimes--unknown.json",
     "casa-valentina-2014/nytimes--ben-brantley.json",
-    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+    "china-doll-2015/nytimes--ben-brantley.json",
+    "chita-rivera-the-dancers-life-2005/nytimes--ben-brantley.json",
+    "come-from-away-2017/nytimes--ben-brantley.json",
+    "company-2006/nytimes--ben-brantley.json",
+    "company-2006/nytimes--jesse-green.json"
   ],
   "failed": [
     "33-variations-2009/nytimes--ben-brantley.json",
@@ -61,7 +66,12 @@
     "cats-1982/nytimes--charles-isherwood.json",
     "cats-1982/nytimes--frank-rich.json",
     "cats-2016/nytimes--charles-isherwood.json",
-    "children-of-a-lesser-god-2018/nytimes--ben-brantley.json"
+    "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "collected-stories-2010/nytimes--charles-isherwood.json",
+    "come-fly-away-2010/nytimes--ben-brantley.json",
+    "coram-boy-2007/nytimes--charles-isherwood.json",
+    "crybaby-2008/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -72,7 +82,11 @@
       "ann-2013/nytimes--charles-isherwood.json",
       "camelot-2023/nytimes--jesse-green.json",
       "camelot-2023/nytimes--unknown.json",
-      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "chita-rivera-the-dancers-life-2005/nytimes--ben-brantley.json",
+      "come-from-away-2017/nytimes--ben-brantley.json",
+      "company-2006/nytimes--ben-brantley.json",
+      "company-2006/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -95,7 +109,10 @@
       "data/review-texts/cabaret-2014/nytimes--ben-brantley.json",
       "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
       "data/review-texts/cats-1982/nytimes--frank-rich.json",
-      "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json"
+      "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json"
     ],
     "archive": [
       "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
@@ -119,11 +136,12 @@
       "bronx-bombers-2014/nytimes--charles-isherwood.json",
       "burn-the-floor-2009/nytimes--.json",
       "call-me-izzy-2025/nytimes--jesse-green.json",
-      "casa-valentina-2014/nytimes--ben-brantley.json"
+      "casa-valentina-2014/nytimes--ben-brantley.json",
+      "china-doll-2015/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-18T11:05:28.661Z",
-  "lastProcessed": "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+  "lastProcessed": "crybaby-2008/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-18T11:06:46.040Z",
@@ -414,6 +432,83 @@
     },
     {
       "t": "2026-02-18T11:46:09.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:47:41.942Z",
+      "event": "bb-session",
+      "session": "83f6a6f1",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T11:47:43.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:49:08.710Z",
+      "event": "bb-session",
+      "session": "cab1b075",
+      "url": "http://theater.nytimes.com/2005/12/12/theater/reviews/12chit.html"
+    },
+    {
+      "t": "2026-02-18T11:49:10.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:50:26.207Z",
+      "event": "bb-session",
+      "session": "965b8e55",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T11:50:28.242Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:51:46.178Z",
+      "event": "bb-session",
+      "session": "92ee44d9",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T11:51:48.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:53:15.064Z",
+      "event": "bb-session",
+      "session": "8f6f7810",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T11:53:17.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:54:28.951Z",
+      "event": "bb-session",
+      "session": "f47f1ca4",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-18T11:54:31.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:55:45.103Z",
+      "event": "bb-session",
+      "session": "9b685c45",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T11:55:47.237Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
