@@ -20,7 +20,11 @@
     "camelot-2023/nytimes--jesse-green.json",
     "camelot-2023/nytimes--unknown.json",
     "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
-    "china-doll-2015/nytimes--ben-brantley.json"
+    "china-doll-2015/nytimes--ben-brantley.json",
+    "company-2006/nytimes--jesse-green.json",
+    "cult-of-love-2024/nytimes--jesse-green.json",
+    "disaster-2016/nytimes--charles-isherwood.json",
+    "doubt-a-parable/nytimes--jesse-green.json"
   ],
   "failed": [
     "wicked-2003/nytimes--charles-isherwood.json",
@@ -61,7 +65,13 @@
     "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
     "collected-stories-2010/nytimes--charles-isherwood.json",
     "come-fly-away-2010/nytimes--ben-brantley.json",
-    "come-from-away-2017/nytimes--ben-brantley.json"
+    "come-from-away-2017/nytimes--ben-brantley.json",
+    "company-2006/nytimes--ben-brantley.json",
+    "crybaby-2008/nytimes--ben-brantley.json",
+    "cymbeline-2007/nytimes--charles-isherwood.json",
+    "dead-accounts-2012/nytimes--ben-brantley.json",
+    "desire-under-the-elms-2009/nytimes--ben-brantley.json",
+    "dividing-the-estate-2008/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -75,7 +85,9 @@
       "call-me-izzy-2025/nytimes--jesse-green.json",
       "camelot-2023/nytimes--jesse-green.json",
       "camelot-2023/nytimes--unknown.json",
-      "china-doll-2015/nytimes--ben-brantley.json"
+      "china-doll-2015/nytimes--ben-brantley.json",
+      "company-2006/nytimes--jesse-green.json",
+      "doubt-a-parable/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -105,7 +117,13 @@
       "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
       "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
       "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
-      "data/review-texts/come-from-away-2017/nytimes--ben-brantley.json"
+      "data/review-texts/come-from-away-2017/nytimes--ben-brantley.json",
+      "data/review-texts/company-2006/nytimes--ben-brantley.json",
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
+      "data/review-texts/cymbeline-2007/nytimes--charles-isherwood.json",
+      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json",
+      "data/review-texts/desire-under-the-elms-2009/nytimes--ben-brantley.json",
+      "data/review-texts/dividing-the-estate-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "death-of-a-salesman-2026/nytimes--jesse-green.json",
@@ -121,11 +139,13 @@
       "anything-goes-2011/nytimes--ben-brantley.json",
       "bad-cinderella-2023/nytimes--unknown.json",
       "bright-star-2016/nytimes--charles-isherwood.json",
-      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json"
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "cult-of-love-2024/nytimes--jesse-green.json",
+      "disaster-2016/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-18T00:49:57.359Z",
-  "lastProcessed": "come-from-away-2017/nytimes--ben-brantley.json",
+  "lastProcessed": "doubt-a-parable/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-18T00:51:26.642Z",
@@ -553,6 +573,17 @@
     },
     {
       "t": "2026-02-18T01:51:16.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:53:01.892Z",
+      "event": "bb-session",
+      "session": "8cb5738b",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T01:53:03.890Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

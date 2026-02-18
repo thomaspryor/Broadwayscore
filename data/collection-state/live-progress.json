@@ -1,30 +1,19 @@
 {
-  "updatedAt": "2026-02-18T01:52:08.569Z",
-  "processed": 21,
-  "failed": 39,
-  "successRate": "35.0%",
+  "updatedAt": "2026-02-18T02:04:03.197Z",
+  "processed": 25,
+  "failed": 45,
+  "successRate": "35.7%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 27,
-    "archive": 14
+    "archiveToday": 33,
+    "archive": 16
   },
-  "browserbaseSessions": 39,
+  "browserbaseSessions": 40,
   "recentActivity": [
-    {
-      "t": "2026-02-18T01:38:39.382Z",
-      "event": "bb-session",
-      "session": "55fa7c1d",
-      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
-    },
-    {
-      "t": "2026-02-18T01:38:41.295Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-18T01:40:12.940Z",
       "event": "bb-session",
@@ -121,6 +110,17 @@
     },
     {
       "t": "2026-02-18T01:51:16.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:53:01.892Z",
+      "event": "bb-session",
+      "session": "8cb5738b",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T01:53:03.890Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
