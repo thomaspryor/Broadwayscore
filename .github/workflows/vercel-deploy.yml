@@ -60,18 +60,9 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel build --prod --token=$VERCEL_TOKEN
 
-      - name: Deploy Prebuilt (preview)
-        id: preview
+      - name: Deploy to Production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          URL=$(vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
-          echo "preview_url=$URL" >> "$GITHUB_OUTPUT"
-          echo "Preview deployed to: $URL"
-
-      - name: Promote to Production
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          vercel promote ${{ steps.preview.outputs.preview_url }} --token=$VERCEL_TOKEN
-          echo "Promoted to production"
+          URL=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
+          echo "Deployed to production: $URL"
