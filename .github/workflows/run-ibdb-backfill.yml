@@ -1,0 +1,43 @@
+name: One-time ibdbUrl Backfill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run ibdbUrl backfill
+        run: node scripts/backfill-ibdb-urls.js
+
+      - name: Commit and push
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+          git diff --staged --quiet && echo "No changes" && exit 0
+          git commit -m "data: Backfill ibdbUrl from cast files into shows.json"
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
