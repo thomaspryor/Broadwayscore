@@ -153,6 +153,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   let tier: ScoreTier | null = null;
   let audienceGrade: HomepageShow['audienceGrade'] = null;
 
+  // Always compute critic score/tier for the chip in audience mode
+  const criticScore = show.criticScore?.score;
+  const criticTier = getScoreTier(criticScore);
+
   if (scoreMode === 'audience') {
     if (show.audienceCombinedScore != null && show.status !== 'previews') {
       score = show.audienceCombinedScore;
@@ -311,7 +315,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             />
             {audienceGrade && (
               <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
                 style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
                 title={audienceGrade.tooltip}
               >
@@ -321,7 +325,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             )}
           </>
         ) : scoreMode === 'audience' ? (
-          // Audience mode: Show letter grade badge
+          // Audience mode: Big audience grade + small critic chip below
           audienceGrade ? (
             <>
               <span
@@ -342,6 +346,16 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               >
                 {audienceGrade.grade}
               </div>
+              {criticScore != null && (
+                <div
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
+                  style={{ backgroundColor: `${criticTier?.color ?? '#6b7280'}20`, color: criticTier?.color ?? '#6b7280' }}
+                  title={criticTier?.tooltip}
+                >
+                  <span className="opacity-60">Critics:</span>
+                  <span>{Math.round(criticScore)}</span>
+                </div>
+              )}
             </>
           ) : show.status === 'previews' ? (
             <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
