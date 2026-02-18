@@ -1,0 +1,45 @@
+name: Check Vercel Deployments
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check recent Vercel deployments
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          echo "=== Checking recent Vercel deployments for broadwayscore ==="
+          echo ""
+          
+          RESPONSE=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?app=broadwayscore&limit=10&teamId=team_zvgatcxkXdPbfhtHQMOnjpXo")
+          
+          echo "Raw response (first 500 chars):"
+          echo "$RESPONSE" | head -c 500
+          echo ""
+          echo ""
+          
+          echo "=== Recent Deployments ==="
+          echo "$RESPONSE" | jq -r '.deployments[] | "ID: \(.uid) | State: \(.state // .readyState) | Created: \(.created | . / 1000 | strftime("%Y-%m-%d %H:%M:%S UTC")) | Source: \(.source // "unknown") | URL: \(.url) | Target: \(.target // "none")"'
+          
+          echo ""
+          echo "=== Deployment Details ==="
+          echo "$RESPONSE" | jq '.deployments[] | {uid, state, readyState, source, target, url, name, meta: .meta}'
+          
+          echo ""
+          echo "=== Summary ==="
+          READY_COUNT=$(echo "$RESPONSE" | jq '[.deployments[] | select(.readyState == "READY")] | length')
+          ERROR_COUNT=$(echo "$RESPONSE" | jq '[.deployments[] | select(.readyState == "ERROR" or .state == "ERROR")] | length')
+          CANCELED_COUNT=$(echo "$RESPONSE" | jq '[.deployments[] | select(.readyState == "CANCELED" or .state == "CANCELED")] | length')
+          echo "Ready: $READY_COUNT | Error: $ERROR_COUNT | Canceled: $CANCELED_COUNT"
+          
+          echo ""
+          echo "=== Deploy Hook Deployments ==="
+          echo "$RESPONSE" | jq '.deployments[] | select(.source == "hook" or .meta.deployHookId != null) | {uid, state, readyState, url, created: (.created | . / 1000 | strftime("%Y-%m-%d %H:%M:%S UTC"))}'
+          
+          echo ""
+          echo "=== Latest Production Deployment ==="
+          echo "$RESPONSE" | jq '[.deployments[] | select(.target == "production")] | first | {uid, state, readyState, url, source, created: (.created | . / 1000 | strftime("%Y-%m-%d %H:%M:%S UTC")), meta: .meta}'
