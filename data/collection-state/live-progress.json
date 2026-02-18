@@ -1,29 +1,128 @@
 {
-  "updatedAt": "2026-02-18T13:10:38.234Z",
-  "processed": 0,
-  "failed": 80,
-  "successRate": "0%",
+  "updatedAt": "2026-02-18T13:27:31.098Z",
+  "processed": 5,
+  "failed": 85,
+  "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 74,
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 40,
   "recentActivity": [
     {
-      "t": "2026-02-18T13:02:26.393Z",
+      "t": "2026-02-18T11:49:09.821Z",
       "event": "bb-session",
-      "session": "aee13cc2",
-      "url": "https://www.ft.com/cms/s/0/92c0cf4c-8444-11e4-bae9-00144feabdc0.html#ixzz3VfJai0"
+      "session": "a51c6656",
+      "url": "https://www.newyorker.com/magazine/2006/12/18/company-2"
     },
     {
-      "t": "2026-02-18T13:02:28.274Z",
+      "t": "2026-02-18T11:49:11.845Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T11:51:24.570Z",
+      "event": "bb-session",
+      "session": "da806944",
+      "url": "https://www.newyorker.com/magazine/2022/11/07/cost-of-living-review-manhattan-th"
+    },
+    {
+      "t": "2026-02-18T11:51:26.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T11:53:30.593Z",
+      "event": "bb-session",
+      "session": "e5447633",
+      "url": "https://www.newyorker.com/magazine/2007/04/02/murder-mystery"
+    },
+    {
+      "t": "2026-02-18T11:53:32.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T11:55:52.731Z",
+      "event": "bb-session",
+      "session": "cb4edb53",
+      "url": "https://www.newyorker.com/magazine/2012/05/07/method-and-madness"
+    },
+    {
+      "t": "2026-02-18T11:55:54.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T11:57:50.914Z",
+      "event": "bb-session",
+      "session": "bb7d7ff1",
+      "url": "https://www.newyorker.com/magazine/2022/10/31/death-of-a-salesman-review-wendell"
+    },
+    {
+      "t": "2026-02-18T11:57:53.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T11:59:55.603Z",
+      "event": "bb-session",
+      "session": "8452fbc9",
+      "url": "https://www.newyorker.com/magazine/2014/11/03/art-argument"
+    },
+    {
+      "t": "2026-02-18T11:59:57.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T12:02:12.853Z",
+      "event": "bb-session",
+      "session": "b94bf83f",
+      "url": "https://www.newyorker.com/magazine/2016/03/21/danai-guriras-eclipsed-reviewed"
+    },
+    {
+      "t": "2026-02-18T12:02:14.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T12:04:24.898Z",
+      "event": "bb-session",
+      "session": "7fbcb94e",
+      "url": "https://www.newyorker.com/magazine/2006/05/29/amazing-grace-3"
+    },
+    {
+      "t": "2026-02-18T12:04:26.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T12:06:26.519Z",
+      "event": "bb-session",
+      "session": "3ec36ec6",
+      "url": "https://www.newyorker.com/magazine/2017/12/25/farinelli-and-the-king-at-the-bela"
+    },
+    {
+      "t": "2026-02-18T12:06:28.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T12:08:44.206Z",
+      "event": "bb-session",
+      "session": "bbb13a96",
+      "url": "https://www.newyorker.com/magazine/2023/05/22/fat-ham-theatre-review"
+    },
+    {
+      "t": "2026-02-18T12:08:46.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
