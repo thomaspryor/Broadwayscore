@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T05:53:28.443Z",
-  "processed": 28,
-  "failed": 2,
-  "successRate": "93.3%",
+  "updatedAt": "2026-02-18T06:06:28.046Z",
+  "processed": 32,
+  "failed": 38,
+  "successRate": "45.7%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 5
+    "archiveToday": 25,
+    "archive": 21
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T05:48:35.429Z",
+      "event": "bb-session",
+      "session": "1392253d",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T05:48:37.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:49:52.029Z",
+      "event": "bb-session",
+      "session": "375ef3c6",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T05:49:54.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:51:25.593Z",
+      "event": "bb-session",
+      "session": "7505271c",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-18T05:51:27.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:53:10.372Z",
+      "event": "bb-session",
+      "session": "ded6f1fe",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-18T05:53:12.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:54:43.348Z",
+      "event": "bb-session",
+      "session": "37b5a0b4",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-18T05:54:45.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:56:08.155Z",
+      "event": "bb-session",
+      "session": "6e1fb323",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T05:56:11.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:57:31.481Z",
+      "event": "bb-session",
+      "session": "0765045c",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T05:57:33.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T05:58:58.104Z",
+      "event": "bb-session",
+      "session": "1a77ead9",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T05:59:00.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T06:00:14.615Z",
+      "event": "bb-session",
+      "session": "d49a5c44",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T06:00:16.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T06:01:31.035Z",
+      "event": "bb-session",
+      "session": "b94bb785",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T06:01:33.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
