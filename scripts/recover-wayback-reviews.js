@@ -39,18 +39,21 @@ const CONFIG = {
   showsPath: path.join(__dirname, '..', 'data', 'shows.json'),
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-recovery-report.json'),
 
-  // Rate limiting
-  cdxDelayMs: 2000,
-  snapshotDelayMs: 2000,
-  archiveTodayDelayMs: 3000,
-  requestTimeoutMs: 20000,
+  // Rate limiting (configurable via env vars for large runs)
+  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '5000'),
+  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '3000'),
+  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '4000'),
+  requestTimeoutMs: parseInt(process.env.REQUEST_TIMEOUT_MS || '30000'),
+
+  // Skip-list for permanently failed URLs (no CDX snapshots or all paywalled)
+  skipListPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-skip-list.json'),
 
   // Quality thresholds
   minTextLength: 300,
   maxSnapshotsToTry: 5,
 
-  // Checkpointing
-  checkpointInterval: 25,
+  // Checkpointing (every N recoveries)
+  checkpointInterval: parseInt(process.env.CHECKPOINT_INTERVAL || '10'),
 
   // Circuit breaker
   maxConsecutiveFailures: 10,
@@ -61,6 +64,7 @@ const CONFIG = {
   dryRun: process.env.DRY_RUN === 'true',
   tierFilter: process.env.TIER_FILTER || '',
   domainFilter: process.env.DOMAIN_FILTER ? process.env.DOMAIN_FILTER.split(',').map(d => d.trim()) : [],
+  sourceMode: process.env.SOURCE_MODE || 'failed-fetches',
 };
 
 // ============================================================================
@@ -138,8 +142,28 @@ function httpGet(url, timeoutMs = CONFIG.requestTimeoutMs) {
 // Wayback Machine CDX API
 // ============================================================================
 
+/**
+ * Normalize URL for CDX lookup — strip tracking params that prevent archive matches.
+ */
+function normalizeUrlForCDX(url) {
+  try {
+    const u = new URL(url);
+    // Remove common tracking query params that break CDX matching
+    const trackingParams = ['gaa_at', 'gaa_n', 'gaa_ts', 'gaa_sig', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'mod', 'reflink', 'ref'];
+    for (const p of trackingParams) u.searchParams.delete(p);
+    // If all params were tracking, strip the ? entirely
+    return u.searchParams.toString() ? u.toString() : u.origin + u.pathname;
+  } catch {
+    return url;
+  }
+}
+
 async function queryCDX(url) {
-  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=10&from=2005&to=2026`;
+  const cleanUrl = normalizeUrlForCDX(url);
+  if (cleanUrl !== url) {
+    console.log(`  CDX normalized: ${cleanUrl.substring(0, 100)}...`);
+  }
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005&to=2026`;
 
   const response = await httpGet(cdxUrl, 30000);
   if (response.statusCode !== 200) {
@@ -435,6 +459,120 @@ function loadCandidates() {
 }
 
 // ============================================================================
+// Load incomplete review candidates (for SOURCE_MODE=incomplete)
+// Scans review-texts/ for truncated/excerpt/stub reviews to upgrade via archive
+// ============================================================================
+
+function loadIncompleteCandidates() {
+  console.log('Loading incomplete review candidates...\n');
+
+  let shows = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+    for (const s of (showsData.shows || showsData)) {
+      shows[s.id || s.slug] = s;
+    }
+  } catch {}
+
+  // Load skip-list of URLs that previously had no CDX snapshots or all-paywalled
+  let skipSet = new Set();
+  try {
+    const skipData = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8'));
+    skipSet = new Set(skipData.urls || []);
+    console.log(`  Loaded skip-list: ${skipSet.size} previously failed URLs\n`);
+  } catch {}
+
+  const candidates = [];
+  let skippedComplete = 0, skippedNoUrl = 0, skippedAlreadyArchived = 0, skippedFlagged = 0, skippedBySkipList = 0, totalScanned = 0;
+
+  const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory()).map(d => d.name);
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(CONFIG.reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      totalScanned++;
+      const filePath = path.join(showPath, file);
+      const reviewId = `${showDir}/${file}`;
+
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+        if (data.contentTier === 'complete') { skippedComplete++; continue; }
+        if (!['truncated', 'excerpt', 'stub'].includes(data.contentTier)) continue;
+        if (data.wrongShow || data.wrongProduction) { skippedFlagged++; continue; }
+
+        const url = data.url;
+        if (!url) { skippedNoUrl++; continue; }
+        if (data.archiveOrgUrl) { skippedAlreadyArchived++; continue; }
+        if (skipSet.has(url)) { skippedBySkipList++; continue; }
+
+        const tier = getTierForUrl(url);
+        const domain = (() => {
+          try { return new URL(url).hostname.replace(/^www\./, ''); }
+          catch { return 'unknown'; }
+        })();
+
+        if (CONFIG.tierFilter && tier !== parseInt(CONFIG.tierFilter)) continue;
+        if (CONFIG.domainFilter.length > 0 && !CONFIG.domainFilter.includes(domain)) continue;
+
+        const show = shows[data.showId] || {};
+        const openingDate = show.openingDate || '2000-01-01';
+
+        candidates.push({
+          reviewId,
+          filePath,
+          url,
+          showId: data.showId,
+          outlet: data.outlet || 'unknown',
+          outletId: data.outletId || 'unknown',
+          criticName: data.criticName || 'unknown',
+          tier,
+          domain,
+          openingDate,
+          existingTextLength: (data.fullText || '').length,
+        });
+      } catch {}
+    }
+  }
+
+  // Sort: Tier 1 first, then 2, then 3. Within tier, newest shows first.
+  candidates.sort((a, b) => {
+    if (a.tier !== b.tier) return a.tier - b.tier;
+    return b.openingDate.localeCompare(a.openingDate);
+  });
+
+  const limited = candidates.slice(0, CONFIG.maxUrls);
+
+  console.log(`  Total review files scanned: ${totalScanned}`);
+  console.log(`  Skipped (complete): ${skippedComplete}`);
+  console.log(`  Skipped (no URL): ${skippedNoUrl}`);
+  console.log(`  Skipped (already archived): ${skippedAlreadyArchived}`);
+  console.log(`  Skipped (flagged wrong): ${skippedFlagged}`);
+  console.log(`  Skipped (skip-list): ${skippedBySkipList}`);
+  console.log(`  Candidates after filters: ${limited.length}${CONFIG.maxUrls < Infinity ? ` (limited from ${candidates.length})` : ''}`);
+
+  // Tier breakdown
+  const tierCounts = { 1: 0, 2: 0, 3: 0 };
+  for (const c of limited) tierCounts[c.tier]++;
+  console.log(`  Tier 1: ${tierCounts[1]}, Tier 2: ${tierCounts[2]}, Tier 3: ${tierCounts[3]}`);
+
+  // Top domains
+  const domainCounts = {};
+  for (const c of limited) domainCounts[c.domain] = (domainCounts[c.domain] || 0) + 1;
+  const topDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  console.log(`  Top domains: ${topDomains.map(([d, c]) => `${d}(${c})`).join(', ')}`);
+
+  if (candidates.length > 500 && CONFIG.maxUrls === Infinity) {
+    console.log(`\n  WARNING: ${candidates.length} candidates found. Consider using DOMAIN_FILTER or MAX_URLS to limit scope.`);
+  }
+
+  return limited;
+}
+
+// ============================================================================
 // Checkpointing (CI only)
 // ============================================================================
 
@@ -453,7 +591,8 @@ function checkpoint(stats) {
       return; // No changes
     } catch {} // Non-zero exit = there ARE changes
 
-    const msg = `feat: Wayback recovery checkpoint - ${stats.recovered} reviews recovered [T1:${stats.recoveredByTier[1]},T2:${stats.recoveredByTier[2]},T3:${stats.recoveredByTier[3]}]`;
+    const modeTag = CONFIG.sourceMode !== 'failed-fetches' ? ` (${CONFIG.sourceMode})` : '';
+    const msg = `feat: Wayback recovery checkpoint${modeTag} - ${stats.recovered} reviews recovered [T1:${stats.recoveredByTier[1]},T2:${stats.recoveredByTier[2]},T3:${stats.recoveredByTier[3]}]`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: path.join(__dirname, '..') });
 
     // Push with retry
@@ -488,8 +627,11 @@ async function main() {
   console.log('╚══════════════════════════════════════════════════════╝\n');
 
   if (CONFIG.dryRun) console.log('*** DRY RUN — no files will be modified ***\n');
+  if (CONFIG.sourceMode !== 'failed-fetches') console.log(`Source mode: ${CONFIG.sourceMode}\n`);
 
-  const candidates = loadCandidates();
+  const candidates = CONFIG.sourceMode === 'incomplete'
+    ? loadIncompleteCandidates()
+    : loadCandidates();
   if (candidates.length === 0) {
     console.log('\nNo candidates to process.');
     return;
@@ -511,7 +653,9 @@ async function main() {
   };
 
   let consecutiveFailures = 0;
+  let lastCheckpointTime = Date.now();
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
+  const permanentlyFailedUrls = []; // Track for skip-list (no CDX snapshots or all paywalled)
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
@@ -567,6 +711,7 @@ async function main() {
 
             if (stats.recovered % CONFIG.checkpointInterval === 0) {
               checkpoint(stats);
+              lastCheckpointTime = Date.now();
             }
             continue;
           }
@@ -574,6 +719,7 @@ async function main() {
       }
 
       stats.notInArchive++;
+      permanentlyFailedUrls.push(c.url);
       continue;
     }
 
@@ -623,6 +769,7 @@ async function main() {
 
           if (stats.recovered % CONFIG.checkpointInterval === 0) {
             checkpoint(stats);
+            lastCheckpointTime = Date.now();
           }
           break;
         }
@@ -657,14 +804,27 @@ async function main() {
 
           if (stats.recovered % CONFIG.checkpointInterval === 0) {
             checkpoint(stats);
+            lastCheckpointTime = Date.now();
           }
+        } else {
+          permanentlyFailedUrls.push(c.url); // archive.today had content but it was garbage/too short
         }
+      } else {
+        permanentlyFailedUrls.push(c.url); // archive.today had nothing either
       }
+    }
+
+    // Time-based checkpoint: save every 5 minutes regardless of recovery count
+    if (stats.recovered > 0 && !CONFIG.dryRun && Date.now() - lastCheckpointTime > 5 * 60 * 1000) {
+      console.log(`\n  [Time checkpoint] 5+ min since last save, checkpointing...`);
+      checkpoint(stats);
+      lastCheckpointTime = Date.now();
     }
   }
 
   // Batch cleanup of failed-fetches.json (at end to avoid rebase conflicts)
-  if (!CONFIG.dryRun && recoveredReviewIds.length > 0) {
+  // Skip in incomplete mode — those reviews aren't in failed-fetches.json
+  if (!CONFIG.dryRun && recoveredReviewIds.length > 0 && CONFIG.sourceMode !== 'incomplete') {
     console.log(`\nCleaning up failed-fetches.json (removing ${recoveredReviewIds.length} recovered entries)...`);
     try {
       const ff = JSON.parse(fs.readFileSync(CONFIG.failedFetchesPath, 'utf8'));
@@ -677,6 +837,25 @@ async function main() {
       console.log(`  Removed ${ff.length - filtered.length} entries (${filtered.length} remaining)`);
     } catch (e) {
       console.log(`  Error cleaning failed-fetches.json: ${e.message}`);
+    }
+  }
+
+  // Save skip-list (merge with existing)
+  if (!CONFIG.dryRun && permanentlyFailedUrls.length > 0) {
+    try {
+      let existing = [];
+      try { existing = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8')).urls || []; } catch {}
+      const merged = [...new Set([...existing, ...permanentlyFailedUrls])];
+      const skipDir = path.dirname(CONFIG.skipListPath);
+      if (!fs.existsSync(skipDir)) fs.mkdirSync(skipDir, { recursive: true });
+      fs.writeFileSync(CONFIG.skipListPath, JSON.stringify({
+        urls: merged,
+        lastUpdated: new Date().toISOString(),
+        count: merged.length,
+      }, null, 2) + '\n');
+      console.log(`\nSkip-list updated: ${permanentlyFailedUrls.length} new + ${existing.length} existing = ${merged.length} total`);
+    } catch (e) {
+      console.log(`\nError saving skip-list: ${e.message}`);
     }
   }
 
@@ -752,6 +931,16 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 
   // Read current source file
   const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+
+  // Length guard for incomplete mode — only accept if meaningfully longer
+  if (CONFIG.sourceMode === 'incomplete' && data.fullText) {
+    const existingLen = data.fullText.length;
+    if (cleanedText.length <= existingLen || (cleanedText.length < existingLen * 1.5 && cleanedText.length < existingLen + 300)) {
+      console.log(`    Archive text (${cleanedText.length}) not meaningfully longer than existing (${existingLen}), skip`);
+      return false;
+    }
+    console.log(`    Upgrading: ${existingLen} -> ${cleanedText.length} chars (+${Math.round((cleanedText.length / existingLen - 1) * 100)}%)`);
+  }
 
   // Update with recovered text
   data.fullText = cleanedText;

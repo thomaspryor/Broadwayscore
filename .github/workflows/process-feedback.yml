@@ -80,7 +80,27 @@ jobs:
 
             console.log(`Creating ${diagnosed.length} bug diagnosis issue(s)`);
 
+            // Load shows.json for resolving show IDs
+            const showsRaw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            const allShows = showsRaw.shows || showsRaw;
+            function resolveShow(name) {
+              if (!name || name === 'N/A') return null;
+              const lower = name.toLowerCase().trim();
+              return allShows.find(s =>
+                s.title.toLowerCase() === lower ||
+                s.slug === lower ||
+                s.slug === lower.replace(/\s+/g, '-')
+              ) || null;
+            }
+
             for (const { item, submission, diagnosis } of diagnosed) {
+              const resolvedShow = resolveShow(submission.show);
+              const diagPayload = {
+                ...diagnosis,
+                showId: resolvedShow?.id || null,
+                showSlug: resolvedShow?.slug || null,
+              };
+
               const body = [
                 `## Bug Report: ${item.summary}`,
                 `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority}`,
@@ -98,9 +118,11 @@ jobs:
                 `**Files:** ${diagnosis.relevantFiles.join(', ')}`,
                 '',
                 '---',
-                '*Reply "fix it" to apply this fix, or "ignore" to dismiss.*',
-                '',
                 `*Auto-diagnosed by feedback pipeline*`,
+                '',
+                `<!-- DIAGNOSIS_JSON`,
+                JSON.stringify(diagPayload),
+                `DIAGNOSIS_JSON -->`,
               ].join('\n');
 
               const title = `Bug Diagnosis: ${item.summary.substring(0, 60)}`;
@@ -116,4 +138,21 @@ jobs:
               });
 
               console.log(`Created issue #${issue.data.number}: ${title}`);
+
+              // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'auto-fix-feedback-bug.yml',
+                  ref: 'main',
+                  inputs: { issue_number: String(issue.data.number) }
+                });
+                console.log(`  Dispatched auto-fix for #${issue.data.number}`);
+              } catch (err) {
+                console.log(`  Failed to dispatch auto-fix: ${err.message}`);
+              }
+
+              // 10s spacing between dispatches
+              await new Promise(r => setTimeout(r, 10000));
             }

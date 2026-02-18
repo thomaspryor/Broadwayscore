@@ -65,6 +65,21 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
+const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
+
+// DTLI slug map (persistent mapping discovered from sitemaps)
+let _dtliSlugMap = null;
+function getDtliSlugMap() {
+  if (_dtliSlugMap) return _dtliSlugMap;
+  try {
+    const data = JSON.parse(fs.readFileSync(DTLI_SLUG_MAP_PATH, 'utf8'));
+    _dtliSlugMap = data.shows || {};
+    console.log(`  Loaded DTLI slug map: ${Object.keys(_dtliSlugMap).length} entries`);
+  } catch {
+    _dtliSlugMap = {};
+  }
+  return _dtliSlugMap;
+}
 
 // Global URL index for cross-production duplicate prevention
 // Maps URL → { showId, file } for all existing review files
@@ -403,6 +418,20 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) 
  * Revival shows often use -bway or -broadway suffixes
  */
 async function searchDTLI(show) {
+  // Try slug map first (most reliable — discovered from DTLI sitemaps)
+  const dtliSlugMap = getDtliSlugMap();
+  const mappedSlug = dtliSlugMap[show.id];
+  if (mappedSlug) {
+    const url = `https://didtheylikeit.com/shows/${mappedSlug}/`;
+    console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
+    const result = await searchAggregator('DTLI', url);
+    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
+      console.log(`    ✓ Found via slug map: ${url}`);
+      return { url, html: result.html };
+    }
+    console.log(`    ⚠ Mapped URL failed, falling back to URL guessing...`);
+  }
+
   const titleSlug = slugify(show.title);
   const titleNoArticle = slugify(show.title.replace(/^(the|a|an)\s+/i, ''));
   const baseSlug = show.slug.replace(/-\d{4}$/, ''); // Remove year suffix
