@@ -1,0 +1,61 @@
+name: "Scrub archives from git history"
+on:
+  workflow_dispatch:
+
+jobs:
+  scrub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Full clone
+        run: |
+          git clone --single-branch --branch main https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
+          cd repo
+          git log --oneline -5
+          echo "Total commits: $(git rev-list --count HEAD)"
+
+      - name: Install git-filter-repo
+        run: pip install git-filter-repo
+
+      - name: Remove data/archives/ from all history
+        working-directory: repo
+        run: |
+          echo "=== Before ==="
+          git rev-list --all --objects -- data/archives/ | head -20
+          echo "Running filter-repo..."
+          git filter-repo --path data/archives/ --invert-paths --force
+          echo "=== After ==="
+          git rev-list --all --objects -- data/archives/ | head -5 || echo "No archives found (good!)"
+          echo "New commit count: $(git rev-list --count HEAD)"
+
+      - name: Add data/archives/ to .gitignore
+        working-directory: repo
+        run: |
+          # Add data/archives/ to .gitignore if not already there
+          if ! grep -q '^data/archives/' .gitignore; then
+            echo "" >> .gitignore
+            echo "# Raw scraped HTML archives (contain embedded API keys, tracking pixels)" >> .gitignore
+            echo "data/archives/" >> .gitignore
+            git add .gitignore
+            git -c user.name="GitHub Action" -c user.email="action@github.com" commit -m "chore: Add data/archives/ to .gitignore
+
+            Prevents raw scraped HTML from being committed. These files
+            contain embedded API keys, tracking pixels, and other content
+            that shouldn't be in version control.
+
+            Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+          fi
+
+      - name: Force push rewritten history
+        working-directory: repo
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push --force origin main
+          echo "Force push complete!"
+
+      - name: Run git gc
+        working-directory: repo
+        run: |
+          git reflog expire --expire=now --all
+          git gc --prune=now --aggressive
+          echo "Cleanup complete. Archives removed from history."
