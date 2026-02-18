@@ -1,17 +1,40 @@
 {
-  "updatedAt": "2026-02-18T10:03:09.349Z",
-  "processed": 34,
-  "failed": 36,
-  "successRate": "48.6%",
+  "updatedAt": "2026-02-18T10:22:42.783Z",
+  "processed": 5,
+  "failed": 85,
+  "successRate": "5.6%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 7
+    "archiveToday": 76,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T07:53:41.094Z",
+      "event": "bb-session",
+      "session": "255b8c5d",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-18T07:53:43.157Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-18T07:55:56.448Z",
+      "event": "bb-session",
+      "session": "9e1a33a0",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-18T07:55:59.061Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
