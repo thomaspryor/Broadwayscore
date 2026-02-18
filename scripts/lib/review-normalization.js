@@ -94,7 +94,7 @@ const OUTLET_ALIASES = {
     'ny mag', 'nymag', 'new york magazine', 'vult', 'vu', 'vulturecom'
   ],
   'variety': [
-    'variety', 'variety magazine'
+    'variety', 'variety magazine', 'varietycom', 'vartiey'
   ],
   'hollywood-reporter': [
     'hollywood reporter', 'the hollywood reporter', 'thr', 'hollywoodreporter',
@@ -108,7 +108,7 @@ const OUTLET_ALIASES = {
     'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york'
   ],
   'guardian': [
-    'guardian', 'the guardian', 'theguardian', 'the-gaurdian', 'the-guardian-uk'
+    'guardian', 'the guardian', 'theguardian', 'the-gaurdian', 'the-guardian-uk', 'uk-guardian'
   ],
   'washpost': [
     'washpost', 'washington post', 'the washington post', 'wapo',
@@ -119,14 +119,14 @@ const OUTLET_ALIASES = {
     'wallstreetjournal', 'wall-street-journal', 'wall-street-jounal'
   ],
   'nypost': [
-    'nypost', 'new york post', 'ny post', 'nyp', 'newyorkpost', 'new-york-post'
+    'nypost', 'new york post', 'ny post', 'nyp', 'newyorkpost', 'new-york-post', 'ny-post'
   ],
   'nydailynews': [
     'nydailynews', 'new york daily news', 'daily news', 'ny daily news',
     'nydn', 'newyorkdailynews', 'new-york-daily-news', 'ny-daily-news'
   ],
   'ew': [
-    'ew', 'entertainment weekly', 'entertainmentweekly', 'entertainment-weekly'
+    'ew', 'entertainment weekly', 'entertainmentweekly', 'entertainment-weekly', 'enertainment-weekly'
   ],
   'theatermania': [
     'theatermania', 'theater mania', 'theatremania', 'theatre mania', 'tmania'
@@ -148,13 +148,13 @@ const OUTLET_ALIASES = {
     'indiewire', 'indie wire', 'indie-wire'
   ],
   'observer': [
-    'observer', 'the observer', 'ny observer', 'new york observer'
+    'observer', 'the observer', 'ny observer', 'new york observer', 'ny-observer'
   ],
   'newyorker': [
     'newyorker', 'the new yorker', 'new yorker', 'the-new-yorker', 'new-yorker'
   ],
   'ap': [
-    'ap', 'associated press', 'the associated press', 'ap news'
+    'ap', 'associated press', 'the associated press', 'ap news', 'associated-press'
   ],
   'reuters': [
     'reuters'
@@ -193,7 +193,8 @@ const OUTLET_ALIASES = {
     'frontmezzjunkies', 'front mezz junkies', 'front-mezz-junkies', 'fmj'
   ],
   'dailybeast': [
-    'dailybeast', 'the daily beast', 'daily beast', 'tdb', 'the-daily-beast', 'daily-beast'
+    'dailybeast', 'the daily beast', 'daily beast', 'tdb', 'the-daily-beast', 'daily-beast',
+    'thedaily-beast'
   ],
   'usatoday': [
     'usatoday', 'usa today', 'usa-today'
@@ -230,13 +231,14 @@ const OUTLET_ALIASES = {
   ],
   'amny': [
     'amny', 'amnewyork', 'am new york', 'am-new-york', 'amnewsyork', 'amny-matt-windman',
-    'amnew-york', 'am-newyork'
+    'amnew-york', 'am-newyork', 'amnycom', 'am-ny-matt-windman'
   ],
   'culturesauce': [
     'culturesauce', 'culture sauce', 'culture-sauce'
   ],
   'oneminutecritic': [
-    'oneminutecritic', 'one minute critic', 'one-minute-critic', '1 minute critic', '1-minute-critic-matthew-wexler'
+    'oneminutecritic', 'one minute critic', 'one-minute-critic', '1 minute critic', '1-minute-critic-matthew-wexler',
+    '1minutecritic'
   ],
   'artsfuse': [
     'artsfuse', 'the arts fuse', 'arts fuse', 'the-arts-fuse'
@@ -273,7 +275,7 @@ const OUTLET_ALIASES = {
   ],
   // New outlets from BWW/DTLI extraction scripts
   'newsday': [
-    'newsday', 'news day'
+    'newsday', 'news day', 'ny-newsday'
   ],
   'npr': [
     'npr', 'national public radio', 'n.p.r.'
@@ -333,7 +335,38 @@ const OUTLET_ALIASES = {
     'faster-times', 'faster times', 'the faster times', 'the-faster-times'
   ],
   'nytheatre': [
-    'nytheatre', 'nytheatre wire', 'nytheatre-wire', 'nytheatrecom'
+    'nytheatre', 'nytheatre wire', 'nytheatre-wire', 'nytheatrecom', 'nytheatrereviewcom'
+  ],
+  // New outlets from Feb 2026 dedup prevention audit
+  'bloomberg': [
+    'bloomberg', 'bloomberg-news', 'bloombeg-news', 'bloomgberg-news'
+  ],
+  '4columns': [
+    '4columns', '4 columns', 'four columns'
+  ],
+  'philadelphia-inquirer': [
+    'philadelphia-inquirer', 'philadelpia-inquirer', 'philadelphia inquirer'
+  ],
+  'village-voice': [
+    'village-voice', 'villiage-voice', 'the village voice', 'village voice'
+  ],
+  'showbiz411': [
+    'showbiz411', 'showbiz 411', 'showbiz-411-roger-friedman'
+  ],
+  'times-square-chronicles': [
+    'times-square-chronicles', 'times square chronicles'
+  ],
+  'towleroad': [
+    'towleroad', 'towle road'
+  ],
+  'mashable': [
+    'mashable'
+  ],
+  'broadstreetreview': [
+    'broadstreetreview', 'broadstreetreviewcom', 'broad street review'
+  ],
+  'blogcritics': [
+    'blogcritics', 'blogcriticsorg'
   ],
 };
 
@@ -365,12 +398,12 @@ const CRITIC_ALIASES = {
   'juan-a-ramirez': ['juan a ramirez', 'juan a. ramirez', 'juan ramirez'],
   'zachary-stewart': ['zachary stewart', 'zach stewart', 'z. stewart'],
   'brittani-samuel': ['brittani samuel', 'b. samuel'],
-  'chris-jones': ['chris jones', 'c. jones', 'christopher jones'],
+  'chris-jones': ['chris jones', 'c. jones', 'christopher jones', 'chris jone'],
   'gillian-russo': ['gillian russo', 'g. russo'],
   'jd-knapp': ['jd knapp', 'j.d. knapp', 'j d knapp'],
   'vinson-cunningham': ['vinson cunningham', 'v. cunningham'],
   'naveen-kumar': ['naveen kumar', 'n. kumar', 'naeen kumar', 'naveen kamal'],
-  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell', 'jonathan mandrell', 'jonthan mandell'],
+  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell', 'jonathan mandrell', 'jonthan mandell', 'jonathan mandel'],
   'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton', 'scott lipton', 'brain scott lipton'],
   'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'm. bernardo', 'rose bernardo'],
   'david-finkle': ['david finkle', 'd. finkle'],
@@ -390,7 +423,7 @@ const CRITIC_ALIASES = {
   // Typo variants discovered by Feb 2026 audit
   'hilton-als': ['hilton als', 'hinton als'],
   'michael-feingold': ['michael feingold', 'michal feingold'],
-  'leah-greenblatt': ['leah greenblatt', 'lea greenblatt', 'leah glreenblatt'],
+  'leah-greenblatt': ['leah greenblatt', 'lea greenblatt', 'leah glreenblatt', 'leah greenblat'],
   'barbara-schuler': ['barbara schuler', 'barbara shuler'],
   'lovia-gyarkye': ['lovia gyarkye', 'lovia gyarke'],
   'thom-geier': ['thom geier', 'thom geir', 'thom geler', 'thom greier', 'thorn geier'],
@@ -1086,11 +1119,37 @@ function isJunkOutlet(outletName) {
   return false;
 }
 
+/**
+ * Normalize a URL for dedup comparison.
+ * Strips protocol, www prefix, trailing slashes, fragments, and tracking params.
+ * Returns a canonical string for comparison (NOT a valid URL).
+ *
+ * Used by:
+ * - gather-reviews.js (write-time URL dedup)
+ * - cleanup-dedup-comprehensive.js (batch cleanup)
+ */
+function normalizeUrl(url) {
+  if (!url) return '';
+  try {
+    let u = url.toLowerCase().trim()
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .replace(/\/+$/, '')
+      .replace(/#.*$/, '');
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc)=[^&]*/g, '')
+      .replace(/\?$/, '');
+    return u;
+  } catch (e) {
+    return url.toLowerCase().trim();
+  }
+}
+
 module.exports = {
   normalizeOutlet,
   isJunkOutlet,
   normalizeCritic,
   normalizePublishDate,
+  normalizeUrl,
   generateReviewFilename,
   generateReviewKey,
   slugify,
