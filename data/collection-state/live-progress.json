@@ -1,40 +1,17 @@
 {
-  "updatedAt": "2026-02-18T10:57:52.872Z",
-  "processed": 86,
-  "failed": 84,
-  "successRate": "50.6%",
+  "updatedAt": "2026-02-18T11:01:06.919Z",
+  "processed": 33,
+  "failed": 7,
+  "successRate": "82.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 20,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 67,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 61,
-    "archive": 19
+    "archiveToday": 4,
+    "archive": 12
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-18T08:04:25.112Z",
-      "event": "bb-session",
-      "session": "003f6a8a",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-18T08:04:26.750Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-18T08:06:57.225Z",
-      "event": "bb-session",
-      "session": "80a9d4b7",
-      "url": "https://www.nytimes.com/2017/04/27/theater/a-dolls-house-part-2-review-laurie-me"
-    },
-    {
-      "t": "2026-02-18T08:06:58.994Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
