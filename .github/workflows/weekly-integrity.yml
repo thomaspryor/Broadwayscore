@@ -35,6 +35,84 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Clean up junk outlet files
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const reviewTextsDir = 'data/review-texts';
+            const registry = JSON.parse(fs.readFileSync('data/outlet-registry.json', 'utf8'));
+
+            // Build set of valid outlets
+            const validOutlets = new Set(Object.keys(registry.outlets));
+            if (registry._aliasIndex) {
+              for (const alias of Object.keys(registry._aliasIndex)) {
+                if (alias !== '_note') validOutlets.add(alias);
+              }
+            }
+            for (const outlet of Object.values(registry.outlets)) {
+              if (outlet.aliases) outlet.aliases.forEach(a => validOutlets.add(a));
+            }
+
+            // Known junk patterns: scraping artifacts, person names used as outlets
+            const JUNK_PATTERNS = [/^advertisement$/, /^sponsored$/, /^promoted$/, /^ad$/, /^promo$/];
+
+            let deleted = 0;
+            const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
+              fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
+            );
+
+            for (const showDir of showDirs) {
+              const files = fs.readdirSync(path.join(reviewTextsDir, showDir))
+                .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+              for (const file of files) {
+                try {
+                  const filePath = path.join(reviewTextsDir, showDir, file);
+                  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                  const outletId = (data.outletId || '').toLowerCase();
+                  if (!outletId || outletId === 'unknown') continue;
+
+                  // Delete files with blocklisted outlet IDs
+                  if (JUNK_PATTERNS.some(p => p.test(outletId))) {
+                    fs.unlinkSync(filePath);
+                    console.log('Deleted junk: ' + showDir + '/' + file);
+                    deleted++;
+                    continue;
+                  }
+
+                  // Delete files where outletId has no URL and critic is 'unknown' and outlet not in registry
+                  // (these are scraper garbage: actor names, movie titles, etc.)
+                  const hyphenCount = (outletId.match(/-/g) || []).length;
+                  if (!data.url && (data.criticName || '').toLowerCase() === 'unknown' &&
+                      !validOutlets.has(outletId) && hyphenCount <= 5) {
+                    fs.unlinkSync(filePath);
+                    console.log('Deleted orphan: ' + showDir + '/' + file + ' (outletId=' + outletId + ', no URL, unknown critic)');
+                    deleted++;
+                  }
+                } catch (e) {}
+              }
+            }
+
+            if (deleted > 0) {
+              console.log('Cleaned up ' + deleted + ' junk review file(s)');
+            } else {
+              console.log('No junk review files found');
+            }
+          "
+
+      - name: Commit cleanup
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/review-texts/
+          if git diff --staged --quiet; then
+            echo "No junk files to clean"
+          else
+            git commit -m "chore: Auto-cleanup junk outlet review files"
+            git push origin main || true
+          fi
+
       - name: Run integrity check
         id: check
         run: |

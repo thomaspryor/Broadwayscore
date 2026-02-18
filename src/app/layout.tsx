@@ -58,6 +58,9 @@ export const metadata: Metadata = {
       'application/rss+xml': `${BASE_URL}/reviews/feed.xml`,
     },
   },
+  other: {
+    'impact-site-verification': '210ec958-0fb2-4221-8150-3f2fa07d559e',
+  },
 };
 
 

@@ -653,15 +653,15 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Type Pills & Score Mode Toggle Row */}
-      <div className="flex items-center justify-between gap-4 mb-4">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4">
         {/* Type Filter Pills (Left) */}
-        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
+        <div className="flex items-center gap-1.5 sm:gap-2" role="group" aria-label="Filter by type">
           {(['all', 'musical', 'play'] as const).map((t) => (
             <button
               key={t}
               onClick={() => updateParams({ type: t })}
               aria-pressed={type === t}
-              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
                 type === t
                   ? 'bg-brand text-gray-900 shadow-glow-sm'
                   : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
@@ -686,7 +686,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
                 }
               }}
               aria-pressed={scoreMode === mode}
-              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
                 scoreMode === mode
                   ? 'bg-brand text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-300'
