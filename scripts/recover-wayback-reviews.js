@@ -61,6 +61,7 @@ const CONFIG = {
   dryRun: process.env.DRY_RUN === 'true',
   tierFilter: process.env.TIER_FILTER || '',
   domainFilter: process.env.DOMAIN_FILTER ? process.env.DOMAIN_FILTER.split(',').map(d => d.trim()) : [],
+  sourceMode: process.env.SOURCE_MODE || 'failed-fetches',
 };
 
 // ============================================================================
@@ -435,6 +436,110 @@ function loadCandidates() {
 }
 
 // ============================================================================
+// Load incomplete review candidates (for SOURCE_MODE=incomplete)
+// Scans review-texts/ for truncated/excerpt/stub reviews to upgrade via archive
+// ============================================================================
+
+function loadIncompleteCandidates() {
+  console.log('Loading incomplete review candidates...\n');
+
+  let shows = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+    for (const s of (showsData.shows || showsData)) {
+      shows[s.id || s.slug] = s;
+    }
+  } catch {}
+
+  const candidates = [];
+  let skippedComplete = 0, skippedNoUrl = 0, skippedAlreadyArchived = 0, skippedFlagged = 0, totalScanned = 0;
+
+  const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory()).map(d => d.name);
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(CONFIG.reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      totalScanned++;
+      const filePath = path.join(showPath, file);
+      const reviewId = `${showDir}/${file}`;
+
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+        if (data.contentTier === 'complete') { skippedComplete++; continue; }
+        if (!['truncated', 'excerpt', 'stub'].includes(data.contentTier)) continue;
+        if (data.wrongShow || data.wrongProduction) { skippedFlagged++; continue; }
+
+        const url = data.url;
+        if (!url) { skippedNoUrl++; continue; }
+        if (data.archiveOrgUrl) { skippedAlreadyArchived++; continue; }
+
+        const tier = getTierForUrl(url);
+        const domain = (() => {
+          try { return new URL(url).hostname.replace(/^www\./, ''); }
+          catch { return 'unknown'; }
+        })();
+
+        if (CONFIG.tierFilter && tier !== parseInt(CONFIG.tierFilter)) continue;
+        if (CONFIG.domainFilter.length > 0 && !CONFIG.domainFilter.includes(domain)) continue;
+
+        const show = shows[data.showId] || {};
+        const openingDate = show.openingDate || '2000-01-01';
+
+        candidates.push({
+          reviewId,
+          filePath,
+          url,
+          showId: data.showId,
+          outlet: data.outlet || 'unknown',
+          outletId: data.outletId || 'unknown',
+          criticName: data.criticName || 'unknown',
+          tier,
+          domain,
+          openingDate,
+          existingTextLength: (data.fullText || '').length,
+        });
+      } catch {}
+    }
+  }
+
+  // Sort: Tier 1 first, then 2, then 3. Within tier, newest shows first.
+  candidates.sort((a, b) => {
+    if (a.tier !== b.tier) return a.tier - b.tier;
+    return b.openingDate.localeCompare(a.openingDate);
+  });
+
+  const limited = candidates.slice(0, CONFIG.maxUrls);
+
+  console.log(`  Total review files scanned: ${totalScanned}`);
+  console.log(`  Skipped (complete): ${skippedComplete}`);
+  console.log(`  Skipped (no URL): ${skippedNoUrl}`);
+  console.log(`  Skipped (already archived): ${skippedAlreadyArchived}`);
+  console.log(`  Skipped (flagged wrong): ${skippedFlagged}`);
+  console.log(`  Candidates after filters: ${limited.length}${CONFIG.maxUrls < Infinity ? ` (limited from ${candidates.length})` : ''}`);
+
+  // Tier breakdown
+  const tierCounts = { 1: 0, 2: 0, 3: 0 };
+  for (const c of limited) tierCounts[c.tier]++;
+  console.log(`  Tier 1: ${tierCounts[1]}, Tier 2: ${tierCounts[2]}, Tier 3: ${tierCounts[3]}`);
+
+  // Top domains
+  const domainCounts = {};
+  for (const c of limited) domainCounts[c.domain] = (domainCounts[c.domain] || 0) + 1;
+  const topDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  console.log(`  Top domains: ${topDomains.map(([d, c]) => `${d}(${c})`).join(', ')}`);
+
+  if (candidates.length > 500 && CONFIG.maxUrls === Infinity) {
+    console.log(`\n  WARNING: ${candidates.length} candidates found. Consider using DOMAIN_FILTER or MAX_URLS to limit scope.`);
+  }
+
+  return limited;
+}
+
+// ============================================================================
 // Checkpointing (CI only)
 // ============================================================================
 
@@ -453,7 +558,8 @@ function checkpoint(stats) {
       return; // No changes
     } catch {} // Non-zero exit = there ARE changes
 
-    const msg = `feat: Wayback recovery checkpoint - ${stats.recovered} reviews recovered [T1:${stats.recoveredByTier[1]},T2:${stats.recoveredByTier[2]},T3:${stats.recoveredByTier[3]}]`;
+    const modeTag = CONFIG.sourceMode !== 'failed-fetches' ? ` (${CONFIG.sourceMode})` : '';
+    const msg = `feat: Wayback recovery checkpoint${modeTag} - ${stats.recovered} reviews recovered [T1:${stats.recoveredByTier[1]},T2:${stats.recoveredByTier[2]},T3:${stats.recoveredByTier[3]}]`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: path.join(__dirname, '..') });
 
     // Push with retry
@@ -488,8 +594,11 @@ async function main() {
   console.log('╚══════════════════════════════════════════════════════╝\n');
 
   if (CONFIG.dryRun) console.log('*** DRY RUN — no files will be modified ***\n');
+  if (CONFIG.sourceMode !== 'failed-fetches') console.log(`Source mode: ${CONFIG.sourceMode}\n`);
 
-  const candidates = loadCandidates();
+  const candidates = CONFIG.sourceMode === 'incomplete'
+    ? loadIncompleteCandidates()
+    : loadCandidates();
   if (candidates.length === 0) {
     console.log('\nNo candidates to process.');
     return;
@@ -664,7 +773,8 @@ async function main() {
   }
 
   // Batch cleanup of failed-fetches.json (at end to avoid rebase conflicts)
-  if (!CONFIG.dryRun && recoveredReviewIds.length > 0) {
+  // Skip in incomplete mode — those reviews aren't in failed-fetches.json
+  if (!CONFIG.dryRun && recoveredReviewIds.length > 0 && CONFIG.sourceMode !== 'incomplete') {
     console.log(`\nCleaning up failed-fetches.json (removing ${recoveredReviewIds.length} recovered entries)...`);
     try {
       const ff = JSON.parse(fs.readFileSync(CONFIG.failedFetchesPath, 'utf8'));
@@ -752,6 +862,16 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 
   // Read current source file
   const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+
+  // Length guard for incomplete mode — only accept if meaningfully longer
+  if (CONFIG.sourceMode === 'incomplete' && data.fullText) {
+    const existingLen = data.fullText.length;
+    if (cleanedText.length <= existingLen || (cleanedText.length < existingLen * 1.5 && cleanedText.length < existingLen + 300)) {
+      console.log(`    Archive text (${cleanedText.length}) not meaningfully longer than existing (${existingLen}), skip`);
+      return false;
+    }
+    console.log(`    Upgrading: ${existingLen} -> ${cleanedText.length} chars (+${Math.round((cleanedText.length / existingLen - 1) * 100)}%)`);
+  }
 
   // Update with recovered text
   data.fullText = cleanedText;
