@@ -15,6 +15,7 @@ import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
+import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
@@ -462,7 +463,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   href={`/lists/${m.listType}/${m.season}`}
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
                 >
-                  <span>{listConfig.icon}</span>
+                  <GoldListBadge type={m.listType} size="xs" />
                   <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
                   <span className="text-gray-500">({m.season})</span>
                 </Link>
