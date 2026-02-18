@@ -177,7 +177,7 @@ jobs:
           const { subject, html } = buildFeedbackThankYouEmail(type, diag.submitterName, diag.submitterShow);
 
           const data = JSON.stringify({
-            from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
+            from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
             to: [email],
             subject,
             html,
