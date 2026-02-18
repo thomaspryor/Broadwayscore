@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T02:30:28.761Z",
-  "processed": 29,
-  "failed": 1,
-  "successRate": "96.7%",
+  "updatedAt": "2026-02-18T02:32:32.960Z",
+  "processed": 46,
+  "failed": 54,
+  "successRate": "46.0%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 32,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 5
+    "archiveToday": 42,
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T01:24:30.174Z",
+      "event": "bb-session",
+      "session": "0071716e",
+      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
+    },
+    {
+      "t": "2026-02-18T01:24:32.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:26:06.058Z",
+      "event": "bb-session",
+      "session": "561dc84e",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-02-18T01:26:08.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:27:26.092Z",
+      "event": "bb-session",
+      "session": "609b0a6a",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-18T01:27:28.387Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:28:49.665Z",
+      "event": "bb-session",
+      "session": "62ef8117",
+      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
+    },
+    {
+      "t": "2026-02-18T01:28:51.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:30:04.698Z",
+      "event": "bb-session",
+      "session": "12bebdb6",
+      "url": "https://www.nytimes.com/2014/04/25/theater/reviews/cabaret-revival-with-alan-cum"
+    },
+    {
+      "t": "2026-02-18T01:30:06.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:31:27.734Z",
+      "event": "bb-session",
+      "session": "f372543c",
+      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
+    },
+    {
+      "t": "2026-02-18T01:31:29.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:32:46.375Z",
+      "event": "bb-session",
+      "session": "98e50624",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T01:32:48.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:34:08.459Z",
+      "event": "bb-session",
+      "session": "5cf36b3b",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T01:34:10.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:35:30.510Z",
+      "event": "bb-session",
+      "session": "7a375b6b",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-18T01:35:32.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T01:36:45.506Z",
+      "event": "bb-session",
+      "session": "bf9a9e74",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-18T01:36:47.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
