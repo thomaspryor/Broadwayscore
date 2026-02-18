@@ -471,6 +471,8 @@ async function runPhase3(candidates) {
 
   let processed = 0;
   let found = 0;
+  let consecutiveUnavailable = 0;
+  const MAX_UNAVAILABLE = 5; // Only stop after 5 consecutive provider failures
 
   for (const c of phase3Candidates) {
     if (processed >= CONFIG.phase3Limit) break;
@@ -485,9 +487,16 @@ async function runPhase3(candidates) {
       );
 
       if (newUrl === '__SERP_UNAVAILABLE__') {
-        console.log('  ⚠ All SERP providers unavailable — stopping Phase 3');
-        break;
+        consecutiveUnavailable++;
+        console.log(`  ⚠ SERP providers unavailable (${consecutiveUnavailable}/${MAX_UNAVAILABLE})`);
+        if (consecutiveUnavailable >= MAX_UNAVAILABLE) {
+          console.log('  ✗ All SERP providers down after 5 consecutive failures — stopping Phase 3');
+          break;
+        }
+        await sleep(5000); // Back off before retrying
+        continue;
       }
+      consecutiveUnavailable = 0; // Reset on any successful call
 
       if (newUrl) {
         updateReviewUrl(c, newUrl, 'google-serp');
