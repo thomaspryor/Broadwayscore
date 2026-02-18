@@ -17,10 +17,18 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. Vercel auto-deploys in ~1 min.
+**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
+
+### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
+**Git auto-deploy is DISABLED** to prevent data checkpoint commits from burning 30+ concurrent build minutes.
+Deploys happen via **Deploy Hook**, triggered by `.github/workflows/vercel-deploy.yml`:
+- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically**
+- Pushes changing only `data/review-texts/`, `data/archives/`, `data/collection-state/` → **no deploy** (intentional)
+- **DO NOT remove `"ignoreCommand": "exit 0"` from `vercel.json`** — it blocks git-triggered builds. Deploy Hook bypasses it via API.
+- To force a manual deploy: `curl -s -X POST "$VERCEL_DEPLOY_HOOK"` (stored as GitHub secret)
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
