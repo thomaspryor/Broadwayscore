@@ -3,7 +3,7 @@
     "generatedAt": "2026-02-18T22:24:40.765Z",
     "totalFlagged": 109,
     "reasons": {
-      "possible-tour-fulltext": 22,
+      "possible-tour-fulltext": 23,
       "originalScore-llm-conflict": 44,
       "both-thumbs-disagree-with-llm": 43
     }
@@ -1414,12 +1414,12 @@
       "flaggedAt": "2026-02-18T22:24:39.347Z"
     },
     {
-      "showId": "waitress-2021",
-      "outletId": "cititour",
-      "criticName": "Brian Scott Lipton",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 81 (bucket=positive, conf=high)",
-      "llmScore": 81,
+      "showId": "waiting-for-godot-2025",
+      "outletId": "nytimes",
+      "criticName": "Unknown",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=77 (Up), both thumbs=Meh",
+      "llmScore": 77,
       "llmBucket": "Positive",
       "llmConfidence": "high",
       "dtliThumb": null,

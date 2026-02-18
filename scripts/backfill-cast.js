@@ -193,6 +193,29 @@ async function main() {
   console.log(`  Failed:   ${failed}`);
   console.log(`  Total:    ${shows.length}`);
 
+  // Sync ibdbUrl from cast files back to shows.json (non-sharded runs only)
+  if (shardIdx === null && success > 0) {
+    try {
+      const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+      let synced = 0;
+      for (const show of showsData.shows) {
+        const castPath = path.join(CAST_DIR, `${show.id}.json`);
+        if (!fs.existsSync(castPath)) continue;
+        const castData = JSON.parse(fs.readFileSync(castPath, 'utf8'));
+        if (castData.ibdbUrl && castData.ibdbUrl !== show.ibdbUrl) {
+          show.ibdbUrl = castData.ibdbUrl;
+          synced++;
+        }
+      }
+      if (synced > 0) {
+        fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+        console.log(`\n📎 Synced ibdbUrl for ${synced} show(s) into shows.json`);
+      }
+    } catch (e) {
+      console.log(`\n⚠️  ibdbUrl sync failed (non-fatal): ${e.message}`);
+    }
+  }
+
   // Cleanup any browser instances from scraper
   try {
     await cleanup();
