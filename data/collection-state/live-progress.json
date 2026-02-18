@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T11:27:15.929Z",
-  "processed": 81,
-  "failed": 20,
-  "successRate": "80.2%",
+  "updatedAt": "2026-02-18T11:28:19.317Z",
+  "processed": 50,
+  "failed": 50,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
-    "scrapingbee": 2,
+    "browserbase": 2,
+    "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 10
+    "archiveToday": 36,
+    "archive": 24
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T10:41:58.389Z",
+      "event": "bb-session",
+      "session": "da41dcc3",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T10:42:00.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:43:28.444Z",
+      "event": "bb-session",
+      "session": "0ee7b7e2",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T10:43:30.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:44:54.575Z",
+      "event": "bb-session",
+      "session": "be87e4bf",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T10:44:57.139Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:46:10.680Z",
+      "event": "bb-session",
+      "session": "92dd91c6",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-18T10:46:12.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:47:33.246Z",
+      "event": "bb-session",
+      "session": "7fd6e714",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T10:47:35.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:48:54.984Z",
+      "event": "bb-session",
+      "session": "fcd8008c",
+      "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html?smtyp=cu"
+    },
+    {
+      "t": "2026-02-18T10:48:57.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:50:34.115Z",
+      "event": "bb-session",
+      "session": "7b2b9175",
+      "url": "http://theater.nytimes.com/2007/05/03/theater/reviews/03cora.html?pagewanted=2"
+    },
+    {
+      "t": "2026-02-18T10:50:36.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:52:01.577Z",
+      "event": "bb-session",
+      "session": "74e5919e",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-18T10:52:03.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:53:34.719Z",
+      "event": "bb-session",
+      "session": "8b65012b",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-02-18T10:53:36.706Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:54:49.116Z",
+      "event": "bb-session",
+      "session": "51ca992a",
+      "url": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html"
+    },
+    {
+      "t": "2026-02-18T10:54:51.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
