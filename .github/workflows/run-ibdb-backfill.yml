@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Sparse checkout (only shows.json + cast/)
+      - name: Sparse checkout (only data + scripts)
         run: |
           git clone --depth 1 --filter=blob:none --sparse https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git .
-          git sparse-checkout set data/shows.json data/cast scripts/backfill-ibdb-urls.js
+          git sparse-checkout set data scripts
 
       - name: Setup Node
         uses: actions/setup-node@v4
