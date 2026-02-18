@@ -490,7 +490,12 @@ function extractBwwRoundupData(html, showId) {
   const $ = cheerio.load(html);
 
   // Detect format by checking for thumb images
-  const hasThumbImages = html.includes('uptrans.png') || html.includes('middletrans.png') || html.includes('downtrans.png');
+  // BWW uses two image naming schemes:
+  //   Old (~pre-2023): uptrans.png, middletrans.png, downtrans.png
+  //   New (~2023+): like-button-icon.png, midlike-button-icon.png, dislike-button-icon.png
+  const hasOldThumbImages = html.includes('uptrans.png') || html.includes('middletrans.png') || html.includes('downtrans.png');
+  const hasNewThumbImages = html.includes('like-button-icon') || html.includes('midlike-button-icon') || html.includes('dislike-button-icon');
+  const hasThumbImages = hasOldThumbImages || hasNewThumbImages;
   const hasAverageRating = html.includes('Average Rating:');
 
   // Extract the roundup URL from canonical link
@@ -524,18 +529,31 @@ function extractBwwRoundupData(html, showId) {
     allLinks.push({ href, text, el });
   });
 
-  // Method 1: Parse structured new-format with thumb images
-  // Structure: <p><img src="uptrans/middletrans/downtrans.png"> CriticName, <a>Outlet:</a> excerpt</p>
+  // Method 1: Parse structured format with thumb images
+  // Old: <p><img src="uptrans/middletrans/downtrans.png"> CriticName, <a>Outlet:</a> excerpt</p>
+  // New: <p><img src="like-button-icon/midlike-button-icon/dislike-button-icon.png" alt="Thumbs Up"> CriticName, <a>Outlet:</a> excerpt</p>
   if (hasThumbImages) {
-    const thumbImgs = container.find('img[src*="uptrans"], img[src*="middletrans"], img[src*="downtrans"]');
+    const thumbImgs = container.find('img[src*="uptrans"], img[src*="middletrans"], img[src*="downtrans"], img[src*="like-button-icon"], img[src*="midlike-button-icon"], img[src*="dislike-button-icon"]');
 
     thumbImgs.each((_, img) => {
       const $img = $(img);
       const src = $img.attr('src') || '';
+      const alt = ($img.attr('alt') || '').toLowerCase();
       let thumb = null;
+      // Old format
       if (src.includes('uptrans')) thumb = 'Up';
       else if (src.includes('middletrans')) thumb = 'Meh';
       else if (src.includes('downtrans')) thumb = 'Down';
+      // New format — check src URL first
+      else if (src.includes('dislike-button-icon')) thumb = 'Down';
+      else if (src.includes('midlike-button-icon')) thumb = 'Meh';
+      else if (src.includes('like-button-icon')) thumb = 'Up';
+      // Fallback: check alt text (BWW uses dual alt attributes)
+      if (!thumb) {
+        if (alt.includes('thumbs up')) thumb = 'Up';
+        else if (alt.includes('thumbs sideways') || alt.includes('thumbs mid')) thumb = 'Meh';
+        else if (alt.includes('thumbs down')) thumb = 'Down';
+      }
 
       // The thumb and review text are in the SAME <p> element
       const parent = $img.closest('p, div, li');

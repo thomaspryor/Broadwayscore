@@ -45,8 +45,8 @@ const CONFIG = {
   archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '4000'),
   requestTimeoutMs: parseInt(process.env.REQUEST_TIMEOUT_MS || '30000'),
 
-  // Skip-list for permanently failed URLs (no CDX snapshots or all paywalled)
-  skipListPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-skip-list.json'),
+  // Exhausted URLs tracker — categorized reasons why archive recovery failed
+  skipListPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-exhausted.json'),
 
   // Quality thresholds
   minTextLength: 300,
@@ -474,12 +474,15 @@ function loadIncompleteCandidates() {
     }
   } catch {}
 
-  // Load skip-list of URLs that previously had no CDX snapshots or all-paywalled
+  // Load exhausted URLs — only skip non-retryable ones (paywalled snapshots, quality failures)
   let skipSet = new Set();
   try {
-    const skipData = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8'));
-    skipSet = new Set(skipData.urls || []);
-    console.log(`  Loaded skip-list: ${skipSet.size} previously failed URLs\n`);
+    const exhaustedData = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8'));
+    const entries = exhaustedData.urls || {};
+    for (const [url, info] of Object.entries(entries)) {
+      if (!info.retryable) skipSet.add(url);
+    }
+    console.log(`  Loaded exhausted list: ${Object.keys(entries).length} total, ${skipSet.size} non-retryable (skipped)\n`);
   } catch {}
 
   const candidates = [];
@@ -655,7 +658,7 @@ async function main() {
   let consecutiveFailures = 0;
   let lastCheckpointTime = Date.now();
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
-  const permanentlyFailedUrls = []; // Track for skip-list (no CDX snapshots or all paywalled)
+  const exhaustedUrls = {}; // Track per-URL failure reasons for wayback-exhausted.json
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
@@ -719,7 +722,8 @@ async function main() {
       }
 
       stats.notInArchive++;
-      permanentlyFailedUrls.push(c.url);
+      // Track but don't skip — CDX may return empty under rate limiting (false negative)
+      exhaustedUrls[c.url] = { reason: 'no_archive_coverage', lastAttempt: new Date().toISOString(), retryable: true };
       continue;
     }
 
@@ -807,10 +811,10 @@ async function main() {
             lastCheckpointTime = Date.now();
           }
         } else {
-          permanentlyFailedUrls.push(c.url); // archive.today had content but it was garbage/too short
+          exhaustedUrls[c.url] = { reason: 'content_quality_failed', lastAttempt: new Date().toISOString(), retryable: false };
         }
       } else {
-        permanentlyFailedUrls.push(c.url); // archive.today had nothing either
+        exhaustedUrls[c.url] = { reason: 'snapshots_paywalled', lastAttempt: new Date().toISOString(), retryable: false };
       }
     }
 
@@ -840,22 +844,33 @@ async function main() {
     }
   }
 
-  // Save skip-list (merge with existing)
-  if (!CONFIG.dryRun && permanentlyFailedUrls.length > 0) {
+  // Save exhausted URL list (merge with existing, preserve per-URL reasons)
+  if (!CONFIG.dryRun && Object.keys(exhaustedUrls).length > 0) {
     try {
-      let existing = [];
-      try { existing = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8')).urls || []; } catch {}
-      const merged = [...new Set([...existing, ...permanentlyFailedUrls])];
+      let existing = {};
+      try { existing = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8')).urls || {}; } catch {}
+      const merged = { ...existing, ...exhaustedUrls };
       const skipDir = path.dirname(CONFIG.skipListPath);
       if (!fs.existsSync(skipDir)) fs.mkdirSync(skipDir, { recursive: true });
+
+      const reasonCounts = {};
+      for (const info of Object.values(merged)) {
+        reasonCounts[info.reason] = (reasonCounts[info.reason] || 0) + 1;
+      }
+
       fs.writeFileSync(CONFIG.skipListPath, JSON.stringify({
         urls: merged,
         lastUpdated: new Date().toISOString(),
-        count: merged.length,
+        totalCount: Object.keys(merged).length,
+        byReason: reasonCounts,
       }, null, 2) + '\n');
-      console.log(`\nSkip-list updated: ${permanentlyFailedUrls.length} new + ${existing.length} existing = ${merged.length} total`);
+
+      const newCount = Object.keys(exhaustedUrls).length;
+      const existingCount = Object.keys(existing).length;
+      console.log(`\nExhausted list updated: ${newCount} new + ${existingCount} existing = ${Object.keys(merged).length} total`);
+      console.log(`  By reason: ${Object.entries(reasonCounts).map(([r, c]) => `${r}(${c})`).join(', ')}`);
     } catch (e) {
-      console.log(`\nError saving skip-list: ${e.message}`);
+      console.log(`\nError saving exhausted list: ${e.message}`);
     }
   }
 
