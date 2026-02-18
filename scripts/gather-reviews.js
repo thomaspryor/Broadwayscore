@@ -65,6 +65,21 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
+const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
+
+// DTLI slug map (persistent mapping discovered from sitemaps)
+let _dtliSlugMap = null;
+function getDtliSlugMap() {
+  if (_dtliSlugMap) return _dtliSlugMap;
+  try {
+    const data = JSON.parse(fs.readFileSync(DTLI_SLUG_MAP_PATH, 'utf8'));
+    _dtliSlugMap = data.shows || {};
+    console.log(`  Loaded DTLI slug map: ${Object.keys(_dtliSlugMap).length} entries`);
+  } catch {
+    _dtliSlugMap = {};
+  }
+  return _dtliSlugMap;
+}
 
 // Global URL index for cross-production duplicate prevention
 // Maps URL → { showId, file } for all existing review files
@@ -162,40 +177,54 @@ If you FIND a review, respond with JSON only:
 
 Important: Only report a review if you actually find one via web search. Do not guess or make up URLs.`;
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`API error ${response.status}: ${error.substring(0, 200)}`);
+      if (!response.ok) {
+        const error = await response.text();
+        const status = response.status;
+        if ((status === 429 || status >= 500) && attempt < 2) {
+          console.log(`    ⚠️  API ${status}, retrying in ${(attempt + 1) * 5}s...`);
+          await sleep((attempt + 1) * 5000);
+          continue;
+        }
+        throw new Error(`API error ${status}: ${error.substring(0, 200)}`);
+      }
+
+      const data = await response.json();
+      const content = data.content[0].text;
+
+      // Parse JSON from response
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const result = JSON.parse(jsonMatch[0]);
+        return result.found ? result : null;
+      }
+      return null;
+    } catch (error) {
+      if (attempt < 2 && (error.message.includes('ECONNRESET') || error.message.includes('fetch failed'))) {
+        console.log(`    ⚠️  Network error, retrying in ${(attempt + 1) * 5}s...`);
+        await sleep((attempt + 1) * 5000);
+        continue;
+      }
+      console.log(`    ⚠️  Search error: ${error.message}`);
+      return null;
     }
-
-    const data = await response.json();
-    const content = data.content[0].text;
-
-    // Parse JSON from response
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
-      return result.found ? result : null;
-    }
-    return null;
-  } catch (error) {
-    console.log(`    ⚠️  Search error: ${error.message}`);
-    return null;
   }
+  return null;
 }
 
 /**
@@ -211,7 +240,7 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
       return;
     }
 
-    const req = https.get(searchUrl, { timeout: 15000 }, (res) => {
+    const req = https.get(searchUrl, { timeout: 30000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
         res.on('data', chunk => data += chunk);
@@ -389,6 +418,20 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) 
  * Revival shows often use -bway or -broadway suffixes
  */
 async function searchDTLI(show) {
+  // Try slug map first (most reliable — discovered from DTLI sitemaps)
+  const dtliSlugMap = getDtliSlugMap();
+  const mappedSlug = dtliSlugMap[show.id];
+  if (mappedSlug) {
+    const url = `https://didtheylikeit.com/shows/${mappedSlug}/`;
+    console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
+    const result = await searchAggregator('DTLI', url);
+    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
+      console.log(`    ✓ Found via slug map: ${url}`);
+      return { url, html: result.html };
+    }
+    console.log(`    ⚠ Mapped URL failed, falling back to URL guessing...`);
+  }
+
   const titleSlug = slugify(show.title);
   const titleNoArticle = slugify(show.title.replace(/^(the|a|an)\s+/i, ''));
   const baseSlug = show.slug.replace(/-\d{4}$/, ''); // Remove year suffix
@@ -2155,7 +2198,13 @@ async function main() {
   const results = [];
 
   for (const showId of showIds) {
-    const result = await gatherReviewsForShow(showId, aggregatorsOnly);
+    let result;
+    try {
+      result = await gatherReviewsForShow(showId, aggregatorsOnly);
+    } catch (err) {
+      console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
+      result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };
+    }
     results.push(result);
     await sleep(2000); // Delay between shows
   }
