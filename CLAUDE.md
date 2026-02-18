@@ -25,14 +25,15 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 
 ### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
 **Git-triggered builds are BLOCKED** (`exit 0` in dashboard Ignored Build Step). This prevents data checkpoint commits from burning build minutes.
-**Deploys happen ONLY via Vercel Deployments API**, triggered by `.github/workflows/vercel-deploy.yml`:
-- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically**
+**Deploys happen ONLY via Vercel CLI** in `.github/workflows/vercel-deploy.yml`:
+- The workflow builds on GitHub Actions (`vercel build --prod`), then uploads prebuilt output (`vercel deploy --prebuilt --prod`). This completely bypasses Vercel's git integration.
+- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically** (~13 min)
 - Pushes changing only `data/review-texts/`, `data/archives/`, etc. → **no deploy** (intentional)
-- The API deployment (`POST /v13/deployments`) bypasses the ignore command — this is why it works while deploy hooks don't.
-- **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks the 30+ checkpoint builds per hour.
-- **DO NOT add `ignoreCommand` to `vercel.json`** — it's managed via dashboard only. `vercel.json` has NO ignoreCommand.
-- To force a manual deploy: `gh workflow run "Deploy to Vercel"` or use the Vercel API directly with `VERCEL_TOKEN`.
-- **Secrets:** `VERCEL_TOKEN` (API auth), `VERCEL_DEPLOY_HOOK` (legacy, not used)
+- To force a manual deploy: `gh workflow run "Deploy to Vercel"`
+- **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks 30+ checkpoint builds per hour.
+- **DO NOT add `ignoreCommand` to `vercel.json`** — it has NO ignoreCommand. Dashboard only.
+- **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
+- **Secret:** `VERCEL_TOKEN` (CLI auth)
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
