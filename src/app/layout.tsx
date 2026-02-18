@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     },
   },
   other: {
-    'impact-site-verification': '26db9e0f-e622-494f-858e-ab9f39dd945c',
+    'impact-site-verification': '210ec958-0fb2-4221-8150-3f2fa07d559e',
   },
 };
 
