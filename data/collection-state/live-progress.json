@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-18T12:30:41.977Z",
-  "processed": 76,
-  "failed": 24,
-  "successRate": "76.0%",
+  "updatedAt": "2026-02-18T12:30:56.309Z",
+  "processed": 50,
+  "failed": 50,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 8
+    "archiveToday": 31,
+    "archive": 19
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 24,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T11:22:05.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:23:35.892Z",
+      "event": "bb-session",
+      "session": "0cc18845",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blithe.html"
+    },
+    {
+      "t": "2026-02-18T11:23:38.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:24:56.955Z",
+      "event": "bb-session",
+      "session": "bdade9c8",
+      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
+    },
+    {
+      "t": "2026-02-18T11:26:45.085Z",
+      "event": "bb-session",
+      "session": "698cb988",
+      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
+    },
+    {
+      "t": "2026-02-18T11:26:47.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:27:59.957Z",
+      "event": "bb-session",
+      "session": "71e4571a",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-02-18T11:28:01.901Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:29:19.583Z",
+      "event": "bb-session",
+      "session": "de47a1dd",
+      "url": "http://www.nytimes.com/2009/10/26/theater/reviews/26brighton.html?_r=1&amp;hp"
+    },
+    {
+      "t": "2026-02-18T11:29:21.909Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:30:34.113Z",
+      "event": "bb-session",
+      "session": "7904c1d7",
+      "url": "http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square."
+    },
+    {
+      "t": "2026-02-18T11:30:36.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:31:49.468Z",
+      "event": "bb-session",
+      "session": "6ba6188d",
+      "url": "http://theater.nytimes.com/2009/08/03/theater/reviews/03burn.html"
+    },
+    {
+      "t": "2026-02-18T11:31:51.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:33:16.786Z",
+      "event": "bb-session",
+      "session": "e960cadc",
+      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
+    },
+    {
+      "t": "2026-02-18T11:33:18.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:34:48.008Z",
+      "event": "bb-session",
+      "session": "d50189af",
+      "url": "https://www.nytimes.com/2014/04/25/theater/reviews/cabaret-revival-with-alan-cum"
+    },
+    {
+      "t": "2026-02-18T11:34:50.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T11:36:18.040Z",
+      "event": "bb-session",
+      "session": "322b804a",
+      "url": "https://www.nytimes.com/2025/06/12/theater/call-me-izzy-review-jean-smart.html"
+    },
+    {
+      "t": "2026-02-18T11:36:20.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
