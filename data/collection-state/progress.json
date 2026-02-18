@@ -2,7 +2,10 @@
   "processed": [
     "1984-2017/vulture--jesse-green.json",
     "a-view-from-the-bridge-2010/vulture--jesse-green.json",
-    "betrayal-2019/vulture--jesse-green.json"
+    "betrayal-2019/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "cyrano-de-bergerac-2007/vulture--scott-brown.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -21,12 +24,24 @@
     "bright-star-2016/vulture--jesse-green.json",
     "bullets-over-broadway-2014/vulture--jesse-green.json",
     "burn-this-2019/vulture--jesse-green.json",
-    "cabaret-2024/vulture--helen-shaw.json"
+    "cabaret-2024/vulture--helen-shaw.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "doubt-a-parable/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
+    "playwright": [
+      "come-from-away-2017/vulture--jesse-green.json"
+    ],
+    "amp": [
+      "data/review-texts/cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
       "bob-fosses-dancin-2023/vulture--jackson-mchenry.json"
@@ -40,16 +55,18 @@
       "data/review-texts/bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
       "data/review-texts/bullets-over-broadway-2014/vulture--jesse-green.json",
       "data/review-texts/burn-this-2019/vulture--jesse-green.json",
-      "data/review-texts/cabaret-2024/vulture--helen-shaw.json"
+      "data/review-texts/cabaret-2024/vulture--helen-shaw.json",
+      "data/review-texts/company-2021/vulture--helen-shaw.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
       "a-view-from-the-bridge-2010/vulture--jesse-green.json",
-      "betrayal-2019/vulture--jesse-green.json"
+      "betrayal-2019/vulture--jesse-green.json",
+      "cyrano-de-bergerac-2007/vulture--scott-brown.json"
     ]
   },
   "startTime": "2026-02-18T13:00:48.829Z",
-  "lastProcessed": "cabaret-2024/vulture--helen-shaw.json",
+  "lastProcessed": "doubt-a-parable/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-02-18T13:02:24.493Z",
