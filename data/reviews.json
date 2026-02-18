@@ -4,16 +4,16 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16246,
-      "skippedNoScore": 949,
+      "totalReviews": 16241,
+      "skippedNoScore": 948,
       "skippedDuplicate": 110,
-      "skippedDuplicateUrl": 367,
+      "skippedDuplicateUrl": 366,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 594,
+      "skippedDuplicateText": 603,
       "skippedFingerprintDedup": 76,
-      "skippedUnknownCriticDedup": 294,
-      "skippedWrongProduction": 2161,
-      "recoveredFromGarbage": 95,
+      "skippedUnknownCriticDedup": 293,
+      "skippedWrongProduction": 2162,
+      "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
         "explicit-outOf": 0,
@@ -21,14 +21,14 @@
         "explicit-letterGrade": 15,
         "human-review": 67,
         "originalScore-priority0": 1721,
-        "llmScore": 10779,
+        "llmScore": 10784,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3494,
+        "llmScore-lowconf": 3485,
         "llmScore-review": 2,
         "assignedScore": 1,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 154
+        "thumb": 153
       }
     }
   },
@@ -13325,7 +13325,7 @@
       "pullQuote": "Whether or not you grew up listening to their music, it is impossible not to be engaged and happy hearing the music and story of The Temptations currently at Theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-too-proud-2019",
@@ -19397,6 +19397,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "outletId": "wsj",
+      "outlet": "The Wall Street Journal",
+      "assignedScore": 64,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Charles Isherwood",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686",
+      "publishDate": "April 22, 2022",
+      "originalRating": null,
+      "pullQuote": "The three actors bring distinct energy and interpretive approaches to their roles.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "american-buffalo-2022",
@@ -27141,7 +27158,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Charles Isherwood",
@@ -27151,7 +27168,7 @@
       "pullQuote": "Impeccable though both performances are, these fine actors almost seem to fade into, um, blank white canvases with a few gray streaks when Mr. Corden bounds or blusters onstage.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "art-2025",
@@ -56823,7 +56840,7 @@
       "pullQuote": "The play manages to feel slight and jam-packed at the same time, combining an uninteresting boy-meets-girl romance and a well-worn premise of right turn versus left turn with a hard-to-follow structure.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "constellations-2015",
@@ -57129,7 +57146,7 @@
       "pullQuote": "What the heck is a “Coram Boy”? This question may not be whipping around the Internet at warp speed, but it is probably tickling the minds of theater lovers who have noted the curious title of the latest and perhaps least-heralded London-born show to hit the express lane to Broadway this season.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "cost-of-living-2022",
@@ -89928,7 +89945,7 @@
       "pullQuote": "Karl, by himself, is reason to see 'Groundhog Day.'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "groundhog-day-2017",
@@ -94047,23 +94064,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "hamlet-2009",
-      "outletId": "whatsonstage",
-      "outlet": "WhatsOnStage",
-      "assignedScore": 73,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Heather Neill",
-      "url": "https://www.whatsonstage.com/reviews/theatre/london/E8831286527648/Hamlet.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Hytner's production, with its multicultural cast, is generally admirably clear, snapping quickly from one scene to the next.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
       "showId": "hand-to-god-2015",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -95286,23 +95286,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "hangmen-2022",
-      "outletId": "thestage",
-      "outlet": "The Stage",
-      "assignedScore": 73,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Lane Williamson",
-      "url": "https://www.thestage.co.uk/reviews/hangmen-review-broadway-golden-theatre-new-york-martin-mcdonagh-alfie-allen-david-threlfall",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's a shame that two of the pieces aren't clicking together to deliver on its promise.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "hangmen-2022",
@@ -128810,7 +128793,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Clive Davis",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/legally-blonde-theatre-review-regents-park-open-air-theatre-8lrrmg3fs?gaa_at=eafs&gaa_n=AWEtsqc6qBgGtTKJAZyAPQ2cvqZ2mRnffK9HAsOLPT2PuvBgP42woRJMFUtg&gaa_ts=699536b0&gaa_sig=ZSbN585266ZKFKHvNjyNEEffYk2k1v5QLt0blTII7CkFhvbVKmFu3xRWv8rujxrWXCDlJRnuPZoGgLccebS8WA%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/legally-blonde-theatre-review-regents-park-open-air-theatre-8lrrmg3fs?gaa_at=eafs&gaa_n=AWEtsqdtZ2j68ROBnfpI_C7t0Uum0fcGFt2zqTe8QcbuwZZhELMHmfp_aqQH&gaa_ts=69957fd0&gaa_sig=EvTXh7Gx7QZs2TdO5rpKezyqcf5QvbNkn0FKxD2hbAbsqVaMsuP5jPyv9zkNSKAFp_kTENRXV0Isqv5j-L0tCw%3D%3D",
       "publishDate": null,
       "originalRating": "4/5 stars",
       "pullQuote": "Go with an open mind and you'll be blown away. True, the show by Laurence O'Keefe, Nell Benjamin and bookwriter Heather Hach - which first reached Broadway in 2007 - has a head start on the movie. It's far wittier, with insidious melodies and lyrics that are cheeky enough to rhyme \"snobs\" with \"Thomas Hobbes\".",
@@ -147341,7 +147324,7 @@
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Taylor Long",
@@ -147351,7 +147334,7 @@
       "pullQuote": "The performances are fantastic.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "million-dollar-quartet-2010",
@@ -176348,7 +176331,7 @@
       "outletId": "dailybeast",
       "outlet": "The Daily Beast",
       "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Tim Teeman",
@@ -176358,7 +176341,7 @@
       "pullQuote": "Hyde Pierce's rendition of 'I Am the Very Model of a Modern Major General' now shares those honors for his standing-still, eyes dead-ahead, surprising-himself, surprising-us navigation through its nutty lyrics.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "pirates-the-penzance-musical-2025",
@@ -180888,23 +180871,6 @@
       "showId": "priscilla-queen-of-the-desert-2011",
       "outletId": "amny",
       "outlet": "amNewYork",
-      "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-priscilla-queen-of-the-desert-2-stars-1.2772292",
-      "publishDate": "March 20, 2011",
-      "originalRating": null,
-      "pullQuote": "“Priscilla Queen of the Desert” is not so much a normal musical but rather a loud, oversized karaoke party and midnight drag show. You really want to have fun, but it is so aggressively campy that it soon becomes irritating and too much to stomach.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "priscilla-queen-of-the-desert-2011",
-      "outletId": "amny",
-      "outlet": "amNewYork",
       "assignedScore": 41,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -182021,7 +181987,7 @@
       "pullQuote": "Flawed and also powerful, Punch tells an astonishing story, and is a chastening corrective in this era of terrible human behavior.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "punch-2025",
@@ -185824,17 +185790,17 @@
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Michael Dale",
-      "url": "https://www.broadwayworld.com/?blogid=2738",
+      "url": "https://www.broadwayworld.com/reviews/Red",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "It's a perfectly competent play receiving a perfectly competent production that never bores and even provides some interesting moments in its ninety minute life.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "red-2010",
@@ -187093,7 +187059,7 @@
       "pullQuote": "Director Jamie Lloyd is playing a smart and enlightened game with his Trafalgar Transformed seasons. His aim is to change the demographic of the theatre audience and last year he wooed young newcomers to his production of Macbeth through a canny combination of recruiting a star better known for his movie work (James McAvoy), a bold, in-yer-face ...",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "richard-iii-2013",
@@ -200786,7 +200752,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 83,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Howard Miller",
@@ -200796,7 +200762,7 @@
       "pullQuote": "There's not a dull spot or misfire in the mix.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "spamalot-2023",
@@ -201535,7 +201501,7 @@
       "outletId": "dctheatrescene",
       "outlet": "DC Theatre Scene",
       "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jonathan Mandell",
@@ -201545,7 +201511,7 @@
       "pullQuote": "The Deaf West production tangibly enhances an acclaimed musical about rebellious and repressed adolescents.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "spring-awakening-2015",
@@ -210630,23 +210596,6 @@
       "showId": "that-championship-season-2011",
       "outletId": "amny",
       "outlet": "amNewYork",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-that-championship-season-2-stars-1.2739185",
-      "publishDate": "March 6, 2011",
-      "originalRating": null,
-      "pullQuote": "“That Championship Season,” Jason Miller’s drama about former high school athletes making drunken confessions in front of their coach, might have been genuinely shocking when it premiered in 1972 at the Public Theater. It successfully transferred to Broadway and even won a Pulitzer Prize.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "that-championship-season-2011",
-      "outletId": "amny",
-      "outlet": "amNewYork",
       "assignedScore": 41,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -214470,23 +214419,6 @@
     },
     {
       "showId": "the-bridges-of-madison-county-2014",
-      "outletId": "huffpost",
-      "outlet": "HuffPost",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Steven Suskin",
-      "url": "https://www.huffpost.com/steven-suskin/aisle-view-bridge-over-tr_b_4827965.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "You enjoy the wonderful performances and the numerous soaring ballads, frustrated that this exceptional work isn't contained in a more workable musical.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-bridges-of-madison-county-2014",
       "outletId": "nbcny",
       "outlet": "NBC New York",
       "assignedScore": 78,
@@ -214550,23 +214482,6 @@
       "originalRating": null,
       "pullQuote": "But Kelli O'Hara and Steven Pasquale, magnificently magnetic as Francesca and Robert, make the ripping feel like real heartbreak.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-bridges-of-madison-county-2014",
-      "outletId": "njartsnet",
-      "outlet": "Njartsnet",
-      "assignedScore": 70,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jay Lustig",
-      "url": "https://www.njarts.net/axelrod-performing-arts-center-presents-a-polished-intense-the-bridges-of-madison-county/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "How discouraging that the rest of the enterprise dulls what might have been glorious.",
-      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -216241,7 +216156,7 @@
       "outletId": "huffpost",
       "outlet": "HuffPost",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Steven Suskin",
@@ -216251,7 +216166,7 @@
       "pullQuote": "A worthwhile evening in the theatre. But is worthwhile, one wonders, enough?",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-children-2017",
@@ -230908,7 +230823,7 @@
       "pullQuote": "A mighty, shout-it-from-the-rooftop-bars yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-inheritance-2019",
@@ -249542,7 +249457,7 @@
       "pullQuote": "Unfortunately, even Tomei’s vivifying, staunchly committed performance isn’t enough to keep this ripe comedy at the emotional heights it needs to sustain.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-rose-tattoo-2019",
