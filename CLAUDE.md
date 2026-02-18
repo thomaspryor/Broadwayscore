@@ -17,7 +17,7 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
+**Path A: Quick Fix** → Work on `main`, push. If push touches `src/` etc., Vercel deploys automatically (~13 min). Otherwise trigger manually (see 3a).
 **Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
@@ -29,11 +29,30 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - The workflow builds on GitHub Actions (`vercel build --prod`), then uploads prebuilt output (`vercel deploy --prebuilt --prod`). This completely bypasses Vercel's git integration.
 - Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically** (~13 min)
 - Pushes changing only `data/review-texts/`, `data/archives/`, etc. → **no deploy** (intentional)
-- To force a manual deploy: `gh workflow run "Deploy to Vercel"`
 - **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks 30+ checkpoint builds per hour.
 - **DO NOT add `ignoreCommand` to `vercel.json`** — it has NO ignoreCommand. Dashboard only.
 - **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
-- **Secret:** `VERCEL_TOKEN` (CLI auth)
+- **Secret:** `VERCEL_TOKEN` (GitHub secret + local `.env`)
+
+**How to manually trigger a deploy:**
+```bash
+# Preferred (REST API — immune to GitHub GraphQL rate limits):
+gh api repos/thomaspryor/Broadwayscore/actions/workflows/vercel-deploy.yml/dispatches -f ref=main
+
+# Alternative (may fail if GitHub API rate-limited):
+gh workflow run "Deploy to Vercel"
+```
+
+**How to verify a deploy succeeded:**
+```bash
+# Check workflow run status:
+gh api repos/thomaspryor/Broadwayscore/actions/workflows/vercel-deploy.yml/runs --jq '.workflow_runs[0] | {status, conclusion, created_at}'
+
+# Check production site headers (age should be low after fresh deploy):
+curl -sI "https://broadwayscorecard.com" | grep -i 'age:'
+```
+
+**CRITICAL: Both build AND deploy steps MUST use `--prod` flag.** A past bug where `--prod` was missing from the deploy step caused all deploys to fail with "prebuilt environment mismatch" error. The workflow on remote main is now correct — do not remove `--prod` from either step.
 
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
