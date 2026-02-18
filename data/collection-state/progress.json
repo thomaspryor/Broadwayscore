@@ -14,7 +14,11 @@
     "falsettos-2016/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/vulture--jesse-green.json",
     "frozen-2018/vulture--jesse-green.json",
-    "good-night-oscar-2023/vulture--jackson-mchenry.json"
+    "good-night-oscar-2023/vulture--jackson-mchenry.json",
+    "gypsy-2024/vulture--sara-holdren.json",
+    "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+    "in-transit-2016/vulture--jesse-green.json",
+    "into-the-woods-2022/vulture--helen-shaw.json"
   ],
   "failed": [
     "moulin-rouge-2019/vulture--sara-holdren.json",
@@ -51,7 +55,13 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
     "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
     "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
-    "gutenberg-2023/vulture--sara-holdren.json"
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gypsy-2008/vulture--jesse-green.json",
+    "hello-dolly-2017/vulture--jesse-green.json",
+    "how-i-learned-to-drive-2022/vulture--helen-shaw.json",
+    "how-i-learned-to-drive-2022/vulture--sara-holdren.json",
+    "how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+    "ink-2019/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -79,7 +89,12 @@
       "data/review-texts/flying-over-sunset-2021/vulture--sara-holdren.json",
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
-      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json"
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+      "data/review-texts/gutenberg-2023/vulture--sara-holdren.json",
+      "data/review-texts/gypsy-2008/vulture--jesse-green.json",
+      "data/review-texts/hello-dolly-2017/vulture--jesse-green.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/vulture--jesse-green.json",
+      "data/review-texts/ink-2019/vulture--jesse-green.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
@@ -94,11 +109,15 @@
       "falsettos-2016/vulture--jesse-green.json",
       "farinelli-and-the-king-2017/vulture--jesse-green.json",
       "frozen-2018/vulture--jesse-green.json",
-      "good-night-oscar-2023/vulture--jackson-mchenry.json"
+      "good-night-oscar-2023/vulture--jackson-mchenry.json",
+      "gypsy-2024/vulture--sara-holdren.json",
+      "hands-on-a-hardbody-2013/vulture--york-magazine.json",
+      "in-transit-2016/vulture--jesse-green.json",
+      "into-the-woods-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-02-18T04:12:26.697Z",
-  "lastProcessed": "gutenberg-2023/vulture--sara-holdren.json",
+  "lastProcessed": "into-the-woods-2022/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-02-18T04:14:05.649Z",
@@ -273,6 +292,61 @@
     },
     {
       "t": "2026-02-18T04:36:24.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:40:23.692Z",
+      "event": "bb-session",
+      "session": "8deea9f0",
+      "url": "https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.ht"
+    },
+    {
+      "t": "2026-02-18T04:40:25.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:40:38.523Z",
+      "event": "bb-session",
+      "session": "e6ddaa60",
+      "url": "https://www.vulture.com/2008/03/theater_gypsy.html"
+    },
+    {
+      "t": "2026-02-18T04:40:41.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:42:08.118Z",
+      "event": "bb-session",
+      "session": "3d0d7d4e",
+      "url": "https://www.vulture.com/2017/04/theater-review-hello-dolly-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:42:10.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:43:12.385Z",
+      "event": "bb-session",
+      "session": "64b4f339",
+      "url": "https://www.vulture.com/2011/03/theater_review_how_to_succeed.html"
+    },
+    {
+      "t": "2026-02-18T04:43:14.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T04:44:11.250Z",
+      "event": "bb-session",
+      "session": "8cecf9fc",
+      "url": "https://www.vulture.com/2019/04/theater-review-ink-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T04:44:13.450Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
