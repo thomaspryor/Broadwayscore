@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-18",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16274,
-      "skippedNoScore": 954,
-      "skippedDuplicate": 114,
-      "skippedDuplicateUrl": 371,
+      "totalReviews": 16257,
+      "skippedNoScore": 947,
+      "skippedDuplicate": 115,
+      "skippedDuplicateUrl": 367,
       "skippedCrossOutletDuplicateUrl": 32,
-      "skippedDuplicateText": 568,
-      "skippedFingerprintDedup": 74,
-      "skippedUnknownCriticDedup": 296,
-      "skippedWrongProduction": 2149,
+      "skippedDuplicateText": 581,
+      "skippedFingerprintDedup": 79,
+      "skippedUnknownCriticDedup": 294,
+      "skippedWrongProduction": 2156,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 5,
@@ -20,15 +20,15 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 15,
         "human-review": 67,
-        "originalScore-priority0": 1718,
-        "llmScore": 10676,
+        "originalScore-priority0": 1720,
+        "llmScore": 10751,
         "thumb-override-llm": 8,
-        "llmScore-lowconf": 3225,
+        "llmScore-lowconf": 3527,
         "llmScore-review": 2,
         "assignedScore": 1,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 557
+        "thumb": 161
       }
     }
   },
@@ -796,7 +796,7 @@
       "pullQuote": "Yet the most forceful theatrical response to the administration is now on Broadway, with a nerve-jangling adaptation of George Orwell's classic novel 1984.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "1984-2017",
@@ -6753,7 +6753,7 @@
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": null,
@@ -6763,7 +6763,7 @@
       "pullQuote": "A Free Man of Color is a mad, glorious mess of circa 1804 world history, quasi-Restoration comedy and conflicting racial issues created with wild ambition and intermittent flashes of brilliance",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-free-man-of-color-2010",
@@ -12992,7 +12992,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Angie Han",
@@ -13002,7 +13002,7 @@
       "pullQuote": "Cooper has created something that feels both deeply personal and broadly resonant, a show that manages to be hilariously funny and devastatingly sad, often within the same moment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -15024,7 +15024,7 @@
       "url": "https://nystagereview.com/2024/12/22/all-in-comedy-about-love-by-simon-rich-story-hour-with-broadway-prices/",
       "publishDate": "December 22, 2024",
       "originalRating": "3/5 stars",
-      "pullQuote": "Yes, the show is not “a” comedy, meaning an actual play, but rather a collection of short humorous pieces written by Simon Rich (son of former New York Times theater critic Frank), read by a rotating quartet of well-known performers....",
+      "pullQuote": "But despite the efforts of director Alex Timbers to lend theatricality to the evening via atmospheric sound and lighting effects, All In: Comedy About Love wears out its welcome before its conclusion despite its brief 90-minute running time.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -18042,16 +18042,16 @@
       "showId": "almost-famous-2022",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Helen Shaw",
+      "assignedScore": 35,
+      "scoreSource": "thumb",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Jackson McHenry",
       "url": "https://www.vulture.com/2022/11/theater-review-almost-famous-broadway-musical.html",
       "publishDate": "November 4, 2022",
       "originalRating": null,
-      "pullQuote": "This Almost Famous gives you all that and the music — but it also wants to be everyone's friend, cozy and familiar.",
-      "dtliThumb": null,
+      "pullQuote": "It so desperately wants to remind you of something else you might’ve loved that the presiding emotional affect ends up being melancholy.",
+      "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -19284,7 +19284,7 @@
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jonathan Mandell",
@@ -19294,7 +19294,7 @@
       "pullQuote": "And only one of the three came close to doing all that for me: Sam Rockwell. Admittedly, he has it the easiest. With a trigger temper, arias of overreaction and a violent streak, Teach is the flashiest part…",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "american-buffalo-2022",
@@ -20212,7 +20212,7 @@
       "pullQuote": "Still, even with its flaws, the musical is a bloody good time.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "american-psycho-2016",
@@ -27111,7 +27111,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Susie Goldsbrough",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqdvqEWCP5mpXlx1IUAfbTlY48_ZIhJIB0Hnk0VDcRwkUOq2oxwG3cz9&gaa_ts=6995383c&gaa_sig=VU8Xa6n9_-vcYH82sZyIFtkAiKi-OLAJ9Uq3ZcGypAQm7mr4cOEiMEvKZGIDPSrAVwWAt4sXt0kLtCXttxmULQ%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqdAgYmICpez866_ey6b8mV9Giqg7IH1tBtAZQxFJM-NeE4ID69tLpA6&gaa_ts=69955fa6&gaa_sig=LCGqEr63AbjnZ_5hLm0i6iowq28RQDQEzkaxj74DHa-nW3w5a_jGSd-KhMm7xVBHzFsrB6OR4yxug9yryOZz9w%3D%3D",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Corden is, unsurprisingly, the stand-out: at one point he bursts in and unleashes a rib-cracking five-minute monologue",
@@ -32167,6 +32167,23 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
+    },
+    {
+      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 86,
+      "scoreSource": "llmScore",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": null,
+      "url": "http://theater.nytimes.com/2011/04/01/theater/reviews/bengal-tiger-with-robin-williams-review.html?ref=theater",
+      "publishDate": "March 31, 2011",
+      "originalRating": null,
+      "pullQuote": "Rajiv Joseph's smart, savagely funny and visionary new work of American theater",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
     },
     {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
@@ -56878,23 +56895,6 @@
     },
     {
       "showId": "constellations-2015",
-      "outletId": "nbcny",
-      "outlet": "NBC New York",
-      "assignedScore": 72,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Roberth Kahn",
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Constellations-Jake-Gyllenhaal-288203481.html",
-      "publishDate": "January 13, 2015",
-      "originalRating": null,
-      "pullQuote": "The 'multiverse play' gets an appealing entry with Constellations, a two-character drama by young British playwright Nick Payne.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "constellations-2015",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 81,
@@ -58405,23 +58405,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "cyrano-de-bergerac-2012",
-      "outletId": "amny",
-      "outlet": "amNewYork",
-      "assignedScore": 59,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-cyrano-de-bergerac-2-stars-1.4102980",
-      "publishDate": "October 11, 2012",
-      "originalRating": null,
-      "pullQuote": "Edmond Rostand's 1897 sentimental fairy tale romance \"Cyrano de Bergerac\" is not so much a great play as it is a durable star vehicle for a skilled actor who can handle rhymed verse, swordplay and a giant prosthetic nose.",
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "cyrano-de-bergerac-2012",
@@ -65501,6 +65484,23 @@
     },
     {
       "showId": "doubt-a-parable",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 80,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.nytimes.com/2024/03/07/theater/doubt-review.html",
+      "publishDate": "March 7, 2024",
+      "originalRating": null,
+      "pullQuote": "It is a sturdy melodrama, an infallible crowd-pleaser, a detective yarn, a character study and an inquest into the unknowable.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "doubt-a-parable",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 80,
@@ -65532,23 +65532,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "doubt-a-parable",
-      "outletId": "theatrely",
-      "outlet": "Theatrely",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Juan A. Ramirez",
-      "url": "https://www.theatrely.com/post/a-soul-shaking-amy-ryan-in-doubt-review",
-      "publishDate": "March 7, 2024",
-      "originalRating": null,
-      "pullQuote": "But Scott Ellis’ direction is slack where suffocating tension is demanded.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "doubt-a-parable",
@@ -65586,27 +65569,10 @@
     },
     {
       "showId": "driving-miss-daisy-2010",
-      "outletId": "ap",
-      "outlet": "Associated Press",
-      "assignedScore": 79,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": null,
-      "url": "http://news.yahoo.com/s/ap/20101025/ap_en_re/us_theater_review_driving_miss_daisy",
-      "publishDate": "October 25, 2010",
-      "originalRating": null,
-      "pullQuote": "Sometimes massive, earthshaking events require — even demand — that they be depicted on stage with an equally vast canvas.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "driving-miss-daisy-2010",
       "outletId": "backstage",
       "outlet": "Backstage",
       "assignedScore": 43,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": null,
@@ -65616,7 +65582,7 @@
       "pullQuote": "It seemed like such a good idea on paper",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "driving-miss-daisy-2010",
@@ -66993,7 +66959,7 @@
       "pullQuote": "In its latest Broadway outing, starring an exuberant Grey Henson in the title role, \"Elf the Musical\" has gotten Buddy delightfully, entirely right.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "elf-2024",
@@ -67060,23 +67026,6 @@
       "originalRating": null,
       "pullQuote": "If there are occasional glimmers that Elf has more going on than meets the eye",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "elling-2010",
-      "outletId": "amny",
-      "outlet": "amNewYork",
-      "assignedScore": 20,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-eiling-1.2484301",
-      "publishDate": "November 21, 2010",
-      "originalRating": null,
-      "pullQuote": "“Elling,” a delicate parable about male outcasts that combines elements of “The Odd Couple” and “One Flew Over the Cuckoo’s Nest,” might have been well served in an intimate Off-Broadway theater. Instead, it has been poorly chosen as a star vehicle for Brendan Fraser, who is making a horrifically bad Broadway debut.",
-      "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "excerpt"
     },
@@ -68394,7 +68343,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": null,
@@ -68404,7 +68353,7 @@
       "pullQuote": "In Lucy Prebble’s “Enron,” the flashy but labored economics lesson that opened on Tuesday night at the Broadhurst Theater, money doesn’t just talk. It sings. It dances. It puts on funny animal costumes. And of course it blows bubbles.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "enron-2010",
@@ -72876,7 +72825,7 @@
       "pullQuote": "This portrait of the Nigerian musician and political activist Fela Anikulapo-Kuti pulses with a musical energy so vital it makes you feel more alive.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "fela-2009",
@@ -73053,7 +73002,7 @@
       "outletId": "backstage",
       "outlet": "Backstage",
       "assignedScore": 88,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": null,
@@ -73063,7 +73012,7 @@
       "pullQuote": "Leon knocks it out of the park with this beautifully calibrated realization of August Wilson's Pulitzer Prize–winning \"Fences.\"",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fences-2010",
@@ -73113,23 +73062,6 @@
       "originalRating": null,
       "pullQuote": "He's abrasively charismatic, yet at times seductive and soulful.",
       "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "fences-2010",
-      "outletId": "faster-times",
-      "outlet": "Faster Times",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": null,
-      "url": "http://thefastertimes.com/newyorktheater/2010/04/26/fences-review/",
-      "publishDate": "April 26, 2010",
-      "originalRating": null,
-      "pullQuote": "Troy Maxson, the character played by Denzel Washington in the must-see revival of August Wilson’s “Fences,” is greeted by foot-stamping cheers from the audience in the Cort Theater, surely the most ecstatic whoops of delight ever for a Pittsburgh garbage collector. There was a time, though, when Troy was himself a star.",
-      "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
     },
@@ -73256,16 +73188,16 @@
       "showId": "fences-2010",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 80,
+      "assignedScore": 78,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": null,
-      "url": "http://theater.nytimes.com/2010/04/27/theater/reviews/27fences.html?ref=theater",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2010/04/27/theater/reviews/27fences.html",
       "publishDate": "April 26, 2010",
       "originalRating": null,
-      "pullQuote": "When Denzel Washington talks about challenging death to a wrestling match, you suddenly sense that everything's going to be all right.",
-      "dtliThumb": "Up",
+      "pullQuote": "Mr. Washington and Ms. Davis prove that lovers don’t have to be as young and star-crossed as Romeo and Juliet to generate shiver-making heat and pathos.",
+      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -78187,7 +78119,7 @@
       "outletId": "dtli",
       "outlet": "Did They Like It",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Bedatri D.Choudhury",
@@ -78197,7 +78129,7 @@
       "pullQuote": "The real strength of an ensemble cast shines through when each actor brings their own gifts and value.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
@@ -92077,7 +92009,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -92087,7 +92019,7 @@
       "pullQuote": "Most important, [Wolfe] has given us a way of seeing a star who had to be seen in this role.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "gypsy-2024",
@@ -99164,23 +99096,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "hedwig-and-the-angry-inch-2014",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
-      "publishDate": "April 23, 2014",
-      "originalRating": null,
-      "pullQuote": "His boots and the show are much kinkier than anything else on Broadway.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "hedwig-and-the-angry-inch-2014",
@@ -177327,7 +177242,7 @@
       "pullQuote": "When a cast is having this much fun, it's impossible not to be in on it.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
@@ -183539,6 +183454,23 @@
     },
     {
       "showId": "purpose-2025",
+      "outletId": "new-york-sun",
+      "outlet": "The New York Sun",
+      "assignedScore": 91,
+      "scoreSource": "llmScore",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Elysa Gardner",
+      "url": "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
+      "publishDate": "March 17, 2025",
+      "originalRating": null,
+      "pullQuote": "He secures his place as Broadway's most incisive and scathingly entertaining chronicler of family and social dysfunction.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "purpose-2025",
       "outletId": "newyorker",
       "outlet": "The New Yorker",
       "assignedScore": 64,
@@ -187338,7 +187270,7 @@
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 39,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Charles Spencer",
@@ -187348,7 +187280,7 @@
       "pullQuote": "This, however, is director's theatre at its self-advertising worst, while Freeman gives a disappointingly underpowered performance as Richard.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "richard-iii-2013",
@@ -202435,8 +202367,8 @@
       "showId": "stephen-sondheims-old-friends-2025",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
+      "assignedScore": 63,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jackson McHenry",
@@ -205479,16 +205411,16 @@
       "showId": "summer-1976-2023",
       "outletId": "vulture",
       "outlet": "Vulture",
-      "assignedScore": 78,
+      "assignedScore": 82,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Unknown",
+      "criticName": "Jackson McHenry",
       "url": "https://www.vulture.com/2023/04/theater-review-linney-hecht-auburn-summer-1976.html",
-      "publishDate": null,
+      "publishDate": "April 25, 2023",
       "originalRating": null,
-      "pullQuote": "The key pleasure of Summer, 1976 comes from listening to Laura Linney and Jessica Hecht talk.",
-      "dtliThumb": null,
+      "pullQuote": "I'd happily see them take on any number of double-act parts",
+      "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -207417,10 +207349,10 @@
       "showId": "sweat-2017",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
-      "assignedScore": 54,
+      "assignedScore": 60,
       "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Jeo Dziemianowicz",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/lynn-nottage-sweat-broadway-studio-54-theater-review-article-1.3008374",
       "publishDate": "March 26, 2017",
@@ -210035,7 +209967,7 @@
       "showId": "tammy-faye",
       "outletId": "nysr",
       "outlet": "New York Stage Review",
-      "assignedScore": 59,
+      "assignedScore": 61,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
@@ -210528,18 +210460,18 @@
       "showId": "tammy-faye-2024",
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
-      "assignedScore": 73,
-      "scoreSource": "llmScore",
+      "assignedScore": 76,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Elysa Gardner",
-      "url": "https://www.nysun.com/article/with-a-big-assist-from-elton-john-tammy-faye-captures-the-televangelism-era-in-all-its-messy-glory",
-      "publishDate": "November 14, 2024",
+      "criticName": "Unknown",
+      "url": null,
+      "publishDate": null,
       "originalRating": null,
       "pullQuote": "She does so gamely, belting out the anthemic power ballads Mr. John has created for the part and infusing several country-flavored numbers he has provided with the necessary twang.",
-      "dtliThumb": "Up",
+      "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "stub"
     },
     {
       "showId": "tammy-faye-2024",
@@ -210716,17 +210648,17 @@
       "outletId": "theatrely",
       "outlet": "Theatrely",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Juan A. Ramirez",
       "url": "https://www.theatrely.com/post/tammy-faye-not-ready-for-this-close-up-review",
       "publishDate": "November 14, 2024",
       "originalRating": null,
-      "pullQuote": "But while the musical finds in her an icon of kitsch and courage, it refuses to take her faith seriously, undermining any possible good that come out of her beliefs by either undercutting it with the other televangelists' devious politicking or plainly mocking religion with the twerpy glee of a Bill Maher.",
+      "pullQuote": "But while the musical finds in her an icon of kitsch and courage, it refuses to take her faith seriously, undermining any possible good that come out of her beliefs",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "tammy-faye-2024",
@@ -211039,7 +210971,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": null,
@@ -211049,7 +210981,7 @@
       "pullQuote": "A drama about the bitter recriminations of a generation of men stung by the reality of their diminished promise and feeling let down by both their leaders and their peers should strike chords in this rudderless age of epidemic disillusionment.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "that-championship-season-2011",
@@ -211752,7 +211684,7 @@
       "showId": "the-addams-family-2010",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 43,
+      "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
@@ -214999,7 +214931,7 @@
       "showId": "the-caine-mutiny-courtmartial-2006",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 41,
+      "assignedScore": 40,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
@@ -221676,7 +221608,7 @@
       "pullQuote": "Either there's something funny in the drinking water in the U.K., or much got lost in the journey over the Atlantic — because it's impossible to imagine this frequently baffling, grindingly dull show connecting with American audiences.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-encounter-2016",
@@ -229247,8 +229179,8 @@
       "showId": "the-house-of-blue-leaves-2011",
       "outletId": "theatermania",
       "outlet": "TheaterMania",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
+      "assignedScore": 63,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": null,
@@ -231146,7 +231078,7 @@
       "pullQuote": "A mighty, shout-it-from-the-rooftop-bars yes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-inheritance-2019",
@@ -232716,15 +232648,15 @@
       "showId": "the-last-five-years-2025",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
+      "assignedScore": 45,
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Brittani Samuel",
       "url": "https://www.broadwaynews.com/the-broadway-review-the-last-five-years-is-a-romance-that-lacks-connection/?utm_source=sniply&amp;utm_campaign=sniply&amp;utm_medium=sniply",
       "publishDate": "April 7, 2025",
       "originalRating": null,
-      "pullQuote": "Each song must bear the emotional fullness of a scene, because it’s an entire memory. Warren can do this. Jonas, simply, cannot. Or does not.",
+      "pullQuote": "Jonas, simply, cannot. Or does not.",
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -236196,7 +236128,7 @@
       "pullQuote": "Never did I imagine that the theatrical adaptation of a childhood favorite would require the most adultlike patience to endure",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-little-prince-2022",
@@ -236236,15 +236168,15 @@
       "showId": "the-little-prince-2022",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
-      "assignedScore": 35,
-      "scoreSource": "thumb",
+      "assignedScore": 43,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Chris Jones",
       "url": "https://www.nydailynews.com/2022/04/11/broadway-review-chilly-confusing-little-prince-forgot-to-unpack-its-heart/",
       "publishDate": "April 11, 2022",
       "originalRating": null,
-      "pullQuote": "In his allegorical 1943. French novella “The Little Prince,” Antoine de Saint-Exupéry wrote, “One sees clearly only with the heart.” So why, one might reasonably ask, is the new family-oriented show at the Broadway Theatre such a cold and removed affair?",
+      "pullQuote": "So why, one might reasonably ask, is the new family-oriented show at the Broadway Theatre such a cold and removed affair?",
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -236270,7 +236202,7 @@
       "showId": "the-little-prince-2022",
       "outletId": "nytimes",
       "outlet": "The New York Times",
-      "assignedScore": 41,
+      "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
@@ -236315,7 +236247,7 @@
       "pullQuote": "And what’s on stage with this “Little Prince” is terrible storytelling.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-little-prince-2022",
@@ -238480,7 +238412,7 @@
       "showId": "the-nance-2013",
       "outletId": "amny",
       "outlet": "amNewYork",
-      "assignedScore": 64,
+      "assignedScore": 69,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
@@ -238488,7 +238420,7 @@
       "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-nance-2-5-stars-1.5077689",
       "publishDate": "April 15, 2013",
       "originalRating": null,
-      "pullQuote": "Even if the play eventually loses momentum, it is the most ambitious and substantial effort made to date by Beane",
+      "pullQuote": "It is the most ambitious and substantial effort made to date by Beane",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -244914,7 +244846,7 @@
       "url": "http://www.wvgazette.com/ap/ApTopStories/201009301189",
       "publishDate": "September 30, 2010",
       "originalRating": null,
-      "pullQuote": "Hall's 'The Pitmen Painters' is another tale of goodhearted, ordinary people from a hardscrabble, mining town in northeast England who tap into their inner artist.",
+      "pullQuote": "Lee Hall has returned to Broadway with familiar themes.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -251673,15 +251605,15 @@
       "showId": "the-skin-of-our-teeth-2022",
       "outletId": "dtli",
       "outlet": "Did They Like It",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
+      "assignedScore": 82,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Ran Xia",
       "url": "https://didtheylikeit.com/shows/the-skin-of-our-teeth/the-skin-of-our-teeth-review-a-set-as-big-as-the-running-time/",
       "publishDate": "April 25, 2022",
       "originalRating": null,
-      "pullQuote": "Thanks to Lileana Blain-Cruz’s inspired directorial vision and playwright Brandon Jacob Jenkins’ new material, an already prophetic text turns into something that’s even more palatable to an audience with a 21st-century cultural context.",
+      "pullQuote": "Thanks to Lileana Blain-Cruz's inspired directorial vision and playwright Brandon Jacob Jenkins' new material, an already prophetic text turns into something that's even more palatable to an audience with a 21st-century cultural context.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -258893,7 +258825,7 @@
       "pullQuote": "The play speaks bluntly and directly to an audience about what racism, inequality, aspiration, love, sexuality, tragedy, success, and happiness look like to a broad group of Black men in contemporary Brooklyn.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "thoughts-of-a-colored-man-2021",
@@ -270156,15 +270088,15 @@
       "showId": "war-horse-2011",
       "outletId": "chicagotribune",
       "outlet": "Chicago Tribune",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
+      "assignedScore": 82,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": null,
       "url": "http://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/war-horse-broadway-review-national-theatre-great-britain.html",
       "publishDate": "April 14, 2011",
       "originalRating": null,
-      "pullQuote": "Theatre of Great Britain’s extraordinary “War Horse” takes Michael Morpurgo’s relatively simple children’s story about a young man and his beloved horse, searching for each other through the deadly quagmire of World War I, and turns that tale into a deeply moving theatrical lament for the death of agrarian innocence and the destructive dawn of a...",
+      "pullQuote": "Theatre of Great Britain's extraordinary \"War Horse\" takes Michael Morpurgo's relatively simple children's story and turns that tale into a deeply moving theatrical lament",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -272179,6 +272111,23 @@
     },
     {
       "showId": "west-side-story-2009",
+      "outletId": "the-times",
+      "outlet": "The Times",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Oxfeld",
+      "url": "https://www.thetimes.com/article/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
+      "publishDate": null,
+      "originalRating": "4/5 stars",
+      "pullQuote": "As it turns out, this West Side Story is excellent.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "west-side-story-2009",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 64,
@@ -272618,23 +272567,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "west-side-story-2020",
-      "outletId": "the-times",
-      "outlet": "The Times",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Oxfeld",
-      "url": "https://www.thetimes.com/edition/times2/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
-      "publishDate": null,
-      "originalRating": "4/5 stars",
-      "pullQuote": "As it turns out, this West Side Story is excellent.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "west-side-story-2020",
@@ -275650,8 +275582,8 @@
       "showId": "yellow-face-2024",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
+      "assignedScore": 82,
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
