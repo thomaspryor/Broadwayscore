@@ -74,7 +74,7 @@ curl -s -X PATCH "$VERCEL_API" \
   -d '{"commandForIgnoringBuildStep": "exit 0"}'
 ```
 Build takes ~9-10 min on Vercel. Monitor at: `curl -s "https://api.vercel.com/v6/deployments?projectId=prj_wmBnDUrCQCwabIAYPbnMiIP3wg15&teamId=team_zvgatcxkXdPbfhtHQMOnjpXo&limit=3" -H "Authorization: Bearer $VERCEL_TOKEN" | jq '.deployments[] | {state, msg: .meta.githubCommitMessage}'`
-**Safe for repeated use.** The selective filter means checkpoint commits are ignored — only your DEPLOY commit triggers a build.
+**Confirmed working (Feb 18, 2026).** Build takes ~9 min on Vercel's servers. Safe for repeated use — checkpoint commits are ignored, only your DEPLOY commit triggers a build.
 
 **Vercel API — Environment Variables & Feature Flags:**
 Manage env vars via API — never ask the user to go to the Vercel dashboard.
