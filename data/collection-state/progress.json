@@ -1,100 +1,651 @@
 {
   "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "a-bronx-tale-2007/thewrap--robert-hofler.json",
-    "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-    "be-more-chill-2019/theatre-reviews-limited--david-roberts.json",
-    "days-of-wine-and-roses-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "elf-2024/broadwaynews--brittani-samuel.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/theatre-reviews-limited--david-roberts.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-    "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-    "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
-    "machinal-2014/thewrap--robert-hofler.json",
-    "natasha-pierre-and-the-great-comet-of-1812-2016/theatre-reviews-limited--david-roberts.json",
-    "oklahoma-2019/theatre-reviews-limited--david-roberts.json",
-    "six-degrees-of-separation-2017/theatre-reviews-limited--michele-willens.json",
-    "straight-white-men-2018/theatre-reviews-limited--david-roberts.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json",
-    "the-nap-2018/theatre-reviews-limited--david-roberts.json",
-    "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
-    "torch-song-2018/theatre-reviews-limited--david-roberts.json",
-    "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
-    "waiting-for-godot-2013/theatre-reviews-limited--david-roberts.json",
-    "yellow-face-2024/theatre-reviews-limited--joseph-verlezza.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json",
-    "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json",
-    "torch-song-2018/cititour--brian-scott-lipton.json"
+    "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "1776-2022/nytimes--jesse-green.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elizabeth-vincentelli.json",
+    "a-catered-affair-2008/nytimes--ben-brantley.json",
+    "a-christmas-carol-2019/nytimes--alexis-soloski.json",
+    "a-dolls-house-part-2-2017/nytimes--unknown.json",
+    "american-buffalo-2022/nytimes--jesse-green.json",
+    "an-act-of-god-2016/nytimes--ben-brantley.json",
+    "an-enemy-of-the-people-2012/nytimes--unknown.json",
+    "an-enemy-of-the-people-2024/nytimes--jesse-green.json",
+    "anything-goes-2011/nytimes--ben-brantley.json",
+    "bad-cinderella-2023/nytimes--unknown.json",
+    "birthday-candles-2022/nytimes--maya-phillips.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "bronx-bombers-2014/nytimes--charles-isherwood.json",
+    "burn-the-floor-2009/nytimes--.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--jesse-green.json",
+    "camelot-2023/nytimes--unknown.json",
+    "casa-valentina-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+    "cats-2016/nytimes--charles-isherwood.json",
+    "china-doll-2015/nytimes--ben-brantley.json",
+    "chita-rivera-the-dancers-life-2005/nytimes--ben-brantley.json",
+    "come-from-away-2017/nytimes--ben-brantley.json",
+    "company-2006/nytimes--ben-brantley.json",
+    "company-2006/nytimes--jesse-green.json",
+    "coram-boy-2007/nytimes--charles-isherwood.json",
+    "cult-of-love-2024/nytimes--jesse-green.json",
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "elf-2024/nytimes--unknown.json",
+    "enron-2010/nytimes--.json",
+    "first-date-2013/nytimes--ben-brantley.json",
+    "floyd-collins-2025/nytimes--unknown.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--laura-collins-hughes.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--unknown.json",
+    "fun-home-2015/nytimes--ben-brantley.json",
+    "gigi-2015/nytimes--ben-brantley.json",
+    "good-night-oscar-2023/nytimes--unknown.json",
+    "gore-vidals-the-best-man-2012/nytimes--ben-brantley.json",
+    "groundhog-day-2017/nytimes--jesse-green.json",
+    "gypsy-2024/nytimes--jesse-green.json",
+    "gypsy-2024/nytimes--unknown.json",
+    "hand-to-god-2015/nytimes--charles-isherwood.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "heartbreak-house-2006/nytimes--charles-isherwood.json",
+    "here-lies-love-2023/nytimes--ben-brantley.json"
   ],
   "failed": [
-    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json",
-    "swept-away-2024/theatrely--david-ng.json",
-    "the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-    "yellow-face-2024/theatrely--juan-a-ramirez.json",
-    "33-variations-2009/talkinbroadway--matthew-murray.json"
+    "700-sundays-2013/nytimes--ben-brantley.json",
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+    "a-little-night-music-2009/nytimes--ben-brantley.json",
+    "a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
+    "a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+    "after-midnight-2013/nytimes--unknown.json",
+    "after-miss-julie-2009/nytimes--.json",
+    "after-miss-julie-2009/nytimes--ben-brantley.json",
+    "all-about-me-2010/nytimes--ben-brantley.json",
+    "allegiance-2015/nytimes--ben-brantley.json",
+    "allegiance-2015/nytimes--charles-isherwood.json",
+    "amelie-a-new-musical-2017/nytimes--ben-brantley.json",
+    "american-buffalo-2008/nytimes--ben-brantley.json",
+    "anastasia-2017/nytimes--ben-brantley.json",
+    "ann-2013/nytimes--charles-isherwood.json",
+    "avenue-q-2003/nytimes--ben-brantley.json",
+    "baby-its-you-2011/nytimes--ben-brantley.json",
+    "baby-its-you-2011/nytimes--charles-isherwood.json",
+    "bandstand-2017/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "birthday-candles-2022/nytimes--jesse-green.json",
+    "blithe-spirit-2009/nytimes--ben-brantley.json",
+    "blithe-spirit-2009/nytimes--charles-isherwood.json",
+    "bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
+    "bonnie-and-clyde-2011/nytimes--ben-brantley.json",
+    "butley-2006/nytimes--ben-brantley.json",
+    "cabaret-2014/nytimes--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-1982/nytimes--frank-rich.json",
+    "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "collected-stories-2010/nytimes--charles-isherwood.json",
+    "come-fly-away-2010/nytimes--ben-brantley.json",
+    "crybaby-2008/nytimes--ben-brantley.json",
+    "cymbeline-2007/nytimes--charles-isherwood.json",
+    "dead-accounts-2012/nytimes--ben-brantley.json",
+    "desire-under-the-elms-2009/nytimes--ben-brantley.json",
+    "dividing-the-estate-2008/nytimes--ben-brantley.json",
+    "driving-miss-daisy-2010/nytimes--ben-brantley.json",
+    "eureka-day-2024/nytimes--unknown.json",
+    "everyday-rapture-2010/nytimes--.json",
+    "fela-2009/nytimes--ben-brantley.json",
+    "fela-2012/nytimes--.json",
+    "golden-boy-2012/nytimes--ben-brantley.json",
+    "hair-2011/nytimes--ben-brantley.json",
+    "head-over-heels-2018/nytimes--jesse-green.json",
+    "hedda-gabler-2009/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "be-more-chill-2019/theatre-reviews-limited--david-roberts.json",
-      "days-of-wine-and-roses-2024/theatre-reviews-limited--joseph-verlezza.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/theatre-reviews-limited--david-roberts.json",
-      "harmony-2023/theatre-reviews-limited--joseph-verlezza.json",
-      "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
-      "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-      "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/theatre-reviews-limited--david-roberts.json",
-      "oklahoma-2019/theatre-reviews-limited--david-roberts.json",
-      "six-degrees-of-separation-2017/theatre-reviews-limited--michele-willens.json",
-      "straight-white-men-2018/theatre-reviews-limited--david-roberts.json",
-      "the-nap-2018/theatre-reviews-limited--david-roberts.json",
-      "torch-song-2018/theatre-reviews-limited--david-roberts.json",
-      "waiting-for-godot-2013/theatre-reviews-limited--david-roberts.json",
-      "yellow-face-2024/theatre-reviews-limited--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/1776-2022/nytimes--jesse-green.json",
+      "1776-2022/nytimes--jesse-green.json"
+    ],
     "scrapingbee": [
-      "a-bronx-tale-2007/thewrap--robert-hofler.json",
-      "grey-house-2023/cititour--brian-scott-lipton.json",
-      "torch-song-2018/cititour--brian-scott-lipton.json"
+      "camelot-2023/nytimes--jesse-green.json",
+      "camelot-2023/nytimes--unknown.json",
+      "casa-valentina-2014/nytimes--ben-brantley.json",
+      "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+      "cats-2016/nytimes--charles-isherwood.json",
+      "china-doll-2015/nytimes--ben-brantley.json",
+      "chita-rivera-the-dancers-life-2005/nytimes--ben-brantley.json",
+      "come-from-away-2017/nytimes--ben-brantley.json",
+      "company-2006/nytimes--ben-brantley.json",
+      "cult-of-love-2024/nytimes--jesse-green.json",
+      "doubt-a-parable/nytimes--jesse-green.json",
+      "elf-2024/nytimes--unknown.json",
+      "enron-2010/nytimes--.json",
+      "first-date-2013/nytimes--ben-brantley.json",
+      "floyd-collins-2025/nytimes--unknown.json",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--laura-collins-hughes.json",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--unknown.json",
+      "fun-home-2015/nytimes--ben-brantley.json",
+      "gigi-2015/nytimes--ben-brantley.json",
+      "good-night-oscar-2023/nytimes--unknown.json",
+      "gore-vidals-the-best-man-2012/nytimes--ben-brantley.json",
+      "gypsy-2024/nytimes--unknown.json",
+      "hand-to-god-2015/nytimes--charles-isherwood.json",
+      "heartbreak-house-2006/nytimes--charles-isherwood.json",
+      "here-lies-love-2023/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/swept-away-2024/theatrely--david-ng.json",
-      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json",
-      "data/review-texts/33-variations-2009/talkinbroadway--matthew-murray.json"
+      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+      "data/review-texts/a-little-night-music-2009/nytimes--ben-brantley.json",
+      "data/review-texts/a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
+      "data/review-texts/a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
+      "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+      "data/review-texts/after-midnight-2013/nytimes--unknown.json",
+      "data/review-texts/after-miss-julie-2009/nytimes--ben-brantley.json",
+      "data/review-texts/amelie-a-new-musical-2017/nytimes--ben-brantley.json",
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
+      "data/review-texts/ann-2013/nytimes--charles-isherwood.json",
+      "data/review-texts/avenue-q-2003/nytimes--ben-brantley.json",
+      "data/review-texts/baby-its-you-2011/nytimes--charles-isherwood.json",
+      "data/review-texts/birthday-candles-2022/nytimes--jesse-green.json",
+      "data/review-texts/blithe-spirit-2009/nytimes--charles-isherwood.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/nytimes--ben-brantley.json",
+      "data/review-texts/bonnie-and-clyde-2011/nytimes--ben-brantley.json",
+      "data/review-texts/butley-2006/nytimes--ben-brantley.json",
+      "data/review-texts/cabaret-2014/nytimes--ben-brantley.json",
+      "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+      "data/review-texts/cats-1982/nytimes--frank-rich.json",
+      "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
+      "data/review-texts/cymbeline-2007/nytimes--charles-isherwood.json",
+      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json",
+      "data/review-texts/desire-under-the-elms-2009/nytimes--ben-brantley.json",
+      "data/review-texts/dividing-the-estate-2008/nytimes--ben-brantley.json",
+      "data/review-texts/driving-miss-daisy-2010/nytimes--ben-brantley.json",
+      "data/review-texts/eureka-day-2024/nytimes--unknown.json",
+      "data/review-texts/everyday-rapture-2010/nytimes--.json",
+      "data/review-texts/golden-boy-2012/nytimes--ben-brantley.json",
+      "data/review-texts/hair-2011/nytimes--ben-brantley.json",
+      "data/review-texts/head-over-heels-2018/nytimes--jesse-green.json",
+      "data/review-texts/hedda-gabler-2009/nytimes--ben-brantley.json"
     ],
     "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-      "elf-2024/broadwaynews--brittani-samuel.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-      "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
-      "machinal-2014/thewrap--robert-hofler.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
-      "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
-      "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json"
+      "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
+      "death-of-a-salesman-2026/nytimes--jesse-green.json",
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elizabeth-vincentelli.json",
+      "a-catered-affair-2008/nytimes--ben-brantley.json",
+      "a-christmas-carol-2019/nytimes--alexis-soloski.json",
+      "a-dolls-house-part-2-2017/nytimes--unknown.json",
+      "american-buffalo-2022/nytimes--jesse-green.json",
+      "an-act-of-god-2016/nytimes--ben-brantley.json",
+      "an-enemy-of-the-people-2012/nytimes--unknown.json",
+      "an-enemy-of-the-people-2024/nytimes--jesse-green.json",
+      "anything-goes-2011/nytimes--ben-brantley.json",
+      "bad-cinderella-2023/nytimes--unknown.json",
+      "birthday-candles-2022/nytimes--maya-phillips.json",
+      "bright-star-2016/nytimes--charles-isherwood.json",
+      "bronx-bombers-2014/nytimes--charles-isherwood.json",
+      "burn-the-floor-2009/nytimes--.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json",
+      "company-2006/nytimes--jesse-green.json",
+      "coram-boy-2007/nytimes--charles-isherwood.json",
+      "groundhog-day-2017/nytimes--jesse-green.json",
+      "gypsy-2024/nytimes--jesse-green.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
     ]
   },
-  "startTime": "2026-02-18T08:01:13.769Z",
-  "lastProcessed": "33-variations-2009/talkinbroadway--matthew-murray.json",
-  "log": []
+  "startTime": "2026-02-18T09:52:03.008Z",
+  "lastProcessed": "here-lies-love-2023/nytimes--ben-brantley.json",
+  "log": [
+    {
+      "t": "2026-02-18T09:53:33.915Z",
+      "event": "bb-session",
+      "session": "a54782b1",
+      "url": "https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html"
+    },
+    {
+      "t": "2026-02-18T09:53:35.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T09:55:05.368Z",
+      "event": "bb-session",
+      "session": "1ea7ea98",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
+    },
+    {
+      "t": "2026-02-18T09:55:07.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T09:57:57.177Z",
+      "event": "bb-session",
+      "session": "a218a805",
+      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+    },
+    {
+      "t": "2026-02-18T09:57:59.174Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T09:59:16.160Z",
+      "event": "bb-session",
+      "session": "22795e91",
+      "url": "https://www.nytimes.com/2008/10/19/theater/reviews/19seasons.html"
+    },
+    {
+      "t": "2026-02-18T09:59:18.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:00:47.232Z",
+      "event": "bb-session",
+      "session": "fb81f2f2",
+      "url": "https://www.nytimes.com/2005/10/17/theater/reviews/17nake.html"
+    },
+    {
+      "t": "2026-02-18T10:00:49.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:02:21.471Z",
+      "event": "bb-session",
+      "session": "d2e548b4",
+      "url": "https://www.nytimes.com/2024/11/12/theater/a-wonderful-world-review.html"
+    },
+    {
+      "t": "2026-02-18T10:02:23.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:03:52.632Z",
+      "event": "bb-session",
+      "session": "84b2c603",
+      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
+    },
+    {
+      "t": "2026-02-18T10:03:54.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:05:21.045Z",
+      "event": "bb-session",
+      "session": "2c784c40",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-02-18T10:05:22.871Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:06:58.558Z",
+      "event": "bb-session",
+      "session": "9d421c08",
+      "url": "https://www.nytimes.com/2017/04/04/theater/amelie-review.html"
+    },
+    {
+      "t": "2026-02-18T10:07:00.489Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:08:31.744Z",
+      "event": "bb-session",
+      "session": "2c38b7a4",
+      "url": "https://www.nytimes.com/2008/10/17/theater/reviews/17buff.html"
+    },
+    {
+      "t": "2026-02-18T10:08:33.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:10:25.794Z",
+      "event": "bb-session",
+      "session": "b8490586",
+      "url": "http://www.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at-viv"
+    },
+    {
+      "t": "2026-02-18T10:10:27.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:12:23.516Z",
+      "event": "bb-session",
+      "session": "d9c7c2d1",
+      "url": "https://www.nytimes.com/2003/07/31/theater/theater-review-puppet-musical-for-adu"
+    },
+    {
+      "t": "2026-02-18T10:12:25.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:14:21.041Z",
+      "event": "bb-session",
+      "session": "f9ce0816",
+      "url": "https://www.nytimes.com/2011/04/28/theater/reviews/baby-its-you-story-of-the-shi"
+    },
+    {
+      "t": "2026-02-18T10:14:23.353Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:16:28.753Z",
+      "event": "bb-session",
+      "session": "302748f0",
+      "url": "https://www.nytimes.com/2022/04/11/theater/birthday-candles-review.html"
+    },
+    {
+      "t": "2026-02-18T10:16:30.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:18:53.033Z",
+      "event": "bb-session",
+      "session": "b4b99ec0",
+      "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blithe.html"
+    },
+    {
+      "t": "2026-02-18T10:18:55.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:20:29.973Z",
+      "event": "bb-session",
+      "session": "daac7198",
+      "url": "https://www.nytimes.com/2010/10/14/theater/reviews/14jackson.html"
+    },
+    {
+      "t": "2026-02-18T10:20:32.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:22:16.236Z",
+      "event": "bb-session",
+      "session": "dbb8c1cf",
+      "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-and-clyde-review.html"
+    },
+    {
+      "t": "2026-02-18T10:22:18.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:23:44.016Z",
+      "event": "bb-session",
+      "session": "a67dc98a",
+      "url": "https://www.nytimes.com/2006/11/01/theater/reviews/01butl.html"
+    },
+    {
+      "t": "2026-02-18T10:23:46.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:25:05.434Z",
+      "event": "bb-session",
+      "session": "89175cc4",
+      "url": "https://www.nytimes.com/2014/04/25/theater/reviews/cabaret-revival-with-alan-cum"
+    },
+    {
+      "t": "2026-02-18T10:25:07.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:26:59.787Z",
+      "event": "bb-session",
+      "session": "99e5da8d",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T10:27:01.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:28:27.634Z",
+      "event": "bb-session",
+      "session": "75532b19",
+      "url": "https://www.nytimes.com/2023/04/13/theater/review-camelot.html"
+    },
+    {
+      "t": "2026-02-18T10:28:29.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:29:47.965Z",
+      "event": "bb-session",
+      "session": "1a30f918",
+      "url": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fi"
+    },
+    {
+      "t": "2026-02-18T10:29:49.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:31:05.015Z",
+      "event": "bb-session",
+      "session": "3fbb57a0",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-18T10:31:07.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:32:36.961Z",
+      "event": "bb-session",
+      "session": "e30a8778",
+      "url": "https://www.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-rich"
+    },
+    {
+      "t": "2026-02-18T10:32:39.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:33:53.055Z",
+      "event": "bb-session",
+      "session": "7d35a00d",
+      "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=1"
+    },
+    {
+      "t": "2026-02-18T10:33:55.465Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:35:09.289Z",
+      "event": "bb-session",
+      "session": "9417b1fa",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
+    },
+    {
+      "t": "2026-02-18T10:35:11.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:36:29.493Z",
+      "event": "bb-session",
+      "session": "e0dd1ee8",
+      "url": "https://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r="
+    },
+    {
+      "t": "2026-02-18T10:36:31.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:37:49.530Z",
+      "event": "bb-session",
+      "session": "5617b6fb",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
+    },
+    {
+      "t": "2026-02-18T10:37:51.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:39:04.779Z",
+      "event": "bb-session",
+      "session": "3d9792b5",
+      "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-p"
+    },
+    {
+      "t": "2026-02-18T10:39:06.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:40:26.903Z",
+      "event": "bb-session",
+      "session": "492fcde8",
+      "url": "http://theater.nytimes.com/2005/12/12/theater/reviews/12chit.html"
+    },
+    {
+      "t": "2026-02-18T10:40:28.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:41:58.389Z",
+      "event": "bb-session",
+      "session": "da41dcc3",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-18T10:42:00.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:43:28.444Z",
+      "event": "bb-session",
+      "session": "0ee7b7e2",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-18T10:43:30.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:44:54.575Z",
+      "event": "bb-session",
+      "session": "be87e4bf",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-18T10:44:57.139Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:46:10.680Z",
+      "event": "bb-session",
+      "session": "92dd91c6",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-18T10:46:12.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:47:33.246Z",
+      "event": "bb-session",
+      "session": "7fd6e714",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-18T10:47:35.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:48:54.984Z",
+      "event": "bb-session",
+      "session": "fcd8008c",
+      "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html?smtyp=cu"
+    },
+    {
+      "t": "2026-02-18T10:48:57.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:50:34.115Z",
+      "event": "bb-session",
+      "session": "7b2b9175",
+      "url": "http://theater.nytimes.com/2007/05/03/theater/reviews/03cora.html?pagewanted=2"
+    },
+    {
+      "t": "2026-02-18T10:50:36.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:52:01.577Z",
+      "event": "bb-session",
+      "session": "74e5919e",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-18T10:52:03.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:53:34.719Z",
+      "event": "bb-session",
+      "session": "8b65012b",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-02-18T10:53:36.706Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-18T10:54:49.116Z",
+      "event": "bb-session",
+      "session": "51ca992a",
+      "url": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html"
+    },
+    {
+      "t": "2026-02-18T10:54:51.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
