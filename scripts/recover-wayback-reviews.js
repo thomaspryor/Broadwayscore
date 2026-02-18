@@ -49,8 +49,8 @@ const CONFIG = {
   minTextLength: 300,
   maxSnapshotsToTry: 5,
 
-  // Checkpointing
-  checkpointInterval: 25,
+  // Checkpointing (every N recoveries)
+  checkpointInterval: parseInt(process.env.CHECKPOINT_INTERVAL || '10'),
 
   // Circuit breaker
   maxConsecutiveFailures: 10,
@@ -620,6 +620,7 @@ async function main() {
   };
 
   let consecutiveFailures = 0;
+  let lastCheckpointTime = Date.now();
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
 
   console.log(`\n${'='.repeat(60)}`);
@@ -676,6 +677,7 @@ async function main() {
 
             if (stats.recovered % CONFIG.checkpointInterval === 0) {
               checkpoint(stats);
+              lastCheckpointTime = Date.now();
             }
             continue;
           }
@@ -732,6 +734,7 @@ async function main() {
 
           if (stats.recovered % CONFIG.checkpointInterval === 0) {
             checkpoint(stats);
+            lastCheckpointTime = Date.now();
           }
           break;
         }
@@ -766,9 +769,17 @@ async function main() {
 
           if (stats.recovered % CONFIG.checkpointInterval === 0) {
             checkpoint(stats);
+            lastCheckpointTime = Date.now();
           }
         }
       }
+    }
+
+    // Time-based checkpoint: save every 5 minutes regardless of recovery count
+    if (stats.recovered > 0 && !CONFIG.dryRun && Date.now() - lastCheckpointTime > 5 * 60 * 1000) {
+      console.log(`\n  [Time checkpoint] 5+ min since last save, checkpointing...`);
+      checkpoint(stats);
+      lastCheckpointTime = Date.now();
     }
   }
 
