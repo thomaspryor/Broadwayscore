@@ -48,7 +48,7 @@ jobs:
                 "ref": "staging",
                 "sha": "${{ steps.repo.outputs.sha }}"
               },
-              "target": "preview"
+              "target": "staging"
             }')
           echo "Response: $RESPONSE"
           URL=$(echo "$RESPONSE" | jq -r '.url // empty')
