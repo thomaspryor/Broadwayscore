@@ -1,17 +1,40 @@
 {
-  "updatedAt": "2026-02-18T09:20:22.386Z",
-  "processed": 83,
-  "failed": 27,
-  "successRate": "75.5%",
+  "updatedAt": "2026-02-18T09:21:36.911Z",
+  "processed": 26,
+  "failed": 74,
+  "successRate": "26.0%",
   "tierBreakdown": {
-    "playwright": 61,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 20,
-    "archive": 13
+    "archiveToday": 39,
+    "archive": 31
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-18T07:50:58.954Z",
+      "event": "bb-session",
+      "session": "f2794603",
+      "url": "https://www.vulture.com/2020/01/theater-review-a-soldiers-play-on-broadway.html"
+    },
+    {
+      "t": "2026-02-18T07:51:01.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-18T07:52:06.333Z",
+      "event": "bb-session",
+      "session": "24b478fd",
+      "url": "https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html"
+    },
+    {
+      "t": "2026-02-18T07:52:08.413Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
