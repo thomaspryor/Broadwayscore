@@ -88,14 +88,22 @@ jobs:
         uses: ./.github/actions/check-file-sizes
         continue-on-error: true
 
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Extract LLM pull quotes"
+
       - name: Commit and push changes
         if: always()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Stage all review-text changes
-          # review-texts now pushed via push-review-texts composite action
+          # review-texts pushed via push-review-texts composite action above
+          # Stage any public repo changes (e.g. reviews.json if rebuild is inline)
+          git add -A
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
