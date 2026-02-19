@@ -268,7 +268,7 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string } }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
@@ -286,6 +286,7 @@ export function getAllTheaters(): Theater[] {
         formerNames: theaterMeta?.formerNames,
         tips: theaterMeta?.tips,
         structuredTips: theaterMeta?.structuredTips,
+        images: theaterMeta?.images,
         currentShow,
         allShows: data.shows.sort((a, b) =>
           new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
