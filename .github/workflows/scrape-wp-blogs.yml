@@ -26,6 +26,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -44,12 +49,19 @@ jobs:
           echo "Scraping WordPress theater blog reviews..."
           node scripts/scrape-wp-theater-blogs.js $SITE_ARG
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape WordPress Theater Blogs — Commit and push changes"
       - name: Commit and push changes
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/review-texts/ data/aggregator-archive/
+          git add data/aggregator-archive/
           git diff --staged --quiet || git commit -m "chore: Update WordPress theater blog review data"
 
           MAX_RETRIES=5

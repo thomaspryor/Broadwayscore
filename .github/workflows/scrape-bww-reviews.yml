@@ -45,6 +45,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -76,10 +81,17 @@ jobs:
           echo "Running: node scripts/scrape-bww-reviews.js $FLAGS"
           node scripts/scrape-bww-reviews.js $FLAGS
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape BWW Reviews — Final commit and push"
       - name: Final commit and push
         if: always()
         run: |
-          git add data/review-texts/ data/aggregator-archive/
+          git add data/aggregator-archive/
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
           git commit -m "data: BWW reviews scrape ($(date -u +%Y-%m-%d))"
@@ -123,6 +135,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -137,12 +154,19 @@ jobs:
           ALLOW_DRIFT: 'true'
         run: node scripts/rebuild-all-reviews.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape BWW Reviews — Commit and push rebuilt reviews.json"
       - name: Commit and push rebuilt reviews.json
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
+          git add data/reviews.json data/critic-registry.json data/audit/
           git diff --staged --quiet || git commit -m "data: Auto-rebuild reviews.json after BWW scrape"
 
           MAX_RETRIES=5

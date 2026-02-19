@@ -44,6 +44,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -110,13 +115,20 @@ jobs:
         if: steps.changes.outputs.has_changes == 'true'
         uses: ./.github/actions/check-file-sizes
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Rebuild Reviews Data — Commit and push changes"
       - name: Commit and push changes
         if: always() && steps.changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/reviews.json data/review-texts/
+          git add data/reviews.json
           git add data/critic-registry.json data/audit/critic-outlet-affinity.json 2>/dev/null || true
 
           BEFORE=${{ steps.before.outputs.count }}

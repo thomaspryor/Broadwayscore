@@ -203,7 +203,7 @@ function gitCheckpoint(message) {
   if (!CONFIG.isCI || CONFIG.dryRun) return;
 
   try {
-    execSync('git add data/review-texts/', { stdio: 'pipe' });
+    execSync('git add -u .', { stdio: 'pipe' });
 
     const status = execSync('git diff --staged --quiet || echo "changes"', {
       encoding: 'utf8', stdio: 'pipe'

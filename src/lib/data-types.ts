@@ -43,6 +43,8 @@ export interface Theater {
   name: string;
   slug: string;
   address?: string;
+  capacity?: number;
+  tips?: string;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
   showCount: number;
@@ -519,4 +521,41 @@ export interface ShowCastFile {
   openingNightCast: CastMemberOBC[];
   currentCast?: CastMemberOBC[] | null;
   currentCastUpdatedAt?: string;
+  replacements?: CastMemberOBC[] | null;
+}
+
+// ============================================
+// Actor Profile Types
+// ============================================
+
+export interface ActorShowEntry {
+  title: string;
+  slug: string;
+  showId: string;
+  role: string;
+  castType: 'obc' | 'replacement' | 'current';
+  venue: string;
+  openingDate: string | null;
+  closingDate: string | null;
+  status: string;
+  type: string;
+  thumbnail: string | null;
+  isRevival: boolean;
+  score: number | null;
+  audienceScore: number | null;
+  flags?: string[];
+}
+
+export interface ActorProfile {
+  name: string;
+  slug: string;
+  ibdbPersonId: string;
+  shows: ActorShowEntry[];
+  showCount: number;
+  avgScore: number | null;
+  highScore: { score: number; showTitle: string } | null;
+  lowScore: { score: number; showTitle: string } | null;
+  openShowCount: number;
+  closedShowCount: number;
+  hasBroadwayDebut: boolean;
 }

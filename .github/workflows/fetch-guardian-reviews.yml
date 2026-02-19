@@ -35,6 +35,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -67,13 +72,20 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: node scripts/rebuild-all-reviews.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch Guardian Reviews via API — Commit changes"
       - name: Commit changes
         if: always() && github.event.inputs.dry_run != 'true'
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
 
-          git add data/review-texts/ data/reviews.json
+          git add data/reviews.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
