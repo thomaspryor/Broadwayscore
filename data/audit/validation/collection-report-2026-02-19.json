@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-19T01:01:05.186Z",
+  "runDate": "2026-02-19T01:36:08.780Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 200,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,40 +11,40 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 17,
-    "failed": 218,
+    "processed": 18,
+    "failed": 239,
     "skipped": 0,
-    "successRate": "7.2%"
+    "successRate": "7.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 17,
+    "archiveToday": 24,
     "archive": 17
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 1,
+    "tier1Attempts": 22,
+    "tier1Success": 14,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 13,
-    "tier1_5Success": 0,
-    "tier2Attempts": 13,
+    "tier1_5Attempts": 8,
+    "tier1_5Success": 2,
+    "tier2Attempts": 8,
     "tier2Success": 1,
-    "tier3Attempts": 12,
+    "tier3Attempts": 7,
     "tier3Success": 0,
-    "tier3_6Attempts": 12,
-    "tier3_6Success": 11,
-    "tier4Attempts": 11,
-    "tier4Success": 1,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 31,
-    "browserbaseSessionsUsed": 13,
-    "browserbaseMinutesUsed": 7.4,
-    "urlDiscoveryAttempts": 1,
+    "tier3_6Attempts": 7,
+    "tier3_6Success": 7,
+    "tier4Attempts": 8,
+    "tier4Success": 0,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 8,
+    "browserbaseMinutesUsed": 3.7,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -65,7 +65,8 @@
     "american-idiot-2010/wsj--terry-teachout.json",
     "american-son-2018/wsj--terry-teachout.json",
     "blackbird-2016/wsj--terry-teachout.json",
-    "camelot-2023/wsj--charles-isherwood.json"
+    "camelot-2023/wsj--charles-isherwood.json",
+    "a-little-night-music-2009/wsj--terry-teachout.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -285,7 +286,28 @@
     "come-fly-away-2010/nytimes--ben-brantley.json",
     "crybaby-2008/nytimes--ben-brantley.json",
     "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "side-show-2014/thewrap--robert-hofler.json"
+    "side-show-2014/thewrap--robert-hofler.json",
+    "a-dolls-house-2023/wsj--charles-isherwood.json",
+    "a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+    "a-life-in-the-theatre-2010/wsj--.json",
+    "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+    "a-strange-loop-2022/wsj--charles-isherwood.json",
+    "a-streetcar-named-desire-2012/wsj--terry-teachout.json",
+    "act-one-2014/wsj--terry-teachout.json",
+    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
+    "constellations-2015/financialtimes--brendan-lemon.json",
+    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
+    "enron-2010/financial-times--brandan-lemon.json",
+    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
+    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
+    "frozen-2018/financial-times-uk--max-mcguinness.json",
+    "glengarry-glen-ross-2012/financialtimes--brendan-lemon.json",
+    "grand-horizons-2020/financialtimes--unknown.json",
+    "hedwig-and-the-angry-inch-2014/financial-times-uk--brendan-lemon.json",
+    "hedwig-and-the-angry-inch-2014/financialtimes--unknown.json",
+    "heisenberg-2016/financial-times-uk--brendan-lemon.json",
+    "hello-dolly-2017/financial-times-uk--max-mcguinness.json",
+    "hughie-2016/financial-times-uk--max-mcguinness.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -303,7 +325,8 @@
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
-      "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json"
+      "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json",
+      "a-little-night-music-2009/wsj--terry-teachout.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -323,7 +346,14 @@
       "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
       "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
       "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
-      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json"
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
+      "data/review-texts/a-dolls-house-2023/wsj--charles-isherwood.json",
+      "data/review-texts/a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+      "data/review-texts/a-life-in-the-theatre-2010/wsj--.json",
+      "data/review-texts/a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+      "data/review-texts/a-strange-loop-2022/wsj--charles-isherwood.json",
+      "data/review-texts/a-streetcar-named-desire-2012/wsj--terry-teachout.json",
+      "data/review-texts/act-one-2014/wsj--terry-teachout.json"
     ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
@@ -345,28 +375,6 @@
       "camelot-2023/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New York Times": {
-      "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Theatre Reviews Limited": {
-      "count": 1,
-      "domain": "theatrereviews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Wrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
