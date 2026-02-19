@@ -24,6 +24,15 @@ on:
         description: 'Filter by incompleteReason: url_dead, no_url, wrong_content (comma-separated)'
         required: false
         default: ''
+      create_stubs:
+        description: 'Create stub review-text files from reviews.json before discovery (for outlets with no files)'
+        required: false
+        type: boolean
+        default: false
+      outlet_filter:
+        description: 'Outlet filter for stub creation (comma-separated outletIds)'
+        required: false
+        default: ''
   schedule:
     - cron: '0 1 * * 0'  # Weekly Sunday 1 AM UTC
 
@@ -71,6 +80,14 @@ jobs:
             ARGS="$ARGS --reason=${{ inputs.reason_filter }}"
           fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
+
+      - name: Create stub review-text files
+        if: inputs.create_stubs == true
+        env:
+          OUTLET_FILTER: ${{ inputs.outlet_filter }}
+        run: |
+          echo "Creating stub review-text files from reviews.json..."
+          node scripts/create-stubs-from-reviews-json.js
 
       - name: Run reason-aware URL discovery (scheduled only)
         if: github.event_name == 'schedule'
@@ -142,12 +159,10 @@ jobs:
           done
 
       - name: Trigger collection for newly-discovered URLs
-        if: always() && github.event_name == 'schedule'
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # The nightly collection at 2 AM will pick these up automatically,
-          # but kick off a targeted run now so we don't wait 24h
           echo "Triggering collection run for newly URL'd reviews..."
           gh workflow run "Collect Review Texts" \
             -f max_reviews=200 \

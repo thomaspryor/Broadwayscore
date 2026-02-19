@@ -594,7 +594,7 @@ export function computeShowData(
     venue: show.venue,
     openingDate: show.openingDate,
     closingDate: show.closingDate,
-    status: show.status,
+    status: show.status === 'previews' && show.previewsStartDate && show.previewsStartDate > new Date().toISOString().slice(0, 10) ? 'upcoming' : show.status,
     type: show.type,
     runtime: show.runtime,
     intermissions: show.intermissions,

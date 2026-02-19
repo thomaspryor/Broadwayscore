@@ -1796,6 +1796,13 @@ function applyImages(show, images) {
     images.thumbnail = existingThumb;
   }
 
+  // Strip internal underscore-prefixed fields before writing to shows.json
+  // (_verifyBuffer, _remainingCandidates are already stripped in verifyAndCollect,
+  //  but _hasNativeSquare and any future internal fields need this safety net)
+  for (const key of Object.keys(images)) {
+    if (key.startsWith('_')) delete images[key];
+  }
+
   show.images = images;
 }
 
@@ -1995,7 +2002,20 @@ async function main() {
   }
 
   if (onlyMissing) {
-    shows = shows.filter(s => !s.images?.poster || !s.images?.thumbnail);
+    shows = shows.filter(s => {
+      // Missing in JSON
+      if (!s.images?.poster || !s.images?.thumbnail) return true;
+      // JSON says images exist but local files are missing on disk
+      const poster = s.images.poster;
+      const thumb = s.images.thumbnail;
+      if (poster && poster.startsWith('/images/')) {
+        if (!fs.existsSync(path.join(__dirname, '..', 'public', poster))) return true;
+      }
+      if (thumb && thumb.startsWith('/images/')) {
+        if (!fs.existsSync(path.join(__dirname, '..', 'public', thumb))) return true;
+      }
+      return false;
+    });
     console.log(`Processing only shows with missing images: ${shows.length}`);
   }
 
@@ -2030,6 +2050,15 @@ async function main() {
 
   // Checkpoint callback — saves shows.json to disk so progress survives timeouts
   const saveShowsData = () => {
+    // Strip underscore-prefixed internal fields from ALL show images before saving
+    // (cleans up historical _hasNativeSquare pollution + any future leaks)
+    for (const s of showsData.shows) {
+      if (s.images) {
+        for (const key of Object.keys(s.images)) {
+          if (key.startsWith('_')) delete s.images[key];
+        }
+      }
+    }
     showsData._meta = showsData._meta || {};
     showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
     fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
@@ -2063,6 +2092,35 @@ async function main() {
     }
     if (dupeCount > 0) {
       console.log(`   🔍 Nulled ${dupeCount} duplicate images`);
+    }
+  }
+
+  // Thumbnail fallback: if thumbnail file is missing but poster exists, copy poster → thumbnail
+  if (!dryRunMode) {
+    let fallbackCount = 0;
+    for (const s of showsData.shows) {
+      const thumb = s.images?.thumbnail;
+      const poster = s.images?.poster;
+      if (!poster || !poster.startsWith('/images/')) continue;
+      const posterPath = path.join(__dirname, '..', 'public', poster);
+      if (!fs.existsSync(posterPath)) continue;
+      // Case 1: no thumbnail at all
+      // Case 2: thumbnail path set but file missing on disk
+      const thumbPath = thumb && thumb.startsWith('/images/') ? path.join(__dirname, '..', 'public', thumb) : null;
+      const thumbMissing = !thumb || (thumbPath && !fs.existsSync(thumbPath));
+      if (thumbMissing) {
+        const targetThumb = poster.replace(/poster\.(jpg|png|webp)/, 'thumbnail.$1');
+        const targetPath = path.join(__dirname, '..', 'public', targetThumb);
+        if (!fs.existsSync(targetPath)) {
+          fs.copyFileSync(posterPath, targetPath);
+        }
+        s.images.thumbnail = targetThumb;
+        fallbackCount++;
+        console.log(`   📎 Thumbnail fallback: copied poster → thumbnail for ${s.id}`);
+      }
+    }
+    if (fallbackCount > 0) {
+      console.log(`   📎 Created ${fallbackCount} thumbnail fallbacks from posters`);
     }
   }
 

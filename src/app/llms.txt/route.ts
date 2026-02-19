@@ -13,7 +13,7 @@ export async function GET() {
   // Count shows by status
   const openShows = shows.filter(s => s.status === 'open');
   const closedShows = shows.filter(s => s.status === 'closed');
-  const previewShows = shows.filter(s => s.status === 'previews');
+  const previewShows = shows.filter(s => s.status === 'previews' || s.status === 'upcoming');
 
   // Get top-rated shows for highlighting
   const topShows = shows

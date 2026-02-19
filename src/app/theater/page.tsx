@@ -40,6 +40,7 @@ export default function TheatersIndexPage() {
       showCount: t.showCount,
       capacity: t.capacity ?? null,
       currentShowTitle: t.currentShow?.title,
+      currentShowStatus: t.currentShow?.status as 'open' | 'previews' | 'upcoming' | undefined,
       avgScore,
     };
   });

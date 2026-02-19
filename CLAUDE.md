@@ -18,7 +18,7 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 
 ### 3. Git Workflow - Two Paths
 **Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
-**Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
+**Path B: Preview** → Branch `staging` from `main`, push. Vercel preview URL is generated automatically (~13 min). Get URL from: `gh run view $(gh run list --workflow=vercel-preview.yml --limit=1 --json databaseId -q '.[0].databaseId') --log 2>&1 | grep 'Preview URL:'`. After approval, merge to `main` and delete staging.
 **Production:** https://broadwayscorecard.com | **Branch:** `main`
 **NEVER:** Create PRs or random feature branches (only `main` or `staging`).
 **BRANCH CHECK:** Before ANY git commit/push, run `git branch --show-current` to verify you're on the correct branch. Other sessions and stash operations frequently leave the local checkout on `staging` when you need `main` (or vice versa). Don't waste time — check first.
@@ -34,6 +34,8 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **DO NOT add `ignoreCommand` to `vercel.json`** — it has NO ignoreCommand. Dashboard only.
 - **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
 - **Secret:** `VERCEL_TOKEN` (CLI auth)
+
+**Preview deploys** (`vercel-preview.yml`): Same CLI approach but without `--prod`. Triggers on pushes to `staging`. Generates a unique preview URL (e.g., `broadwayscore-abc123.vercel.app`). Builds on GitHub Actions (free). After user approves, merge staging → main to deploy to production.
 
 **"Pushed" ≠ "Deployed" — NEVER declare work complete after just pushing.** Deploys take ~13 min and often fail (rate limits, build errors, timeouts). After pushing code that triggers a deploy:
 1. **Confirm the workflow triggered:** `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion,createdAt,databaseId`
