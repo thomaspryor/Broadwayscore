@@ -16,7 +16,8 @@
     "american-idiot-2010/wsj--terry-teachout.json",
     "american-son-2018/wsj--terry-teachout.json",
     "blackbird-2016/wsj--terry-teachout.json",
-    "camelot-2023/wsj--charles-isherwood.json"
+    "camelot-2023/wsj--charles-isherwood.json",
+    "a-little-night-music-2009/wsj--terry-teachout.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -236,7 +237,16 @@
     "come-fly-away-2010/nytimes--ben-brantley.json",
     "crybaby-2008/nytimes--ben-brantley.json",
     "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
-    "side-show-2014/thewrap--robert-hofler.json"
+    "side-show-2014/thewrap--robert-hofler.json",
+    "a-dolls-house-2023/wsj--charles-isherwood.json",
+    "a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+    "a-life-in-the-theatre-2010/wsj--.json",
+    "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+    "a-strange-loop-2022/wsj--charles-isherwood.json",
+    "a-streetcar-named-desire-2012/wsj--terry-teachout.json",
+    "act-one-2014/wsj--terry-teachout.json",
+    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
+    "constellations-2015/financialtimes--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -255,7 +265,8 @@
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
-      "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json"
+      "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json",
+      "a-little-night-music-2009/wsj--terry-teachout.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -275,7 +286,14 @@
       "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
       "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
       "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
-      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json"
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
+      "data/review-texts/a-dolls-house-2023/wsj--charles-isherwood.json",
+      "data/review-texts/a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+      "data/review-texts/a-life-in-the-theatre-2010/wsj--.json",
+      "data/review-texts/a-life-in-the-theatre-2010/wsj--terry-teachout.json",
+      "data/review-texts/a-strange-loop-2022/wsj--charles-isherwood.json",
+      "data/review-texts/a-streetcar-named-desire-2012/wsj--terry-teachout.json",
+      "data/review-texts/act-one-2014/wsj--terry-teachout.json"
     ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
@@ -298,7 +316,7 @@
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "side-show-2014/thewrap--robert-hofler.json",
+  "lastProcessed": "constellations-2015/financialtimes--brendan-lemon.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -437,6 +455,94 @@
       "event": "bb-session",
       "session": "8232b67f",
       "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+    },
+    {
+      "t": "2026-02-19T01:23:11.682Z",
+      "event": "bb-session",
+      "session": "7ef661d5",
+      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
+    },
+    {
+      "t": "2026-02-19T01:23:14.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:24:50.667Z",
+      "event": "bb-session",
+      "session": "55d20637",
+      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
+    },
+    {
+      "t": "2026-02-19T01:24:52.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:26:32.458Z",
+      "event": "bb-session",
+      "session": "a10d29f3",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-19T01:26:34.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:28:14.577Z",
+      "event": "bb-session",
+      "session": "216ea334",
+      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
+    },
+    {
+      "t": "2026-02-19T01:28:16.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:30:00.151Z",
+      "event": "bb-session",
+      "session": "b440c82a",
+      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
+    },
+    {
+      "t": "2026-02-19T01:30:02.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:31:30.992Z",
+      "event": "bb-session",
+      "session": "cf94d504",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
+    },
+    {
+      "t": "2026-02-19T01:31:32.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:32:56.133Z",
+      "event": "bb-session",
+      "session": "94c085c3",
+      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
+    },
+    {
+      "t": "2026-02-19T01:32:58.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:34:14.426Z",
+      "event": "bb-session",
+      "session": "c5a79043",
+      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
+    },
+    {
+      "t": "2026-02-19T01:34:16.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
