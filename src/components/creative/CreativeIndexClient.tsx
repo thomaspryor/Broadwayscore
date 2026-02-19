@@ -4,8 +4,10 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
 
-type SortColumn = 'name' | 'shows' | 'avg';
+type SortColumn = 'name' | 'obc' | 'shows' | 'avg';
 type SortDir = 'asc' | 'desc';
+
+const MIN_SHOW_OPTIONS = [0, 3, 5, 10] as const;
 
 interface CreativeProfileSummary {
   name: string;
@@ -16,21 +18,37 @@ interface CreativeProfileSummary {
   openShowCount: number;
   roles: string[];
   obcCount?: number;
+  headshot?: string | null;
 }
 
-function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; routePath: string }) {
+function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfileSummary; routePath: string; showObc?: boolean }) {
   const href = profile.unifiedSlug ? `/creative/${profile.unifiedSlug}` : `/${routePath}/${profile.slug}`;
+  const replacementCount = profile.obcCount !== undefined ? profile.showCount - profile.obcCount : 0;
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImg = profile.headshot && !imgFailed;
   return (
     <Link
       href={href}
       className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
     >
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-sm">
-          {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
-        </span>
-      </div>
+      {showImg ? (
+        <img
+          src={profile.headshot!}
+          alt=""
+          width={40}
+          height={40}
+          loading="lazy"
+          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
+          <span className="text-white font-bold text-sm">
+            {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+          </span>
+        </div>
+      )}
 
       {/* Info */}
       <div className="flex-1 min-w-0">
@@ -38,9 +56,20 @@ function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; 
           {profile.name}
         </h2>
         <p className="text-gray-400 text-xs sm:text-sm">
-          {profile.showCount} show{profile.showCount !== 1 ? 's' : ''}
-          {profile.obcCount !== undefined && profile.obcCount > 0 && (
-            <span className="text-brand"> · {profile.obcCount} OBC</span>
+          {showObc ? (
+            <>
+              {profile.showCount} show{profile.showCount !== 1 ? 's' : ''}
+              {profile.obcCount !== undefined && profile.obcCount > 0 && (
+                <span className="text-brand"> · {profile.obcCount} OBC</span>
+              )}
+              {replacementCount > 0 && (
+                <span> · {replacementCount} replacement{replacementCount !== 1 ? 's' : ''}</span>
+              )}
+            </>
+          ) : (
+            <>
+              {profile.showCount} show{profile.showCount !== 1 ? 's' : ''}
+            </>
           )}
           {profile.openShowCount > 0 && (
             <span className="text-emerald-400"> · {profile.openShowCount} running</span>
@@ -48,13 +77,20 @@ function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; 
         </p>
       </div>
 
+      {/* OBC count — cast pages only */}
+      {showObc && (
+        <div className="w-10 text-center flex-shrink-0">
+          <p className="text-lg font-bold text-brand">{profile.obcCount ?? 0}</p>
+        </div>
+      )}
+
       {/* Show count */}
-      <div className="w-14 text-right flex-shrink-0">
+      <div className="w-12 text-center flex-shrink-0">
         <p className="text-lg font-bold text-white">{profile.showCount}</p>
       </div>
 
       {/* Avg Score */}
-      <div className="w-11 flex-shrink-0">
+      <div className="w-11 flex-shrink-0 ml-1">
         {profile.avgScore !== null ? (
           <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(profile.avgScore)} flex items-center justify-center font-bold`}>
             {Math.round(profile.avgScore)}
@@ -82,18 +118,21 @@ export default function CreativeIndexClient({
   routePath,
   totalShows,
   showObcFilter,
+  defaultMinShows = 0,
 }: {
   profiles: CreativeProfileSummary[];
   categoryLabel: string;
   routePath: string;
   totalShows: number;
   showObcFilter?: boolean;
+  defaultMinShows?: number;
 }) {
   const [search, setSearch] = useState('');
   const [sortCol, setSortCol] = useState<SortColumn>('shows');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [visibleCount, setVisibleCount] = useState(100);
   const [obcOnly, setObcOnly] = useState(false);
+  const [minShows, setMinShows] = useState(defaultMinShows);
 
   function handleSort(col: SortColumn) {
     if (col === sortCol) {
@@ -107,6 +146,9 @@ export default function CreativeIndexClient({
 
   const filtered = useMemo(() => {
     let list = profiles;
+    if (minShows > 0) {
+      list = list.filter(p => p.showCount >= minShows);
+    }
     if (search) {
       const q = search.toLowerCase();
       list = list.filter(p => p.name.toLowerCase().includes(q));
@@ -115,7 +157,7 @@ export default function CreativeIndexClient({
       list = list.filter(p => p.obcCount && p.obcCount > 0);
     }
     return list;
-  }, [search, profiles, obcOnly]);
+  }, [search, profiles, obcOnly, minShows]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
@@ -123,6 +165,8 @@ export default function CreativeIndexClient({
     switch (sortCol) {
       case 'name':
         return list.sort((a, b) => dir * a.name.localeCompare(b.name));
+      case 'obc':
+        return list.sort((a, b) => dir * ((a.obcCount ?? 0) - (b.obcCount ?? 0)));
       case 'avg':
         return list.sort((a, b) => dir * ((a.avgScore ?? -999) - (b.avgScore ?? -999)));
       default:
@@ -148,8 +192,8 @@ export default function CreativeIndexClient({
         </p>
       </div>
 
-      {/* Search + Filters — same line */}
-      <div className="flex items-center gap-3 mb-4">
+      {/* Search + Filters */}
+      <div className="flex items-center gap-3 mb-3">
         <div className="relative flex-1">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -159,29 +203,50 @@ export default function CreativeIndexClient({
             placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
             value={search}
             onChange={(e) => { setSearch(e.target.value); setVisibleCount(100); }}
+            aria-label={`Search ${categoryLabel.toLowerCase()}`}
             className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
           />
         </div>
-        {showObcFilter && (
+      </div>
+
+      {/* Filters — min credits + OBC only */}
+      {showObcFilter && (
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Min credits:</span>
+          {MIN_SHOW_OPTIONS.map(n => (
+            <button
+              key={n}
+              onClick={() => { setMinShows(n); setVisibleCount(100); }}
+              className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${
+                minShows === n
+                  ? 'text-brand bg-brand/15 border-brand/40'
+                  : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {n === 0 ? 'All' : `${n}+`}
+            </button>
+          ))}
+          <span className="text-gray-600 mx-1">|</span>
           <button
             onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
-            className={`px-3 py-2.5 text-xs font-medium uppercase tracking-wider rounded-lg border transition-colors whitespace-nowrap ${
+            className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${
               obcOnly
                 ? 'text-brand bg-brand/15 border-brand/40'
                 : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
             }`}
           >
-            OBC Only
+            <span title="Original Broadway Cast">OBC</span> Only
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Column Headers — clickable for sorting */}
-      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
+      <div className="flex items-center gap-3 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-10 flex-shrink-0" />
         <button
           className="flex-1 min-w-0 text-left group/sort"
           onClick={() => handleSort('name')}
+          aria-sort={sortCol === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'name' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
@@ -189,19 +254,34 @@ export default function CreativeIndexClient({
             Name<SortArrow active={sortCol === 'name'} dir={sortDir} />
           </span>
         </button>
+        {showObcFilter && (
+          <button
+            className="w-10 text-center flex-shrink-0 group/sort"
+            onClick={() => handleSort('obc')}
+            aria-sort={sortCol === 'obc' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
+          >
+            <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+              sortCol === 'obc' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+            }`}>
+              <span title="Original Broadway Cast">OBC</span><SortArrow active={sortCol === 'obc'} dir={sortDir} />
+            </span>
+          </button>
+        )}
         <button
-          className="w-14 text-right flex-shrink-0 group/sort"
+          className="w-12 text-center flex-shrink-0 group/sort"
           onClick={() => handleSort('shows')}
+          aria-sort={sortCol === 'shows' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'shows' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
           }`}>
-            Shows<SortArrow active={sortCol === 'shows'} dir={sortDir} />
+            {showObcFilter ? 'Total' : 'Shows'}<SortArrow active={sortCol === 'shows'} dir={sortDir} />
           </span>
         </button>
         <button
-          className="w-11 text-center flex-shrink-0 group/sort"
+          className="w-11 text-center flex-shrink-0 ml-1 group/sort"
           onClick={() => handleSort('avg')}
+          aria-sort={sortCol === 'avg' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'avg' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
@@ -216,7 +296,7 @@ export default function CreativeIndexClient({
         <>
           <div className="space-y-2">
             {sorted.slice(0, visibleCount).map(profile => (
-              <ProfileCard key={profile.slug} profile={profile} routePath={routePath} />
+              <ProfileCard key={profile.slug} profile={profile} routePath={routePath} showObc={showObcFilter} />
             ))}
           </div>
           {sorted.length > visibleCount && (
@@ -230,14 +310,19 @@ export default function CreativeIndexClient({
         </>
       ) : (
         <div className="card p-8 text-center">
-          <p className="text-gray-400">No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</p>
+          <p className="text-gray-400">
+            {search.trim()
+              ? <>No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</>
+              : <>No {categoryLabel.toLowerCase()} found with current filters</>
+            }
+          </p>
         </div>
       )}
 
       {/* Result count */}
-      {sorted.length > 0 && (search.trim() || obcOnly) && (
+      {sorted.length > 0 && (search.trim() || obcOnly || minShows > 0) && (
         <p className="text-center text-sm text-gray-500 mt-6">
-          {sorted.length.toLocaleString()} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''}{search.trim() ? ` matching \u201c${search}\u201d` : ''}{obcOnly ? ' (OBC only)' : ''}
+          {sorted.length.toLocaleString()} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''}{minShows > 0 ? ` with ${minShows}+ credits` : ''}{search.trim() ? ` matching \u201c${search}\u201d` : ''}{obcOnly ? ' (OBC only)' : ''}
         </p>
       )}
     </div>
