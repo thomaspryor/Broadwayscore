@@ -388,7 +388,7 @@ function checkpoint(stats) {
   if (CONFIG.dryRun) return;
 
   try {
-    execSync('git add data/review-texts/ data/audit/', { stdio: 'pipe', cwd: path.join(__dirname, '..') });
+    execSync('git add data/audit/', { stdio: 'pipe', cwd: path.join(__dirname, '..') });
 
     // Check if there are staged changes
     try {

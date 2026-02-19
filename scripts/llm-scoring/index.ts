@@ -229,7 +229,7 @@ function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
   try {
     console.log(`\n📌 Checkpoint: committing ${processedSoFar}/${totalFiles} scored reviews...`);
 
-    execSync('git add data/review-texts/ data/collection-state/scoring-progress.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+    execSync('git add data/collection-state/scoring-progress.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
 
     // Check if there are staged changes
     try {
