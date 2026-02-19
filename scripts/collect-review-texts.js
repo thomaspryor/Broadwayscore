@@ -4290,8 +4290,8 @@ function commitChanges(processed) {
     }
 
     // Stage changes
-    // Note: data/archives/ is in .gitignore — do NOT git add it
-    execSync('git add data/review-texts/ data/collection-state/', {
+    // Note: data/review-texts/ and data/archives/ are in .gitignore (review-texts pushed to private repo)
+    execSync('git add data/collection-state/', {
       stdio: 'pipe'
     });
 
