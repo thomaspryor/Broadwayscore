@@ -500,10 +500,11 @@ ${stepsHtml}
 <br>
 <p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)} &mdash; ${escapeHtml(planSummary)}</p>
 <br>
-<p style="margin:0;">
-  <a href="${escapeHtml(approveUrl)}" style="display:inline-block;padding:12px 28px;background-color:#22c55e;color:#fff;font-size:15px;font-weight:600;text-decoration:none;border-radius:6px;margin-right:12px;">Approve Fix</a>
-  <a href="${escapeHtml(rejectUrl)}" style="display:inline-block;padding:12px 28px;background-color:#ef4444;color:#fff;font-size:15px;font-weight:600;text-decoration:none;border-radius:6px;">Reject</a>
-</p>
+<table cellpadding="0" cellspacing="0" border="0" style="margin:0;"><tr>
+  <td align="center" bgcolor="#22c55e" style="border-radius:6px;padding:0;"><a href="${escapeHtml(approveUrl)}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Approve Fix</a></td>
+  <td style="width:12px;"></td>
+  <td align="center" bgcolor="#ef4444" style="border-radius:6px;padding:0;"><a href="${escapeHtml(rejectUrl)}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Reject</a></td>
+</tr></table>
 <br>
 <p style="margin:0;color:#999;font-size:13px;">This link expires in 7 days. If you do nothing, no changes are made.</p>
 <p style="margin:0;color:#999;font-size:13px;">Issue: <a href="https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}" style="color:#999;">#${issueNumber}</a></p>
