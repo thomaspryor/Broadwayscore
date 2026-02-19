@@ -110,6 +110,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
         : undefined,
       audienceCombinedScore: buzz?.combinedScore ?? null,
       audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      reviewYearNote: show.reviewYearNote ?? undefined,
     };
   });
 
@@ -131,12 +132,9 @@ export default function BestOfPage({ params }: { params: { category: string } })
         ]} />
 
         {/* Header */}
-        <div className="mb-5">
+        <div className="mb-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{list.title}</h1>
           <p className="text-gray-400 text-lg">{list.description}</p>
-          <p className="text-gray-500 text-sm mt-2">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-          </p>
         </div>
 
         {/* Interactive Show List (curated: no sort/filter, just audience toggle) */}
@@ -150,6 +148,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
           availableSorts={['score']}
           showTypeFilter={false}
           showScoreToggle={!isCriticSpecific}
+          subtitle={`Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
         />
 
         {/* Other Lists */}

@@ -23,6 +23,7 @@ export interface BrowseShow {
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   performances?: number;
+  reviewYearNote?: string;
 }
 
 type ScoreMode = 'critics' | 'audience';
@@ -41,6 +42,8 @@ interface BrowseListClientProps {
   showTypeFilter: boolean;
   /** Whether to show the score mode toggle */
   showScoreToggle: boolean;
+  /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
+  subtitle?: string;
 }
 
 function getBroadwayDuration(openingDate: string | null): string | null {
@@ -68,11 +71,11 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 const SORT_LABELS: Record<SortOption, string> = {
-  score: 'Highest',
+  score: 'Top',
   alpha: 'A-Z',
-  newest: 'Newest',
-  closing: 'Closing Soon',
-  performances: 'Longest Running',
+  newest: 'New',
+  closing: 'Closing',
+  performances: 'Longest',
 };
 
 const ShowCard = memo(function ShowCard({
@@ -164,6 +167,13 @@ const ShowCard = memo(function ShowCard({
           </div>
         </div>
 
+        {/* Review Year Note - hidden on mobile */}
+        {show.reviewYearNote && scoreMode === 'critics' && (
+          <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
+            {show.reviewYearNote}
+          </span>
+        )}
+
         {/* Score */}
         <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
           {scoreMode === 'audience' ? (
@@ -204,6 +214,16 @@ const ShowCard = memo(function ShowCard({
                 </span>
               ) : null}
               <ScoreBadge score={displayScore} size="md" />
+              {show.audienceGrade && (
+                <div
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-0.5"
+                  style={{ backgroundColor: `${show.audienceGrade.color}20`, color: show.audienceGrade.color }}
+                  title={show.audienceGrade.tooltip}
+                >
+                  <span className="opacity-60">Audience:</span>
+                  <span>{show.audienceGrade.grade}</span>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -222,6 +242,7 @@ export default function BrowseListClient({
   availableSorts,
   showTypeFilter,
   showScoreToggle,
+  subtitle,
 }: BrowseListClientProps) {
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
   const [sort, setSort] = useState<SortOption>(
@@ -282,7 +303,7 @@ export default function BrowseListClient({
     <>
       {/* Controls */}
       {showControls && (
-        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : 'mb-1'}>
+        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
           {/* Type filter row (only if mixed types) */}
           {showTypeFilter && (
             <div className="flex items-center gap-1.5">
@@ -321,6 +342,8 @@ export default function BrowseListClient({
                   </button>
                 ))}
               </div>
+            ) : subtitle ? (
+              <span className="text-gray-500 text-sm">{subtitle}</span>
             ) : <div />}
 
             {/* Score mode toggle */}
@@ -334,7 +357,7 @@ export default function BrowseListClient({
                     key={key}
                     onClick={() => setScoreMode(key)}
                     aria-pressed={scoreMode === key}
-                    className={`px-1.5 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
+                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
                       scoreMode === key
                         ? 'bg-brand text-gray-900 shadow-sm'
                         : 'text-gray-500 hover:text-gray-300'
