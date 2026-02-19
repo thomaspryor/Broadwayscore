@@ -64,8 +64,26 @@ Any script processing >10 items in CI MUST save progress incrementally.
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
 - `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `getScoreTier()`, `ShowImage`, `getOptimizedImageUrl()`
-- Import: `import { ScoreBadge, StatusBadge, ... } from '@/components/show-cards';`
+- `ToggleBar<T>` — generic labeled toggle row for sort/filter controls. Props: `label`, `options`, `value`, `onChange`, `size?: 'default' | 'compact'`, `className?`. Use `compact` for dense pages (critics, outlets, creatives). Use `default` (has 36px mobile tap targets) for main pages.
+- `ScoreToggle` — Critics/Audience segmented control. Props: `value`, `onChange`, `audienceFirst?`, `size?: 'default' | 'large'`, `className?`. Side effects (like forcing sort on audience switch) go in the parent's `onChange` handler, not the component.
+- Import: `import { ScoreBadge, StatusBadge, ToggleBar, ScoreToggle, ... } from '@/components/show-cards';`
 - New pages MUST use these. Add new components to `show-cards/` barrel — never inline.
+
+### 8a. Visual QA for UI Changes (MANDATORY)
+**When changing UI across 2+ files, you MUST do before/after screenshot comparison BEFORE committing.**
+1. **Before making changes**: Screenshot production (`broadwayscorecard.com`) at mobile (375px) and desktop (1280px) for every affected page
+2. **After making changes**: Build locally (`npx next build`), serve (`npx serve out -l 3099`), screenshot same pages at same sizes
+3. **Compare**: View before/after pairs side-by-side. Only commit if layout is identical (data count differences from pipeline runs are OK)
+4. **Playwright script pattern**:
+```js
+const { chromium } = require('playwright');
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 375, height: 900 } });
+const page = await ctx.newPage();
+await page.goto(url, { waitUntil: 'networkidle' });
+await page.screenshot({ path: '/tmp/before-pagename-375.png' });
+```
+**This rule exists because** a session proposed this exact testing plan, then skipped it and pushed without comparing. The refactor happened to be pixel-perfect, but we got lucky.
 
 ### 9. Roadmap Discipline
 Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
@@ -94,9 +112,15 @@ For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data 
 - Parallel sessions switching branches → always verify branch before commit, or use Git Data API
 
 ### 11. Pipeline Operations — Test, Monitor, Parallelize
+**MANDATORY: End-to-end test before ANY large dispatch.** Never dispatch 5+ runs or 50+ reviews without first running a tiny test (5 reviews, 1 batch, same params) and verifying data lands in the private repo. We lost a full week of credits (Feb 18-19, 2026) running 3 rounds of 5 runs that all failed for different infrastructure bugs — each taking hours to discover because the runs themselves take hours. The test takes 10 minutes and catches everything.
+- Verify: did checkpoint push to private repo work? (`gh api repos/thomaspryor/broadway-review-texts/commits`)
+- Verify: did final push-review-texts step succeed?
+- Verify: no `git add` errors on gitignored paths?
+- Only THEN dispatch at scale. Check within 30 min after dispatch.
+
 **Before:** Verify secrets (test 1 workflow first), check slots (<35 in-progress), 10s+ spacing between `gh workflow run`, shard scoring to 10 (`-f shard=N -f total_shards=10`).
 **During:** Check within 15 min. Verify chaining created next run.
-**After:** Trigger rebuild if needed. Verify data landed.
+**After:** Trigger rebuild if needed. Verify data landed **in the private repo**.
 **Collection MUST be chained:** Always use `-f chain=true -f remaining_batches=10`. `remaining_batches` defaults to 0 = NO CHAINING.
 For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
 

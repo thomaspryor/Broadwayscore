@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass, TierBadgeSmall } from '@/lib/critic-page-utils';
+import { ToggleBar } from '@/components/show-cards';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
 type TierFilter = 'all' | 1 | 2 | 3;
@@ -29,13 +30,6 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'highest', label: 'HIGHEST AVG' },
   { value: 'lowest', label: 'LOWEST AVG' },
   { value: 'alpha', label: 'A-Z' },
-];
-
-const TIER_OPTIONS: { value: TierFilter; label: string }[] = [
-  { value: 'all', label: 'ALL' },
-  { value: 1, label: 'TIER 1' },
-  { value: 2, label: 'TIER 2' },
-  { value: 3, label: 'TIER 3' },
 ];
 
 function OutletCard({ outlet }: { outlet: OutletSummary }) {
@@ -169,56 +163,42 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
 
       {/* Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-5 text-sm">
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Filter by tier">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">TIER:</span>
-          {TIER_OPTIONS.map(opt => (
-            <button
-              key={String(opt.value)}
-              onClick={() => setTierFilter(opt.value)}
-              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                tierFilter === opt.value
-                  ? 'text-brand bg-brand/10 sm:bg-transparent'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="TIER:"
+          options={[
+            { value: 'all', label: 'ALL' },
+            { value: '1', label: 'TIER 1' },
+            { value: '2', label: 'TIER 2' },
+            { value: '3', label: 'TIER 3' },
+          ]}
+          value={tierFilter === 'all' ? 'all' : String(tierFilter)}
+          onChange={(v) => setTierFilter(v === 'all' ? 'all' : (Number(v) as 1 | 2 | 3))}
+          ariaLabel="Filter by tier"
+          size="compact"
+        />
 
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Sort outlets">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {SORT_OPTIONS.map(opt => (
-            <button
-              key={opt.value}
-              onClick={() => setSortMode(opt.value)}
-              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                sortMode === opt.value
-                  ? 'text-brand bg-brand/10 sm:bg-transparent'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="SORT:"
+          options={SORT_OPTIONS.map(opt => ({ value: opt.value, label: opt.label }))}
+          value={sortMode}
+          onChange={setSortMode}
+          ariaLabel="Sort outlets"
+          size="compact"
+        />
 
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Minimum reviews">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">MIN:</span>
-          {[1, 5, 10, 25].map(n => (
-            <button
-              key={n}
-              onClick={() => setMinReviews(n)}
-              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                minReviews === n
-                  ? 'text-brand bg-brand/10 sm:bg-transparent'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {n === 1 ? 'ALL' : `${n}+`}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="MIN:"
+          options={[
+            { value: '1', label: 'ALL' },
+            { value: '5', label: '5+' },
+            { value: '10', label: '10+' },
+            { value: '25', label: '25+' },
+          ]}
+          value={String(minReviews)}
+          onChange={(v) => setMinReviews(Number(v))}
+          ariaLabel="Minimum reviews"
+          size="compact"
+        />
       </div>
 
       {/* Column Headers */}
