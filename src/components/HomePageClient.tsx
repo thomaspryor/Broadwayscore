@@ -7,7 +7,8 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
+import { getBroadwayDuration } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -71,18 +72,6 @@ function formatOpeningDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-function getBroadwayDuration(openingDate: string | null): string | null {
-  if (!openingDate) return null;
-  const open = new Date(openingDate);
-  const now = new Date();
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
-  if (months < 1) return 'Just opened';
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
-  const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
-  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
-}
 
 function SearchIcon() {
   return (
@@ -260,13 +249,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               status={show.status}
             />
             {audienceGrade && (
-              <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
-                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
-                title={audienceGrade.tooltip}
-              >
-                <span className="opacity-60">Audience:</span>
-                <span>{audienceGrade.grade}</span>
+              <div className="mt-1">
+                <AudienceChip grade={audienceGrade} />
               </div>
             )}
           </>
