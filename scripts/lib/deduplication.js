@@ -182,7 +182,15 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
   for (const [key, variants] of Object.entries(KNOWN_DUPLICATES)) {
     const matchesVariant = (title) => variants.some(v => {
       if (v === title) return true;
-      if (title.includes(v)) return true;
+      // Match title.includes(v) only if variant appears as a whole word/prefix
+      // Prevents "six" matching "sixteen wounded" while keeping "six" matching "six the musical"
+      if (title.includes(v)) {
+        const idx = title.indexOf(v);
+        const afterChar = title[idx + v.length];
+        // Variant must be at start or preceded by space, and followed by space/end
+        const atWordBoundary = (idx === 0 || title[idx - 1] === ' ') && (!afterChar || afterChar === ' ');
+        if (atWordBoundary) return true;
+      }
       // Only match v.includes(title) if title is at least 80% of variant length
       // Prevents "ann" matching "annie", "doubt" matching "doubtfire" etc.
       if (v.includes(title) && title.length >= v.length * 0.8) return true;
