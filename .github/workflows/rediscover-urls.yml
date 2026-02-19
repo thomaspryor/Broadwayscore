@@ -78,6 +78,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           CI: true
         run: |
           echo "=== Scheduled: Running URL discovery for all reason categories ==="
@@ -103,6 +104,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           CI: true
         run: node scripts/rediscover-review-urls.js ${{ steps.args.outputs.args }}
 
