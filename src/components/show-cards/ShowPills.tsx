@@ -36,6 +36,20 @@ export function FormatPill({ type }: { type: string }) {
   );
 }
 
+// Audience grade chip - small pill shown below critic score in critics mode
+export function AudienceChip({ grade }: { grade: { grade: string; color: string; tooltip: string } }) {
+  return (
+    <div
+      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+      style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
+      title={grade.tooltip}
+    >
+      <span className="opacity-60">Audience:</span>
+      <span>{grade.grade}</span>
+    </div>
+  );
+}
+
 // Production pill - solid muted fill
 export function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';

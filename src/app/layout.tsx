@@ -214,6 +214,7 @@ export default function RootLayout({
                   {featureFlags.creativePages && <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>}
                   {featureFlags.creativePages && <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>}
                   {featureFlags.creativePages && <li><Link href="/lyricists" className="hover:text-white transition-colors">Lyricists</Link></li>}
+                  {featureFlags.castPages && <li><Link href="/cast" className="hover:text-white transition-colors">Cast</Link></li>}
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>
