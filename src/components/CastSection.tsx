@@ -69,7 +69,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {isOpen && hasCurrentCast && (
           <>
             <div className="flex items-baseline justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Now Playing</h2>
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Current Cast</h2>
               {currentCastUpdatedAt && (
                 <span className="text-xs text-gray-500">Updated {formatDate(currentCastUpdatedAt)}</span>
               )}
