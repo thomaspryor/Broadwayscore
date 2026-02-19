@@ -101,6 +101,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -216,6 +221,13 @@ jobs:
         if: always()
         uses: ./.github/actions/check-file-sizes
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Final commit and push"
       - name: Final commit and push
         if: always()
         id: push
@@ -407,6 +419,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -517,6 +534,13 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Commit and push changes for ${{ matrix.outlet_tier }}"
       - name: Commit and push changes for ${{ matrix.outlet_tier }}
         if: always()
         run: |

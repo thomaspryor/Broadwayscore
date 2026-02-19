@@ -30,6 +30,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Check if queue has items
         id: check_queue
         run: |
@@ -86,6 +91,13 @@ jobs:
             echo "$CHANGED file(s) changed."
           fi
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Adjudicate Review Queue — Commit and push"
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
         run: |

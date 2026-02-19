@@ -26,6 +26,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,6 +39,30 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Detect and auto-fix critic typos
+        id: typos
+        run: |
+          node scripts/detect-critic-typos.js
+          # Commit auto-aliases if changed
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/auto-critic-aliases.json
+          if git diff --staged --quiet; then
+            echo "No new critic typos detected"
+            echo "new_typos=0" >> $GITHUB_OUTPUT
+          else
+            NEW=$(git diff --staged --stat | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "0")
+            echo "new_typos=$NEW" >> $GITHUB_OUTPUT
+            git commit -m "data: Auto-detect critic name typos"
+            for i in 1 2 3 4 5; do
+              git push origin main && break
+              echo "Push attempt $i failed, rebasing..."
+              sleep $((RANDOM % 10 + 5))
+              git fetch origin main
+              git rebase -X theirs origin/main
+            done
+          fi
 
       - name: Run dedup cleanup
         id: dedup
@@ -48,6 +77,13 @@ jobs:
           echo "dedup_total=$TOTAL" >> $GITHUB_OUTPUT
           echo "dedup_summary=Outlet:$OUTLET Critic:$CRITIC CrossShow:$CROSS URL:$URL" >> $GITHUB_OUTPUT
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Weekly Data Integrity Check — Commit dedup cleanup"
       - name: Commit dedup cleanup
         if: always()
         run: |
@@ -132,6 +168,13 @@ jobs:
             }
           "
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Weekly Data Integrity Check — Commit cleanup"
       - name: Commit cleanup
         if: always()
         run: |
