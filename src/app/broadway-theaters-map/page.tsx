@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllTheaters } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Broadway Theaters Map - All NYC Theater Venues',
@@ -56,15 +57,10 @@ export default function TheatersMapPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">Broadway Theaters</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Broadway Theaters' },
+        ]} />
 
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">

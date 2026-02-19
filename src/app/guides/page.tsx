@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { GUIDE_PAGES } from '@/config/guide-pages';
 import { getGuideList } from '@/lib/data-guides';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Broadway Guides - Expert-Curated Show Recommendations',
@@ -45,13 +46,10 @@ export default function GuidesIndexPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">Guides</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Guides' },
+        ]} />
 
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
