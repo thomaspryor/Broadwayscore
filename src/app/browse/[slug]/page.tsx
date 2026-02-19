@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
 import { getShowGrosses } from '@/lib/data-grosses';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
-import { getOptimizedImageUrl } from '@/lib/images';
-import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
+import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
-import { ScoreBadge } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
+import BrowseListClient from '@/components/BrowseListClient';
+import type { BrowseShow } from '@/components/BrowseListClient';
 
 export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
@@ -56,15 +58,28 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function RankBadge({ rank }: { rank: number }) {
-  const isTop3 = rank <= 3;
-  return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-      isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
-    }`}>
-      {rank}
-    </div>
-  );
+// Determine which sort options make sense for this page
+function getAvailableSorts(config: { sort?: string; slug: string }): Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances'> {
+  const sorts: Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances'> = [];
+
+  // Always offer score sort
+  sorts.push('score');
+
+  // Add context-appropriate sorts
+  if (config.sort === 'performances') {
+    sorts.push('performances');
+  }
+  if (config.slug === 'broadway-shows-closing-soon') {
+    sorts.push('closing');
+  }
+  if (config.slug.includes('new-broadway') || config.slug === 'upcoming-broadway-shows' || config.slug.includes('-season')) {
+    sorts.push('newest');
+  }
+
+  // Always offer A-Z
+  sorts.push('alpha');
+
+  return sorts;
 }
 
 export default function BrowsePage({ params }: { params: { slug: string } }) {
@@ -123,6 +138,44 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
 
+  // Compute display flags
+  const isMixedType = new Set(shows.map(s => s.type)).size > 1;
+  const statuses = new Set(shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const isMixedStatus = statuses.size > 1;
+  const hasPerformanceData = config.sort === 'performances';
+
+  // Serialize shows with audience data for client
+  const serializedShows: BrowseShow[] = shows.map(show => {
+    const buzz = getAudienceBuzz(show.id);
+    const grosses = hasPerformanceData ? getShowGrosses(show.slug) : null;
+    return {
+      id: show.id,
+      slug: show.slug,
+      title: show.title,
+      venue: show.venue,
+      openingDate: show.openingDate,
+      closingDate: show.closingDate ?? undefined,
+      status: show.status,
+      type: show.type,
+      isRevival: show.isRevival ?? undefined,
+      runtime: show.runtime ?? undefined,
+      images: show.images,
+      criticScore: show.criticScore
+        ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
+        : undefined,
+      audienceCombinedScore: buzz?.combinedScore ?? null,
+      audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      performances: grosses?.allTime?.performances ?? undefined,
+    };
+  });
+
+  // Determine available sorts and filters for this page
+  const availableSorts = getAvailableSorts(config);
+  const showTypeFilter = isMixedType;
+  // Show score toggle on pages that aren't specifically about critic rankings
+  // Season pages, general browse, closing soon etc. all make sense for audience toggle
+  const showScoreToggle = true;
+
   return (
     <>
       <script
@@ -130,17 +183,11 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">{config.title}</li>
-          </ol>
-        </nav>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: config.title },
+        ]} />
 
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
@@ -174,91 +221,18 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Show List */}
-        {shows.length > 0 ? (
-          <div className="space-y-3 sm:space-y-4">
-            {shows.map((show, index) => (
-              <Link
-                key={show.id}
-                href={`/show/${show.slug}`}
-                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
-              >
-                {config.limit !== 1 && <RankBadge rank={index + 1} />}
-
-                {/* Thumbnail - smaller on mobile */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                  {show.images?.thumbnail ? (
-                    <img
-                      src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                      alt={`${show.title} Broadway ${show.type}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xl sm:text-2xl">🎭</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
-                    {show.title}
-                  </h2>
-                  <p className="text-gray-400 text-xs sm:text-sm truncate">
-                    {show.venue} {show.runtime && `• ${show.runtime}`}
-                  </p>
-                  {config.sort === 'performances' ? (
-                    (() => {
-                      const grosses = getShowGrosses(show.slug);
-                      const performances = grosses?.allTime?.performances;
-                      return performances ? (
-                        <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
-                          {performances.toLocaleString()} performances
-                        </p>
-                      ) : null;
-                    })()
-                  ) : show.status === 'previews' ? (
-                    <p className="text-purple-400 text-xs mt-0.5 sm:mt-1">
-                      Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </p>
-                  ) : show.closingDate ? (
-                    <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
-                      {show.status === 'closed' ? 'Closed' : 'Closes'} {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </p>
-                  ) : show.status === 'open' && (
-                    <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
-                      Now Playing
-                    </p>
-                  )}
-                </div>
-
-                {/* Score - slightly smaller on mobile */}
-                <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} size="sm" />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="card p-6 sm:p-8 text-center">
-            <div className="text-3xl sm:text-4xl mb-4">🎭</div>
-            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">No Shows Currently</h2>
-            <p className="text-gray-400 text-sm sm:text-base mb-6">
-              There are no shows matching this category right now. Check back soon as Broadway is always changing!
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {relatedPages.slice(0, 3).map(page => (
-                <Link
-                  key={page.slug}
-                  href={`/browse/${page.slug}`}
-                  className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center"
-                >
-                  {page.title.replace('Best ', '').replace('Broadway ', '')}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Interactive Show List */}
+        <BrowseListClient
+          shows={serializedShows}
+          showRanks={config.limit !== 1}
+          isMixedType={isMixedType}
+          isMixedStatus={isMixedStatus}
+          defaultSort={config.sort || 'score'}
+          hasPerformanceData={hasPerformanceData}
+          availableSorts={availableSorts}
+          showTypeFilter={showTypeFilter}
+          showScoreToggle={showScoreToggle}
+        />
 
         {/* Related Categories */}
         {relatedPages.length > 0 && (

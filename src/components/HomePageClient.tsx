@@ -71,6 +71,19 @@ function formatOpeningDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
+function getBroadwayDuration(openingDate: string | null): string | null {
+  if (!openingDate) return null;
+  const open = new Date(openingDate);
+  const now = new Date();
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  if (months < 1) return 'Just opened';
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
+  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
+}
+
 function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,6 +109,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   let tier: ScoreTier | null = null;
   let audienceGrade: HomepageShow['audienceGrade'] = null;
 
+  // Always compute critic score/tier for the chip in audience mode
+  const criticScore = show.criticScore?.score;
+  const criticTier = getScoreTier(criticScore);
+
   if (scoreMode === 'audience') {
     if (show.audienceCombinedScore != null && show.status !== 'previews') {
       score = show.audienceCombinedScore;
@@ -108,6 +125,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   } else {
     score = show.criticScore?.score;
     tier = getScoreTier(score);
+    // Always get audience grade for the chip below critic score
+    audienceGrade = show.audienceGrade;
   }
 
   return (
@@ -116,7 +135,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       prefetch={false}
       role="listitem"
       data-testid="show-card"
-      className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
@@ -158,21 +177,30 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         <p className="text-sm text-gray-400 mt-2.5 truncate">
           {show.status === 'previews' ? (
             <>Opens {formatOpeningDate(show.openingDate)}</>
-          ) : show.closingDate ? (
-            <>
-              <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatOpeningDate(show.closingDate)}</span>
-              <span className="text-gray-500"> • Opened {formatOpeningDate(show.openingDate)}</span>
-            </>
+          ) : show.status === 'closed' ? (
+            <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
           ) : (
-            <>Opened {formatOpeningDate(show.openingDate)}</>
+            <>
+              {getBroadwayDuration(show.openingDate)}
+              {show.closingDate && (
+                <span className="text-amber-400"> · Closes {formatOpeningDate(show.closingDate)}</span>
+              )}
+            </>
           )}
         </p>
       </div>
 
+      {/* Review Year Note - between info and score (hidden on mobile) */}
+      {show.reviewYearNote && scoreMode === 'critics' && (
+        <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
+          {show.reviewYearNote}
+        </span>
+      )}
+
       {/* Score Badge */}
-      <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
+      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24 overflow-visible">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show letter grade badge (matches critic score badge layout)
+          // Audience mode: Big audience grade + small critic chip below
           audienceGrade ? (
             <>
               <span
@@ -193,6 +221,16 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               >
                 {audienceGrade.grade}
               </div>
+              {criticScore != null && (
+                <div
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
+                  style={{ backgroundColor: `${criticTier?.color ?? '#6b7280'}20`, color: criticTier?.color ?? '#6b7280' }}
+                  title={criticTier?.tooltip}
+                >
+                  <span className="opacity-60">Critics:</span>
+                  <span>{Math.round(criticScore)}</span>
+                </div>
+              )}
             </>
           ) : show.status === 'previews' ? (
             <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
@@ -200,7 +238,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             </div>
           ) : null
         ) : (
-          // Critics mode: Show tier label + numeric score badge
+          // Critics mode: Show tier label + numeric score badge + audience chip
           <>
             {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
@@ -221,10 +259,15 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
             />
-            {show.reviewYearNote && show.status !== 'closed' && (
-              <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight mt-1">
-                {show.reviewYearNote}
-              </span>
+            {audienceGrade && (
+              <div
+                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
+                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
+                title={audienceGrade.tooltip}
+              >
+                <span className="opacity-60">Audience:</span>
+                <span>{audienceGrade.grade}</span>
+              </div>
             )}
           </>
         )}
@@ -600,9 +643,9 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Hero - Large heading on desktop only */}
-      <div className="mb-6 sm:mb-8">
+      <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
@@ -616,7 +659,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
 
       {/* Best Recent Musicals - Featured Shelf */}
       {bestNewMusicals.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
             <Link
@@ -636,7 +679,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       )}
 
       {/* Search */}
-      <div id="search" className="relative mb-6 scroll-mt-24" role="search">
+      <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
         <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
@@ -653,15 +696,15 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Type Pills & Score Mode Toggle Row */}
-      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
         {/* Type Filter Pills (Left) */}
-        <div className="flex items-center gap-1.5 sm:gap-2" role="group" aria-label="Filter by type">
+        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
           {(['all', 'musical', 'play'] as const).map((t) => (
             <button
               key={t}
               onClick={() => updateParams({ type: t })}
               aria-pressed={type === t}
-              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
                 type === t
                   ? 'bg-brand text-gray-900 shadow-glow-sm'
                   : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
@@ -672,27 +715,29 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           ))}
         </div>
 
-        {/* Score Mode Toggle (Right) - Segmented Control Style */}
-        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
-          {(['audience', 'critics'] as const).map((mode) => (
+        {/* Score Mode Picker (Right) - Variant comparison for preview */}
+        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
+          {([
+            { key: 'critics', label: 'Critics' },
+            { key: 'audience', label: 'Audience' },
+          ] as const).map(({ key, label }) => (
             <button
-              key={mode}
+              key={key}
               onClick={() => {
-                // When switching to audience mode, auto-set sort to highest
-                if (mode === 'audience') {
-                  updateParams({ scoreMode: mode, sort: 'score_desc' });
+                if (key === 'audience') {
+                  updateParams({ scoreMode: key, sort: 'score_desc' });
                 } else {
-                  updateParams({ scoreMode: mode });
+                  updateParams({ scoreMode: key });
                 }
               }}
-              aria-pressed={scoreMode === mode}
-              className={`px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
-                scoreMode === mode
+              aria-pressed={scoreMode === key}
+              className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
+                scoreMode === key
                   ? 'bg-brand text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
-              {mode === 'critics' ? 'Critics' : 'Audience'}
+              {label}
             </button>
           ))}
         </div>
@@ -770,7 +815,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Score Legend */}
-      {scoreMode === 'audience' ? (
+      {scoreMode === 'audience' && !scoreMode.startsWith('both') ? (
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
           <div className="flex items-center gap-1.5 cursor-help" title="Audiences love it">
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
