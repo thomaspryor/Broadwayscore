@@ -24,32 +24,31 @@ interface CreativeProfileSummary {
 function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfileSummary; routePath: string; showObc?: boolean }) {
   const href = profile.unifiedSlug ? `/creative/${profile.unifiedSlug}` : `/${routePath}/${profile.slug}`;
   const replacementCount = profile.obcCount !== undefined ? profile.showCount - profile.obcCount : 0;
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImg = profile.headshot && !imgFailed;
   return (
     <Link
       href={href}
       className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
     >
       {/* Avatar */}
-      {profile.headshot ? (
+      {showImg ? (
         <img
-          src={profile.headshot}
+          src={profile.headshot!}
           alt=""
           width={40}
           height={40}
           loading="lazy"
           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-          onError={(e) => {
-            const el = e.currentTarget;
-            el.style.display = 'none';
-            (el.nextElementSibling as HTMLElement)?.classList.remove('hidden');
-          }}
+          onError={() => setImgFailed(true)}
         />
-      ) : null}
-      <div className={`w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 ${profile.headshot ? 'hidden' : ''}`}>
-        <span className="text-white font-bold text-sm">
-          {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
-        </span>
-      </div>
+      ) : (
+        <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
+          <span className="text-white font-bold text-sm">
+            {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+          </span>
+        </div>
+      )}
 
       {/* Info */}
       <div className="flex-1 min-w-0">
@@ -204,6 +203,7 @@ export default function CreativeIndexClient({
             placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
             value={search}
             onChange={(e) => { setSearch(e.target.value); setVisibleCount(100); }}
+            aria-label={`Search ${categoryLabel.toLowerCase()}`}
             className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
           />
         </div>
@@ -235,7 +235,7 @@ export default function CreativeIndexClient({
                 : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
             }`}
           >
-            OBC Only
+            <span title="Original Broadway Cast">OBC</span> Only
           </button>
         </div>
       )}
@@ -246,6 +246,7 @@ export default function CreativeIndexClient({
         <button
           className="flex-1 min-w-0 text-left group/sort"
           onClick={() => handleSort('name')}
+          aria-sort={sortCol === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'name' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
@@ -257,17 +258,19 @@ export default function CreativeIndexClient({
           <button
             className="w-10 text-center flex-shrink-0 group/sort"
             onClick={() => handleSort('obc')}
+            aria-sort={sortCol === 'obc' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
           >
             <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
               sortCol === 'obc' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
             }`}>
-              OBC<SortArrow active={sortCol === 'obc'} dir={sortDir} />
+              <span title="Original Broadway Cast">OBC</span><SortArrow active={sortCol === 'obc'} dir={sortDir} />
             </span>
           </button>
         )}
         <button
           className="w-12 text-center flex-shrink-0 group/sort"
           onClick={() => handleSort('shows')}
+          aria-sort={sortCol === 'shows' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'shows' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
@@ -278,6 +281,7 @@ export default function CreativeIndexClient({
         <button
           className="w-11 text-center flex-shrink-0 ml-1 group/sort"
           onClick={() => handleSort('avg')}
+          aria-sort={sortCol === 'avg' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
             sortCol === 'avg' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'

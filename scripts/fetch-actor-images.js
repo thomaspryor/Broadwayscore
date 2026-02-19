@@ -89,6 +89,8 @@ async function queryWikipediaBatch(names) {
   if (data.query?.pages) {
     for (const page of Object.values(data.query.pages)) {
       if (page.thumbnail?.source) {
+        // Skip SVG files (logos, icons — not actual headshots)
+        if (/\.svg/i.test(page.thumbnail.source)) continue;
         const pageTitle = page.title;
         results.set(pageTitle, {
           imageUrl: page.thumbnail.source,
