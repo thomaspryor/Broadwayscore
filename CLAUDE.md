@@ -35,6 +35,29 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
 - **Secret:** `VERCEL_TOKEN` (CLI auth)
 
+**"Pushed" ≠ "Deployed" — NEVER declare work complete after just pushing.** Deploys take ~13 min and often fail (rate limits, build errors, timeouts). After pushing code that triggers a deploy:
+1. **Confirm the workflow triggered:** `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion,createdAt,databaseId`
+2. **If you have other work to do**, do it while the deploy runs. Check back before wrapping up.
+3. **Before ending the session**, check deploy status: `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion -q '.[0]'`
+   - If `completed` + `success`: verify production looks correct, THEN say "done"
+   - If `completed` + `failure`: investigate and fix. Do NOT leave a failed deploy for the next session.
+   - If still `in_progress`: tell the user "Deploy is still running (run #ID). Check back in X minutes." Do NOT say "all done."
+
+### 3b. Commit Frequently — Uncommitted Work WILL Be Lost (MANDATORY)
+**Multiple sessions run concurrently. Any session can run out of context at any time. Uncommitted changes are destroyed by: context expiration, other sessions doing git operations, stash pops, branch switches, or linters.**
+
+**Commit vs Push — different cadences:**
+- **Commit locally after each logical unit of work** — one component extracted, one bug fixed, one page updated. Never accumulate more than 1-2 changed files without committing. Commits are free and instant.
+- **Push at natural checkpoints** — after completing a sprint task, after a feature works end-to-end, or before starting QA. Pushes to `main` that touch `src/` trigger a ~13 min deploy workflow, so don't push every 5 minutes. But DO push at least every 30 min or after each major milestone — a local-only commit is still vulnerable to other sessions doing `git checkout` or `git stash pop`.
+
+**Other rules:**
+- **If you've been working for 15+ minutes without committing, stop and commit NOW.** A WIP commit is infinitely better than lost work.
+- **Before starting visual QA or testing, commit AND push first.** QA often runs out of context. If changes aren't committed, the QA session's feedback is useless because the code it reviewed no longer exists.
+- **Commit messages for WIP are fine:** `git commit -m "wip: extract StatGrid component"` — clean up later with a final commit message if needed.
+- **Never batch all changes into one final commit.** This is the #1 cause of lost work. A session that modifies 25 files across 4 features and never commits WILL lose everything.
+
+**Why this rule exists:** A session completed 4 component extractions across ~25 files but never committed. The session ran out of context. Another session's git operation overwrote the working tree. Hours of work permanently lost.
+
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
 

@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass, TierBadgeSmall } from '@/lib/critic-page-utils';
 import { ToggleBar } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
 type TierFilter = 'all' | 1 | 2 | 3;
@@ -118,13 +119,11 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5"><Link href="/critics" className="hover:text-brand transition-colors">Critics</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300" aria-current="page">Outlets</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Critics', href: '/critics' },
+        { label: 'Outlets' },
+      ]} />
 
       {/* Header */}
       <div className="mb-6">
