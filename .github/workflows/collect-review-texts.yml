@@ -544,7 +544,7 @@ jobs:
       - name: Commit and push changes for ${{ matrix.outlet_tier }}
         if: always()
         run: |
-          git add
+          # review-texts now pushed via push-review-texts composite action
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else

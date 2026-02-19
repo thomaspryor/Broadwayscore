@@ -229,7 +229,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add
+          # review-texts now pushed via push-review-texts composite action
           git add data/reviews.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -271,11 +271,18 @@ jobs:
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
-            const body = '## ✅ Review Successfully Added!\n\n' +
+            const body = '## ✅ Review Successfully Added!
+
+' +
               'The review has been scraped and added to our database. ' +
-              'It will appear on the site within a few minutes after the next deployment.\n\n' +
-              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
-              '---\n' +
+              'It will appear on the site within a few minutes after the next deployment.
+
+' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭
+
+' +
+              '---
+' +
               '*Added by automated system • ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -303,10 +310,17 @@ jobs:
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
-            const body = '## ⚠️ Scraping Failed\n\n' +
-              'The review validation passed, but we encountered an error while scraping the review content.\n\n' +
-              'A maintainer will investigate and manually add the review if possible.\n\n' +
-              '---\n' +
+            const body = '## ⚠️ Scraping Failed
+
+' +
+              'The review validation passed, but we encountered an error while scraping the review content.
+
+' +
+              'A maintainer will investigate and manually add the review if possible.
+
+' +
+              '---
+' +
               '*Error occurred at ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,

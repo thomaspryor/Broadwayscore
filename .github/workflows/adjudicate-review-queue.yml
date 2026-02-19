@@ -104,7 +104,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add
+          # review-texts now pushed via push-review-texts composite action
 
           CHANGED=${{ steps.changes.outputs.changed_count }}
           git commit -m "data: Auto-adjudicate $CHANGED review(s) from queue

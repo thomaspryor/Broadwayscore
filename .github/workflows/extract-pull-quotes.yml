@@ -95,7 +95,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # Stage all review-text changes
-          git add
+          # review-texts now pushed via push-review-texts composite action
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
