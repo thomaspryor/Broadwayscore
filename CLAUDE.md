@@ -72,7 +72,28 @@ Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
 When finishing: update the issue body + post a comment summarizing what was done.
 **Rabbit hole prevention:** New discoveries → Backlog comment. Don't context-switch.
 
-### 10. Pipeline Operations — Test, Monitor, Parallelize
+### 10. Planning & Testing for Infrastructure Changes (MANDATORY)
+For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data pipelines**, or **cross-repo operations**:
+
+**Planning phase:**
+1. Write the plan (what changes, where, why)
+2. Have a separate agent review the plan for gaps (use `/critique` for high-stakes changes)
+3. **Explicitly list assumptions** that could be wrong (e.g., "git add on gitignored path is a no-op" — it's NOT, it returns exit code 1)
+4. **Include a testing phase in the plan itself** — not as afterthought, but as a numbered phase with specific workflows to test
+
+**Testing phase (before declaring done):**
+1. **Test at least 3 representative workflows** — one simple (NYSR), one complex (rebuild), one write-heavy (collect-review-texts)
+2. **Wait for runs to complete** and check ALL step statuses (not just overall pass/fail)
+3. **Check for interaction effects** — gitignore + git add, nested repos + file size checks, composite actions + error handling
+4. **Test the failure path** — what happens when a step fails? Does `if: always()` work? Do subsequent steps still run?
+
+**Common gotchas to check:**
+- `git add <gitignored-path>` → exit code 1 (not a silent no-op)
+- Nested `.git` directories from multi-repo checkouts → triggers size checks, confuses git commands
+- `set -e` in bash steps → any non-zero exit kills the step, even from benign commands
+- Parallel sessions switching branches → always verify branch before commit, or use Git Data API
+
+### 11. Pipeline Operations — Test, Monitor, Parallelize
 **Before:** Verify secrets (test 1 workflow first), check slots (<35 in-progress), 10s+ spacing between `gh workflow run`, shard scoring to 10 (`-f shard=N -f total_shards=10`).
 **During:** Check within 15 min. Verify chaining created next run.
 **After:** Trigger rebuild if needed. Verify data landed.
