@@ -231,12 +231,19 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
                 {tier.label}
               </span>
             ) : null}
-            <ScoreBadge
-              score={score}
-              size="lg"
-              reviewCount={show.criticScore?.reviewCount}
-              status={show.status}
-            />
+            <div className="flex items-center gap-1.5">
+              {show.reviewYearNote && (
+                <span className="text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem]">
+                  {show.reviewYearNote}
+                </span>
+              )}
+              <ScoreBadge
+                score={score}
+                size="lg"
+                reviewCount={show.criticScore?.reviewCount}
+                status={show.status}
+              />
+            </div>
             {audienceGrade && (
               <div
                 className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
