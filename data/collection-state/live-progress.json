@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-19T09:23:50.573Z",
-  "processed": 20,
-  "failed": 30,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-19T09:25:14.534Z",
+  "processed": 46,
+  "failed": 54,
+  "successRate": "46.0%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 6
+    "archiveToday": 37,
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-19T08:43:49.847Z",
+      "event": "bb-session",
+      "session": "4a7b1f36",
+      "url": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html"
+    },
+    {
+      "t": "2026-02-19T08:43:52.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:45:06.373Z",
+      "event": "bb-session",
+      "session": "63be3269",
+      "url": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holm"
+    },
+    {
+      "t": "2026-02-19T08:45:08.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:46:24.407Z",
+      "event": "bb-session",
+      "session": "3d9d0d1f",
+      "url": "https://www.nytimes.com/2009/04/28/theater/reviews/28desire.html"
+    },
+    {
+      "t": "2026-02-19T08:46:26.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:47:45.142Z",
+      "event": "bb-session",
+      "session": "5a4d95b1",
+      "url": "https://www.nytimes.com/2008/11/21/theater/reviews/21estate.html"
+    },
+    {
+      "t": "2026-02-19T08:47:47.489Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:49:15.724Z",
+      "event": "bb-session",
+      "session": "a3b34d46",
+      "url": "https://www.nytimes.com/2010/10/26/theater/reviews/26daisy.html"
+    },
+    {
+      "t": "2026-02-19T08:49:18.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:50:45.005Z",
+      "event": "bb-session",
+      "session": "0fec0404",
+      "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html#:~:text=Revi"
+    },
+    {
+      "t": "2026-02-19T08:50:47.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:51:59.513Z",
+      "event": "bb-session",
+      "session": "9efa144a",
+      "url": "http://theater.nytimes.com/2010/04/28/theater/reviews/28enron.html?ref=theater"
+    },
+    {
+      "t": "2026-02-19T08:52:01.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:53:28.478Z",
+      "event": "bb-session",
+      "session": "b9c0870c",
+      "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html"
+    },
+    {
+      "t": "2026-02-19T08:53:30.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:54:48.234Z",
+      "event": "bb-session",
+      "session": "d1a475f7",
+      "url": "http://theater.nytimes.com/2010/04/30/theater/reviews/30everyday.html?ref=theate"
+    },
+    {
+      "t": "2026-02-19T08:54:50.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T08:56:02.931Z",
+      "event": "bb-session",
+      "session": "9bbc6fd9",
+      "url": "https://www.nytimes.com/2010/04/30/theater/reviews/30rapture.html"
+    },
+    {
+      "t": "2026-02-19T08:56:05.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
