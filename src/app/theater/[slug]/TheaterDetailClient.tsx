@@ -1,0 +1,212 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+
+export interface TheaterShow {
+  id: string;
+  slug: string;
+  title: string;
+  openingDate: string;
+  closingDate?: string;
+  status: string;
+  type: string;
+  isRevival?: boolean;
+  images?: { thumbnail?: string; poster?: string; hero?: string };
+  criticScore?: { score?: number; reviewCount?: number };
+  audienceCombinedScore: number | null;
+  audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
+}
+
+type ScoreMode = 'critics' | 'audience';
+type SortMode = 'newest' | 'highest' | 'alpha';
+
+function getBroadwayDuration(openingDate: string | null): string | null {
+  if (!openingDate) return null;
+  const open = new Date(openingDate);
+  const now = new Date();
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  if (months < 1) return 'Just opened';
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
+  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
+}
+
+export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] }) {
+  const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
+  const [sortMode, setSortMode] = useState<SortMode>('newest');
+  const [typeFilter, setTypeFilter] = useState<'all' | 'musical' | 'play'>('all');
+
+  const hasAnyAudienceData = useMemo(
+    () => shows.some(s => s.audienceCombinedScore !== null),
+    [shows]
+  );
+
+  const isMixedType = useMemo(() => {
+    const types = new Set(shows.map(s => s.type));
+    return types.size > 1;
+  }, [shows]);
+
+  const filtered = useMemo(() => {
+    if (typeFilter === 'all') return shows;
+    return shows.filter(s => s.type === typeFilter);
+  }, [shows, typeFilter]);
+
+  const sorted = useMemo(() => {
+    const list = [...filtered];
+    switch (sortMode) {
+      case 'newest':
+        return list.sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime());
+      case 'highest': {
+        const getScore = (s: TheaterShow) =>
+          scoreMode === 'audience' ? (s.audienceCombinedScore ?? -1) : (s.criticScore?.score ?? -1);
+        return list.sort((a, b) => getScore(b) - getScore(a));
+      }
+      case 'alpha':
+        return list.sort((a, b) => a.title.localeCompare(b.title));
+    }
+  }, [filtered, sortMode, scoreMode]);
+
+  return (
+    <div>
+      {/* Single row: type pills (left) + sort + toggle (right) */}
+      <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Type filter */}
+          {isMixedType && (
+            <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
+              {(['all', 'musical', 'play'] as const).map(t => (
+                <button
+                  key={t}
+                  onClick={() => setTypeFilter(t)}
+                  aria-pressed={typeFilter === t}
+                  className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+                    typeFilter === t
+                      ? 'bg-brand text-gray-900 shadow-glow-sm'
+                      : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+                  }`}
+                >
+                  {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Sort */}
+          <div className="flex items-center gap-0.5 sm:gap-2" role="group" aria-label="Sort shows">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
+            {(['newest', 'highest', 'alpha'] as const).map(s => (
+              <button
+                key={s}
+                onClick={() => setSortMode(s)}
+                aria-pressed={sortMode === s}
+                className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 ${
+                  sortMode === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {s === 'newest' ? 'Newest' : s === 'highest' ? 'Highest' : 'A-Z'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Critics/Audience toggle */}
+        {hasAnyAudienceData && (
+          <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
+            {([
+              { key: 'critics' as const, label: 'Critics' },
+              { key: 'audience' as const, label: 'Audience' },
+            ]).map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => {
+                  setScoreMode(key);
+                  if (key === 'audience') setSortMode('highest');
+                }}
+                aria-pressed={scoreMode === key}
+                className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
+                  scoreMode === key
+                    ? 'bg-brand text-gray-900 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-300'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Show list */}
+      <div className="space-y-2">
+        {sorted.map(show => {
+          const isOpen = show.status === 'open' || show.status === 'previews';
+          const displayScore = scoreMode === 'audience'
+            ? (show.audienceCombinedScore ?? undefined)
+            : show.criticScore?.score;
+
+          return (
+            <Link
+              key={show.id}
+              href={`/show/${show.slug}`}
+              className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group ${
+                isOpen ? 'border border-status-open/20' : ''
+              }`}
+            >
+              <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                {show.images?.thumbnail ? (
+                  <img src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')} alt={show.title} className="w-full h-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center"><span className="text-lg sm:text-xl">🎭</span></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">{show.title}</h3>
+                  {isOpen && <span className="w-1.5 h-1.5 rounded-full bg-status-open flex-shrink-0" />}
+                </div>
+                <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs text-gray-500">
+                  <FormatPill type={show.type} />
+                  {show.isRevival && <ProductionPill isRevival={true} />}
+                  {isOpen ? (() => {
+                    const duration = getBroadwayDuration(show.openingDate);
+                    return <>
+                      {duration && (
+                        <span>{duration}</span>
+                      )}
+                      {show.closingDate && (
+                        <span className="text-amber-400">
+                          · Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      )}
+                    </>;
+                  })() : (
+                    <span>
+                      {show.openingDate ? new Date(show.openingDate).getFullYear() : ''}
+                      {show.closingDate && show.openingDate ? ` – ${new Date(show.closingDate).getFullYear()}` : show.closingDate ? new Date(show.closingDate).getFullYear() : ''}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <ScoreBadge score={displayScore} size="sm" status={show.status} />
+            </Link>
+          );
+        })}
+      </div>
+
+      {sorted.length === 0 && (
+        <div className="card p-8 text-center">
+          <p className="text-gray-400">No shows match the current filter.</p>
+        </div>
+      )}
+
+      <p className="text-center text-sm text-gray-500 mt-6">
+        {sorted.length} show{sorted.length !== 1 ? 's' : ''}
+      </p>
+    </div>
+  );
+}
