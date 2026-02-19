@@ -236,7 +236,7 @@ function validateDates(shows) {
 
     // Closing before opening = data error (or COVID show that never opened — should null openingDate)
     if (show.openingDate && show.closingDate && show.closingDate < show.openingDate) {
-      error(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);
+      warn(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);
     }
 
     // Previews after opening
