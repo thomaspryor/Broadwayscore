@@ -414,14 +414,10 @@ async function fetchFromIBDB(show) {
     console.log(`   ⚠ IBDB SERP search failed: ${err.message}`);
   }
 
-  // Fallback: construct URL from title slug
+  // No fallback URL construction — IBDB bare slugs without numeric production IDs
+  // redirect to homepage. Skip IBDB image search if no real URL is available.
   if (!ibdbUrl) {
-    const slug = show.title.toLowerCase()
-      .replace(/['']/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-    ibdbUrl = `https://www.ibdb.com/broadway-production/${slug}`;
-    console.log(`   Trying constructed IBDB URL: ${ibdbUrl}`);
+    console.log(`   No IBDB URL available for "${show.title}" — skipping IBDB image search`);
   }
 
   await sleep(1500);
