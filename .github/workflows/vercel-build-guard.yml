@@ -1,0 +1,50 @@
+name: Vercel Build Guard
+
+# Self-healing check: ensures git-triggered builds stay blocked on Vercel.
+# Without this, every pipeline commit triggers a Vercel build ($0.015/min).
+# 39,176 accidental builds cost $3,500 in Feb 2026 before this was caught.
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Vercel build guard setting
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
+
+          SETTING=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/$PROJECT_ID" \
+            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'NOT SET')")
+
+          echo "Current setting: '$SETTING'"
+
+          if [ "$SETTING" = "exit 0" ]; then
+            echo "Build guard is active. All good."
+            exit 0
+          fi
+
+          echo "::error::Build guard is NOT 'exit 0' — it is '$SETTING'. Restoring now..."
+
+          # Auto-fix: restore the guard
+          RESULT=$(curl -s -X PATCH \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.vercel.com/v9/projects/$PROJECT_ID" \
+            -d '{"commandForIgnoringBuildStep":"exit 0"}')
+
+          VERIFY=$(echo "$RESULT" | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'FAILED')")
+          echo "After fix: '$VERIFY'"
+
+          if [ "$VERIFY" = "exit 0" ]; then
+            echo "::warning::Build guard was missing and has been restored. Check Vercel billing for unwanted builds."
+          else
+            echo "::error::Failed to restore build guard! Manual intervention required."
+            exit 1
+          fi
