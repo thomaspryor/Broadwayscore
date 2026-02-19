@@ -105,7 +105,7 @@ const BROADWAY_THEATERS = {
     canonical: 'Shubert Theatre',
     address: '225 W 44th St',
     seats: 1460,
-    aliases: []
+    aliases: ['Sam S. Shubert Theatre']
   },
   'winter-garden': {
     canonical: 'Winter Garden Theatre',
@@ -125,7 +125,8 @@ const BROADWAY_THEATERS = {
     canonical: 'Gershwin Theatre',
     address: '222 W 51st St',
     seats: 1933,
-    aliases: []
+    aliases: ['Uris Theatre'],
+    renamed: '1983-06-01'
   },
   'lena-horne': {
     canonical: 'Lena Horne Theatre',
@@ -156,7 +157,7 @@ const BROADWAY_THEATERS = {
     canonical: 'Nederlander Theatre',
     address: '208 W 41st St',
     seats: 1232,
-    aliases: ['National Theatre', 'Billy Rose Theatre']
+    aliases: ['National Theatre', 'Billy Rose Theatre', 'Trafalgar Theatre']
   },
   'neil-simon': {
     canonical: 'Neil Simon Theatre',
@@ -182,7 +183,7 @@ const BROADWAY_THEATERS = {
     canonical: 'August Wilson Theatre',
     address: '245 W 52nd St',
     seats: 1222,
-    aliases: ['Virginia Theatre'],
+    aliases: ['Virginia Theatre', 'ANTA Theatre', 'ANTA Playhouse'],
     renamed: '2005-10-16'
   },
   'al-hirschfeld': {
@@ -231,7 +232,7 @@ const BROADWAY_THEATERS = {
     canonical: 'Todd Haimes Theatre',
     address: '227 W 42nd St',
     seats: 1024,
-    aliases: ['American Airlines Theatre'],
+    aliases: ['American Airlines Theatre', 'Selwyn Theatre'],
     renamed: '2023-09-12'
   },
   'harold-and-miriam-steinberg': {
@@ -307,6 +308,36 @@ const BROADWAY_THEATERS = {
     seats: 1006,
     aliases: [],
     note: 'Roundabout Theatre Company home'
+  },
+
+  // === HISTORICAL THEATERS (demolished or converted, no longer Broadway) ===
+  'morosco': {
+    canonical: 'Morosco Theatre',
+    address: '217 W 45th St',
+    seats: 1009,
+    aliases: [],
+    note: 'Demolished 1982 for Marriott Marquis hotel'
+  },
+  'mark-hellinger': {
+    canonical: 'Mark Hellinger Theatre',
+    address: '237 W 51st St',
+    seats: 1603,
+    aliases: ['Hellinger Theatre'],
+    note: 'Converted to Times Square Church in 1991'
+  },
+  'bijou': {
+    canonical: 'Bijou Theatre',
+    address: '209 W 45th St',
+    seats: 603,
+    aliases: [],
+    note: 'Demolished 1982 for Marriott Marquis hotel'
+  },
+  'edison': {
+    canonical: 'Edison Theatre',
+    address: '240 W 47th St',
+    seats: 499,
+    aliases: ['Edison Hotel Theatre'],
+    note: 'No longer a Broadway theater'
   },
 };
 

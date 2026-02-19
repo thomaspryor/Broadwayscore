@@ -329,7 +329,7 @@ function checkpoint(message) {
         try {
           execSync('git pull --rebase origin main && git push', { stdio: 'pipe' });
           console.log(`  [checkpoint] Committed and pushed: ${message}`);
-          return;
+          break;
         } catch {
           console.log(`  [checkpoint] Push attempt ${attempt} failed, retrying...`);
           try { execSync('git rebase --abort 2>/dev/null', { stdio: 'pipe' }); } catch {}
@@ -339,6 +339,65 @@ function checkpoint(message) {
     }
   } catch (e) {
     console.log(`  [checkpoint] Warning: ${e.message}`);
+  }
+  // Also push review-texts to private repo
+  pushReviewTextsCheckpoint(message);
+}
+
+function pushReviewTextsCheckpoint(message) {
+  if (!process.env.REVIEW_TEXTS_TOKEN || !process.env.GITHUB_ACTIONS) return;
+  const rtDir = path.join(process.cwd(), 'data', 'review-texts');
+  if (!fs.existsSync(path.join(rtDir, '.git'))) {
+    console.log('  [checkpoint] (No private repo checkout — skipping review-texts push)');
+    return;
+  }
+  try {
+    execSync('git config user.name "GitHub Action"', { cwd: rtDir, stdio: 'pipe' });
+    execSync('git config user.email "action@github.com"', { cwd: rtDir, stdio: 'pipe' });
+    const remoteUrl = `https://x-access-token:${process.env.REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
+    try {
+      execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    } catch {
+      execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    }
+    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    try {
+      execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' });
+      return; // No changes
+    } catch { /* Has changes */ }
+    const msg = `chore: Checkpoint review texts — ${message}`;
+    execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
+    for (let i = 1; i <= 3; i++) {
+      try {
+        execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
+        execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
+        console.log(`  [checkpoint] ✓ Pushed review-texts to private repo (attempt ${i})`);
+        return;
+      } catch (pushErr) {
+        // Handle modify/delete conflicts
+        try {
+          const unmerged = execSync('git diff --name-only --diff-filter=U', { cwd: rtDir, encoding: 'utf8' }).trim();
+          if (unmerged) {
+            for (const f of unmerged.split('\n').filter(Boolean)) {
+              if (fs.existsSync(path.join(rtDir, f))) {
+                execSync(`git add "${f}"`, { cwd: rtDir, stdio: 'pipe' });
+              } else {
+                try { execSync(`git rm "${f}"`, { cwd: rtDir, stdio: 'pipe' }); } catch {}
+              }
+            }
+            execSync('git rebase --continue', { cwd: rtDir, stdio: 'pipe' });
+            execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
+            console.log(`  [checkpoint] ✓ Pushed review-texts after conflict resolution (attempt ${i})`);
+            return;
+          }
+        } catch {}
+        try { execSync('git rebase --abort', { cwd: rtDir, stdio: 'pipe' }); } catch {}
+        console.log(`  [checkpoint] Review-texts push attempt ${i} failed, retrying...`);
+      }
+    }
+    console.log('  [checkpoint] ⚠ Failed to push review-texts after 3 attempts');
+  } catch (e) {
+    console.log(`  [checkpoint] ⚠ Review-texts push error: ${e.message}`);
   }
 }
 

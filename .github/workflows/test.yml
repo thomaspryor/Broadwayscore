@@ -39,11 +39,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Guard — no copyrighted content in public repo
+        run: |
+          # Fail immediately if ANY review-text files are tracked in the public repo
+          COUNT=$(git ls-tree -r HEAD --name-only -- 'data/review-texts/' 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$COUNT" -gt "0" ]; then
+            echo "::error::CRITICAL: $COUNT review-text files found in public repo! These contain copyrighted content and MUST be removed."
+            git ls-tree -r HEAD --name-only -- 'data/review-texts/' | head -20
+            exit 1
+          fi
+          echo "✓ Zero review-text files in public repo"
 
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
