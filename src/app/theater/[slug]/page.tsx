@@ -2,9 +2,10 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
-import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
+import TheaterDetailClient from './TheaterDetailClient';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
@@ -18,7 +19,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const currentShowText = theater.currentShow
     ? `Currently showing: ${theater.currentShow.title}.`
     : 'View show history and information.';
-  const description = `${theater.name} on Broadway. ${currentShowText} See all shows, scores, and theater details.`;
+  const capacityText = theater.capacity ? ` ${theater.capacity.toLocaleString()} seats.` : '';
+  const description = `${theater.name} on Broadway.${capacityText} ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
 
   return {
     title: `${theater.name} - Broadway Theater`,
@@ -66,9 +68,33 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
       .map(s => ({ title: s.title, slug: s.slug })),
   });
 
-  const openShows = theater.allShows.filter(s => s.status === 'open' || s.status === 'previews');
-  const closedShows = [...theater.allShows.filter(s => s.status === 'closed')]
-    .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime());
+  // Compute stats
+  const pastShowCount = theater.allShows.filter(s => s.status === 'closed').length;
+  const scoredShows = theater.allShows.filter(s => s.criticScore?.score != null);
+  const avgScore = scoredShows.length > 0
+    ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)
+    : null;
+
+  // Serialize shows for client component
+  const theaterShows = theater.allShows.map(show => {
+    const buzz = getAudienceBuzz(show.id);
+    return {
+      id: show.id,
+      slug: show.slug,
+      title: show.title,
+      openingDate: show.openingDate,
+      closingDate: show.closingDate ?? undefined,
+      status: show.status,
+      type: show.type,
+      isRevival: show.isRevival ?? undefined,
+      images: show.images,
+      criticScore: show.criticScore
+        ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
+        : undefined,
+      audienceCombinedScore: buzz?.combinedScore ?? null,
+      audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+    };
+  });
 
   return (
     <>
@@ -87,7 +113,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
         </nav>
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-12 h-12 rounded-lg bg-surface-overlay flex items-center justify-center flex-shrink-0">
               <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,87 +138,37 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Total Shows</p>
-              <p className="text-2xl font-bold text-white">{theater.showCount}</p>
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            {theater.capacity && (
+              <div className="card p-3 sm:p-4 text-center">
+                <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
+                <p className="text-xl sm:text-2xl font-bold text-white">{theater.capacity.toLocaleString()}</p>
+              </div>
+            )}
+            <div className="card p-3 sm:p-4 text-center">
+              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
+              <p className="text-xl sm:text-2xl font-bold text-white">{pastShowCount}</p>
             </div>
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Now Playing</p>
-              <p className="text-2xl font-bold text-white">{openShows.length || '—'}</p>
-            </div>
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Past Shows</p>
-              <p className="text-2xl font-bold text-white">{closedShows.length}</p>
+            <div className="card p-3 sm:p-4 text-center">
+              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
+              <div className="flex justify-center">
+                <ScoreBadge score={avgScore ?? undefined} size="sm" />
+              </div>
             </div>
           </div>
+
+          {/* Tips */}
+          {theater.tips && (
+            <div className="card p-4 mb-4 border border-white/5">
+              <p className="text-sm text-gray-300 leading-relaxed">{theater.tips}</p>
+            </div>
+          )}
         </div>
 
-        {/* Now Playing */}
-        {openShows.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-status-open animate-pulse" />
-              Now Playing
-            </h2>
-            <div className="space-y-2">
-              {openShows.map(show => (
-                <Link key={show.id} href={`/show/${show.slug}`}
-                  className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group border border-status-open/20">
-                  <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                    {show.images?.thumbnail ? (
-                      <img src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')} alt={show.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center"><span className="text-xl">🎭</span></div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">{show.title}</h3>
-                    <p className="text-gray-500 text-sm mt-0.5">
-                      {show.type === 'musical' ? 'Musical' : 'Play'} · Opened {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </p>
-                  </div>
-                  <ScoreBadge score={show.criticScore?.score} size="sm" />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Show History */}
-        {closedShows.length > 0 && (
-          <section>
-            <h2 className="text-lg font-bold text-white mb-3">Show History</h2>
-            <div className="space-y-2">
-              {closedShows.map(show => (
-                <Link key={show.id} href={`/show/${show.slug}`}
-                  className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group">
-                  <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                    {show.images?.thumbnail ? (
-                      <img src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')} alt={show.title} className="w-full h-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center"><span className="text-lg sm:text-xl">🎭</span></div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">{show.title}</h3>
-                    <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
-                      {new Date(show.openingDate).getFullYear()}{show.closingDate && ` – ${new Date(show.closingDate).getFullYear()}`} · {show.type === 'musical' ? 'Musical' : 'Play'}
-                    </p>
-                  </div>
-                  <ScoreBadge score={show.criticScore?.score} size="sm" />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {theater.allShows.length === 0 && (
-          <div className="card p-8 text-center">
-            <p className="text-gray-400">No shows found for this theater.</p>
-          </div>
-        )}
+        {/* Show list with sort/toggle */}
+        <h2 className="text-lg font-bold text-white mb-3">All Shows</h2>
+        <TheaterDetailClient shows={theaterShows} />
       </div>
     </>
   );

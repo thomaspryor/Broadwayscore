@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
 
-type SortMode = 'shows' | 'highest' | 'lowest' | 'alpha';
+type SortColumn = 'name' | 'shows' | 'avg';
+type SortDir = 'asc' | 'desc';
 
 interface CreativeProfileSummary {
   name: string;
@@ -14,14 +15,8 @@ interface CreativeProfileSummary {
   avgScore: number | null;
   openShowCount: number;
   roles: string[];
+  obcCount?: number;
 }
-
-const SORT_OPTIONS: { value: SortMode; label: string }[] = [
-  { value: 'shows', label: 'MOST SHOWS' },
-  { value: 'highest', label: 'HIGHEST AVG' },
-  { value: 'lowest', label: 'LOWEST AVG' },
-  { value: 'alpha', label: 'A-Z' },
-];
 
 function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; routePath: string }) {
   const href = profile.unifiedSlug ? `/creative/${profile.unifiedSlug}` : `/${routePath}/${profile.slug}`;
@@ -44,6 +39,9 @@ function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; 
         </h2>
         <p className="text-gray-400 text-xs sm:text-sm">
           {profile.showCount} show{profile.showCount !== 1 ? 's' : ''}
+          {profile.obcCount !== undefined && profile.obcCount > 0 && (
+            <span className="text-brand"> · {profile.obcCount} OBC</span>
+          )}
           {profile.openShowCount > 0 && (
             <span className="text-emerald-400"> · {profile.openShowCount} running</span>
           )}
@@ -71,39 +69,66 @@ function ProfileCard({ profile, routePath }: { profile: CreativeProfileSummary; 
   );
 }
 
+function SortArrow({ active, dir }: { active: boolean; dir: SortDir }) {
+  if (!active) return null;
+  return (
+    <span className="ml-0.5 text-brand">{dir === 'desc' ? '▼' : '▲'}</span>
+  );
+}
+
 export default function CreativeIndexClient({
   profiles,
   categoryLabel,
   routePath,
   totalShows,
+  showObcFilter,
 }: {
   profiles: CreativeProfileSummary[];
   categoryLabel: string;
   routePath: string;
   totalShows: number;
+  showObcFilter?: boolean;
 }) {
   const [search, setSearch] = useState('');
-  const [sortMode, setSortMode] = useState<SortMode>('shows');
+  const [sortCol, setSortCol] = useState<SortColumn>('shows');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
+  const [visibleCount, setVisibleCount] = useState(100);
+  const [obcOnly, setObcOnly] = useState(false);
+
+  function handleSort(col: SortColumn) {
+    if (col === sortCol) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortCol(col);
+      setSortDir(col === 'name' ? 'asc' : 'desc');
+    }
+    setVisibleCount(100);
+  }
 
   const filtered = useMemo(() => {
-    if (!search) return profiles;
-    const q = search.toLowerCase();
-    return profiles.filter(p => p.name.toLowerCase().includes(q));
-  }, [search, profiles]);
+    let list = profiles;
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(q));
+    }
+    if (obcOnly) {
+      list = list.filter(p => p.obcCount && p.obcCount > 0);
+    }
+    return list;
+  }, [search, profiles, obcOnly]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
-    switch (sortMode) {
-      case 'highest':
-        return list.sort((a, b) => (b.avgScore ?? -1) - (a.avgScore ?? -1));
-      case 'lowest':
-        return list.sort((a, b) => (a.avgScore ?? 999) - (b.avgScore ?? 999));
-      case 'alpha':
-        return list.sort((a, b) => a.name.localeCompare(b.name));
+    const dir = sortDir === 'asc' ? 1 : -1;
+    switch (sortCol) {
+      case 'name':
+        return list.sort((a, b) => dir * a.name.localeCompare(b.name));
+      case 'avg':
+        return list.sort((a, b) => dir * ((a.avgScore ?? -999) - (b.avgScore ?? -999)));
       default:
-        return list.sort((a, b) => b.showCount - a.showCount);
+        return list.sort((a, b) => dir * (a.showCount - b.showCount));
     }
-  }, [filtered, sortMode]);
+  }, [filtered, sortCol, sortDir]);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
@@ -119,61 +144,90 @@ export default function CreativeIndexClient({
       <div className="mb-6">
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Broadway {categoryLabel}</h1>
         <p className="text-gray-400">
-          {profiles.length} {categoryLabel.toLowerCase()} across {totalShows} Broadway shows
+          {profiles.length.toLocaleString()} {categoryLabel.toLowerCase()} across {totalShows} Broadway shows
         </p>
       </div>
 
-      {/* Search */}
-      <div className="relative mb-4">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          type="text"
-          placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
-        />
-      </div>
-
-      {/* Sort Controls */}
-      <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap mb-5 text-sm" role="group" aria-label={`Sort ${categoryLabel.toLowerCase()}`}>
-        <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-        {SORT_OPTIONS.map(opt => (
+      {/* Search + Filters — same line */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="relative flex-1">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setVisibleCount(100); }}
+            className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
+          />
+        </div>
+        {showObcFilter && (
           <button
-            key={opt.value}
-            onClick={() => setSortMode(opt.value)}
-            className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-              sortMode === opt.value
-                ? 'text-brand bg-brand/10 sm:bg-transparent'
-                : 'text-gray-300 hover:text-white'
+            onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
+            className={`px-3 py-2.5 text-xs font-medium uppercase tracking-wider rounded-lg border transition-colors whitespace-nowrap ${
+              obcOnly
+                ? 'text-brand bg-brand/15 border-brand/40'
+                : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
             }`}
           >
-            {opt.label}
+            OBC Only
           </button>
-        ))}
+        )}
       </div>
 
-      {/* Column Headers */}
+      {/* Column Headers — clickable for sorting */}
       <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0" />
-        <div className="w-14 text-right flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Shows</span>
-        </div>
-        <div className="w-11 text-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Avg</span>
-        </div>
+        <button
+          className="flex-1 min-w-0 text-left group/sort"
+          onClick={() => handleSort('name')}
+        >
+          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+            sortCol === 'name' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+          }`}>
+            Name<SortArrow active={sortCol === 'name'} dir={sortDir} />
+          </span>
+        </button>
+        <button
+          className="w-14 text-right flex-shrink-0 group/sort"
+          onClick={() => handleSort('shows')}
+        >
+          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+            sortCol === 'shows' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+          }`}>
+            Shows<SortArrow active={sortCol === 'shows'} dir={sortDir} />
+          </span>
+        </button>
+        <button
+          className="w-11 text-center flex-shrink-0 group/sort"
+          onClick={() => handleSort('avg')}
+        >
+          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+            sortCol === 'avg' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+          }`}>
+            Avg<SortArrow active={sortCol === 'avg'} dir={sortDir} />
+          </span>
+        </button>
       </div>
 
       {/* Results */}
       {sorted.length > 0 ? (
-        <div className="space-y-2">
-          {sorted.map(profile => (
-            <ProfileCard key={profile.slug} profile={profile} routePath={routePath} />
-          ))}
-        </div>
+        <>
+          <div className="space-y-2">
+            {sorted.slice(0, visibleCount).map(profile => (
+              <ProfileCard key={profile.slug} profile={profile} routePath={routePath} />
+            ))}
+          </div>
+          {sorted.length > visibleCount && (
+            <button
+              onClick={() => setVisibleCount(prev => prev + 100)}
+              className="w-full mt-4 py-3 text-sm font-medium text-brand hover:text-brand-hover border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              Show 100 more ({(sorted.length - visibleCount).toLocaleString()} remaining)
+            </button>
+          )}
+        </>
       ) : (
         <div className="card p-8 text-center">
           <p className="text-gray-400">No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</p>
@@ -181,9 +235,9 @@ export default function CreativeIndexClient({
       )}
 
       {/* Result count */}
-      {sorted.length > 0 && search.trim() && (
+      {sorted.length > 0 && (search.trim() || obcOnly) && (
         <p className="text-center text-sm text-gray-500 mt-6">
-          {sorted.length} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''} matching &ldquo;{search}&rdquo;
+          {sorted.length.toLocaleString()} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''}{search.trim() ? ` matching \u201c${search}\u201d` : ''}{obcOnly ? ' (OBC only)' : ''}
         </p>
       )}
     </div>
