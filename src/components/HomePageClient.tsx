@@ -190,9 +190,9 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         </p>
       </div>
 
-      {/* Review Year Note - between info and score */}
+      {/* Review Year Note - between info and score (hidden on mobile) */}
       {show.reviewYearNote && scoreMode === 'critics' && (
-        <span className="flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
+        <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
           {show.reviewYearNote}
         </span>
       )}
@@ -643,9 +643,9 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Hero - Large heading on desktop only */}
-      <div className="mb-6 sm:mb-8">
+      <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
@@ -659,7 +659,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
 
       {/* Best Recent Musicals - Featured Shelf */}
       {bestNewMusicals.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
             <Link
@@ -679,7 +679,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       )}
 
       {/* Search */}
-      <div id="search" className="relative mb-6 scroll-mt-24" role="search">
+      <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
         <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
@@ -696,7 +696,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       </div>
 
       {/* Type Pills & Score Mode Toggle Row */}
-      <div className="flex items-center justify-between gap-4 mb-4">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
         {/* Type Filter Pills (Left) */}
         <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
           {(['all', 'musical', 'play'] as const).map((t) => (
@@ -704,7 +704,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
               key={t}
               onClick={() => updateParams({ type: t })}
               aria-pressed={type === t}
-              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
                 type === t
                   ? 'bg-brand text-gray-900 shadow-glow-sm'
                   : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
