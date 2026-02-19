@@ -1,51 +1,128 @@
 {
-  "updatedAt": "2026-02-19T02:13:32.090Z",
-  "processed": 1,
-  "failed": 9,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-19T02:15:17.981Z",
+  "processed": 72,
+  "failed": 353,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "playwright": 25,
+    "amp": 7,
+    "browserbase": 2,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 20,
+    "archive": 57
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-19T02:10:59.158Z",
-      "event": "bb-session",
-      "session": "323bb5c3",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
-    },
-    {
-      "t": "2026-02-19T02:11:01.321Z",
+      "t": "2026-02-19T00:50:59.379Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-19T02:11:58.169Z",
+      "t": "2026-02-19T00:52:31.191Z",
       "event": "bb-session",
-      "session": "79411441",
-      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "b9890cca",
+      "url": "https://www.nytimes.com/1982/10/08/theater/theater-eliot-s-old-possum-s-book-bec"
     },
     {
-      "t": "2026-02-19T02:12:00.177Z",
+      "t": "2026-02-19T00:52:33.283Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-19T02:13:10.650Z",
+      "t": "2026-02-19T00:54:07.810Z",
       "event": "bb-session",
-      "session": "7c771f5a",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "87d16d58",
+      "url": "https://www.nytimes.com/2018/04/11/theater/children-of-a-lesser-god-review.html"
     },
     {
-      "t": "2026-02-19T02:13:12.756Z",
+      "t": "2026-02-19T00:54:10.023Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:55:30.947Z",
+      "event": "bb-session",
+      "session": "e8fbc573",
+      "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+    },
+    {
+      "t": "2026-02-19T00:55:32.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:57:09.842Z",
+      "event": "bb-session",
+      "session": "25bdec71",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-19T00:57:11.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:58:23.000Z",
+      "event": "bb-session",
+      "session": "ae739e20",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-19T00:58:25.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:59:52.477Z",
+      "event": "bb-session",
+      "session": "3f8cd900",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-19T00:59:54.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:00:45.215Z",
+      "event": "bb-session",
+      "session": "8232b67f",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+    },
+    {
+      "t": "2026-02-19T02:09:34.586Z",
+      "event": "bb-session",
+      "session": "65d64907",
+      "url": "https://www.variety.com/review/VE1117947355?refCatId=33"
+    },
+    {
+      "t": "2026-02-19T02:09:36.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-19T02:12:50.359Z",
+      "event": "bb-session",
+      "session": "30d32890",
+      "url": "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-123512"
+    },
+    {
+      "t": "2026-02-19T02:12:52.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-19T02:14:41.367Z",
+      "event": "bb-session",
+      "session": "26586e28",
+      "url": "http://www.nytimes.com/2014/10/10/theater/matthew-broderick-nathan-lane-and-stoc"
+    },
+    {
+      "t": "2026-02-19T02:14:43.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
