@@ -21,7 +21,7 @@ permissions:
 jobs:
   discover-historical:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 60
     outputs:
       historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
       historical_shows: ${{ steps.discover.outputs.historical_shows }}
