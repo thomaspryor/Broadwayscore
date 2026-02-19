@@ -456,7 +456,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: 'Upcoming Broadway Shows (2026)',
     metaDescription: 'New Broadway shows coming soon. See what\'s opening next on the Great White Way, from world premieres to highly anticipated transfers.',
     intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
-    filter: (show) => show.status === 'previews',
+    filter: (show) => show.status === 'previews' || show.status === 'upcoming',
     sort: 'opening-date-asc',
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
   },

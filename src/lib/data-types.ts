@@ -89,6 +89,11 @@ export interface Theater {
   formerNames?: string[];
   tips?: string;
   structuredTips?: TheaterStructuredTips;
+  images?: {
+    exterior?: string;
+    interior?: string;
+    attribution?: string;
+  };
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
   showCount: number;

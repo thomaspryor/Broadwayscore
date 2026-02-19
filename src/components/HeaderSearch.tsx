@@ -75,9 +75,8 @@ export default function HeaderSearch() {
       : [];
 
     // Merge: Fuse results first (ranked by relevance), then substring matches
-    // Exclude unscored closed shows (historical shows without reviews)
-    const merged = [...fuseResults, ...substringMatches]
-      .filter(show => show.hasScore || show.status !== 'closed');
+    // Note: unscored closed shows are already excluded from search-shows.json at build time
+    const merged = [...fuseResults, ...substringMatches];
     return merged.slice(0, 8);
   }, [query, fuse, shows]);
 
@@ -239,9 +238,11 @@ export default function HeaderSearch() {
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium
                                     ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                                      show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
                                       'bg-gray-500/20 text-gray-400'}`}>
                       {show.status === 'open' ? 'Now Playing' :
-                       show.status === 'previews' ? 'In Previews' : 'Closed'}
+                       show.status === 'previews' ? 'In Previews' :
+                       show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                     </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>
@@ -255,7 +256,7 @@ export default function HeaderSearch() {
         {isOpen && query.length >= 1 && filteredShows.length === 0 && (
           <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-50">
             <p className="text-sm text-gray-400 text-center">
-              {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+              {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
             </p>
           </div>
         )}
@@ -337,9 +338,11 @@ export default function HeaderSearch() {
                           <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
                                           ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                             show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                                            show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
                                             'bg-gray-500/20 text-gray-400'}`}>
                             {show.status === 'open' ? 'Now Playing' :
-                             show.status === 'previews' ? 'In Previews' : 'Closed'}
+                             show.status === 'previews' ? 'In Previews' :
+                             show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                           </span>
                           {show.venue && <span className="truncate">{show.venue}</span>}
                         </div>
@@ -353,7 +356,7 @@ export default function HeaderSearch() {
               ) : query.length >= 1 ? (
                 <div className="p-8 text-center">
                   <p className="text-gray-400">
-                    {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+                    {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
                   </p>
                 </div>
               ) : (

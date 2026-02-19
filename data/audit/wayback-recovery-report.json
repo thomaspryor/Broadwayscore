@@ -1,20 +1,22 @@
 {
-  "totalCandidates": 326,
-  "cdxFound": 40,
-  "cdxNotFound": 75,
-  "recovered": 19,
+  "totalCandidates": 253,
+  "cdxFound": 4,
+  "cdxNotFound": 132,
+  "recovered": 3,
   "recoveredByTier": {
-    "1": 19,
+    "1": 0,
     "2": 0,
-    "3": 0
+    "3": 3
   },
   "recoveredByDomain": {
-    "wsj.com": 19
+    "theaterpizzazz.com": 1,
+    "thebroadwayblog.com": 1,
+    "theater.nytimes.com": 1
   },
-  "tooShort": 64,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 211,
-  "notInArchive": 75
+  "errors": 117,
+  "notInArchive": 132
 }

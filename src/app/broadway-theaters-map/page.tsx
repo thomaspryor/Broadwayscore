@@ -99,7 +99,7 @@ export default function TheatersMapPage() {
                     className="block mb-3 p-3 bg-surface-overlay rounded-lg hover:bg-white/5 transition-colors group"
                   >
                     <p className="text-sm text-gray-400 uppercase tracking-wide mb-1">
-                      {theater.currentShow?.status === 'previews' ? 'In Previews' : 'Now Playing'}
+                      {theater.currentShow?.status === 'upcoming' ? 'Upcoming' : theater.currentShow?.status === 'previews' ? 'In Previews' : 'Now Playing'}
                     </p>
                     <p className="font-medium text-brand group-hover:text-brand-hover transition-colors">
                       {theater.currentShow.title}

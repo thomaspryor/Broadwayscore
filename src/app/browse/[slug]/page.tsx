@@ -140,7 +140,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   // Compute display flags
   const isMixedType = new Set(shows.map(s => s.type)).size > 1;
-  const statuses = new Set(shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const statuses = new Set(shows.map(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming' ? 'open' : 'closed'));
   const isMixedStatus = statuses.size > 1;
   const hasPerformanceData = config.sort === 'performances';
 

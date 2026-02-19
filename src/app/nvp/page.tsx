@@ -110,7 +110,7 @@ function NVPPageInner() {
 
     // Status filter
     if (status === 'playing') {
-      result = result.filter(s => s.status === 'open' || s.status === 'previews');
+      result = result.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
     } else if (status === 'closed') {
       result = result.filter(s => s.status === 'closed');
     }
@@ -128,15 +128,15 @@ function NVPPageInner() {
       switch (sort) {
         case 'score_desc': {
           if (scoreMode === 'audience') {
-            const aAudience = a.status === 'previews' ? -1 : (getAudienceBuzz(a.id)?.combinedScore ?? -1);
-            const bAudience = b.status === 'previews' ? -1 : (getAudienceBuzz(b.id)?.combinedScore ?? -1);
+            const aAudience = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (getAudienceBuzz(a.id)?.combinedScore ?? -1);
+            const bAudience = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (getAudienceBuzz(b.id)?.combinedScore ?? -1);
             return bAudience - aAudience;
           }
           // Sort by score, then open > previews > closed for ties
-          const aScore = a.status === 'previews' ? -1 : (a.criticScore?.score ?? -1);
-          const bScore = b.status === 'previews' ? -1 : (b.criticScore?.score ?? -1);
+          const aScore = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.criticScore?.score ?? -1);
+          const bScore = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.criticScore?.score ?? -1);
           if (bScore !== aScore) return bScore - aScore;
-          const statusOrder = { open: 0, previews: 1, closed: 2 };
+          const statusOrder = { open: 0, previews: 1, upcoming: 1, closed: 2 };
           return (statusOrder[a.status as keyof typeof statusOrder] ?? 3) - (statusOrder[b.status as keyof typeof statusOrder] ?? 3);
         }
         case 'alpha':
@@ -153,7 +153,7 @@ function NVPPageInner() {
   // Counts for summary badges (from full NVP list, not filtered)
   const allNvpShows = useMemo(() => allShows.filter(show => NVP_SHOW_IDS.includes(show.id)), [allShows]);
   const openCount = allNvpShows.filter(s => s.status === 'open').length;
-  const previewCount = allNvpShows.filter(s => s.status === 'previews').length;
+  const previewCount = allNvpShows.filter(s => s.status === 'previews' || s.status === 'upcoming').length;
   const closedCount = allNvpShows.filter(s => s.status === 'closed').length;
   const playingCount = openCount + previewCount;
 
@@ -303,7 +303,7 @@ function NVPPageInner() {
                     fallback={
                       <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
                         <div className="text-2xl mb-0.5">🎭</div>
-                        {show.status === 'previews' && (
+                        {(show.status === 'previews' || show.status === 'upcoming') && (
                           <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
                         )}
                       </div>
@@ -322,7 +322,7 @@ function NVPPageInner() {
                     <StatusBadge status={show.status} />
                   </div>
                   <p className="text-sm text-gray-400 mt-2.5 truncate">
-                    {show.status === 'previews' ? (
+                    {show.status === 'previews' || show.status === 'upcoming' ? (
                       <>Opens {formatOpeningDate(show.openingDate)}</>
                     ) : show.closingDate ? (
                       <>
@@ -359,14 +359,14 @@ function NVPPageInner() {
                           {audienceGrade.grade}
                         </div>
                       </>
-                    ) : show.status === 'previews' ? (
+                    ) : show.status === 'previews' || show.status === 'upcoming' ? (
                       <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
                         TBD
                       </div>
                     ) : null
                   ) : (
                     <>
-                      {tier && show.status !== 'previews' && (show.criticScore?.reviewCount ?? 0) >= 5 && (
+                      {tier && show.status !== 'previews' && show.status !== 'upcoming' && (show.criticScore?.reviewCount ?? 0) >= 5 && (
                         <span
                           className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
                           style={{ color: tier.color }}

@@ -36,8 +36,12 @@ for (const review of reviews) {
   }
 }
 
+// Filter out unscored closed shows (historical shows without reviews)
+// These are hidden in HeaderSearch anyway — no point shipping them to every user
+const visibleShows = shows.filter(show => showsWithScores.has(show.id) || show.status !== 'closed');
+
 // Map shows to search-friendly format (matching HeaderSearch's Show interface)
-const searchShows = shows.map(show => {
+const searchShows = visibleShows.map(show => {
   const entry = {
     id: show.id,
     title: show.title,
@@ -68,4 +72,5 @@ const outputPath = path.join(outputDir, 'search-shows.json');
 fs.writeFileSync(outputPath, JSON.stringify(searchShows));
 
 const sizeKB = (fs.statSync(outputPath).size / 1024).toFixed(0);
-console.log(`Generated ${outputPath} (${sizeKB}KB, ${searchShows.length} shows, ${showsWithScores.size} with scores)`);
+const excluded = shows.length - visibleShows.length;
+console.log(`Generated ${outputPath} (${sizeKB}KB, ${searchShows.length} shows, ${showsWithScores.size} with scores, ${excluded} unscored closed excluded)`);
