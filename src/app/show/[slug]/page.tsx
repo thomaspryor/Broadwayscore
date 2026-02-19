@@ -341,6 +341,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                             Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                           </a>
                         )}
+                        {/* Review age note for long-running shows */}
+                        {(() => {
+                          if (!show.openingDate || show.status === 'closed') return null;
+                          const openYear = new Date(show.openingDate).getFullYear();
+                          const yearsAgo = new Date().getFullYear() - openYear;
+                          if (yearsAgo < 10 || reviewCount < 3) return null;
+                          return (
+                            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 leading-snug">
+                              Most reviews from {yearsAgo} years ago
+                            </p>
+                          );
+                        })()}
                       </div>
                     </div>
 
