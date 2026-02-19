@@ -80,7 +80,7 @@ jobs:
             exit 1
           fi
           # Check a show page too
-          STATUS2=$(curl -s -o /dev/null -w "%{http_code}" https://broadwayscorecard.com/show/hamilton-2015)
+          STATUS2=$(curl -s -o /dev/null -w "%{http_code}" https://broadwayscorecard.com/show/wicked)
           echo "Show page returned HTTP $STATUS2"
           if [ "$STATUS2" != "200" ]; then
             echo "::error::Production smoke test failed — show page returned HTTP $STATUS2"
