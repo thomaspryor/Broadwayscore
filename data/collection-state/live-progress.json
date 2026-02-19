@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-19T11:19:50.330Z",
-  "processed": 18,
-  "failed": 2,
-  "successRate": "90.0%",
+  "updatedAt": "2026-02-19T11:23:20.961Z",
+  "processed": 5,
+  "failed": 95,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 12
+    "archiveToday": 86,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 38,
+  "recentActivity": [
+    {
+      "t": "2026-02-19T09:45:41.244Z",
+      "event": "bb-session",
+      "session": "b03c4a9c",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/beetlejuice-brightens-up-broadway"
+    },
+    {
+      "t": "2026-02-19T09:45:43.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:47:40.704Z",
+      "event": "bb-session",
+      "session": "fd15f7fe",
+      "url": "https://www.newyorker.com/magazine/2018/10/15/sarah-bernhardt-takes-on-hamlet-ag"
+    },
+    {
+      "t": "2026-02-19T09:47:42.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:49:42.465Z",
+      "event": "bb-session",
+      "session": "8d730456",
+      "url": "https://www.newyorker.com/magazine/2013/11/18/betrayal-2"
+    },
+    {
+      "t": "2026-02-19T09:49:44.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:52:01.567Z",
+      "event": "bb-session",
+      "session": "46892f3e",
+      "url": "https://www.newyorker.com/magazine/2014/05/05/the-emcee-returns"
+    },
+    {
+      "t": "2026-02-19T09:52:03.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:53:57.753Z",
+      "event": "bb-session",
+      "session": "1dac3f72",
+      "url": "https://www.newyorker.com/magazine/2012/04/30/white-flight"
+    },
+    {
+      "t": "2026-02-19T09:54:00.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:56:03.145Z",
+      "event": "bb-session",
+      "session": "795bfe2b",
+      "url": "https://www.newyorker.com/magazine/2021/12/13/clydes-reviewed-a-kitchen-where-dr"
+    },
+    {
+      "t": "2026-02-19T09:56:05.274Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T09:58:08.454Z",
+      "event": "bb-session",
+      "session": "b4ec42ae",
+      "url": "https://www.newyorker.com/magazine/2021/12/13/a-new-play-finds-hope-in-a-highway"
+    },
+    {
+      "t": "2026-02-19T09:58:10.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T10:00:05.730Z",
+      "event": "bb-session",
+      "session": "578e7b02",
+      "url": "https://www.newyorker.com/magazine/2017/04/03/come-from-away-celebrates-kindness"
+    },
+    {
+      "t": "2026-02-19T10:00:07.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T10:01:57.037Z",
+      "event": "bb-session",
+      "session": "6a8adfee",
+      "url": "https://www.newyorker.com/magazine/2006/12/18/company-2"
+    },
+    {
+      "t": "2026-02-19T10:01:58.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T10:04:02.628Z",
+      "event": "bb-session",
+      "session": "59c980ae",
+      "url": "https://www.newyorker.com/magazine/2022/11/07/cost-of-living-review-manhattan-th"
+    },
+    {
+      "t": "2026-02-19T10:04:04.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
