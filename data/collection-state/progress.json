@@ -1,57 +1,69 @@
 {
   "processed": [
-    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "all-my-sons-2019/nyt-theater--raven-snook.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-    "hughie-2016/act-three-the-reviews--doug-marino.json",
-    "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-    "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-    "be-more-chill-2019/theatre-reviews-limited--david-roberts.json",
-    "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+    "1984-2017/vulture--jesse-green.json"
   ],
   "failed": [
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "american-psycho-2016/thewrap--robert-hofler.json",
-    "american-psycho-2016/thewrap--steve-pond.json",
-    "bad-cinderella-2023/thewrap--robert-hofler.json"
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-christmas-carol-2019/vulture--jesse-green.json",
+    "a-christmas-carol-2022/vulture--helen-shaw.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "hughie-2016/act-three-the-reviews--doug-marino.json",
-      "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-      "be-more-chill-2019/theatre-reviews-limited--david-roberts.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+      "data/review-texts/a-christmas-carol-2019/vulture--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2022/vulture--helen-shaw.json"
+    ],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json",
-      "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "1984-2017/vulture--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-19T01:27:36.332Z",
-  "lastProcessed": "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T01:44:49.318Z",
+  "lastProcessed": "a-soldiers-play-2020/vulture--helen-shaw.json",
+  "log": [
+    {
+      "t": "2026-02-19T01:45:44.332Z",
+      "event": "bb-session",
+      "session": "7a193cdb",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-19T01:45:46.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T01:46:47.258Z",
+      "event": "bb-session",
+      "session": "547f015f",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T01:46:49.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T01:48:05.778Z",
+      "event": "bb-session",
+      "session": "1020a7a1",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T01:48:08.197Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
