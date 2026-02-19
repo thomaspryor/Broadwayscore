@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
@@ -699,67 +699,46 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           ))}
         </div>
 
-        {/* Score Mode Picker (Right) - Variant comparison for preview */}
-        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
-          {([
-            { key: 'critics', label: 'Critics' },
-            { key: 'audience', label: 'Audience' },
-          ] as const).map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => {
-                if (key === 'audience') {
-                  updateParams({ scoreMode: key, sort: 'score_desc' });
-                } else {
-                  updateParams({ scoreMode: key });
-                }
-              }}
-              aria-pressed={scoreMode === key}
-              className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
-                scoreMode === key
-                  ? 'bg-brand text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        {/* Score Mode Picker (Right) */}
+        <ScoreToggle
+          value={scoreMode}
+          onChange={(key) => {
+            if (key === 'audience') {
+              updateParams({ scoreMode: key, sort: 'score_desc' });
+            } else {
+              updateParams({ scoreMode: key });
+            }
+          }}
+        />
       </div>
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
-          {(['now_playing', 'closing_soon', 'all', 'closed'] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => updateParams({ status: s })}
-              aria-pressed={status === s}
-              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[36px] sm:min-h-0 ${
-                status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {s === 'all' ? 'ALL' : s === 'now_playing' ? 'PLAYING' : s === 'closing_soon' ? 'CLOSING' : 'CLOSED'}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="STATUS:"
+          options={[
+            { value: 'now_playing' as StatusParam, label: 'PLAYING' },
+            { value: 'closing_soon' as StatusParam, label: 'CLOSING' },
+            { value: 'all' as StatusParam, label: 'ALL' },
+            { value: 'closed' as StatusParam, label: 'CLOSED' },
+          ]}
+          value={status}
+          onChange={(s) => updateParams({ status: s })}
+          ariaLabel="Filter by status"
+        />
 
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {(['recent', 'score_desc', 'audience_buzz', 'alpha'] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => updateParams({ sort: s })}
-              aria-pressed={sort === s}
-              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 ${
-                sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : 'A-Z'}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="SORT:"
+          options={[
+            { value: 'recent' as SortParam, label: 'NEWEST' },
+            { value: 'score_desc' as SortParam, label: 'HIGHEST' },
+            { value: 'audience_buzz' as SortParam, label: 'BUZZ' },
+            { value: 'alpha' as SortParam, label: 'A-Z' },
+          ]}
+          value={sort}
+          onChange={(s) => updateParams({ sort: s })}
+          ariaLabel="Sort shows"
+        />
       </div>
 
       {/* Show List */}

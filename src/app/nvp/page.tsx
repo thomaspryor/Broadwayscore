@@ -7,7 +7,7 @@ import { getAllShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
-import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 
 // NVP show IDs - shows invested in by Nothing Ventured Productions
@@ -207,63 +207,46 @@ function NVPPageInner() {
         </div>
 
         {/* Score Mode Toggle (Right) */}
-        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
-          {(['audience', 'critics'] as const).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => {
-                if (mode === 'audience') {
-                  updateParams({ scoreMode: mode, sort: 'score_desc' });
-                } else {
-                  updateParams({ scoreMode: mode });
-                }
-              }}
-              aria-pressed={scoreMode === mode}
-              className={`px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
-                scoreMode === mode
-                  ? 'bg-brand text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
-              {mode === 'critics' ? 'Critics' : 'Audience'}
-            </button>
-          ))}
-        </div>
+        <ScoreToggle
+          value={scoreMode}
+          onChange={(mode) => {
+            if (mode === 'audience') {
+              updateParams({ scoreMode: mode, sort: 'score_desc' });
+            } else {
+              updateParams({ scoreMode: mode });
+            }
+          }}
+          audienceFirst
+          size="large"
+          ariaLabel="Score mode"
+        />
       </div>
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
-          {(['playing', 'all', 'closed'] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => updateParams({ status: s })}
-              aria-pressed={status === s}
-              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[36px] sm:min-h-0 ${
-                status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {s === 'playing' ? 'PLAYING' : s === 'all' ? 'ALL' : 'CLOSED'}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="STATUS:"
+          options={[
+            { value: 'playing' as StatusParam, label: 'PLAYING' },
+            { value: 'all' as StatusParam, label: 'ALL' },
+            { value: 'closed' as StatusParam, label: 'CLOSED' },
+          ]}
+          value={status}
+          onChange={(s) => updateParams({ status: s })}
+          ariaLabel="Filter by status"
+        />
 
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {(['score_desc', 'recent', 'alpha'] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => updateParams({ sort: s })}
-              aria-pressed={sort === s}
-              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 ${
-                sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {s === 'score_desc' ? 'HIGHEST' : s === 'recent' ? 'NEWEST' : 'A-Z'}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="SORT:"
+          options={[
+            { value: 'score_desc' as SortParam, label: 'HIGHEST' },
+            { value: 'recent' as SortParam, label: 'NEWEST' },
+            { value: 'alpha' as SortParam, label: 'A-Z' },
+          ]}
+          value={sort}
+          onChange={(s) => updateParams({ sort: s })}
+          ariaLabel="Sort shows"
+        />
       </div>
 
       {/* Score Column Header */}
