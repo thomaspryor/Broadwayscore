@@ -261,7 +261,7 @@ async function lookupIBDBCast(title, options = {}) {
         return notFound;
       }
 
-      bestMatch = findBestProduction(searchResults, options);
+      bestMatch = findBestProduction(searchResults, { ...options, title });
     }
 
     if (!bestMatch) {
