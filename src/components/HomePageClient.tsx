@@ -71,6 +71,19 @@ function formatOpeningDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
+function getBroadwayDuration(openingDate: string | null): string | null {
+  if (!openingDate) return null;
+  const open = new Date(openingDate);
+  const now = new Date();
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  if (months < 1) return 'Just opened';
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
+  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
+}
+
 function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -177,6 +190,13 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         </p>
       </div>
 
+      {/* Review Year Note - between info and score */}
+      {show.reviewYearNote && scoreMode === 'critics' && (
+        <span className="flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
+          {show.reviewYearNote}
+        </span>
+      )}
+
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24 overflow-visible">
         {scoreMode === 'audience' ? (
@@ -233,19 +253,12 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
                 {tier.label}
               </span>
             ) : null}
-            <div className="flex items-center gap-1.5">
-              {show.reviewYearNote && (
-                <span className="text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem]">
-                  {show.reviewYearNote}
-                </span>
-              )}
-              <ScoreBadge
-                score={score}
-                size="lg"
-                reviewCount={show.criticScore?.reviewCount}
-                status={show.status}
-              />
-            </div>
+            <ScoreBadge
+              score={score}
+              size="lg"
+              reviewCount={show.criticScore?.reviewCount}
+              status={show.status}
+            />
             {audienceGrade && (
               <div
                 className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
