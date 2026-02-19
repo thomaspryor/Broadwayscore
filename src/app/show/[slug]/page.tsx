@@ -204,6 +204,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     const allPersonIds = [
       ...(castFile.openingNightCast || []),
       ...(castFile.currentCast || []),
+      ...(castFile.replacements || []),
     ].map(m => m.ibdbPersonId).filter((id): id is string => !!id);
     const slugMap = getActorSlugMap(allPersonIds);
     for (const [id, slug] of Array.from(slugMap.entries())) {
@@ -690,11 +691,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Cast — OBC and current cast from IBDB */}
-        {featureFlags.castPages && castFile && castFile.openingNightCast.length > 0 && (
+        {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
           <CastSection
             openingNightCast={castFile.openingNightCast}
             currentCast={castFile.currentCast}
             currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
+            replacements={castFile.replacements}
             showStatus={show.status}
             actorSlugs={castActorSlugs}
           />

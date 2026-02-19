@@ -169,8 +169,14 @@ async function main() {
         castFile.currentCastUpdatedAt = new Date().toISOString();
       }
 
+      // Include replacements if available
+      if (result.replacements && result.replacements.length > 0) {
+        castFile.replacements = result.replacements;
+      }
+
       writeCastFile(show.id, castFile);
       console.log(`  ✅ Saved: ${result.openingNightCast.length} OBC` +
+        (castFile.replacements ? ` + ${castFile.replacements.length} replacements` : '') +
         (castFile.currentCast ? ` + ${castFile.currentCast.length} current` : ''));
       success++;
 

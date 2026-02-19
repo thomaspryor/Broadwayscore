@@ -43,6 +43,8 @@ export interface Theater {
   name: string;
   slug: string;
   address?: string;
+  capacity?: number;
+  tips?: string;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
   showCount: number;
@@ -519,6 +521,7 @@ export interface ShowCastFile {
   openingNightCast: CastMemberOBC[];
   currentCast?: CastMemberOBC[] | null;
   currentCastUpdatedAt?: string;
+  replacements?: CastMemberOBC[] | null;
 }
 
 // ============================================
@@ -530,7 +533,7 @@ export interface ActorShowEntry {
   slug: string;
   showId: string;
   role: string;
-  castType: 'obc' | 'current';
+  castType: 'obc' | 'replacement' | 'current';
   venue: string;
   openingDate: string | null;
   closingDate: string | null;
