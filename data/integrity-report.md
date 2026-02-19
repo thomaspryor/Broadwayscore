@@ -4,10 +4,10 @@
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 24047 | 23923 | +124 |
+| Total Reviews | 23923 | 23923 | - |
 | Unknown Outlets | 35 | 35 | - |
 | Duplicates | 7 | 7 | - |
-| Sync Delta | 7424 | 7367 | +57 |
+| Sync Delta | 7367 | 7366 | +1 |
 
 ## Issues Found
 
@@ -35,7 +35,7 @@
 
 ### 🔴 sync_delta
 
-review-texts (24047) and reviews.json (16623) are out of sync by 7424 reviews
+review-texts (23923) and reviews.json (16556) are out of sync by 7367 reviews
 
 ## Recommendations
 
@@ -45,4 +45,4 @@ review-texts (24047) and reviews.json (16623) are out of sync by 7424 reviews
 
 ---
 
-*Report generated: 2026-02-19T01:25:27.483Z*
+*Report generated: 2026-02-19T00:14:52.460Z*
