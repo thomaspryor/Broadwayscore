@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-19",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16512,
-      "skippedNoScore": 438,
+      "totalReviews": 16507,
+      "skippedNoScore": 442,
       "skippedDuplicate": 87,
-      "skippedDuplicateUrl": 237,
+      "skippedDuplicateUrl": 255,
       "skippedCrossOutletDuplicateUrl": 28,
       "skippedDuplicateText": 247,
       "skippedFingerprintDedup": 83,
-      "skippedUnknownCriticDedup": 229,
-      "skippedWrongProduction": 2566,
+      "skippedUnknownCriticDedup": 231,
+      "skippedWrongProduction": 2567,
       "recoveredFromGarbage": 93,
       "scoreSources": {
         "explicit-stars": 7,
@@ -21,10 +21,10 @@
         "explicit-letterGrade": 15,
         "human-review": 68,
         "originalScore-priority0": 1698,
-        "llmScore": 10862,
+        "llmScore": 10860,
         "llmScore-thumb-validated": 27,
         "llmScore-thumb-boosted": 345,
-        "llmScore-lowconf": 3419,
+        "llmScore-lowconf": 3416,
         "llmScore-review": 2,
         "assignedScore": 1,
         "originalScore": 0,
@@ -6713,7 +6713,7 @@
       "pullQuote": "We are left with the bleak idea that some chasms are too deep to ever be bridged, no matter how well-meaning the intentions.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-dolls-house-part-2-2017",
@@ -13887,7 +13887,7 @@
       "pullQuote": "Nonetheless, it may be that in the long run it signals too obliviously the pessimistic outlook on life about to unfold at length.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "airline-highway-2015",
@@ -21325,17 +21325,17 @@
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Dale",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
+      "url": "https://www.broadwayworld.com/denver/article/BWW-Review-AN-ACT-OF-GOD-at-Denver-Center-20161206",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "There isn't a lot to chew on, but nevertheless 'An Act Of God' is a tasty and sweet stick of bubble gum, full of good laughs and silly summer fun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "an-act-of-god-2016",
@@ -68770,6 +68770,23 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 42,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2018/03/theater-review-escape-to-margaritaville.html",
+      "publishDate": "March 15, 2018",
+      "originalRating": null,
+      "pullQuote": "The show is so determined to be pleasant that it becomes unpleasant, like a cruise director who won't stop smiling even as the ship is sinking.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "outletId": "vulture",
+      "outlet": "Vulture",
+      "assignedScore": 42,
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
@@ -72252,23 +72269,6 @@
     },
     {
       "showId": "fences-2010",
-      "outletId": "bbc-news",
-      "outlet": "BBC News",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Tim Masters",
-      "url": "https://www.bbc.co.uk/news/entertainment-arts-11773562",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Unlike most NT productions, the Fela! musical actively encourages the audience to stand up and dance.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "fences-2010",
       "outletId": "bloomberg",
       "outlet": "Bloomberg",
       "assignedScore": 82,
@@ -74329,7 +74329,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 76,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Scott Brown",
@@ -74339,7 +74339,7 @@
       "pullQuote": "The songs (by Alan Zachary and ­Michael Weiner, of the upcoming Secondhand Lions) are pleasant, often energetic Broadpop bonbons with better-than-­average lyrics, but apart from Gay Bestie's oft-repeated 'Bailout Song' (performed with flair by Kristoffer Cusick), they won't haunt your dreams or even your cab ride home.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "fish-in-the-dark-2015",
@@ -98505,23 +98505,6 @@
     },
     {
       "showId": "heisenberg-2016",
-      "outletId": "abc-news",
-      "outlet": "ABC News",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Mark Kennedy",
-      "url": "https://abcnews.go.com/Entertainment/wireStory/review-broadways-bare-play-heisenberg-sumptuous-42793495",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But Simon Stephens' play also is as sumptuous an experience as theater gets.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "heisenberg-2016",
       "outletId": "act-three-the-reviews",
       "outlet": "Act Three: The Reviews",
       "assignedScore": 40,
@@ -99199,7 +99182,7 @@
       "pullQuote": "However, is this awkward pairing really believable?",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "heisenberg-2016",
@@ -112444,7 +112427,7 @@
       "pullQuote": "Little wonder that so many are so eager to salute Sondheim; we can only hope for more homages as lovely as this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "into-the-woods-2022",
@@ -154680,7 +154663,7 @@
       "pullQuote": "It is an important and brave interpretation that serves our present social atmosphere, shedding a new perspective on an old story.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -156072,23 +156055,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "It's great theatre, less great musical theatre.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
-      "outletId": "theatre-reviews-limited",
-      "outlet": "Theatre Reviews Limited",
-      "assignedScore": 92,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "David Roberts",
-      "url": "https://www.theatrereviews.com/broadway-review-natasha-pierre-the-great-comet-of-1812-sparkles-at-the-imperial-theatre/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The Great Comet is one of the most innovative musicals to appear on Broadway for a very long time.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -163607,7 +163573,7 @@
       "pullQuote": "This reimagining of “Oklahoma!” adds very little – if anything at all – to the original musical or any of its previous revivals.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "oklahoma-2019",
@@ -183790,7 +183756,7 @@
       "pullQuote": "Good intentions aren't enough to make a good play.",
       "dtliThumb": "Down",
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "punch-2025",
@@ -198094,7 +198060,7 @@
       "pullQuote": "“Six Degrees of Separation” – yes, long before Kevin Bacon, this is where the phrase originated – is a rollicking ninety minutes and not for the tame of heart.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "six-degrees-of-separation-2017",
@@ -223462,7 +223428,7 @@
       "pullQuote": "Although 'The Encounter' is not for everyone, fans of '3D audio,' radio plays and one-man monologues will find a lot to love in this ambitious production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-encounter-2016",
@@ -232303,7 +232269,7 @@
       "pullQuote": "“The Humans” is a psychological thriller that manages to capture the human condition, its pain, its worries, its culpability, even its hopes in concrete images that often leave the audience spellbound.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-humans-2016",
@@ -268195,7 +268161,7 @@
       "pullQuote": "The story isn’t really surprising, except that now that audiences have a chance to see the play, its combination of biting humor and moments of powerfully moving drama would seem a potent formula for popular success in any era.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "trouble-in-mind-2021",
@@ -271838,23 +271804,6 @@
     },
     {
       "showId": "waiting-for-godot-2009",
-      "outletId": "nytg",
-      "outlet": "New York Theatre Guide",
-      "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Joe Dziemianowicz",
-      "url": "https://www.newyorktheatreguide.com/reviews/no-mans-land-waiting-for-godot",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "While the stars bring marquee magnetism, the production design lends mystery.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "waiting-for-godot-2009",
       "outletId": "newsday",
       "outlet": "Newsday",
       "assignedScore": 55,
@@ -272124,23 +272073,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "waiting-for-godot-2013",
-      "outletId": "nyt-theater",
-      "outlet": "New York Theater",
-      "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2013/11/24/waiting-for-godot-review-sirs-patrick-stewart-and-ian-mckellen-on-broadway/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "What I am most uncertain about in this particular production is the existence of Lloyd's guiding intelligence.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "waiting-for-godot-2013",
@@ -273160,7 +273092,7 @@
       "pullQuote": "Which is pretty much how you are likely to feel after seeing 'Waitress.'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "waitress-2016",
@@ -277665,23 +277597,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "This show is amazing and highly recommend it to anyone who ever loved the Wizard of Oz.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "wicked-2003",
-      "outletId": "broadwayworld",
-      "outlet": "BroadwayWorld",
-      "assignedScore": 61,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Aaron Wallace",
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "This is the most complete, and completely satisfying, new musical I've come across in a long time.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
