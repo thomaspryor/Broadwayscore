@@ -101,6 +101,93 @@ async function sendEmail(to, from, subject, html) {
   });
 }
 
+// --- GPT-4o verification ---
+
+async function verifyPlanWithGPT(plan, diagnosis, showContext) {
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (!openaiKey) {
+    console.log('No OPENAI_API_KEY — skipping second-LLM verification');
+    return { verified: true, skipped: true };
+  }
+
+  const prompt = `You are fact-checking a proposed data fix for Broadway Scorecard. Your ONLY job is to check for factual errors — wrong production years, wrong directors, wrong show IDs, or claims that contradict the show data provided.
+
+## Proposed Fix
+**Summary:** ${plan.summary}
+**Steps:** ${plan.steps.join('; ')}
+**Actions:** ${JSON.stringify(plan.actions, null, 2)}
+
+## Original Diagnosis
+${diagnosis.summary}
+${diagnosis.whatsHappening}
+
+## Show Data From Our Database
+${showContext || '(no show data available)'}
+
+## Instructions
+1. Check each action's showId — does it match a real show in the data?
+2. Check any production years or revival claims — do they match the show data's openingDate?
+3. Check factual claims about directors, cast, venues — do they match creativeTeam data?
+4. If the show data doesn't include the claimed show, flag it as UNVERIFIED (not necessarily wrong, just can't confirm)
+
+Respond with ONLY a JSON object:
+{
+  "passed": true/false,
+  "issues": ["Issue 1", "Issue 2"],
+  "confidence": "high|medium|low"
+}
+
+If everything looks correct, return {"passed": true, "issues": [], "confidence": "high"}.`;
+
+  const data = JSON.stringify({
+    model: 'gpt-4o-mini',
+    temperature: 0.1,
+    max_tokens: 500,
+    messages: [{ role: 'user', content: prompt }],
+  });
+
+  return new Promise((resolve) => {
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiKey}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', c => body += c);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          const text = parsed.choices?.[0]?.message?.content || '';
+          const jsonMatch = text.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const result = JSON.parse(jsonMatch[0]);
+            console.log(`GPT-4o verification: ${result.passed ? 'PASSED' : 'FAILED'} (${result.confidence})`);
+            if (result.issues?.length > 0) {
+              console.log(`  Issues: ${result.issues.join('; ')}`);
+            }
+            resolve({ verified: result.passed, issues: result.issues || [], confidence: result.confidence });
+          } else {
+            console.log('GPT-4o verification: could not parse response');
+            resolve({ verified: true, skipped: true });
+          }
+        } catch (err) {
+          console.log(`GPT-4o verification error: ${err.message}`);
+          resolve({ verified: true, skipped: true });
+        }
+      });
+    });
+    req.on('error', (err) => {
+      console.log(`GPT-4o verification network error: ${err.message}`);
+      resolve({ verified: true, skipped: true });
+    });
+    req.write(data);
+    req.end();
+  });
+}
+
 // --- Allowed actions for plans ---
 
 const ALLOWED_DATA_FIELDS = {
@@ -294,6 +381,10 @@ Or if you cannot create an actionable plan:
     return;
   }
 
+  // 3b. Verify plan with GPT-4o (second-LLM fact-check)
+  const showContextForVerification = contextParts.filter(p => p.startsWith('## Show Data')).join('\n\n');
+  const verification = await verifyPlanWithGPT(plan, diagnosis, showContextForVerification);
+
   // 4. Save plan to data/pending-fixes/
   const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
   const planData = {
@@ -320,16 +411,43 @@ Or if you cannot create an actionable plan:
       riskLevel: plan.riskLevel,
       actions: plan.actions,
     },
+    verification: {
+      passed: verification.verified,
+      skipped: verification.skipped || false,
+      issues: verification.issues || [],
+      confidence: verification.confidence || null,
+    },
   };
 
   fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
   console.log(`Plan saved to ${planFile}`);
 
-  // 5. Generate HMAC-signed approval URLs
+  // 5. Build "current state" context for the email so the recipient can verify
+  const currentState = [];
+  for (const action of (plan.actions || [])) {
+    if (action.type === 'data-edit' && action.showId) {
+      const targetShow = shows.find(s => s.id === action.showId);
+      if (targetShow) {
+        const currentValue = action.field === 'creativeTeam'
+          ? (targetShow.creativeTeam || []).map(ct => `${ct.name} (${ct.role})`).join(', ') || 'empty'
+          : targetShow[action.field] != null ? String(targetShow[action.field]) : 'not set';
+        currentState.push({
+          showTitle: targetShow.title,
+          showId: targetShow.id,
+          field: action.field,
+          currentValue,
+          proposedChange: action.description || JSON.stringify(action.newValue),
+          ibdbUrl: `https://www.ibdb.com/broadway-production/${targetShow.slug || targetShow.id}`,
+        });
+      }
+    }
+  }
+
+  // 6. Generate HMAC-signed approval URLs
   const approveUrl = generateApprovalUrl('approve', issueNumber, secret);
   const rejectUrl = generateApprovalUrl('reject', issueNumber, secret);
 
-  // 6. Send approval email
+  // 7. Send approval email
   const ownerEmail = process.env.OWNER_EMAIL;
   if (ownerEmail) {
     const { subject, html } = buildFixApprovalEmail({
@@ -339,6 +457,8 @@ Or if you cannot create an actionable plan:
       planSummary: plan.summary,
       planSteps: plan.steps,
       riskLevel: plan.riskLevel,
+      currentState,
+      verification,
       approveUrl,
       rejectUrl,
       issueNumber: parseInt(issueNumber),

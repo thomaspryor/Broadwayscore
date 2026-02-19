@@ -474,6 +474,7 @@ function buildFixApprovalEmail(opts) {
   const {
     submitterName, showTitle, originalMessage,
     planSummary, planSteps, riskLevel,
+    currentState, verification,
     approveUrl, rejectUrl, issueNumber,
   } = opts;
 
@@ -487,19 +488,53 @@ function buildFixApprovalEmail(opts) {
     .map((s, i) => `<p style="margin:0 0 6px;padding-left:20px;">${i + 1}. ${escapeHtml(s)}</p>`)
     .join('\n');
 
+  // Build "current state" section so reviewer can verify the fix makes sense
+  let currentStateHtml = '';
+  if (currentState && currentState.length > 0) {
+    const rows = currentState.map(s => {
+      const verifyLink = s.ibdbUrl
+        ? ` <a href="${escapeHtml(s.ibdbUrl)}" style="color:#0066cc;font-size:12px;">[verify on IBDB]</a>`
+        : '';
+      return `<tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;">
+          <strong>${escapeHtml(s.showTitle)}</strong>${verifyLink}<br>
+          <span style="color:#555;font-size:13px;">${escapeHtml(s.field)}: currently ${escapeHtml(s.currentValue)}</span><br>
+          <span style="color:#0066cc;font-size:13px;">Change: ${escapeHtml(s.proposedChange)}</span>
+        </td>
+      </tr>`;
+    }).join('\n');
+
+    currentStateHtml = `
+<p style="margin:0;font-weight:600;">What the data looks like now:</p>
+<br>
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%;border:1px solid #ddd;border-radius:6px;margin:0;">
+${rows}
+</table>
+<br>`;
+  }
+
+  const messageHtml = originalMessage
+    ? `<p style="margin:0;padding-left:16px;border-left:3px solid #ddd;color:#555;font-style:italic;">${escapeHtml(originalMessage)}</p>`
+    : `<p style="margin:0;color:#999;font-style:italic;">(no message text available)</p>`;
+
   const html = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
 <p style="margin:0;">${escapeHtml(who)} wrote in${showRef}:</p>
 <br>
-<p style="margin:0;padding-left:16px;border-left:3px solid #ddd;color:#555;font-style:italic;">${escapeHtml(originalMessage)}</p>
+${messageHtml}
 <br>
-<p style="margin:0;font-weight:600;">Here's what I'd do to fix it:</p>
+${currentStateHtml}<p style="margin:0;font-weight:600;">Proposed fix:</p>
 <br>
 ${stepsHtml}
 <br>
 <p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)} &mdash; ${escapeHtml(planSummary)}</p>
 <br>
+${verification && !verification.skipped ? (
+  verification.passed
+    ? `<p style="margin:0 0 12px;padding:8px 12px;background-color:#f0fdf4;border:1px solid #86efac;border-radius:6px;color:#166534;font-size:13px;">&#9989; <strong>Verified by second AI</strong> &mdash; Facts checked, no issues found</p>`
+    : `<p style="margin:0 0 12px;padding:8px 12px;background-color:#fef2f2;border:1px solid #fca5a5;border-radius:6px;color:#991b1b;font-size:13px;">&#9888;&#65039; <strong>Verification flagged issues:</strong> ${verification.issues.map(i => escapeHtml(i)).join('; ')}</p>`
+) : ''}
 <table cellpadding="0" cellspacing="0" border="0" style="margin:0;"><tr>
   <td align="center" bgcolor="#22c55e" style="border-radius:6px;padding:0;"><a href="${escapeHtml(approveUrl)}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Approve Fix</a></td>
   <td style="width:12px;"></td>
