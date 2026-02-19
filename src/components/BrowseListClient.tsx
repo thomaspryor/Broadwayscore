@@ -3,7 +3,7 @@
 import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -215,13 +215,8 @@ const ShowCard = memo(function ShowCard({
               ) : null}
               <ScoreBadge score={displayScore} size="md" />
               {show.audienceGrade && (
-                <div
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-0.5"
-                  style={{ backgroundColor: `${show.audienceGrade.color}20`, color: show.audienceGrade.color }}
-                  title={show.audienceGrade.tooltip}
-                >
-                  <span className="opacity-60">Audience:</span>
-                  <span>{show.audienceGrade.grade}</span>
+                <div className="mt-0.5">
+                  <AudienceChip grade={show.audienceGrade} />
                 </div>
               )}
             </>
