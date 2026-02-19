@@ -95,6 +95,7 @@ jobs:
           echo "Git dir size before: $(du -sh .git | cut -f1)"
 
           python3 -m git_filter_repo \
+            --sensitive-data-removal \
             --path data/archives/ \
             --path data/review-texts/ \
             --path data/master-review-list.json \
@@ -126,7 +127,7 @@ jobs:
 
           for attempt in $(seq 1 5); do
             echo "=== Force push attempt $attempt ==="
-            if git push --force origin main 2>&1; then
+            if git push --force --all origin 2>&1 && git push --force --tags origin 2>&1; then
               echo "SUCCESS on attempt $attempt!"
               exit 0
             fi
