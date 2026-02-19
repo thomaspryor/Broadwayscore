@@ -112,9 +112,9 @@ export default function ActorDetailClient({
     setShowCount(INITIAL_SHOWS);
   }
 
-  // Only show actors who are in the current cast of running shows
+  // Shows currently running — include 'current' cast, or OBC of open shows (fallback when currentCast data hasn't been scraped)
   const openShows = useMemo(() =>
-    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews') && s.castType === 'current'),
+    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews') && (s.castType === 'current' || s.castType === 'obc')),
     [profile.shows]
   );
 
@@ -151,6 +151,7 @@ export default function ActorDetailClient({
       <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
         <ol className="flex items-center gap-1.5 flex-wrap">
           <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
+          <li className="before:content-['/'] before:mx-1.5"><Link href="/cast" className="hover:text-brand transition-colors">Cast</Link></li>
           <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{profile.name}</li>
         </ol>
       </nav>

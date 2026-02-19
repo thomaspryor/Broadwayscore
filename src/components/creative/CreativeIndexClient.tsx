@@ -64,7 +64,7 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
                 <span className="text-brand"> · {profile.obcCount} OBC</span>
               )}
               {replacementCount > 0 && (
-                <span> · {replacementCount} replacement</span>
+                <span> · {replacementCount} replacement{replacementCount !== 1 ? 's' : ''}</span>
               )}
             </>
           ) : (
@@ -306,7 +306,12 @@ export default function CreativeIndexClient({
         </>
       ) : (
         <div className="card p-8 text-center">
-          <p className="text-gray-400">No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</p>
+          <p className="text-gray-400">
+            {search.trim()
+              ? <>No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</>
+              : <>No {categoryLabel.toLowerCase()} found with current filters</>
+            }
+          </p>
         </div>
       )}
 
