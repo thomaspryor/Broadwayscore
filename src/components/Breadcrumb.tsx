@@ -5,19 +5,20 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+export default function Breadcrumb({ items, className }: { items: BreadcrumbItem[]; className?: string }) {
   return (
-    <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 flex-wrap">
+    <nav aria-label="Breadcrumb" className={`text-sm text-gray-500 ${className ?? 'mb-6'}`}>
+      <ol className="flex items-center gap-1.5 flex-wrap">
         {items.map((item, i) => (
-          <li key={i} className="flex items-center gap-2">
-            {i > 0 && <span className="text-gray-500">/</span>}
+          <li
+            key={i}
+            className={`${i > 0 ? "before:content-['/'] before:mx-1.5" : ''}${!item.href ? ' text-gray-300 truncate' : ''}`}
+            {...(!item.href ? { 'aria-current': 'page' as const } : {})}
+          >
             {item.href ? (
-              <Link href={item.href} className="hover:text-white transition-colors">
-                {item.label}
-              </Link>
+              <Link href={item.href} className="hover:text-brand transition-colors">{item.label}</Link>
             ) : (
-              <span className="text-gray-300">{item.label}</span>
+              item.label
             )}
           </li>
         ))}

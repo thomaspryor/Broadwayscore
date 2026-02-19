@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortColumn = 'name' | 'obc' | 'shows' | 'avg';
 type SortDir = 'asc' | 'desc';
@@ -63,7 +64,7 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
                 <span className="text-brand"> · {profile.obcCount} OBC</span>
               )}
               {replacementCount > 0 && (
-                <span> · {replacementCount} replacement{replacementCount !== 1 ? 's' : ''}</span>
+                <span className="text-gray-500"> · {replacementCount} other</span>
               )}
             </>
           ) : (
@@ -118,6 +119,7 @@ export default function CreativeIndexClient({
   routePath,
   totalShows,
   showObcFilter,
+  subtitle,
   defaultMinShows = 0,
 }: {
   profiles: CreativeProfileSummary[];
@@ -125,6 +127,7 @@ export default function CreativeIndexClient({
   routePath: string;
   totalShows: number;
   showObcFilter?: boolean;
+  subtitle?: string;
   defaultMinShows?: number;
 }) {
   const [search, setSearch] = useState('');
@@ -176,13 +179,10 @@ export default function CreativeIndexClient({
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5 flex-wrap">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300" aria-current="page">{categoryLabel}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: categoryLabel },
+      ]} />
 
       {/* Header */}
       <div className="mb-6">
@@ -190,6 +190,7 @@ export default function CreativeIndexClient({
         <p className="text-gray-400">
           {profiles.length.toLocaleString()} {categoryLabel.toLowerCase()} across {totalShows} Broadway shows
         </p>
+        {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
       </div>
 
       {/* Search + Filters */}

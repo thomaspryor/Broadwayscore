@@ -35,6 +35,29 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
 - **Secret:** `VERCEL_TOKEN` (CLI auth)
 
+**"Pushed" ≠ "Deployed" — NEVER declare work complete after just pushing.** Deploys take ~13 min and often fail (rate limits, build errors, timeouts). After pushing code that triggers a deploy:
+1. **Confirm the workflow triggered:** `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion,createdAt,databaseId`
+2. **If you have other work to do**, do it while the deploy runs. Check back before wrapping up.
+3. **Before ending the session**, check deploy status: `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion -q '.[0]'`
+   - If `completed` + `success`: verify production looks correct, THEN say "done"
+   - If `completed` + `failure`: investigate and fix. Do NOT leave a failed deploy for the next session.
+   - If still `in_progress`: tell the user "Deploy is still running (run #ID). Check back in X minutes." Do NOT say "all done."
+
+### 3b. Commit Frequently — Uncommitted Work WILL Be Lost (MANDATORY)
+**Multiple sessions run concurrently. Any session can run out of context at any time. Uncommitted changes are destroyed by: context expiration, other sessions doing git operations, stash pops, branch switches, or linters.**
+
+**Commit vs Push — different cadences:**
+- **Commit locally after each logical unit of work** — one component extracted, one bug fixed, one page updated. Never accumulate more than 1-2 changed files without committing. Commits are free and instant.
+- **Push at natural checkpoints** — after completing a sprint task, after a feature works end-to-end, or before starting QA. Pushes to `main` that touch `src/` trigger a ~13 min deploy workflow, so don't push every 5 minutes. But DO push at least every 30 min or after each major milestone — a local-only commit is still vulnerable to other sessions doing `git checkout` or `git stash pop`.
+
+**Other rules:**
+- **If you've been working for 15+ minutes without committing, stop and commit NOW.** A WIP commit is infinitely better than lost work.
+- **Before starting visual QA or testing, commit AND push first.** QA often runs out of context. If changes aren't committed, the QA session's feedback is useless because the code it reviewed no longer exists.
+- **Commit messages for WIP are fine:** `git commit -m "wip: extract StatGrid component"` — clean up later with a final commit message if needed.
+- **Never batch all changes into one final commit.** This is the #1 cause of lost work. A session that modifies 25 files across 4 features and never commits WILL lose everything.
+
+**Why this rule exists:** A session completed 4 component extractions across ~25 files but never committed. The session ran out of context. Another session's git operation overwrote the working tree. Hours of work permanently lost.
+
 ### 4. Automate Everything — SET AND FORGET
 All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
 
@@ -50,27 +73,57 @@ Any script processing >10 items in CI MUST save progress incrementally.
 - Use 5-retry push with `--rebase -X theirs`
 - `rebuild-all-reviews.js` writes back to `data/review-texts/` — the `push-review-texts` composite action handles pushing those changes to the private repo
 
-### 7a. Private Review-Texts Repo (IMPORTANT — ALL SESSIONS READ THIS)
-**`data/review-texts/` is in a private repo** (`thomaspryor/broadway-review-texts`), NOT the public repo. This protects 24,000+ copyrighted full-text reviews from DMCA exposure.
-- **CI workflows** automatically check out and push review-texts via composite actions:
+### 7a. Private Review-Texts Repo (CRITICAL — ALL SESSIONS READ THIS)
+**NEVER commit copyrighted review text, scraped full-text content, or third-party API keys to the public repo.** This is a legal/DMCA risk. All 24,000+ full-text reviews live in a private repo only.
+- **`data/review-texts/`** → private repo (`thomaspryor/broadway-review-texts`), gitignored from public repo.
+- **`reviews.json`** → public repo, but contains ONLY metadata (scores, outlets, URLs) — NO `fullText` field.
+- **CI workflows** use composite actions to check out / push review-texts:
   - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
   - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
 - **Secret:** `REVIEW_TEXTS_TOKEN` (PAT with `repo` scope, no expiration)
 - **Public repo:** `data/review-texts/` is in `.gitignore`. `git add data/review-texts/` is a no-op.
 - **Scripts unchanged:** No script modifications needed. Workflow-level composite actions handle the private repo.
 - **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
+- **Automated guard:** `test.yml` data-validation job verifies zero review-text files are tracked in the public repo. Fails the build if any leak in.
 - **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
 
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
 - `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `getScoreTier()`, `ShowImage`, `getOptimizedImageUrl()`
-- Import: `import { ScoreBadge, StatusBadge, ... } from '@/components/show-cards';`
+- `ToggleBar<T>` — generic labeled toggle row for sort/filter controls. Props: `label`, `options`, `value`, `onChange`, `size?: 'default' | 'compact'`, `className?`. Use `compact` for dense pages (critics, outlets, creatives). Use `default` (has 36px mobile tap targets) for main pages.
+- `ScoreToggle` — Critics/Audience segmented control. Props: `value`, `onChange`, `audienceFirst?`, `size?: 'default' | 'large'`, `className?`. Side effects (like forcing sort on audience switch) go in the parent's `onChange` handler, not the component.
+- Import: `import { ScoreBadge, StatusBadge, ToggleBar, ScoreToggle, ... } from '@/components/show-cards';`
 - New pages MUST use these. Add new components to `show-cards/` barrel — never inline.
+
+### 8a. Visual QA for UI Changes (MANDATORY)
+**When changing UI across 2+ files, you MUST do before/after screenshot comparison BEFORE committing.**
+1. **Before making changes**: Screenshot production (`broadwayscorecard.com`) at mobile (375px) and desktop (1280px) for every affected page
+2. **After making changes**: Build locally (`npx next build`), serve (`npx serve out -l 3099`), screenshot same pages at same sizes
+3. **Compare**: View before/after pairs side-by-side. Only commit if layout is identical (data count differences from pipeline runs are OK)
+4. **Playwright script pattern**:
+```js
+const { chromium } = require('playwright');
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 375, height: 900 } });
+const page = await ctx.newPage();
+await page.goto(url, { waitUntil: 'networkidle' });
+await page.screenshot({ path: '/tmp/before-pagename-375.png' });
+```
+**This rule exists because** a session proposed this exact testing plan, then skipped it and pushed without comparing. The refactor happened to be pixel-perfect, but we got lucky.
 
 ### 9. Roadmap Discipline
 Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
-When finishing: update the issue body + post a comment summarizing what was done.
-**Rabbit hole prevention:** New discoveries → Backlog comment. Don't context-switch.
+
+**When finishing a session**, you MUST:
+1. **Update the roadmap issue body** — move completed items to "Recently Done" with a one-line summary and date. Move newly started items to "In Progress."
+2. **Post a comment** summarizing what was done in this session.
+
+**When you discover work that should be done but WON'T do now**, you MUST:
+1. **Add it to the roadmap** — put it in the appropriate Backlog section (UI/Design, New Features, Infrastructure, etc.) with a one-line description.
+2. **Post a comment** explaining why it matters and why you're not doing it now.
+3. This prevents good ideas from being lost when sessions compact, get distracted, or fail. If it's not on the roadmap, it doesn't exist.
+
+**Rabbit hole prevention:** New discoveries → Backlog entry + comment. Don't context-switch.
 
 ### 10. Planning & Testing for Infrastructure Changes (MANDATORY)
 For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data pipelines**, or **cross-repo operations**:

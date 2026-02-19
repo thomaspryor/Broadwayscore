@@ -29,7 +29,7 @@ Break the project into sprints. For each sprint, follow these rules:
 - **Manual before automated:** If the plan involves building automation for a process, do the process manually first (at least 2-3 times) to discover edge cases, THEN automate. Never automate a process you haven't run manually.
 
 **Task-level rules:**
-- Every task is an atomic, committable piece of work (one commit, one concern)
+- Every task is an atomic, committable piece of work (one commit, one concern). **COMMIT IMMEDIATELY after each task passes its VERIFY check.** Do not accumulate uncommitted changes across tasks — context can expire at any time and uncommitted work WILL be lost. See CLAUDE.md §3b.
 - Every task has a **Complexity** rating: S (< 30 min), M (30-90 min), L (90+ min). If L, break it down further
 - Every task lists **Files touched** (new or modified — use actual paths if in an existing codebase)
 - Every task has **Acceptance criteria** in this format:
