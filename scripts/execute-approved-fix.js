@@ -337,27 +337,8 @@ async function main() {
       fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
 
       output('result', 'validation-failed');
-
-      // Notify Tom
-      const ownerEmail = process.env.OWNER_EMAIL;
-      if (ownerEmail) {
-        try {
-          await sendEmail(
-            ownerEmail,
-            'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-            `Fix Failed: Issue #${issueNumber}`,
-            `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:24px;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-<p style="margin:0;">The approved fix for issue #${issueNumber} failed validation and was rolled back.</p>
-<br>
-<p style="margin:0;">Applied: ${applied.length}, Failed: ${failed.length}</p>
-${failed.length > 0 ? `<p style="margin:0;color:#c00;">Failures: ${failed.join('; ')}</p>` : ''}
-<br>
-<p style="margin:0;"><a href="https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}">View issue #${issueNumber}</a></p>
-</body></html>`
-          );
-        } catch { /* best effort */ }
-      }
+      // No email — GitHub issue gets labeled 'needs-manual-review' by the workflow.
+      // Sending failure emails on every attempt was spammy during debugging.
       return;
     }
     console.log('Validation passed');
