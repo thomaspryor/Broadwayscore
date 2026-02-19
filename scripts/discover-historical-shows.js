@@ -92,6 +92,7 @@ const IBDB_SEASON_IDS = {
 };
 
 const dryRun = process.argv.includes('--dry-run');
+const skipRuntimes = process.argv.includes('--skip-runtimes');
 
 // Parse season argument
 const seasonsArg = process.argv.find(arg => arg.startsWith('--seasons='));
@@ -507,7 +508,7 @@ async function discoverHistoricalShows() {
 
   // --- Runtime enrichment from Broadway.com ---
   let runtimeEnrichments = {};
-  if (!dryRun && newShows.length > 0) {
+  if (!dryRun && !skipRuntimes && newShows.length > 0) {
     try {
       console.log('⏱️  Looking up runtimes from Broadway.com...');
       // Centralized page covers current shows; for historical, try individual pages

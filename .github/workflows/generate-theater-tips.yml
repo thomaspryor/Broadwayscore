@@ -1,0 +1,105 @@
+name: Generate Theater Tips
+
+on:
+  workflow_dispatch:
+    inputs:
+      theater:
+        description: 'Single theater name filter (optional)'
+        required: false
+        type: string
+      limit:
+        description: 'Limit number of theaters to process (0=all)'
+        required: false
+        type: number
+        default: 0
+      skip_scrape:
+        description: 'Skip scraping, use existing scraped data'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Generate but do not merge into metadata'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  generate-tips:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright (for scraping)
+        if: ${{ inputs.skip_scrape != true }}
+        run: npx playwright install chromium
+
+      - name: Scrape theater dining & parking data
+        if: ${{ inputs.skip_scrape != true }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.theater }}" ]; then
+            ARGS="$ARGS --theater \"${{ inputs.theater }}\""
+          fi
+          if [ "${{ inputs.limit }}" != "0" ]; then
+            ARGS="$ARGS --limit ${{ inputs.limit }}"
+          fi
+          echo "Running: node scripts/scrape-theater-tips.js $ARGS"
+          eval node scripts/scrape-theater-tips.js $ARGS
+
+      - name: Generate structured tips via Gemini Flash
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.theater }}" ]; then
+            ARGS="$ARGS --theater \"${{ inputs.theater }}\""
+          fi
+          if [ "${{ inputs.limit }}" != "0" ]; then
+            ARGS="$ARGS --limit ${{ inputs.limit }}"
+          fi
+          echo "Running: node scripts/generate-theater-tips.js $ARGS"
+          eval node scripts/generate-theater-tips.js $ARGS
+
+      - name: Merge tips into theater metadata
+        if: ${{ inputs.dry_run != true }}
+        run: node scripts/merge-theater-tips.js
+
+      - name: Validate data
+        if: ${{ inputs.dry_run != true }}
+        run: node scripts/validate-data.js
+
+      - name: Commit and push if changed
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/theater-tips-scraped.json data/theater-tips-draft.json data/theater-metadata.json
+          if git diff --staged --quiet; then
+            echo "No changes to theater tips"
+          else
+            git commit -m "chore: Update theater tips data (automated)"
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+          fi
