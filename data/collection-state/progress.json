@@ -1,62 +1,69 @@
 {
   "processed": [
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json",
-    "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-    "mcneal-2024/broadwaynews--brittani-samuel.json",
-    "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json"
+    "1984-2017/vulture--jesse-green.json"
   ],
   "failed": [
-    "chicago-1996/oocities--richard-zoglin.json",
-    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
-    "amelie-a-new-musical-2017/nytg--david-gordon.json",
-    "ghost-the-musical-2012/guardian--charles-isherwood.json",
-    "good-night-oscar-2023/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json"
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-christmas-carol-2019/vulture--jesse-green.json",
+    "a-christmas-carol-2022/vulture--helen-shaw.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "hadestown-2019/medium--christian-lewis.json",
-      "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-      "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "latin-history-for-morons-2017/thewrap--robert-hoffler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/leopoldstadt-2022/new-york-sun--unknown.json",
-      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
-      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+      "data/review-texts/a-christmas-carol-2019/vulture--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2022/vulture--helen-shaw.json"
     ],
     "archive": [
-      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-      "cabaret-2024/broadwaynews--brittani-samuel.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "mcneal-2024/broadwaynews--brittani-samuel.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json"
+      "1984-2017/vulture--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-19T01:27:54.427Z",
-  "lastProcessed": "swept-away-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T02:10:25.643Z",
+  "lastProcessed": "a-soldiers-play-2020/vulture--helen-shaw.json",
+  "log": [
+    {
+      "t": "2026-02-19T02:10:59.158Z",
+      "event": "bb-session",
+      "session": "323bb5c3",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-19T02:11:01.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T02:11:58.169Z",
+      "event": "bb-session",
+      "session": "79411441",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T02:12:00.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T02:13:10.650Z",
+      "event": "bb-session",
+      "session": "7c771f5a",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T02:13:12.756Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }

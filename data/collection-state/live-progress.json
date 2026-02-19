@@ -1,17 +1,51 @@
 {
-  "updatedAt": "2026-02-19T01:37:32.456Z",
-  "processed": 14,
-  "failed": 6,
-  "successRate": "70.0%",
+  "updatedAt": "2026-02-19T02:13:32.090Z",
+  "processed": 1,
+  "failed": 9,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 5
+    "archiveToday": 3,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-19T02:10:59.158Z",
+      "event": "bb-session",
+      "session": "323bb5c3",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-19T02:11:01.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T02:11:58.169Z",
+      "event": "bb-session",
+      "session": "79411441",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T02:12:00.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-19T02:13:10.650Z",
+      "event": "bb-session",
+      "session": "7c771f5a",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-19T02:13:12.756Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
