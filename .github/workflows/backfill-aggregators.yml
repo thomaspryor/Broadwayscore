@@ -38,6 +38,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Split shows into parallel batches
         id: split
         run: |
@@ -115,6 +120,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -155,6 +165,13 @@ jobs:
         if: always()
         uses: ./.github/actions/check-file-sizes
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill Aggregator Data — Commit and push changes"
       - name: Commit and push changes
         if: always()
         run: |
@@ -207,6 +224,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -219,6 +241,13 @@ jobs:
       - name: Rebuild reviews.json
         run: node scripts/rebuild-all-reviews.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill Aggregator Data — Commit and push rebuilt reviews.json"
       - name: Commit and push rebuilt reviews.json
         run: |
           git config user.name "github-actions[bot]"

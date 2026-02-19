@@ -181,12 +181,12 @@ export default function BestOfPage({ params }: { params: { category: string } })
                     <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
                       {duration && <span>{duration}</span>}
                       {isOpen && show.closingDate && (
-                        <span>
+                        <span className="text-amber-400">
                           {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                       )}
                       {isMixedStatus && !isOpen && (
-                        <span className="text-amber-400">
+                        <span className="text-orange-400">
                           Closed{show.closingDate ? ` ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : ''}
                         </span>
                       )}

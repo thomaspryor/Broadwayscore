@@ -1,0 +1,146 @@
+name: "Purge archives + review-texts from git history"
+
+# Deep clean: removes data/archives/ and data/review-texts/ from ALL commits.
+# Both were removed from HEAD (archives Feb 18, review-texts Feb 18, 2026).
+# review-texts moved to private repo thomaspryor/broadway-review-texts.
+#
+# Strategy: Runs during the quietest window (Saturday 1 AM EST). If other
+# workflows are active, it waits up to 30 minutes for them to finish naturally.
+# If they don't finish, it skips and tries again next Saturday.
+#
+# WARNING: After success, all local clones must run:
+#   git fetch origin && git reset --hard origin/main
+
+on:
+  schedule:
+    - cron: '0 6 * * 6'  # Saturday 6 AM UTC (1 AM EST) — quietest window
+  workflow_dispatch:
+
+concurrency:
+  group: purge-archives
+  cancel-in-progress: true
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Check if purge is still needed
+        id: check
+        run: |
+          git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
+          cd /tmp/check-repo
+          ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
+          ARCHIVE_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/archives/' || echo "0")
+          REVIEW_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/review-texts/' || echo "0")
+          echo "archive_commits=$ARCHIVE_COMMITS" >> "$GITHUB_OUTPUT"
+          echo "review_commits=$REVIEW_COMMITS" >> "$GITHUB_OUTPUT"
+          TOTAL=$((ARCHIVE_COMMITS + REVIEW_COMMITS))
+          if [ "$TOTAL" = "0" ]; then
+            echo "Nothing to purge — archives and review-texts already clean!"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found $ARCHIVE_COMMITS archive refs + $REVIEW_COMMITS review-texts refs in history"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+          rm -rf /tmp/check-repo
+
+      - name: Wait for other workflows to finish naturally
+        if: steps.check.outputs.skip == 'false'
+        id: wait
+        run: |
+          CURRENT_RUN_ID=${{ github.run_id }}
+          echo "Waiting for other workflows to finish naturally (up to 30 min)..."
+          for i in $(seq 1 36); do
+            RUNNING=$(gh run list --status=in_progress --json databaseId --jq "[.[] | select(.databaseId != $CURRENT_RUN_ID)] | length")
+            if [ "$RUNNING" -eq 0 ]; then
+              echo "All clear — no other workflows running"
+              echo "ready=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "($i/36) $RUNNING workflows still running, waiting 50s..."
+            sleep 50
+          done
+          echo "Other workflows still running after 30 minutes. Skipping this week."
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Full clone
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install git-filter-repo
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: pip3 install git-filter-repo
+
+      - name: Remove data/archives/ and data/review-texts/ from all history
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: |
+          echo "Commits before: $(git log --oneline | wc -l)"
+          echo "Git dir size before: $(du -sh .git | cut -f1)"
+
+          python3 -m git_filter_repo \
+            --path data/archives/ \
+            --path data/review-texts/ \
+            --invert-paths --force
+
+          echo "Commits after: $(git log --oneline | wc -l)"
+          echo "Git dir size after: $(du -sh .git | cut -f1)"
+
+      - name: Force push
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: |
+          # filter-repo removes the remote, re-add it
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+          # Final check: make sure no workflows started during filter-repo
+          CURRENT_RUN_ID=${{ github.run_id }}
+          RUNNING=$(gh run list --status=in_progress --json databaseId --jq "[.[] | select(.databaseId != $CURRENT_RUN_ID)] | length")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "WARNING: $RUNNING workflows started during filter-repo. Proceeding with force push anyway."
+            echo "Those workflows will fail on their next push (expected — they'll be retried by schedule)."
+          fi
+
+          for attempt in $(seq 1 5); do
+            echo "=== Force push attempt $attempt ==="
+            if git push --force origin main 2>&1; then
+              echo "SUCCESS on attempt $attempt!"
+              exit 0
+            fi
+            echo "Failed, retrying in 10s..."
+            sleep 10
+          done
+
+          echo "ERROR: Force push failed after 5 attempts"
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
+            echo "## Purge not needed" >> "$GITHUB_STEP_SUMMARY"
+            echo "Archives and review-texts already removed from history." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
+            echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
+            echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## History purge complete" >> "$GITHUB_STEP_SUMMARY"
+            echo "GitHub GC will reclaim space within ~24 hours." >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**All local clones must run:**" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "git fetch origin && git reset --hard origin/main" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi

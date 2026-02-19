@@ -99,6 +99,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -160,6 +165,13 @@ jobs:
         if: steps.git-check.outputs.changes == 'true'
         uses: ./.github/actions/check-file-sizes
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit review data"
       - name: Commit review data
         if: always() && steps.git-check.outputs.changes == 'true'
         run: |
@@ -229,6 +241,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -248,6 +265,13 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }}
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit and push aggregator data"
       - name: Commit and push aggregator data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -298,6 +322,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -311,6 +340,13 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit rebuilt reviews.json"
       - name: Commit rebuilt reviews.json
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

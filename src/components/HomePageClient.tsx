@@ -164,13 +164,15 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         <p className="text-sm text-gray-400 mt-2.5 truncate">
           {show.status === 'previews' ? (
             <>Opens {formatOpeningDate(show.openingDate)}</>
-          ) : show.closingDate ? (
-            <>
-              <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatOpeningDate(show.closingDate)}</span>
-              <span className="text-gray-500"> • Opened {formatOpeningDate(show.openingDate)}</span>
-            </>
+          ) : show.status === 'closed' ? (
+            <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
           ) : (
-            <>Opened {formatOpeningDate(show.openingDate)}</>
+            <>
+              {getBroadwayDuration(show.openingDate)}
+              {show.closingDate && (
+                <span className="text-amber-400"> · Closes {formatOpeningDate(show.closingDate)}</span>
+              )}
+            </>
           )}
         </p>
       </div>
