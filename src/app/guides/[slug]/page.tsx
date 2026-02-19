@@ -24,7 +24,8 @@ import {
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getLotteryRush } from '@/lib/data-lottery';
-import { ScoreBadge, StatusBadge, FormatPill } from '@/components/show-cards';
+import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
 
@@ -235,6 +236,8 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               const ticketLinks = show.ticketLinks?.filter(Boolean) || [];
               const lotteryRush = getLotteryRush(show.id);
               const displayText = consensus || show.synopsis;
+              const buzz = getAudienceBuzz(show.id);
+              const audienceGrade = buzz?.combinedScore != null ? getAudienceGrade(buzz.combinedScore) : null;
 
               return (
                 <div key={show.id} className="card p-4 sm:p-5">
@@ -289,12 +292,17 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </div>
 
                     {/* Score — shared component, large size */}
-                    <ScoreBadge
-                      score={show.criticScore?.score}
-                      size="lg"
-                      reviewCount={show.criticScore?.reviewCount}
-                      status={show.status}
-                    />
+                    <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
+                      <ScoreBadge
+                        score={show.criticScore?.score}
+                        size="lg"
+                        reviewCount={show.criticScore?.reviewCount}
+                        status={show.status}
+                      />
+                      {audienceGrade && audienceGrade.grade !== '—' && (
+                        <AudienceChip grade={audienceGrade} />
+                      )}
+                    </div>
                   </div>
 
                   {/* Critic Consensus or Synopsis fallback */}

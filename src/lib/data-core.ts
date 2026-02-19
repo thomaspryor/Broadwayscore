@@ -23,6 +23,8 @@ import buzzData from '../../data/buzz.json';
 import blogReviewsData from '../../data/blog-reviews-for-scoring.json';
 // LLM-generated related show recommendations
 import relatedShowsData from '../../data/related-shows.json';
+// Theater metadata (capacity, tips)
+import theaterMetaData from '../../data/theater-metadata.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -263,13 +265,18 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string }>;
+
   return Array.from(theaterMap.entries()).map(([name, data]) => {
     const currentShow = data.shows.find(s => s.status === 'open');
+    const theaterMeta = meta[name];
 
     return {
       name,
       slug: slugify(name),
       address: data.address,
+      capacity: theaterMeta?.capacity,
+      tips: theaterMeta?.tips,
       currentShow,
       allShows: data.shows.sort((a, b) =>
         new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
