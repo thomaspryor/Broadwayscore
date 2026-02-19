@@ -181,7 +181,7 @@ export function getUpcomingShows(): ComputedShow[] {
   const allShows = getAllShows();
 
   return allShows
-    .filter(show => show.status === 'previews')
+    .filter(show => show.status === 'previews' || show.status === 'upcoming')
     .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
 }
 
@@ -268,12 +268,12 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string } }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
     .map(([name, data]) => {
-      const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews');
+      const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
       const theaterMeta = meta[name];
 
       return {
@@ -286,6 +286,7 @@ export function getAllTheaters(): Theater[] {
         formerNames: theaterMeta?.formerNames,
         tips: theaterMeta?.tips,
         structuredTips: theaterMeta?.structuredTips,
+        images: theaterMeta?.images,
         currentShow,
         allShows: data.shows.sort((a, b) =>
           new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
@@ -504,12 +505,12 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     return entry.relatedOpenIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews') && !isSameShow(s, show))
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show))
       .slice(0, limit);
   }
-  // Fallback: filter algorithmic results to open/previews
+  // Fallback: filter algorithmic results to open/previews/upcoming
   return getRelatedShowsAlgorithmic(show, limit * 3)
-    .filter(s => s.status === 'open' || s.status === 'previews')
+    .filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming')
     .slice(0, limit);
 }
 
@@ -606,7 +607,7 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
       else if (yearDiff <= 5) score += 1;
 
       // Currently open/previews boost
-      if (candidate.status === 'open' || candidate.status === 'previews') score += 3;
+      if (candidate.status === 'open' || candidate.status === 'previews' || candidate.status === 'upcoming') score += 3;
 
       return { show: candidate, score };
     })

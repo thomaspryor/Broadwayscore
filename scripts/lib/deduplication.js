@@ -319,13 +319,14 @@ function checkForDuplicate(newShow, existingShows) {
       }
     }
 
-    // Check 7: Same venue + normalized title starts the same (first 8 chars)
+    // Check 7: Same venue + normalized title starts the same (first 15 chars)
     if (newVenue && existingVenue && newVenue === existingVenue) {
-      if (newTitleNormalized.length > 4 && existingTitleNormalized.length > 4 &&
-          newTitleNormalized.substring(0, 8) === existingTitleNormalized.substring(0, 8)) {
+      if (newTitleNormalized.length > 8 && existingTitleNormalized.length > 8 &&
+          newTitleNormalized.substring(0, 15) === existingTitleNormalized.substring(0, 15)) {
         // Skip multi-part shows at same venue (e.g., Coast of Utopia parts)
         const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
         if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
+        if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
           reason: `Same venue "${newVenue}" + similar title start`,

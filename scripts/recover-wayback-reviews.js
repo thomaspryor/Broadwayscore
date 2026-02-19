@@ -16,6 +16,7 @@
  *   DRY_RUN=true        CDX discovery only, no file writes
  *   TIER_FILTER=1       Only process Tier 1 outlets (1, 2, 3, or empty)
  *   DOMAIN_FILTER=x,y   Only process specific domains (comma-separated)
+ *   SOURCE_MODE=reviews-json  Process reviews from reviews.json that have URLs but no review-text files
  */
 
 const fs = require('fs');
@@ -28,6 +29,7 @@ const { execSync } = require('child_process');
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractScore } = require('./lib/score-extractors');
+const { generateReviewFilename } = require('./lib/review-normalization');
 
 // ============================================================================
 // Configuration
@@ -36,13 +38,16 @@ const { extractScore } = require('./lib/score-extractors');
 const CONFIG = {
   reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
   failedFetchesPath: path.join(__dirname, '..', 'data', 'review-texts', 'failed-fetches.json'),
+  reviewsJsonPath: path.join(__dirname, '..', 'data', 'reviews.json'),
   showsPath: path.join(__dirname, '..', 'data', 'shows.json'),
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-recovery-report.json'),
 
   // Rate limiting (configurable via env vars for large runs)
-  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '5000'),
-  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '3000'),
-  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '4000'),
+  // Tested Feb 19 2026: CDX safe at 1s (60/min), snapshots safe at 1s.
+  // Using 1.5s as default for CI (shared GitHub Actions IPs). See memory/archive-org-rate-limits.md
+  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '1500'),
+  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '1500'),
+  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '3000'),
   requestTimeoutMs: parseInt(process.env.REQUEST_TIMEOUT_MS || '30000'),
 
   // Exhausted URLs tracker — categorized reasons why archive recovery failed
@@ -281,7 +286,12 @@ function extractTextFromHtml(html, url) {
     .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
     .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
 
-  return extractParagraphs(text);
+  const pText = extractParagraphs(text);
+  if (pText.length > 200) return pText;
+
+  // Step 5: Fallback for old-style HTML (e.g., CurtainUp) using <br> paragraph breaks
+  // These sites use bare text with <br><br> instead of <p> tags
+  return extractBrSeparatedText(text);
 }
 
 /**
@@ -302,6 +312,36 @@ function extractParagraphs(html) {
       paragraphs.push(pText);
     }
   }
+
+  return paragraphs.join('\n\n');
+}
+
+/**
+ * Extract text from HTML that uses <br> tags instead of <p> tags (old-style sites).
+ * Treats <br><br> as paragraph breaks.
+ */
+function extractBrSeparatedText(html) {
+  // Strip remaining HTML tags but preserve <br> as paragraph markers
+  let text = html
+    .replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n\n')  // double br → paragraph break
+    .replace(/<br\s*\/?>/gi, '\n')                    // single br → newline
+    .replace(/<[^>]+>/g, ' ')                         // strip other tags
+    .replace(/[ \t]+/g, ' ');                         // normalize spaces
+
+  text = decodeHtmlEntities(text);
+
+  // Split into paragraphs, filter for content
+  const paragraphs = text.split(/\n\n+/)
+    .map(p => p.trim())
+    .filter(p => {
+      if (p.length < 40) return false;
+      const lower = p.toLowerCase();
+      if (lower.includes('cookie') || lower.includes('subscribe') ||
+          lower.includes('sign up for') || lower.includes('advertisement') ||
+          lower.includes('back to') || lower.includes('search curtainup') ||
+          lower.includes('production notes')) return false;
+      return true;
+    });
 
   return paragraphs.join('\n\n');
 }
@@ -576,6 +616,108 @@ function loadIncompleteCandidates() {
 }
 
 // ============================================================================
+// Load reviews-json candidates (for SOURCE_MODE=reviews-json)
+// Finds reviews in reviews.json that have URLs but no review-text files
+// ============================================================================
+
+function loadReviewsJsonCandidates() {
+  console.log('Loading reviews-json candidates (reviews with URLs but no files)...\n');
+
+  let shows = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+    for (const s of (showsData.shows || showsData)) {
+      shows[s.id || s.slug] = s;
+    }
+  } catch {}
+
+  const reviewsData = JSON.parse(fs.readFileSync(CONFIG.reviewsJsonPath, 'utf8'));
+  const allReviews = reviewsData.reviews || [];
+  console.log(`  Total reviews in reviews.json: ${allReviews.length}`);
+
+  const candidates = [];
+  let skippedNoUrl = 0, skippedFileExists = 0, skippedFlagged = 0;
+
+  for (const review of allReviews) {
+    if (!review.url) { skippedNoUrl++; continue; }
+    if (review.wrongShow || review.wrongProduction) { skippedFlagged++; continue; }
+    // Skip if already has full text
+    if (review.fullText && review.fullText.length > 300) continue;
+
+    const showId = review.showId;
+    if (!showId) continue;
+
+    // Generate expected file path
+    const filename = generateReviewFilename(review.outlet || review.outletId, review.criticName);
+    const showDir = path.join(CONFIG.reviewTextsDir, showId);
+    const filePath = path.join(showDir, filename);
+
+    // Skip if file already exists (other modes handle those)
+    if (fs.existsSync(filePath)) { skippedFileExists++; continue; }
+
+    const url = review.url;
+    const tier = getTierForUrl(url);
+    const domain = (() => {
+      try { return new URL(url).hostname.replace(/^www\./, ''); }
+      catch { return 'unknown'; }
+    })();
+
+    if (CONFIG.tierFilter && tier !== parseInt(CONFIG.tierFilter)) continue;
+    if (CONFIG.domainFilter.length > 0 && !CONFIG.domainFilter.includes(domain)) continue;
+
+    const show = shows[showId] || {};
+    const openingDate = show.openingDate || '2000-01-01';
+
+    candidates.push({
+      reviewId: `${showId}/${filename}`,
+      filePath,
+      url,
+      showId,
+      outlet: review.outlet || 'unknown',
+      outletId: review.outletId || 'unknown',
+      criticName: review.criticName || 'unknown',
+      tier,
+      domain,
+      openingDate,
+      isNewFile: true, // Flag: no existing review-text file
+      reviewsJsonData: {
+        outlet: review.outlet,
+        outletId: review.outletId,
+        criticName: review.criticName,
+        showId: review.showId,
+        url: review.url,
+        publishDate: review.publishDate,
+        source: review.source,
+      },
+    });
+  }
+
+  // Sort: Tier 1 first, then newest shows
+  candidates.sort((a, b) => {
+    if (a.tier !== b.tier) return a.tier - b.tier;
+    return b.openingDate.localeCompare(a.openingDate);
+  });
+
+  const limited = candidates.slice(0, CONFIG.maxUrls);
+
+  console.log(`  Skipped (no URL): ${skippedNoUrl}`);
+  console.log(`  Skipped (file already exists): ${skippedFileExists}`);
+  console.log(`  Skipped (flagged wrong): ${skippedFlagged}`);
+  console.log(`  Candidates after filters: ${limited.length}${CONFIG.maxUrls < Infinity ? ` (limited from ${candidates.length})` : ''}`);
+
+  const tierCounts = { 1: 0, 2: 0, 3: 0 };
+  for (const c of limited) tierCounts[c.tier]++;
+  console.log(`  Tier 1: ${tierCounts[1]}, Tier 2: ${tierCounts[2]}, Tier 3: ${tierCounts[3]}`);
+
+  const domainCounts = {};
+  for (const c of limited) domainCounts[c.domain] = (domainCounts[c.domain] || 0) + 1;
+  const topDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  console.log(`  Top domains: ${topDomains.map(([d, c]) => `${d}(${c})`).join(', ')}`);
+
+  return limited;
+}
+
+// ============================================================================
 // Checkpointing (CI only)
 // ============================================================================
 
@@ -634,6 +776,8 @@ async function main() {
 
   const candidates = CONFIG.sourceMode === 'incomplete'
     ? loadIncompleteCandidates()
+    : CONFIG.sourceMode === 'reviews-json'
+    ? loadReviewsJsonCandidates()
     : loadCandidates();
   if (candidates.length === 0) {
     console.log('\nNo candidates to process.');
@@ -828,7 +972,7 @@ async function main() {
 
   // Batch cleanup of failed-fetches.json (at end to avoid rebase conflicts)
   // Skip in incomplete mode — those reviews aren't in failed-fetches.json
-  if (!CONFIG.dryRun && recoveredReviewIds.length > 0 && CONFIG.sourceMode !== 'incomplete') {
+  if (!CONFIG.dryRun && recoveredReviewIds.length > 0 && CONFIG.sourceMode === 'failed-fetches') {
     console.log(`\nCleaning up failed-fetches.json (removing ${recoveredReviewIds.length} recovered entries)...`);
     try {
       const ff = JSON.parse(fs.readFileSync(CONFIG.failedFetchesPath, 'utf8'));
@@ -944,8 +1088,25 @@ async function processRecoveredText(candidate, text, html, archiveData) {
     return false;
   }
 
-  // Read current source file
-  const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+  // Read current source file or create new one for reviews-json mode
+  let data;
+  if (candidate.isNewFile) {
+    // Create new review-text file from reviews.json metadata
+    const showDir = path.dirname(candidate.filePath);
+    if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
+    data = {
+      showId: candidate.showId,
+      outlet: candidate.outlet,
+      outletId: candidate.outletId,
+      criticName: candidate.criticName,
+      url: candidate.url,
+      publishDate: candidate.reviewsJsonData?.publishDate || null,
+      source: 'wayback-recovery',
+    };
+    console.log(`    Creating new review-text file: ${candidate.reviewId}`);
+  } else {
+    data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+  }
 
   // Length guard for incomplete mode — only accept if meaningfully longer
   if (CONFIG.sourceMode === 'incomplete' && data.fullText) {

@@ -41,13 +41,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify Vercel build guard is active
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          SETTING=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/prj_wmBnDUrCQCwabIAYPbnMiIP3wg15" \
+            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'NOT SET')")
+          echo "commandForIgnoringBuildStep: $SETTING"
+          if [ "$SETTING" != "exit 0" ]; then
+            echo "::warning::Build guard is NOT set to 'exit 0' — fixing now..."
+            curl -s -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+              "https://api.vercel.com/v9/projects/prj_wmBnDUrCQCwabIAYPbnMiIP3wg15" \
+              -d '{"commandForIgnoringBuildStep":"exit 0"}'
+            echo "::warning::Build guard restored to 'exit 0'. Git-triggered builds were unblocked — check Vercel billing."
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Cache Vercel CLI
+        id: vercel-cli-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm/_npx
+          key: vercel-cli-${{ runner.os }}
 
       - name: Install Vercel CLI
         run: npm install -g vercel
@@ -56,6 +80,15 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-cache-${{ runner.os }}-
 
       - name: Build
         env:

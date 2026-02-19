@@ -5,6 +5,14 @@ import TheaterIndexClient from './TheaterIndexClient';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+function getWikimediaThumbUrl(originalUrl: string, width: number): string {
+  if (!originalUrl.includes('/commons/') || originalUrl.includes('/thumb/')) return originalUrl;
+  const parts = originalUrl.split('/commons/');
+  const path = parts[1];
+  const filename = path.split('/').pop();
+  return `${parts[0]}/commons/thumb/${path}/${width}px-${filename}`;
+}
+
 export const metadata: Metadata = {
   title: 'Broadway Theaters - All NYC Theater Venues',
   description: 'Browse all Broadway theaters in New York City. See what shows are currently playing at each venue with critic scores and reviews.',
@@ -40,7 +48,9 @@ export default function TheatersIndexPage() {
       showCount: t.showCount,
       capacity: t.capacity ?? null,
       currentShowTitle: t.currentShow?.title,
+      currentShowStatus: t.currentShow?.status as 'open' | 'previews' | 'upcoming' | undefined,
       avgScore,
+      imageUrl: t.images?.exterior ? getWikimediaThumbUrl(t.images.exterior, 80) : undefined,
     };
   });
 
