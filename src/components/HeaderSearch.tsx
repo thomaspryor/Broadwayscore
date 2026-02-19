@@ -15,13 +15,13 @@ interface Show {
   images?: {
     thumbnail?: string;
   };
+  hasScore?: boolean;
 }
 
-interface HeaderSearchProps {
-  shows: Show[];
-}
-
-export default function HeaderSearch({ shows }: HeaderSearchProps) {
+export default function HeaderSearch() {
+  const [shows, setShows] = useState<Show[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const fetchedRef = useRef(false);
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -29,6 +29,23 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Fetch search data on first interaction
+  const ensureData = useCallback(async () => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+    setIsLoading(true);
+    try {
+      const res = await fetch('/data/search-shows.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: Show[] = await res.json();
+      setShows(data);
+    } catch {
+      fetchedRef.current = false; // allow retry on next interaction
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Fuse.js instance for fuzzy search
   const fuse = useMemo(() => new Fuse(shows, {
@@ -58,7 +75,9 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
       : [];
 
     // Merge: Fuse results first (ranked by relevance), then substring matches
-    const merged = [...fuseResults, ...substringMatches];
+    // Exclude unscored closed shows (historical shows without reviews)
+    const merged = [...fuseResults, ...substringMatches]
+      .filter(show => show.hasScore || show.status !== 'closed');
     return merged.slice(0, 8);
   }, [query, fuse, shows]);
 
@@ -145,7 +164,7 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
               setQuery(e.target.value);
               setIsOpen(e.target.value.length >= 1);
             }}
-            onFocus={() => query.length >= 1 && setIsOpen(true)}
+            onFocus={() => { ensureData(); query.length >= 1 && setIsOpen(true); }}
             onKeyDown={handleKeyDown}
             placeholder="Search shows..."
             className="w-48 lg:w-56 px-3 py-1.5 pl-9 text-sm bg-white/5 border border-white/10 rounded-lg
@@ -235,14 +254,16 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
         {/* No results message */}
         {isOpen && query.length >= 1 && filteredShows.length === 0 && (
           <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-50">
-            <p className="text-sm text-gray-400 text-center">No shows found for &ldquo;{query}&rdquo;</p>
+            <p className="text-sm text-gray-400 text-center">
+              {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+            </p>
           </div>
         )}
       </div>
 
       {/* Mobile search button */}
       <button
-        onClick={() => setIsMobileOpen(true)}
+        onClick={() => { ensureData(); setIsMobileOpen(true); }}
         className="sm:hidden p-2 text-gray-400 hover:text-white transition-colors"
         aria-label="Search shows"
       >
@@ -331,7 +352,9 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
                 </div>
               ) : query.length >= 1 ? (
                 <div className="p-8 text-center">
-                  <p className="text-gray-400">No shows found for &ldquo;{query}&rdquo;</p>
+                  <p className="text-gray-400">
+                    {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+                  </p>
                 </div>
               ) : (
                 <div className="p-8 text-center">

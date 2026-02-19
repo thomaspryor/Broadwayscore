@@ -578,6 +578,7 @@ async function discoverHistoricalShows() {
         originalProductionId,
         productionNumber,
         season: show.season,
+        ibdbUrl: show.ibdbUrl || null,
       });
     }
 
