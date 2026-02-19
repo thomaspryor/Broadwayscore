@@ -3,7 +3,7 @@
 import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 import { getBroadwayDuration } from '@/lib/date-utils';
 
@@ -310,47 +310,24 @@ export default function BrowseListClient({
           {/* Sort + Toggle row (all on one line) */}
           <div className="flex items-center justify-between gap-1">
             {availableSorts.length > 1 ? (
-              <div className="flex items-center gap-0.5 sm:gap-2">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
-                {availableSorts.map(s => (
-                  <button
-                    key={s}
-                    onClick={() => setSort(s)}
-                    className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 whitespace-nowrap ${
-                      sort === s
-                        ? 'text-brand bg-brand/10 sm:bg-transparent'
-                        : 'text-gray-300 hover:text-white'
-                    }`}
-                  >
-                    {SORT_LABELS[s]}
-                  </button>
-                ))}
-              </div>
+              <ToggleBar
+                label="Sort:"
+                options={availableSorts.map(s => ({ value: s, label: SORT_LABELS[s] }))}
+                value={sort}
+                onChange={setSort}
+                ariaLabel="Sort shows"
+              />
             ) : subtitle ? (
               <span className="text-gray-500 text-sm">{subtitle}</span>
             ) : <div />}
 
             {/* Score mode toggle */}
             {showScoreToggle && hasAnyAudienceData && (
-              <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10 flex-shrink-0" role="group" aria-label="Score display mode">
-                {([
-                  { key: 'critics' as const, label: 'Critics' },
-                  { key: 'audience' as const, label: 'Audience' },
-                ]).map(({ key, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => setScoreMode(key)}
-                    aria-pressed={scoreMode === key}
-                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
-                      scoreMode === key
-                        ? 'bg-brand text-gray-900 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-300'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
+              <ScoreToggle
+                value={scoreMode}
+                onChange={setScoreMode}
+                className="flex-shrink-0"
+              />
             )}
           </div>
         </div>
