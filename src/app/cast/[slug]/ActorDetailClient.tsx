@@ -55,6 +55,11 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
               OBC
             </span>
           )}
+          {show.castType === 'replacement' && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
+              Replacement
+            </span>
+          )}
           {show.type && (
             <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
               show.type === 'musical'

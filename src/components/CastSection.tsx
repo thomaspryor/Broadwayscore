@@ -8,6 +8,7 @@ interface CastSectionProps {
   openingNightCast: CastMemberOBC[];
   currentCast?: CastMemberOBC[] | null;
   currentCastUpdatedAt?: string | null;
+  replacements?: CastMemberOBC[] | null;
   showStatus: string;
   actorSlugs?: Record<string, string>;  // ibdbPersonId → slug
 }
@@ -66,12 +67,13 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs }: { cast: Ca
   );
 }
 
-export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, showStatus, actorSlugs }: CastSectionProps) {
+export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, actorSlugs }: CastSectionProps) {
   const hasOBC = openingNightCast.length > 0;
   const hasCurrentCast = currentCast && currentCast.length > 0;
+  const hasReplacements = replacements && replacements.length > 0;
   const isOpen = showStatus === 'open' || showStatus === 'previews';
 
-  if (!hasOBC && !hasCurrentCast) return null;
+  if (!hasOBC && !hasCurrentCast && !hasReplacements) return null;
 
   return (
     <div className="mb-8">
@@ -97,6 +99,17 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
               Original Broadway Cast
             </h2>
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} />
+          </>
+        )}
+
+        {/* Replacements */}
+        {hasReplacements && (
+          <>
+            {hasOBC && <div className="border-t border-white/10 my-5" />}
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+              Notable Replacements
+            </h2>
+            <CastList cast={replacements!} actorSlugs={actorSlugs} />
           </>
         )}
       </div>

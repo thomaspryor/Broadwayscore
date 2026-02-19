@@ -109,6 +109,9 @@ function buildAllProfiles() {
     };
 
     processCast(castFile.openingNightCast || [], 'obc');
+    if (castFile.replacements) {
+      processCast(castFile.replacements, 'replacement');
+    }
     if (castFile.currentCast) {
       processCast(castFile.currentCast, 'current');
     }
