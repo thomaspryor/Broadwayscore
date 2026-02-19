@@ -5,6 +5,8 @@ import Link from 'next/link';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
+import { ToggleBar, StatGrid } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -94,13 +96,11 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5 flex-wrap">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5"><Link href="/critics" className="hover:text-brand transition-colors">Critics</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{critic.name}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Critics', href: '/critics' },
+        { label: critic.name },
+      ]} />
 
       {/* Header */}
       <div className="mb-8">
@@ -144,26 +144,12 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Reviews</p>
-            <p className="text-2xl font-bold text-white">{critic.reviewCount}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
-            <p className="text-2xl font-bold" style={{ color: getScoreTextColor(critic.avgScore) }}>
-              {Math.round(critic.avgScore)}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-            <p className="text-2xl font-bold text-white">{critic.highScore}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-            <p className="text-2xl font-bold text-white">{critic.lowScore}</p>
-          </div>
-        </div>
+        <StatGrid className="mb-4" stats={[
+          { label: 'Reviews', value: critic.reviewCount },
+          { label: 'Average', value: Math.round(critic.avgScore), color: getScoreTextColor(critic.avgScore) },
+          { label: 'Highest', value: critic.highScore },
+          { label: 'Lowest', value: critic.lowScore },
+        ]} />
 
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
@@ -174,22 +160,19 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       </div>
 
       {/* Sort Controls */}
-      <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap mb-4" role="group" aria-label="Sort reviews">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-        {(['recent', 'highest', 'lowest'] as SortMode[]).map(mode => (
-          <button
-            key={mode}
-            onClick={() => { setSortMode(mode); setShowCount(INITIAL_REVIEWS); }}
-            className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-              sortMode === mode
-                ? 'text-brand bg-brand/10 sm:bg-transparent'
-                : 'text-gray-300 hover:text-white'
-            }`}
-          >
-            {mode === 'recent' ? 'RECENT' : mode === 'highest' ? 'HIGHEST' : 'LOWEST'}
-          </button>
-        ))}
-      </div>
+      <ToggleBar
+        label="SORT:"
+        options={[
+          { value: 'recent' as SortMode, label: 'RECENT' },
+          { value: 'highest' as SortMode, label: 'HIGHEST' },
+          { value: 'lowest' as SortMode, label: 'LOWEST' },
+        ]}
+        value={sortMode}
+        onChange={(mode) => { setSortMode(mode); setShowCount(INITIAL_REVIEWS); }}
+        ariaLabel="Sort reviews"
+        size="compact"
+        className="mb-4"
+      />
 
       {/* Review List */}
       <div className="space-y-2">

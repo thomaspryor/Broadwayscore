@@ -79,9 +79,20 @@ const IBDB_SEASON_IDS = {
   '1982-1983': 1084,
   '1981-1982': 1083,
   '1980-1981': 1082,
+  '1979-1980': 1081,
+  '1978-1979': 1080,
+  '1977-1978': 1079,
+  '1976-1977': 1078,
+  '1975-1976': 1077,
+  '1974-1975': 1076,
+  '1973-1974': 1075,
+  '1972-1973': 1074,
+  '1971-1972': 1073,
+  '1970-1971': 1072,
 };
 
 const dryRun = process.argv.includes('--dry-run');
+const skipRuntimes = process.argv.includes('--skip-runtimes');
 
 // Parse season argument
 const seasonsArg = process.argv.find(arg => arg.startsWith('--seasons='));
@@ -497,7 +508,7 @@ async function discoverHistoricalShows() {
 
   // --- Runtime enrichment from Broadway.com ---
   let runtimeEnrichments = {};
-  if (!dryRun && newShows.length > 0) {
+  if (!dryRun && !skipRuntimes && newShows.length > 0) {
     try {
       console.log('⏱️  Looking up runtimes from Broadway.com...');
       // Centralized page covers current shows; for historical, try individual pages

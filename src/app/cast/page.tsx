@@ -41,7 +41,7 @@ export default function CastIndexPage() {
     avgScore: p.avgScore,
     openShowCount: p.openShowCount,
     roles: [] as string[],
-    obcCount: p.shows.filter(s => s.castType === 'obc').length,
+    obcCount: p.shows.filter(s => s.castType === 'obc' && !s.isRevival).length,
     headshot: p.headshot,
   }));
 
@@ -58,6 +58,7 @@ export default function CastIndexPage() {
         totalShows={totalShows}
         showObcFilter
         defaultMinShows={3}
+        subtitle="Covers productions from 1970 to present. Critic scores available from 2005."
       />
     </div>
   );

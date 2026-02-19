@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
+import { ToggleBar } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
 
@@ -103,12 +105,10 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300" aria-current="page">Critics</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Critics' },
+      ]} />
 
       {/* Header */}
       <div className="mb-6">
@@ -147,39 +147,28 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
 
       {/* Sort & Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-5 text-sm">
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Sort critics">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {SORT_OPTIONS.map(opt => (
-            <button
-              key={opt.value}
-              onClick={() => setSortMode(opt.value)}
-              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                sortMode === opt.value
-                  ? 'text-brand bg-brand/10 sm:bg-transparent'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="SORT:"
+          options={SORT_OPTIONS.map(opt => ({ value: opt.value, label: opt.label }))}
+          value={sortMode}
+          onChange={setSortMode}
+          ariaLabel="Sort critics"
+          size="compact"
+        />
 
-        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Minimum reviews">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">MIN:</span>
-          {[1, 5, 10, 25].map(n => (
-            <button
-              key={n}
-              onClick={() => setMinReviews(n)}
-              className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                minReviews === n
-                  ? 'text-brand bg-brand/10 sm:bg-transparent'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {n === 1 ? 'ALL' : `${n}+`}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          label="MIN:"
+          options={[
+            { value: '1', label: 'ALL' },
+            { value: '5', label: '5+' },
+            { value: '10', label: '10+' },
+            { value: '25', label: '25+' },
+          ]}
+          value={String(minReviews)}
+          onChange={(v) => setMinReviews(Number(v))}
+          ariaLabel="Minimum reviews"
+          size="compact"
+        />
       </div>
 
       {/* Column Headers */}
