@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { getBroadwayDuration } from '@/lib/date-utils';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -46,18 +47,6 @@ interface BrowseListClientProps {
   subtitle?: string;
 }
 
-function getBroadwayDuration(openingDate: string | null): string | null {
-  if (!openingDate) return null;
-  const open = new Date(openingDate);
-  const now = new Date();
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
-  if (months < 1) return 'Just opened';
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
-  const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
-  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
-}
 
 function RankBadge({ rank }: { rank: number }) {
   const isTop3 = rank <= 3;
@@ -71,9 +60,9 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 const SORT_LABELS: Record<SortOption, string> = {
-  score: 'Top',
+  score: 'Highest',
   alpha: 'A-Z',
-  newest: 'New',
+  newest: 'Newest',
   closing: 'Closing',
   performances: 'Longest',
 };
@@ -321,16 +310,16 @@ export default function BrowseListClient({
           {/* Sort + Toggle row (all on one line) */}
           <div className="flex items-center justify-between gap-1">
             {availableSorts.length > 1 ? (
-              <div className="flex items-center gap-0.5">
-                <span className="text-[10px] font-medium uppercase tracking-wide text-gray-500 mr-0.5 hidden sm:inline">Sort:</span>
+              <div className="flex items-center gap-0.5 sm:gap-2">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
                 {availableSorts.map(s => (
                   <button
                     key={s}
                     onClick={() => setSort(s)}
-                    className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[32px] whitespace-nowrap ${
+                    className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 whitespace-nowrap ${
                       sort === s
-                        ? 'bg-white/15 text-white'
-                        : 'text-gray-500 hover:text-gray-300'
+                        ? 'text-brand bg-brand/10 sm:bg-transparent'
+                        : 'text-gray-300 hover:text-white'
                     }`}
                   >
                     {SORT_LABELS[s]}
