@@ -50,6 +50,30 @@ jobs:
           fi
           echo "✓ Zero review-text files in public repo"
 
+      - name: Guard — aggregator archives present
+        run: |
+          TOTAL=0
+          FAIL=0
+          for dir in data/aggregator-archive/*/; do
+            NAME=$(basename "$dir")
+            COUNT=$(ls "$dir" 2>/dev/null | wc -l | tr -d ' ')
+            echo "$NAME: $COUNT files"
+            TOTAL=$((TOTAL + COUNT))
+            if [ "$COUNT" -lt 40 ]; then
+              echo "::warning::$NAME has only $COUNT files (expected 40+)"
+              FAIL=$((FAIL + 1))
+            fi
+          done
+          if [ "$TOTAL" -lt 2500 ]; then
+            echo "::error::CRITICAL: Only $TOTAL aggregator archive files found (expected 2500+). Archives may have been accidentally deleted."
+            exit 1
+          fi
+          if [ "$FAIL" -gt 2 ]; then
+            echo "::error::$FAIL aggregator directories below minimum file count."
+            exit 1
+          fi
+          echo "✓ $TOTAL aggregator archive files present"
+
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
