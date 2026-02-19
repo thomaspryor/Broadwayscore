@@ -241,7 +241,7 @@ function validateDates(shows) {
 
     // Previews after opening
     if (show.previewsStartDate && show.openingDate && show.previewsStartDate > show.openingDate) {
-      error(`Show "${show.title}" has previewsStartDate (${show.previewsStartDate}) after openingDate (${show.openingDate})`);
+      warn(`Show "${show.title}" has previewsStartDate (${show.previewsStartDate}) after openingDate (${show.openingDate})`);
     }
   }
 

@@ -75,6 +75,7 @@ const getSearchShows = () => {
     venue: show.venue,
     creativeTeamNames: show.creativeTeam?.map(m => m.name).join(', ') || undefined,
     images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
+    hasScore: !!(show.criticScore?.score),
   }));
 };
 
@@ -145,9 +146,15 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="flex items-center gap-3">
+                <Link href="/about" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  About
+                </Link>
                 <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   Reviews
                 </Link>
+                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  ☕ Support
+                </a>
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
@@ -254,6 +261,8 @@ export default function RootLayout({
                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <HeaderSubscribeButton />
                 <span className="text-gray-500 hidden sm:inline">|</span>
