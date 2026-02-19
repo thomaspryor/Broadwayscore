@@ -43,7 +43,7 @@ interface HomePageClientProps {
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
-type ScoreModeParam = 'critics' | 'audience' | 'both_c';
+type ScoreModeParam = 'critics' | 'audience';
 
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
@@ -52,7 +52,7 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
-const DEFAULT_SCORE_MODE: ScoreModeParam = 'both_c';
+const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -112,10 +112,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   } else {
     score = show.criticScore?.score;
     tier = getScoreTier(score);
-    // Also get audience grade for "both" modes
-    if (scoreMode.startsWith('both')) {
-      audienceGrade = show.audienceGrade;
-    }
+    // Always get audience grade for the chip below critic score
+    audienceGrade = show.audienceGrade;
   }
 
   return (
@@ -124,7 +122,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       prefetch={false}
       role="listitem"
       data-testid="show-card"
-      className="group card-interactive flex items-center gap-4 px-5 py-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
@@ -179,40 +177,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24 overflow-visible">
-        {scoreMode === 'both_c' ? (
-          // Variant C: Big critic badge + small audience chip
-          <>
-            {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
-              <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
-                Not Yet Rated
-              </span>
-            ) : tier ? (
-              <span
-                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-                style={{ color: tier.color }}
-                title={tier.tooltip}
-              >
-                {tier.label}
-              </span>
-            ) : null}
-            <ScoreBadge
-              score={score}
-              size="lg"
-              reviewCount={show.criticScore?.reviewCount}
-              status={show.status}
-            />
-            {audienceGrade && (
-              <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
-                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
-                title={audienceGrade.tooltip}
-              >
-                <span className="opacity-60">Audience:</span>
-                <span>{audienceGrade.grade}</span>
-              </div>
-            )}
-          </>
-        ) : scoreMode === 'audience' ? (
+        {scoreMode === 'audience' ? (
           // Audience mode: Big audience grade + small critic chip below
           audienceGrade ? (
             <>
@@ -251,7 +216,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             </div>
           ) : null
         ) : (
-          // Critics mode: Show tier label + numeric score badge
+          // Critics mode: Show tier label + numeric score badge + audience chip
           <>
             {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
@@ -272,10 +237,15 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
             />
-            {show.reviewYearNote && (
-              <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight mt-1">
-                {show.reviewYearNote}
-              </span>
+            {audienceGrade && (
+              <div
+                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
+                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
+                title={audienceGrade.tooltip}
+              >
+                <span className="opacity-60">Audience:</span>
+                <span>{audienceGrade.grade}</span>
+              </div>
             )}
           </>
         )}
@@ -387,7 +357,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
-    scoreMode: (['critics', 'audience', 'both_c'].includes(initialSearchParams.get('scoreMode') as string)
+    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
   }));
@@ -726,7 +696,6 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         {/* Score Mode Picker (Right) - Variant comparison for preview */}
         <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
           {([
-            { key: 'both_c', label: 'Chip' },
             { key: 'critics', label: 'Critics' },
             { key: 'audience', label: 'Audience' },
           ] as const).map(({ key, label }) => (
