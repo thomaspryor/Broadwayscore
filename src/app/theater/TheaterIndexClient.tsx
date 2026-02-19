@@ -2,10 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, ToggleBar } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
-type SortMode = 'playing' | 'shows' | 'capacity' | 'score' | 'alpha';
+type StatusFilter = 'current' | 'all' | 'dark';
+type SortMode = 'shows' | 'capacity' | 'score' | 'alpha';
 
 interface TheaterSummary {
   name: string;
@@ -14,14 +15,9 @@ interface TheaterSummary {
   showCount: number;
   capacity: number | null;
   currentShowTitle?: string;
+  currentShowStatus?: 'open' | 'previews';
   avgScore: number | null;
 }
-
-// Pill-style sorts (left side of header row)
-const PILL_SORTS: { value: SortMode; label: string }[] = [
-  { value: 'playing', label: 'Playing' },
-  { value: 'alpha', label: 'A-Z' },
-];
 
 function TheaterCard({ theater }: { theater: TheaterSummary }) {
   return (
@@ -43,7 +39,12 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
         </h2>
         <p className="text-gray-500 text-xs sm:text-sm truncate mt-0.5">
           {theater.currentShowTitle ? (
-            <span className="text-brand">{theater.currentShowTitle}</span>
+            <>
+              <span className="text-brand">{theater.currentShowTitle}</span>
+              {theater.currentShowStatus === 'previews' && (
+                <span className="text-amber-400 text-[10px] font-medium ml-1.5">IN PREVIEWS</span>
+              )}
+            </>
           ) : (
             <span className="text-gray-600 italic">No current show</span>
           )}
@@ -51,18 +52,18 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
       </div>
 
       {/* Capacity — desktop only */}
-      <div className="w-14 text-center flex-shrink-0 hidden sm:block">
+      <div className="w-14 flex items-center justify-center flex-shrink-0 hidden sm:flex">
         <p className="text-sm font-medium text-gray-400">
           {theater.capacity ? theater.capacity.toLocaleString() : '—'}
         </p>
       </div>
 
-      {/* Show count */}
-      <div className="w-10 sm:w-12 text-center flex-shrink-0">
+      {/* Past show count */}
+      <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
         <p className="text-sm font-bold text-white">{theater.showCount}</p>
       </div>
 
-      {/* Avg Score */}
+      {/* Avg Critic Score */}
       <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
     </Link>
   );
@@ -70,28 +71,35 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
 
 export default function TheaterIndexClient({ theaters }: { theaters: TheaterSummary[] }) {
   const [search, setSearch] = useState('');
-  const [sortMode, setSortMode] = useState<SortMode>('playing');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('current');
+  const [sortMode, setSortMode] = useState<SortMode>('shows');
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return theaters;
-    const q = search.toLowerCase();
-    return theaters.filter(t =>
-      t.name.toLowerCase().includes(q) ||
-      (t.currentShowTitle && t.currentShowTitle.toLowerCase().includes(q)) ||
-      (t.address && t.address.toLowerCase().includes(q))
-    );
-  }, [search, theaters]);
+    let list = theaters;
+
+    // Status filter
+    if (statusFilter === 'current') {
+      list = list.filter(t => t.currentShowTitle);
+    } else if (statusFilter === 'dark') {
+      list = list.filter(t => !t.currentShowTitle);
+    }
+
+    // Search
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter(t =>
+        t.name.toLowerCase().includes(q) ||
+        (t.currentShowTitle && t.currentShowTitle.toLowerCase().includes(q)) ||
+        (t.address && t.address.toLowerCase().includes(q))
+      );
+    }
+
+    return list;
+  }, [search, theaters, statusFilter]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
     switch (sortMode) {
-      case 'playing':
-        return list.sort((a, b) => {
-          const aPlaying = a.currentShowTitle ? 1 : 0;
-          const bPlaying = b.currentShowTitle ? 1 : 0;
-          if (bPlaying !== aPlaying) return bPlaying - aPlaying;
-          return b.showCount - a.showCount;
-        });
       case 'shows': return list.sort((a, b) => b.showCount - a.showCount);
       case 'capacity': return list.sort((a, b) => (b.capacity ?? 0) - (a.capacity ?? 0));
       case 'score': return list.sort((a, b) => (b.avgScore ?? 0) - (a.avgScore ?? 0));
@@ -132,58 +140,46 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         />
       </div>
 
-      {/* Combined sort pills + clickable column headers */}
-      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
-        {/* Pill sorts on the left */}
-        <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0 flex items-center gap-0.5" role="group" aria-label="Sort theaters">
-          {PILL_SORTS.map(opt => (
-            <button
-              key={opt.value}
-              onClick={() => setSortMode(opt.value)}
-              aria-pressed={sortMode === opt.value}
-              className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[28px] whitespace-nowrap ${
-                sortMode === opt.value
-                  ? 'bg-white/15 text-white'
-                  : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+      {/* Status & Sort — matching homepage pattern */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
+        <ToggleBar
+          label="STATUS:"
+          options={[
+            { value: 'current' as StatusFilter, label: 'PLAYING' },
+            { value: 'all' as StatusFilter, label: 'ALL' },
+            { value: 'dark' as StatusFilter, label: 'DARK' },
+          ]}
+          value={statusFilter}
+          onChange={setStatusFilter}
+          ariaLabel="Filter by theater status"
+        />
+        <ToggleBar
+          label="SORT:"
+          options={[
+            { value: 'shows' as SortMode, label: 'MOST SHOWS' },
+            { value: 'capacity' as SortMode, label: 'CAPACITY' },
+            { value: 'score' as SortMode, label: 'SCORE' },
+            { value: 'alpha' as SortMode, label: 'A-Z' },
+          ]}
+          value={sortMode}
+          onChange={setSortMode}
+          ariaLabel="Sort theaters"
+        />
+      </div>
 
-        {/* Clickable column headers on the right */}
-        <button
-          onClick={() => setSortMode('capacity')}
-          aria-pressed={sortMode === 'capacity'}
-          aria-label="Sort by seat capacity"
-          className={`w-14 text-center flex-shrink-0 hidden sm:block cursor-pointer transition-colors ${
-            sortMode === 'capacity' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-          }`}
-        >
-          <span className="text-[10px] font-medium uppercase tracking-wider">Seats{sortMode === 'capacity' ? ' ↓' : ''}</span>
-        </button>
-        <button
-          onClick={() => setSortMode('shows')}
-          aria-pressed={sortMode === 'shows'}
-          aria-label="Sort by show count"
-          className={`w-10 sm:w-12 text-center flex-shrink-0 cursor-pointer transition-colors ${
-            sortMode === 'shows' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-          }`}
-        >
-          <span className="text-[10px] font-medium uppercase tracking-wider">Shows{sortMode === 'shows' ? ' ↓' : ''}</span>
-        </button>
-        <button
-          onClick={() => setSortMode('score')}
-          aria-pressed={sortMode === 'score'}
-          aria-label="Sort by average score"
-          className={`w-10 text-center flex-shrink-0 cursor-pointer transition-colors ${
-            sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-          }`}
-        >
-          <span className="text-[10px] font-medium uppercase tracking-wider">Avg{sortMode === 'score' ? ' ↓' : ''}</span>
-        </button>
+      {/* Column headers */}
+      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
+        <div className="w-10 flex-shrink-0" />
+        <div className="flex-1 min-w-0" />
+        <div className="w-14 hidden sm:flex items-center justify-center flex-shrink-0">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Seats</span>
+        </div>
+        <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Past</span>
+        </div>
+        <div className="w-10 flex items-center justify-center flex-shrink-0">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Score</span>
+        </div>
       </div>
 
       {/* Theater List */}
@@ -193,7 +189,7 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
 
       {sorted.length === 0 && (
         <div className="card p-8 text-center">
-          <p className="text-gray-400">No theaters match &quot;{search}&quot;</p>
+          <p className="text-gray-400">No theaters match{search.trim() ? ` "${search}"` : ' your filters'}</p>
         </div>
       )}
 
