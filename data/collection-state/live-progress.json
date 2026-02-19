@@ -1,128 +1,51 @@
 {
-  "updatedAt": "2026-02-19T01:36:07.321Z",
-  "processed": 18,
-  "failed": 239,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-19T01:46:16.551Z",
+  "processed": 1,
+  "failed": 9,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 24,
-    "archive": 17
+    "archiveToday": 3,
+    "archive": 1
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-19T00:58:25.059Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-19T00:59:52.477Z",
+      "t": "2026-02-19T01:43:14.137Z",
       "event": "bb-session",
-      "session": "3f8cd900",
-      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+      "session": "0061bc8c",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
     },
     {
-      "t": "2026-02-19T00:59:54.634Z",
+      "t": "2026-02-19T01:43:16.124Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-19T01:00:45.215Z",
+      "t": "2026-02-19T01:44:22.153Z",
       "event": "bb-session",
-      "session": "8232b67f",
-      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
+      "session": "23e0f82b",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-19T01:23:11.682Z",
-      "event": "bb-session",
-      "session": "7ef661d5",
-      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
-    },
-    {
-      "t": "2026-02-19T01:23:14.014Z",
+      "t": "2026-02-19T01:44:24.124Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-19T01:24:50.667Z",
+      "t": "2026-02-19T01:45:43.369Z",
       "event": "bb-session",
-      "session": "55d20637",
-      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
+      "session": "87ef8671",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-19T01:24:52.835Z",
+      "t": "2026-02-19T01:45:45.419Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:26:32.458Z",
-      "event": "bb-session",
-      "session": "a10d29f3",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T01:26:34.712Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:28:14.577Z",
-      "event": "bb-session",
-      "session": "216ea334",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T01:28:16.655Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:30:00.151Z",
-      "event": "bb-session",
-      "session": "b440c82a",
-      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
-    },
-    {
-      "t": "2026-02-19T01:30:02.323Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:31:30.992Z",
-      "event": "bb-session",
-      "session": "cf94d504",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
-    },
-    {
-      "t": "2026-02-19T01:31:32.894Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:32:56.133Z",
-      "event": "bb-session",
-      "session": "94c085c3",
-      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
-    },
-    {
-      "t": "2026-02-19T01:32:58.063Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:34:14.426Z",
-      "event": "bb-session",
-      "session": "c5a79043",
-      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
-    },
-    {
-      "t": "2026-02-19T01:34:16.383Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "vulture.com"
     }
   ]
 }
