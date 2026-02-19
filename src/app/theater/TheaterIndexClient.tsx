@@ -13,8 +13,6 @@ interface TheaterSummary {
   showCount: number;
   capacity: number | null;
   currentShowTitle?: string;
-  currentShowSlug?: string;
-  currentShowScore?: number | null;
   avgScore: number | null;
 }
 

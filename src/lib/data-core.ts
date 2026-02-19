@@ -252,9 +252,12 @@ export function getAllDirectorSlugs(): string[] {
 // ============================================
 
 /**
- * Get all unique theaters with their shows
+ * Get all unique theaters with their shows (memoized)
  */
+let _theatersCache: Theater[] | null = null;
 export function getAllTheaters(): Theater[] {
+  if (_theatersCache) return _theatersCache;
+
   const allShows = getAllShows();
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
@@ -265,25 +268,32 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[] }>;
 
-  return Array.from(theaterMap.entries()).map(([name, data]) => {
-    const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews');
-    const theaterMeta = meta[name];
+  _theatersCache = Array.from(theaterMap.entries())
+    .filter(([name]) => !name.startsWith('_'))
+    .map(([name, data]) => {
+      const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews');
+      const theaterMeta = meta[name];
 
-    return {
-      name,
-      slug: slugify(name),
-      address: data.address,
-      capacity: theaterMeta?.capacity,
-      tips: theaterMeta?.tips,
-      currentShow,
-      allShows: data.shows.sort((a, b) =>
-        new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
-      ),
-      showCount: data.shows.length,
-    };
-  }).sort((a, b) => b.showCount - a.showCount);
+      return {
+        name,
+        slug: slugify(name),
+        address: data.address,
+        capacity: theaterMeta?.capacity,
+        yearBuilt: theaterMeta?.yearBuilt,
+        operator: theaterMeta?.operator,
+        formerNames: theaterMeta?.formerNames,
+        tips: theaterMeta?.tips,
+        currentShow,
+        allShows: data.shows.sort((a, b) =>
+          new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
+        ),
+        showCount: data.shows.length,
+      };
+    }).sort((a, b) => b.showCount - a.showCount);
+
+  return _theatersCache;
 }
 
 /**
