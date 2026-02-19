@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-18T06:59:29.031Z",
+  "generatedAt": "2026-02-19T06:53:04.235Z",
   "summary": {
     "totalShows": 728,
     "openShows": 27,
@@ -9,8 +9,9 @@
     "lastUpdated": "2026-02-16T13:16:25.915Z",
     "weekEnding": "2/08/2026",
     "showCount": 678,
-    "status": "ok",
-    "daysStale": 1
+    "status": "warning",
+    "daysStale": 2,
+    "message": "Week ending 2/08/2026 is 11 days ago"
   },
   "statusChanges": {
     "autoClosed": []
@@ -20,19 +21,19 @@
       "id": "hells-kitchen-2024",
       "title": "Hell's Kitchen",
       "closingDate": "2026-02-22",
-      "daysLeft": 4
+      "daysLeft": 3
     },
     {
       "id": "bug-2026",
       "title": "Bug",
       "closingDate": "2026-03-08",
-      "daysLeft": 18
+      "daysLeft": 17
     },
     {
       "id": "all-out-2025",
       "title": "All Out: Comedy About Ambition",
       "closingDate": "2026-03-08",
-      "daysLeft": 18
+      "daysLeft": 17
     }
   ],
   "dataQuality": {
@@ -244,10 +245,6 @@
         "title": "Hamilton",
         "issues": [
           {
-            "type": "missing_thumbnail",
-            "severity": "low"
-          },
-          {
             "type": "missing_cast",
             "severity": "medium"
           },
@@ -372,9 +369,6 @@
         "Wicked",
         "The Lion King",
         "Chicago"
-      ],
-      "missing_thumbnail": [
-        "Hamilton"
       ]
     }
   }
