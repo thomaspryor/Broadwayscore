@@ -185,16 +185,11 @@ export default function BestOfPage({ params }: { params: { category: string } })
                           {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                       )}
-                      {isMixedStatus && (isOpen ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-400">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                          Now Playing
+                      {isMixedStatus && !isOpen && (
+                        <span className="text-amber-400">
+                          Closed{show.closingDate ? ` ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : ''}
                         </span>
-                      ) : (
-                        <span>
-                          Closed{show.closingDate ? ` ${new Date(show.closingDate).getFullYear()}` : ''}
-                        </span>
-                      ))}
+                      )}
                     </div>
                   </div>
 
