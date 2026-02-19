@@ -1,8 +1,8 @@
-name: "Purge archives from git history"
+name: "Purge archives + review-texts from git history"
 
-# One-time deep clean: removes data/archives/ from ALL commits in history.
-# Archives were already removed from HEAD on Feb 18, 2026. This reduces repo size
-# by removing raw scraped HTML from historical commits.
+# Deep clean: removes data/archives/ and data/review-texts/ from ALL commits.
+# Both were removed from HEAD (archives Feb 18, review-texts Feb 18, 2026).
+# review-texts moved to private repo thomaspryor/broadway-review-texts.
 #
 # Strategy: Runs during the quietest window (Saturday 1 AM EST). If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
@@ -33,13 +33,17 @@ jobs:
         run: |
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
-          ARCHIVE_COMMITS=$(git log --all --pretty=format: --name-only 2>/dev/null | grep -c '^data/archives/' || echo "0")
+          ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
+          ARCHIVE_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/archives/' || echo "0")
+          REVIEW_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/review-texts/' || echo "0")
           echo "archive_commits=$ARCHIVE_COMMITS" >> "$GITHUB_OUTPUT"
-          if [ "$ARCHIVE_COMMITS" = "0" ]; then
-            echo "No archives in history — purge already done!"
+          echo "review_commits=$REVIEW_COMMITS" >> "$GITHUB_OUTPUT"
+          TOTAL=$((ARCHIVE_COMMITS + REVIEW_COMMITS))
+          if [ "$TOTAL" = "0" ]; then
+            echo "Nothing to purge — archives and review-texts already clean!"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Found $ARCHIVE_COMMITS archive references in history"
+            echo "Found $ARCHIVE_COMMITS archive refs + $REVIEW_COMMITS review-texts refs in history"
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
           rm -rf /tmp/check-repo
@@ -78,13 +82,16 @@ jobs:
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
 
-      - name: Remove data/archives/ from all history
+      - name: Remove data/archives/ and data/review-texts/ from all history
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: |
           echo "Commits before: $(git log --oneline | wc -l)"
           echo "Git dir size before: $(du -sh .git | cut -f1)"
 
-          python3 -m git_filter_repo --path data/archives/ --invert-paths --force
+          python3 -m git_filter_repo \
+            --path data/archives/ \
+            --path data/review-texts/ \
+            --invert-paths --force
 
           echo "Commits after: $(git log --oneline | wc -l)"
           echo "Git dir size after: $(du -sh .git | cut -f1)"
@@ -124,7 +131,7 @@ jobs:
         run: |
           if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
             echo "## Purge not needed" >> "$GITHUB_STEP_SUMMARY"
-            echo "Archives already removed from history." >> "$GITHUB_STEP_SUMMARY"
+            echo "Archives and review-texts already removed from history." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
             echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"
