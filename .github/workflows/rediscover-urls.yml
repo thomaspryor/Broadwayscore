@@ -82,7 +82,7 @@ jobs:
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
       - name: Create stub review-text files
-        if: inputs.create_stubs == 'true'
+        if: inputs.create_stubs == true
         env:
           OUTLET_FILTER: ${{ inputs.outlet_filter }}
         run: |
