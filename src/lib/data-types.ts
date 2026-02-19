@@ -44,6 +44,9 @@ export interface Theater {
   slug: string;
   address?: string;
   capacity?: number;
+  yearBuilt?: number;
+  operator?: string;
+  formerNames?: string[];
   tips?: string;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
