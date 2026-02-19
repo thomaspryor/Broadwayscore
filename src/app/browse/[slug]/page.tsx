@@ -7,7 +7,8 @@ import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSche
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier, FormatPill, ProductionPill } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
@@ -67,6 +68,19 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
+function getBroadwayDuration(openingDate: string | null): string | null {
+  if (!openingDate) return null;
+  const open = new Date(openingDate);
+  const now = new Date();
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  if (months < 1) return 'Just opened';
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
+  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
+}
+
 export default function BrowsePage({ params }: { params: { slug: string } }) {
   const browseList = getBrowseList(params.slug);
 
@@ -123,6 +137,12 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
 
+  // Only show format pills when the list has mixed types
+  const isMixedType = new Set(shows.map(s => s.type)).size > 1;
+  // Only show status when the list has mixed statuses
+  const statuses = new Set(shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const isMixedStatus = statuses.size > 1;
+
   return (
     <>
       <script
@@ -130,17 +150,11 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">{config.title}</li>
-          </ol>
-        </nav>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: config.title },
+        ]} />
 
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
@@ -176,68 +190,93 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
         {/* Show List */}
         {shows.length > 0 ? (
-          <div className="space-y-3 sm:space-y-4">
-            {shows.map((show, index) => (
-              <Link
-                key={show.id}
-                href={`/show/${show.slug}`}
-                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
-              >
+          <div className="space-y-3">
+            {shows.map((show, index) => {
+              const tier = getScoreTier(show.criticScore?.score);
+              const isOpen = show.status === 'open' || show.status === 'previews';
+              const duration = isOpen ? getBroadwayDuration(show.openingDate) : null;
+              return (
+              <div key={show.id} className="flex items-center gap-3">
+                {/* Rank outside the card */}
                 {config.limit !== 1 && <RankBadge rank={index + 1} />}
 
-                {/* Thumbnail - smaller on mobile */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                  {show.images?.thumbnail ? (
-                    <img
-                      src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                      alt={`${show.title} Broadway ${show.type}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xl sm:text-2xl">🎭</span>
+                <Link
+                  href={`/show/${show.slug}`}
+                  className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.images?.thumbnail ? (
+                      <img
+                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
+                        alt={`${show.title} Broadway ${show.type}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-2xl">🎭</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors truncate">
+                        {show.title}
+                      </h2>
+                      {isMixedType && <FormatPill type={show.type} />}
+                      {show.isRevival && <ProductionPill isRevival={true} />}
                     </div>
-                  )}
-                </div>
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+                      {config.sort === 'performances' ? (
+                        (() => {
+                          const grosses = getShowGrosses(show.slug);
+                          const performances = grosses?.allTime?.performances;
+                          return performances ? (
+                            <span className="text-emerald-400">{performances.toLocaleString()} performances</span>
+                          ) : null;
+                        })()
+                      ) : (
+                        <>
+                          {duration && <span>{duration}</span>}
+                          {isOpen && show.closingDate && (
+                            <span>
+                              {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                          )}
+                          {show.status === 'previews' && show.openingDate && (
+                            <span className="text-purple-400">
+                              Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                          )}
+                        </>
+                      )}
+                      {isMixedStatus && !isOpen && (
+                        <span className="text-amber-400">
+                          Closed{show.closingDate ? ` ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : ''}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
-                    {show.title}
-                  </h2>
-                  <p className="text-gray-400 text-xs sm:text-sm truncate">
-                    {show.venue} {show.runtime && `• ${show.runtime}`}
-                  </p>
-                  {config.sort === 'performances' ? (
-                    (() => {
-                      const grosses = getShowGrosses(show.slug);
-                      const performances = grosses?.allTime?.performances;
-                      return performances ? (
-                        <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
-                          {performances.toLocaleString()} performances
-                        </p>
-                      ) : null;
-                    })()
-                  ) : show.status === 'previews' ? (
-                    <p className="text-purple-400 text-xs mt-0.5 sm:mt-1">
-                      Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </p>
-                  ) : show.closingDate ? (
-                    <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
-                      {show.status === 'closed' ? 'Closed' : 'Closes'} {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </p>
-                  ) : show.status === 'open' && (
-                    <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
-                      Now Playing
-                    </p>
-                  )}
-                </div>
-
-                {/* Score - slightly smaller on mobile */}
-                <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} size="sm" />
-              </Link>
-            ))}
+                  {/* Score — tier label above badge */}
+                  <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
+                    {tier ? (
+                      <span
+                        className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                        style={{ color: tier.color }}
+                      >
+                        {tier.label}
+                      </span>
+                    ) : null}
+                    <ScoreBadge score={show.criticScore?.score} size="md" />
+                  </div>
+                </Link>
+              </div>
+              );
+            })}
           </div>
         ) : (
           <div className="card p-6 sm:p-8 text-center">
