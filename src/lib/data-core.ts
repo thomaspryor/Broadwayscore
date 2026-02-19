@@ -268,7 +268,7 @@ export function getAllTheaters(): Theater[] {
   const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string }>;
 
   return Array.from(theaterMap.entries()).map(([name, data]) => {
-    const currentShow = data.shows.find(s => s.status === 'open');
+    const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews');
     const theaterMeta = meta[name];
 
     return {
