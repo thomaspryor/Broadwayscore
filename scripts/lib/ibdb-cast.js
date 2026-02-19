@@ -291,6 +291,7 @@ async function lookupIBDBCast(title, options = {}) {
     return {
       openingNightCast: castData.openingNightCast,
       currentCast: castData.currentCast,
+      replacements: castData.replacements,
       ibdbUrl: bestMatch.url,
       found: true
     };

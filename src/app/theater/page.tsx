@@ -27,21 +27,28 @@ export default function TheatersIndexPage() {
   ]);
 
   // Strip heavy show data — only pass what the client needs
-  const theaterSummaries = theaters.map(t => ({
-    name: t.name,
-    slug: t.slug,
-    address: t.address,
-    showCount: t.showCount,
-    currentShowTitle: t.currentShow?.title,
-    currentShowSlug: t.currentShow?.slug,
-    currentShowScore: t.currentShow?.criticScore?.score ?? null,
-  }));
+  const theaterSummaries = theaters.map(t => {
+    const scoredShows = t.allShows.filter(s => s.criticScore?.score != null);
+    const avgScore = scoredShows.length > 0
+      ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)
+      : null;
+
+    return {
+      name: t.name,
+      slug: t.slug,
+      address: t.address,
+      showCount: t.showCount,
+      capacity: t.capacity ?? null,
+      currentShowTitle: t.currentShow?.title,
+      avgScore,
+    };
+  });
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
       />
       <TheaterIndexClient theaters={theaterSummaries} />
     </>
