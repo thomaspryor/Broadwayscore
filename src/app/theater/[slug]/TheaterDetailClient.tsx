@@ -114,7 +114,7 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
       {/* Show list */}
       <div className="space-y-2">
         {sorted.map(show => {
-          const isOpen = show.status === 'open' || show.status === 'previews';
+          const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
           const displayScore = scoreMode === 'audience'
             ? (show.audienceCombinedScore ?? undefined)
             : show.criticScore?.score;

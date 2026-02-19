@@ -177,7 +177,7 @@ function buildAllProfiles() {
         avgScore,
         highScore,
         lowScore,
-        openShowCount: data.shows.filter(s => s.status === 'open' || s.status === 'previews').length,
+        openShowCount: data.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming').length,
         closedShowCount: data.shows.filter(s => s.status === 'closed').length,
       };
 
@@ -305,7 +305,7 @@ function buildUnifiedProfiles() {
       avgScore,
       highScore,
       lowScore,
-      openShowCount: shows.filter(s => s.status === 'open' || s.status === 'previews').length,
+      openShowCount: shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming').length,
       closedShowCount: shows.filter(s => s.status === 'closed').length,
     };
 

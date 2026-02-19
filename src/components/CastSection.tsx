@@ -71,7 +71,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
   const hasOBC = openingNightCast.length > 0;
   const hasCurrentCast = currentCast && currentCast.length > 0;
   const hasReplacements = replacements && replacements.length > 0;
-  const isOpen = showStatus === 'open' || showStatus === 'previews';
+  const isOpen = showStatus === 'open' || showStatus === 'previews' || showStatus === 'upcoming';
 
   if (!hasOBC && !hasCurrentCast && !hasReplacements) return null;
 

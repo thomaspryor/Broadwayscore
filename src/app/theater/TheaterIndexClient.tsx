@@ -15,8 +15,9 @@ interface TheaterSummary {
   showCount: number;
   capacity: number | null;
   currentShowTitle?: string;
-  currentShowStatus?: 'open' | 'previews';
+  currentShowStatus?: 'open' | 'previews' | 'upcoming';
   avgScore: number | null;
+  imageUrl?: string;
 }
 
 function TheaterCard({ theater }: { theater: TheaterSummary }) {
@@ -25,12 +26,19 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
       href={`/theater/${theater.slug}`}
       className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group"
     >
-      {/* Theater icon */}
-      <div className="w-10 h-10 rounded-lg bg-surface-overlay flex items-center justify-center flex-shrink-0">
-        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-      </div>
+      {/* Theater thumbnail */}
+      {theater.imageUrl ? (
+        <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-surface-overlay">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={theater.imageUrl} alt="" className="w-full h-full object-cover" loading="lazy" />
+        </div>
+      ) : (
+        <div className="w-10 h-10 rounded-lg bg-surface-overlay flex items-center justify-center flex-shrink-0">
+          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+      )}
 
       {/* Info */}
       <div className="flex-1 min-w-0">
@@ -42,7 +50,10 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
             <>
               <span className="text-brand">{theater.currentShowTitle}</span>
               {theater.currentShowStatus === 'previews' && (
-                <span className="text-amber-400 text-[10px] font-medium ml-1.5">IN PREVIEWS</span>
+                <span className="text-purple-400 text-[10px] font-medium ml-1.5">IN PREVIEWS</span>
+              )}
+              {theater.currentShowStatus === 'upcoming' && (
+                <span className="text-blue-400 text-[10px] font-medium ml-1.5">UPCOMING</span>
               )}
             </>
           ) : (

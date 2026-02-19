@@ -10,7 +10,7 @@ interface BizBuzzCardProps {
   showTitle: string;
   trend?: RecoupmentTrend;
   weeklyGross?: number | null;
-  showStatus?: 'open' | 'closed' | 'previews';
+  showStatus?: 'open' | 'closed' | 'previews' | 'upcoming';
   allTimeGross?: number | null;
 }
 
@@ -105,7 +105,7 @@ function calculateEstimatedReturns(
   weeklyGross: number | null,
   weeklyRunningCost: number | null,
   capitalization: number | null,
-  showStatus: 'open' | 'closed' | 'previews' | undefined
+  showStatus: 'open' | 'closed' | 'previews' | 'upcoming' | undefined
 ): { yearsOfReturns: number; percentageReturn: number } | null {
   // Only for recouped shows still running
   if (!recouped || !recoupedWeeks || showStatus !== 'open') return null;

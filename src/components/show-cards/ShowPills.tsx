@@ -4,6 +4,7 @@ export function StatusBadge({ status }: { status: string }) {
     open: 'NOW PLAYING',
     closed: 'CLOSED',
     previews: 'IN PREVIEWS',
+    upcoming: 'UPCOMING',
     announced: 'ANNOUNCED',
   }[status] || status.toUpperCase();
 
@@ -11,6 +12,7 @@ export function StatusBadge({ status }: { status: string }) {
     open: 'bg-emerald-500/15 text-emerald-400',
     closed: 'bg-gray-500/15 text-gray-400',
     previews: 'bg-purple-500/15 text-purple-400',
+    upcoming: 'bg-blue-500/15 text-blue-400',
     announced: 'bg-blue-500/15 text-blue-400',
   }[status] || 'bg-gray-500/15 text-gray-400';
 

@@ -395,7 +395,7 @@ export function assessConfidence(
   }
 
   // Show status
-  if (showStatus === 'previews') {
+  if (showStatus === 'previews' || showStatus === 'upcoming') {
     score -= 1;
     reasons.push('Show still in previews');
   }

@@ -39,7 +39,7 @@ function getEffectiveStatus(show: SerializedTonyShow): string {
 }
 
 function TierLabel({ score, reviewCount, status }: { score: number | null; reviewCount: number; status: string }) {
-  if (status === 'previews' || reviewCount < 5) return null;
+  if (status === 'previews' || status === 'upcoming' || reviewCount < 5) return null;
   const tier = getScoreTier(score);
   if (!tier) return null;
   return (
