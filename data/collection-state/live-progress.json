@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-19T03:05:37.285Z",
-  "processed": 47,
-  "failed": 33,
-  "successRate": "58.8%",
+  "updatedAt": "2026-02-19T03:08:22.721Z",
+  "processed": 42,
+  "failed": 58,
+  "successRate": "42.0%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 24
+    "archiveToday": 41,
+    "archive": 41
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-19T02:30:04.660Z",
+      "event": "bb-session",
+      "session": "f9b35e0e",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-19T02:30:06.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:31:12.929Z",
+      "event": "bb-session",
+      "session": "7b8ebc19",
+      "url": "http://theater.nytimes.com/2007/05/03/theater/reviews/03cora.html?pagewanted=2"
+    },
+    {
+      "t": "2026-02-19T02:31:14.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:32:20.998Z",
+      "event": "bb-session",
+      "session": "042532a1",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-19T02:32:23.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:33:28.188Z",
+      "event": "bb-session",
+      "session": "28ac824c",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-02-19T02:33:30.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:34:35.143Z",
+      "event": "bb-session",
+      "session": "334652c0",
+      "url": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html"
+    },
+    {
+      "t": "2026-02-19T02:34:37.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:35:54.527Z",
+      "event": "bb-session",
+      "session": "7034a661",
+      "url": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holm"
+    },
+    {
+      "t": "2026-02-19T02:35:56.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:37:13.888Z",
+      "event": "bb-session",
+      "session": "19309082",
+      "url": "https://www.nytimes.com/2009/04/28/theater/reviews/28desire.html"
+    },
+    {
+      "t": "2026-02-19T02:37:15.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:38:33.757Z",
+      "event": "bb-session",
+      "session": "d01e2b20",
+      "url": "https://www.nytimes.com/2008/11/21/theater/reviews/21estate.html"
+    },
+    {
+      "t": "2026-02-19T02:38:36.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:39:40.336Z",
+      "event": "bb-session",
+      "session": "99529735",
+      "url": "https://www.nytimes.com/2010/10/26/theater/reviews/26daisy.html"
+    },
+    {
+      "t": "2026-02-19T02:39:42.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:40:51.317Z",
+      "event": "bb-session",
+      "session": "3c9e7173",
+      "url": "http://theater.nytimes.com/2010/04/28/theater/reviews/28enron.html?ref=theater"
+    },
+    {
+      "t": "2026-02-19T02:40:53.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
