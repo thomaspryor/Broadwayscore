@@ -1,0 +1,57 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getActorBySlug, getAllActorSlugs, getAllActorProfiles } from '@/lib/data-actors';
+import { generateBreadcrumbSchema, generateActorPersonSchema, generateActorFAQSchema, BASE_URL } from '@/lib/seo';
+import ActorDetailClient from './ActorDetailClient';
+
+export function generateStaticParams() {
+  return getAllActorSlugs().map(slug => ({ slug }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const profile = getActorBySlug(params.slug);
+  if (!profile) return {};
+
+  const title = `${profile.name} — Broadway Actor`;
+  const description = `${profile.name} has appeared in ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an avg critic score of ${profile.avgScore}` : ''}. See all Broadway credits and scores.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `${BASE_URL}/cast/${profile.slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}/cast/${profile.slug}`,
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+    },
+    twitter: { card: 'summary' },
+  };
+}
+
+export default function ActorDetailPage({ params }: { params: { slug: string } }) {
+  const profile = getActorBySlug(params.slug);
+  if (!profile) notFound();
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Cast', url: `${BASE_URL}/cast` },
+    { name: profile.name, url: `${BASE_URL}/cast/${profile.slug}` },
+  ]);
+
+  const personSchema = generateActorPersonSchema(profile);
+  const faqSchema = generateActorFAQSchema(profile);
+
+  const allProfiles = getAllActorProfiles();
+  const rank = allProfiles.findIndex(p => p.slug === profile.slug) + 1;
+
+  return (
+    <div className="min-h-screen bg-surface">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, personSchema, faqSchema]) }}
+      />
+      <ActorDetailClient profile={profile} rank={rank} />
+    </div>
+  );
+}
