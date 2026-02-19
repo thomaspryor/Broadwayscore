@@ -4,7 +4,9 @@ import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, FormatPill, ProductionPill, StatusBadge } from '@/components/show-cards';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
 import TheaterTipsCard from '@/components/TheaterTipsCard';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -186,8 +188,9 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
               </div>
             )}
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Shows Tracked</p>
+              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
               <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
+              <p className="text-[10px] text-gray-600 mt-0.5">1970 – present</p>
             </div>
             <div className="card p-3 sm:p-4 text-center">
               <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
@@ -196,6 +199,44 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
               </div>
             </div>
           </div>
+
+          {/* Now Playing — prominent current show card */}
+          {theater.currentShow && (
+            <Link
+              href={`/show/${theater.currentShow.slug}`}
+              className="card p-4 sm:p-5 mb-4 border border-status-open/30 hover:border-status-open/50 transition-colors group block"
+            >
+              <p className="text-[10px] font-medium uppercase tracking-wider text-status-open mb-2">Now Playing</p>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {theater.currentShow.images?.thumbnail ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={getOptimizedImageUrl(theater.currentShow.images.thumbnail, 'thumbnail')}
+                      alt={theater.currentShow.title}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center"><span className="text-xl">🎭</span></div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-bold text-white group-hover:text-brand transition-colors truncate">{theater.currentShow.title}</h3>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+                    <FormatPill type={theater.currentShow.type} />
+                    {theater.currentShow.isRevival && <ProductionPill isRevival />}
+                    <StatusBadge status={theater.currentShow.status} />
+                    {(() => {
+                      const duration = getBroadwayDuration(theater.currentShow!.openingDate || theater.currentShow!.previewsStartDate || '');
+                      return duration ? <span className="text-gray-500">{duration}</span> : null;
+                    })()}
+                  </div>
+                </div>
+                <ScoreBadge score={theater.currentShow.criticScore?.score} size="md" status={theater.currentShow.status} />
+              </div>
+            </Link>
+          )}
 
           {/* Tips */}
           {theater.structuredTips ? (
@@ -208,7 +249,8 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Show list with sort/toggle */}
-        <h2 className="text-lg font-bold text-white mb-3">All Shows</h2>
+        <h2 className="text-lg font-bold text-white mb-1">All Shows</h2>
+        <p className="text-xs text-gray-500 mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
         <TheaterDetailClient shows={theaterShows} />
       </div>
     </>

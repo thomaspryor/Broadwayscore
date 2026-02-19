@@ -136,6 +136,7 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         <p className="text-gray-400">
           {theaters.length} theaters · {playingCount} with shows currently running
         </p>
+        <p className="text-xs text-gray-500 mt-1">Past show counts cover 1970 to present.</p>
       </div>
 
       {/* Search */}
