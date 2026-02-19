@@ -550,6 +550,7 @@ export interface ActorProfile {
   name: string;
   slug: string;
   ibdbPersonId: string;
+  headshot: string | null;
   shows: ActorShowEntry[];
   showCount: number;
   avgScore: number | null;

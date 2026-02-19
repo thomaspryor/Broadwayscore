@@ -18,6 +18,7 @@ interface CreativeProfileSummary {
   openShowCount: number;
   roles: string[];
   obcCount?: number;
+  headshot?: string | null;
 }
 
 function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfileSummary; routePath: string; showObc?: boolean }) {
@@ -29,7 +30,22 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
       className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
     >
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
+      {profile.headshot ? (
+        <img
+          src={profile.headshot}
+          alt=""
+          width={40}
+          height={40}
+          loading="lazy"
+          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+          onError={(e) => {
+            const el = e.currentTarget;
+            el.style.display = 'none';
+            (el.nextElementSibling as HTMLElement)?.classList.remove('hidden');
+          }}
+        />
+      ) : null}
+      <div className={`w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 ${profile.headshot ? 'hidden' : ''}`}>
         <span className="text-white font-bold text-sm">
           {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
         </span>
@@ -191,23 +207,11 @@ export default function CreativeIndexClient({
             className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
           />
         </div>
-        {showObcFilter && (
-          <button
-            onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
-            className={`px-3 py-2.5 text-xs font-medium uppercase tracking-wider rounded-lg border transition-colors whitespace-nowrap ${
-              obcOnly
-                ? 'text-brand bg-brand/15 border-brand/40'
-                : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
-            }`}
-          >
-            OBC Only
-          </button>
-        )}
       </div>
 
-      {/* Min shows filter */}
+      {/* Filters — min credits + OBC only */}
       {showObcFilter && (
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Min credits:</span>
           {MIN_SHOW_OPTIONS.map(n => (
             <button
@@ -222,6 +226,17 @@ export default function CreativeIndexClient({
               {n === 0 ? 'All' : `${n}+`}
             </button>
           ))}
+          <span className="text-gray-600 mx-1">|</span>
+          <button
+            onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
+            className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${
+              obcOnly
+                ? 'text-brand bg-brand/15 border-brand/40'
+                : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
+            }`}
+          >
+            OBC Only
+          </button>
         </div>
       )}
 

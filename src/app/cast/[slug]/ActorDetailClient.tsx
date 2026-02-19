@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { ActorProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
+import { FormatPill, ProductionPill } from '@/components/show-cards';
 
 type SortCol = 'date' | 'score';
 type SortDir = 'asc' | 'desc';
@@ -40,13 +41,18 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
-          {show.title}
-        </h3>
-        <p className="text-gray-400 text-xs sm:text-sm truncate">
-          {show.venue}
-          {show.openingDate && ` · ${formatDate(show.openingDate)}`}
+        {/* Title + format/production pills */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+            {show.title}
+          </h3>
+          {show.type && <FormatPill type={show.type} />}
+          {show.isRevival && <ProductionPill isRevival />}
+        </div>
+        <p className="text-gray-400 text-xs sm:text-sm">
+          {show.openingDate && formatDate(show.openingDate)}
         </p>
+        {/* Role + cast type tags */}
         <div className="flex items-center gap-1.5 mt-1 flex-wrap">
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
@@ -59,20 +65,6 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           {show.castType === 'replacement' && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
               Replacement
-            </span>
-          )}
-          {show.type && (
-            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
-              show.type === 'musical'
-                ? 'bg-purple-500/20 text-purple-400 border-purple-500/30'
-                : 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-            }`}>
-              {show.type === 'musical' ? 'Musical' : 'Play'}
-            </span>
-          )}
-          {show.isRevival && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30">
-              Revival
             </span>
           )}
           {show.flags && show.flags.some(f => f.toLowerCase().includes('broadway debut')) && (
@@ -165,7 +157,28 @@ export default function ActorDetailClient({
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3">{profile.name}</h1>
+        <div className="flex items-center gap-4 mb-3">
+          {profile.headshot ? (
+            <img
+              src={profile.headshot}
+              alt={profile.name}
+              width={80}
+              height={80}
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover flex-shrink-0"
+              onError={(e) => {
+                const el = e.currentTarget;
+                el.style.display = 'none';
+                (el.nextElementSibling as HTMLElement)?.classList.remove('hidden');
+              }}
+            />
+          ) : null}
+          <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 ${profile.headshot ? 'hidden' : ''}`}>
+            <span className="text-white font-bold text-xl sm:text-2xl">
+              {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.name}</h1>
+        </div>
 
         {/* Stats — only show for actors with 2+ shows */}
         {showStats && (
@@ -271,7 +284,7 @@ export default function ActorDetailClient({
                 <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
                   sortCol === 'date' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
                 }`}>
-                  Show{sortCol === 'date' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
+                  Recent{sortCol === 'date' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
                 </span>
               </button>
               <button
