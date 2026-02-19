@@ -1,0 +1,56 @@
+name: Push review-texts
+description: Commits and pushes review-texts changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update review texts'
+
+runs:
+  using: composite
+  steps:
+    - name: Push review-texts to private repo
+      shell: bash
+      working-directory: data/review-texts
+      env:
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        # Configure git for this nested repo
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+
+        # Ensure remote uses the token (actions/checkout may have set it, but be safe)
+        git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || \
+          git remote add origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
+
+        # Stage all changes
+        git add -A
+
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No review-texts changes to push"
+          exit 0
+        fi
+
+        # Commit
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        # Push with retry (handles concurrent workflows)
+        for i in 1 2 3 4 5; do
+          if git pull --rebase -X theirs origin main 2>/dev/null && git push origin main 2>&1; then
+            echo "Review-texts pushed successfully (attempt $i)"
+            exit 0
+          fi
+          echo "Push attempt $i failed, retrying in $((RANDOM % 10 + 5))s..."
+          git rebase --abort 2>/dev/null || true
+          sleep $((RANDOM % 10 + 5))
+        done
+
+        echo "WARNING: Failed to push review-texts after 5 attempts"
+        exit 1
