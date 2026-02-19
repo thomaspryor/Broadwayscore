@@ -6,6 +6,8 @@ import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge } from '@/components/show-cards';
 import TheaterDetailClient from './TheaterDetailClient';
+import TheaterTipsCard from '@/components/TheaterTipsCard';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
@@ -104,13 +106,11 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-          <ol className="flex items-center gap-1.5 flex-wrap">
-            <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-            <li className="before:content-['/'] before:mx-1.5"><Link href="/theater" className="hover:text-brand transition-colors">Theaters</Link></li>
-            <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{theater.name}</li>
-          </ol>
-        </nav>
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: 'Theaters', href: '/theater' },
+          { label: theater.name },
+        ]} />
 
         {/* Header */}
         <div className="mb-6">
@@ -168,11 +168,13 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Tips */}
-          {theater.tips && (
+          {theater.structuredTips ? (
+            <TheaterTipsCard tips={theater.structuredTips} fallbackTips={theater.tips} />
+          ) : theater.tips ? (
             <div className="card p-4 mb-4 border border-white/5">
               <p className="text-sm text-gray-300 leading-relaxed">{theater.tips}</p>
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Show list with sort/toggle */}

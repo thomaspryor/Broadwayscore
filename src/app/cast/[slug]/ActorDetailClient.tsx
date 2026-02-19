@@ -58,9 +58,14 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
           </span>
-          {show.castType === 'obc' && (
+          {show.castType === 'obc' && !show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30" title="Original Broadway Cast">
               OBC
+            </span>
+          )}
+          {show.castType === 'obc' && show.isRevival && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Revival Opening Cast">
+              Revival
             </span>
           )}
           {show.castType === 'replacement' && (

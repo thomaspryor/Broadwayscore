@@ -9,6 +9,7 @@ import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getGoldListSeasons } from '@/lib/data-gold-list-badges';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Broadway Gold Lists',
@@ -41,15 +42,10 @@ export default function GoldListsIndex() {
     <div className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">Gold Lists</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Gold Lists' },
+        ]} />
 
         {/* Header */}
         <div className="mb-8">

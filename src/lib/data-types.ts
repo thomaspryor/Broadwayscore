@@ -39,6 +39,46 @@ export interface Director {
   showCount: number;
 }
 
+// Theater Tips structured data
+export interface TheaterTipRestaurant {
+  name: string;
+  cuisine?: string;
+  walkMinutes?: number;
+  priceRange?: string;  // "$", "$$", "$$$", "$$$$"
+  notes?: string;
+}
+
+export interface TheaterTipGarage {
+  name: string;
+  walkMinutes?: number;
+  notes?: string;
+}
+
+export interface TheaterStructuredTips {
+  lastUpdated: string;
+  seating?: {
+    bestSeats?: string;
+    avoidSeats?: string;
+    accessibility?: string;
+  };
+  parking?: {
+    nearestGarages?: TheaterTipGarage[];
+    streetParking?: string;
+    tip?: string;
+  };
+  dining?: {
+    preShow?: TheaterTipRestaurant[];
+    postShow?: TheaterTipRestaurant[];
+    quickBite?: TheaterTipRestaurant[];
+  };
+  logistics?: {
+    entrance?: string;
+    nearestSubway?: string;
+    exitStrategy?: string;
+    restrooms?: string;
+  };
+}
+
 export interface Theater {
   name: string;
   slug: string;
@@ -48,6 +88,7 @@ export interface Theater {
   operator?: string;
   formerNames?: string[];
   tips?: string;
+  structuredTips?: TheaterStructuredTips;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
   showCount: number;
