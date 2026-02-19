@@ -3,84 +3,11 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { CreativeProfile } from '@/lib/data-types';
-import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, ordinalSuffix } from '@/lib/critic-page-utils';
+import { ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
+import { CreativeShowCard } from './CreativeShowCard';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-}
-
-function ShowCard({ show, loading = 'lazy' }: { show: CreativeProfile['shows'][0]; loading?: 'eager' | 'lazy' }) {
-  return (
-    <Link
-      href={`/show/${show.slug}`}
-      className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group"
-    >
-      {/* Thumbnail */}
-      <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-        {show.thumbnail ? (
-          <img
-            src={getOptimizedImageUrl(show.thumbnail, 'thumbnail')}
-            alt={show.title}
-            className="w-full h-full object-cover"
-            width={56}
-            height={56}
-            loading={loading}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-xl">🎭</span>
-          </div>
-        )}
-      </div>
-
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
-          {show.title}
-        </h3>
-        <p className="text-gray-400 text-xs sm:text-sm truncate">
-          {show.venue}
-          {show.openingDate && ` · ${formatDate(show.openingDate)}`}
-        </p>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
-            {show.role}
-          </span>
-          {show.type && (
-            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
-              show.type === 'musical'
-                ? 'bg-purple-500/20 text-purple-400 border-purple-500/30'
-                : 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-            }`}>
-              {show.type === 'musical' ? 'Musical' : 'Play'}
-            </span>
-          )}
-          {show.isRevival && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30">
-              Revival
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Score */}
-      {show.score !== null ? (
-        <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(show.score)} flex items-center justify-center font-bold flex-shrink-0`}>
-          {Math.round(show.score)}
-        </div>
-      ) : (
-        <div className="w-10 h-10 text-sm rounded-lg bg-surface-overlay flex items-center justify-center text-gray-500 font-bold flex-shrink-0">
-          —
-        </div>
-      )}
-    </Link>
-  );
-}
 
 const INITIAL_SHOWS = 50;
 
@@ -159,7 +86,7 @@ export default function CreativeDetailClient({
           </h2>
           <div className="space-y-2">
             {openShows.map((show, i) => (
-              <ShowCard key={show.slug} show={show} loading={i < 4 ? 'eager' : 'lazy'} />
+              <CreativeShowCard key={show.slug} show={show} roles={[show.role]} loading={i < 4 ? 'eager' : 'lazy'} />
             ))}
           </div>
         </section>
@@ -188,9 +115,10 @@ export default function CreativeDetailClient({
           </div>
           <div className="space-y-2">
             {visibleClosed.map((show, i) => (
-              <ShowCard
+              <CreativeShowCard
                 key={show.slug}
                 show={show}
+                roles={[show.role]}
                 loading={openShows.length === 0 && i < 4 ? 'eager' : 'lazy'}
               />
             ))}
