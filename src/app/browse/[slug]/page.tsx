@@ -166,6 +166,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       audienceCombinedScore: buzz?.combinedScore ?? null,
       audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
       performances: grosses?.allTime?.performances ?? undefined,
+      reviewYearNote: show.reviewYearNote ?? undefined,
     };
   });
 

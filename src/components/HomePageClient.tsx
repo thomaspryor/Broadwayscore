@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -260,13 +260,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               status={show.status}
             />
             {audienceGrade && (
-              <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mt-1"
-                style={{ backgroundColor: `${audienceGrade.color}20`, color: audienceGrade.color }}
-                title={audienceGrade.tooltip}
-              >
-                <span className="opacity-60">Audience:</span>
-                <span>{audienceGrade.grade}</span>
+              <div className="mt-1">
+                <AudienceChip grade={audienceGrade} />
               </div>
             )}
           </>

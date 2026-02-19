@@ -43,10 +43,30 @@ runs:
 
         # Push with retry (handles concurrent workflows)
         for i in 1 2 3 4 5; do
-          if git pull --rebase -X theirs origin main 2>/dev/null && git push origin main 2>&1; then
+          if git pull --rebase -X theirs origin main 2>&1 && git push origin main 2>&1; then
             echo "Review-texts pushed successfully (attempt $i)"
             exit 0
           fi
+
+          # Check for modify/delete conflicts (e.g. failed-fetches.json deleted locally but modified remotely)
+          UNMERGED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+          if [ -n "$UNMERGED" ]; then
+            echo "Resolving modify/delete conflicts..."
+            echo "$UNMERGED" | while IFS= read -r f; do
+              if [ -f "$f" ]; then
+                git add "$f"
+              else
+                git rm "$f" 2>/dev/null || true
+              fi
+            done
+            if git rebase --continue 2>/dev/null; then
+              if git push origin main 2>&1; then
+                echo "Review-texts pushed successfully after conflict resolution (attempt $i)"
+                exit 0
+              fi
+            fi
+          fi
+
           echo "Push attempt $i failed, retrying in $((RANDOM % 10 + 5))s..."
           git rebase --abort 2>/dev/null || true
           sleep $((RANDOM % 10 + 5))
