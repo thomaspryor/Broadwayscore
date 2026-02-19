@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { CreativeProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, ordinalSuffix } from '@/lib/critic-page-utils';
+import { ToggleBar } from '@/components/show-cards';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -190,22 +191,18 @@ export default function CreativeDetailClient({
               Past Productions
               <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
             </h2>
-            <div className="flex items-center gap-0.5 sm:gap-2" role="group" aria-label="Sort productions">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-              {(['recent', 'highest', 'lowest'] as const).map(mode => (
-                <button
-                  key={mode}
-                  onClick={() => setSortMode(mode)}
-                  className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                    sortMode === mode
-                      ? 'text-brand bg-brand/10 sm:bg-transparent'
-                      : 'text-gray-300 hover:text-white'
-                  }`}
-                >
-                  {mode === 'recent' ? 'RECENT' : mode === 'highest' ? 'HIGHEST' : 'LOWEST'}
-                </button>
-              ))}
-            </div>
+            <ToggleBar
+              label="SORT:"
+              options={[
+                { value: 'recent' as SortMode, label: 'RECENT' },
+                { value: 'highest' as SortMode, label: 'HIGHEST' },
+                { value: 'lowest' as SortMode, label: 'LOWEST' },
+              ]}
+              value={sortMode}
+              onChange={setSortMode}
+              ariaLabel="Sort productions"
+              size="compact"
+            />
           </div>
           <div className="space-y-2">
             {visibleClosed.map((show, i) => (

@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { ScoreBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration } from '@/lib/date-utils';
 
 export interface TheaterShow {
@@ -86,47 +86,28 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
           )}
 
           {/* Sort */}
-          <div className="flex items-center gap-0.5 sm:gap-2" role="group" aria-label="Sort shows">
-            <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
-            {(['newest', 'highest', 'alpha'] as const).map(s => (
-              <button
-                key={s}
-                onClick={() => setSortMode(s)}
-                aria-pressed={sortMode === s}
-                className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 ${
-                  sortMode === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-                }`}
-              >
-                {s === 'newest' ? 'Newest' : s === 'highest' ? 'Highest' : 'A-Z'}
-              </button>
-            ))}
-          </div>
+          <ToggleBar
+            label="Sort:"
+            options={[
+              { value: 'newest' as SortMode, label: 'Newest' },
+              { value: 'highest' as SortMode, label: 'Highest' },
+              { value: 'alpha' as SortMode, label: 'A-Z' },
+            ]}
+            value={sortMode}
+            onChange={setSortMode}
+            ariaLabel="Sort shows"
+          />
         </div>
 
         {/* Critics/Audience toggle */}
         {hasAnyAudienceData && (
-          <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
-            {([
-              { key: 'critics' as const, label: 'Critics' },
-              { key: 'audience' as const, label: 'Audience' },
-            ]).map(({ key, label }) => (
-              <button
-                key={key}
-                onClick={() => {
-                  setScoreMode(key);
-                  if (key === 'audience') setSortMode('highest');
-                }}
-                aria-pressed={scoreMode === key}
-                className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
-                  scoreMode === key
-                    ? 'bg-brand text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-300'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+          <ScoreToggle
+            value={scoreMode}
+            onChange={(key) => {
+              setScoreMode(key);
+              if (key === 'audience') setSortMode('highest');
+            }}
+          />
         )}
       </div>
 
