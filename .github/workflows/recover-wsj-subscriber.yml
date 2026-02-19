@@ -48,6 +48,11 @@ jobs:
         if: env.SKIP != 'true'
         uses: actions/checkout@v4
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         if: env.SKIP != 'true'
         uses: actions/setup-node@v4
@@ -77,10 +82,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/recover-wsj-subscriber.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Recover WSJ Reviews (Subscriber Cookies) — Final commit and push"
       - name: Final commit and push
         if: always() && env.SKIP != 'true'
         run: |
-          git add data/review-texts/ data/audit/
+          git add data/audit/
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
           RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")

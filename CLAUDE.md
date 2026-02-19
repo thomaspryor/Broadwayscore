@@ -48,7 +48,18 @@ URL structure is wildly inconsistent. NEVER extract years, production info, or i
 Any script processing >10 items in CI MUST save progress incrementally.
 - Use `if: always()` on archive/commit/push steps (timeouts silently lose ALL data without this)
 - Use 5-retry push with `--rebase -X theirs`
-- `rebuild-all-reviews.js` writes back to `data/review-texts/` — commit steps MUST `git add data/review-texts/` too
+- `rebuild-all-reviews.js` writes back to `data/review-texts/` — the `push-review-texts` composite action handles pushing those changes to the private repo
+
+### 7a. Private Review-Texts Repo (IMPORTANT — ALL SESSIONS READ THIS)
+**`data/review-texts/` is in a private repo** (`thomaspryor/broadway-review-texts`), NOT the public repo. This protects 24,000+ copyrighted full-text reviews from DMCA exposure.
+- **CI workflows** automatically check out and push review-texts via composite actions:
+  - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
+  - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
+- **Secret:** `REVIEW_TEXTS_TOKEN` (PAT with `repo` scope, no expiration)
+- **Public repo:** `data/review-texts/` is in `.gitignore`. `git add data/review-texts/` is a no-op.
+- **Scripts unchanged:** No script modifications needed. Workflow-level composite actions handle the private repo.
+- **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
+- **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
 
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
@@ -61,12 +72,64 @@ Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
 When finishing: update the issue body + post a comment summarizing what was done.
 **Rabbit hole prevention:** New discoveries → Backlog comment. Don't context-switch.
 
-### 10. Pipeline Operations — Test, Monitor, Parallelize
+### 10. Planning & Testing for Infrastructure Changes (MANDATORY)
+For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data pipelines**, or **cross-repo operations**:
+
+**Planning phase:**
+1. Write the plan (what changes, where, why)
+2. Have a separate agent review the plan for gaps (use `/critique` for high-stakes changes)
+3. **Explicitly list assumptions** that could be wrong (e.g., "git add on gitignored path is a no-op" — it's NOT, it returns exit code 1)
+4. **Include a testing phase in the plan itself** — not as afterthought, but as a numbered phase with specific workflows to test
+
+**Testing phase (before declaring done):**
+1. **Test at least 3 representative workflows** — one simple (NYSR), one complex (rebuild), one write-heavy (collect-review-texts)
+2. **Wait for runs to complete** and check ALL step statuses (not just overall pass/fail)
+3. **Check for interaction effects** — gitignore + git add, nested repos + file size checks, composite actions + error handling
+4. **Test the failure path** — what happens when a step fails? Does `if: always()` work? Do subsequent steps still run?
+
+**Common gotchas to check:**
+- `git add <gitignored-path>` → exit code 1 (not a silent no-op)
+- Nested `.git` directories from multi-repo checkouts → triggers size checks, confuses git commands
+- `set -e` in bash steps → any non-zero exit kills the step, even from benign commands
+- Parallel sessions switching branches → always verify branch before commit, or use Git Data API
+
+### 11. Pipeline Operations — Test, Monitor, Parallelize
 **Before:** Verify secrets (test 1 workflow first), check slots (<35 in-progress), 10s+ spacing between `gh workflow run`, shard scoring to 10 (`-f shard=N -f total_shards=10`).
 **During:** Check within 15 min. Verify chaining created next run.
 **After:** Trigger rebuild if needed. Verify data landed.
 **Collection MUST be chained:** Always use `-f chain=true -f remaining_batches=10`. `remaining_batches` defaults to 0 = NO CHAINING.
 For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
+
+### 12. Visual Preview Before Deploying UI Changes (MANDATORY)
+**NEVER deploy UI changes to staging/production without visually verifying them first.** The user is non-technical and on their phone — every broken deploy wastes their time reviewing garbage.
+
+**Workflow for ANY visual/layout change:**
+1. Start dev server: `PORT=3456 npm run dev > /tmp/dev-server.log 2>&1 &` (~2 sec startup, hot-reloads on save)
+2. Screenshot with Playwright script (MCP Playwright often fails — use this instead):
+   ```js
+   node -e "const{chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:420,height:900}});await p.goto('http://localhost:3456/PAGE',{waitUntil:'networkidle'});await p.screenshot({path:'/tmp/ss.png'});await b.close();})()"
+   ```
+3. Review the screenshot yourself — check layout, spacing, alignment, overflow, text wrapping
+4. If it looks wrong, fix and re-screenshot. Dev server hot-reloads changes automatically.
+5. Only after visual confirmation: commit, push, and trigger deploy
+6. Kill the server when done: `kill $(lsof -ti:3456)`
+
+**Why dev server over full build:** `npm run dev` starts in ~2 seconds vs ~4 minutes for `npm run build` + `npx serve out`. Pages are identical for visual/layout work. Use full build only if you need to verify static export behavior.
+
+**What to check in screenshots:**
+- Score badges are in the same position/size as production (never shift badge position)
+- Cards have consistent spacing and don't look squished or bloated
+- New elements don't overflow their containers or push other elements around
+- Text wraps correctly, doesn't clip, and is readable
+- Toggle states all look correct (check each mode)
+
+**If you can't build locally** (e.g., branch conflicts), at minimum describe exactly what will change visually and flag any uncertainty to the user before deploying.
+
+### 13. UI Change Principles
+- **Score badges are sacred** — never change their size, position, or shape. The score column (`w-20 sm:w-24`) is fixed. New elements go around it, not inside it.
+- **Card layout is `[Thumbnail] [Info] [Score]`** — three flex children. Add new elements between Info and Score as separate flex children, not nested inside existing ones.
+- **Test with real data** — long show titles, missing images, shows in previews, closed shows, shows with/without audience scores. Edge cases break layouts.
+- **Padding changes cascade** — changing `p-4` to `p-3` affects every card. Always check the visual result.
 
 ---
 
@@ -92,7 +155,7 @@ Broadway review aggregator. Next.js 14, TypeScript, Tailwind CSS, static export.
 data/
   shows.json                 # Source of truth (status: "open"|"previews"|"closed")
   reviews.json               # Derived from review-texts/ via rebuild
-  review-texts/{show-id}/    # Individual files (versioned IDs, e.g., bug-2026/)
+  review-texts/{show-id}/    # PRIVATE REPO (thomaspryor/broadway-review-texts) — see §7a
   grosses.json / grosses-history.json / commercial.json / audience-buzz.json
   critic-consensus.json / critic-registry.json / aggregator-archive/
 ```
@@ -117,7 +180,7 @@ Quality flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` — excluded f
 
 ## Automation
 
-**Source of truth:** `data/review-texts/` → **Derived:** `data/reviews.json`
+**Source of truth:** `data/review-texts/` (private repo — see §7a) → **Derived:** `data/reviews.json`
 See `.github/workflows/CLAUDE.md` for workflow descriptions and schedules.
 **Always run `node scripts/validate-data.js` before pushing.**
 **Secrets MUST be passed via `env:` blocks** (NOT auto-available). **Local keys:** `.env` at project root.

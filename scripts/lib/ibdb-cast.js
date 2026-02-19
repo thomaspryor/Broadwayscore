@@ -164,6 +164,7 @@ async function extractCastFromIBDBPage(url) {
   const result = {
     openingNightCast: [],
     currentCast: null,
+    replacements: null,
     ibdbUrl: url
   };
 
@@ -215,6 +216,16 @@ async function extractCastFromIBDBPage(url) {
     }
   }
 
+  // Parse Replacements (actors who joined after opening night)
+  const replSection = doc.getElementById('Replacements');
+  if (replSection) {
+    const replacements = parseCastSection(replSection);
+    if (replacements.length > 0) {
+      result.replacements = replacements;
+      console.log(`  ✅ Replacements: ${result.replacements.length} member(s)`);
+    }
+  }
+
   // Safety check: warn on unusually large casts (>60 members likely parsing error)
   if (result.openingNightCast.length > 60) {
     console.log(`  ⚠️  WARNING: ${result.openingNightCast.length} OBC members — unusually large, check for parsing errors`);
@@ -261,7 +272,7 @@ async function lookupIBDBCast(title, options = {}) {
         return notFound;
       }
 
-      bestMatch = findBestProduction(searchResults, options);
+      bestMatch = findBestProduction(searchResults, { ...options, title });
     }
 
     if (!bestMatch) {

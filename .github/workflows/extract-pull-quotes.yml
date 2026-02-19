@@ -51,6 +51,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -90,7 +95,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # Stage all review-text changes
-          git add data/review-texts/
+          # review-texts now pushed via push-review-texts composite action
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -126,7 +131,7 @@ jobs:
           fi
 
           # Only trigger if we actually committed changes
-          if git diff --quiet HEAD~1 -- data/review-texts/ 2>/dev/null; then
+          if git diff --quiet HEAD~1 -- 2>/dev/null; then
             echo "No review-text changes — skipping rebuild"
             exit 0
           fi

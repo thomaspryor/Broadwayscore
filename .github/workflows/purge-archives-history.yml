@@ -1,10 +1,19 @@
-name: "Purge archives from git history"
+name: "Purge copyrighted/sensitive paths from git history"
 
-# One-time deep clean: removes data/archives/ from ALL commits in history.
-# Archives were already removed from HEAD on Feb 18, 2026. This reduces repo size
-# by removing raw scraped HTML from historical commits.
+# Deep clean: removes copyrighted review data and sensitive files from ALL commits.
+# Paths purged:
+#   - data/archives/              (archived HTML pages)
+#   - data/review-texts/          (copyrighted review full texts — moved to private repo)
+#   - data/master-review-list.json
+#   - data/review-texts-quarantine/
+#   - data/calibration/calibration-examples.json
+#   - data/aggregator-archive/    (archived aggregator HTML)
+#   - data/collected-reviews/
+#   - data/mezzanine-screenshots/
+#   - data/bug-reviews.json
+#   - .mcp.json                   (sensitive config)
 #
-# Strategy: Runs during the quietest window (Saturday 1 AM EST). If other
+# Strategy: Runs weekly Saturday 1 AM EST. Once clean, auto-exits in seconds. If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
 # If they don't finish, it skips and tries again next Saturday.
 #
@@ -13,7 +22,7 @@ name: "Purge archives from git history"
 
 on:
   schedule:
-    - cron: '0 6 * * 6'  # Saturday 6 AM UTC (1 AM EST) — quietest window
+    - cron: '0 6 * * 6'  # Saturday 1 AM EST (6 AM UTC)
   workflow_dispatch:
 
 concurrency:
@@ -33,13 +42,14 @@ jobs:
         run: |
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
-          ARCHIVE_COMMITS=$(git log --all --pretty=format: --name-only 2>/dev/null | grep -c '^data/archives/' || echo "0")
-          echo "archive_commits=$ARCHIVE_COMMITS" >> "$GITHUB_OUTPUT"
-          if [ "$ARCHIVE_COMMITS" = "0" ]; then
-            echo "No archives in history — purge already done!"
+          ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
+          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/aggregator-archive/|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || echo "0")
+          echo "purge_count=$COUNT" >> "$GITHUB_OUTPUT"
+          if [ "$COUNT" = "0" ]; then
+            echo "Nothing to purge — all target paths already clean!"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Found $ARCHIVE_COMMITS archive references in history"
+            echo "Found $COUNT refs to purge-target paths in history"
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
           rm -rf /tmp/check-repo
@@ -78,13 +88,25 @@ jobs:
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
 
-      - name: Remove data/archives/ from all history
+      - name: Remove copyrighted/sensitive paths from all history
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: |
           echo "Commits before: $(git log --oneline | wc -l)"
           echo "Git dir size before: $(du -sh .git | cut -f1)"
 
-          python3 -m git_filter_repo --path data/archives/ --invert-paths --force
+          python3 -m git_filter_repo \
+            --sensitive-data-removal \
+            --path data/archives/ \
+            --path data/review-texts/ \
+            --path data/master-review-list.json \
+            --path data/review-texts-quarantine/ \
+            --path data/calibration/calibration-examples.json \
+            --path data/aggregator-archive/ \
+            --path data/collected-reviews/ \
+            --path data/mezzanine-screenshots/ \
+            --path data/bug-reviews.json \
+            --path .mcp.json \
+            --invert-paths --force
 
           echo "Commits after: $(git log --oneline | wc -l)"
           echo "Git dir size after: $(du -sh .git | cut -f1)"
@@ -105,7 +127,7 @@ jobs:
 
           for attempt in $(seq 1 5); do
             echo "=== Force push attempt $attempt ==="
-            if git push --force origin main 2>&1; then
+            if git push --force --all origin 2>&1 && git push --force --tags origin 2>&1; then
               echo "SUCCESS on attempt $attempt!"
               exit 0
             fi
@@ -124,7 +146,7 @@ jobs:
         run: |
           if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
             echo "## Purge not needed" >> "$GITHUB_STEP_SUMMARY"
-            echo "Archives already removed from history." >> "$GITHUB_STEP_SUMMARY"
+            echo "All target paths already removed from history." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
             echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"

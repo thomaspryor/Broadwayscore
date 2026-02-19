@@ -293,7 +293,7 @@ const OUTLET_ALIASES = {
   ],
   'nbcny': [
     'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york',
-    'mbc new york', 'mbc-new-york'
+    'mbc new york', 'mbc-new-york', 'nbcnewyork'
   ],
   'londontheatre': [
     'londontheatre', 'london theatre', 'london-theatre', 'london theater'
@@ -482,6 +482,23 @@ const CRITIC_ALIASES = {
   'kerensa-cadenas': ['kerensa cadenas', 'kerensa cardenas'],
   'steven-babyak': ['steven babyak', 'steve babyak'],
 };
+
+// Merge auto-discovered aliases from weekly integrity workflow
+try {
+  const autoAliasPath = path.join(__dirname, '..', '..', 'data', 'auto-critic-aliases.json');
+  const autoAliases = JSON.parse(fs.readFileSync(autoAliasPath, 'utf8'));
+  if (autoAliases.aliases) {
+    for (const [canonical, aliases] of Object.entries(autoAliases.aliases)) {
+      if (CRITIC_ALIASES[canonical]) {
+        for (const a of aliases) {
+          if (!CRITIC_ALIASES[canonical].includes(a)) CRITIC_ALIASES[canonical].push(a);
+        }
+      } else {
+        CRITIC_ALIASES[canonical] = aliases;
+      }
+    }
+  }
+} catch (e) { /* auto-critic-aliases.json not found or invalid — skip */ }
 
 /**
  * Normalize an outlet name to its canonical ID.

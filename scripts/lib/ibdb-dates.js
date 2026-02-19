@@ -99,20 +99,10 @@ async function searchIBDB(title, options = {}) {
     }
   }
 
-  // Fallback: construct URL directly from title slug
+  // No fallback URL construction — IBDB bare slugs (without numeric production IDs)
+  // always redirect to the homepage. Only real SERP results have valid URLs.
   if (results.length === 0) {
-    const slug = title.toLowerCase()
-      .replace(/['']/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-    // Try common IBDB URL patterns
-    console.log(`  📎 No SERP results, trying direct URL construction for "${title}"`);
-    results.push({
-      url: `${IBDB_BASE}/broadway-production/${slug}`,
-      title: title,
-      year: openingYear ? String(openingYear) : null,
-      isGuessed: true
-    });
+    console.log(`  📎 No SERP results for "${title}" — cannot construct IBDB URL without production ID`);
   }
 
   return results;
@@ -473,22 +463,104 @@ function parseIBDBDate(dateStr) {
 }
 
 /**
+ * Extract production title from an IBDB URL slug.
+ * /broadway-production/burn-the-floor-485387 → "burn the floor"
+ * /broadway-production/the-24-hour-plays-2009-485386 → "the 24 hour plays 2009"
+ */
+function extractTitleFromIBDBUrl(url) {
+  const slug = (url.split('/broadway-production/')[1] || '');
+  // Strip trailing numeric IBDB ID (3+ digits at end)
+  return slug.replace(/-\d{3,}$/, '').replace(/-/g, ' ').trim();
+}
+
+/**
+ * Normalize a title for IBDB matching comparison.
+ * Strips articles, punctuation, possessives, and SERP suffixes.
+ */
+function normalizeForTitleMatch(title) {
+  return title
+    .toLowerCase()
+    .replace(/\s*\|.*$/, '')           // Remove "| IBDB" SERP suffix
+    .replace(/\s*[-–]\s*broadway\s+production\b/i, '') // Remove "- Broadway Production"
+    .replace(/\s*\(.*?\)/g, '')        // Remove parentheticals
+    .replace(/[''']s\b/g, 's')        // Possessive 's → s (before punctuation strip)
+    .replace(/[''.:!?,/&']/g, ' ')    // Punctuation → spaces (preserves compound words)
+    .replace(/^(the|a|an)\s+/i, '')    // Remove leading articles
+    .replace(/[^a-z0-9\s]/g, '')       // Remove remaining non-alphanumeric
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Score how well a candidate IBDB result matches the expected show title.
+ * Returns: +15 (exact), +12 (containment), +8 (strong overlap), 0 (weak),
+ *          -10 (no overlap = clear mismatch)
+ */
+function titleMatchScore(searchTitle, candidateUrl, candidateSerpTitle) {
+  const search = normalizeForTitleMatch(searchTitle);
+  const fromUrl = normalizeForTitleMatch(extractTitleFromIBDBUrl(candidateUrl));
+  const fromSerp = normalizeForTitleMatch(candidateSerpTitle || '');
+
+  // Check both URL slug and SERP title, use best
+  for (const candidate of [fromUrl, fromSerp]) {
+    if (!candidate) continue;
+    if (search === candidate) return 15;                                     // Exact
+    if (candidate.includes(search) || search.includes(candidate)) return 12; // Containment
+  }
+
+  // Word overlap (Jaccard) on URL slug
+  if (fromUrl) {
+    // Keep single-char digits (important for shows like "13", "9 to 5")
+    const wordsA = new Set(search.split(/\s+/).filter(w => w.length > 1 || /\d/.test(w)));
+    const wordsB = new Set(fromUrl.split(/\s+/).filter(w => w.length > 1 || /\d/.test(w)));
+    const intersection = [...wordsA].filter(w => wordsB.has(w)).length;
+    const union = new Set([...wordsA, ...wordsB]).size;
+    const jaccard = union > 0 ? intersection / union : 0;
+    if (jaccard >= 0.5) return 8;    // Strong partial match
+    if (jaccard > 0) return 0;       // Some overlap, neutral
+
+    // Character-level fallback for accented/diacritical differences
+    // (e.g., "les miserables" vs "les misrables" — IBDB drops accented chars)
+    const longer = Math.max(search.length, fromUrl.length);
+    if (longer > 0) {
+      let common = 0;
+      const bChars = fromUrl.split('');
+      for (const ch of search) {
+        const idx = bChars.indexOf(ch);
+        if (idx !== -1) { common++; bChars.splice(idx, 1); }
+      }
+      const charSim = common / longer;
+      if (charSim > 0.75) return 5;   // Close character match (accent differences)
+      if (charSim > 0.5) return 0;    // Marginal, neutral
+    }
+
+    return -10;                        // Zero overlap = clear mismatch
+  }
+  return 0;
+}
+
+/**
  * Find the best matching production from search results
  * @param {Array} results - Search results from searchIBDB
  * @param {Object} options
+ * @param {string} [options.title] - Expected show title (strongest signal)
  * @param {number} [options.openingYear] - Expected opening year
  * @param {string} [options.venue] - Expected venue name
  * @returns {Object|null} Best matching result
  */
 function findBestProduction(results, options = {}) {
   if (!results || results.length === 0) return null;
-  if (results.length === 1) return results[0];
 
-  const { openingYear, venue } = options;
+  const { openingYear, venue, title } = options;
 
   // Score each result
   const scored = results.map(r => {
     let score = 0;
+
+    // Title match (strongest signal — prevents wrong-production matches)
+    if (title) {
+      score += titleMatchScore(title, r.url, r.title);
+    }
 
     // Year match
     if (openingYear && r.year) {
@@ -515,6 +587,13 @@ function findBestProduction(results, options = {}) {
   });
 
   scored.sort((a, b) => b.score - a.score);
+
+  // Reject if best candidate is a clear mismatch (score too low)
+  if (title && scored[0].score < -5) {
+    console.log(`  ⛔ All IBDB results are title mismatches for "${title}" — rejecting`);
+    return null;
+  }
+
   return scored[0];
 }
 
@@ -552,8 +631,8 @@ async function lookupIBDBDates(title, options = {}) {
         return notFound;
       }
 
-      // Step 2: Find best matching production
-      bestMatch = findBestProduction(searchResults, options);
+      // Step 2: Find best matching production (title-aware scoring)
+      bestMatch = findBestProduction(searchResults, { ...options, title });
     }
 
     if (!bestMatch) {
@@ -662,5 +741,8 @@ module.exports = {
   findBestProduction,
   lookupIBDBDates,
   batchLookupIBDBDates,
-  parseIBDBDate
+  parseIBDBDate,
+  extractTitleFromIBDBUrl,
+  normalizeForTitleMatch,
+  titleMatchScore
 };

@@ -30,6 +30,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Check if queue has items
         id: check_queue
         run: |
@@ -76,23 +81,30 @@ jobs:
         if: steps.check_queue.outputs.has_items == 'true'
         id: changes
         run: |
-          if git diff --quiet data/review-texts/; then
+          if git diff --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No files changed."
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            CHANGED=$(git diff --name-only data/review-texts/ | wc -l | tr -d ' ')
+            CHANGED=$(git diff --name-only | wc -l | tr -d ' ')
             echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
             echo "$CHANGED file(s) changed."
           fi
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Adjudicate Review Queue — Commit and push"
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/review-texts/
+          # review-texts now pushed via push-review-texts composite action
 
           CHANGED=${{ steps.changes.outputs.changed_count }}
           git commit -m "data: Auto-adjudicate $CHANGED review(s) from queue

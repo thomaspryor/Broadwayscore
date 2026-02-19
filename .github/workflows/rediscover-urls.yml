@@ -39,6 +39,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -75,12 +80,19 @@ jobs:
           CI: true
         run: node scripts/rediscover-review-urls.js ${{ steps.args.outputs.args }}
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Rediscover Review URLs — Final commit and push"
       - name: Final commit and push
         if: always() && inputs.dry_run != 'true'
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
-          git add data/review-texts/
+          # review-texts now pushed via push-review-texts composite action
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0

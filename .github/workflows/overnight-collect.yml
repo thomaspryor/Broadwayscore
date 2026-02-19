@@ -26,6 +26,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 1
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -111,7 +116,7 @@ jobs:
               --priority=all || true
 
             # Commit after each show
-            git add data/review-texts/ data/archives/ data/collection-state/ data/audit/ || true
+            git add data/archives/ data/collection-state/ data/audit/ || true
             if git diff --staged --quiet; then
               echo "No changes for $show"
             else
@@ -139,6 +144,13 @@ jobs:
           echo "OVERNIGHT BATCH COMPLETE"
           echo "Shows processed: $PROCESSED"
           echo "============================================"
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Overnight collection batch"
 
       - name: Trigger reviews rebuild
         if: always()
