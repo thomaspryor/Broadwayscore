@@ -9,7 +9,7 @@ on:
 
 concurrency:
   group: gitlab-mirror
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   mirror:
