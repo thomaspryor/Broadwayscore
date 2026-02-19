@@ -520,3 +520,39 @@ export interface ShowCastFile {
   currentCast?: CastMemberOBC[] | null;
   currentCastUpdatedAt?: string;
 }
+
+// ============================================
+// Actor Profile Types
+// ============================================
+
+export interface ActorShowEntry {
+  title: string;
+  slug: string;
+  showId: string;
+  role: string;
+  castType: 'obc' | 'current';
+  venue: string;
+  openingDate: string | null;
+  closingDate: string | null;
+  status: string;
+  type: string;
+  thumbnail: string | null;
+  isRevival: boolean;
+  score: number | null;
+  audienceScore: number | null;
+  flags?: string[];
+}
+
+export interface ActorProfile {
+  name: string;
+  slug: string;
+  ibdbPersonId: string;
+  shows: ActorShowEntry[];
+  showCount: number;
+  avgScore: number | null;
+  highScore: { score: number; showTitle: string } | null;
+  lowScore: { score: number; showTitle: string } | null;
+  openShowCount: number;
+  closedShowCount: number;
+  hasBroadwayDebut: boolean;
+}

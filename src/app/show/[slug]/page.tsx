@@ -10,6 +10,7 @@ import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
 import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
+import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
@@ -197,6 +198,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const commercial = getShowCommercial(show.slug);
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
+  // Pre-compute actor slug map for clickable cast names
+  const castActorSlugs: Record<string, string> = {};
+  if (featureFlags.castPages && castFile) {
+    const allPersonIds = [
+      ...(castFile.openingNightCast || []),
+      ...(castFile.currentCast || []),
+    ].map(m => m.ibdbPersonId).filter((id): id is string => !!id);
+    const slugMap = getActorSlugMap(allPersonIds);
+    for (const [id, slug] of Array.from(slugMap.entries())) {
+      castActorSlugs[id] = slug;
+    }
+  }
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
@@ -683,6 +696,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             currentCast={castFile.currentCast}
             currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
             showStatus={show.status}
+            actorSlugs={castActorSlugs}
           />
         )}
 
