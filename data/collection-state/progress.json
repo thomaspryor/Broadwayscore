@@ -1,62 +1,63 @@
 {
   "processed": [
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json",
-    "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-    "mcneal-2024/broadwaynews--brittani-samuel.json",
-    "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json"
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "titanique-2026/nytimes--elisabeth-vincentelli.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "1776-2022/nytimes--jesse-green.json",
+    "700-sundays-2013/nytimes--ben-brantley.json",
+    "a-catered-affair-2008/nytimes--ben-brantley.json",
+    "a-dolls-house-part-2-2017/nytimes--unknown.json"
   ],
   "failed": [
-    "chicago-1996/oocities--richard-zoglin.json",
-    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
-    "amelie-a-new-musical-2017/nytg--david-gordon.json",
-    "ghost-the-musical-2012/guardian--charles-isherwood.json",
-    "good-night-oscar-2023/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json"
+    "33-variations-2009/nytimes--ben-brantley.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "hadestown-2019/medium--christian-lewis.json",
-      "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-      "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "latin-history-for-morons-2017/thewrap--robert-hoffler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/leopoldstadt-2022/new-york-sun--unknown.json",
-      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
-      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
+      "data/review-texts/33-variations-2009/nytimes--ben-brantley.json",
+      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json"
     ],
     "archive": [
-      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-      "cabaret-2024/broadwaynews--brittani-samuel.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "mcneal-2024/broadwaynews--brittani-samuel.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json"
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "titanique-2026/nytimes--elisabeth-vincentelli.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "1776-2022/nytimes--jesse-green.json",
+      "700-sundays-2013/nytimes--ben-brantley.json",
+      "a-catered-affair-2008/nytimes--ben-brantley.json",
+      "a-dolls-house-part-2-2017/nytimes--unknown.json"
     ]
   },
-  "startTime": "2026-02-19T01:27:54.427Z",
-  "lastProcessed": "swept-away-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T01:49:17.142Z",
+  "lastProcessed": "a-dolls-house-part-2-2017/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-19T01:50:26.806Z",
+      "event": "bb-session",
+      "session": "09a0606b",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+    },
+    {
+      "t": "2026-02-19T01:50:28.981Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:51:52.275Z",
+      "event": "bb-session",
+      "session": "f891b332",
+      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
+    },
+    {
+      "t": "2026-02-19T01:51:54.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
