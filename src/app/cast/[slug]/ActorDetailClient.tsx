@@ -4,8 +4,9 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { ActorProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
-import { FormatPill, ProductionPill, StatGrid } from '@/components/show-cards';
+import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
+// getScoreClass no longer needed — using ScoreBadge component
+import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortCol = 'date' | 'score';
@@ -17,6 +18,8 @@ function formatDate(dateStr: string): string {
 }
 
 function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; loading?: 'eager' | 'lazy' }) {
+  const tier = show.score !== null ? getScoreTier(show.score) : null;
+
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -59,13 +62,13 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
             {show.role}
           </span>
           {show.castType === 'obc' && !show.isRevival && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30" title="Original Broadway Cast">
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Original Broadway Cast">
               OBC
             </span>
           )}
           {show.castType === 'obc' && show.isRevival && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Revival Opening Cast">
-              Revival
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/10 text-gray-400 border-white/15" title="Opening night cast of this revival">
+              Opening Cast
             </span>
           )}
           {show.castType === 'replacement' && (
@@ -81,16 +84,19 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
         </div>
       </div>
 
-      {/* Score */}
-      {show.score !== null ? (
-        <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(show.score)} flex items-center justify-center font-bold flex-shrink-0`}>
-          {Math.round(show.score)}
-        </div>
-      ) : (
-        <div className="w-10 h-10 text-sm rounded-lg bg-surface-overlay flex items-center justify-center text-gray-500 font-bold flex-shrink-0">
-          —
-        </div>
-      )}
+      {/* Score with tier label */}
+      <div className="flex flex-col items-center flex-shrink-0">
+        {tier && (
+          <span
+            className="text-[8px] font-semibold uppercase tracking-wide whitespace-nowrap mb-0.5"
+            style={{ color: tier.color }}
+            title={tier.tooltip}
+          >
+            {tier.label}
+          </span>
+        )}
+        <ScoreBadge score={show.score} size="sm" />
+      </div>
     </Link>
   );
 }
@@ -136,7 +142,13 @@ export default function ActorDetailClient({
     const credits = [...profile.shows.filter(s => s.status !== 'upcoming' && !openIds.has(s.showId))];
     const dir = sortDir === 'asc' ? 1 : -1;
     if (sortCol === 'score') {
-      return credits.sort((a, b) => dir * ((a.score ?? -999) - (b.score ?? -999)));
+      return credits.sort((a, b) => {
+        // Always put unscored shows at the bottom regardless of sort direction
+        if (a.score === null && b.score === null) return 0;
+        if (a.score === null) return 1;
+        if (b.score === null) return -1;
+        return dir * (a.score - b.score);
+      });
     }
     // date sort: by opening date
     return credits.sort((a, b) => {
@@ -264,7 +276,7 @@ export default function ActorDetailClient({
                 </span>
               </button>
               <button
-                className="w-11 text-center flex-shrink-0 group/sort"
+                className="w-14 text-center flex-shrink-0 group/sort"
                 onClick={() => handleSort('score')}
                 aria-sort={sortCol === 'score' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
