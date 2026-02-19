@@ -103,11 +103,17 @@ runs:
 
             echo "Conflict resolution: kept $KEPT_OURS ours, $KEPT_THEIRS theirs"
 
-            if git rebase --continue 2>/dev/null; then
-              if git push origin main 2>&1; then
-                echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
-                exit 0
-              fi
+            # If all conflicts were resolved by keeping theirs, our commit is empty — skip it
+            if git diff --staged --quiet 2>/dev/null && [ "$KEPT_OURS" -eq 0 ]; then
+              echo "All conflicts resolved by keeping theirs — skipping our empty commit"
+              GIT_EDITOR=true git rebase --skip 2>/dev/null || true
+            else
+              GIT_EDITOR=true git rebase --continue 2>/dev/null || true
+            fi
+
+            if git push origin main 2>&1; then
+              echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
+              exit 0
             fi
           fi
 
