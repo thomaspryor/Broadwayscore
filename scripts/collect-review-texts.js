@@ -2977,7 +2977,8 @@ function buildTierContext(review) {
   const reason = review.incompleteReason || '';
   // NOT scraper_garbage — many got garbage FROM archive.org, so archive-first creates a loop
   const forceArchiveFirst = ['paywall', 'partial_text'].includes(reason);
-  const skipDirectScrapers = reason === 'paywall';
+  // Only skip direct scrapers for paywall if we DON'T have cookies (cookies = try Playwright first)
+  const skipDirectScrapers = reason === 'paywall' && !getPaywallCredentials(url)?.email;
   const enableBrowserbase = reason === 'bot_blocked';
 
   const isArchiveFirst = forceArchiveFirst || (!archiveOrgDisabledForBatch &&
@@ -4289,7 +4290,8 @@ function commitChanges(processed) {
     }
 
     // Stage changes
-    execSync('git add data/review-texts/ data/archives/reviews/ data/collection-state/', {
+    // Note: data/archives/ is in .gitignore — do NOT git add it
+    execSync('git add data/review-texts/ data/collection-state/', {
       stdio: 'pipe'
     });
 
