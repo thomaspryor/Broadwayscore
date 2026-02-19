@@ -124,7 +124,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       prefetch={false}
       role="listitem"
       data-testid="show-card"
-      className="group card-interactive flex items-center gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      className="group card-interactive flex items-center gap-4 px-5 py-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
@@ -178,7 +178,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       </div>
 
       {/* Score Badge */}
-      <div className={`flex-shrink-0 flex flex-col items-center justify-center gap-1.5 ${scoreMode === 'both_c' ? 'w-36 sm:w-44' : 'w-20 sm:w-24'}`}>
+      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24 overflow-visible">
         {scoreMode === 'both_c' ? (
           // Variant C: Big critic badge + small audience chip
           <>
