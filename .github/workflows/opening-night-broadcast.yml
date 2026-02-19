@@ -27,6 +27,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Find recently opened shows
         id: find
         run: |
@@ -155,6 +160,13 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/send-opening-night-broadcast.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Broadcast — Commit data"
       - name: Commit data
         if: always()
         run: |

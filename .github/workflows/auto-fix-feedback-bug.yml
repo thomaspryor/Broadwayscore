@@ -146,3 +146,99 @@ jobs:
                 issue_number: issueNumber, labels: ['needs-manual-review']
               });
             }
+
+      - name: Generate remediation plan
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug'
+        id: plan
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+        run: node scripts/generate-remediation-plan.js
+
+      - name: Commit pending fix plan
+        if: always() && steps.plan.outputs.plan_created == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          git add data/pending-fixes/
+          if git diff --staged --quiet; then
+            echo "No plan file to commit"
+          else
+            git commit -m "chore: Save remediation plan for #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep $((10 + RANDOM % 20))
+              git pull --rebase -X theirs origin main
+            done
+          fi
+
+      - name: Send thank-you email to submitter
+        if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'not-a-bug')
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node -e "
+          const https = require('https');
+
+          const body = process.env.ISSUE_BODY || '';
+          const action = process.env.FIX_ACTION;
+          const resendKey = process.env.RESEND_API_KEY;
+
+          // Extract submitter info from DIAGNOSIS_JSON
+          const match = body.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
+          if (!match) { console.log('No DIAGNOSIS_JSON found'); process.exit(0); }
+
+          let diag;
+          try { diag = JSON.parse(match[1]); } catch { console.log('Invalid JSON'); process.exit(0); }
+
+          const email = diag.submitterEmail;
+          if (!email || !resendKey) { console.log('No email or Resend key'); process.exit(0); }
+
+          // Build email using the template
+          const { buildFeedbackThankYouEmail } = require('./scripts/lib/email-templates.js');
+          const type = action === 'fixed' ? 'fixed' : 'acknowledged';
+          const { subject, html } = buildFeedbackThankYouEmail(type, diag.submitterName, diag.submitterShow);
+
+          const data = JSON.stringify({
+            from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+            to: [email],
+            subject,
+            html,
+          });
+
+          const req = https.request('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + resendKey,
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(data),
+            },
+          }, (res) => {
+            let body = '';
+            res.on('data', c => body += c);
+            res.on('end', () => {
+              if (res.statusCode >= 200 && res.statusCode < 300) {
+                console.log('Sent ' + type + ' thank-you to ' + email);
+              } else {
+                console.log('Email failed: ' + res.statusCode + ' ' + body.slice(0, 200));
+              }
+            });
+          });
+          req.on('error', e => console.log('Email error: ' + e.message));
+          req.write(data);
+          req.end();
+          "

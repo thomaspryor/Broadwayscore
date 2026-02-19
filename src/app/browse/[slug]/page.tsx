@@ -242,7 +242,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                         <>
                           {duration && <span>{duration}</span>}
                           {isOpen && show.closingDate && (
-                            <span>
+                            <span className="text-amber-400">
                               {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             </span>
                           )}
@@ -254,7 +254,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                         </>
                       )}
                       {isMixedStatus && !isOpen && (
-                        <span className="text-amber-400">
+                        <span className="text-orange-400">
                           Closed{show.closingDate ? ` ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : ''}
                         </span>
                       )}

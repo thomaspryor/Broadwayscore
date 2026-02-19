@@ -54,6 +54,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -250,6 +255,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -362,6 +372,13 @@ jobs:
           mkdir -p /tmp/failures
           echo "${FAILED_SHOWS:1}" > /tmp/failures/batch-${{ matrix.batch_id }}.txt
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Final commit (catch uncommitted files)"
       - name: Final commit (catch uncommitted files)
         if: always()
         run: |
@@ -399,6 +416,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -437,6 +459,13 @@ jobs:
           SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
           node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Commit PV + NYC results"
       - name: Commit PV + NYC results
         run: |
           if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
@@ -477,6 +506,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -500,6 +534,13 @@ jobs:
       - name: Rebuild reviews.json
         run: node scripts/rebuild-all-reviews.js
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Commit rebuild"
       - name: Commit rebuild
         if: always()
         run: |

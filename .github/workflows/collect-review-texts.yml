@@ -2,7 +2,7 @@ name: Collect Review Texts
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
 concurrency:
-  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}
+  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}
   cancel-in-progress: false
 
 on:
@@ -75,6 +75,10 @@ on:
         description: 'Only process reviews from these domains (comma-separated, e.g. theatermania.com,huffpost.com)'
         required: false
         default: ''
+      reason_filter:
+        description: 'Filter by incompleteReason (comma-separated: paywall,scraper_garbage,not_attempted,url_dead,bot_blocked,etc.)'
+        required: false
+        default: ''
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -97,6 +101,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -193,6 +202,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -211,11 +221,18 @@ jobs:
         if: always()
         uses: ./.github/actions/check-file-sizes
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Final commit and push"
       - name: Final commit and push
         if: always()
         id: push
         run: |
-          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
+          git add data/review-texts/ data/audit/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -353,6 +370,7 @@ jobs:
           AGGRESSIVE="${{ inputs.aggressive }}"
           STEALTH="${{ inputs.stealth_proxy }}"
           DOMAIN_FILTER="${{ inputs.domain_filter }}"
+          REASON_FILTER="${{ inputs.reason_filter }}"
 
           gh workflow run "Collect Review Texts" \
             -f max_reviews=${{ inputs.max_reviews }} \
@@ -366,6 +384,7 @@ jobs:
             -f archive_first=${{ inputs.archive_first }} \
             -f content_tier="$TIER_FILTER" \
             -f domain_filter="$DOMAIN_FILTER" \
+            -f reason_filter="$REASON_FILTER" \
             -f chain=true \
             -f remaining_batches="$NEXT_BATCHES" \
             -f chain_browserbase_budget="$NEXT_BB_BUDGET"
@@ -400,6 +419,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -494,6 +518,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -509,10 +534,17 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Commit and push changes for ${{ matrix.outlet_tier }}"
       - name: Commit and push changes for ${{ matrix.outlet_tier }}
         if: always()
         run: |
-          git add data/review-texts/ data/archives/reviews/
+          git add data/review-texts/
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else
