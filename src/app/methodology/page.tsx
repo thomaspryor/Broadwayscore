@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
+import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
 // Static OG image (API routes don't work with static export)
 const ogImageUrl = `${BASE_URL}/og/home.png`;
@@ -510,6 +511,9 @@ export default function MethodologyPage() {
             </li>
           </ul>
         </section>
+
+        {/* Buy Me a Coffee */}
+        <BuyMeACoffeeWidget />
 
         {/* Version */}
         <div className="text-center text-gray-500 text-sm pt-4">
