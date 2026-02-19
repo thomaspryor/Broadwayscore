@@ -6,23 +6,41 @@
     "1776-2022/nytimes--jesse-green.json",
     "700-sundays-2013/nytimes--ben-brantley.json",
     "a-catered-affair-2008/nytimes--ben-brantley.json",
-    "a-dolls-house-part-2-2017/nytimes--unknown.json"
+    "a-dolls-house-part-2-2017/nytimes--unknown.json",
+    "allegiance-2015/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "33-variations-2009/nytimes--ben-brantley.json",
     "9-to-5-2009/nytimes--ben-brantley.json",
-    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json"
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+    "a-little-night-music-2009/nytimes--ben-brantley.json",
+    "a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
+    "a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+    "after-midnight-2013/nytimes--unknown.json",
+    "after-miss-julie-2009/nytimes--.json",
+    "after-miss-julie-2009/nytimes--ben-brantley.json",
+    "all-about-me-2010/nytimes--ben-brantley.json",
+    "allegiance-2015/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "allegiance-2015/nytimes--charles-isherwood.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/33-variations-2009/nytimes--ben-brantley.json",
-      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json"
+      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+      "data/review-texts/a-little-night-music-2009/nytimes--ben-brantley.json",
+      "data/review-texts/a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
+      "data/review-texts/a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
+      "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+      "data/review-texts/after-midnight-2013/nytimes--unknown.json",
+      "data/review-texts/after-miss-julie-2009/nytimes--ben-brantley.json"
     ],
     "archive": [
       "the-lion-king-1997/nytimes--ben-brantley.json",
@@ -35,7 +53,7 @@
     ]
   },
   "startTime": "2026-02-19T01:26:14.172Z",
-  "lastProcessed": "a-dolls-house-part-2-2017/nytimes--unknown.json",
+  "lastProcessed": "allegiance-2015/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-19T01:27:24.567Z",
@@ -56,6 +74,83 @@
     },
     {
       "t": "2026-02-19T01:29:06.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:31:11.610Z",
+      "event": "bb-session",
+      "session": "e90a43e7",
+      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+    },
+    {
+      "t": "2026-02-19T01:31:13.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:32:29.527Z",
+      "event": "bb-session",
+      "session": "fa1f50ef",
+      "url": "https://www.nytimes.com/2008/10/19/theater/reviews/19seasons.html"
+    },
+    {
+      "t": "2026-02-19T01:32:31.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:34:10.158Z",
+      "event": "bb-session",
+      "session": "8868e973",
+      "url": "https://www.nytimes.com/2005/10/17/theater/reviews/17nake.html"
+    },
+    {
+      "t": "2026-02-19T01:34:12.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:35:35.008Z",
+      "event": "bb-session",
+      "session": "e625cda2",
+      "url": "https://www.nytimes.com/2024/11/12/theater/a-wonderful-world-review.html"
+    },
+    {
+      "t": "2026-02-19T01:35:36.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:36:52.183Z",
+      "event": "bb-session",
+      "session": "906b6bcc",
+      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
+    },
+    {
+      "t": "2026-02-19T01:36:54.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:38:09.450Z",
+      "event": "bb-session",
+      "session": "a0035326",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-02-19T01:38:11.489Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:39:48.831Z",
+      "event": "bb-session",
+      "session": "76f6e0b2",
+      "url": "https://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-l"
+    },
+    {
+      "t": "2026-02-19T01:39:50.710Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
