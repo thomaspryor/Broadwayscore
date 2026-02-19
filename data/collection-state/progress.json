@@ -17,7 +17,8 @@
     "american-son-2018/wsj--terry-teachout.json",
     "blackbird-2016/wsj--terry-teachout.json",
     "camelot-2023/wsj--charles-isherwood.json",
-    "a-little-night-music-2009/wsj--terry-teachout.json"
+    "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
+    "side-show-2014/thewrap--robert-hofler.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -247,23 +248,31 @@
     "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
     "cats-1982/nytimes--frank-rich.json",
     "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json"
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "collected-stories-2010/nytimes--charles-isherwood.json",
+    "come-fly-away-2010/nytimes--ben-brantley.json",
+    "crybaby-2008/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "hughie-2016/act-three-the-reviews--doug-marino.json",
-      "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-      "be-more-chill-2019/theatre-reviews-limited--david-roberts.json"
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "hadestown-2019/medium--christian-lewis.json",
+      "the-father-2016/act-three-the-reviews--doug-marino.json",
+      "be-more-chill-2019/theatre-reviews-limited--david-roberts.json",
+      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
+      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/theatre-reviews-limited--david-roberts.json",
+      "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
       "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json",
-      "a-little-night-music-2009/wsj--terry-teachout.json"
+      "side-show-2014/thewrap--robert-hofler.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -292,22 +301,33 @@
       "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
       "data/review-texts/cats-1982/nytimes--frank-rich.json",
       "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json"
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json",
-      "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "operation-mincemeat-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "the-outsiders-2024/wsj--charles-isherwood.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+      "american-buffalo-2022/wsj--charles-isherwood.json",
+      "american-idiot-2010/wsj--terry-teachout.json",
+      "american-son-2018/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json",
+      "camelot-2023/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+  "lastProcessed": "side-show-2014/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -545,6 +565,45 @@
       "t": "2026-02-19T01:34:55.666Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:36:32.190Z",
+      "event": "bb-session",
+      "session": "508bcc39",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-19T01:36:34.221Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:37:48.523Z",
+      "event": "bb-session",
+      "session": "88fa3ad8",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-19T01:37:50.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:39:03.666Z",
+      "event": "bb-session",
+      "session": "c46f7c7b",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-19T01:39:05.702Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:39:39.876Z",
+      "event": "bb-session",
+      "session": "234b0a4d",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
     }
   ]
 }
