@@ -107,10 +107,21 @@ jobs:
               break
             fi
             echo "Push failed (attempt $i), rebasing..."
-            # Stash any unstaged changes before rebase
+            # Clean working tree for rebase
             git stash --include-untracked || true
-            git pull --rebase -X theirs origin main || true
-            git stash pop || true
+            # Attempt rebase; if conflicts, resolve and continue
+            if ! git pull --rebase -X theirs origin main; then
+              echo "Rebase conflict — resolving..."
+              # Accept theirs for any conflicting files (our commit only cares about shows.json)
+              git diff --name-only --diff-filter=U | xargs -I{} git checkout --theirs {} 2>/dev/null || true
+              git add -A
+              GIT_EDITOR=true git rebase --continue 2>/dev/null || {
+                echo "Rebase continue failed, aborting rebase..."
+                git rebase --abort || true
+                git pull --no-rebase -X theirs origin main || true
+              }
+            fi
+            git stash pop || git stash drop || true
             # Re-stage our files in case rebase dropped them
             git add data/shows.json
             if [ -f data/historical-shows-pending.json ]; then
