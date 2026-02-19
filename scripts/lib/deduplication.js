@@ -182,7 +182,15 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
   for (const [key, variants] of Object.entries(KNOWN_DUPLICATES)) {
     const matchesVariant = (title) => variants.some(v => {
       if (v === title) return true;
-      if (title.includes(v)) return true;
+      // Match title.includes(v) only if variant appears as a whole word/prefix
+      // Prevents "six" matching "sixteen wounded" while keeping "six" matching "six the musical"
+      if (title.includes(v)) {
+        const idx = title.indexOf(v);
+        const afterChar = title[idx + v.length];
+        // Variant must be at start or preceded by space, and followed by space/end
+        const atWordBoundary = (idx === 0 || title[idx - 1] === ' ') && (!afterChar || afterChar === ' ');
+        if (atWordBoundary) return true;
+      }
       // Only match v.includes(title) if title is at least 80% of variant length
       // Prevents "ann" matching "annie", "doubt" matching "doubtfire" etc.
       if (v.includes(title) && title.length >= v.length * 0.8) return true;
@@ -202,6 +210,13 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
  * Returns true if both have year info and opening years differ by >2 years.
  */
 function isMultiProduction(newShow, existing) {
+  // If both have different IBDB URLs, they are definitively separate productions
+  const newIbdb = newShow.ibdbUrl || '';
+  const existingIbdb = existing.ibdbUrl || '';
+  if (newIbdb && existingIbdb && newIbdb !== existingIbdb) {
+    return true;
+  }
+
   // Try year from ID suffix first, then from openingDate
   const getYear = (show) => {
     const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
@@ -304,13 +319,14 @@ function checkForDuplicate(newShow, existingShows) {
       }
     }
 
-    // Check 7: Same venue + normalized title starts the same (first 8 chars)
+    // Check 7: Same venue + normalized title starts the same (first 15 chars)
     if (newVenue && existingVenue && newVenue === existingVenue) {
-      if (newTitleNormalized.length > 4 && existingTitleNormalized.length > 4 &&
-          newTitleNormalized.substring(0, 8) === existingTitleNormalized.substring(0, 8)) {
+      if (newTitleNormalized.length > 8 && existingTitleNormalized.length > 8 &&
+          newTitleNormalized.substring(0, 15) === existingTitleNormalized.substring(0, 15)) {
         // Skip multi-part shows at same venue (e.g., Coast of Utopia parts)
         const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
         if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
+        if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
           reason: `Same venue "${newVenue}" + similar title start`,

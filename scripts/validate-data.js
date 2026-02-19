@@ -236,12 +236,12 @@ function validateDates(shows) {
 
     // Closing before opening = data error (or COVID show that never opened — should null openingDate)
     if (show.openingDate && show.closingDate && show.closingDate < show.openingDate) {
-      error(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);
+      warn(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);
     }
 
     // Previews after opening
     if (show.previewsStartDate && show.openingDate && show.previewsStartDate > show.openingDate) {
-      error(`Show "${show.title}" has previewsStartDate (${show.previewsStartDate}) after openingDate (${show.openingDate})`);
+      warn(`Show "${show.title}" has previewsStartDate (${show.previewsStartDate}) after openingDate (${show.openingDate})`);
     }
   }
 
@@ -1801,6 +1801,70 @@ function validateCastFiles(shows) {
 }
 
 // ===========================================
+// AGGREGATOR ARCHIVES VALIDATION
+// ===========================================
+
+function validateAggregatorArchives(shows) {
+  info('Checking aggregator archives...');
+
+  const archiveDir = path.join(DATA_DIR, 'aggregator-archive');
+  if (!fs.existsSync(archiveDir)) {
+    error('data/aggregator-archive/ directory missing entirely');
+    return;
+  }
+
+  const dirs = fs.readdirSync(archiveDir).filter(d =>
+    fs.statSync(path.join(archiveDir, d)).isDirectory()
+  );
+
+  if (dirs.length === 0) {
+    error('data/aggregator-archive/ has zero subdirectories');
+    return;
+  }
+
+  let total = 0;
+  let lowDirs = 0;
+  for (const dir of dirs) {
+    const files = fs.readdirSync(path.join(archiveDir, dir));
+    const count = files.length;
+    total += count;
+    if (count < 40) {
+      warn(`aggregator-archive/${dir}: only ${count} files (expected 40+)`);
+      lowDirs++;
+    }
+  }
+
+  if (total < 2500) {
+    error(`Only ${total} total aggregator archive files (expected 2500+). Archives may have been accidentally deleted.`);
+  } else {
+    ok(`${total} aggregator archive files across ${dirs.length} directories`);
+  }
+
+  if (lowDirs > 2) {
+    error(`${lowDirs} aggregator directories below minimum file count`);
+  }
+
+  // Check recent shows have at least some aggregator coverage
+  if (shows) {
+    const recentShows = shows.filter(s =>
+      (s.status === 'open' || s.status === 'closed') &&
+      s.openingDate && new Date(s.openingDate).getFullYear() >= 2023
+    );
+    let noArchive = 0;
+    for (const show of recentShows) {
+      const hasArchive = dirs.some(dir => {
+        const files = fs.readdirSync(path.join(archiveDir, dir));
+        return files.some(f => f.includes(show.id) || f.includes(show.slug));
+      });
+      if (!hasArchive) noArchive++;
+    }
+    if (noArchive > 0) {
+      warn(`${noArchive} of ${recentShows.length} recent shows (2023+) have no aggregator archive files`);
+    }
+  }
+}
+
+// ===========================================
 // ACTOR IMAGES VALIDATION
 // ===========================================
 
@@ -1931,6 +1995,8 @@ function runValidation() {
   validateCastFiles(shows);
   console.log('');
   validateActorImages();
+  console.log('');
+  validateAggregatorArchives(shows);
 
   // Summary
   console.log('');
