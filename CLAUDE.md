@@ -100,6 +100,33 @@ For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data 
 **Collection MUST be chained:** Always use `-f chain=true -f remaining_batches=10`. `remaining_batches` defaults to 0 = NO CHAINING.
 For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
 
+### 12. Visual Preview Before Deploying UI Changes (MANDATORY)
+**NEVER deploy UI changes to staging/production without visually verifying them first.** The user is non-technical and on their phone — every broken deploy wastes their time reviewing garbage.
+
+**Workflow for ANY visual/layout change:**
+1. Build locally: `npm run build` (fix errors before proceeding)
+2. Serve the static export: `npx serve out -l 3456 &`
+3. Screenshot with Playwright: use `mcp__plugin_playwright_playwright__browser_navigate` to `http://localhost:3456`, then `browser_take_screenshot`
+4. Review the screenshot yourself — check layout, spacing, alignment, overflow, text wrapping
+5. If it looks wrong, fix and re-screenshot. Do NOT deploy broken UI.
+6. Only after visual confirmation: commit, push, and trigger deploy
+7. Kill the server: `kill %1` or `lsof -ti:3456 | xargs kill`
+
+**What to check in screenshots:**
+- Score badges are in the same position/size as production (never shift badge position)
+- Cards have consistent spacing and don't look squished or bloated
+- New elements don't overflow their containers or push other elements around
+- Text wraps correctly, doesn't clip, and is readable
+- Toggle states all look correct (check each mode)
+
+**If you can't build locally** (e.g., branch conflicts), at minimum describe exactly what will change visually and flag any uncertainty to the user before deploying.
+
+### 13. UI Change Principles
+- **Score badges are sacred** — never change their size, position, or shape. The score column (`w-20 sm:w-24`) is fixed. New elements go around it, not inside it.
+- **Card layout is `[Thumbnail] [Info] [Score]`** — three flex children. Add new elements between Info and Score as separate flex children, not nested inside existing ones.
+- **Test with real data** — long show titles, missing images, shows in previews, closed shows, shows with/without audience scores. Edge cases break layouts.
+- **Padding changes cascade** — changing `p-4` to `p-3` affects every card. Always check the visual result.
+
 ---
 
 ## Project Overview
