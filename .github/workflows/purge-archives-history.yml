@@ -13,7 +13,7 @@ name: "Purge copyrighted/sensitive paths from git history"
 #   - data/bug-reviews.json
 #   - .mcp.json                   (sensitive config)
 #
-# Strategy: Runs every 3 hours until purge succeeds. Once clean, auto-exits in seconds. If other
+# Strategy: Runs weekly Saturday 1 AM EST. Once clean, auto-exits in seconds. If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
 # If they don't finish, it skips and tries again next Saturday.
 #
@@ -22,7 +22,7 @@ name: "Purge copyrighted/sensitive paths from git history"
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # Every 3 hours — finds quiet gap ASAP for urgent purge
+    - cron: '0 6 * * 6'  # Saturday 1 AM EST (6 AM UTC)
   workflow_dispatch:
 
 concurrency:
@@ -149,7 +149,7 @@ jobs:
             echo "All target paths already removed from history." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
-            echo "Will retry in 3 hours." >> "$GITHUB_STEP_SUMMARY"
+            echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "## History purge complete" >> "$GITHUB_STEP_SUMMARY"
             echo "GitHub GC will reclaim space within ~24 hours." >> "$GITHUB_STEP_SUMMARY"

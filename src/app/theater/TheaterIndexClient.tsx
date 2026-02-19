@@ -2,23 +2,25 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { getScoreClass } from '@/lib/critic-page-utils';
+import { ScoreBadge } from '@/components/show-cards';
 
-type SortMode = 'shows' | 'alpha' | 'playing';
+type SortMode = 'playing' | 'shows' | 'capacity' | 'score' | 'alpha';
 
 interface TheaterSummary {
   name: string;
   slug: string;
   address?: string;
   showCount: number;
+  capacity: number | null;
   currentShowTitle?: string;
   currentShowSlug?: string;
   currentShowScore?: number | null;
+  avgScore: number | null;
 }
 
-const SORT_OPTIONS: { value: SortMode; label: string }[] = [
-  { value: 'playing', label: 'NOW PLAYING' },
-  { value: 'shows', label: 'MOST SHOWS' },
+// Pill-style sorts (left side of header row)
+const PILL_SORTS: { value: SortMode; label: string }[] = [
+  { value: 'playing', label: 'Playing' },
   { value: 'alpha', label: 'A-Z' },
 ];
 
@@ -49,23 +51,20 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
         </p>
       </div>
 
-      {/* Show count */}
-      <div className="w-12 sm:w-14 text-center flex-shrink-0">
-        <p className="text-lg font-bold text-white">{theater.showCount}</p>
+      {/* Capacity — desktop only */}
+      <div className="w-14 text-center flex-shrink-0 hidden sm:block">
+        <p className="text-sm font-medium text-gray-400">
+          {theater.capacity ? theater.capacity.toLocaleString() : '—'}
+        </p>
       </div>
 
-      {/* Score */}
-      <div className="w-10 flex-shrink-0">
-        {theater.currentShowScore != null ? (
-          <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(theater.currentShowScore)} flex items-center justify-center font-bold`}>
-            {Math.round(theater.currentShowScore)}
-          </div>
-        ) : (
-          <div className="w-10 h-10 text-sm rounded-lg bg-surface-overlay text-gray-600 border border-white/5 flex items-center justify-center font-bold">
-            —
-          </div>
-        )}
+      {/* Show count */}
+      <div className="w-10 sm:w-12 text-center flex-shrink-0">
+        <p className="text-sm font-bold text-white">{theater.showCount}</p>
       </div>
+
+      {/* Avg Score */}
+      <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
     </Link>
   );
 }
@@ -89,13 +88,14 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
     switch (sortMode) {
       case 'playing':
         return list.sort((a, b) => {
-          // Theaters with current shows first, then by show count
           const aPlaying = a.currentShowTitle ? 1 : 0;
           const bPlaying = b.currentShowTitle ? 1 : 0;
           if (bPlaying !== aPlaying) return bPlaying - aPlaying;
           return b.showCount - a.showCount;
         });
       case 'shows': return list.sort((a, b) => b.showCount - a.showCount);
+      case 'capacity': return list.sort((a, b) => (b.capacity ?? 0) - (a.capacity ?? 0));
+      case 'score': return list.sort((a, b) => (b.avgScore ?? 0) - (a.avgScore ?? 0));
       case 'alpha': return list.sort((a, b) => a.name.localeCompare(b.name));
     }
   }, [filtered, sortMode]);
@@ -134,34 +134,51 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         />
       </div>
 
-      {/* Sort Controls */}
-      <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap mb-5" role="group" aria-label="Sort theaters">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-        {SORT_OPTIONS.map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => setSortMode(opt.value)}
-            className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-              sortMode === opt.value
-                ? 'text-brand bg-brand/10 sm:bg-transparent'
-                : 'text-gray-300 hover:text-white'
-            }`}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Column Headers */}
+      {/* Combined sort pills + clickable column headers */}
       <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
+        {/* Pill sorts on the left */}
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0" />
-        <div className="w-12 sm:w-14 text-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Shows</span>
+        <div className="flex-1 min-w-0 flex items-center gap-0.5">
+          {PILL_SORTS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => setSortMode(opt.value)}
+              className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[28px] whitespace-nowrap ${
+                sortMode === opt.value
+                  ? 'bg-white/15 text-white'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
         </div>
-        <div className="w-10 text-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Score</span>
-        </div>
+
+        {/* Clickable column headers on the right */}
+        <button
+          onClick={() => setSortMode('capacity')}
+          className={`w-14 text-center flex-shrink-0 hidden sm:block cursor-pointer transition-colors ${
+            sortMode === 'capacity' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <span className="text-[10px] font-medium uppercase tracking-wider">Seats{sortMode === 'capacity' ? ' ↓' : ''}</span>
+        </button>
+        <button
+          onClick={() => setSortMode('shows')}
+          className={`w-10 sm:w-12 text-center flex-shrink-0 cursor-pointer transition-colors ${
+            sortMode === 'shows' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <span className="text-[10px] font-medium uppercase tracking-wider">Shows{sortMode === 'shows' ? ' ↓' : ''}</span>
+        </button>
+        <button
+          onClick={() => setSortMode('score')}
+          className={`w-10 text-center flex-shrink-0 cursor-pointer transition-colors ${
+            sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <span className="text-[10px] font-medium uppercase tracking-wider">Avg{sortMode === 'score' ? ' ↓' : ''}</span>
+        </button>
       </div>
 
       {/* Theater List */}
