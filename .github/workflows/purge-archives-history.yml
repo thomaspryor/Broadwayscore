@@ -4,7 +4,7 @@ name: "Purge archives + review-texts from git history"
 # Both were removed from HEAD (archives Feb 18, review-texts Feb 18, 2026).
 # review-texts moved to private repo thomaspryor/broadway-review-texts.
 #
-# Strategy: Runs during the quietest window (Saturday 1 AM EST). If other
+# Strategy: Runs every 3 hours until purge succeeds. Once clean, auto-exits in seconds. If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
 # If they don't finish, it skips and tries again next Saturday.
 #
@@ -13,7 +13,7 @@ name: "Purge archives + review-texts from git history"
 
 on:
   schedule:
-    - cron: '0 6 * * 6'  # Saturday 6 AM UTC (1 AM EST) — quietest window
+    - cron: '0 */3 * * *'  # Every 3 hours — finds quiet gap ASAP for urgent purge
   workflow_dispatch:
 
 concurrency:
@@ -134,7 +134,7 @@ jobs:
             echo "Archives and review-texts already removed from history." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
-            echo "Will retry next Saturday." >> "$GITHUB_STEP_SUMMARY"
+            echo "Will retry in 3 hours." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "## History purge complete" >> "$GITHUB_STEP_SUMMARY"
             echo "GitHub GC will reclaim space within ~24 hours." >> "$GITHUB_STEP_SUMMARY"
