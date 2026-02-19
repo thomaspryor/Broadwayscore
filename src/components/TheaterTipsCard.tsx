@@ -15,31 +15,33 @@ interface TheaterTipsCardProps {
 function SeatIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 19h16M5 7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V7zm2 0v8h10V7H7z" />
     </svg>
   );
 }
 
 function ParkingIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth={2} />
+      <text x="12" y="17" textAnchor="middle" fill="currentColor" fontSize="14" fontWeight="bold" fontFamily="system-ui">P</text>
     </svg>
   );
 }
 
-function ForkKnifeIcon() {
+function DiningIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v6c0 1.1.9 2 2 2h1v10h2V11h1c1.1 0 2-.9 2-2V3M8 3v4M5 3v4M19 3c0 0-2 1-2 5v3h2v10h2V11h2V8c0-4-2-5-2-5" />
     </svg>
   );
 }
 
-function SubwayIcon() {
+function DirectionsIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   );
 }
@@ -82,11 +84,13 @@ const TAB_ACTIVE_CLASSES: Record<TabKey, string> = {
   logistics: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
 };
 
+const ALL_TABS: TabKey[] = ['seating', 'parking', 'dining', 'logistics'];
+
 const TAB_CONFIG: Record<TabKey, { label: string; icon: React.ReactNode }> = {
   seating: { label: 'Seating', icon: <SeatIcon /> },
   parking: { label: 'Parking', icon: <ParkingIcon /> },
-  dining: { label: 'Dining', icon: <ForkKnifeIcon /> },
-  logistics: { label: 'Getting There', icon: <SubwayIcon /> },
+  dining: { label: 'Dining', icon: <DiningIcon /> },
+  logistics: { label: 'Getting There', icon: <DirectionsIcon /> },
 };
 
 // ============================================
@@ -227,18 +231,19 @@ function LogisticsTab({ logistics }: { logistics: NonNullable<TheaterStructuredT
 
 export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardProps) {
   // Determine which tabs have content
-  const availableTabs = (Object.keys(TAB_CONFIG) as TabKey[]).filter(key => {
+  const tabsWithData = new Set(ALL_TABS.filter(key => {
     if (key === 'seating') return !!tips.seating;
     if (key === 'parking') return !!tips.parking;
     if (key === 'dining') return !!tips.dining;
     if (key === 'logistics') return !!tips.logistics;
     return false;
-  });
+  }));
 
-  const [activeTab, setActiveTab] = useState<TabKey>(availableTabs[0] || 'seating');
+  const firstAvailable = ALL_TABS.find(k => tabsWithData.has(k)) || 'seating';
+  const [activeTab, setActiveTab] = useState<TabKey>(firstAvailable);
 
   // If no structured tips at all, show fallback
-  if (availableTabs.length === 0) {
+  if (tabsWithData.size === 0) {
     if (fallbackTips) {
       return (
         <div className="card p-4 mb-4 border border-white/5">
@@ -255,20 +260,25 @@ export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardP
 
       {/* Tab bar */}
       <div className="flex gap-1 mb-4 overflow-x-auto -mx-1 px-1" role="tablist" aria-label="Theater tips sections">
-        {availableTabs.map(key => {
+        {ALL_TABS.map(key => {
           const config = TAB_CONFIG[key];
           const isActive = activeTab === key;
+          const hasData = tabsWithData.has(key);
           return (
             <button
               key={key}
+              id={`tab-${key}`}
               role="tab"
               aria-selected={isActive}
               aria-controls={`tips-panel-${key}`}
-              onClick={() => setActiveTab(key)}
+              aria-disabled={!hasData || undefined}
+              onClick={() => hasData && setActiveTab(key)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border ${
-                isActive
-                  ? TAB_ACTIVE_CLASSES[key]
-                  : 'text-gray-500 hover:text-gray-300 border-transparent'
+                !hasData
+                  ? 'text-gray-600 border-transparent cursor-default opacity-50'
+                  : isActive
+                    ? TAB_ACTIVE_CLASSES[key]
+                    : 'text-gray-500 hover:text-gray-300 border-transparent'
               }`}
             >
               {config.icon}
