@@ -89,7 +89,7 @@ function buildAllProfiles() {
               venue: show.venue,
               openingDate: show.openingDate || null,
               closingDate: show.closingDate || null,
-              status: show.status,
+              status: (show.status === 'previews' && show.tags?.includes('upcoming')) ? 'upcoming' : show.status,
               type: show.type,
               thumbnail: show.images?.thumbnail || null,
               isRevival: !!(show.tags && show.tags.includes('revival')),

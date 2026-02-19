@@ -50,6 +50,11 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
           </span>
+          {show.castType === 'obc' && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30">
+              OBC
+            </span>
+          )}
           {show.type && (
             <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
               show.type === 'musical'
@@ -100,6 +105,11 @@ export default function ActorDetailClient({
 
   const openShows = useMemo(() =>
     profile.shows.filter(s => s.status === 'open' || s.status === 'previews'),
+    [profile.shows]
+  );
+
+  const upcomingShows = useMemo(() =>
+    profile.shows.filter(s => s.status === 'upcoming'),
     [profile.shows]
   );
 
@@ -195,6 +205,21 @@ export default function ActorDetailClient({
           <div className="space-y-2">
             {openShows.map((show, i) => (
               <ShowCard key={show.showId} show={show} loading={i < 4 ? 'eager' : 'lazy'} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Upcoming */}
+      {upcomingShows.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">
+            Upcoming
+            <span className="text-sm font-normal text-gray-400 ml-2">({upcomingShows.length})</span>
+          </h2>
+          <div className="space-y-2">
+            {upcomingShows.map((show, i) => (
+              <ShowCard key={show.showId} show={show} loading="lazy" />
             ))}
           </div>
         </section>
