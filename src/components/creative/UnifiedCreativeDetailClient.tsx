@@ -25,7 +25,7 @@ export default function UnifiedCreativeDetailClient({
   const [showCount, setShowCount] = useState(INITIAL_SHOWS);
 
   const openShows = useMemo(() =>
-    profile.shows.filter(s => s.status === 'open' || s.status === 'previews'),
+    profile.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming'),
     [profile.shows]
   );
 

@@ -121,7 +121,7 @@ export default function ActorDetailClient({
 
   // Shows currently running — include 'current' cast, or OBC of open shows (fallback when currentCast data hasn't been scraped)
   const openShows = useMemo(() =>
-    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews') && (s.castType === 'current' || s.castType === 'obc')),
+    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && (s.castType === 'current' || s.castType === 'obc')),
     [profile.shows]
   );
 
