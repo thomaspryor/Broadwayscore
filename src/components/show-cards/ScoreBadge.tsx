@@ -63,8 +63,8 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status }: ScoreBad
     lg: 'w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl',
   }[size];
 
-  // Show TBD for previews shows
-  if (status === 'previews') {
+  // Show TBD for previews/upcoming shows
+  if (status === 'previews' || status === 'upcoming') {
     return (
       <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
         TBD

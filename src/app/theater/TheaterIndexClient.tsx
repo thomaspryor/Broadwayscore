@@ -15,7 +15,7 @@ interface TheaterSummary {
   showCount: number;
   capacity: number | null;
   currentShowTitle?: string;
-  currentShowStatus?: 'open' | 'previews';
+  currentShowStatus?: 'open' | 'previews' | 'upcoming';
   avgScore: number | null;
 }
 
@@ -42,7 +42,10 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
             <>
               <span className="text-brand">{theater.currentShowTitle}</span>
               {theater.currentShowStatus === 'previews' && (
-                <span className="text-amber-400 text-[10px] font-medium ml-1.5">IN PREVIEWS</span>
+                <span className="text-purple-400 text-[10px] font-medium ml-1.5">IN PREVIEWS</span>
+              )}
+              {theater.currentShowStatus === 'upcoming' && (
+                <span className="text-blue-400 text-[10px] font-medium ml-1.5">UPCOMING</span>
               )}
             </>
           ) : (

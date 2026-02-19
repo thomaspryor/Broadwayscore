@@ -239,9 +239,11 @@ export default function HeaderSearch() {
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium
                                     ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                                      show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
                                       'bg-gray-500/20 text-gray-400'}`}>
                       {show.status === 'open' ? 'Now Playing' :
-                       show.status === 'previews' ? 'In Previews' : 'Closed'}
+                       show.status === 'previews' ? 'In Previews' :
+                       show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                     </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>
@@ -337,9 +339,11 @@ export default function HeaderSearch() {
                           <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
                                           ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                             show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                                            show.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
                                             'bg-gray-500/20 text-gray-400'}`}>
                             {show.status === 'open' ? 'Now Playing' :
-                             show.status === 'previews' ? 'In Previews' : 'Closed'}
+                             show.status === 'previews' ? 'In Previews' :
+                             show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                           </span>
                           {show.venue && <span className="truncate">{show.venue}</span>}
                         </div>

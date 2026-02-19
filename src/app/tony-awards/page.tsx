@@ -125,12 +125,12 @@ function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
     const matching = eligible.filter(cat.filter);
 
     const scored = matching
-      .filter(s => s.status !== 'previews' && (s.criticScore?.reviewCount || 0) >= 5)
+      .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
       .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0))
       .map(serializeShow);
 
     const upcoming = matching
-      .filter(s => s.status === 'previews' || (s.criticScore?.reviewCount || 0) < 5)
+      .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
       .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
       .map(serializeShow);
 

@@ -276,7 +276,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       <p className="text-gray-400 text-xs sm:text-sm truncate mt-1">
                         {show.venue} {show.runtime && `\u00B7 ${show.runtime}`}
                       </p>
-                      {show.status === 'previews' && show.openingDate && (
+                      {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
                         <p className="text-purple-400 text-xs mt-0.5">
                           Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </p>
