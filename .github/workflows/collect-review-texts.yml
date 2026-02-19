@@ -203,6 +203,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -519,6 +520,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then

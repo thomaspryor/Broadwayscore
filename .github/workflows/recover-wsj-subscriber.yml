@@ -50,9 +50,11 @@ jobs:
 
 
       - name: Checkout review-texts (private repo)
+        if: env.SKIP != 'true'
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         if: env.SKIP != 'true'
         uses: actions/setup-node@v4
@@ -84,7 +86,7 @@ jobs:
 
 
       - name: Push review-texts to private repo
-        if: always()
+        if: always() && env.SKIP != 'true'
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
