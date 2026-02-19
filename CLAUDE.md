@@ -48,7 +48,18 @@ URL structure is wildly inconsistent. NEVER extract years, production info, or i
 Any script processing >10 items in CI MUST save progress incrementally.
 - Use `if: always()` on archive/commit/push steps (timeouts silently lose ALL data without this)
 - Use 5-retry push with `--rebase -X theirs`
-- `rebuild-all-reviews.js` writes back to `data/review-texts/` — commit steps MUST `git add data/review-texts/` too
+- `rebuild-all-reviews.js` writes back to `data/review-texts/` — the `push-review-texts` composite action handles pushing those changes to the private repo
+
+### 7a. Private Review-Texts Repo (IMPORTANT — ALL SESSIONS READ THIS)
+**`data/review-texts/` is in a private repo** (`thomaspryor/broadway-review-texts`), NOT the public repo. This protects 24,000+ copyrighted full-text reviews from DMCA exposure.
+- **CI workflows** automatically check out and push review-texts via composite actions:
+  - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
+  - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
+- **Secret:** `REVIEW_TEXTS_TOKEN` (PAT with `repo` scope, no expiration)
+- **Public repo:** `data/review-texts/` is in `.gitignore`. `git add data/review-texts/` is a no-op.
+- **Scripts unchanged:** No script modifications needed. Workflow-level composite actions handle the private repo.
+- **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
+- **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
 
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
@@ -92,7 +103,7 @@ Broadway review aggregator. Next.js 14, TypeScript, Tailwind CSS, static export.
 data/
   shows.json                 # Source of truth (status: "open"|"previews"|"closed")
   reviews.json               # Derived from review-texts/ via rebuild
-  review-texts/{show-id}/    # Individual files (versioned IDs, e.g., bug-2026/)
+  review-texts/{show-id}/    # PRIVATE REPO (thomaspryor/broadway-review-texts) — see §7a
   grosses.json / grosses-history.json / commercial.json / audience-buzz.json
   critic-consensus.json / critic-registry.json / aggregator-archive/
 ```
@@ -117,7 +128,7 @@ Quality flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` — excluded f
 
 ## Automation
 
-**Source of truth:** `data/review-texts/` → **Derived:** `data/reviews.json`
+**Source of truth:** `data/review-texts/` (private repo — see §7a) → **Derived:** `data/reviews.json`
 See `.github/workflows/CLAUDE.md` for workflow descriptions and schedules.
 **Always run `node scripts/validate-data.js` before pushing.**
 **Secrets MUST be passed via `env:` blocks** (NOT auto-available). **Local keys:** `.env` at project root.

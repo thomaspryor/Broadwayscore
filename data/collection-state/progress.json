@@ -231,7 +231,12 @@
     "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
     "cats-1982/nytimes--frank-rich.json",
     "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json"
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "collected-stories-2010/nytimes--charles-isherwood.json",
+    "come-fly-away-2010/nytimes--ben-brantley.json",
+    "crybaby-2008/nytimes--ben-brantley.json",
+    "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json",
+    "side-show-2014/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -267,7 +272,10 @@
       "data/review-texts/cabaret-2014/nytimes--ben-brantley.json",
       "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
       "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
-      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json"
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
@@ -290,7 +298,7 @@
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+  "lastProcessed": "side-show-2014/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -390,6 +398,45 @@
       "t": "2026-02-19T00:55:32.872Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:57:09.842Z",
+      "event": "bb-session",
+      "session": "25bdec71",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-19T00:57:11.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:58:23.000Z",
+      "event": "bb-session",
+      "session": "ae739e20",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-19T00:58:25.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T00:59:52.477Z",
+      "event": "bb-session",
+      "session": "3f8cd900",
+      "url": "https://www.nytimes.com/2008/04/25/theater/reviews/25baby.html"
+    },
+    {
+      "t": "2026-02-19T00:59:54.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T01:00:45.215Z",
+      "event": "bb-session",
+      "session": "8232b67f",
+      "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
     }
   ]
 }
