@@ -10,6 +10,7 @@ runs:
         LARGE=$(find data/ -type f -size +5M \
           ! -path 'data/archives/*' \
           ! -path 'data/aggregator-archive/*' \
+          ! -path 'data/review-texts/.git/*' \
           ! -name 'master-review-list.json' \
           ! -name 'llm-scoring-runs.json' \
           ! -name 'llm-scoring-garbage-skips.json' \
