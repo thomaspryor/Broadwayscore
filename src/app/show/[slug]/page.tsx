@@ -522,7 +522,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5">
                     {isHistoricalBanner
-                      ? 'Reviews for this production are being compiled from archived sources.'
+                      ? 'Broadway Scorecard\'s critic review coverage begins in 2005. Cast, creative team, and production details are available for this historical production.'
                       : 'This show page is currently being built and will be complete in a couple of days. Reviews and scores are on the way.'}
                   </p>
                 </div>

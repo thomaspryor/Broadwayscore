@@ -13,15 +13,25 @@ on:
         required: false
         default: false
         type: boolean
+      skip_runtimes:
+        description: 'Skip Broadway.com runtime lookups (much faster)'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
   issues: write
 
+# Allow parallel runs — each uses retry-push with rebase
+concurrency:
+  group: discover-historical-${{ github.event.inputs.seasons }}
+  cancel-in-progress: false
+
 jobs:
   discover-historical:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     outputs:
       historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
       historical_shows: ${{ steps.discover.outputs.historical_shows }}
@@ -41,6 +51,7 @@ jobs:
         run: npm ci || npm install
 
       - name: Install Playwright browsers
+        if: ${{ inputs.skip_runtimes != 'true' }}
         run: npx playwright install chromium
 
       - name: Discover historical shows
@@ -49,11 +60,14 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
+          ARGS="--seasons=${{ inputs.seasons }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }} --dry-run
-          else
-            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }}
+            ARGS="$ARGS --dry-run"
           fi
+          if [ "${{ inputs.skip_runtimes }}" = "true" ]; then
+            ARGS="$ARGS --skip-runtimes"
+          fi
+          node scripts/discover-historical-shows.js $ARGS
 
       - name: Validate data
         id: validate
@@ -74,6 +88,10 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
+          # Reset any dirty tracked files from validate step (prevents rebase conflicts)
+          git checkout -- data/audit/ 2>/dev/null || true
+
           git add data/shows.json
           if [ -f data/historical-shows-pending.json ]; then
             git add data/historical-shows-pending.json
@@ -86,15 +104,25 @@ jobs:
             git commit -m "chore: Historical show discovery (no new shows)"
           fi
 
-          # Retry push with rebase in case remote has new commits
+          # Retry push with rebase
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
               break
             fi
-            echo "Push failed (attempt $i), pulling and rebasing..."
-            git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
+            echo "Push failed (attempt $i), rebasing..."
+            git pull --rebase -X theirs origin main || {
+              echo "Rebase conflict — aborting and using merge..."
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X theirs origin main || true
+            }
+            # Re-stage our files in case rebase dropped them
+            git add data/shows.json
+            if [ -f data/historical-shows-pending.json ]; then
+              git add data/historical-shows-pending.json
+            fi
+            git diff --cached --quiet || git commit -m "chore: Add historical shows from ${{ inputs.seasons }} (retry $i)"
+            sleep $((RANDOM % 10 + 5))
           done
 
   # Create issue for historical shows

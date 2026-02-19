@@ -5,7 +5,8 @@ import Link from 'next/link';
 import type { ActorProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
-import { FormatPill, ProductionPill } from '@/components/show-cards';
+import { FormatPill, ProductionPill, StatGrid } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortCol = 'date' | 'score';
 type SortDir = 'asc' | 'desc';
@@ -57,9 +58,14 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
           </span>
-          {show.castType === 'obc' && (
+          {show.castType === 'obc' && !show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30" title="Original Broadway Cast">
               OBC
+            </span>
+          )}
+          {show.castType === 'obc' && show.isRevival && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Revival Opening Cast">
+              Revival
             </span>
           )}
           {show.castType === 'replacement' && (
@@ -148,14 +154,11 @@ export default function ActorDetailClient({
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5 flex-wrap">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5"><Link href="/cast" className="hover:text-brand transition-colors">Cast</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{profile.name}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Cast', href: '/cast' },
+        { label: profile.name },
+      ]} />
 
       {/* Header */}
       <div className="mb-8">
@@ -181,40 +184,12 @@ export default function ActorDetailClient({
 
         {/* Stats — only show for actors with 2+ shows */}
         {showStats && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Shows</p>
-              <p className="text-2xl font-bold text-white">{profile.showCount}</p>
-            </div>
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Avg Score</p>
-              <p className="text-2xl font-bold" style={profile.avgScore !== null ? { color: getScoreTextColor(profile.avgScore) } : undefined}>
-                {profile.avgScore !== null ? Math.round(profile.avgScore) : '—'}
-              </p>
-            </div>
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-              {profile.highScore ? (
-                <>
-                  <p className="text-2xl font-bold text-white">{profile.highScore.score}</p>
-                  <p className="text-[10px] text-gray-500 truncate mt-1">{profile.highScore.showTitle}</p>
-                </>
-              ) : (
-                <p className="text-2xl font-bold text-gray-500">—</p>
-              )}
-            </div>
-            <div className="card p-4 text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-              {profile.lowScore ? (
-                <>
-                  <p className="text-2xl font-bold text-white">{profile.lowScore.score}</p>
-                  <p className="text-[10px] text-gray-500 truncate mt-1">{profile.lowScore.showTitle}</p>
-                </>
-              ) : (
-                <p className="text-2xl font-bold text-gray-500">—</p>
-              )}
-            </div>
-          </div>
+          <StatGrid className="mb-4" stats={[
+            { label: 'Shows', value: profile.showCount },
+            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null },
+            { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
+            { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
+          ]} />
         )}
 
         {/* Rank + IBDB link */}
@@ -267,10 +242,11 @@ export default function ActorDetailClient({
       {/* Broadway Credits */}
       {closedShows.length > 0 && (
         <section>
-          <h2 className="text-lg font-bold text-white mb-3">
+          <h2 className="text-lg font-bold text-white mb-1">
             Broadway Credits
             <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
           </h2>
+          <p className="text-xs text-gray-500 mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
 
           {/* Column headers — clickable sort */}
           {closedShows.length > 1 && (
