@@ -72,7 +72,9 @@
     "grey-house-2023/hollywood-reporter--david-rooney.json",
     "hughie-2016/act-three-the-reviews--doug-marino.json",
     "irenas-vow-2009/variety--charles-isherwood.json",
-    "job-2024/nytimes--jesse-green.json"
+    "job-2024/nytimes--jesse-green.json",
+    "looped-2010/hollywood-reporter--frank-scheck.json",
+    "losing-louie-2006/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -436,7 +438,15 @@
     "la-cage-aux-folles-2010/variety--david-rooney.json",
     "leap-of-faith-2012/variety--marilyn-stasio.json",
     "leap-of-faith-2012/variety--steven-suskin.json",
-    "lend-me-a-tenor-2010/nytheatrecom--michael-criscuolo.json"
+    "lend-me-a-tenor-2010/nytheatrecom--michael-criscuolo.json",
+    "lombardi-2010/nytheatre--david-fuller.json",
+    "lombardi-2010/nytheatrecom--david-fuller.json",
+    "looped-2010/nytimes--charles-isherwood.json",
+    "looped-2010/variety--david-rooney.json",
+    "love-letters-2014/hollywood-reporter--david-rooney.json",
+    "lysistrata-jones-2011/variety--marilyn-stasio.json",
+    "macbeth-2008/variety--charles-isherwood.json",
+    "macbeth-2022/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -505,7 +515,8 @@
       "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
       "data/review-texts/chicago-1996/oocities--richard-zoglin.json",
       "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-      "data/review-texts/its-only-a-play-2014/nytimes--ben-brantley.json"
+      "data/review-texts/its-only-a-play-2014/nytimes--ben-brantley.json",
+      "data/review-texts/looped-2010/nytimes--charles-isherwood.json"
     ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
@@ -565,11 +576,13 @@
       "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
       "grey-house-2023/hollywood-reporter--david-rooney.json",
       "irenas-vow-2009/variety--charles-isherwood.json",
-      "job-2024/nytimes--jesse-green.json"
+      "job-2024/nytimes--jesse-green.json",
+      "looped-2010/hollywood-reporter--frank-scheck.json",
+      "losing-louie-2006/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "lend-me-a-tenor-2010/nytheatrecom--michael-criscuolo.json",
+  "lastProcessed": "macbeth-2022/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -739,6 +752,17 @@
     },
     {
       "t": "2026-02-19T02:14:43.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:16:30.950Z",
+      "event": "bb-session",
+      "session": "ce00e4f5",
+      "url": "https://theater.nytimes.com/2010/10/22/theater/reviews/22lomb.html?src=twt&twt=n"
+    },
+    {
+      "t": "2026-02-19T02:16:33.388Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
