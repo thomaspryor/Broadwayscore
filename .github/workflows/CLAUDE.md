@@ -395,6 +395,13 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Performance:** ~20 sec/show (vs ~5 min/show previously). 100 gap shows in ~7 min with 5 parallel jobs.
 - **Parallel-safe:** Matrix strategy with round-robin distribution, 30s stagger, 5-retry push with rebase, fail-fast: false, pre-commit JSON validation, atomic file writes
 
+## `fix-todaytix-links.yml`
+- **Runs:** Weekly on Mondays at 10 AM EST (3 PM UTC), or manually
+- **Does:** Checks all TodayTix URLs in shows.json via HEAD requests. Detects 404s and wrong-show redirects (ID recycling) by comparing page `<title>`. Auto-fixes broken links using TodayTix public API (`api.todaytix.com/api/v2/shows?query=NAME&location=1`). Removes stale links for closed shows. Commits fixes directly.
+- **Script:** `scripts/fix-todaytix-links.js`
+- **No secrets needed** (public TodayTix API + HEAD requests)
+- **CLI:** `node scripts/fix-todaytix-links.js [--dry-run]`
+
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
 - **Tests:** Data validation (duplicates, required fields, dates, status), **text quality audit** (35% full, <40% truncated, <5% unknown), E2E tests (homepage, show pages, navigation, filters, mobile)
