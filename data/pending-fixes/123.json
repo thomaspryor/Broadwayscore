@@ -1,6 +1,6 @@
 {
   "issueNumber": 123,
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-02-19T21:28:47.826Z",
   "diagnosis": {
     "summary": "All Out: Comedy About Ambition is missing an age recommendation",
@@ -39,5 +39,13 @@
     "skipped": false,
     "issues": [],
     "confidence": "high"
-  }
+  },
+  "executedAt": "2026-02-19T21:52:56.602Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ageRecommendation updated for all-out-2025"
+    }
+  ]
 }
