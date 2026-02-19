@@ -75,7 +75,8 @@
     "job-2024/nytimes--jesse-green.json",
     "looped-2010/hollywood-reporter--frank-scheck.json",
     "losing-louie-2006/nytimes--charles-isherwood.json",
-    "man-and-boy-2011/vulture--scott-brown.json"
+    "man-and-boy-2011/vulture--scott-brown.json",
+    "network-2018/vulture--jesse-green.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -456,7 +457,16 @@
     "memphis-2009/variety--charles-isherwood.json",
     "meteor-shower-2017/hollywood-reporter--david-rooney.json",
     "million-dollar-quartet-2010/nytheatrecom--martin-denton.json",
-    "misery-2015/hollywood-reporter--david-rooney.json"
+    "misery-2015/hollywood-reporter--david-rooney.json",
+    "mr-saturday-night-2022/variety--maya-phillips.json",
+    "mrs-warrens-profession-2010/variety--marilyn-stasio.json",
+    "my-fair-lady-2018/variety--marilyn-stasio.json",
+    "next-fall-2010/nytheatre--stan-richardson.json",
+    "next-fall-2010/nytheatrecom--stan-richardson.json",
+    "next-to-normal-2009/nytheatre--jo-ann-rosen.json",
+    "next-to-normal-2009/nytheatrecom--jo-ann-rosen.json",
+    "nice-work-if-you-can-get-it-2012/variety--marilyn-stasio.json",
+    "nice-work-if-you-can-get-it-2012/variety--steven-suskin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -526,7 +536,8 @@
       "data/review-texts/chicago-1996/oocities--richard-zoglin.json",
       "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/its-only-a-play-2014/nytimes--ben-brantley.json",
-      "data/review-texts/looped-2010/nytimes--charles-isherwood.json"
+      "data/review-texts/looped-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/network-2018/vulture--jesse-green.json"
     ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
@@ -593,7 +604,7 @@
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "misery-2015/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "nice-work-if-you-can-get-it-2012/variety--steven-suskin.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -776,6 +787,17 @@
       "t": "2026-02-19T02:16:33.388Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-19T02:17:38.171Z",
+      "event": "bb-session",
+      "session": "a318c5ae",
+      "url": "https://www.vulture.com/2018/12/theater-review-network-on-broadway.html"
+    },
+    {
+      "t": "2026-02-19T02:17:40.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
