@@ -113,8 +113,17 @@ await page.screenshot({ path: '/tmp/before-pagename-375.png' });
 
 ### 9. Roadmap Discipline
 Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
-When finishing: update the issue body + post a comment summarizing what was done.
-**Rabbit hole prevention:** New discoveries → Backlog comment. Don't context-switch.
+
+**When finishing a session**, you MUST:
+1. **Update the roadmap issue body** — move completed items to "Recently Done" with a one-line summary and date. Move newly started items to "In Progress."
+2. **Post a comment** summarizing what was done in this session.
+
+**When you discover work that should be done but WON'T do now**, you MUST:
+1. **Add it to the roadmap** — put it in the appropriate Backlog section (UI/Design, New Features, Infrastructure, etc.) with a one-line description.
+2. **Post a comment** explaining why it matters and why you're not doing it now.
+3. This prevents good ideas from being lost when sessions compact, get distracted, or fail. If it's not on the roadmap, it doesn't exist.
+
+**Rabbit hole prevention:** New discoveries → Backlog entry + comment. Don't context-switch.
 
 ### 10. Planning & Testing for Infrastructure Changes (MANDATORY)
 For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data pipelines**, or **cross-repo operations**:
