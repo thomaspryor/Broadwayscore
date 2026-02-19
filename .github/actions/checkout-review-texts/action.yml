@@ -1,0 +1,21 @@
+name: Checkout review-texts
+description: Checks out the private review-texts repo into data/review-texts/
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  fetch-depth:
+    description: Number of commits to fetch (0 for full history)
+    required: false
+    default: '1'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: thomaspryor/broadway-review-texts
+        token: ${{ inputs.token }}
+        path: data/review-texts
+        fetch-depth: ${{ inputs.fetch-depth }}

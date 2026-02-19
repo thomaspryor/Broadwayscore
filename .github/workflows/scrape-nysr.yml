@@ -21,6 +21,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout review-texts from private repo
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,6 +39,13 @@ jobs:
         run: |
           echo "Scraping NYSR reviews via WordPress API..."
           node scripts/scrape-nysr-reviews.js
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: NYSR review scrape'
 
       - name: Commit and push changes
         if: always()
