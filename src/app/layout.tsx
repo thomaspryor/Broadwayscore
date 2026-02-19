@@ -75,6 +75,7 @@ const getSearchShows = () => {
     venue: show.venue,
     creativeTeamNames: show.creativeTeam?.map(m => m.name).join(', ') || undefined,
     images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
+    hasScore: !!(show.criticScore?.score),
   }));
 };
 
