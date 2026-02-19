@@ -2,23 +2,7 @@ import Link from 'next/link';
 import type { ComputedShow } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
-
-function ScoreOverlay({ score }: { score: number | null | undefined }) {
-  return (
-    <div className="absolute bottom-1.5 right-1.5">
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-        score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-        score >= 85 ? 'score-must-see' :
-        score >= 75 ? 'score-great' :
-        score >= 65 ? 'score-good' :
-        score >= 55 ? 'score-tepid' :
-        'score-skip'
-      }`}>
-        {score !== undefined && score !== null ? Math.round(score) : '—'}
-      </div>
-    </div>
-  );
-}
+import { ScoreBadge } from '@/components/show-cards';
 
 export default function RelatedShows({ shows, title = 'You Might Also Like' }: { shows: ComputedShow[]; title?: string }) {
   if (shows.length === 0) return null;
@@ -49,7 +33,9 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                   </div>
                 }
               />
-              <ScoreOverlay score={show.criticScore?.score} />
+              <div className="absolute bottom-1.5 right-1.5">
+                <ScoreBadge score={show.criticScore?.score} size="sm" />
+              </div>
             </div>
             <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
               {show.title}
