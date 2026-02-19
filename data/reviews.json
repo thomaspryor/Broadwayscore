@@ -74346,7 +74346,7 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Scott Brown",
@@ -74356,7 +74356,7 @@
       "pullQuote": "The songs (by Alan Zachary and ­Michael Weiner, of the upcoming Secondhand Lions) are pleasant, often energetic Broadpop bonbons with better-than-­average lyrics, but apart from Gay Bestie's oft-repeated 'Bailout Song' (performed with flair by Kristoffer Cusick), they won't haunt your dreams or even your cab ride home.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "fish-in-the-dark-2015",
@@ -203212,7 +203212,7 @@
       "pullQuote": "It’s all admirably imaginative.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "spongebob-squarepants-2017",
@@ -271821,6 +271821,23 @@
     },
     {
       "showId": "waiting-for-godot-2009",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 63,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Joe Dziemianowicz",
+      "url": "https://www.newyorktheatreguide.com/reviews/no-mans-land-waiting-for-godot",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "While the stars bring marquee magnetism, the production design lends mystery.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "waiting-for-godot-2009",
       "outletId": "newsday",
       "outlet": "Newsday",
       "assignedScore": 55,
@@ -272090,6 +272107,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "waiting-for-godot-2013",
+      "outletId": "nyt-theater",
+      "outlet": "New York Theater",
+      "assignedScore": 45,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Jonathan Mandell",
+      "url": "https://newyorktheater.me/2013/11/24/waiting-for-godot-review-sirs-patrick-stewart-and-ian-mckellen-on-broadway/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "What I am most uncertain about in this particular production is the existence of Lloyd's guiding intelligence.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
     },
     {
       "showId": "waiting-for-godot-2013",
