@@ -1,8 +1,17 @@
-name: "Purge archives + review-texts from git history"
+name: "Purge copyrighted/sensitive paths from git history"
 
-# Deep clean: removes data/archives/ and data/review-texts/ from ALL commits.
-# Both were removed from HEAD (archives Feb 18, review-texts Feb 18, 2026).
-# review-texts moved to private repo thomaspryor/broadway-review-texts.
+# Deep clean: removes copyrighted review data and sensitive files from ALL commits.
+# Paths purged:
+#   - data/archives/              (archived HTML pages)
+#   - data/review-texts/          (copyrighted review full texts — moved to private repo)
+#   - data/master-review-list.json
+#   - data/review-texts-quarantine/
+#   - data/calibration/calibration-examples.json
+#   - data/aggregator-archive/    (archived aggregator HTML)
+#   - data/collected-reviews/
+#   - data/mezzanine-screenshots/
+#   - data/bug-reviews.json
+#   - .mcp.json                   (sensitive config)
 #
 # Strategy: Runs every 3 hours until purge succeeds. Once clean, auto-exits in seconds. If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
@@ -34,16 +43,13 @@ jobs:
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
           ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
-          ARCHIVE_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/archives/' || echo "0")
-          REVIEW_COMMITS=$(echo "$ALL_FILES" | grep -c '^data/review-texts/' || echo "0")
-          echo "archive_commits=$ARCHIVE_COMMITS" >> "$GITHUB_OUTPUT"
-          echo "review_commits=$REVIEW_COMMITS" >> "$GITHUB_OUTPUT"
-          TOTAL=$((ARCHIVE_COMMITS + REVIEW_COMMITS))
-          if [ "$TOTAL" = "0" ]; then
-            echo "Nothing to purge — archives and review-texts already clean!"
+          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/aggregator-archive/|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || echo "0")
+          echo "purge_count=$COUNT" >> "$GITHUB_OUTPUT"
+          if [ "$COUNT" = "0" ]; then
+            echo "Nothing to purge — all target paths already clean!"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Found $ARCHIVE_COMMITS archive refs + $REVIEW_COMMITS review-texts refs in history"
+            echo "Found $COUNT refs to purge-target paths in history"
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
           rm -rf /tmp/check-repo
@@ -82,7 +88,7 @@ jobs:
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
 
-      - name: Remove data/archives/ and data/review-texts/ from all history
+      - name: Remove copyrighted/sensitive paths from all history
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: |
           echo "Commits before: $(git log --oneline | wc -l)"
@@ -91,6 +97,14 @@ jobs:
           python3 -m git_filter_repo \
             --path data/archives/ \
             --path data/review-texts/ \
+            --path data/master-review-list.json \
+            --path data/review-texts-quarantine/ \
+            --path data/calibration/calibration-examples.json \
+            --path data/aggregator-archive/ \
+            --path data/collected-reviews/ \
+            --path data/mezzanine-screenshots/ \
+            --path data/bug-reviews.json \
+            --path .mcp.json \
             --invert-paths --force
 
           echo "Commits after: $(git log --oneline | wc -l)"
@@ -131,7 +145,7 @@ jobs:
         run: |
           if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
             echo "## Purge not needed" >> "$GITHUB_STEP_SUMMARY"
-            echo "Archives and review-texts already removed from history." >> "$GITHUB_STEP_SUMMARY"
+            echo "All target paths already removed from history." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.wait.outputs.ready }}" = "false" ]; then
             echo "## Skipped — other workflows active" >> "$GITHUB_STEP_SUMMARY"
             echo "Will retry in 3 hours." >> "$GITHUB_STEP_SUMMARY"
