@@ -210,6 +210,13 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
  * Returns true if both have year info and opening years differ by >2 years.
  */
 function isMultiProduction(newShow, existing) {
+  // If both have different IBDB URLs, they are definitively separate productions
+  const newIbdb = newShow.ibdbUrl || '';
+  const existingIbdb = existing.ibdbUrl || '';
+  if (newIbdb && existingIbdb && newIbdb !== existingIbdb) {
+    return true;
+  }
+
   // Try year from ID suffix first, then from openingDate
   const getYear = (show) => {
     const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
