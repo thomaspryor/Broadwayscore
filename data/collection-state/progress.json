@@ -1,62 +1,138 @@
 {
-  "processed": [
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json",
-    "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-    "mcneal-2024/broadwaynews--brittani-samuel.json",
-    "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json"
-  ],
+  "processed": [],
   "failed": [
-    "chicago-1996/oocities--richard-zoglin.json",
-    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
-    "amelie-a-new-musical-2017/nytg--david-gordon.json",
-    "ghost-the-musical-2012/guardian--charles-isherwood.json",
-    "good-night-oscar-2023/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json"
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "mj-2022/newyorker--naomi-fry.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "hadestown-2019/medium--christian-lewis.json",
-      "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-      "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "latin-history-for-morons-2017/thewrap--robert-hoffler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/leopoldstadt-2022/new-york-sun--unknown.json",
-      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
-      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
+      "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
+      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
+      "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "data/review-texts/mj-2022/newyorker--naomi-fry.json",
+      "data/review-texts/six-2021/newyorker--naomi-fry.json",
+      "data/review-texts/the-lion-king-1997/newyorker--john-lahr.json",
+      "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
+      "data/review-texts/wicked-2003/newyorker--john-lahr.json"
     ],
-    "archive": [
-      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-      "cabaret-2024/broadwaynews--brittani-samuel.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "mcneal-2024/broadwaynews--brittani-samuel.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-19T01:27:54.427Z",
-  "lastProcessed": "swept-away-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T02:09:04.572Z",
+  "lastProcessed": "wicked-2003/newyorker--john-lahr.json",
+  "log": [
+    {
+      "t": "2026-02-19T02:10:37.760Z",
+      "event": "bb-session",
+      "session": "8e83dea1",
+      "url": "https://www.newyorker.com/magazine/2011/04/04/african-american"
+    },
+    {
+      "t": "2026-02-19T02:10:40.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:12:47.750Z",
+      "event": "bb-session",
+      "session": "484862b3",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to"
+    },
+    {
+      "t": "2026-02-19T02:12:50.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:15:06.036Z",
+      "event": "bb-session",
+      "session": "6f5ce8b2",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/hells-kitchen-theatre-review"
+    },
+    {
+      "t": "2026-02-19T02:15:09.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:17:01.875Z",
+      "event": "bb-session",
+      "session": "73207f2a",
+      "url": "https://www.newyorker.com/magazine/2024/12/02/maybe-happy-ending-theatre-review"
+    },
+    {
+      "t": "2026-02-19T02:17:04.491Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:18:55.356Z",
+      "event": "bb-session",
+      "session": "0fb619c9",
+      "url": "https://www.newyorker.com/magazine/2022/02/21/mj-sanitizes-michael-jackson"
+    },
+    {
+      "t": "2026-02-19T02:18:57.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:21:00.069Z",
+      "event": "bb-session",
+      "session": "9cf80f21",
+      "url": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadwa"
+    },
+    {
+      "t": "2026-02-19T02:21:02.549Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:23:11.790Z",
+      "event": "bb-session",
+      "session": "16815dc6",
+      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+    },
+    {
+      "t": "2026-02-19T02:23:14.165Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:25:03.253Z",
+      "event": "bb-session",
+      "session": "6d4a135e",
+      "url": "https://www.newyorker.com/magazine/2024/05/13/the-outsiders-theatre-review"
+    },
+    {
+      "t": "2026-02-19T02:25:05.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-19T02:27:05.180Z",
+      "event": "bb-session",
+      "session": "95e4379f",
+      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
+    },
+    {
+      "t": "2026-02-19T02:27:07.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
