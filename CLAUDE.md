@@ -64,8 +64,26 @@ Any script processing >10 items in CI MUST save progress incrementally.
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
 - `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `getScoreTier()`, `ShowImage`, `getOptimizedImageUrl()`
-- Import: `import { ScoreBadge, StatusBadge, ... } from '@/components/show-cards';`
+- `ToggleBar<T>` — generic labeled toggle row for sort/filter controls. Props: `label`, `options`, `value`, `onChange`, `size?: 'default' | 'compact'`, `className?`. Use `compact` for dense pages (critics, outlets, creatives). Use `default` (has 36px mobile tap targets) for main pages.
+- `ScoreToggle` — Critics/Audience segmented control. Props: `value`, `onChange`, `audienceFirst?`, `size?: 'default' | 'large'`, `className?`. Side effects (like forcing sort on audience switch) go in the parent's `onChange` handler, not the component.
+- Import: `import { ScoreBadge, StatusBadge, ToggleBar, ScoreToggle, ... } from '@/components/show-cards';`
 - New pages MUST use these. Add new components to `show-cards/` barrel — never inline.
+
+### 8a. Visual QA for UI Changes (MANDATORY)
+**When changing UI across 2+ files, you MUST do before/after screenshot comparison BEFORE committing.**
+1. **Before making changes**: Screenshot production (`broadwayscorecard.com`) at mobile (375px) and desktop (1280px) for every affected page
+2. **After making changes**: Build locally (`npx next build`), serve (`npx serve out -l 3099`), screenshot same pages at same sizes
+3. **Compare**: View before/after pairs side-by-side. Only commit if layout is identical (data count differences from pipeline runs are OK)
+4. **Playwright script pattern**:
+```js
+const { chromium } = require('playwright');
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 375, height: 900 } });
+const page = await ctx.newPage();
+await page.goto(url, { waitUntil: 'networkidle' });
+await page.screenshot({ path: '/tmp/before-pagename-375.png' });
+```
+**This rule exists because** a session proposed this exact testing plan, then skipped it and pushed without comparing. The refactor happened to be pixel-perfect, but we got lucky.
 
 ### 9. Roadmap Discipline
 Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
