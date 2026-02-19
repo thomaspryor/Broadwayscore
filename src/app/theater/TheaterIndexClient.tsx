@@ -70,12 +70,14 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
       </div>
 
       {/* Past show count */}
-      <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
+      <div className="w-10 sm:w-16 flex items-center justify-center flex-shrink-0">
         <p className="text-sm font-bold text-white">{theater.showCount}</p>
       </div>
 
       {/* Avg Critic Score */}
-      <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
+      <div className="w-10 sm:w-14 flex items-center justify-center flex-shrink-0">
+        <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
+      </div>
     </Link>
   );
 }
@@ -151,8 +153,8 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         />
       </div>
 
-      {/* Status & Sort — matching homepage pattern */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
+      {/* Status filter */}
+      <div className="mb-4 sm:mb-6 text-sm">
         <ToggleBar
           label="STATUS:"
           options={[
@@ -164,32 +166,46 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
           onChange={setStatusFilter}
           ariaLabel="Filter by theater status"
         />
-        <ToggleBar
-          label="SORT:"
-          options={[
-            { value: 'shows' as SortMode, label: 'MOST SHOWS' },
-            { value: 'capacity' as SortMode, label: 'CAPACITY' },
-            { value: 'score' as SortMode, label: 'SCORE' },
-            { value: 'alpha' as SortMode, label: 'A-Z' },
-          ]}
-          value={sortMode}
-          onChange={setSortMode}
-          ariaLabel="Sort theaters"
-        />
       </div>
 
-      {/* Column headers */}
-      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
+      {/* Column headers — also serve as sort controls */}
+      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="group" aria-label="Sort theaters">
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0" />
+        <div className="flex-1 min-w-0">
+          <button
+            onClick={() => setSortMode('alpha')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${sortMode === 'alpha' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
+            aria-pressed={sortMode === 'alpha'}
+          >
+            Theater{sortMode === 'alpha' ? ' ▾' : ''}
+          </button>
+        </div>
         <div className="w-14 hidden sm:flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Seats</span>
+          <button
+            onClick={() => setSortMode('capacity')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${sortMode === 'capacity' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
+            aria-pressed={sortMode === 'capacity'}
+          >
+            Seats{sortMode === 'capacity' ? ' ▾' : ''}
+          </button>
         </div>
-        <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Past</span>
+        <div className="w-10 sm:w-16 flex items-center justify-center flex-shrink-0">
+          <button
+            onClick={() => setSortMode('shows')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors text-center leading-tight ${sortMode === 'shows' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
+            aria-pressed={sortMode === 'shows'}
+          >
+            <span className="hidden sm:inline">Past </span>Shows{sortMode === 'shows' ? ' ▾' : ''}
+          </button>
         </div>
-        <div className="w-10 flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Score</span>
+        <div className="w-10 sm:w-14 flex items-center justify-center flex-shrink-0">
+          <button
+            onClick={() => setSortMode('score')}
+            className={`text-[10px] font-medium uppercase tracking-wider transition-colors text-center leading-tight ${sortMode === 'score' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
+            aria-pressed={sortMode === 'score'}
+          >
+            <span className="hidden sm:inline">Avg </span>Score{sortMode === 'score' ? ' ▾' : ''}
+          </button>
         </div>
       </div>
 
