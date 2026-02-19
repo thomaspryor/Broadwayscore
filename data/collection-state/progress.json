@@ -26,7 +26,14 @@
     "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
     "chicago-1996/ew--melissa-rose-bernardo.json",
     "chicago-1996/theatermania--andy-propst.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "the-lion-king-1997/new-york--john-simon.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -256,7 +263,10 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/bloomberg-news--jeremy-gerard.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
-    "just-in-time-2025/broadwaynews--brittani-samuel.json"
+    "just-in-time-2025/broadwaynews--brittani-samuel.json",
+    "moulin-rouge-2019/theater-news-online-jeremy-gerard--jeremy-gerard.json",
+    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+    "the-outsiders-2024/deadline--pete-hammond.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -273,13 +283,36 @@
       "natasha-pierre-and-the-great-comet-of-1812-2016/theatre-reviews-limited--david-roberts.json",
       "bug-2026/theatre-reviews-limited--david-roberts.json",
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "chicago-1996/ew--melissa-rose-bernardo.json"
+      "chicago-1996/ew--melissa-rose-bernardo.json",
+      "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "peter-and-the-starcatcher-2012/bloomberg-news--jeremy-gerard.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
+      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
+      "data/review-texts/wicked-2003/newyorker--john-lahr.json",
+      "data/review-texts/1984-2017/newyorker--hilton-als.json",
+      "data/review-texts/33-variations-2009/nytimes--ben-brantley.json",
+      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+      "data/review-texts/a-little-night-music-2009/nytimes--ben-brantley.json",
+      "data/review-texts/butley-2006/nytimes--ben-brantley.json",
+      "data/review-texts/cabaret-2014/nytimes--ben-brantley.json",
+      "data/review-texts/cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+      "data/review-texts/children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
+      "data/review-texts/crybaby-2008/nytimes--ben-brantley.json"
+    ],
     "archive": [
       "harry-potter-2021/wsj--terry-teachout.json",
       "operation-mincemeat-2025/wsj--charles-isherwood.json",
@@ -304,11 +337,15 @@
       "aladdin-2014/timeout--adam-feldman.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
       "chicago-1996/theatermania--andy-propst.json",
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "the-lion-king-1997/new-york--john-simon.json"
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "just-in-time-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
