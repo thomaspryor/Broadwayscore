@@ -58,7 +58,7 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
             {show.role}
           </span>
           {show.castType === 'obc' && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30">
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-brand/20 text-brand border-brand/30" title="Original Broadway Cast">
               OBC
             </span>
           )}
@@ -101,6 +101,7 @@ export default function ActorDetailClient({
   const [sortCol, setSortCol] = useState<SortCol>('date');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [showCount, setShowCount] = useState(INITIAL_SHOWS);
+  const [imgFailed, setImgFailed] = useState(false);
 
   function handleSort(col: SortCol) {
     if (col === sortCol) {
@@ -159,25 +160,22 @@ export default function ActorDetailClient({
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-3">
-          {profile.headshot ? (
+          {profile.headshot && !imgFailed ? (
             <img
               src={profile.headshot}
               alt={profile.name}
               width={80}
               height={80}
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover flex-shrink-0"
-              onError={(e) => {
-                const el = e.currentTarget;
-                el.style.display = 'none';
-                (el.nextElementSibling as HTMLElement)?.classList.remove('hidden');
-              }}
+              onError={() => setImgFailed(true)}
             />
-          ) : null}
-          <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 ${profile.headshot ? 'hidden' : ''}`}>
-            <span className="text-white font-bold text-xl sm:text-2xl">
-              {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
-            </span>
-          </div>
+          ) : (
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-xl sm:text-2xl">
+                {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+              </span>
+            </div>
+          )}
           <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.name}</h1>
         </div>
 
@@ -281,6 +279,7 @@ export default function ActorDetailClient({
               <button
                 className="flex-1 min-w-0 text-left group/sort"
                 onClick={() => handleSort('date')}
+                aria-sort={sortCol === 'date' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
                 <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
                   sortCol === 'date' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
@@ -291,6 +290,7 @@ export default function ActorDetailClient({
               <button
                 className="w-11 text-center flex-shrink-0 group/sort"
                 onClick={() => handleSort('score')}
+                aria-sort={sortCol === 'score' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
                 <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
                   sortCol === 'score' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
