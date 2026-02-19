@@ -321,7 +321,7 @@ async function processRecover(items) {
 
 function checkpoint(message) {
   try {
-    execSync('git add data/review-texts/', { stdio: 'pipe' });
+    execSync('git add -u .', { stdio: 'pipe' });
     const status = execSync('git diff --staged --quiet 2>/dev/null; echo $?', { encoding: 'utf8' }).trim();
     if (status !== '0') {
       execSync(`git commit -m "chore: Retroactive LLM verify — ${message}"`, { stdio: 'pipe' });
