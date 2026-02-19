@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: vercel-production-deploy
-      cancel-in-progress: false
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,3 +68,22 @@ jobs:
         run: |
           URL=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
+
+      - name: Smoke test production
+        run: |
+          echo "Waiting 30s for deployment to propagate..."
+          sleep 30
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://broadwayscorecard.com/)
+          echo "Homepage returned HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Production smoke test failed — homepage returned HTTP $STATUS"
+            exit 1
+          fi
+          # Check a show page too
+          STATUS2=$(curl -s -o /dev/null -w "%{http_code}" https://broadwayscorecard.com/show/hamilton-2015)
+          echo "Show page returned HTTP $STATUS2"
+          if [ "$STATUS2" != "200" ]; then
+            echo "::error::Production smoke test failed — show page returned HTTP $STATUS2"
+            exit 1
+          fi
+          echo "Smoke test passed — production is live"
