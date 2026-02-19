@@ -42,6 +42,7 @@ export default function CastIndexPage() {
     openShowCount: p.openShowCount,
     roles: [] as string[],
     obcCount: p.shows.filter(s => s.castType === 'obc').length,
+    headshot: p.headshot,
   }));
 
   return (
