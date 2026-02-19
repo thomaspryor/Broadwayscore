@@ -58,6 +58,7 @@ export default function CastIndexPage() {
         totalShows={totalShows}
         showObcFilter
         defaultMinShows={3}
+        subtitle="Covers productions from 1970 to present. Critic scores available from 2005."
       />
     </div>
   );
