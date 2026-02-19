@@ -77,8 +77,8 @@ function runValidation() {
     console.log('Validation passed');
     return true;
   } catch (err) {
-    console.error('Validation stderr:', err.stderr?.toString().slice(-500) || '(none)');
-    console.error('Validation stdout:', err.stdout?.toString().slice(-500) || '(none)');
+    console.error('Validation stderr:', err.stderr?.toString().slice(-2000) || '(none)');
+    console.error('Validation stdout (last 3000 chars):', err.stdout?.toString().slice(-3000) || '(none)');
     console.error('Validation exit code:', err.status);
     return false;
   }
