@@ -3,3 +3,4 @@ export type { ScoreTier, ScoreBadgeProps } from './ScoreBadge';
 export { StatusBadge, FormatPill, ProductionPill, AudienceChip } from './ShowPills';
 export { ToggleBar } from './ToggleBar';
 export { ScoreToggle } from './ScoreToggle';
+export { StatGrid } from './StatGrid';

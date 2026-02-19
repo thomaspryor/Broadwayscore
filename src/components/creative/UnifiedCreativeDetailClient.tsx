@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { UnifiedCreativeProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, ordinalSuffix } from '@/lib/critic-page-utils';
-import { ToggleBar } from '@/components/show-cards';
+import { ToggleBar, StatGrid } from '@/components/show-cards';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -140,30 +140,12 @@ export default function UnifiedCreativeDetailClient({
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Shows</p>
-            <p className="text-2xl font-bold text-white">{profile.showCount}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Avg Score</p>
-            <p className={`text-2xl font-bold ${profile.avgScore !== null ? 'text-white' : 'text-gray-500'}`}>
-              {profile.avgScore !== null ? Math.round(profile.avgScore) : '—'}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-            <p className={`text-2xl font-bold ${profile.highScore !== null ? 'text-white' : 'text-gray-500'}`}>
-              {profile.highScore !== null ? Math.round(profile.highScore) : '—'}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-            <p className={`text-2xl font-bold ${profile.lowScore !== null ? 'text-white' : 'text-gray-500'}`}>
-              {profile.lowScore !== null ? Math.round(profile.lowScore) : '—'}
-            </p>
-          </div>
-        </div>
+        <StatGrid className="mb-4" stats={[
+          { label: 'Shows', value: profile.showCount },
+          { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', dimmed: profile.avgScore === null },
+          { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—', dimmed: profile.highScore === null },
+          { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '—', dimmed: profile.lowScore === null },
+        ]} />
 
         {/* Rank */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
