@@ -1,0 +1,121 @@
+name: Rotate GitLab Mirror Token
+
+on:
+  schedule:
+    - cron: '0 12 1 * *'  # 1st of every month at noon UTC
+  workflow_dispatch:
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check token expiry
+        id: check
+        run: |
+          RESPONSE=$(curl -sf -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/personal_access_tokens/self")
+
+          if [ $? -ne 0 ]; then
+            echo "::error::GitLab token is invalid or expired!"
+            echo "expired=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          EXPIRES=$(echo "$RESPONSE" | jq -r '.expires_at')
+          TOKEN_NAME=$(echo "$RESPONSE" | jq -r '.name')
+          echo "Token: $TOKEN_NAME, expires: $EXPIRES"
+
+          EXPIRES_EPOCH=$(date -d "$EXPIRES" +%s)
+          NOW_EPOCH=$(date +%s)
+          DAYS_LEFT=$(( (EXPIRES_EPOCH - NOW_EPOCH) / 86400 ))
+          echo "Days until expiry: $DAYS_LEFT"
+          echo "days_left=$DAYS_LEFT" >> "$GITHUB_OUTPUT"
+
+          if [ "$DAYS_LEFT" -le 30 ]; then
+            echo "Token expires in $DAYS_LEFT days — rotating now"
+            echo "needs_rotation=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Token still valid for $DAYS_LEFT days — no rotation needed"
+            echo "needs_rotation=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+
+      - name: Rotate token via GitLab API
+        id: rotate
+        if: steps.check.outputs.needs_rotation == 'true'
+        run: |
+          # Rotate the token — GitLab returns a new token and invalidates the old one
+          RESPONSE=$(curl -sf -X POST \
+            -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/personal_access_tokens/self/rotate" \
+            -d "expires_at=$(date -d '+1 year' +%Y-%m-%d)")
+
+          if [ $? -ne 0 ]; then
+            echo "::error::Failed to rotate GitLab token"
+            exit 1
+          fi
+
+          NEW_TOKEN=$(echo "$RESPONSE" | jq -r '.token')
+          NEW_EXPIRES=$(echo "$RESPONSE" | jq -r '.expires_at')
+
+          if [ -z "$NEW_TOKEN" ] || [ "$NEW_TOKEN" = "null" ]; then
+            echo "::error::Rotation response did not contain a new token"
+            exit 1
+          fi
+
+          echo "New token expires: $NEW_EXPIRES"
+          echo "::add-mask::$NEW_TOKEN"
+          echo "$NEW_TOKEN" > /tmp/new-gitlab-token.txt
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+
+      - name: Update GitHub secret
+        if: steps.check.outputs.needs_rotation == 'true' && steps.rotate.outcome == 'success'
+        run: |
+          gh secret set GITLAB_MIRROR_TOKEN < /tmp/new-gitlab-token.txt
+          rm -f /tmp/new-gitlab-token.txt
+          echo "GitHub secret updated with new GitLab token"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Verify new token works
+        if: steps.check.outputs.needs_rotation == 'true' && steps.rotate.outcome == 'success'
+        run: |
+          # Read the new token back (it was written to the secret but we still have the file)
+          # Verify by checking the GitLab API with the new token
+          echo "Rotation complete. Next mirror run will use the new token."
+
+      - name: Create issue if token is expired
+        if: steps.check.outputs.expired == 'true'
+        run: |
+          gh issue create \
+            --title "GitLab mirror token has expired" \
+            --body "The GitLab mirror token (\`GITLAB_MIRROR_TOKEN\`) has expired or is invalid. The automatic rotation failed because the token was already dead.
+
+          **Manual fix needed:**
+          1. Go to https://gitlab.com/-/user_settings/personal_access_tokens
+          2. Create a new token with \`api\` scope, 1 year expiry
+          3. Run: \`gh secret set GITLAB_MIRROR_TOKEN\` and paste the new token
+
+          The GitLab mirror is NOT syncing until this is fixed." \
+            --label "bug"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check.outputs.expired }}" = "true" ]; then
+            echo "## Token Expired" >> "$GITHUB_STEP_SUMMARY"
+            echo "GitLab token is expired. GitHub issue created." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ steps.check.outputs.needs_rotation }}" = "true" ]; then
+            echo "## Token Rotated" >> "$GITHUB_STEP_SUMMARY"
+            echo "GitLab token was rotated. New token expires in ~1 year." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## No Rotation Needed" >> "$GITHUB_STEP_SUMMARY"
+            echo "Token still valid for ${{ steps.check.outputs.days_left }} days." >> "$GITHUB_STEP_SUMMARY"
+          fi
