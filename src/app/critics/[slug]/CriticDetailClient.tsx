@@ -6,6 +6,7 @@ import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -95,13 +96,11 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5 flex-wrap">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5"><Link href="/critics" className="hover:text-brand transition-colors">Critics</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{critic.name}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Critics', href: '/critics' },
+        { label: critic.name },
+      ]} />
 
       {/* Header */}
       <div className="mb-8">
