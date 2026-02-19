@@ -2,178 +2,264 @@
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
     "lastUpdated": "2026-02-18",
-    "sources": ["broadway-show-tickets.com", "broadwayworld.com", "IBDB", "Wikipedia"]
+    "sources": [
+      "broadway-show-tickets.com",
+      "broadwayworld.com",
+      "IBDB",
+      "Wikipedia"
+    ]
   },
   "Al Hirschfeld Theatre": {
     "capacity": 1424,
-    "tips": "Great sightlines from the mezzanine. The theater was beautifully renovated in 2003 and named after the legendary caricaturist."
+    "tips": "Great sightlines from the mezzanine. The theater was beautifully renovated in 2003 and named after the legendary caricaturist.",
+    "yearBuilt": 1924,
+    "operator": "ATG Entertainment"
   },
   "Ambassador Theatre": {
     "capacity": 1108,
-    "tips": "An intimate house for its size. Rear mezzanine can feel distant — stick to the front mezz or orchestra for the best experience."
+    "tips": "An intimate house for its size. Rear mezzanine can feel distant — stick to the front mezz or orchestra for the best experience.",
+    "yearBuilt": 1921,
+    "operator": "Shubert Organization"
   },
   "August Wilson Theatre": {
     "capacity": 1239,
-    "tips": "Formerly the Virginia Theatre. Good sightlines throughout, though the balcony overhang can cut off set pieces in the last few orchestra rows."
+    "tips": "Formerly the Virginia Theatre. Good sightlines throughout, though the balcony overhang can cut off set pieces in the last few orchestra rows.",
+    "yearBuilt": 1925,
+    "operator": "ATG Entertainment"
   },
   "Belasco Theatre": {
     "capacity": 1018,
-    "tips": "One of the most beautiful Broadway theaters with stunning Tiffany ceiling lights. The mezzanine offers excellent views at a lower price."
+    "tips": "One of the most beautiful Broadway theaters with stunning Tiffany ceiling lights. The mezzanine offers excellent views at a lower price.",
+    "yearBuilt": 1907,
+    "operator": "Shubert Organization"
   },
   "Bernard B. Jacobs Theatre": {
     "capacity": 1112,
-    "tips": "A well-designed midsize house. Front mezzanine seats are among the best values on Broadway with excellent overhead perspective."
+    "tips": "A well-designed midsize house. Front mezzanine seats are among the best values on Broadway with excellent overhead perspective.",
+    "yearBuilt": 1927,
+    "operator": "Shubert Organization"
   },
   "Booth Theatre": {
     "capacity": 766,
-    "tips": "One of Broadway's most intimate venues — every seat feels close. A favorite for plays. Built in 1913 and shares a wall with the Shubert."
+    "tips": "One of Broadway's most intimate venues — every seat feels close. A favorite for plays. Built in 1913 and shares a wall with the Shubert.",
+    "yearBuilt": 1913,
+    "operator": "Shubert Organization"
   },
   "Broadhurst Theatre": {
     "capacity": 1156,
-    "tips": "Solid sightlines from most seats. The theater is slightly wider than average, which helps with views from the sides."
+    "tips": "Solid sightlines from most seats. The theater is slightly wider than average, which helps with views from the sides.",
+    "yearBuilt": 1917,
+    "operator": "Shubert Organization"
   },
   "Broadway Theatre": {
     "capacity": 1761,
-    "tips": "One of the largest Broadway houses. Despite the size, the orchestra has a good rake for sightlines. Front mezzanine is excellent."
-  },
-  "Brooks Atkinson Theatre": {
-    "capacity": 1069,
-    "tips": "Now known as the Lena Horne Theatre. Intimate feel despite the capacity. Good legroom in the orchestra compared to older houses."
-  },
-  "Circle in the Square Theatre": {
-    "capacity": 776,
-    "tips": "Broadway's only theater-in-the-round — unique and immersive. No seat is more than a few rows from the stage. A truly special experience."
-  },
-  "Ethel Barrymore Theatre": {
-    "capacity": 1058,
-    "tips": "A classic Shubert house with great acoustics. Center orchestra offers the best experience. Named after the legendary actress."
-  },
-  "Eugene O'Neill Theatre": {
-    "capacity": 1108,
-    "tips": "Wide stage and good acoustics. The front mezzanine center is a sweet spot. Home to many Tony-winning productions over the years."
-  },
-  "Gerald Schoenfeld Theatre": {
-    "capacity": 1080,
-    "tips": "Excellent sightlines from the mezzanine. The theater underwent a major renovation in 2018 with improved accessibility and comfort."
-  },
-  "Gershwin Theatre": {
-    "capacity": 1933,
-    "tips": "The largest Broadway theater — home to Wicked for two decades. Even rear mezzanine seats have decent views due to the steep rake. Arrive early for the lobby experience."
-  },
-  "Harold and Miriam Steinberg Center for Theatre": {
-    "capacity": 299,
-    "tips": "Part of the Roundabout Theatre Company complex. An intimate off-Broadway-sized space that occasionally hosts Broadway-eligible productions."
-  },
-  "Helen Hayes Theater": {
-    "capacity": 597,
-    "tips": "Broadway's smallest theater — incredibly intimate. Every seat is close. Named after the First Lady of American Theater."
-  },
-  "Hudson Theatre": {
-    "capacity": 970,
-    "tips": "One of Broadway's oldest theaters (1903), beautifully restored in 2017. Ornate interior with excellent acoustics. The orchestra has great legroom."
-  },
-  "Imperial Theatre": {
-    "capacity": 1439,
-    "tips": "A premier musical house with a wide stage and excellent acoustics. Center orchestra rows D-L are considered some of the best seats on Broadway."
-  },
-  "James Earl Jones Theatre": {
-    "capacity": 1057,
-    "tips": "Formerly the Cort Theatre, renovated and renamed in 2022. Now one of Broadway's most modern and accessible theaters with all-new seating."
-  },
-  "John Golden Theatre": {
-    "capacity": 805,
-    "tips": "A small, intimate venue ideal for plays. The mezzanine is steep but offers surprisingly good views. Limited legroom in the orchestra."
+    "tips": "One of the largest Broadway houses. Despite the size, the orchestra has a good rake for sightlines. Front mezzanine is excellent.",
+    "yearBuilt": 1924,
+    "operator": "Shubert Organization"
   },
   "Lena Horne Theatre": {
     "capacity": 1069,
-    "tips": "Renamed from Brooks Atkinson in 2022 to honor the legendary Lena Horne. Intimate feel with good sightlines from most seats."
+    "formerNames": ["Brooks Atkinson Theatre"],
+    "tips": "Formerly Brooks Atkinson Theatre, renamed in 2022 to honor the legendary Lena Horne. Intimate feel with good sightlines from most seats.",
+    "yearBuilt": 1926,
+    "operator": "Nederlander Organization"
+  },
+  "Circle in the Square Theatre": {
+    "capacity": 776,
+    "tips": "Broadway's only theater-in-the-round — unique and immersive. No seat is more than a few rows from the stage. A truly special experience.",
+    "yearBuilt": 1972,
+    "operator": "Independent"
+  },
+  "Ethel Barrymore Theatre": {
+    "capacity": 1058,
+    "tips": "A classic Shubert house with great acoustics. Center orchestra offers the best experience. Named after the legendary actress.",
+    "yearBuilt": 1928,
+    "operator": "Shubert Organization"
+  },
+  "Eugene O'Neill Theatre": {
+    "capacity": 1108,
+    "tips": "Wide stage and good acoustics. The front mezzanine center is a sweet spot. Home to many Tony-winning productions over the years.",
+    "yearBuilt": 1925,
+    "operator": "ATG Entertainment"
+  },
+  "Gerald Schoenfeld Theatre": {
+    "capacity": 1080,
+    "tips": "Excellent sightlines from the mezzanine. The theater underwent a major renovation in 2018 with improved accessibility and comfort.",
+    "yearBuilt": 1917,
+    "operator": "Shubert Organization"
+  },
+  "Gershwin Theatre": {
+    "capacity": 1933,
+    "tips": "The largest Broadway theater — home to Wicked for two decades. Even rear mezzanine seats have decent views due to the steep rake. Arrive early for the lobby experience.",
+    "yearBuilt": 1972,
+    "operator": "Nederlander Organization"
+  },
+  "Harold and Miriam Steinberg Center for Theatre": {
+    "capacity": 299,
+    "tips": "Part of the Roundabout Theatre Company complex. An intimate off-Broadway-sized space that occasionally hosts Broadway-eligible productions.",
+    "yearBuilt": 2003,
+    "operator": "Roundabout Theatre Company"
+  },
+  "Helen Hayes Theater": {
+    "capacity": 597,
+    "tips": "Broadway's smallest theater — incredibly intimate. Every seat is close. Named after the First Lady of American Theater.",
+    "yearBuilt": 1912,
+    "operator": "Second Stage Theater"
+  },
+  "Hudson Theatre": {
+    "capacity": 970,
+    "tips": "One of Broadway's oldest theaters (1903), beautifully restored in 2017. Ornate interior with excellent acoustics. The orchestra has great legroom.",
+    "yearBuilt": 1903,
+    "operator": "ATG Entertainment"
+  },
+  "Imperial Theatre": {
+    "capacity": 1439,
+    "tips": "A premier musical house with a wide stage and excellent acoustics. Center orchestra rows D-L are considered some of the best seats on Broadway.",
+    "yearBuilt": 1923,
+    "operator": "Shubert Organization"
+  },
+  "James Earl Jones Theatre": {
+    "capacity": 1057,
+    "tips": "Formerly the Cort Theatre, renovated and renamed in 2022. Now one of Broadway's most modern and accessible theaters with all-new seating.",
+    "yearBuilt": 1912,
+    "operator": "Shubert Organization"
+  },
+  "John Golden Theatre": {
+    "capacity": 805,
+    "tips": "A small, intimate venue ideal for plays. The mezzanine is steep but offers surprisingly good views. Limited legroom in the orchestra.",
+    "yearBuilt": 1927,
+    "operator": "Shubert Organization"
   },
   "Longacre Theatre": {
     "capacity": 1077,
-    "tips": "A classic theater with a beautiful proscenium arch. Center orchestra is best. The balcony overhang can affect views in rear orchestra rows."
+    "tips": "A classic theater with a beautiful proscenium arch. Center orchestra is best. The balcony overhang can affect views in rear orchestra rows.",
+    "yearBuilt": 1913,
+    "operator": "Shubert Organization"
   },
   "Lunt-Fontanne Theatre": {
     "capacity": 1509,
-    "tips": "A grand theater with an ornate interior. Originally opened with a retractable roof. Good sightlines from the front mezzanine."
+    "tips": "A grand theater with an ornate interior. Originally opened with a retractable roof. Good sightlines from the front mezzanine.",
+    "yearBuilt": 1910,
+    "operator": "Nederlander Organization"
   },
   "Lyceum Theatre": {
     "capacity": 950,
-    "tips": "The oldest continuously operating Broadway theater (1903) and a New York City landmark. Stunning Beaux-Arts architecture. Intimate and charming."
+    "tips": "The oldest continuously operating Broadway theater (1903) and a New York City landmark. Stunning Beaux-Arts architecture. Intimate and charming.",
+    "yearBuilt": 1903,
+    "operator": "Shubert Organization"
   },
   "Lyric Theatre": {
     "capacity": 1930,
-    "tips": "One of Broadway's newest and largest theaters, created by combining two older venues. The theater can be reconfigured for different productions."
+    "tips": "One of Broadway's newest and largest theaters, created by combining two older venues. The theater can be reconfigured for different productions.",
+    "yearBuilt": 1998,
+    "operator": "ATG Entertainment"
   },
   "Majestic Theatre": {
     "capacity": 1645,
-    "tips": "Home of The Phantom of the Opera for 35 years. A grand musical theater with excellent acoustics. Center orchestra rows E-M are ideal."
+    "tips": "Home of The Phantom of the Opera for 35 years. A grand musical theater with excellent acoustics. Center orchestra rows E-M are ideal.",
+    "yearBuilt": 1927,
+    "operator": "Shubert Organization"
   },
   "Marquis Theatre": {
     "capacity": 1611,
-    "tips": "Located inside the Marriott Marquis hotel — enter through the lobby and take the escalators up. Modern theater with comfortable seating and no obstructed views."
+    "tips": "Located inside the Marriott Marquis hotel — enter through the lobby and take the escalators up. Modern theater with comfortable seating and no obstructed views.",
+    "yearBuilt": 1986,
+    "operator": "Nederlander Organization"
   },
   "Minskoff Theatre": {
     "capacity": 1710,
-    "tips": "A large modern theater in the heart of Times Square. Home to The Lion King since 2006. Front mezzanine has exceptional views of the full stage."
+    "tips": "A large modern theater in the heart of Times Square. Home to The Lion King since 2006. Front mezzanine has exceptional views of the full stage.",
+    "yearBuilt": 1973,
+    "operator": "Nederlander Organization"
   },
   "Music Box Theatre": {
     "capacity": 1009,
-    "tips": "Built by Irving Berlin in 1921 and one of the most beautiful theaters on Broadway. Excellent acoustics. A favorite venue for both plays and musicals."
+    "tips": "Built by Irving Berlin in 1921 and one of the most beautiful theaters on Broadway. Excellent acoustics. A favorite venue for both plays and musicals.",
+    "yearBuilt": 1921,
+    "operator": "Shubert Organization"
   },
   "Nederlander Theatre": {
     "capacity": 1232,
-    "tips": "Good sightlines from most seats. The mezzanine has a nice rake. Watch out for limited legroom in some orchestra sections."
+    "tips": "Good sightlines from most seats. The mezzanine has a nice rake. Watch out for limited legroom in some orchestra sections.",
+    "yearBuilt": 1921,
+    "operator": "Nederlander Organization"
   },
   "Neil Simon Theatre": {
     "capacity": 1445,
-    "tips": "A large house with a wide orchestra. Front mezzanine center seats offer the best overall view. The theater has hosted many long-running hits."
+    "tips": "A large house with a wide orchestra. Front mezzanine center seats offer the best overall view. The theater has hosted many long-running hits.",
+    "yearBuilt": 1927,
+    "operator": "Nederlander Organization"
   },
   "New Amsterdam Theatre": {
     "capacity": 1702,
-    "tips": "Disney's flagship Broadway theater, spectacularly restored in 1997. Art Nouveau interior is worth seeing on its own. Excellent sightlines from the orchestra."
+    "tips": "Disney's flagship Broadway theater, spectacularly restored in 1997. Art Nouveau interior is worth seeing on its own. Excellent sightlines from the orchestra.",
+    "yearBuilt": 1903,
+    "operator": "Disney Theatrical Group"
   },
   "Palace Theatre": {
     "capacity": 1648,
-    "tips": "Famously raised 30 feet in the air during the TSX Broadway development. Recently renovated with modern amenities while preserving its historic character."
+    "tips": "Famously raised 30 feet in the air during the TSX Broadway development. Recently renovated with modern amenities while preserving its historic character.",
+    "yearBuilt": 1913,
+    "operator": "Nederlander Organization"
   },
   "Richard Rodgers Theatre": {
     "capacity": 1319,
-    "tips": "Home of Hamilton since 2015. Good sightlines throughout. The front mezzanine is especially popular for a full view of the staging."
+    "tips": "Home of Hamilton since 2015. Good sightlines throughout. The front mezzanine is especially popular for a full view of the staging.",
+    "yearBuilt": 1925,
+    "operator": "Nederlander Organization"
   },
   "Samuel J. Friedman Theatre": {
     "capacity": 650,
-    "tips": "One of Broadway's smallest and most intimate theaters. Home to Manhattan Theatre Club productions. Every seat feels connected to the stage."
+    "tips": "One of Broadway's smallest and most intimate theaters. Home to Manhattan Theatre Club productions. Every seat feels connected to the stage.",
+    "yearBuilt": 1925,
+    "operator": "Manhattan Theatre Club"
   },
   "Shubert Theatre": {
     "capacity": 1460,
-    "tips": "The flagship of the Shubert Organization, located on Shubert Alley. Home to A Chorus Line for 15 years. Classic Broadway experience with great acoustics."
+    "tips": "The flagship of the Shubert Organization, located on Shubert Alley. Home to A Chorus Line for 15 years. Classic Broadway experience with great acoustics.",
+    "yearBuilt": 1913,
+    "operator": "Shubert Organization"
   },
   "St. James Theatre": {
     "capacity": 1710,
-    "tips": "One of Broadway's grand musical houses. Has hosted many legendary premieres. The orchestra has excellent sightlines; front mezz is also great."
+    "tips": "One of Broadway's grand musical houses. Has hosted many legendary premieres. The orchestra has excellent sightlines; front mezz is also great.",
+    "yearBuilt": 1927,
+    "operator": "ATG Entertainment"
   },
   "Stephen Sondheim Theatre": {
     "capacity": 1055,
-    "tips": "Renamed in 2010 to honor the legendary composer-lyricist. A well-designed midsize house. Good for both musicals and plays."
+    "tips": "Renamed in 2010 to honor the legendary composer-lyricist. A well-designed midsize house. Good for both musicals and plays.",
+    "yearBuilt": 1918,
+    "operator": "Roundabout Theatre Company"
   },
   "Studio 54": {
     "capacity": 1004,
-    "tips": "The legendary nightclub turned Broadway theater. Operated by Roundabout Theatre Company. Retains some of its famous nightclub atmosphere in the design."
+    "tips": "The legendary nightclub turned Broadway theater. Operated by Roundabout Theatre Company. Retains some of its famous nightclub atmosphere in the design.",
+    "yearBuilt": 1927,
+    "operator": "Roundabout Theatre Company"
   },
   "Todd Haimes Theatre": {
     "capacity": 740,
-    "tips": "Formerly Stage II at Second Stage Theater, renamed in 2023. One of Broadway's smaller houses, offering an intimate experience for new works."
+    "tips": "Formerly Stage II at Second Stage Theater, renamed in 2023. One of Broadway's smaller houses, offering an intimate experience for new works.",
+    "yearBuilt": 1918,
+    "operator": "Roundabout Theatre Company"
   },
   "Vivian Beaumont Theater": {
     "capacity": 1080,
-    "tips": "Located in Lincoln Center — one of Broadway's few theaters outside the Theater District. Thrust stage creates an immersive experience. Excellent sightlines."
+    "tips": "Located in Lincoln Center — one of Broadway's few theaters outside the Theater District. Thrust stage creates an immersive experience. Excellent sightlines.",
+    "yearBuilt": 1965,
+    "operator": "Lincoln Center Theater"
   },
   "Walter Kerr Theatre": {
     "capacity": 975,
-    "tips": "A beautiful theater with excellent sightlines and acoustics. The intimate size makes it ideal for both plays and smaller musicals."
+    "tips": "A beautiful theater with excellent sightlines and acoustics. The intimate size makes it ideal for both plays and smaller musicals.",
+    "yearBuilt": 1921,
+    "operator": "ATG Entertainment"
   },
   "Winter Garden Theatre": {
     "capacity": 1526,
-    "tips": "A grand theater with a distinctive wide auditorium. Home to Cats for 18 years. Recently renovated with improved comfort and accessibility."
+    "tips": "A grand theater with a distinctive wide auditorium. Home to Cats for 18 years. Recently renovated with improved comfort and accessibility.",
+    "yearBuilt": 1911,
+    "operator": "Shubert Organization"
   }
 }

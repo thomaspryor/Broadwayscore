@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { getBroadwayDuration } from '@/lib/date-utils';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -46,18 +47,6 @@ interface BrowseListClientProps {
   subtitle?: string;
 }
 
-function getBroadwayDuration(openingDate: string | null): string | null {
-  if (!openingDate) return null;
-  const open = new Date(openingDate);
-  const now = new Date();
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
-  if (months < 1) return 'Just opened';
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
-  const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
-  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
-}
 
 function RankBadge({ rank }: { rank: number }) {
   const isTop3 = rank <= 3;
