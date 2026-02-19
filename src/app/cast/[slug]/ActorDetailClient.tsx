@@ -108,8 +108,9 @@ export default function ActorDetailClient({
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [showCount, setShowCount] = useState(INITIAL_SHOWS);
 
+  // Only show actors who are in the current cast of running shows
   const openShows = useMemo(() =>
-    profile.shows.filter(s => s.status === 'open' || s.status === 'previews'),
+    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews') && s.castType === 'current'),
     [profile.shows]
   );
 
@@ -119,11 +120,13 @@ export default function ActorDetailClient({
   );
 
   const closedShows = useMemo(() => {
-    const closed = profile.shows.filter(s => s.status === 'closed');
-    if (sortMode === 'highest') return [...closed].sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
-    if (sortMode === 'lowest') return [...closed].sort((a, b) => (a.score ?? 999) - (b.score ?? 999));
-    return closed; // already sorted by date
-  }, [profile.shows, sortMode]);
+    // Everything not in openShows or upcoming goes to Broadway Credits
+    const openIds = new Set(openShows.map(s => s.showId));
+    const credits = profile.shows.filter(s => s.status !== 'upcoming' && !openIds.has(s.showId));
+    if (sortMode === 'highest') return [...credits].sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+    if (sortMode === 'lowest') return [...credits].sort((a, b) => (a.score ?? 999) - (b.score ?? 999));
+    return credits; // already sorted by date
+  }, [profile.shows, openShows, sortMode]);
 
   const visibleClosed = closedShows.slice(0, showCount);
   const remaining = closedShows.length - showCount;

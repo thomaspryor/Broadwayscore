@@ -84,6 +84,7 @@ export default function CreativeIndexClient({
 }) {
   const [search, setSearch] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('shows');
+  const [visibleCount, setVisibleCount] = useState(100);
 
   const filtered = useMemo(() => {
     if (!search) return profiles;
@@ -132,7 +133,7 @@ export default function CreativeIndexClient({
           type="text"
           placeholder={`Search ${categoryLabel.toLowerCase().replace(/s$/, '')}s...`}
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setVisibleCount(100); }}
           className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
         />
       </div>
@@ -143,7 +144,7 @@ export default function CreativeIndexClient({
         {SORT_OPTIONS.map(opt => (
           <button
             key={opt.value}
-            onClick={() => setSortMode(opt.value)}
+            onClick={() => { setSortMode(opt.value); setVisibleCount(100); }}
             className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
               sortMode === opt.value
                 ? 'text-brand bg-brand/10 sm:bg-transparent'
@@ -169,11 +170,21 @@ export default function CreativeIndexClient({
 
       {/* Results */}
       {sorted.length > 0 ? (
-        <div className="space-y-2">
-          {sorted.map(profile => (
-            <ProfileCard key={profile.slug} profile={profile} routePath={routePath} />
-          ))}
-        </div>
+        <>
+          <div className="space-y-2">
+            {sorted.slice(0, visibleCount).map(profile => (
+              <ProfileCard key={profile.slug} profile={profile} routePath={routePath} />
+            ))}
+          </div>
+          {sorted.length > visibleCount && (
+            <button
+              onClick={() => setVisibleCount(prev => prev + 100)}
+              className="w-full mt-4 py-3 text-sm font-medium text-brand hover:text-brand-hover border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              Show 100 more ({(sorted.length - visibleCount).toLocaleString()} remaining)
+            </button>
+          )}
+        </>
       ) : (
         <div className="card p-8 text-center">
           <p className="text-gray-400">No {categoryLabel.toLowerCase()} found matching &ldquo;{search}&rdquo;</p>

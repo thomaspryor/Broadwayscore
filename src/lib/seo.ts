@@ -903,7 +903,7 @@ export function generateActorFAQSchema(profile: {
   avgScore: number | null;
   highScore: { score: number; showTitle: string } | null;
   openShowCount: number;
-  shows: Array<{ title: string; score: number | null; status: string }>;
+  shows: Array<{ title: string; score: number | null; status: string; castType?: string }>;
 }) {
   const faqs: { question: string; answer: string }[] = [];
 
@@ -919,11 +919,14 @@ export function generateActorFAQSchema(profile: {
     });
   }
 
-  if (profile.openShowCount > 0) {
-    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews');
+  // Only claim actor is currently on Broadway if they're in the current cast
+  const currentlyIn = profile.shows.filter(s =>
+    (s.status === 'open' || s.status === 'previews') && s.castType === 'current'
+  );
+  if (currentlyIn.length > 0) {
     faqs.push({
       question: `Is ${profile.name} currently on Broadway?`,
-      answer: `Yes, ${profile.name} is currently appearing in ${running.map(s => s.title).join(', ')} on Broadway.`,
+      answer: `Yes, ${profile.name} is currently appearing in ${currentlyIn.map(s => s.title).join(', ')} on Broadway.`,
     });
   }
 
