@@ -40,9 +40,11 @@ const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wayback-recovery-report.json'),
 
   // Rate limiting (configurable via env vars for large runs)
-  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '5000'),
-  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '3000'),
-  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '4000'),
+  // Tested Feb 19 2026: CDX safe at 1s (60/min), snapshots safe at 1s.
+  // Using 1.5s as default for CI (shared GitHub Actions IPs). See memory/archive-org-rate-limits.md
+  cdxDelayMs: parseInt(process.env.CDX_DELAY_MS || '1500'),
+  snapshotDelayMs: parseInt(process.env.SNAPSHOT_DELAY_MS || '1500'),
+  archiveTodayDelayMs: parseInt(process.env.ARCHIVE_TODAY_DELAY_MS || '3000'),
   requestTimeoutMs: parseInt(process.env.REQUEST_TIMEOUT_MS || '30000'),
 
   // Exhausted URLs tracker — categorized reasons why archive recovery failed
