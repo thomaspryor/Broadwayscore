@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-19T08:50:55.834Z",
+  "runDate": "2026-02-19T08:54:13.028Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 90,
+    "processed": 9,
+    "failed": 91,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "9.0%"
   },
   "tierBreakdown": {
     "playwright": 9,
@@ -22,8 +22,8 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 78,
-    "archive": 1
+    "archiveToday": 79,
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 94,
@@ -36,14 +36,14 @@
     "tier2Success": 0,
     "tier3Attempts": 80,
     "tier3Success": 0,
-    "tier3_6Attempts": 79,
-    "tier3_6Success": 78,
+    "tier3_6Attempts": 80,
+    "tier3_6Success": 79,
     "tier4Attempts": 13,
     "tier4Success": 1,
-    "totalFailed": 90,
-    "scrapingBeeCreditsUsed": 5,
+    "totalFailed": 91,
+    "scrapingBeeCreditsUsed": 6,
     "browserbaseSessionsUsed": 40,
-    "browserbaseMinutesUsed": 11.9,
+    "browserbaseMinutesUsed": 12.1,
     "urlDiscoveryAttempts": 6,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -57,8 +57,7 @@
     "ink-2019/washpost--peter-marks.json",
     "jagged-little-pill-2019/washpost--peter-marks.json",
     "jerusalem-2011/washpost--peter-marks.json",
-    "junk-2017/washpost--peter-marks.json",
-    "les-liaisons-dangereuses-2016/washpost--peter-marks.json"
+    "junk-2017/washpost--peter-marks.json"
   ],
   "failed": [
     "hells-kitchen-2024/washpost--peter-marks.json",
@@ -141,6 +140,7 @@
     "left-on-tenth-2024/washpost--peter-marks.json",
     "legally-blonde-2007/washpost--peter-marks.json",
     "lennon-2005/washpost--peter-marks.json",
+    "les-liaisons-dangereuses-2016/washpost--peter-marks.json",
     "les-liaisons-dangereuses-2016/washpost--unknown.json",
     "lestat-2006/washpost--peter-marks.json",
     "lobby-hero-2018/washpost--peter-marks.json",
@@ -201,10 +201,10 @@
       "data/review-texts/clybourne-park-2012/washpost--peter-marks.json",
       "data/review-texts/clydes-2021/washpost--peter-marks.json",
       "data/review-texts/cost-of-living-2022/washpost--peter-marks.json",
-      "data/review-texts/crybaby-2008/washpost--peter-marks.json",
       "data/review-texts/cult-of-love-2024/washpost--peter-marks.json",
       "data/review-texts/dead-accounts-2012/ap--mark-kennedy.json",
       "data/review-texts/dear-evan-hansen-2016/washpost--peter-marks.json",
+      "data/review-texts/desire-under-the-elms-2009/washpost--peter-marks.json",
       "data/review-texts/eclipsed-2016/washpost--peter-marks.json",
       "data/review-texts/end-of-the-rainbow-2012/washpost--peter-marks.json",
       "data/review-texts/enron-2010/washpost--peter-marks.json",
@@ -237,6 +237,7 @@
       "data/review-texts/left-on-tenth-2024/washpost--peter-marks.json",
       "data/review-texts/legally-blonde-2007/washpost--peter-marks.json",
       "data/review-texts/lennon-2005/washpost--peter-marks.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/washpost--peter-marks.json",
       "data/review-texts/les-liaisons-dangereuses-2016/washpost--unknown.json",
       "data/review-texts/lestat-2006/washpost--peter-marks.json",
       "data/review-texts/lobby-hero-2018/washpost--peter-marks.json",
@@ -248,9 +249,7 @@
       "data/review-texts/matilda-the-musical-2013/washpost--peter-marks.json",
       "data/review-texts/mean-girls-2018/washpost--peter-marks.json"
     ],
-    "archive": [
-      "les-liaisons-dangereuses-2016/washpost--peter-marks.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "The Washington Post": {
