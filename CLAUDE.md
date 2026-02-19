@@ -104,13 +104,17 @@ For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
 **NEVER deploy UI changes to staging/production without visually verifying them first.** The user is non-technical and on their phone — every broken deploy wastes their time reviewing garbage.
 
 **Workflow for ANY visual/layout change:**
-1. Build locally: `npm run build` (fix errors before proceeding)
-2. Serve the static export: `npx serve out -l 3456 &`
-3. Screenshot with Playwright: use `mcp__plugin_playwright_playwright__browser_navigate` to `http://localhost:3456`, then `browser_take_screenshot`
-4. Review the screenshot yourself — check layout, spacing, alignment, overflow, text wrapping
-5. If it looks wrong, fix and re-screenshot. Do NOT deploy broken UI.
-6. Only after visual confirmation: commit, push, and trigger deploy
-7. Kill the server: `kill %1` or `lsof -ti:3456 | xargs kill`
+1. Start dev server: `PORT=3456 npm run dev > /tmp/dev-server.log 2>&1 &` (~2 sec startup, hot-reloads on save)
+2. Screenshot with Playwright script (MCP Playwright often fails — use this instead):
+   ```js
+   node -e "const{chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:420,height:900}});await p.goto('http://localhost:3456/PAGE',{waitUntil:'networkidle'});await p.screenshot({path:'/tmp/ss.png'});await b.close();})()"
+   ```
+3. Review the screenshot yourself — check layout, spacing, alignment, overflow, text wrapping
+4. If it looks wrong, fix and re-screenshot. Dev server hot-reloads changes automatically.
+5. Only after visual confirmation: commit, push, and trigger deploy
+6. Kill the server when done: `kill $(lsof -ti:3456)`
+
+**Why dev server over full build:** `npm run dev` starts in ~2 seconds vs ~4 minutes for `npm run build` + `npx serve out`. Pages are identical for visual/layout work. Use full build only if you need to verify static export behavior.
 
 **What to check in screenshots:**
 - Score badges are in the same position/size as production (never shift badge position)

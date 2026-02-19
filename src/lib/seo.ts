@@ -865,6 +865,82 @@ export function generateUnifiedCreativeFAQSchema(profile: {
   };
 }
 
+// ============================================
+// Actor Profile Schemas
+// ============================================
+
+export function generateActorPersonSchema(profile: {
+  name: string;
+  slug: string;
+  showCount: number;
+  avgScore: number | null;
+  ibdbPersonId: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    url: `${BASE_URL}/cast/${profile.slug}`,
+    jobTitle: 'Broadway Actor',
+    knowsAbout: 'Broadway Theater',
+    description: `${profile.name} is a Broadway actor who has appeared in ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    sameAs: [`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`],
+    ...(profile.avgScore !== null && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: toFiveStarScale(profile.avgScore),
+        bestRating: 5,
+        worstRating: 1,
+        ratingCount: profile.showCount,
+      },
+    }),
+  };
+}
+
+export function generateActorFAQSchema(profile: {
+  name: string;
+  showCount: number;
+  avgScore: number | null;
+  highScore: { score: number; showTitle: string } | null;
+  openShowCount: number;
+  shows: Array<{ title: string; score: number | null; status: string; castType?: string }>;
+}) {
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `How many Broadway shows has ${profile.name} appeared in?`,
+    answer: `${profile.name} has appeared in ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+  });
+
+  if (profile.highScore) {
+    faqs.push({
+      question: `What is ${profile.name}'s highest-rated Broadway show?`,
+      answer: `${profile.name}'s highest-rated show is ${profile.highScore.showTitle} with a critic score of ${profile.highScore.score}/100.`,
+    });
+  }
+
+  // Only claim actor is currently on Broadway if they're in the current cast
+  const currentlyIn = profile.shows.filter(s =>
+    (s.status === 'open' || s.status === 'previews') && s.castType === 'current'
+  );
+  if (currentlyIn.length > 0) {
+    faqs.push({
+      question: `Is ${profile.name} currently on Broadway?`,
+      answer: `Yes, ${profile.name} is currently appearing in ${currentlyIn.map(s => s.title).join(', ')} on Broadway.`,
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);
