@@ -5,7 +5,7 @@ import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Broadway Scorecard is built by Tom Pryor — a one-person, independent project aggregating Broadway reviews. Always free, no ads, no paywalls.',
+  description: 'Broadway Scorecard is a one-person, independent project aggregating Broadway reviews. Always free, no ads, no paywalls.',
   alternates: {
     canonical: `${BASE_URL}/about`,
   },
@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div className="card p-6 sm:p-8 mb-6">
           <div className="space-y-5 text-gray-300 leading-relaxed text-lg">
             <p>
-              I&apos;m Tom Pryor &mdash; I built Broadway Scorecard because I see 60+ shows a year and got tired
+              I&apos;m Tom &mdash; I built Broadway Scorecard because I see 60+ shows a year and got tired
               of not having a single place to compare reviews across critics.
             </p>
             <p>
