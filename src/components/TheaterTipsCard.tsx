@@ -253,9 +253,9 @@ export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardP
       {hiddenCount > 0 && !expanded && (
         <button
           onClick={() => setExpanded(true)}
-          className="mt-4 text-sm text-brand hover:text-brand/80 transition-colors font-medium"
+          className="mt-4 w-full py-2.5 text-sm text-brand hover:text-white border border-brand/30 hover:border-brand/60 hover:bg-brand/10 rounded-lg transition-colors font-medium"
         >
-          Show {hiddenCount} more section{hiddenCount > 1 ? 's' : ''} ({sections.slice(1).map(k => SECTION_CONFIG[k].label).join(', ')})
+          More Tips: {sections.slice(1).map(k => SECTION_CONFIG[k].label).join(', ')}
         </button>
       )}
     </section>

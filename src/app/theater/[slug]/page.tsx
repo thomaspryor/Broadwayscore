@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
-import { ScoreBadge, FormatPill, ProductionPill, StatusBadge } from '@/components/show-cards';
+import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
@@ -233,7 +233,24 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                     })()}
                   </div>
                 </div>
-                <ScoreBadge score={theater.currentShow.criticScore?.score} size="md" status={theater.currentShow.status} />
+                {(() => {
+                  const score = theater.currentShow!.criticScore?.score;
+                  const tier = getScoreTier(score ?? null);
+                  return (
+                    <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                      <ScoreBadge score={score} size="md" status={theater.currentShow!.status} />
+                      {tier && (
+                        <span
+                          className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                          style={{ color: tier.color }}
+                          title={tier.tooltip}
+                        >
+                          {tier.label}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             </Link>
           )}
