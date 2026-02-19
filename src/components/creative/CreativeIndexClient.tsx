@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
+import { ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortColumn = 'name' | 'obc' | 'shows' | 'avg';
@@ -106,12 +107,6 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
   );
 }
 
-function SortArrow({ active, dir }: { active: boolean; dir: SortDir }) {
-  if (!active) return null;
-  return (
-    <span className="ml-0.5 text-brand">{dir === 'desc' ? '▼' : '▲'}</span>
-  );
-}
 
 export default function CreativeIndexClient({
   profiles,
@@ -244,52 +239,12 @@ export default function CreativeIndexClient({
       {/* Column Headers — clickable for sorting */}
       <div className="flex items-center gap-3 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-10 flex-shrink-0" />
-        <button
-          className="flex-1 min-w-0 text-left group/sort"
-          onClick={() => handleSort('name')}
-          aria-sort={sortCol === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-        >
-          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-            sortCol === 'name' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-          }`}>
-            Name<SortArrow active={sortCol === 'name'} dir={sortDir} />
-          </span>
-        </button>
+        <ColumnHeader label="Name" active={sortCol === 'name'} direction={sortDir} onClick={() => handleSort('name')} flex align="left" />
         {showObcFilter && (
-          <button
-            className="w-10 text-center flex-shrink-0 group/sort"
-            onClick={() => handleSort('obc')}
-            aria-sort={sortCol === 'obc' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-          >
-            <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-              sortCol === 'obc' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-            }`}>
-              <span title="Original Broadway Cast">OBC</span><SortArrow active={sortCol === 'obc'} dir={sortDir} />
-            </span>
-          </button>
+          <ColumnHeader label="OBC" title="Original Broadway Cast" active={sortCol === 'obc'} direction={sortDir} onClick={() => handleSort('obc')} className="w-10 flex-shrink-0" />
         )}
-        <button
-          className="w-12 text-center flex-shrink-0 group/sort"
-          onClick={() => handleSort('shows')}
-          aria-sort={sortCol === 'shows' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-        >
-          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-            sortCol === 'shows' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-          }`}>
-            {showObcFilter ? 'Total' : 'Shows'}<SortArrow active={sortCol === 'shows'} dir={sortDir} />
-          </span>
-        </button>
-        <button
-          className="w-11 text-center flex-shrink-0 ml-1 group/sort"
-          onClick={() => handleSort('avg')}
-          aria-sort={sortCol === 'avg' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-        >
-          <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-            sortCol === 'avg' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-          }`}>
-            Avg<SortArrow active={sortCol === 'avg'} dir={sortDir} />
-          </span>
-        </button>
+        <ColumnHeader label={showObcFilter ? 'Total' : 'Shows'} active={sortCol === 'shows'} direction={sortDir} onClick={() => handleSort('shows')} className="w-12 flex-shrink-0" />
+        <ColumnHeader label="Avg" active={sortCol === 'avg'} direction={sortDir} onClick={() => handleSort('avg')} className="w-11 flex-shrink-0 ml-1" />
       </div>
 
       {/* Results */}

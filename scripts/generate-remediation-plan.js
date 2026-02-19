@@ -212,6 +212,28 @@ const ALLOWED_SCRIPTS = [
   'fetch-show-images-auto.js',
 ];
 
+// --- Show name extraction (mirrors diagnose-feedback-bug.js) ---
+
+function extractShowNamesFromMessage(message) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+    const shows = raw.shows || raw;
+    const lower = message.toLowerCase();
+    const matched = new Set();
+    for (const show of shows) {
+      const titleLower = show.title.toLowerCase();
+      if (titleLower.length >= 4 && lower.includes(titleLower)) {
+        matched.add(show.title);
+      }
+    }
+    return Array.from(matched);
+  } catch { return []; }
+}
+
+function loadAllShowData(showsArray, title) {
+  return showsArray.filter(s => s.title.toLowerCase() === title.toLowerCase());
+}
+
 // --- Main ---
 
 async function main() {
@@ -247,40 +269,57 @@ async function main() {
   // 2. Build context for Claude
   const showsData = loadJsonSafe('data/shows.json');
   const shows = showsData?.shows || showsData || [];
-  const show = diagnosis.showId
-    ? shows.find(s => s.id === diagnosis.showId)
-    : null;
+
+  // Find relevant shows — by showId if available, otherwise extract from message text
+  let relevantShows = [];
+  if (diagnosis.showId) {
+    const show = shows.find(s => s.id === diagnosis.showId);
+    if (show) relevantShows.push(show);
+  }
+
+  // When showId is null, extract show names from the original message
+  if (relevantShows.length === 0 && diagnosis.originalMessage) {
+    const extractedNames = extractShowNamesFromMessage(diagnosis.originalMessage);
+    console.log(`  Extracted show names from message: ${extractedNames.join(', ') || '(none)'}`);
+    const seen = new Set();
+    for (const name of extractedNames) {
+      const matches = loadAllShowData(shows, name);
+      for (const m of matches) {
+        if (!seen.has(m.id)) {
+          seen.add(m.id);
+          relevantShows.push(m);
+        }
+      }
+    }
+    if (relevantShows.length > 0) {
+      console.log(`  Found ${relevantShows.length} matching shows: ${relevantShows.map(s => `${s.title} (${s.id})`).join(', ')}`);
+    }
+  }
 
   let contextParts = [];
 
-  // Show data
-  if (show) {
+  // Show data for all relevant shows
+  const commercial = relevantShows.length > 0 ? loadJsonSafe('data/commercial.json') : null;
+  const reviewsData = relevantShows.length > 0 ? loadJsonSafe('data/reviews.json') : null;
+  const allReviews = reviewsData?.reviews || reviewsData || [];
+
+  for (const show of relevantShows) {
     const showContext = { ...show };
-    contextParts.push(`## Show Data\n\`\`\`json\n${JSON.stringify(showContext, null, 2)}\n\`\`\``);
+    contextParts.push(`## Show Data: ${show.title} (${show.id})\n\`\`\`json\n${JSON.stringify(showContext, null, 2)}\n\`\`\``);
 
     // Commercial data
-    const commercial = loadJsonSafe('data/commercial.json');
-    const slug = diagnosis.showSlug || show.slug;
+    const slug = show.slug || show.id;
     if (commercial?.shows?.[slug]) {
-      contextParts.push(`## Commercial Data\n\`\`\`json\n${JSON.stringify(commercial.shows[slug], null, 2)}\n\`\`\``);
+      contextParts.push(`## Commercial Data: ${show.title}\n\`\`\`json\n${JSON.stringify(commercial.shows[slug], null, 2)}\n\`\`\``);
     }
 
     // Reviews summary
-    const reviewsData = loadJsonSafe('data/reviews.json');
-    const allReviews = reviewsData?.reviews || reviewsData || [];
     const showReviews = allReviews.filter(r => r.showId === show.id);
     if (showReviews.length > 0) {
-      const summary = showReviews.slice(0, 20).map(r => ({
+      const summary = showReviews.slice(0, 10).map(r => ({
         outlet: r.outlet, critic: r.criticName, score: r.assignedScore, tier: r.tier,
       }));
-      contextParts.push(`## Reviews (${showReviews.length} total, showing first 20)\n\`\`\`json\n${JSON.stringify(summary, null, 2)}\n\`\`\``);
-    }
-
-    // Review text files
-    const reviewDir = path.join(ROOT, 'data/review-texts', show.id);
-    if (fs.existsSync(reviewDir)) {
-      const files = fs.readdirSync(reviewDir).slice(0, 10);
-      contextParts.push(`## Review text files (${files.length} shown): ${files.join(', ')}`);
+      contextParts.push(`## Reviews for ${show.title} (${showReviews.length} total, showing first 10)\n\`\`\`json\n${JSON.stringify(summary, null, 2)}\n\`\`\``);
     }
   }
 

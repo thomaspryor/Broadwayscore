@@ -59,7 +59,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Execute Approved Fix — Commit and push changes"
       - name: Commit and push changes
-        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes')
+        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed')
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |
