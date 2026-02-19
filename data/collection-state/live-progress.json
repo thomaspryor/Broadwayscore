@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-19T10:15:42.134Z",
-  "processed": 49,
-  "failed": 31,
-  "successRate": "61.3%",
+  "updatedAt": "2026-02-19T10:18:24.014Z",
+  "processed": 24,
+  "failed": 76,
+  "successRate": "24.0%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 19
+    "archiveToday": 70,
+    "archive": 23
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 38,
+  "recentActivity": [
+    {
+      "t": "2026-02-19T09:27:50.079Z",
+      "event": "bb-session",
+      "session": "4a5b3e8d",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-19T09:27:52.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:29:31.969Z",
+      "event": "bb-session",
+      "session": "3fa61ee6",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-19T09:29:33.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:31:17.132Z",
+      "event": "bb-session",
+      "session": "7670e9d4",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-02-19T09:31:19.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:33:03.395Z",
+      "event": "bb-session",
+      "session": "11d436ca",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-19T09:33:05.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:34:27.877Z",
+      "event": "bb-session",
+      "session": "3873e20d",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-19T09:34:29.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:36:09.054Z",
+      "event": "bb-session",
+      "session": "e95cdb13",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-19T09:36:10.863Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:37:49.547Z",
+      "event": "bb-session",
+      "session": "d1f1c816",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-19T09:37:51.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:39:17.086Z",
+      "event": "bb-session",
+      "session": "227c7367",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-19T09:39:18.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:40:47.963Z",
+      "event": "bb-session",
+      "session": "377709fe",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-19T09:40:49.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T09:42:20.956Z",
+      "event": "bb-session",
+      "session": "4348c985",
+      "url": "https://www.wsj.com/articles/SB122404440509358685"
+    },
+    {
+      "t": "2026-02-19T09:42:22.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
