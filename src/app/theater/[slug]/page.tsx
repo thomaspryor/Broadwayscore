@@ -100,7 +100,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, theaterSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, theaterSchema]).replace(/</g, '\\u003c') }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
@@ -122,19 +122,28 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
-              {theater.address && (
-                <a
-                  href={getGoogleMapsUrl(theater.address)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 text-sm hover:text-brand transition-colors inline-flex items-center gap-1"
-                >
-                  {theater.address}
-                  <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
+              {theater.formerNames && theater.formerNames.length > 0 && (
+                <p className="text-gray-500 text-xs mt-0.5">Formerly {theater.formerNames.join(', ')}</p>
               )}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                {theater.address && (
+                  <a
+                    href={getGoogleMapsUrl(theater.address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 text-sm hover:text-brand transition-colors inline-flex items-center gap-1"
+                  >
+                    {theater.address}
+                    <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                )}
+                {theater.operator && (
+                  <span className="text-gray-500 text-xs">{theater.operator}</span>
+                )}
+                <Link href="/broadway-theaters-map" className="text-gray-500 text-xs hover:text-brand transition-colors">View on Map</Link>
+              </div>
             </div>
           </div>
 
