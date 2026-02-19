@@ -136,6 +136,7 @@ jobs:
                 submitterName: submission.name || null,
                 submitterEmail: submission.email || null,
                 submitterShow: submission.show || null,
+                originalMessage: submission.message || null,
               };
 
               const body = [

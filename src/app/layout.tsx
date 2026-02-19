@@ -6,7 +6,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
-import { getAllShows, getDataStats } from '@/lib/data-core';
+import { getDataStats } from '@/lib/data-core';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
@@ -64,26 +64,11 @@ export const metadata: Metadata = {
 };
 
 
-// Get shows data for header search
-const getSearchShows = () => {
-  const shows = getAllShows();
-  return shows.map(show => ({
-    id: show.id,
-    title: show.title,
-    slug: show.slug,
-    status: show.status,
-    venue: show.venue,
-    creativeTeamNames: show.creativeTeam?.map(m => m.name).join(', ') || undefined,
-    images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
-  }));
-};
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const searchShows = getSearchShows();
   const { totalReviews } = getDataStats();
 
   return (
@@ -145,13 +130,19 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="flex items-center gap-3">
+                <Link href="/about" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  About
+                </Link>
                 <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   Reviews
                 </Link>
+                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  ☕ Support
+                </a>
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
-                <HeaderSearch shows={searchShows} />
+                <HeaderSearch />
               </div>
             </div>
           </nav>
@@ -254,6 +245,8 @@ export default function RootLayout({
                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <HeaderSubscribeButton />
                 <span className="text-gray-500 hidden sm:inline">|</span>

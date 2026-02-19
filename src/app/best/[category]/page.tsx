@@ -88,7 +88,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
 
   // Display flags
   const isMixedType = new Set(list.shows.map(s => s.type)).size > 1;
-  const statuses = new Set(list.shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const statuses = new Set(list.shows.map(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming' ? 'open' : 'closed'));
   const isMixedStatus = statuses.size > 1;
 
   // Serialize shows with audience data

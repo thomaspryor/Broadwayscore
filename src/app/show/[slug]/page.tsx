@@ -284,7 +284,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
-                {show.status === 'previews' ? (
+                {show.status === 'previews' || show.status === 'upcoming' ? (
                   <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
                 ) : show.closingDate ? (
                   <>
@@ -299,7 +299,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
                 const reviewCount = show.criticScore?.reviewCount || 0;
-                const showTBD = show.status === 'previews' || reviewCount < 5;
+                const showTBD = show.status === 'previews' || show.status === 'upcoming' || reviewCount < 5;
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score) : null;
 
@@ -562,7 +562,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
             }))} initialCount={5} />
           </div>
-        ) : show.status === 'previews' ? (
+        ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
             <p className="text-gray-400 text-sm">
@@ -596,7 +596,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               limitedSources={isHistorical && sourceCount <= 1}
             />
           );
-        })() : show.status === 'previews' ? (
+        })() : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Audience Buzz</h2>
             <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
@@ -617,9 +617,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Box Office Stats */}
         {featureFlags.boxOffice && (
-          grosses && (show.status !== 'previews' || grosses.thisWeek) ? (
+          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
             <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-          ) : show.status === 'previews' ? (
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
             <section className="card p-5 sm:p-6 mb-6">
               <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
               <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
@@ -635,10 +635,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               showTitle={show.title}
               trend={getRecoupmentTrend(show.slug)}
               weeklyGross={grosses?.thisWeek?.gross}
-              showStatus={show.status as 'open' | 'closed' | 'previews'}
+              showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
               allTimeGross={grosses?.allTime?.gross}
             />
-          ) : show.status === 'previews' ? (
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
             <section className="card p-5 sm:p-6 mb-6">
               <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
               <p className="text-gray-400 text-sm">Financial data not available yet.</p>
@@ -716,14 +716,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div>
               <dt className="text-gray-500">Status</dt>
               <dd className="text-white mt-0.5">
-                {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : 'Closed'}
+                {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
               </dd>
             </div>
             <div>
-              <dt className="text-gray-500">{show.status === 'previews' ? 'Opens' : 'Opened'}</dt>
+              <dt className="text-gray-500">{show.status === 'previews' || show.status === 'upcoming' ? 'Opens' : 'Opened'}</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
             </div>
-            {show.previewsStartDate && show.status === 'previews' && (
+            {show.previewsStartDate && (show.status === 'previews' || show.status === 'upcoming') && (
               <div>
                 <dt className="text-gray-500">Previews Start</dt>
                 <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>

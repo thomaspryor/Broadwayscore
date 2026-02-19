@@ -41,27 +41,71 @@ runs:
         CHANGED=$(git diff --staged --stat | tail -1)
         git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
 
-        # Push with retry (handles concurrent workflows)
+        # Push with retry and content-aware conflict resolution
+        # Instead of -X theirs (which silently drops local changes), we rebase
+        # without auto-resolution, then resolve conflicts by keeping the version
+        # with richer content (longer fullText). This prevents a truncated archive
+        # snapshot from overwriting a complete review pushed by another workflow.
         for i in 1 2 3 4 5; do
-          if git pull --rebase -X theirs origin main 2>&1 && git push origin main 2>&1; then
+          # Try fast path first: if no conflicts, rebase + push succeeds immediately
+          if git pull --rebase origin main 2>&1 && git push origin main 2>&1; then
             echo "Review-texts pushed successfully (attempt $i)"
             exit 0
           fi
 
-          # Check for modify/delete conflicts (e.g. failed-fetches.json deleted locally but modified remotely)
+          # Rebase hit conflicts — resolve them content-aware
           UNMERGED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
           if [ -n "$UNMERGED" ]; then
-            echo "Resolving modify/delete conflicts..."
-            echo "$UNMERGED" | while IFS= read -r f; do
-              if [ -f "$f" ]; then
-                git add "$f"
-              else
+            echo "Resolving conflicts with content-aware merge (attempt $i)..."
+            KEPT_OURS=0
+            KEPT_THEIRS=0
+
+            while IFS= read -r f; do
+              # Handle delete/modify conflicts
+              if [ ! -f "$f" ]; then
                 git rm "$f" 2>/dev/null || true
+                continue
               fi
-            done
+
+              # For JSON review files: compare fullText length, keep the richer version
+              if [[ "$f" == *.json ]] && [[ "$f" != "failed-fetches.json" ]]; then
+                OUR_LEN=0
+                THEIR_LEN=0
+
+                # REBASE_HEAD = our commit being replayed, HEAD = remote base
+                OUR_CONTENT=$(git show REBASE_HEAD:"$f" 2>/dev/null || echo "")
+                THEIR_CONTENT=$(git show HEAD:"$f" 2>/dev/null || echo "")
+
+                if [ -n "$OUR_CONTENT" ]; then
+                  OUR_LEN=$(echo "$OUR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
+                fi
+
+                if [ -n "$THEIR_CONTENT" ]; then
+                  THEIR_LEN=$(echo "$THEIR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
+                fi
+
+                if [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; then
+                  git show REBASE_HEAD:"$f" > "$f" 2>/dev/null
+                  git add "$f"
+                  KEPT_OURS=$((KEPT_OURS + 1))
+                  echo "  $f: kept ours (${OUR_LEN} chars > ${THEIR_LEN} chars)"
+                else
+                  git checkout --theirs "$f" 2>/dev/null || true
+                  git add "$f"
+                  KEPT_THEIRS=$((KEPT_THEIRS + 1))
+                  echo "  $f: kept theirs (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
+                fi
+              else
+                # Non-review files (failed-fetches.json, etc): keep ours
+                git checkout --ours "$f" 2>/dev/null || git add "$f"
+              fi
+            done <<< "$UNMERGED"
+
+            echo "Conflict resolution: kept $KEPT_OURS ours, $KEPT_THEIRS theirs"
+
             if git rebase --continue 2>/dev/null; then
               if git push origin main 2>&1; then
-                echo "Review-texts pushed successfully after conflict resolution (attempt $i)"
+                echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
                 exit 0
               fi
             fi

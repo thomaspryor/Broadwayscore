@@ -155,9 +155,9 @@ jobs:
         id: git-check
         run: |
           # Check for changes in review-texts or archives directory (NOT reviews.json to avoid conflicts)
-          git diff --exit-code data/archives/ data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
+          git diff --exit-code data/aggregator-archive/ data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
           # Also check for untracked files
-          if [ -n "$(git ls-files --others --exclude-standard data/archives/)" ]; then
+          if [ -n "$(git ls-files --others --exclude-standard data/aggregator-archive/)" ]; then
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -180,7 +180,7 @@ jobs:
 
           # Only add review-texts and archives (NOT reviews.json to avoid merge conflicts)
           # reviews.json can be rebuilt later from review-texts
-          git add data/archives/ data/collection-state/
+          git add data/aggregator-archive/ data/collection-state/
 
           # Check if there's anything to commit after adding
           if git diff --cached --quiet; then

@@ -145,7 +145,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           fallback={
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
               <div className="text-2xl mb-0.5">🎭</div>
-              {show.status === 'previews' && (
+              {(show.status === 'previews' || show.status === 'upcoming') && (
                 <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
               )}
             </div>
@@ -164,7 +164,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           {!hideStatus && <StatusBadge status={show.status} />}
         </div>
         <p className="text-sm text-gray-400 mt-2.5 truncate">
-          {show.status === 'previews' ? (
+          {show.status === 'previews' || show.status === 'upcoming' ? (
             <>Opens {formatOpeningDate(show.openingDate)}</>
           ) : show.status === 'closed' ? (
             <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
@@ -221,7 +221,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
                 </div>
               )}
             </>
-          ) : show.status === 'previews' ? (
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
             <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
               TBD
             </div>
@@ -229,7 +229,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         ) : (
           // Critics mode: Show tier label + numeric score badge + audience chip
           <>
-            {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
+            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
                 Not Yet Rated
               </span>
@@ -287,7 +287,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
           fallback={
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
               <div className="text-2xl mb-1">🎭</div>
-              {show.status === 'previews' && (
+              {(show.status === 'previews' || show.status === 'upcoming') && (
                 <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
               )}
             </div>
@@ -540,7 +540,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
     // Non-search filtering: apply score mode, status, and type filters
     let result = shows.filter(show => {
       // Previews shows appear in the Upcoming carousel, not the main grid
-      if (show.status === 'previews') return false;
+      if (show.status === 'previews' || show.status === 'upcoming') return false;
       if (scoreMode === 'audience') {
         // Only show shows with audience buzz data
         return show.audienceCombinedScore !== null;
@@ -585,29 +585,29 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
         switch (sort) {
           case 'score_desc': {
             if (scoreMode === 'audience') {
-              const aAud = a.status === 'previews' ? -1 : (a.audienceCombinedScore ?? -1);
-              const bAud = b.status === 'previews' ? -1 : (b.audienceCombinedScore ?? -1);
+              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.audienceCombinedScore ?? -1);
+              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.audienceCombinedScore ?? -1);
               return bAud - aAud;
             }
-            const aDesc = a.status === 'previews' ? -1 : (a.criticScore?.score ?? -1);
-            const bDesc = b.status === 'previews' ? -1 : (b.criticScore?.score ?? -1);
+            const aDesc = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.criticScore?.score ?? -1);
+            const bDesc = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.criticScore?.score ?? -1);
             return bDesc - aDesc;
           }
           case 'score_asc': {
             if (scoreMode === 'audience') {
-              const aAud = a.status === 'previews' ? Infinity : (a.audienceCombinedScore ?? Infinity);
-              const bAud = b.status === 'previews' ? Infinity : (b.audienceCombinedScore ?? Infinity);
+              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.audienceCombinedScore ?? Infinity);
+              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (b.audienceCombinedScore ?? Infinity);
               return aAud - bAud;
             }
-            const aAsc = a.status === 'previews' ? Infinity : (a.criticScore?.score ?? Infinity);
-            const bAsc = b.status === 'previews' ? Infinity : (b.criticScore?.score ?? Infinity);
+            const aAsc = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.criticScore?.score ?? Infinity);
+            const bAsc = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (b.criticScore?.score ?? Infinity);
             return aAsc - bAsc;
           }
           case 'audience_buzz': {
             // Sort by audience buzz combined score (highest first)
             // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
-            const aScore = a.status === 'previews' ? -1 : (a.audienceCombinedScore ?? -1);
-            const bScore = b.status === 'previews' ? -1 : (b.audienceCombinedScore ?? -1);
+            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.audienceCombinedScore ?? -1);
+            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.audienceCombinedScore ?? -1);
             return bScore - aScore;
           }
           case 'alpha':

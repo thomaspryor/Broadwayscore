@@ -74,6 +74,72 @@ const BUG_CATEGORIES = {
 const DEFAULT_FILES = ['src/lib/engine.ts', 'src/config/scoring.ts', 'src/app/page.tsx'];
 
 /**
+ * Extract potential show names from user message by matching against shows.json titles
+ */
+function extractShowNamesFromMessage(message) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+    const shows = raw.shows || raw;
+    const lower = message.toLowerCase();
+    const matched = new Set();
+
+    for (const show of shows) {
+      // Match show titles that appear in the message (case-insensitive)
+      const titleLower = show.title.toLowerCase();
+      if (titleLower.length >= 4 && lower.includes(titleLower)) {
+        matched.add(show.title);
+      }
+    }
+
+    return Array.from(matched);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Load ALL matching shows for a given title (handles multiple productions)
+ */
+function loadAllShowData(showName) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+    const shows = raw.shows || raw;
+    const lower = showName.toLowerCase().trim();
+    const matches = shows.filter(s =>
+      s.title.toLowerCase() === lower ||
+      s.slug === lower ||
+      s.title.toLowerCase().includes(lower) ||
+      lower.includes(s.title.toLowerCase())
+    );
+
+    if (matches.length === 0) return [];
+
+    // Load reviews data once for all matches
+    let allReviews = [];
+    try {
+      const reviewsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
+      allReviews = reviewsRaw.reviews || reviewsRaw;
+    } catch { /* skip */ }
+
+    return matches.map(show => ({
+      show: {
+        id: show.id,
+        title: show.title,
+        slug: show.slug,
+        status: show.status,
+        venue: show.venue,
+        openingDate: show.openingDate,
+        closingDate: show.closingDate,
+        creativeTeam: show.creativeTeam || [],
+      },
+      reviewCount: allReviews.filter(r => r.showId === show.id).length,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/**
  * Match bug description to file categories via keyword matching
  */
 function classifyBugCategories(message) {
@@ -253,14 +319,35 @@ export async function diagnoseBug(message, showName, userCategory) {
   // 2. Load code context
   const codeContext = buildCodeContext(categories);
 
-  // 3. Load show data if mentioned
+  // 3. Load show data if mentioned (from form field AND from message text)
   let showData = null;
   let showDataStr = '';
+  const allShowData = [];
+
+  // Try loading from the form's show field
   if (showName && showName !== 'N/A') {
     showData = loadShowData(showName);
     if (showData) {
-      showDataStr = `## Show Data for "${showData.show.title}"\n\`\`\`json\n${JSON.stringify(showData, null, 2)}\n\`\`\``;
+      allShowData.push(showData);
     }
+  }
+
+  // Also try to extract show names from the message text and load ALL matching productions
+  const extractedShows = extractShowNamesFromMessage(message);
+  for (const name of extractedShows) {
+    const productions = loadAllShowData(name);
+    for (const data of productions) {
+      if (!allShowData.some(d => (d.show?.id || d.id) === data.show.id)) {
+        allShowData.push(data);
+      }
+    }
+  }
+
+  if (allShowData.length > 0) {
+    showDataStr = allShowData.map(d => {
+      const show = d.show || d;
+      return `## Show Data for "${show.title}" (id: ${show.id})\n\`\`\`json\n${JSON.stringify(d, null, 2)}\n\`\`\``;
+    }).join('\n\n');
   }
 
   // 4. Build diagnosis prompt
@@ -271,7 +358,7 @@ export async function diagnoseBug(message, showName, userCategory) {
 **Show mentioned:** ${showName || 'None'}
 **Message:** ${message}
 
-${isContentError && showDataStr ? showDataStr : ''}
+${showDataStr || ''}
 
 ${codeContext ? `## Relevant Source Code\n${codeContext}` : ''}
 
@@ -282,6 +369,7 @@ ${codeContext ? `## Relevant Source Code\n${codeContext}` : ''}
 4. If the user seems to be confused about how the site works (not actually a bug), say so kindly
 5. Propose a concrete fix in 1-2 sentences, or say "no fix needed" if it's working as designed
 6. Rate your confidence: high (obvious cause found), medium (likely but uncertain), low (speculative)
+7. CRITICAL: Do NOT assert specific production years, revival numbers, or historical Broadway facts unless you can verify them from the Show Data provided above. If no show data was loaded, say "the show's data file" without guessing years or production details. Getting production details wrong (e.g., saying "2005 original" when it was a "2015 revival") undermines trust in the diagnosis.
 
 Respond with ONLY a JSON object in this exact format:
 {
