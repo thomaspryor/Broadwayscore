@@ -1,654 +1,77 @@
 {
   "processed": [
-    "aladdin-2014/wsj--terry-teachout.json",
-    "bug-2026/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json",
-    "ragtime-2025/wsj--charles-isherwood.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
-    "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-    "a-life-in-the-theatre-2010/wsj--terry-teachout.json",
-    "a-soldiers-play-2020/wsj--terry-teachout.json",
-    "a-view-from-the-bridge-2010/wsj--terry-teachout.json",
-    "airline-highway-2015/wsj--terry-teachout.json",
-    "almost-famous-2022/wsj--charles-isherwood.json",
-    "amazing-grace-2015/wsj--terry-teachout.json",
-    "american-buffalo-2022/wsj--charles-isherwood.json",
-    "american-idiot-2010/wsj--terry-teachout.json",
-    "american-son-2018/wsj--terry-teachout.json",
-    "appropriate-2023/wsj--charles-isherwood.json",
-    "bad-cinderella-2023/wsj--charles-isherwood.json",
-    "be-more-chill-2019/wsj--terry-teachout.json",
-    "camelot-2023/wsj--charles-isherwood.json",
-    "carousel-2018/wsj--terry-teachout.json",
-    "cats-1982/wsj--terry-teachout.json"
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "a-bronx-tale-2007/thewrap--robert-hofler.json",
+    "almost-famous-2022/new-york-sun--elysa-gardner.json",
+    "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
+    "english-2025/broadwaynews--brittani-samuel.json",
+    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+    "good-night-oscar-2023/thewrap--robert-hofler.json",
+    "gypsy-2024/broadwaynews--brittani-samuel.json",
+    "gypsy-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/chelsea-community-news--michael-musto.json",
+    "lempicka-2024/broadwaynews--brittani-samuel.json",
+    "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
+    "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "network-2018/broadwaynews--charles-isherwood.json",
+    "on-your-feet-2015/theatre-reviews-limited--david-roberts.json",
+    "once-on-this-island-2017/theatre-reviews-limited--joseph-verlezza.json",
+    "once-upon-a-mattress-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "saint-joan-2018/theatre-reviews-limited--david-roberts.json",
+    "smash-2025/broadwaynews--brittani-samuel.json",
+    "smash-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "suffs-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--charles-isherwood.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "the-great-gatsby-2024/wsj--charles-isherwood.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "110-in-the-shade-2007/wsj--terry-teachout.json",
-    "1776-2022/wsj--charles-isherwood.json",
-    "1984-2017/wsj--terry-teachout.json",
-    "33-variations-2009/wsj--terry-teachout.json",
-    "700-sundays-2013/wsj--terry-teachout.json",
-    "9-to-5-2009/wsj--unknown.json",
-    "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
-    "a-christmas-carol-2019/wsj--charles-isherwood.json",
-    "a-christmas-story-the-musical-2012/wsj--terry-teachout.json",
-    "a-delicate-balance-2014/wsj--terry-teachout.json",
-    "a-delicate-balance-2014/wsj--unknown.json",
-    "a-dolls-house-2023/wsj--charles-isherwood.json",
-    "a-dolls-house-part-2-2017/wsj--terry-teachout.json",
-    "a-life-in-the-theatre-2010/wsj--.json",
-    "a-little-night-music-2009/wsj--terry-teachout.json",
-    "a-strange-loop-2022/wsj--charles-isherwood.json",
-    "a-streetcar-named-desire-2012/wsj--terry-teachout.json",
-    "act-one-2014/wsj--terry-teachout.json",
-    "after-midnight-2013/wsj--terry-teachout.json",
-    "aint-no-mo-2022/wsj--charles-isherwood.json",
-    "all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
-    "all-my-sons-2008/wsj--terry-teachout.json",
-    "allegiance-2015/wsj--terry-teachout.json",
-    "almost-famous-2022/wsj--terry-teachout.json",
-    "amelie-a-new-musical-2017/wsj--terry-teachout.json",
-    "american-buffalo-2008/wsj--terry-teachout.json",
-    "american-psycho-2016/wsj--terry-teachout.json",
-    "an-act-of-god-2016/wsj--terry-teachout.json",
-    "an-american-in-paris-2015/wsj--terry-teachout.json",
-    "an-enemy-of-the-people-2012/wsj--terry-teachout.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "anastasia-2017/wsj--charles-isherwood.json",
-    "annie-2012/wsj--terry-teachout.json",
-    "anything-goes-2011/wsj--terry-teachout.json",
-    "arcadia-2011/wsj--terry-teachout.json",
-    "baby-its-you-2011/wsj--terry-teachout.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "bandstand-2017/wsj--terry-teachout.json",
-    "bengal-tiger-at-the-baghdad-zoo-2011/wsj--terry-teachout.json",
-    "bernhardthamlet-2018/wsj--terry-teachout.json",
-    "betrayal-2013/wsj--terry-teachout.json",
-    "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
-    "big-fish-2013/wsj--terry-teachout.json",
-    "blackbird-2016/wsj--terry-teachout.json",
-    "breakfast-at-tiffanys-2013/wsj--terry-teachout.json",
-    "bright-star-2016/wsj--terry-teachout.json",
-    "bullets-over-broadway-2014/wsj--terry-teachout.json",
-    "burn-this-2019/wsj--terry-teachout.json",
-    "cabaret-2014/wsj--terry-teachout.json",
-    "cabaret-2024/wsj--charles-isherwood.json",
-    "camelot-2023/wsj--terry-teachout.json",
-    "caroline-or-change-2021/wsj--terry-teachout.json",
-    "catch-me-if-you-can-2011/wsj--terry-teachout.json",
-    "cats-2016/wsj--terry-teachout.json",
-    "chaplin-2012/wsj--terry-teachout.json",
-    "children-of-a-lesser-god-2018/wsj--terry-teachout.json",
-    "china-doll-2015/wsj--unknown.json",
-    "chinglish-2011/wsj--terry-teachout.json",
-    "clydes-2021/wsj--charles-isherwood.json",
-    "collected-stories-2010/wsj--terry-teachout.json",
-    "come-fly-away-2010/wsj--.json",
-    "come-from-away-2017/wsj--terry-teachout.json",
-    "company-2021/wsj--terry-teachout.json",
-    "cost-of-living-2022/wsj--charles-isherwood.json"
+    "just-in-time-2025/broadwaynews--brittani-samuel.json",
+    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
+    "american-psycho-2016/thewrap--robert-hofler.json",
+    "american-psycho-2016/thewrap--steve-pond.json",
+    "ghost-the-musical-2012/guardian--charles-isherwood.json",
+    "here-lies-love-2023/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "marjorie-prime-2025/theatre-reviews-limited--david-roberts.json",
+      "once-upon-a-mattress-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "saint-joan-2018/theatre-reviews-limited--david-roberts.json",
+      "smash-2025/theatre-reviews-limited--joseph-verlezza.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
-      "a-life-in-the-theatre-2010/wsj--terry-teachout.json"
+      "good-night-oscar-2023/thewrap--robert-hofler.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
-      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
-      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json",
-      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
-      "data/review-texts/titanique-2026/wsj--charles-isherwood.json",
-      "data/review-texts/110-in-the-shade-2007/wsj--terry-teachout.json",
-      "data/review-texts/1776-2022/wsj--charles-isherwood.json",
-      "data/review-texts/1984-2017/wsj--terry-teachout.json",
-      "data/review-texts/33-variations-2009/wsj--terry-teachout.json",
-      "data/review-texts/700-sundays-2013/wsj--terry-teachout.json",
-      "data/review-texts/9-to-5-2009/wsj--unknown.json",
-      "data/review-texts/a-behanding-in-spokane-2010/wsj--terry-teachout.json",
-      "data/review-texts/a-christmas-carol-2019/wsj--charles-isherwood.json",
-      "data/review-texts/a-christmas-story-the-musical-2012/wsj--terry-teachout.json",
-      "data/review-texts/a-delicate-balance-2014/wsj--unknown.json",
-      "data/review-texts/a-dolls-house-2023/wsj--charles-isherwood.json",
-      "data/review-texts/a-dolls-house-part-2-2017/wsj--terry-teachout.json",
-      "data/review-texts/a-life-in-the-theatre-2010/wsj--.json",
-      "data/review-texts/a-little-night-music-2009/wsj--terry-teachout.json",
-      "data/review-texts/a-strange-loop-2022/wsj--charles-isherwood.json",
-      "data/review-texts/a-streetcar-named-desire-2012/wsj--terry-teachout.json",
-      "data/review-texts/act-one-2014/wsj--terry-teachout.json",
-      "data/review-texts/after-midnight-2013/wsj--terry-teachout.json",
-      "data/review-texts/aint-no-mo-2022/wsj--charles-isherwood.json",
-      "data/review-texts/all-in-comedy-about-love-2024/wsj--charles-isherwood.json",
-      "data/review-texts/all-my-sons-2008/wsj--terry-teachout.json",
-      "data/review-texts/allegiance-2015/wsj--terry-teachout.json",
-      "data/review-texts/almost-famous-2022/wsj--terry-teachout.json",
-      "data/review-texts/amelie-a-new-musical-2017/wsj--terry-teachout.json",
-      "data/review-texts/american-buffalo-2008/wsj--terry-teachout.json",
-      "data/review-texts/american-psycho-2016/wsj--terry-teachout.json",
-      "data/review-texts/an-american-in-paris-2015/wsj--terry-teachout.json",
-      "data/review-texts/an-enemy-of-the-people-2012/wsj--terry-teachout.json",
-      "data/review-texts/an-enemy-of-the-people-2024/wsj--unknown.json",
-      "data/review-texts/anastasia-2017/wsj--charles-isherwood.json",
-      "data/review-texts/annie-2012/wsj--terry-teachout.json",
-      "data/review-texts/anything-goes-2011/wsj--terry-teachout.json",
-      "data/review-texts/arcadia-2011/wsj--terry-teachout.json",
-      "data/review-texts/baby-its-you-2011/wsj--terry-teachout.json",
-      "data/review-texts/back-to-the-future-2023/wsj--charles-isherwood.json",
-      "data/review-texts/bandstand-2017/wsj--terry-teachout.json",
-      "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/wsj--terry-teachout.json",
-      "data/review-texts/between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
-      "data/review-texts/big-fish-2013/wsj--terry-teachout.json",
-      "data/review-texts/breakfast-at-tiffanys-2013/wsj--terry-teachout.json",
-      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
-      "data/review-texts/bullets-over-broadway-2014/wsj--terry-teachout.json",
-      "data/review-texts/burn-this-2019/wsj--terry-teachout.json",
-      "data/review-texts/cabaret-2024/wsj--charles-isherwood.json",
-      "data/review-texts/camelot-2023/wsj--terry-teachout.json",
-      "data/review-texts/caroline-or-change-2021/wsj--terry-teachout.json",
-      "data/review-texts/catch-me-if-you-can-2011/wsj--terry-teachout.json",
-      "data/review-texts/cats-2016/wsj--terry-teachout.json",
-      "data/review-texts/chaplin-2012/wsj--terry-teachout.json",
-      "data/review-texts/children-of-a-lesser-god-2018/wsj--terry-teachout.json",
-      "data/review-texts/china-doll-2015/wsj--unknown.json",
-      "data/review-texts/chinglish-2011/wsj--terry-teachout.json",
-      "data/review-texts/clydes-2021/wsj--charles-isherwood.json",
-      "data/review-texts/collected-stories-2010/wsj--terry-teachout.json",
-      "data/review-texts/come-from-away-2017/wsj--terry-teachout.json",
-      "data/review-texts/company-2021/wsj--terry-teachout.json",
-      "data/review-texts/cost-of-living-2022/wsj--charles-isherwood.json"
+      "data/review-texts/network-2018/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
-      "aladdin-2014/wsj--terry-teachout.json",
-      "bug-2026/wsj--charles-isherwood.json",
-      "hadestown-2019/wsj--terry-teachout.json",
-      "hamilton-2015/wsj--terry-teachout.json",
-      "harry-potter-2021/wsj--terry-teachout.json",
-      "operation-mincemeat-2025/wsj--charles-isherwood.json",
-      "ragtime-2025/wsj--charles-isherwood.json",
-      "the-outsiders-2024/wsj--charles-isherwood.json",
-      "wicked-2003/wsj--terry-teachout.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
-      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-      "a-soldiers-play-2020/wsj--terry-teachout.json",
-      "a-view-from-the-bridge-2010/wsj--terry-teachout.json",
-      "airline-highway-2015/wsj--terry-teachout.json",
-      "almost-famous-2022/wsj--charles-isherwood.json",
-      "amazing-grace-2015/wsj--terry-teachout.json",
-      "american-buffalo-2022/wsj--charles-isherwood.json",
-      "american-idiot-2010/wsj--terry-teachout.json",
-      "american-son-2018/wsj--terry-teachout.json",
-      "appropriate-2023/wsj--charles-isherwood.json",
-      "bad-cinderella-2023/wsj--charles-isherwood.json",
-      "be-more-chill-2019/wsj--terry-teachout.json",
-      "camelot-2023/wsj--charles-isherwood.json",
-      "carousel-2018/wsj--terry-teachout.json",
-      "cats-1982/wsj--terry-teachout.json"
+      "a-bronx-tale-2007/thewrap--robert-hofler.json",
+      "almost-famous-2022/new-york-sun--elysa-gardner.json",
+      "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
+      "english-2025/broadwaynews--brittani-samuel.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/chelsea-community-news--michael-musto.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json",
+      "on-your-feet-2015/theatre-reviews-limited--david-roberts.json",
+      "once-on-this-island-2017/theatre-reviews-limited--joseph-verlezza.json",
+      "smash-2025/broadwaynews--brittani-samuel.json",
+      "suffs-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-19T04:53:11.031Z",
-  "lastProcessed": "cost-of-living-2022/wsj--charles-isherwood.json",
-  "log": [
-    {
-      "t": "2026-02-19T04:54:02.587Z",
-      "event": "bb-session",
-      "session": "33396c25",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
-    },
-    {
-      "t": "2026-02-19T04:54:04.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T04:55:23.433Z",
-      "event": "bb-session",
-      "session": "2ce718d1",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
-    },
-    {
-      "t": "2026-02-19T04:55:25.526Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T04:56:50.340Z",
-      "event": "bb-session",
-      "session": "be2e9840",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-19T04:56:52.392Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T04:58:17.491Z",
-      "event": "bb-session",
-      "session": "9c097481",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-19T04:58:19.398Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T04:59:55.110Z",
-      "event": "bb-session",
-      "session": "431e32a9",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
-    },
-    {
-      "t": "2026-02-19T04:59:57.111Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:01:38.590Z",
-      "event": "bb-session",
-      "session": "c381ea19",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-02-19T05:01:40.516Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:03:34.000Z",
-      "event": "bb-session",
-      "session": "d3079570",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-19T05:03:36.117Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:05:06.700Z",
-      "event": "bb-session",
-      "session": "ccecdc56",
-      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
-    },
-    {
-      "t": "2026-02-19T05:05:08.716Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:06:31.740Z",
-      "event": "bb-session",
-      "session": "bca1d87d",
-      "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadw"
-    },
-    {
-      "t": "2026-02-19T05:06:33.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:08:03.904Z",
-      "event": "bb-session",
-      "session": "6bc31bd9",
-      "url": "https://www.wsj.com/articles/SB117961869834728582"
-    },
-    {
-      "t": "2026-02-19T05:08:06.145Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:09:37.325Z",
-      "event": "bb-session",
-      "session": "f659b0e5",
-      "url": "https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-pa"
-    },
-    {
-      "t": "2026-02-19T05:09:39.372Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:11:19.513Z",
-      "event": "bb-session",
-      "session": "f9ed429f",
-      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
-    },
-    {
-      "t": "2026-02-19T05:11:21.559Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:12:41.154Z",
-      "event": "bb-session",
-      "session": "30de4537",
-      "url": "https://www.wsj.com/articles/SB123788676543210987"
-    },
-    {
-      "t": "2026-02-19T05:12:43.155Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:14:09.496Z",
-      "event": "bb-session",
-      "session": "f3a579c7",
-      "url": "https://www.wsj.com/articles/SB10001424052702304470504579162943094099658"
-    },
-    {
-      "t": "2026-02-19T05:14:11.388Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:15:52.767Z",
-      "event": "bb-session",
-      "session": "aa07c21b",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
-    },
-    {
-      "t": "2026-02-19T05:15:54.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:17:25.336Z",
-      "event": "bb-session",
-      "session": "e1828c88",
-      "url": "https://www.wsj.com/articles/SB10001424052748704682604575130943020916946"
-    },
-    {
-      "t": "2026-02-19T05:17:27.531Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:19:00.057Z",
-      "event": "bb-session",
-      "session": "fb86ada6",
-      "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-lo"
-    },
-    {
-      "t": "2026-02-19T05:19:02.116Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:20:37.666Z",
-      "event": "bb-session",
-      "session": "3c79186f",
-      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
-    },
-    {
-      "t": "2026-02-19T05:20:39.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:22:45.142Z",
-      "event": "bb-session",
-      "session": "77cff285",
-      "url": "https://online.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balan"
-    },
-    {
-      "t": "2026-02-19T05:22:47.079Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:24:26.031Z",
-      "event": "bb-session",
-      "session": "4a867c5c",
-      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
-    },
-    {
-      "t": "2026-02-19T05:24:28.261Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:26:06.135Z",
-      "event": "bb-session",
-      "session": "e42b5634",
-      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
-    },
-    {
-      "t": "2026-02-19T05:26:08.179Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:27:32.961Z",
-      "event": "bb-session",
-      "session": "f772897e",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T05:27:35.004Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:29:06.495Z",
-      "event": "bb-session",
-      "session": "f9d26fea",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T05:29:08.573Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:30:24.496Z",
-      "event": "bb-session",
-      "session": "7da2170c",
-      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
-    },
-    {
-      "t": "2026-02-19T05:30:26.667Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:31:56.020Z",
-      "event": "bb-session",
-      "session": "9322bc41",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
-    },
-    {
-      "t": "2026-02-19T05:31:58.785Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:33:34.928Z",
-      "event": "bb-session",
-      "session": "bcbb4804",
-      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
-    },
-    {
-      "t": "2026-02-19T05:33:37.349Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:35:13.699Z",
-      "event": "bb-session",
-      "session": "97810299",
-      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
-    },
-    {
-      "t": "2026-02-19T05:35:15.891Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:36:51.509Z",
-      "event": "bb-session",
-      "session": "aa57b13a",
-      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
-    },
-    {
-      "t": "2026-02-19T05:36:53.292Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:38:21.397Z",
-      "event": "bb-session",
-      "session": "394e4edd",
-      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
-    },
-    {
-      "t": "2026-02-19T05:38:23.461Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:39:54.863Z",
-      "event": "bb-session",
-      "session": "c8b16bab",
-      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
-    },
-    {
-      "t": "2026-02-19T05:39:57.057Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:41:34.581Z",
-      "event": "bb-session",
-      "session": "33e5fe5f",
-      "url": "https://www.wsj.com/articles/SB122401234567890123"
-    },
-    {
-      "t": "2026-02-19T05:41:36.636Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:43:16.134Z",
-      "event": "bb-session",
-      "session": "d8a12b4d",
-      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
-    },
-    {
-      "t": "2026-02-19T05:43:17.942Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:44:45.330Z",
-      "event": "bb-session",
-      "session": "53f08cbd",
-      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
-    },
-    {
-      "t": "2026-02-19T05:44:47.576Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:46:10.055Z",
-      "event": "bb-session",
-      "session": "7ddfe9c4",
-      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
-    },
-    {
-      "t": "2026-02-19T05:46:12.365Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:47:46.004Z",
-      "event": "bb-session",
-      "session": "f0e32dfe",
-      "url": "https://www.wsj.com/articles/SB122404440509358685"
-    },
-    {
-      "t": "2026-02-19T05:47:48.009Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:49:47.384Z",
-      "event": "bb-session",
-      "session": "0b4d9bad",
-      "url": "https://www.wsj.com/articles/american-psycho-the-musical-review-serial-killer-ch"
-    },
-    {
-      "t": "2026-02-19T05:49:49.287Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:51:32.204Z",
-      "event": "bb-session",
-      "session": "4ea3d4d9",
-      "url": "https://www.wsj.com/articles/an-american-in-paris-review-not-since-robbins-14289"
-    },
-    {
-      "t": "2026-02-19T05:51:34.231Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:52:49.462Z",
-      "event": "bb-session",
-      "session": "4f0d58e0",
-      "url": "https://www.wsj.com/articles/SB10000872396390444620104578014550867896632"
-    },
-    {
-      "t": "2026-02-19T05:52:51.518Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:54:20.830Z",
-      "event": "bb-session",
-      "session": "8f3eb3ea",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-19T05:54:22.652Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T05:56:16.913Z",
-      "event": "bb-session",
-      "session": "2f3da3d3",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
-    },
-    {
-      "t": "2026-02-19T05:56:18.889Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-02-19T06:28:46.524Z",
+  "lastProcessed": "suffs-2024/broadwaynews--brittani-samuel.json",
+  "log": []
 }
