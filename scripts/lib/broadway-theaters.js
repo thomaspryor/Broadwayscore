@@ -291,7 +291,7 @@ const BROADWAY_THEATERS = {
     canonical: 'Lyric Theatre',
     address: '214 W 43rd St',
     seats: 1896,
-    aliases: ['Ford Center', 'Hilton Theatre'],
+    aliases: ['Ford Center', 'Ford Center for the Performing Arts', 'Hilton Theatre'],
     renamed: '2014-08-01'
   },
 
