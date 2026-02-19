@@ -293,7 +293,7 @@ const OUTLET_ALIASES = {
   ],
   'nbcny': [
     'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york',
-    'mbc new york', 'mbc-new-york'
+    'mbc new york', 'mbc-new-york', 'nbcnewyork'
   ],
   'londontheatre': [
     'londontheatre', 'london theatre', 'london-theatre', 'london theater'
