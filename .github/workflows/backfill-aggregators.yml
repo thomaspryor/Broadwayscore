@@ -177,7 +177,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/review-texts/ data/aggregator-archive/
+          git add data/aggregator-archive/
           git diff --staged --quiet && { echo "No changes in batch ${{ matrix.batch_id }}"; exit 0; }
 
           git commit -m "data: Backfill aggregator data (batch ${{ matrix.batch_id }}/${{ strategy.job-total }})"
@@ -252,7 +252,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reviews.json data/critic-registry.json data/audit/ data/review-texts/
+          git add data/reviews.json data/critic-registry.json data/audit/
           git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
 
           git commit -m "data: Auto-rebuild reviews.json after aggregator backfill"

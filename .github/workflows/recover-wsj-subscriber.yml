@@ -92,7 +92,7 @@ jobs:
       - name: Final commit and push
         if: always() && env.SKIP != 'true'
         run: |
-          git add data/review-texts/ data/audit/
+          git add data/audit/
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
           RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")

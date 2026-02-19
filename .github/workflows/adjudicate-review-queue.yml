@@ -81,12 +81,12 @@ jobs:
         if: steps.check_queue.outputs.has_items == 'true'
         id: changes
         run: |
-          if git diff --quiet data/review-texts/; then
+          if git diff --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No files changed."
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            CHANGED=$(git diff --name-only data/review-texts/ | wc -l | tr -d ' ')
+            CHANGED=$(git diff --name-only | wc -l | tr -d ' ')
             echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
             echo "$CHANGED file(s) changed."
           fi
@@ -104,7 +104,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/review-texts/
+          git add
 
           CHANGED=${{ steps.changes.outputs.changed_count }}
           git commit -m "data: Auto-adjudicate $CHANGED review(s) from queue

@@ -63,7 +63,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |
-          git add data/shows.json data/commercial.json data/audience-buzz.json data/review-texts/ data/pending-fixes/
+          git add data/shows.json data/commercial.json data/audience-buzz.json data/pending-fixes/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

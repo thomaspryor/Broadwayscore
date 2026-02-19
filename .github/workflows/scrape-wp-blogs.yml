@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/review-texts/ data/aggregator-archive/
+          git add data/aggregator-archive/
           git diff --staged --quiet || git commit -m "chore: Update WordPress theater blog review data"
 
           MAX_RETRIES=5
