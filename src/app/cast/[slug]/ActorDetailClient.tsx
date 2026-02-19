@@ -6,7 +6,8 @@ import type { ActorProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
 
-type SortMode = 'recent' | 'highest' | 'lowest';
+type SortCol = 'date' | 'score';
+type SortDir = 'asc' | 'desc';
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -105,8 +106,19 @@ export default function ActorDetailClient({
   profile: ActorProfile;
   rank: number;
 }) {
-  const [sortMode, setSortMode] = useState<SortMode>('recent');
+  const [sortCol, setSortCol] = useState<SortCol>('date');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [showCount, setShowCount] = useState(INITIAL_SHOWS);
+
+  function handleSort(col: SortCol) {
+    if (col === sortCol) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortCol(col);
+      setSortDir('desc');
+    }
+    setShowCount(INITIAL_SHOWS);
+  }
 
   // Only show actors who are in the current cast of running shows
   const openShows = useMemo(() =>
@@ -122,11 +134,18 @@ export default function ActorDetailClient({
   const closedShows = useMemo(() => {
     // Everything not in openShows or upcoming goes to Broadway Credits
     const openIds = new Set(openShows.map(s => s.showId));
-    const credits = profile.shows.filter(s => s.status !== 'upcoming' && !openIds.has(s.showId));
-    if (sortMode === 'highest') return [...credits].sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
-    if (sortMode === 'lowest') return [...credits].sort((a, b) => (a.score ?? 999) - (b.score ?? 999));
-    return credits; // already sorted by date
-  }, [profile.shows, openShows, sortMode]);
+    const credits = [...profile.shows.filter(s => s.status !== 'upcoming' && !openIds.has(s.showId))];
+    const dir = sortDir === 'asc' ? 1 : -1;
+    if (sortCol === 'score') {
+      return credits.sort((a, b) => dir * ((a.score ?? -999) - (b.score ?? -999)));
+    }
+    // date sort: by opening date
+    return credits.sort((a, b) => {
+      const da = a.openingDate ? new Date(a.openingDate).getTime() : 0;
+      const db = b.openingDate ? new Date(b.openingDate).getTime() : 0;
+      return dir * (da - db);
+    });
+  }, [profile.shows, openShows, sortCol, sortDir]);
 
   const visibleClosed = closedShows.slice(0, showCount);
   const remaining = closedShows.length - showCount;
@@ -236,30 +255,38 @@ export default function ActorDetailClient({
       {/* Broadway Credits */}
       {closedShows.length > 0 && (
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-white">
-              Broadway Credits
-              <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
-            </h2>
-            {closedShows.length > 1 && (
-              <div className="flex items-center gap-0.5 sm:gap-2" role="group" aria-label="Sort credits">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-                {(['recent', 'highest', 'lowest'] as const).map(mode => (
-                  <button
-                    key={mode}
-                    onClick={() => { setSortMode(mode); setShowCount(INITIAL_SHOWS); }}
-                    className={`px-2 py-1 text-[11px] font-medium uppercase tracking-wider rounded transition-colors ${
-                      sortMode === mode
-                        ? 'text-brand bg-brand/10 sm:bg-transparent'
-                        : 'text-gray-300 hover:text-white'
-                    }`}
-                  >
-                    {mode === 'recent' ? 'RECENT' : mode === 'highest' ? 'HIGHEST' : 'LOWEST'}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <h2 className="text-lg font-bold text-white mb-3">
+            Broadway Credits
+            <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
+          </h2>
+
+          {/* Column headers — clickable sort */}
+          {closedShows.length > 1 && (
+            <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
+              <div className="w-14 flex-shrink-0" />
+              <button
+                className="flex-1 min-w-0 text-left group/sort"
+                onClick={() => handleSort('date')}
+              >
+                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                  sortCol === 'date' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+                }`}>
+                  Show{sortCol === 'date' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
+                </span>
+              </button>
+              <button
+                className="w-11 text-center flex-shrink-0 group/sort"
+                onClick={() => handleSort('score')}
+              >
+                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                  sortCol === 'score' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+                }`}>
+                  Score{sortCol === 'score' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
+                </span>
+              </button>
+            </div>
+          )}
+
           <div className="space-y-2">
             {visibleClosed.map((show, i) => (
               <ShowCard
