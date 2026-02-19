@@ -6,7 +6,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
-import { getAllShows, getDataStats } from '@/lib/data-core';
+import { getDataStats } from '@/lib/data-core';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
@@ -64,27 +64,11 @@ export const metadata: Metadata = {
 };
 
 
-// Get shows data for header search
-const getSearchShows = () => {
-  const shows = getAllShows();
-  return shows.map(show => ({
-    id: show.id,
-    title: show.title,
-    slug: show.slug,
-    status: show.status,
-    venue: show.venue,
-    creativeTeamNames: show.creativeTeam?.map(m => m.name).join(', ') || undefined,
-    images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
-    hasScore: !!(show.criticScore?.score),
-  }));
-};
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const searchShows = getSearchShows();
   const { totalReviews } = getDataStats();
 
   return (
@@ -158,7 +142,7 @@ export default function RootLayout({
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
-                <HeaderSearch shows={searchShows} />
+                <HeaderSearch />
               </div>
             </div>
           </nav>
