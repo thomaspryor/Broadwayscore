@@ -1,57 +1,97 @@
 {
   "processed": [
-    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "all-my-sons-2019/nyt-theater--raven-snook.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-    "hughie-2016/act-three-the-reviews--doug-marino.json",
-    "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-    "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-    "be-more-chill-2019/theatre-reviews-limited--david-roberts.json",
-    "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+    "aladdin-2014/wsj--terry-teachout.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "failed": [
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "american-psycho-2016/thewrap--robert-hofler.json",
-    "american-psycho-2016/thewrap--steve-pond.json",
-    "bad-cinderella-2023/thewrap--robert-hofler.json"
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "hughie-2016/act-three-the-reviews--doug-marino.json",
-      "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
-      "be-more-chill-2019/theatre-reviews-limited--david-roberts.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
+      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json"
+    ],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "all-my-sons-2019/nyt-theater--raven-snook.json",
-      "a-soldiers-play-2020/broadwaynews--charles-isherwood.json",
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-      "eureka-day-2024/broadwaynews--gloria-oladipo.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "aladdin-2014/wsj--terry-teachout.json",
+      "bug-2026/wsj--charles-isherwood.json",
+      "hadestown-2019/wsj--terry-teachout.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "harry-potter-2021/wsj--terry-teachout.json"
     ]
   },
-  "startTime": "2026-02-19T01:27:36.332Z",
-  "lastProcessed": "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T01:42:57.856Z",
+  "lastProcessed": "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-02-19T01:44:01.672Z",
+      "event": "bb-session",
+      "session": "eef825ae",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-19T01:44:03.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:45:23.578Z",
+      "event": "bb-session",
+      "session": "8e19bbdd",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-19T01:45:25.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:46:50.829Z",
+      "event": "bb-session",
+      "session": "3340db85",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-19T01:46:52.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:48:20.160Z",
+      "event": "bb-session",
+      "session": "73ff609b",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-19T01:48:22.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-19T01:49:52.466Z",
+      "event": "bb-session",
+      "session": "19723ac1",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-02-19T01:49:54.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
