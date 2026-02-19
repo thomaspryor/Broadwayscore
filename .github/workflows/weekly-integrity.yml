@@ -89,7 +89,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/review-texts/
+          git add
           if git diff --staged --quiet; then
             echo "No dedup fixes needed"
           else
@@ -180,7 +180,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/review-texts/
+          git add
           if git diff --staged --quiet; then
             echo "No junk files to clean"
           else

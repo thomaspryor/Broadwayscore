@@ -232,7 +232,7 @@ jobs:
         if: always()
         id: push
         run: |
-          git add data/review-texts/ data/audit/ data/collection-state/ || true
+          git add data/audit/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -544,7 +544,7 @@ jobs:
       - name: Commit and push changes for ${{ matrix.outlet_tier }}
         if: always()
         run: |
-          git add data/review-texts/
+          git add
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else
@@ -585,4 +585,3 @@ jobs:
           gh workflow run "Rebuild Reviews Data" \
             -R "${{ github.repository }}" \
             -f reason="Auto-triggered after Collect Review Texts (parallel)"
-

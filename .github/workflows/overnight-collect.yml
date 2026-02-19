@@ -116,7 +116,7 @@ jobs:
               --priority=all || true
 
             # Commit after each show
-            git add data/review-texts/ data/archives/ data/collection-state/ data/audit/ || true
+            git add data/archives/ data/collection-state/ data/audit/ || true
             if git diff --staged --quiet; then
               echo "No changes for $show"
             else

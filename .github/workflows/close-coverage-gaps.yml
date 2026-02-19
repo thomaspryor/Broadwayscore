@@ -316,7 +316,7 @@ jobs:
               echo "--- Checkpoint at $COUNT/$TOTAL ---"
 
               # Stage files
-              git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
+              git add data/aggregator-archive/ 2>/dev/null || true
               STAGED_FILES=$(git diff --cached --name-only 2>/dev/null)
               STAGED=$(echo "$STAGED_FILES" | grep -c . 2>/dev/null || echo "0")
 
@@ -382,7 +382,7 @@ jobs:
       - name: Final commit (catch uncommitted files)
         if: always()
         run: |
-          git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
+          git add data/aggregator-archive/ 2>/dev/null || true
           STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
           if [ "$STAGED" -gt 0 ]; then
             git commit -m "data: Batch ${{ matrix.batch_id }} final — $STAGED remaining files (${{ inputs.era }})" || true
@@ -473,7 +473,7 @@ jobs:
             exit 0
           fi
 
-          git add data/review-texts/ data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
+          git add data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
           CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
 
           if [ "$CHANGED" = "0" ]; then
@@ -544,7 +544,7 @@ jobs:
       - name: Commit rebuild
         if: always()
         run: |
-          git add data/reviews.json data/audit/ data/review-texts/
+          git add data/reviews.json data/audit/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

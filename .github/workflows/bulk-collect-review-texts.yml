@@ -322,7 +322,7 @@ jobs:
       - name: Final commit and push
         if: always()
         run: |
-          git add data/review-texts/ data/archives/reviews/ data/collection-state/ || true
+          git add data/archives/reviews/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit for batch ${{ matrix.batch_id }}"
             exit 0
