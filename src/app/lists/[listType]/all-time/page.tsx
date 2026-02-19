@@ -21,6 +21,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, generateGoldListFAQSc
 import { SeasonSelect } from '@/components/SeasonSelect';
 import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@/components/gold-list/GoldListCards';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -96,19 +97,11 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li>
-              <Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link>
-            </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">{config.shortTitle} — All-Time</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Gold Lists', href: '/lists' },
+          { label: `${config.shortTitle} — All-Time` },
+        ]} />
 
         {/* Back Link */}
         <Link href="/lists" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">

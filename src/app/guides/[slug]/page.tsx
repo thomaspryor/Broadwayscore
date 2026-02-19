@@ -28,6 +28,7 @@ import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
   return getAllGuideSlugs().map((slug) => ({ slug }));
@@ -171,15 +172,11 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-            <li className="text-gray-500">/</li>
-            <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">{breadcrumbTitle}</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Guides', href: '/guides' },
+          { label: breadcrumbTitle },
+        ]} />
 
         {/* Back Link */}
         <Link href="/guides" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">

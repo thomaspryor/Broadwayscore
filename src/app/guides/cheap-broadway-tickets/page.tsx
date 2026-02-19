@@ -7,6 +7,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
 import { featureFlags } from '@/config/feature-flags';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const currentYear = new Date().getFullYear();
 
@@ -92,15 +93,11 @@ export default function CheapBroadwayTicketsGuide() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-            <li className="text-gray-500">/</li>
-            <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
-            <li className="text-gray-500">/</li>
-            <li className="text-gray-300">Cheap Broadway Tickets</li>
-          </ol>
-        </nav>
+        <Breadcrumb className="mb-4" items={[
+          { label: 'Home', href: '/' },
+          { label: 'Guides', href: '/guides' },
+          { label: 'Cheap Broadway Tickets' },
+        ]} />
 
         {/* Back Link */}
         <Link href="/guides" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
