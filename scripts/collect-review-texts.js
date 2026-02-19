@@ -4387,11 +4387,100 @@ function commitChanges(processed) {
     } else {
       console.log('  (No changes to commit)');
     }
+
+    // Also push review-texts to private repo at every checkpoint
+    // This prevents data loss if the run is cancelled before the final push step
+    pushReviewTextsCheckpoint(processed);
+
   } catch (e) {
     console.error(`  ✗ Git commit/push FAILED: ${e.message}`);
     console.error(`    This means work may be lost if the job times out!`);
     console.error(`    Check workflow permissions: needs 'contents: write'`);
     // Don't throw - we don't want to stop the collection
+  }
+}
+
+/**
+ * Push review-texts to private repo as a checkpoint.
+ * Runs at every checkpoint so data is saved incrementally, not just at the end.
+ */
+function pushReviewTextsCheckpoint(processed) {
+  if (!process.env.REVIEW_TEXTS_TOKEN || !process.env.GITHUB_ACTIONS) return;
+
+  const rtDir = path.join(process.cwd(), 'data', 'review-texts');
+  if (!fs.existsSync(path.join(rtDir, '.git'))) {
+    console.log('  (No private repo checkout — skipping review-texts push)');
+    return;
+  }
+
+  const { execSync } = require('child_process');
+
+  try {
+    // Configure git for private repo
+    execSync('git config user.name "GitHub Action"', { cwd: rtDir, stdio: 'pipe' });
+    execSync('git config user.email "action@github.com"', { cwd: rtDir, stdio: 'pipe' });
+
+    // Ensure remote uses the token
+    const remoteUrl = `https://x-access-token:${process.env.REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
+    try {
+      execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    } catch (e) {
+      execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    }
+
+    // Stage all changes
+    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+
+    // Check if there are changes
+    try {
+      execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' });
+      // No changes
+      return;
+    } catch (e) {
+      // Has changes — continue
+    }
+
+    // Commit
+    const msg = `chore: Checkpoint review texts (${processed} collected)`;
+    execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
+
+    // Push with retry (same pattern as push-review-texts action)
+    for (let i = 1; i <= 3; i++) {
+      try {
+        execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
+        execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
+        console.log(`  ✓ Pushed review-texts checkpoint to private repo (attempt ${i})`);
+        return;
+      } catch (pushErr) {
+        // Handle modify/delete conflicts
+        try {
+          const unmerged = execSync('git diff --name-only --diff-filter=U', { cwd: rtDir, encoding: 'utf8', stdio: 'pipe' }).trim();
+          if (unmerged) {
+            for (const f of unmerged.split('\n').filter(Boolean)) {
+              if (fs.existsSync(path.join(rtDir, f))) {
+                execSync(`git add "${f}"`, { cwd: rtDir, stdio: 'pipe' });
+              } else {
+                execSync(`git rm "${f}"`, { cwd: rtDir, stdio: 'pipe' });
+              }
+            }
+            execSync('git rebase --continue', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
+            execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
+            console.log(`  ✓ Pushed review-texts checkpoint after conflict resolution (attempt ${i})`);
+            return;
+          }
+        } catch (e2) {
+          // Conflict resolution failed
+        }
+        try { execSync('git rebase --abort', { cwd: rtDir, stdio: 'pipe' }); } catch (e3) {}
+        if (i < 3) {
+          const wait = Math.floor(Math.random() * 10) + 5;
+          execSync(`sleep ${wait}`, { stdio: 'pipe' });
+        }
+      }
+    }
+    console.log('  ⚠ Failed to push review-texts checkpoint (will retry at next checkpoint)');
+  } catch (e) {
+    console.log(`  ⚠ Review-texts checkpoint push error: ${e.message}`);
   }
 }
 
