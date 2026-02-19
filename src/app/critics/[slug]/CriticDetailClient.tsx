@@ -5,7 +5,8 @@ import Link from 'next/link';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
-import { ToggleBar } from '@/components/show-cards';
+import { ToggleBar, StatGrid } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -95,13 +96,11 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5 flex-wrap">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5"><Link href="/critics" className="hover:text-brand transition-colors">Critics</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300 truncate" aria-current="page">{critic.name}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Critics', href: '/critics' },
+        { label: critic.name },
+      ]} />
 
       {/* Header */}
       <div className="mb-8">
@@ -145,26 +144,12 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Reviews</p>
-            <p className="text-2xl font-bold text-white">{critic.reviewCount}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
-            <p className="text-2xl font-bold" style={{ color: getScoreTextColor(critic.avgScore) }}>
-              {Math.round(critic.avgScore)}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-            <p className="text-2xl font-bold text-white">{critic.highScore}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-            <p className="text-2xl font-bold text-white">{critic.lowScore}</p>
-          </div>
-        </div>
+        <StatGrid className="mb-4" stats={[
+          { label: 'Reviews', value: critic.reviewCount },
+          { label: 'Average', value: Math.round(critic.avgScore), color: getScoreTextColor(critic.avgScore) },
+          { label: 'Highest', value: critic.highScore },
+          { label: 'Lowest', value: critic.lowScore },
+        ]} />
 
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">

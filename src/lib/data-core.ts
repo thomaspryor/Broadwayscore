@@ -11,7 +11,7 @@ import {
   RawBuzzThread,
 } from './engine';
 
-import type { Director, Theater, BestOfCategory, BestOfList, BrowseList } from './data-types';
+import type { Director, Theater, TheaterStructuredTips, BestOfCategory, BestOfList, BrowseList } from './data-types';
 import { getShowGrosses } from './data-grosses';
 import { BROWSE_PAGES, BrowsePageConfig, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
 // Import raw data (loaded at build time for static generation)
@@ -126,7 +126,7 @@ export function getDataStats() {
   const uniqueCritics = new Set(baseReviews.map(r => r.criticName).filter(Boolean));
 
   return {
-    totalShows: shows.length,
+    totalShows: allShows.filter(s => (s.criticScore?.reviewCount || 0) > 0).length,
     openShows: shows.filter(s => s.status === 'open').length,
     closedShows: shows.filter(s => s.status === 'closed').length,
     totalReviews,
@@ -268,7 +268,7 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[] }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
@@ -285,6 +285,7 @@ export function getAllTheaters(): Theater[] {
         operator: theaterMeta?.operator,
         formerNames: theaterMeta?.formerNames,
         tips: theaterMeta?.tips,
+        structuredTips: theaterMeta?.structuredTips,
         currentShow,
         allShows: data.shows.sort((a, b) =>
           new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()

@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'playing' | 'shows' | 'capacity' | 'score' | 'alpha';
 
@@ -103,12 +104,10 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-        <ol className="flex items-center gap-1.5">
-          <li><Link href="/" className="hover:text-brand transition-colors">Home</Link></li>
-          <li className="before:content-['/'] before:mx-1.5 text-gray-300" aria-current="page">Theaters</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Theaters' },
+      ]} />
 
       {/* Header */}
       <div className="mb-6">
