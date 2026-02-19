@@ -64,7 +64,7 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
                 <span className="text-brand"> · {profile.obcCount} OBC</span>
               )}
               {replacementCount > 0 && (
-                <span> · {replacementCount} replacement{replacementCount !== 1 ? 's' : ''}</span>
+                <span className="text-gray-500"> · {replacementCount} other</span>
               )}
             </>
           ) : (
