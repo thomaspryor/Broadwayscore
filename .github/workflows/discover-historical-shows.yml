@@ -88,6 +88,10 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
+          # Reset any dirty tracked files from validate step (prevents rebase conflicts)
+          git checkout -- data/audit/ 2>/dev/null || true
+
           git add data/shows.json
           if [ -f data/historical-shows-pending.json ]; then
             git add data/historical-shows-pending.json
@@ -100,28 +104,18 @@ jobs:
             git commit -m "chore: Historical show discovery (no new shows)"
           fi
 
-          # Retry push with rebase in case remote has new commits (parallel-safe)
+          # Retry push with rebase
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
               break
             fi
             echo "Push failed (attempt $i), rebasing..."
-            # Clean working tree for rebase
-            git stash --include-untracked || true
-            # Attempt rebase; if conflicts, resolve and continue
-            if ! git pull --rebase -X theirs origin main; then
-              echo "Rebase conflict — resolving..."
-              # Accept theirs for any conflicting files (our commit only cares about shows.json)
-              git diff --name-only --diff-filter=U | xargs -I{} git checkout --theirs {} 2>/dev/null || true
-              git add -A
-              GIT_EDITOR=true git rebase --continue 2>/dev/null || {
-                echo "Rebase continue failed, aborting rebase..."
-                git rebase --abort || true
-                git pull --no-rebase -X theirs origin main || true
-              }
-            fi
-            git stash pop || git stash drop || true
+            git pull --rebase -X theirs origin main || {
+              echo "Rebase conflict — aborting and using merge..."
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X theirs origin main || true
+            }
             # Re-stage our files in case rebase dropped them
             git add data/shows.json
             if [ -f data/historical-shows-pending.json ]; then
