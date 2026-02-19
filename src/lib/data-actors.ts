@@ -9,6 +9,7 @@ import { getAllShows, slugify } from './data-core';
 import { getAudienceBuzz } from './data-audience';
 
 const CAST_DIR = path.join(process.cwd(), 'data', 'cast');
+const ACTOR_IMAGES_FILE = path.join(process.cwd(), 'data', 'actor-images.json');
 
 // ============================================
 // Lazy-init state
@@ -121,6 +122,14 @@ function buildAllProfiles() {
     }
   }
 
+  // Load actor images map
+  let actorImages: Record<string, { name: string; imageUrl: string; source: string }> = {};
+  try {
+    if (fs.existsSync(ACTOR_IMAGES_FILE)) {
+      actorImages = JSON.parse(fs.readFileSync(ACTOR_IMAGES_FILE, 'utf-8'));
+    }
+  } catch { /* no images available */ }
+
   // Build profiles from accumulated data
   for (const [, data] of Array.from(actorMap.entries())) {
     const shows: ActorShowEntry[] = [];
@@ -169,6 +178,7 @@ function buildAllProfiles() {
       name: data.name,
       slug,
       ibdbPersonId: data.ibdbPersonId,
+      headshot: actorImages[data.ibdbPersonId]?.imageUrl || null,
       shows,
       showCount: shows.length,
       avgScore,
