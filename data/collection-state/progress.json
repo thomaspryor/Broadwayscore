@@ -1,62 +1,126 @@
 {
-  "processed": [
-    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json",
-    "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-    "mcneal-2024/broadwaynews--brittani-samuel.json",
-    "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json"
-  ],
+  "processed": [],
   "failed": [
-    "chicago-1996/oocities--richard-zoglin.json",
-    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
-    "amelie-a-new-musical-2017/nytg--david-gordon.json",
-    "ghost-the-musical-2012/guardian--charles-isherwood.json",
-    "good-night-oscar-2023/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json"
+    "hells-kitchen-2024/washpost--peter-marks.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "700-sundays-2013/washpost--peter-marks.json",
+    "a-chorus-line-2006/washpost--peter-marks.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "a-dolls-house-2023/washpost--peter-marks.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
+    "all-my-sons-2008/washpost--peter-marks.json",
+    "all-my-sons-2019/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "hadestown-2019/medium--christian-lewis.json",
-      "children-of-a-lesser-god-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "john-lithgow-stories-by-heart-2018/theatre-reviews-limited--david-roberts.json",
-      "mcneal-2024/theatre-reviews-limited--david-roberts.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "stephen-sondheims-old-friends-2025/theatre-reviews-limited-joseph-verlezza--joseph-verlezza.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
-      "latin-history-for-morons-2017/thewrap--robert-hoffler.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/leopoldstadt-2022/new-york-sun--unknown.json",
-      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
-      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/theatrely--hayley-levitt.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
+      "data/review-texts/700-sundays-2013/washpost--peter-marks.json",
+      "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json"
     ],
-    "archive": [
-      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
-      "cabaret-2024/broadwaynews--brittani-samuel.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "mcneal-2024/broadwaynews--brittani-samuel.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-19T01:27:54.427Z",
-  "lastProcessed": "swept-away-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-19T01:49:15.608Z",
+  "lastProcessed": "all-my-sons-2019/washpost--peter-marks.json",
+  "log": [
+    {
+      "t": "2026-02-19T01:49:41.733Z",
+      "event": "bb-session",
+      "session": "3d230ba9",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-19T01:49:43.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:50:08.007Z",
+      "event": "bb-session",
+      "session": "9f5ebebf",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
+    },
+    {
+      "t": "2026-02-19T01:50:10.121Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:50:47.721Z",
+      "event": "bb-session",
+      "session": "2d3f2372",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-02-19T01:50:49.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:51:13.629Z",
+      "event": "bb-session",
+      "session": "45a4300e",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-02-19T01:51:16.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:52:01.851Z",
+      "event": "bb-session",
+      "session": "17ae6a04",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-02-19T01:52:03.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:52:49.297Z",
+      "event": "bb-session",
+      "session": "ba8377e3",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-02-19T01:52:51.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:54:24.253Z",
+      "event": "bb-session",
+      "session": "5a19cb56",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/10/16/AR2008101603518"
+    },
+    {
+      "t": "2026-02-19T01:54:26.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:54:59.673Z",
+      "event": "bb-session",
+      "session": "2eb04e3a",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
+    },
+    {
+      "t": "2026-02-19T01:55:01.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
