@@ -13,15 +13,25 @@ on:
         required: false
         default: false
         type: boolean
+      skip_runtimes:
+        description: 'Skip Broadway.com runtime lookups (much faster)'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
   issues: write
 
+# Allow parallel runs — each uses retry-push with rebase
+concurrency:
+  group: discover-historical-${{ github.event.inputs.seasons }}
+  cancel-in-progress: false
+
 jobs:
   discover-historical:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     outputs:
       historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
       historical_shows: ${{ steps.discover.outputs.historical_shows }}
@@ -41,6 +51,7 @@ jobs:
         run: npm ci || npm install
 
       - name: Install Playwright browsers
+        if: ${{ inputs.skip_runtimes != 'true' }}
         run: npx playwright install chromium
 
       - name: Discover historical shows
@@ -49,11 +60,14 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
+          ARGS="--seasons=${{ inputs.seasons }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }} --dry-run
-          else
-            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }}
+            ARGS="$ARGS --dry-run"
           fi
+          if [ "${{ inputs.skip_runtimes }}" = "true" ]; then
+            ARGS="$ARGS --skip-runtimes"
+          fi
+          node scripts/discover-historical-shows.js $ARGS
 
       - name: Validate data
         id: validate
