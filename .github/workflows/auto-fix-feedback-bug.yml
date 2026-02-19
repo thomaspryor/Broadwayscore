@@ -91,7 +91,7 @@ jobs:
             done
           fi
 
-      - name: Post comment and update issue
+      - name: Update issue labels (no comment — avoids GitHub notification noise)
         if: always()
         uses: actions/github-script@v7
         env:
@@ -100,32 +100,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
             const action = process.env.FIX_ACTION || 'error';
             const issueNumber = parseInt(process.env.FIX_ISSUE_NUMBER);
 
-            let comment = '';
-            try { comment = fs.readFileSync('.github-comment.md', 'utf8'); } catch {}
-
-            if (!comment) {
-              const defaults = {
-                'fixed': '## Fix Applied\n\nThe data fix has been applied and will be live shortly.',
-                'skipped': '## Skipped\n\nThis bug requires manual review.',
-                'not-a-bug': '## Likely Not a Bug\n\nAnalysis suggests this is working as designed. Leaving open for review.',
-                'validation-failed': '## Validation Failed\n\nAuto-fix was rolled back. Requires manual review.',
-                'error': '## Error\n\nAuto-fix encountered an error. A maintainer will review.',
-              };
-              comment = defaults[action] || defaults['error'];
-            }
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: comment
-            });
-
+            // Only comment for actionable outcomes (fix applied or error).
+            // Routine skips/manual-review get labels only — the approval email
+            // is the human-facing notification channel, not GitHub comments.
             if (action === 'fixed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Fix Applied\n\nThe data fix has been applied and will be live shortly.'
+              });
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber, labels: ['auto-fixed']
@@ -140,7 +126,19 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber, labels: ['not-a-bug']
               });
+            } else if (action === 'error') {
+              // Only comment on actual errors so we notice failures
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Error\n\nAuto-fix encountered an error. A maintainer will review.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
             } else {
+              // skipped, validation-failed — just label, no comment (no notification)
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber, labels: ['needs-manual-review']
