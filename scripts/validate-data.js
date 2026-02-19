@@ -1800,6 +1800,68 @@ function validateCastFiles(shows) {
   }
 }
 
+// ===========================================
+// ACTOR IMAGES VALIDATION
+// ===========================================
+
+function validateActorImages() {
+  info('Checking actor-images.json...');
+
+  const imagesFile = path.join(DATA_DIR, 'actor-images.json');
+  if (!fs.existsSync(imagesFile)) {
+    info('No actor-images.json found — skipping');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(imagesFile, 'utf8'));
+    ok(`actor-images.json: ${Object.keys(data).length} entries`);
+  } catch (e) {
+    error(`actor-images.json parse error: ${e.message}`);
+    return;
+  }
+
+  let issues = 0;
+  const validSources = ['wikipedia', 'broadwayworld'];
+  const svgUrls = [];
+
+  for (const [id, entry] of Object.entries(data)) {
+    if (!entry.imageUrl || typeof entry.imageUrl !== 'string') {
+      error(`actor-images.json: entry "${id}" missing imageUrl`);
+      issues++;
+      continue;
+    }
+
+    if (!entry.source || !validSources.includes(entry.source)) {
+      warn(`actor-images.json: entry "${id}" has invalid source "${entry.source}"`);
+      issues++;
+    }
+
+    // Catch SVG logos (e.g., American Idol logo) — not valid headshots
+    if (/\.svg/i.test(entry.imageUrl)) {
+      svgUrls.push({ id, name: entry.name, url: entry.imageUrl });
+      issues++;
+    }
+
+    // Catch non-HTTPS URLs
+    if (!entry.imageUrl.startsWith('https://')) {
+      warn(`actor-images.json: entry "${id}" has non-HTTPS URL: ${entry.imageUrl.substring(0, 80)}`);
+      issues++;
+    }
+  }
+
+  if (svgUrls.length > 0) {
+    for (const s of svgUrls) {
+      error(`actor-images.json: "${s.name}" (${s.id}) has SVG image (likely a logo, not a headshot): ${s.url.substring(0, 80)}`);
+    }
+  }
+
+  if (issues === 0) {
+    ok('All actor image entries are valid');
+  }
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -1867,6 +1929,8 @@ function runValidation() {
   validateCreativeTeamDuplicateNames(shows);
   console.log('');
   validateCastFiles(shows);
+  console.log('');
+  validateActorImages();
 
   // Summary
   console.log('');
