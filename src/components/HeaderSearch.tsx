@@ -75,9 +75,8 @@ export default function HeaderSearch() {
       : [];
 
     // Merge: Fuse results first (ranked by relevance), then substring matches
-    // Exclude unscored closed shows (historical shows without reviews)
-    const merged = [...fuseResults, ...substringMatches]
-      .filter(show => show.hasScore || show.status !== 'closed');
+    // Note: unscored closed shows are already excluded from search-shows.json at build time
+    const merged = [...fuseResults, ...substringMatches];
     return merged.slice(0, 8);
   }, [query, fuse, shows]);
 
@@ -257,7 +256,7 @@ export default function HeaderSearch() {
         {isOpen && query.length >= 1 && filteredShows.length === 0 && (
           <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-50">
             <p className="text-sm text-gray-400 text-center">
-              {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+              {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
             </p>
           </div>
         )}
@@ -357,7 +356,7 @@ export default function HeaderSearch() {
               ) : query.length >= 1 ? (
                 <div className="p-8 text-center">
                   <p className="text-gray-400">
-                    {isLoading ? 'Loading...' : <>No shows found for &ldquo;{query}&rdquo;</>}
+                    {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
                   </p>
                 </div>
               ) : (
