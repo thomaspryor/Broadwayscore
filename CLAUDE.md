@@ -94,9 +94,15 @@ For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data 
 - Parallel sessions switching branches → always verify branch before commit, or use Git Data API
 
 ### 11. Pipeline Operations — Test, Monitor, Parallelize
+**MANDATORY: End-to-end test before ANY large dispatch.** Never dispatch 5+ runs or 50+ reviews without first running a tiny test (5 reviews, 1 batch, same params) and verifying data lands in the private repo. We lost a full week of credits (Feb 18-19, 2026) running 3 rounds of 5 runs that all failed for different infrastructure bugs — each taking hours to discover because the runs themselves take hours. The test takes 10 minutes and catches everything.
+- Verify: did checkpoint push to private repo work? (`gh api repos/thomaspryor/broadway-review-texts/commits`)
+- Verify: did final push-review-texts step succeed?
+- Verify: no `git add` errors on gitignored paths?
+- Only THEN dispatch at scale. Check within 30 min after dispatch.
+
 **Before:** Verify secrets (test 1 workflow first), check slots (<35 in-progress), 10s+ spacing between `gh workflow run`, shard scoring to 10 (`-f shard=N -f total_shards=10`).
 **During:** Check within 15 min. Verify chaining created next run.
-**After:** Trigger rebuild if needed. Verify data landed.
+**After:** Trigger rebuild if needed. Verify data landed **in the private repo**.
 **Collection MUST be chained:** Always use `-f chain=true -f remaining_batches=10`. `remaining_batches` defaults to 0 = NO CHAINING.
 For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
 
