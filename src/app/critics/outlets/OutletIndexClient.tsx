@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass, TierBadgeSmall } from '@/lib/critic-page-utils';
-import { ToggleBar } from '@/components/show-cards';
+import { ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
@@ -204,26 +204,21 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
       <div className="flex items-center gap-3 px-3 sm:px-4 mb-2" role="row" aria-label="Column headers">
         <div className="w-8 flex-shrink-0" />
         <div className="flex-1 min-w-0" />
-        <div className="w-14 text-right flex-shrink-0">
-          <button
-            onClick={() => setSortMode(sortMode === 'reviews' ? 'reviews-asc' : 'reviews')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-              sortMode === 'reviews' || sortMode === 'reviews-asc' ? 'text-brand' : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            Reviews {sortMode === 'reviews' ? '\u25BC' : sortMode === 'reviews-asc' ? '\u25B2' : ''}
-          </button>
-        </div>
-        <div className="w-11 flex-shrink-0">
-          <button
-            onClick={() => setSortMode(sortMode === 'highest' ? 'lowest' : 'highest')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-              sortMode === 'highest' || sortMode === 'lowest' ? 'text-brand' : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            Avg {sortMode === 'highest' ? '\u25BC' : sortMode === 'lowest' ? '\u25B2' : ''}
-          </button>
-        </div>
+        <ColumnHeader
+          label="Reviews"
+          active={sortMode === 'reviews' || sortMode === 'reviews-asc'}
+          direction={sortMode === 'reviews' ? 'desc' : sortMode === 'reviews-asc' ? 'asc' : undefined}
+          onClick={() => setSortMode(sortMode === 'reviews' ? 'reviews-asc' : 'reviews')}
+          className="w-14 flex-shrink-0"
+          align="right"
+        />
+        <ColumnHeader
+          label="Avg"
+          active={sortMode === 'highest' || sortMode === 'lowest'}
+          direction={sortMode === 'highest' ? 'desc' : sortMode === 'lowest' ? 'asc' : undefined}
+          onClick={() => setSortMode(sortMode === 'highest' ? 'lowest' : 'highest')}
+          className="w-11 flex-shrink-0"
+        />
       </div>
 
       {/* Outlet List */}
