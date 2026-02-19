@@ -172,26 +172,27 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                 <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs text-gray-500">
                   <FormatPill type={show.type} />
                   {show.isRevival && <ProductionPill isRevival={true} />}
-                  {isOpen ? (
-                    <>
-                      {getBroadwayDuration(show.openingDate) && (
-                        <span>{getBroadwayDuration(show.openingDate)}</span>
+                  {isOpen ? (() => {
+                    const duration = getBroadwayDuration(show.openingDate);
+                    return <>
+                      {duration && (
+                        <span>{duration}</span>
                       )}
                       {show.closingDate && (
                         <span className="text-amber-400">
                           · Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                       )}
-                    </>
-                  ) : (
+                    </>;
+                  })() : (
                     <span>
-                      {new Date(show.openingDate).getFullYear()}
-                      {show.closingDate && ` – ${new Date(show.closingDate).getFullYear()}`}
+                      {show.openingDate ? new Date(show.openingDate).getFullYear() : ''}
+                      {show.closingDate && show.openingDate ? ` – ${new Date(show.closingDate).getFullYear()}` : show.closingDate ? new Date(show.closingDate).getFullYear() : ''}
                     </span>
                   )}
                 </div>
               </div>
-              <ScoreBadge score={displayScore} size="sm" />
+              <ScoreBadge score={displayScore} size="sm" status={show.status} />
             </Link>
           );
         })}

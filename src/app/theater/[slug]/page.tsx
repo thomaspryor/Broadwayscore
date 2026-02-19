@@ -82,7 +82,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
       id: show.id,
       slug: show.slug,
       title: show.title,
-      openingDate: show.openingDate,
+      openingDate: show.openingDate || show.previewsStartDate || '',
       closingDate: show.closingDate ?? undefined,
       status: show.status,
       type: show.type,
@@ -139,7 +139,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Stats row */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className={`grid ${theater.capacity ? 'grid-cols-3' : 'grid-cols-2'} gap-3 mb-4`}>
             {theater.capacity && (
               <div className="card p-3 sm:p-4 text-center">
                 <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
@@ -147,8 +147,8 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
               </div>
             )}
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
-              <p className="text-xl sm:text-2xl font-bold text-white">{pastShowCount}</p>
+              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Shows Tracked</p>
+              <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
             </div>
             <div className="card p-3 sm:p-4 text-center">
               <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>

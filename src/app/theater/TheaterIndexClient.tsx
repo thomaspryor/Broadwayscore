@@ -121,12 +121,13 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
       </div>
 
       {/* Search */}
-      <div className="relative mb-4">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative mb-4" role="search">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
           type="text"
+          aria-label="Search theaters or shows"
           placeholder="Search theaters or shows..."
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -138,11 +139,12 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
       <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
         {/* Pill sorts on the left */}
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0 flex items-center gap-0.5">
+        <div className="flex-1 min-w-0 flex items-center gap-0.5" role="group" aria-label="Sort theaters">
           {PILL_SORTS.map(opt => (
             <button
               key={opt.value}
               onClick={() => setSortMode(opt.value)}
+              aria-pressed={sortMode === opt.value}
               className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[28px] whitespace-nowrap ${
                 sortMode === opt.value
                   ? 'bg-white/15 text-white'
@@ -157,6 +159,8 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         {/* Clickable column headers on the right */}
         <button
           onClick={() => setSortMode('capacity')}
+          aria-pressed={sortMode === 'capacity'}
+          aria-label="Sort by seat capacity"
           className={`w-14 text-center flex-shrink-0 hidden sm:block cursor-pointer transition-colors ${
             sortMode === 'capacity' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
           }`}
@@ -165,6 +169,8 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         </button>
         <button
           onClick={() => setSortMode('shows')}
+          aria-pressed={sortMode === 'shows'}
+          aria-label="Sort by show count"
           className={`w-10 sm:w-12 text-center flex-shrink-0 cursor-pointer transition-colors ${
             sortMode === 'shows' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
           }`}
@@ -173,6 +179,8 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         </button>
         <button
           onClick={() => setSortMode('score')}
+          aria-pressed={sortMode === 'score'}
+          aria-label="Sort by average score"
           className={`w-10 text-center flex-shrink-0 cursor-pointer transition-colors ${
             sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
           }`}
