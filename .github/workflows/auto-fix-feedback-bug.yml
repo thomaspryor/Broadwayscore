@@ -147,6 +147,43 @@ jobs:
               });
             }
 
+      - name: Generate remediation plan
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug'
+        id: plan
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+        run: node scripts/generate-remediation-plan.js
+
+      - name: Commit pending fix plan
+        if: always() && steps.plan.outputs.plan_created == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          git add data/pending-fixes/
+          if git diff --staged --quiet; then
+            echo "No plan file to commit"
+          else
+            git commit -m "chore: Save remediation plan for #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep $((10 + RANDOM % 20))
+              git pull --rebase -X theirs origin main
+            done
+          fi
+
       - name: Send thank-you email to submitter
         if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'not-a-bug')
         env:
@@ -177,7 +214,7 @@ jobs:
           const { subject, html } = buildFeedbackThankYouEmail(type, diag.submitterName, diag.submitterShow);
 
           const data = JSON.stringify({
-            from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
+            from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
             to: [email],
             subject,
             html,

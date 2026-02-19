@@ -1,0 +1,368 @@
+#!/usr/bin/env node
+
+/**
+ * Generates a remediation plan for bugs that auto-fix couldn't handle.
+ *
+ * Called from auto-fix-feedback-bug.yml when outcome is skipped/validation-failed.
+ * Uses Claude to create a detailed, human-approved fix plan, saves it to
+ * data/pending-fixes/{issue}.json, and emails Tom with Approve/Reject buttons.
+ *
+ * Env vars:
+ *   ISSUE_BODY             - Full GitHub issue body text
+ *   ISSUE_NUMBER           - GitHub issue number
+ *   FIX_ACTION             - What auto-fix returned (skipped, validation-failed, error)
+ *   ANTHROPIC_API_KEY      - Claude API key
+ *   RESEND_API_KEY         - For sending email
+ *   OWNER_EMAIL            - Tom's email
+ *   APPROVAL_HMAC_SECRET   - For signing approval URLs
+ */
+
+import { Anthropic } from '@anthropic-ai/sdk';
+import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import https from 'https';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { buildFixApprovalEmail } = require('./lib/email-templates.js');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT = path.join(__dirname, '..');
+
+// --- Helpers ---
+
+function parseDiagnosis(issueBody) {
+  const match = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
+  if (!match) return null;
+  try { return JSON.parse(match[1]); } catch { return null; }
+}
+
+function loadJsonSafe(relPath) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'));
+  } catch { return null; }
+}
+
+function loadFile(relPath, maxChars = 50000) {
+  try {
+    const content = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
+    return content.length > maxChars ? content.slice(0, maxChars) + '\n...[truncated]' : content;
+  } catch { return null; }
+}
+
+function output(key, value) {
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
+  }
+}
+
+function generateApprovalUrl(action, issueNumber, secret) {
+  // 7-day expiry
+  const expires = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
+  const token = crypto
+    .createHmac('sha256', secret)
+    .update(`${action}:${issueNumber}:${expires}`)
+    .digest('hex');
+  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}`;
+}
+
+async function sendEmail(to, from, subject, html) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) { console.log('No RESEND_API_KEY — skipping email'); return; }
+
+  const data = JSON.stringify({ from, to: [to], subject, html });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', c => body += c);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log('Email sent successfully');
+          resolve(body);
+        } else {
+          console.log(`Email failed: ${res.statusCode} ${body.slice(0, 200)}`);
+          reject(new Error(`Email ${res.statusCode}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+// --- Allowed actions for plans ---
+
+const ALLOWED_DATA_FIELDS = {
+  'shows.json': [
+    'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
+    'type', 'isRevival', 'status', 'closingDate', 'openingDate',
+    'previewDate', 'creativeTeam',
+  ],
+  'commercial.json': [
+    'designation', 'capitalization', 'weeklyRunningCost',
+    'capitalizationSource', 'notes', 'recouped', 'recoupmentSource',
+  ],
+  'audience-buzz.json': ['title'],
+};
+
+const ALLOWED_SCRIPTS = [
+  'rebuild-all-reviews.js',
+  'gather-reviews.js',
+  'collect-review-texts.js',
+  'generate-critic-consensus.js',
+  'validate-data.js',
+  'fetch-show-images-auto.js',
+];
+
+// --- Main ---
+
+async function main() {
+  const issueBody = process.env.ISSUE_BODY;
+  const issueNumber = process.env.ISSUE_NUMBER;
+  const fixAction = process.env.FIX_ACTION || 'skipped';
+
+  if (!issueBody || !issueNumber) {
+    console.error('Missing ISSUE_BODY or ISSUE_NUMBER');
+    output('plan_created', 'false');
+    return;
+  }
+
+  const secret = process.env.APPROVAL_HMAC_SECRET;
+  if (!secret) {
+    console.error('No APPROVAL_HMAC_SECRET — cannot generate approval links');
+    output('plan_created', 'false');
+    return;
+  }
+
+  // 1. Parse diagnosis from issue body
+  const diagnosis = parseDiagnosis(issueBody);
+  if (!diagnosis) {
+    console.log('No DIAGNOSIS_JSON found — cannot generate plan');
+    output('plan_created', 'false');
+    return;
+  }
+
+  console.log(`Generating remediation plan for issue #${issueNumber}`);
+  console.log(`  Diagnosis: ${diagnosis.summary}`);
+  console.log(`  Fix type: ${diagnosis.fixType}, Auto-fix result: ${fixAction}`);
+
+  // 2. Build context for Claude
+  const showsData = loadJsonSafe('data/shows.json');
+  const shows = showsData?.shows || showsData || [];
+  const show = diagnosis.showId
+    ? shows.find(s => s.id === diagnosis.showId)
+    : null;
+
+  let contextParts = [];
+
+  // Show data
+  if (show) {
+    const showContext = { ...show };
+    contextParts.push(`## Show Data\n\`\`\`json\n${JSON.stringify(showContext, null, 2)}\n\`\`\``);
+
+    // Commercial data
+    const commercial = loadJsonSafe('data/commercial.json');
+    const slug = diagnosis.showSlug || show.slug;
+    if (commercial?.shows?.[slug]) {
+      contextParts.push(`## Commercial Data\n\`\`\`json\n${JSON.stringify(commercial.shows[slug], null, 2)}\n\`\`\``);
+    }
+
+    // Reviews summary
+    const reviewsData = loadJsonSafe('data/reviews.json');
+    const allReviews = reviewsData?.reviews || reviewsData || [];
+    const showReviews = allReviews.filter(r => r.showId === show.id);
+    if (showReviews.length > 0) {
+      const summary = showReviews.slice(0, 20).map(r => ({
+        outlet: r.outlet, critic: r.criticName, score: r.assignedScore, tier: r.tier,
+      }));
+      contextParts.push(`## Reviews (${showReviews.length} total, showing first 20)\n\`\`\`json\n${JSON.stringify(summary, null, 2)}\n\`\`\``);
+    }
+
+    // Review text files
+    const reviewDir = path.join(ROOT, 'data/review-texts', show.id);
+    if (fs.existsSync(reviewDir)) {
+      const files = fs.readdirSync(reviewDir).slice(0, 10);
+      contextParts.push(`## Review text files (${files.length} shown): ${files.join(', ')}`);
+    }
+  }
+
+  // Relevant source code based on fix type
+  if (diagnosis.fixType === 'code' || diagnosis.fixType === 'config') {
+    for (const f of (diagnosis.relevantFiles || []).slice(0, 3)) {
+      const content = loadFile(f, 30000);
+      if (content) contextParts.push(`## ${f}\n\`\`\`\n${content}\n\`\`\``);
+    }
+  }
+
+  const allowedFieldsList = Object.entries(ALLOWED_DATA_FIELDS)
+    .map(([file, fields]) => `  ${file}: ${fields.join(', ')}`)
+    .join('\n');
+
+  // 3. Call Claude to generate remediation plan
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  const prompt = `You are generating a remediation plan for a bug on Broadway Scorecard that couldn't be auto-fixed.
+
+## Bug Diagnosis
+**Summary:** ${diagnosis.summary}
+**What's happening:** ${diagnosis.whatsHappening}
+**Findings:** ${diagnosis.findings?.join('; ') || 'N/A'}
+**Proposed fix:** ${diagnosis.proposedFix}
+**Fix type:** ${diagnosis.fixType}
+**Confidence:** ${diagnosis.confidence}
+**Auto-fix result:** ${fixAction}
+
+${contextParts.join('\n\n')}
+
+## What You Can Plan
+Your plan will be executed automatically after human approval. You may include these action types:
+
+### 1. data-edit — Change fields in data files
+Allowed fields:
+${allowedFieldsList}
+Each edit must specify: file, showId/slug, field, oldValue, newValue
+
+### 2. run-script — Run a pipeline script
+Allowed scripts: ${ALLOWED_SCRIPTS.join(', ')}
+Specify: script name, arguments (optional)
+
+### 3. review-file-op — Move/delete review files in data/review-texts/
+Specify: operation (move, delete, rename), source path, destination path
+
+## Rules
+- Be SPECIFIC with every action — exact field names, exact values, exact paths
+- For data-edits, include the current oldValue so the executor can verify nothing changed
+- Keep it minimal — only what's needed to fix the bug
+- Assess risk honestly: Low (data-only, easily reversible), Medium (multiple files, review file ops), High (structural changes)
+- Write the summary in plain English as if explaining to a friend
+
+Respond with ONLY a JSON object:
+{
+  "canCreatePlan": true,
+  "summary": "Plain English summary of the fix in 1-2 sentences",
+  "steps": ["Step 1 in plain English", "Step 2"],
+  "riskLevel": "Low|Medium|High",
+  "actions": [
+    {
+      "type": "data-edit",
+      "file": "shows.json",
+      "showId": "show-id",
+      "field": "venue",
+      "oldValue": "current value",
+      "newValue": "new value",
+      "description": "Why this change"
+    }
+  ]
+}
+
+Or if you cannot create an actionable plan:
+{ "canCreatePlan": false, "reason": "why" }`;
+
+  let plan;
+  try {
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: prompt }],
+    });
+
+    const text = message.content[0].text;
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON in Claude response');
+    plan = JSON.parse(jsonMatch[0]);
+  } catch (err) {
+    console.error('Claude API error:', err.message);
+    output('plan_created', 'false');
+    return;
+  }
+
+  if (!plan.canCreatePlan) {
+    console.log(`Cannot create plan: ${plan.reason}`);
+    output('plan_created', 'false');
+    return;
+  }
+
+  // 4. Save plan to data/pending-fixes/
+  const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
+  const planData = {
+    issueNumber: parseInt(issueNumber),
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    diagnosis: {
+      summary: diagnosis.summary,
+      whatsHappening: diagnosis.whatsHappening,
+      fixType: diagnosis.fixType,
+      confidence: diagnosis.confidence,
+      showId: diagnosis.showId,
+      showSlug: diagnosis.showSlug,
+    },
+    submitter: {
+      name: diagnosis.submitterName || 'Anonymous',
+      email: diagnosis.submitterEmail || null,
+      show: diagnosis.submitterShow || null,
+      message: diagnosis.originalMessage || '',
+    },
+    plan: {
+      summary: plan.summary,
+      steps: plan.steps,
+      riskLevel: plan.riskLevel,
+      actions: plan.actions,
+    },
+  };
+
+  fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
+  console.log(`Plan saved to ${planFile}`);
+
+  // 5. Generate HMAC-signed approval URLs
+  const approveUrl = generateApprovalUrl('approve', issueNumber, secret);
+  const rejectUrl = generateApprovalUrl('reject', issueNumber, secret);
+
+  // 6. Send approval email
+  const ownerEmail = process.env.OWNER_EMAIL;
+  if (ownerEmail) {
+    const { subject, html } = buildFixApprovalEmail({
+      submitterName: planData.submitter.name,
+      showTitle: planData.submitter.show,
+      originalMessage: planData.submitter.message,
+      planSummary: plan.summary,
+      planSteps: plan.steps,
+      riskLevel: plan.riskLevel,
+      approveUrl,
+      rejectUrl,
+      issueNumber: parseInt(issueNumber),
+    });
+
+    try {
+      await sendEmail(
+        ownerEmail,
+        'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+        subject,
+        html
+      );
+      console.log(`Approval email sent to ${ownerEmail}`);
+    } catch (err) {
+      console.error('Failed to send approval email:', err.message);
+    }
+  } else {
+    console.log('No OWNER_EMAIL set — skipping email');
+  }
+
+  output('plan_created', 'true');
+  console.log('Remediation plan generated successfully');
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  output('plan_created', 'false');
+});

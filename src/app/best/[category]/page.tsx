@@ -6,7 +6,7 @@ import type { BestOfCategory } from '@/lib/data-types';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import Breadcrumb from '@/components/Breadcrumb';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier, FormatPill, ProductionPill } from '@/components/show-cards';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
@@ -37,6 +37,19 @@ export function generateMetadata({ params }: { params: { category: string } }): 
       description: list.description,
     },
   };
+}
+
+function getBroadwayDuration(openingDate: string | null): string | null {
+  if (!openingDate) return null;
+  const open = new Date(openingDate);
+  const now = new Date();
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  if (months < 1) return 'Just opened';
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
+  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -96,6 +109,12 @@ export default function BestOfPage({ params }: { params: { category: string } })
 
   const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
 
+  // Only show format pills when the list has mixed types (e.g. "Best New Shows" has musicals + plays)
+  const isMixedType = new Set(list.shows.map(s => s.type)).size > 1;
+  // Only show status when the list has mixed statuses (e.g. don't show "Now Playing" on every card if they're all open)
+  const statuses = new Set(list.shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const isMixedStatus = statuses.size > 1;
+
   return (
     <>
       <script
@@ -103,7 +122,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         <Breadcrumb items={[
           { label: 'Home', href: '/' },
           { label: list.title },
@@ -120,50 +139,81 @@ export default function BestOfPage({ params }: { params: { category: string } })
 
         {/* Show List */}
         {list.shows.length > 0 ? (
-          <div className="space-y-4">
-            {list.shows.map((show, index) => (
-              <Link
-                key={show.id}
-                href={`/show/${show.slug}`}
-                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
-              >
+          <div className="space-y-3">
+            {list.shows.map((show, index) => {
+              const tier = getScoreTier(show.criticScore?.score);
+              const isOpen = show.status === 'open' || show.status === 'previews';
+              const duration = isOpen ? getBroadwayDuration(show.openingDate) : null;
+              return (
+              <div key={show.id} className="flex items-center gap-3">
+                {/* Rank outside the card */}
                 <RankBadge rank={index + 1} />
 
-                {/* Thumbnail */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                  {show.images?.thumbnail ? (
-                    <img
-                      src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                      alt={`${show.title} Broadway ${show.type}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-2xl">🎭</span>
+                <Link
+                  href={`/show/${show.slug}`}
+                  className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.images?.thumbnail ? (
+                      <img
+                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
+                        alt={`${show.title} Broadway ${show.type}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-2xl">🎭</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors truncate">
+                        {show.title}
+                      </h2>
+                      {isMixedType && <FormatPill type={show.type} />}
+                      {show.isRevival && <ProductionPill isRevival={true} />}
                     </div>
-                  )}
-                </div>
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+                      {duration && <span>{duration}</span>}
+                      {isOpen && show.closingDate && (
+                        <span>
+                          {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      )}
+                      {isMixedStatus && (isOpen ? (
+                        <span className="inline-flex items-center gap-1 text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          Now Playing
+                        </span>
+                      ) : (
+                        <span>
+                          Closed{show.closingDate ? ` ${new Date(show.closingDate).getFullYear()}` : ''}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate">
-                    {show.title}
-                  </h2>
-                  <p className="text-gray-400 text-sm truncate">
-                    {show.venue} • {show.type === 'musical' ? 'Musical' : 'Play'}
-                  </p>
-                  {show.criticScore && (
-                    <p className="text-gray-500 text-xs mt-1">
-                      {show.criticScore.reviewCount} reviews
-                    </p>
-                  )}
-                </div>
-
-                {/* Score */}
-                <ScoreBadge score={show.criticScore?.score} size="sm" />
-              </Link>
-            ))}
+                  {/* Score — tier label above badge, fixed width for alignment */}
+                  <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
+                    {tier ? (
+                      <span
+                        className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                        style={{ color: tier.color }}
+                      >
+                        {tier.label}
+                      </span>
+                    ) : null}
+                    <ScoreBadge score={show.criticScore?.score} size="md" />
+                  </div>
+                </Link>
+              </div>
+              );
+            })}
           </div>
         ) : (
           <div className="card p-8 text-center">
