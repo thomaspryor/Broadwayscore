@@ -110,7 +110,7 @@ function formatDate(dateStr: string | null | undefined): string {
   const date = new Date(cleanedDateStr);
 
   // Check for invalid date or Unix epoch (which indicates missing date)
-  if (isNaN(date.getTime()) || date.getFullYear() < 1990) {
+  if (isNaN(date.getTime()) || date.getFullYear() < 1950) {
     return ''; // Hide date instead of showing garbage
   }
 
@@ -285,15 +285,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
                 {show.status === 'previews' || show.status === 'upcoming' ? (
-                  <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
+                  formatDate(show.openingDate) ? <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span> : null
                 ) : show.closingDate ? (
                   <>
                     <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
-                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
+                    {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
                   </>
-                ) : (
+                ) : formatDate(show.openingDate) ? (
                   <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
-                )}
+                ) : null}
               </p>
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
