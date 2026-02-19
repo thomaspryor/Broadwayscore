@@ -99,20 +99,10 @@ async function searchIBDB(title, options = {}) {
     }
   }
 
-  // Fallback: construct URL directly from title slug
+  // No fallback URL construction — IBDB bare slugs (without numeric production IDs)
+  // always redirect to the homepage. Only real SERP results have valid URLs.
   if (results.length === 0) {
-    const slug = title.toLowerCase()
-      .replace(/['']/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-    // Try common IBDB URL patterns
-    console.log(`  📎 No SERP results, trying direct URL construction for "${title}"`);
-    results.push({
-      url: `${IBDB_BASE}/broadway-production/${slug}`,
-      title: title,
-      year: openingYear ? String(openingYear) : null,
-      isGuessed: true
-    });
+    console.log(`  📎 No SERP results for "${title}" — cannot construct IBDB URL without production ID`);
   }
 
   return results;

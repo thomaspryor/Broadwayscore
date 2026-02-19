@@ -3,8 +3,9 @@
 import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { getBroadwayDuration } from '@/lib/date-utils';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -23,6 +24,7 @@ export interface BrowseShow {
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   performances?: number;
+  reviewYearNote?: string;
 }
 
 type ScoreMode = 'critics' | 'audience';
@@ -41,20 +43,10 @@ interface BrowseListClientProps {
   showTypeFilter: boolean;
   /** Whether to show the score mode toggle */
   showScoreToggle: boolean;
+  /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
+  subtitle?: string;
 }
 
-function getBroadwayDuration(openingDate: string | null): string | null {
-  if (!openingDate) return null;
-  const open = new Date(openingDate);
-  const now = new Date();
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
-  if (months < 1) return 'Just opened';
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
-  const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
-  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
-}
 
 function RankBadge({ rank }: { rank: number }) {
   const isTop3 = rank <= 3;
@@ -71,8 +63,8 @@ const SORT_LABELS: Record<SortOption, string> = {
   score: 'Highest',
   alpha: 'A-Z',
   newest: 'Newest',
-  closing: 'Closing Soon',
-  performances: 'Longest Running',
+  closing: 'Closing',
+  performances: 'Longest',
 };
 
 const ShowCard = memo(function ShowCard({
@@ -164,6 +156,13 @@ const ShowCard = memo(function ShowCard({
           </div>
         </div>
 
+        {/* Review Year Note - hidden on mobile */}
+        {show.reviewYearNote && scoreMode === 'critics' && (
+          <span className="hidden sm:flex flex-shrink-0 text-[10px] text-gray-400 leading-tight text-right max-w-[4.5rem] self-center">
+            {show.reviewYearNote}
+          </span>
+        )}
+
         {/* Score */}
         <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
           {scoreMode === 'audience' ? (
@@ -204,6 +203,11 @@ const ShowCard = memo(function ShowCard({
                 </span>
               ) : null}
               <ScoreBadge score={displayScore} size="md" />
+              {show.audienceGrade && (
+                <div className="mt-0.5">
+                  <AudienceChip grade={show.audienceGrade} />
+                </div>
+              )}
             </>
           )}
         </div>
@@ -222,6 +226,7 @@ export default function BrowseListClient({
   availableSorts,
   showTypeFilter,
   showScoreToggle,
+  subtitle,
 }: BrowseListClientProps) {
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
   const [sort, setSort] = useState<SortOption>(
@@ -282,7 +287,7 @@ export default function BrowseListClient({
     <>
       {/* Controls */}
       {showControls && (
-        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : 'mb-1'}>
+        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
           {/* Type filter row (only if mixed types) */}
           {showTypeFilter && (
             <div className="flex items-center gap-1.5">
@@ -305,22 +310,24 @@ export default function BrowseListClient({
           {/* Sort + Toggle row (all on one line) */}
           <div className="flex items-center justify-between gap-1">
             {availableSorts.length > 1 ? (
-              <div className="flex items-center gap-0.5">
-                <span className="text-[10px] font-medium uppercase tracking-wide text-gray-500 mr-0.5 hidden sm:inline">Sort:</span>
+              <div className="flex items-center gap-0.5 sm:gap-2">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
                 {availableSorts.map(s => (
                   <button
                     key={s}
                     onClick={() => setSort(s)}
-                    className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[32px] whitespace-nowrap ${
+                    className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 whitespace-nowrap ${
                       sort === s
-                        ? 'bg-white/15 text-white'
-                        : 'text-gray-500 hover:text-gray-300'
+                        ? 'text-brand bg-brand/10 sm:bg-transparent'
+                        : 'text-gray-300 hover:text-white'
                     }`}
                   >
                     {SORT_LABELS[s]}
                   </button>
                 ))}
               </div>
+            ) : subtitle ? (
+              <span className="text-gray-500 text-sm">{subtitle}</span>
             ) : <div />}
 
             {/* Score mode toggle */}
@@ -334,7 +341,7 @@ export default function BrowseListClient({
                     key={key}
                     onClick={() => setScoreMode(key)}
                     aria-pressed={scoreMode === key}
-                    className={`px-1.5 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
+                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
                       scoreMode === key
                         ? 'bg-brand text-gray-900 shadow-sm'
                         : 'text-gray-500 hover:text-gray-300'
