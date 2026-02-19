@@ -50,15 +50,18 @@ Any script processing >10 items in CI MUST save progress incrementally.
 - Use 5-retry push with `--rebase -X theirs`
 - `rebuild-all-reviews.js` writes back to `data/review-texts/` — the `push-review-texts` composite action handles pushing those changes to the private repo
 
-### 7a. Private Review-Texts Repo (IMPORTANT — ALL SESSIONS READ THIS)
-**`data/review-texts/` is in a private repo** (`thomaspryor/broadway-review-texts`), NOT the public repo. This protects 24,000+ copyrighted full-text reviews from DMCA exposure.
-- **CI workflows** automatically check out and push review-texts via composite actions:
+### 7a. Private Review-Texts Repo (CRITICAL — ALL SESSIONS READ THIS)
+**NEVER commit copyrighted review text, scraped full-text content, or third-party API keys to the public repo.** This is a legal/DMCA risk. All 24,000+ full-text reviews live in a private repo only.
+- **`data/review-texts/`** → private repo (`thomaspryor/broadway-review-texts`), gitignored from public repo.
+- **`reviews.json`** → public repo, but contains ONLY metadata (scores, outlets, URLs) — NO `fullText` field.
+- **CI workflows** use composite actions to check out / push review-texts:
   - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
   - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
 - **Secret:** `REVIEW_TEXTS_TOKEN` (PAT with `repo` scope, no expiration)
 - **Public repo:** `data/review-texts/` is in `.gitignore`. `git add data/review-texts/` is a no-op.
 - **Scripts unchanged:** No script modifications needed. Workflow-level composite actions handle the private repo.
 - **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
+- **Automated guard:** `test.yml` data-validation job verifies zero review-text files are tracked in the public repo. Fails the build if any leak in.
 - **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
 
 ### 8. Design System — Use Shared Components
