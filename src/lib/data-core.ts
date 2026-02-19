@@ -11,7 +11,7 @@ import {
   RawBuzzThread,
 } from './engine';
 
-import type { Director, Theater, BestOfCategory, BestOfList, BrowseList } from './data-types';
+import type { Director, Theater, TheaterStructuredTips, BestOfCategory, BestOfList, BrowseList } from './data-types';
 import { getShowGrosses } from './data-grosses';
 import { BROWSE_PAGES, BrowsePageConfig, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
 // Import raw data (loaded at build time for static generation)
@@ -268,7 +268,7 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: import('./data-types').TheaterStructuredTips }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
