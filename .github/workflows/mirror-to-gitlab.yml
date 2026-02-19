@@ -1,0 +1,42 @@
+name: Mirror to GitLab
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: gitlab-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Mirror clone from GitHub
+        run: git clone --mirror "https://github.com/thomaspryor/Broadwayscore.git" repo.git
+
+      - name: Push to GitLab
+        id: push
+        run: |
+          cd repo.git
+          git push --force "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" 'refs/heads/*:refs/heads/*' 'refs/tags/*:refs/tags/*' 2>&1
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Verify mirror is in sync
+        run: |
+          GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
+          GITLAB_SHA=$(git ls-remote "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" main | cut -f1)
+          if [ "$GITHUB_SHA" != "$GITLAB_SHA" ]; then
+            echo "::error::Mirror out of sync! GitHub=$GITHUB_SHA GitLab=$GITLAB_SHA"
+            exit 1
+          fi
+          echo "Mirror verified: $GITHUB_SHA"
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
