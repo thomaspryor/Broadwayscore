@@ -885,15 +885,6 @@ export function generateActorPersonSchema(profile: {
     knowsAbout: 'Broadway Theater',
     description: `${profile.name} is a Broadway actor who has appeared in ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
     sameAs: [`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`],
-    ...(profile.avgScore !== null && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: toFiveStarScale(profile.avgScore),
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: profile.showCount,
-      },
-    }),
   };
 }
 

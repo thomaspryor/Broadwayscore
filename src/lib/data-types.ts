@@ -44,6 +44,9 @@ export interface Theater {
   slug: string;
   address?: string;
   capacity?: number;
+  yearBuilt?: number;
+  operator?: string;
+  formerNames?: string[];
   tips?: string;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
@@ -550,6 +553,7 @@ export interface ActorProfile {
   name: string;
   slug: string;
   ibdbPersonId: string;
+  headshot: string | null;
   shows: ActorShowEntry[];
   showCount: number;
   avgScore: number | null;

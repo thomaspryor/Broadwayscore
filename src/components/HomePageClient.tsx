@@ -8,6 +8,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip } from '@/components/show-cards';
+import { getBroadwayDuration } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -71,18 +72,6 @@ function formatOpeningDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-function getBroadwayDuration(openingDate: string | null): string | null {
-  if (!openingDate) return null;
-  const open = new Date(openingDate);
-  const now = new Date();
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
-  if (months < 1) return 'Just opened';
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} on Broadway`;
-  const years = Math.floor(months / 12);
-  const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years === 1 ? '' : 's'} on Broadway`;
-  return `${years}+ year${years === 1 ? '' : 's'} on Broadway`;
-}
 
 function SearchIcon() {
   return (

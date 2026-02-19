@@ -40,8 +40,6 @@ export default function TheatersIndexPage() {
       showCount: t.showCount,
       capacity: t.capacity ?? null,
       currentShowTitle: t.currentShow?.title,
-      currentShowSlug: t.currentShow?.slug,
-      currentShowScore: t.currentShow?.criticScore?.score ?? null,
       avgScore,
     };
   });
@@ -50,7 +48,7 @@ export default function TheatersIndexPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
       />
       <TheaterIndexClient theaters={theaterSummaries} />
     </>
