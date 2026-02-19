@@ -42,7 +42,9 @@
     "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
     "hadestown-2019/amny--matt-windman.json",
     "hadestown-2019/medium--christian-lewis.json",
-    "hamilton-2015/ap--mark-kennedy.json"
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/on-disney-july-3--unknown.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -286,7 +288,15 @@
     "book-of-mormon-2011/ny-1--roma-torre.json",
     "chicago-1996/oocities--richard-zoglin.json",
     "chicago-1996/time--.json",
-    "chicago-1996/time--richard-zoglin.json"
+    "chicago-1996/time--richard-zoglin.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/washpost--peter-marks.json",
+    "oh-mary-2024/front-row-center--david-walters.json",
+    "oh-mary-2024/njcom--christopher-kelly.json",
+    "six-2021/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -307,7 +317,9 @@
       "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
       "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
       "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "hadestown-2019/medium--christian-lewis.json"
+      "hadestown-2019/medium--christian-lewis.json",
+      "hamilton-2015/on-disney-july-3--unknown.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -333,10 +345,40 @@
       "data/review-texts/collected-stories-2010/nytimes--charles-isherwood.json",
       "data/review-texts/come-fly-away-2010/nytimes--ben-brantley.json",
       "data/review-texts/crybaby-2008/nytimes--ben-brantley.json",
-      "data/review-texts/chicago-1996/oocities--richard-zoglin.json"
+      "data/review-texts/chicago-1996/oocities--richard-zoglin.json",
+      "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "operation-mincemeat-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/wsj--charles-isherwood.json",
+      "the-outsiders-2024/wsj--charles-isherwood.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/wsj--charles-isherwood.json",
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+      "american-buffalo-2022/wsj--charles-isherwood.json",
+      "american-idiot-2010/wsj--terry-teachout.json",
+      "american-son-2018/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json",
+      "camelot-2023/wsj--charles-isherwood.json",
+      "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+      "the-lion-king-1997/vulture--john-simon.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "aladdin-2014/timeout--adam-feldman.json",
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "chicago-1996/theatermania--andy-propst.json",
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
       "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "the-lion-king-1997/new-york--john-simon.json",
+      "wicked-2003/ew--alice-king.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
       "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
       "all-out-2025/amny--matt-windman.json",
       "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
@@ -346,7 +388,7 @@
     ]
   },
   "startTime": "2026-02-18T22:33:15.196Z",
-  "lastProcessed": "hamilton-2015/ap--mark-kennedy.json",
+  "lastProcessed": "six-2021/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-02-19T00:43:39.561Z",
@@ -485,94 +527,6 @@
       "event": "bb-session",
       "session": "8232b67f",
       "url": "http://www.thewrap.com/side-show-theater-review-bill-condon-gives-twin-dreamgirl"
-    },
-    {
-      "t": "2026-02-19T01:23:11.682Z",
-      "event": "bb-session",
-      "session": "7ef661d5",
-      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
-    },
-    {
-      "t": "2026-02-19T01:23:14.014Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:24:50.667Z",
-      "event": "bb-session",
-      "session": "55d20637",
-      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-aga"
-    },
-    {
-      "t": "2026-02-19T01:24:52.835Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:26:32.458Z",
-      "event": "bb-session",
-      "session": "a10d29f3",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T01:26:34.712Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:28:14.577Z",
-      "event": "bb-session",
-      "session": "216ea334",
-      "url": "http://online.wsj.com/article/SB10001424052748703440004575548133890697248.html?m"
-    },
-    {
-      "t": "2026-02-19T01:28:16.655Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:30:00.151Z",
-      "event": "bb-session",
-      "session": "b440c82a",
-      "url": "http://online.wsj.com/article/SB10001424052748704702304575403073840625174.html?m"
-    },
-    {
-      "t": "2026-02-19T01:30:02.323Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:31:30.992Z",
-      "event": "bb-session",
-      "session": "cf94d504",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review"
-    },
-    {
-      "t": "2026-02-19T01:31:32.894Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:32:56.133Z",
-      "event": "bb-session",
-      "session": "94c085c3",
-      "url": "https://www.wsj.com/articles/SB10001424052702304444604577338220013871424"
-    },
-    {
-      "t": "2026-02-19T01:32:58.063Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-19T01:34:14.426Z",
-      "event": "bb-session",
-      "session": "c5a79043",
-      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
-    },
-    {
-      "t": "2026-02-19T01:34:16.383Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
