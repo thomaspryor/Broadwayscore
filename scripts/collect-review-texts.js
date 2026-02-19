@@ -2975,7 +2975,8 @@ function buildTierContext(review) {
 
   // Reason-aware routing: override tier strategy based on incompleteReason
   const reason = review.incompleteReason || '';
-  const forceArchiveFirst = ['scraper_garbage', 'paywall', 'partial_text'].includes(reason);
+  // NOT scraper_garbage — many got garbage FROM archive.org, so archive-first creates a loop
+  const forceArchiveFirst = ['paywall', 'partial_text'].includes(reason);
   const skipDirectScrapers = reason === 'paywall';
   const enableBrowserbase = reason === 'bot_blocked';
 
@@ -4882,25 +4883,16 @@ async function processReview(review) {
 
     if (discoveredUrl) {
       console.log(`  [${review.incompleteReason}] Discovered: ${review.url || '(none)'} → ${discoveredUrl}`);
-      // For wrong_content: clear wrong flags on file so it can be re-scraped
-      if (review.incompleteReason === 'wrong_content') {
-        try {
-          const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-          fileData.previousUrl = fileData.url;
-          fileData.url = discoveredUrl;
-          delete fileData.wrongProduction;
-          delete fileData.wrongShow;
-          delete fileData.wrongProductionReason;
-          delete fileData.wrongShowReason;
-          delete fileData.showNotMentioned;
-          delete fileData.contentMismatchNote;
-          delete fileData.incompleteReason;
-          delete fileData.incompleteDetail;
-          fileData.urlDiscoveredAt = new Date().toISOString();
-          fileData.urlDiscoveryMethod = 'google-serp-reason-recovery';
-          fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
-        } catch (e) {}
-      }
+      // Update URL on file, but keep wrong-content flags until fetch succeeds
+      // (race condition: if we clear flags now but fetch fails, rebuild would include wrong text)
+      try {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        fileData.previousUrl = fileData.url;
+        fileData.url = discoveredUrl;
+        fileData.urlDiscoveredAt = new Date().toISOString();
+        fileData.urlDiscoveryMethod = 'google-serp-reason-recovery';
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      } catch (e) {}
       review.url = discoveredUrl;
       review._urlDiscovered = true;
     } else {
@@ -4942,6 +4934,13 @@ async function processReview(review) {
       stats.totalFailed++;
       return { success: false, error: 'show_not_mentioned_no_url' };
     }
+  }
+
+  // Safety: no URL means we can't fetch (prevents crash on no_url reviews that missed SERP)
+  if (!review.url) {
+    console.log('  ✗ No URL available — skipping');
+    stats.totalFailed++;
+    return { success: false, error: 'no_url' };
   }
 
   try {
@@ -5049,6 +5048,20 @@ async function processReview(review) {
 
     // Clear any previous failure tracking on success
     clearFailedFetch(review.reviewId);
+
+    // For wrong_content: now safe to clear flags (content fetched and validated from new URL)
+    if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        delete postData.wrongProduction;
+        delete postData.wrongShow;
+        delete postData.wrongProductionReason;
+        delete postData.wrongShowReason;
+        delete postData.showNotMentioned;
+        delete postData.contentMismatchNote;
+        fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+      } catch (e) {}
+    }
 
     return { success: true, method: result.method, validation };
 

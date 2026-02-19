@@ -144,3 +144,6 @@ data/cookies/
 .env
 # Google service account keys
 ga-service-account*.json
+# Raw scraped HTML archives (contain embedded API keys, tracking pixels)
+data/archives/
+
