@@ -73,9 +73,13 @@ function output(key, value) {
 
 function runValidation() {
   try {
-    execSync('node scripts/validate-data.js', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
+    const output = execSync('node scripts/validate-data.js', { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
+    console.log('Validation passed');
     return true;
-  } catch {
+  } catch (err) {
+    console.error('Validation stderr:', err.stderr?.toString().slice(-500) || '(none)');
+    console.error('Validation stdout:', err.stdout?.toString().slice(-500) || '(none)');
+    console.error('Validation exit code:', err.status);
     return false;
   }
 }
