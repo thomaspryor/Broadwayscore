@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, ToggleBar } from '@/components/show-cards';
+import { ScoreBadge, ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type StatusFilter = 'current' | 'all' | 'dark';
@@ -171,42 +171,10 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
       {/* Column headers — also serve as sort controls */}
       <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="group" aria-label="Sort theaters">
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0">
-          <button
-            onClick={() => setSortMode('alpha')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${sortMode === 'alpha' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
-            aria-pressed={sortMode === 'alpha'}
-          >
-            Theater{sortMode === 'alpha' ? ' ▾' : ''}
-          </button>
-        </div>
-        <div className="w-14 hidden sm:flex items-center justify-center flex-shrink-0">
-          <button
-            onClick={() => setSortMode('capacity')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${sortMode === 'capacity' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
-            aria-pressed={sortMode === 'capacity'}
-          >
-            Seats{sortMode === 'capacity' ? ' ▾' : ''}
-          </button>
-        </div>
-        <div className="w-10 sm:w-16 flex items-center justify-center flex-shrink-0">
-          <button
-            onClick={() => setSortMode('shows')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors text-center leading-tight ${sortMode === 'shows' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
-            aria-pressed={sortMode === 'shows'}
-          >
-            <span className="hidden sm:inline">Past </span>Shows{sortMode === 'shows' ? ' ▾' : ''}
-          </button>
-        </div>
-        <div className="w-10 sm:w-14 flex items-center justify-center flex-shrink-0">
-          <button
-            onClick={() => setSortMode('score')}
-            className={`text-[10px] font-medium uppercase tracking-wider transition-colors text-center leading-tight ${sortMode === 'score' ? 'text-brand' : 'text-gray-500 hover:text-gray-400'}`}
-            aria-pressed={sortMode === 'score'}
-          >
-            <span className="hidden sm:inline">Avg </span>Score{sortMode === 'score' ? ' ▾' : ''}
-          </button>
-        </div>
+        <ColumnHeader label="Theater" active={sortMode === 'alpha'} onClick={() => setSortMode('alpha')} flex align="left" />
+        <ColumnHeader label="Seats" active={sortMode === 'capacity'} onClick={() => setSortMode('capacity')} className="w-14 hidden sm:flex items-center justify-center flex-shrink-0" />
+        <ColumnHeader label="Past Shows" mobileLabel="Shows" active={sortMode === 'shows'} onClick={() => setSortMode('shows')} className="w-10 sm:w-16 flex-shrink-0" />
+        <ColumnHeader label="Avg Score" mobileLabel="Score" active={sortMode === 'score'} onClick={() => setSortMode('score')} className="w-10 sm:w-14 flex-shrink-0" />
       </div>
 
       {/* Theater List */}

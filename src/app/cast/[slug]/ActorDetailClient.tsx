@@ -6,7 +6,7 @@ import type { ActorProfile } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
 // getScoreClass no longer needed — using ScoreBadge component
-import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid } from '@/components/show-cards';
+import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortCol = 'date' | 'score';
@@ -264,28 +264,8 @@ export default function ActorDetailClient({
           {closedShows.length > 1 && (
             <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
               <div className="w-14 flex-shrink-0" />
-              <button
-                className="flex-1 min-w-0 text-left group/sort"
-                onClick={() => handleSort('date')}
-                aria-sort={sortCol === 'date' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-              >
-                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-                  sortCol === 'date' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-                }`}>
-                  Recent{sortCol === 'date' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
-                </span>
-              </button>
-              <button
-                className="w-14 text-center flex-shrink-0 group/sort"
-                onClick={() => handleSort('score')}
-                aria-sort={sortCol === 'score' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
-              >
-                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-                  sortCol === 'score' ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
-                }`}>
-                  Score{sortCol === 'score' && <span className="ml-0.5 text-brand">{sortDir === 'desc' ? '▼' : '▲'}</span>}
-                </span>
-              </button>
+              <ColumnHeader label="Recent" active={sortCol === 'date'} direction={sortDir} onClick={() => handleSort('date')} flex align="left" />
+              <ColumnHeader label="Score" active={sortCol === 'score'} direction={sortDir} onClick={() => handleSort('score')} className="w-14 flex-shrink-0" />
             </div>
           )}
 
