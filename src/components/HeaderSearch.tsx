@@ -75,9 +75,9 @@ export default function HeaderSearch() {
       : [];
 
     // Merge: Fuse results first (ranked by relevance), then substring matches
-    const merged = [...fuseResults, ...substringMatches];
-    // Sort scored shows above unscored (within each group, preserve relevance order)
-    merged.sort((a, b) => (b.hasScore ? 1 : 0) - (a.hasScore ? 1 : 0));
+    // Exclude unscored closed shows (historical shows without reviews)
+    const merged = [...fuseResults, ...substringMatches]
+      .filter(show => show.hasScore || show.status !== 'closed');
     return merged.slice(0, 8);
   }, [query, fuse, shows]);
 
@@ -222,8 +222,7 @@ export default function HeaderSearch() {
                 aria-selected={index === selectedIndex}
                 onClick={() => handleResultClick(show.slug)}
                 className={`w-full flex items-center gap-3 px-3 py-2 text-left transition-colors
-                           ${index === selectedIndex ? 'bg-white/10' : 'hover:bg-white/5'}
-                           ${!show.hasScore && show.status === 'closed' ? 'opacity-50' : ''}`}
+                           ${index === selectedIndex ? 'bg-white/10' : 'hover:bg-white/5'}`}
               >
                 {show.images?.thumbnail ? (
                   <img
@@ -240,11 +239,9 @@ export default function HeaderSearch() {
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium
                                     ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                                      !show.hasScore && show.status === 'closed' ? 'bg-gray-500/10 text-gray-500' :
                                       'bg-gray-500/20 text-gray-400'}`}>
                       {show.status === 'open' ? 'Now Playing' :
-                       show.status === 'previews' ? 'In Previews' :
-                       !show.hasScore && show.status === 'closed' ? 'No Score' : 'Closed'}
+                       show.status === 'previews' ? 'In Previews' : 'Closed'}
                     </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>
@@ -323,8 +320,7 @@ export default function HeaderSearch() {
                     <button
                       key={show.id}
                       onClick={() => handleResultClick(show.slug)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors
-                                 ${!show.hasScore && show.status === 'closed' ? 'opacity-50' : ''}`}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors"
                     >
                       {show.images?.thumbnail ? (
                         <img
@@ -341,11 +337,9 @@ export default function HeaderSearch() {
                           <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
                                           ${show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                                             show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                                            !show.hasScore && show.status === 'closed' ? 'bg-gray-500/10 text-gray-500' :
                                             'bg-gray-500/20 text-gray-400'}`}>
                             {show.status === 'open' ? 'Now Playing' :
-                             show.status === 'previews' ? 'In Previews' :
-                             !show.hasScore && show.status === 'closed' ? 'No Score' : 'Closed'}
+                             show.status === 'previews' ? 'In Previews' : 'Closed'}
                           </span>
                           {show.venue && <span className="truncate">{show.venue}</span>}
                         </div>
