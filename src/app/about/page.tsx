@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BASE_URL } from '@/lib/seo';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   title: 'About',
