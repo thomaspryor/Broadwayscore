@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-19T17:05:19.722Z",
+  "runDate": "2026-02-19T17:12:33.389Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -20,31 +20,31 @@
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 60,
-    "archive": 2
+    "archiveToday": 55,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 91,
+    "tier1Attempts": 92,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 91,
+    "tier2Attempts": 92,
     "tier2Success": 5,
-    "tier3Attempts": 86,
+    "tier3Attempts": 87,
     "tier3Success": 0,
     "tier3_6Attempts": 85,
-    "tier3_6Success": 60,
+    "tier3_6Success": 55,
     "tier4Attempts": 91,
     "tier4Success": 2,
     "totalFailed": 94,
-    "scrapingBeeCreditsUsed": 146,
+    "scrapingBeeCreditsUsed": 123,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 28,
+    "urlDiscoveryAttempts": 33,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -158,9 +158,7 @@
     "browserbase": [],
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
-      "gypsy-2024/newyorker--naomi-fry.json",
-      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
+      "gypsy-2024/newyorker--naomi-fry.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -175,6 +173,8 @@
       "data/review-texts/wicked-2003/newyorker--john-lahr.json",
       "data/review-texts/1776-2022/newyorker--naomi-fry.json",
       "data/review-texts/1984-2017/newyorker--hilton-als.json",
+      "data/review-texts/a-christmas-carol-2019/newyorker--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2022/newyorker--naomi-fry.json",
       "data/review-texts/a-free-man-of-color-2010/newyorker--hilton-als.json",
       "data/review-texts/a-view-from-the-bridge-2015/newyorker--hilton-als.json",
       "data/review-texts/act-one-2014/newyorker--hilton-als.json",
@@ -192,19 +192,12 @@
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
       "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
-      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "data/review-texts/cabaret-2014/newyorker--hilton-als.json",
-      "data/review-texts/clybourne-park-2012/newyorker--hilton-als.json",
-      "data/review-texts/clydes-2021/newyorker--hilton-als.json",
-      "data/review-texts/clydes-2021/newyorker--naomi-fry.json",
-      "data/review-texts/company-2006/newyorker--john-lahr.json",
-      "data/review-texts/eclipsed-2016/newyorker--hilton-als.json",
-      "data/review-texts/faith-healer-2006/newyorker--john-lahr.json",
-      "data/review-texts/farinelli-and-the-king-2017/newyorker--hilton-als.json",
-      "data/review-texts/fences-2010/newyorker--hilton-als.json",
-      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
-      "data/review-texts/indecent-2017/newyorker--hilton-als.json",
-      "data/review-texts/into-the-woods-2022/newyorker--naomi-fry.json",
+      "data/review-texts/is-this-a-room-2021/newyorker--naomi-fry.json",
+      "data/review-texts/junk-2017/newyorker--hilton-als.json",
+      "data/review-texts/just-for-us-2023/newyorker--naomi-fry.json",
+      "data/review-texts/kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
+      "data/review-texts/king-charles-iii-2015/newyorker--hilton-als.json",
+      "data/review-texts/king-kong-2018/newyorker--hilton-als.json",
       "data/review-texts/kinky-boots-2013/newyorker--hilton-als.json",
       "data/review-texts/kiss-me-kate-2019/newyorker--hilton-als.json",
       "data/review-texts/la-bete-2010/newyorker--hilton-als.json",
@@ -227,12 +220,14 @@
     ],
     "archive": [
       "august-osage-county-2007/newyorker--.json",
-      "lombardi-2010/newyorker--uncredited.json"
+      "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
     ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 25,
+      "count": 30,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
