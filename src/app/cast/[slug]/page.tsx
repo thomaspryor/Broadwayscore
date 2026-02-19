@@ -23,9 +23,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       title,
       description,
       url: `${BASE_URL}/cast/${profile.slug}`,
-      images: profile.headshot
-        ? [{ url: profile.headshot }]
-        : [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
     },
     twitter: { card: 'summary' },
   };
