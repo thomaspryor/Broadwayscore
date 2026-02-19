@@ -282,23 +282,42 @@ export default function BrowseListClient({
     <>
       {/* Controls */}
       {showControls && (
-        <div className="mb-6 space-y-3">
-          {/* Top row: Type filter (left) + Score toggle (right) */}
-          <div className="flex items-center justify-between gap-3">
-            {/* Type filter */}
-            {showTypeFilter ? (
-              <div className="flex items-center gap-1.5">
-                {(['all', 'musical', 'play'] as const).map(t => (
+        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : 'mb-1'}>
+          {/* Type filter row (only if mixed types) */}
+          {showTypeFilter && (
+            <div className="flex items-center gap-1.5">
+              {(['all', 'musical', 'play'] as const).map(t => (
+                <button
+                  key={t}
+                  onClick={() => setTypeFilter(t)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors min-h-[36px] ${
+                    typeFilter === t
+                      ? 'bg-brand text-gray-900'
+                      : 'bg-surface-overlay text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+                  }`}
+                >
+                  {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Sort + Toggle row (all on one line) */}
+          <div className="flex items-center justify-between gap-1">
+            {availableSorts.length > 1 ? (
+              <div className="flex items-center gap-0.5">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-gray-500 mr-0.5 hidden sm:inline">Sort:</span>
+                {availableSorts.map(s => (
                   <button
-                    key={t}
-                    onClick={() => setTypeFilter(t)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors min-h-[36px] ${
-                      typeFilter === t
-                        ? 'bg-brand text-gray-900'
-                        : 'bg-surface-overlay text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+                    key={s}
+                    onClick={() => setSort(s)}
+                    className={`px-2 py-1 rounded-full text-[10px] font-semibold uppercase transition-colors min-h-[32px] whitespace-nowrap ${
+                      sort === s
+                        ? 'bg-white/15 text-white'
+                        : 'text-gray-500 hover:text-gray-300'
                     }`}
                   >
-                    {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
+                    {SORT_LABELS[s]}
                   </button>
                 ))}
               </div>
@@ -306,21 +325,16 @@ export default function BrowseListClient({
 
             {/* Score mode toggle */}
             {showScoreToggle && hasAnyAudienceData && (
-              <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score display mode">
+              <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10 flex-shrink-0" role="group" aria-label="Score display mode">
                 {([
                   { key: 'critics' as const, label: 'Critics' },
                   { key: 'audience' as const, label: 'Audience' },
                 ]).map(({ key, label }) => (
                   <button
                     key={key}
-                    onClick={() => {
-                      setScoreMode(key);
-                      if (key === 'audience' && sort === 'score') {
-                        // Keep sort by score, just recalculate
-                      }
-                    }}
+                    onClick={() => setScoreMode(key)}
                     aria-pressed={scoreMode === key}
-                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[36px] sm:min-h-0 ${
+                    className={`px-1.5 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all min-h-[36px] sm:min-h-0 ${
                       scoreMode === key
                         ? 'bg-brand text-gray-900 shadow-sm'
                         : 'text-gray-500 hover:text-gray-300'
@@ -332,26 +346,6 @@ export default function BrowseListClient({
               </div>
             )}
           </div>
-
-          {/* Sort row */}
-          {availableSorts.length > 1 && (
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">Sort:</span>
-              {availableSorts.map(s => (
-                <button
-                  key={s}
-                  onClick={() => setSort(s)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-colors min-h-[32px] ${
-                    sort === s
-                      ? 'bg-white/15 text-white'
-                      : 'text-gray-500 hover:text-gray-300'
-                  }`}
-                >
-                  {SORT_LABELS[s]}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       )}
 
