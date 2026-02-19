@@ -1,53 +1,651 @@
 {
   "processed": [
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+    "company-2021/washpost--peter-marks.json",
+    "dana-h-2021/washpost--peter-marks.json",
+    "diana-the-musical-2021/washpost--peter-marks.json",
+    "flying-over-sunset-2021/washpost--peter-marks.json",
+    "girl-from-the-north-country-2022/washpost--peter-marks.json",
+    "ink-2019/washpost--peter-marks.json",
+    "jagged-little-pill-2019/washpost--peter-marks.json",
+    "jerusalem-2011/washpost--peter-marks.json",
+    "junk-2017/washpost--peter-marks.json",
+    "les-liaisons-dangereuses-2016/washpost--peter-marks.json"
   ],
   "failed": [
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
-    "american-idiot-2010/financialtimes--brendan-lemon.json",
-    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
-    "betrayal-2013/financialtimes--brendan-lemon.json",
-    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
-    "carousel-2018/financial-times-uk--max-mcguinness.json",
-    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
-    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
-    "constellations-2015/financialtimes--brendan-lemon.json",
-    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
-    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
-    "enron-2010/financial-times--brandan-lemon.json",
-    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
-    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
-    "frozen-2018/financial-times-uk--max-mcguinness.json",
-    "glengarry-glen-ross-2012/financialtimes--brendan-lemon.json",
-    "grand-horizons-2020/financialtimes--unknown.json",
-    "hedwig-and-the-angry-inch-2014/financial-times-uk--brendan-lemon.json",
-    "hedwig-and-the-angry-inch-2014/financialtimes--unknown.json",
-    "heisenberg-2016/financial-times-uk--brendan-lemon.json",
-    "hello-dolly-2017/financial-times-uk--max-mcguinness.json",
-    "hughie-2016/financial-times-uk--max-mcguinness.json",
-    "indecent-2017/financial-times-uk--max-mcguinness.json",
-    "ink-2019/financialtimes--max-mcguinness.json",
-    "jesus-christ-superstar-2012/financialtimes--brendan-lemon.json"
+    "hells-kitchen-2024/washpost--peter-marks.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "700-sundays-2013/washpost--peter-marks.json",
+    "a-chorus-line-2006/washpost--peter-marks.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "a-dolls-house-2023/washpost--peter-marks.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
+    "all-my-sons-2008/washpost--peter-marks.json",
+    "all-my-sons-2019/washpost--peter-marks.json",
+    "allegiance-2015/washpost--peter-marks.json",
+    "amelie-a-new-musical-2017/washpost--peter-marks.json",
+    "american-buffalo-2022/washpost--peter-marks.json",
+    "american-psycho-2016/washpost--peter-marks.json",
+    "american-son-2018/washpost--peter-marks.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+    "anastasia-2017/washpost--peter-marks.json",
+    "annie-2012/ap--jennifer-farrar.json",
+    "annie-2012/washpost--peter-marks.json",
+    "anything-goes-2011/washpost--peter-marks.json",
+    "appropriate-2023/washpost--peter-marks.json",
+    "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+    "beetlejuice-2019/washpost--peter-marks.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
+    "betrayal-2013/washpost--peter-marks.json",
+    "betrayal-2019/washpost--peter-marks.json",
+    "bring-it-on-the-musical-2012/washpost--peter-marks.json",
+    "bronx-bombers-2014/ap--mark-kennedy.json",
+    "bronx-bombers-2014/washpost--unknown.json",
+    "camelot-2023/washpost--peter-marks.json",
+    "carousel-2018/washpost--peter-marks.json",
+    "cats-2016/washpost--peter-marks.json",
+    "china-doll-2015/washpost--peter-marks.json",
+    "chinglish-2011/washpost--peter-marks.json",
+    "clybourne-park-2012/washpost--peter-marks.json",
+    "clydes-2021/washpost--peter-marks.json",
+    "cost-of-living-2022/washpost--peter-marks.json",
+    "crybaby-2008/washpost--peter-marks.json",
+    "cult-of-love-2024/washpost--naveen-kumar.json",
+    "cult-of-love-2024/washpost--peter-marks.json",
+    "dead-accounts-2012/ap--mark-kennedy.json",
+    "dear-evan-hansen-2016/washpost--peter-marks.json",
+    "desire-under-the-elms-2009/washpost--peter-marks.json",
+    "disaster-2016/washpost--peter-marks.json",
+    "eclipsed-2016/washpost--peter-marks.json",
+    "end-of-the-rainbow-2012/washpost--peter-marks.json",
+    "enron-2010/washpost--peter-marks.json",
+    "evita-2012/washpost--peter-marks.json",
+    "falsettos-2016/washpost--peter-marks.json",
+    "farinelli-and-the-king-2017/washpost--peter-marks.json",
+    "finding-neverland-2015/washpost--peter-marks.json",
+    "first-date-2013/washpost--unknown.json",
+    "fish-in-the-dark-2015/washpost--peter-marks.json",
+    "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+    "ghost-the-musical-2012/ap--mark-kennedy.json",
+    "glengarry-glen-ross-2025/washpost--naveen-kumar.json",
+    "god-of-carnage-2009/washpost--peter-marks.json",
+    "golden-boy-2012/ap--mark-kennedy.json",
+    "good-people-2011/washpost--peter-marks.json",
+    "grand-horizons-2020/washpost--peter-marks.json",
+    "grey-gardens-2006/washpost--peter-marks.json",
+    "groundhog-day-2017/washpost--peter-marks.json",
+    "hand-to-god-2015/washpost--peter-marks.json",
+    "here-lies-love-2023/washpost--peter-marks.json",
+    "how-i-learned-to-drive-2022/washpost--peter-marks.json",
+    "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+    "illinoise-2024/washpost--peter-marks.json",
+    "in-the-next-room-2009/washpost--peter-marks.json",
+    "indecent-2017/washpost--peter-marks.json",
+    "is-he-dead-2007/washpost--peter-marks.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "jersey-boys-2005/washpost--peter-marks.json",
+    "king-charles-iii-2015/washpost--peter-marks.json",
+    "king-kong-2018/washpost--peter-marks.json",
+    "king-lear-2019/washpost--peter-marks.json",
+    "kinky-boots-2013/washpost--peter-marks.json",
+    "kiss-me-kate-2019/washpost--peter-marks.json",
+    "left-on-tenth-2024/washpost--peter-marks.json",
+    "legally-blonde-2007/washpost--peter-marks.json",
+    "lennon-2005/washpost--peter-marks.json",
+    "les-liaisons-dangereuses-2016/washpost--unknown.json",
+    "lestat-2006/washpost--peter-marks.json",
+    "lobby-hero-2018/washpost--peter-marks.json",
+    "lombardi-2010/washpost--peter-marks.json",
+    "lucky-guy-2013/washpost--peter-marks.json",
+    "macbeth-2008/washpost--peter-marks.json",
+    "mary-jane-2024/washpost--peter-marks.json",
+    "mary-stuart-2009/washpost--peter-marks.json",
+    "matilda-the-musical-2013/washpost--peter-marks.json",
+    "mean-girls-2018/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "company-2021/washpost--peter-marks.json",
+      "dana-h-2021/washpost--peter-marks.json",
+      "diana-the-musical-2021/washpost--peter-marks.json",
+      "flying-over-sunset-2021/washpost--peter-marks.json",
+      "girl-from-the-north-country-2022/washpost--peter-marks.json",
+      "ink-2019/washpost--peter-marks.json",
+      "jagged-little-pill-2019/washpost--peter-marks.json",
+      "jerusalem-2011/washpost--peter-marks.json",
+      "junk-2017/washpost--peter-marks.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
+      "data/review-texts/700-sundays-2013/washpost--peter-marks.json",
+      "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
+      "data/review-texts/allegiance-2015/washpost--peter-marks.json",
+      "data/review-texts/amelie-a-new-musical-2017/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/american-son-2018/washpost--peter-marks.json",
+      "data/review-texts/an-enemy-of-the-people-2024/washpost--peter-marks.json",
+      "data/review-texts/anastasia-2017/washpost--peter-marks.json",
+      "data/review-texts/annie-2012/ap--jennifer-farrar.json",
+      "data/review-texts/anything-goes-2011/washpost--peter-marks.json",
+      "data/review-texts/appropriate-2023/washpost--peter-marks.json",
+      "data/review-texts/beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+      "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
+      "data/review-texts/betrayal-2013/washpost--peter-marks.json",
+      "data/review-texts/betrayal-2019/washpost--peter-marks.json",
+      "data/review-texts/bring-it-on-the-musical-2012/washpost--peter-marks.json",
+      "data/review-texts/bronx-bombers-2014/ap--mark-kennedy.json",
+      "data/review-texts/bronx-bombers-2014/washpost--unknown.json",
+      "data/review-texts/camelot-2023/washpost--peter-marks.json",
+      "data/review-texts/carousel-2018/washpost--peter-marks.json",
+      "data/review-texts/cats-2016/washpost--peter-marks.json",
+      "data/review-texts/china-doll-2015/washpost--peter-marks.json",
+      "data/review-texts/chinglish-2011/washpost--peter-marks.json",
+      "data/review-texts/clybourne-park-2012/washpost--peter-marks.json",
+      "data/review-texts/clydes-2021/washpost--peter-marks.json",
+      "data/review-texts/cost-of-living-2022/washpost--peter-marks.json",
+      "data/review-texts/crybaby-2008/washpost--peter-marks.json",
+      "data/review-texts/cult-of-love-2024/washpost--peter-marks.json",
+      "data/review-texts/dead-accounts-2012/ap--mark-kennedy.json",
+      "data/review-texts/dear-evan-hansen-2016/washpost--peter-marks.json",
+      "data/review-texts/eclipsed-2016/washpost--peter-marks.json",
+      "data/review-texts/end-of-the-rainbow-2012/washpost--peter-marks.json",
+      "data/review-texts/enron-2010/washpost--peter-marks.json",
+      "data/review-texts/evita-2012/washpost--peter-marks.json",
+      "data/review-texts/falsettos-2016/washpost--peter-marks.json",
+      "data/review-texts/farinelli-and-the-king-2017/washpost--peter-marks.json",
+      "data/review-texts/finding-neverland-2015/washpost--peter-marks.json",
+      "data/review-texts/first-date-2013/washpost--unknown.json",
+      "data/review-texts/fish-in-the-dark-2015/washpost--peter-marks.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+      "data/review-texts/ghost-the-musical-2012/ap--mark-kennedy.json",
+      "data/review-texts/god-of-carnage-2009/washpost--peter-marks.json",
+      "data/review-texts/golden-boy-2012/ap--mark-kennedy.json",
+      "data/review-texts/good-people-2011/washpost--peter-marks.json",
+      "data/review-texts/grand-horizons-2020/washpost--peter-marks.json",
+      "data/review-texts/grey-gardens-2006/washpost--peter-marks.json",
+      "data/review-texts/groundhog-day-2017/washpost--peter-marks.json",
+      "data/review-texts/hand-to-god-2015/washpost--peter-marks.json",
+      "data/review-texts/here-lies-love-2023/washpost--peter-marks.json",
+      "data/review-texts/how-i-learned-to-drive-2022/washpost--peter-marks.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+      "data/review-texts/illinoise-2024/washpost--peter-marks.json",
+      "data/review-texts/in-the-next-room-2009/washpost--peter-marks.json",
+      "data/review-texts/indecent-2017/washpost--peter-marks.json",
+      "data/review-texts/is-he-dead-2007/washpost--peter-marks.json",
+      "data/review-texts/jersey-boys-2005/washpost--peter-marks.json",
+      "data/review-texts/king-kong-2018/washpost--peter-marks.json",
+      "data/review-texts/kinky-boots-2013/washpost--peter-marks.json",
+      "data/review-texts/kiss-me-kate-2019/washpost--peter-marks.json",
+      "data/review-texts/left-on-tenth-2024/washpost--peter-marks.json",
+      "data/review-texts/legally-blonde-2007/washpost--peter-marks.json",
+      "data/review-texts/lennon-2005/washpost--peter-marks.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/washpost--unknown.json",
+      "data/review-texts/lestat-2006/washpost--peter-marks.json",
+      "data/review-texts/lobby-hero-2018/washpost--peter-marks.json",
+      "data/review-texts/lombardi-2010/washpost--peter-marks.json",
+      "data/review-texts/lucky-guy-2013/washpost--peter-marks.json",
+      "data/review-texts/macbeth-2008/washpost--peter-marks.json",
+      "data/review-texts/mary-jane-2024/washpost--peter-marks.json",
+      "data/review-texts/mary-stuart-2009/washpost--peter-marks.json",
+      "data/review-texts/matilda-the-musical-2013/washpost--peter-marks.json",
+      "data/review-texts/mean-girls-2018/washpost--peter-marks.json"
+    ],
     "archive": [
-      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+      "les-liaisons-dangereuses-2016/washpost--peter-marks.json"
     ]
   },
-  "startTime": "2026-02-19T08:42:44.117Z",
-  "lastProcessed": "jesus-christ-superstar-2012/financialtimes--brendan-lemon.json",
-  "log": []
+  "startTime": "2026-02-19T07:58:08.871Z",
+  "lastProcessed": "mean-girls-2018/washpost--peter-marks.json",
+  "log": [
+    {
+      "t": "2026-02-19T07:58:26.594Z",
+      "event": "bb-session",
+      "session": "f790e4d0",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-19T07:58:28.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T07:59:07.865Z",
+      "event": "bb-session",
+      "session": "22b1bdd7",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
+    },
+    {
+      "t": "2026-02-19T07:59:09.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T07:59:55.670Z",
+      "event": "bb-session",
+      "session": "54d30cf6",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-02-19T07:59:57.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:00:36.283Z",
+      "event": "bb-session",
+      "session": "7c5d6be0",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-02-19T08:00:38.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:01:08.378Z",
+      "event": "bb-session",
+      "session": "3d5c4476",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-02-19T08:01:10.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:02:04.769Z",
+      "event": "bb-session",
+      "session": "44544158",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-02-19T08:02:06.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:03:34.120Z",
+      "event": "bb-session",
+      "session": "9d577dc1",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/10/16/AR2008101603518"
+    },
+    {
+      "t": "2026-02-19T08:03:36.080Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:04:12.793Z",
+      "event": "bb-session",
+      "session": "c079d2bc",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
+    },
+    {
+      "t": "2026-02-19T08:04:14.841Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:04:59.105Z",
+      "event": "bb-session",
+      "session": "b71edb3c",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/allegiance-review-geo"
+    },
+    {
+      "t": "2026-02-19T08:05:01.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:05:23.463Z",
+      "event": "bb-session",
+      "session": "04f29cfe",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-amelie-a-new-m"
+    },
+    {
+      "t": "2026-02-19T08:05:25.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:05:53.533Z",
+      "event": "bb-session",
+      "session": "fa8e030e",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-02-19T08:05:55.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:06:21.769Z",
+      "event": "bb-session",
+      "session": "983f1672",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
+    },
+    {
+      "t": "2026-02-19T08:06:23.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:07:01.402Z",
+      "event": "bb-session",
+      "session": "470e75cf",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+    },
+    {
+      "t": "2026-02-19T08:07:03.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:07:41.327Z",
+      "event": "bb-session",
+      "session": "b49bdba9",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
+    },
+    {
+      "t": "2026-02-19T08:07:43.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:08:24.503Z",
+      "event": "bb-session",
+      "session": "07c667cb",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
+    },
+    {
+      "t": "2026-02-19T08:08:26.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:09:11.925Z",
+      "event": "bb-session",
+      "session": "69e2feff",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-02-19T08:09:13.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:09:55.759Z",
+      "event": "bb-session",
+      "session": "12bec479",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-02-19T08:09:57.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:10:35.224Z",
+      "event": "bb-session",
+      "session": "3d924c1f",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-carole-king-musical-be"
+    },
+    {
+      "t": "2026-02-19T08:10:37.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:11:20.866Z",
+      "event": "bb-session",
+      "session": "843a61a5",
+      "url": "https://www.washingtonpost.com/lifestyle/style/bengal-tiger-at-the-baghdad-zoo-r"
+    },
+    {
+      "t": "2026-02-19T08:11:22.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:11:59.966Z",
+      "event": "bb-session",
+      "session": "6dc7c9d1",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mike-nichols-sc"
+    },
+    {
+      "t": "2026-02-19T08:12:02.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:13:20.169Z",
+      "event": "bb-session",
+      "session": "c9664e4f",
+      "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddles"
+    },
+    {
+      "t": "2026-02-19T08:13:22.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:13:46.272Z",
+      "event": "bb-session",
+      "session": "1a4dbf22",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/bring-it-on-the-music"
+    },
+    {
+      "t": "2026-02-19T08:13:48.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:14:10.416Z",
+      "event": "bb-session",
+      "session": "d89f6c43",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bronx-bombers-"
+    },
+    {
+      "t": "2026-02-19T08:14:12.486Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:14:43.389Z",
+      "event": "bb-session",
+      "session": "99775aa4",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bronx-bombers-"
+    },
+    {
+      "t": "2026-02-19T08:14:45.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:15:22.442Z",
+      "event": "bb-session",
+      "session": "3a4a1421",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/14/camelot-broadway-review/"
+    },
+    {
+      "t": "2026-02-19T08:15:24.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:16:09.670Z",
+      "event": "bb-session",
+      "session": "7b1f77b0",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/carousel-spins-back-t"
+    },
+    {
+      "t": "2026-02-19T08:16:11.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:16:48.783Z",
+      "event": "bb-session",
+      "session": "10ebedb5",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/cats-review-the-felin"
+    },
+    {
+      "t": "2026-02-19T08:16:50.899Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:17:13.034Z",
+      "event": "bb-session",
+      "session": "f01cfce7",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/china-doll-theater-re"
+    },
+    {
+      "t": "2026-02-19T08:17:15.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:17:39.095Z",
+      "event": "bb-session",
+      "session": "28c8b29d",
+      "url": "https://www.washingtonpost.com/lifestyle/style/chinglish-at-longacre-theatre/201"
+    },
+    {
+      "t": "2026-02-19T08:17:41.155Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:18:03.598Z",
+      "event": "bb-session",
+      "session": "b1df99a4",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/clybourne-park-at-the"
+    },
+    {
+      "t": "2026-02-19T08:18:05.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:18:38.776Z",
+      "event": "bb-session",
+      "session": "92610278",
+      "url": "https://www.washingtonpost.com/theater-dance/2021/12/10/clydes-broadway-review/"
+    },
+    {
+      "t": "2026-02-19T08:18:40.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:19:17.499Z",
+      "event": "bb-session",
+      "session": "2084ee7c",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/21/cost-of-living-broadway-"
+    },
+    {
+      "t": "2026-02-19T08:19:19.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:20:45.534Z",
+      "event": "bb-session",
+      "session": "06ab1098",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/04/24/AR2008042403189"
+    },
+    {
+      "t": "2026-02-19T08:20:47.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:21:13.077Z",
+      "event": "bb-session",
+      "session": "1623efc0",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-re"
+    },
+    {
+      "t": "2026-02-19T08:21:15.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:21:59.940Z",
+      "event": "bb-session",
+      "session": "b16351fa",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebeck"
+    },
+    {
+      "t": "2026-02-19T08:22:01.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:22:40.061Z",
+      "event": "bb-session",
+      "session": "7efed5f4",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/dear-evan-hansen-revi"
+    },
+    {
+      "t": "2026-02-19T08:22:46.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:23:57.969Z",
+      "event": "bb-session",
+      "session": "eb6b58ac",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/04/27/AR2009042703054"
+    },
+    {
+      "t": "2026-02-19T08:24:00.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:25:27.718Z",
+      "event": "bb-session",
+      "session": "2a28377d",
+      "url": "https://www.washingtonpost.com/entertainment/theater_and_dance/eclipsed-brings-t"
+    },
+    {
+      "t": "2026-02-19T08:25:29.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:26:07.827Z",
+      "event": "bb-session",
+      "session": "0b2c820c",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/end-of-the-rainbow-on"
+    },
+    {
+      "t": "2026-02-19T08:26:09.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T08:27:36.480Z",
+      "event": "bb-session",
+      "session": "bcb428a5",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/27/AR2010042703647"
+    },
+    {
+      "t": "2026-02-19T08:27:38.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
