@@ -4,25 +4,35 @@ on:
   push:
     branches: [staging]
     paths:
+      - 'api/**'
       - 'src/**'
       - 'public/**'
+      - 'content/**'
+      - 'next.config.*'
+      - 'vercel.json'
+      - 'tailwind.config.*'
+      - 'tsconfig.*'
+      - 'package.json'
+      - 'package-lock.json'
       - 'data/shows.json'
       - 'data/reviews.json'
       - 'data/grosses.json'
+      - 'data/grosses-history.json'
       - 'data/commercial.json'
       - 'data/audience-buzz.json'
       - 'data/critic-consensus.json'
       - 'data/lottery-rush.json'
       - 'data/awards.json'
       - 'data/gold-lists-computed.json'
-      - 'next.config.*'
-      - 'tailwind.config.*'
-      - 'package.json'
+      - 'data/critic-registry.json'
   workflow_dispatch:
 
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-preview-deploy
+      cancel-in-progress: true
     steps:
       - name: Checkout staging
         uses: actions/checkout@v4
@@ -54,11 +64,30 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           URL=$(vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
-          echo "Preview URL: $URL"
-          echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "::notice::Preview URL: $URL"
+
+      - name: Smoke test preview
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          echo "Waiting 15s for preview to propagate..."
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PREVIEW_URL/")
+          echo "Homepage returned HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Preview smoke test failed — homepage returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "Preview is live at $PREVIEW_URL"
 
       - name: Write deploy summary
         if: always()
         run: |
-          echo "## Preview Deployment" >> $GITHUB_STEP_SUMMARY
-          echo "Preview URL: ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "## Preview Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.url }}" ]; then
+            echo "**Preview URL:** ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deploy failed — no preview URL generated." >> "$GITHUB_STEP_SUMMARY"
+          fi

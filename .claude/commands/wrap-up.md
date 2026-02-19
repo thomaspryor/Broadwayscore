@@ -1,0 +1,102 @@
+End-of-session wrap-up checklist. Run this before closing ANY project session.
+
+## Mode Selection
+
+First, determine the session scope:
+- **Quick session** (1-2 files changed, <30 min): Run Phases 1, 3, 4, 6 only
+- **Full session** (multi-file changes, new features, infrastructure work): Run all phases
+
+## Instructions
+
+### Phase 1: Session Inventory
+
+Identify what YOU did this session using git:
+```bash
+# Find your commits (adjust timeframe as needed)
+git log --oneline --since="2 hours ago" --author="$(git config user.name)" | head -20
+# Or diff from where you started
+git diff --stat origin/main@{2.hours.ago}..HEAD 2>/dev/null || git log --oneline -15
+```
+
+Summarize in 3-5 bullet points. Be specific — include file names, feature names, and outcomes. Distinguish between:
+- **Completed**: Fully done, tested, pushed
+- **In progress**: Started but not finished
+- **Discovered**: Identified as important but not started
+
+### Phase 2: Extrapolation Check (full sessions only)
+
+**Skip this phase** unless the session involved UI changes, bug fixes, refactoring, or new patterns. It's most valuable when you changed something that has equivalents elsewhere.
+
+Look at the changes and ask:
+1. **Pattern reuse**: Did we create a pattern, component, or approach that should be applied elsewhere?
+2. **Consistency**: Did we fix a bug or change behavior in one place that has equivalents elsewhere?
+3. **Data implications**: Did we change data structures, schemas, or processing that affects downstream consumers?
+
+For each finding, note it — don't fix it now. Just capture it for the roadmap.
+
+### Phase 3: Loose Ends Audit
+
+Check for:
+1. **Unstaged changes**: `git status` — are there modified files that should be committed or discarded?
+2. **Running processes**: Any dev servers, background tasks, or watchers still running? Kill them (`kill $(lsof -ti:3456)` etc.)
+3. **Failed tests**: Run `npx tsc --noEmit 2>&1 | head -20` — are there TypeScript errors?
+4. **Broken deploys**: Check `gh run list --workflow="Deploy to Vercel" --limit 1 --json status,conclusion` — is the latest deploy healthy?
+
+### Phase 4: Roadmap Update
+
+Read the current roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
+
+Then update it:
+1. **Move completed items** to the "Recently Done" section with a one-line summary and date
+2. **Update in-progress items** with current status
+3. **Add new backlog items** for anything discovered (extrapolation findings, loose ends, new ideas)
+4. **Post a comment** on issue #50 summarizing this session's work (2-3 sentences max)
+
+Use `gh issue edit 50 --body "..."` for body updates and `gh issue comment 50 --body "..."` for the session summary comment.
+
+### Phase 5: Documentation, Memory & Learnings
+
+This phase combines documentation updates with lessons learned. For each item below, make the change now if warranted.
+
+**What did we learn this session?** Think about:
+- What went wrong or almost went wrong? (Wrong assumptions, wasted time, broken builds)
+- What new gotchas, edge cases, or operational knowledge did we discover?
+- Did we add, modify, or learn something about a workflow or infrastructure?
+
+**Where should each learning live?**
+
+| Learning type | Where to save | Example |
+|---|---|---|
+| Universal rule (all sessions must follow) | `CLAUDE.md` | "Never use show ID in URLs — use slug" |
+| Gotcha, edge case, operational knowledge | `memory/MEMORY.md` | "TodayTix recycles numeric IDs" |
+| Workflow added/changed | `.github/workflows/CLAUDE.md` | New workflow description |
+| Correction to existing docs | Edit the relevant file | Fix wrong API endpoint |
+
+**Rules criteria** — only codify a learning as a rule if:
+- It was learned from an actual failure or near-miss (not hypothetical)
+- It's likely to recur in future sessions
+- It's not already covered by existing rules
+- It can be stated in one imperative sentence with brief context
+
+### Phase 6: Final Report
+
+Present a summary to the user:
+
+```
+## Session Wrap-Up
+
+### Done
+- [completed items]
+
+### Roadmap Updated
+- Moved to done: [items]
+- Added to backlog: [items]
+
+### Documentation Updated
+- [files changed and why]
+
+### Loose Ends (for next session)
+- [anything unfinished, with enough context to pick up]
+```
+
+If there are no loose ends, say so explicitly — "Clean exit, no loose ends."
