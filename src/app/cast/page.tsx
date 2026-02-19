@@ -56,6 +56,7 @@ export default function CastIndexPage() {
         routePath="cast"
         totalShows={totalShows}
         showObcFilter
+        defaultMinShows={3}
       />
     </div>
   );
