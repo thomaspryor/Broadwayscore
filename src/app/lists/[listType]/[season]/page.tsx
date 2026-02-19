@@ -210,7 +210,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
                     {entry.status && <StatusBadge status={entry.status} />}
                   </div>
                   <p className="text-xs text-gray-400 mt-1.5 truncate">
-                    {entry.status === 'previews' && entry.openingDate ? (
+                    {(entry.status === 'previews' || entry.status === 'upcoming') && entry.openingDate ? (
                       <>Opens {formatGoldListDate(entry.openingDate)}</>
                     ) : entry.closingDate ? (
                       <>

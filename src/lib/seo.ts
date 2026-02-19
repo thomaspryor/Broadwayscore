@@ -250,7 +250,7 @@ export function generateItemListSchema(items: {
 
       // Event status
       if (item.status) {
-        event.eventStatus = item.status === 'open' || item.status === 'previews'
+        event.eventStatus = item.status === 'open' || item.status === 'previews' || item.status === 'upcoming'
           ? 'https://schema.org/EventScheduled'
           : 'https://schema.org/EventCancelled';
         event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
@@ -328,6 +328,8 @@ export function generateShowFAQSchema(show: ComputedShow) {
       ? `Yes, ${show.title} is currently playing at ${show.venue} on Broadway.${show.closingDate ? ` It is scheduled to close on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : ''}`
       : show.status === 'previews'
       ? `${show.title} is currently in previews at ${show.venue}. It officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
+      : show.status === 'upcoming'
+      ? `${show.title} is upcoming at ${show.venue}. Previews begin ${show.previewsStartDate ? new Date(show.previewsStartDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'soon'} and it officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
       : `No, ${show.title} has closed. It played at ${show.venue}${show.closingDate ? ` and closed on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : ''}.`,
   });
 
@@ -415,7 +417,7 @@ export function generateBrowseFAQSchema(
   }
 
   // Q: How many shows are in this category?
-  const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews');
+  const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
   if (openShows.length > 0) {
     faqs.push({
       question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently on Broadway?`,
@@ -763,7 +765,7 @@ export function generateCreativeFAQSchema(profile: {
   }
 
   if (profile.openShowCount > 0) {
-    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews');
+    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
     faqs.push({
       question: `Does ${profile.name} have any shows currently on Broadway?`,
       answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} on Broadway: ${running.map(s => s.title).join(', ')}.`,
@@ -842,7 +844,7 @@ export function generateUnifiedCreativeFAQSchema(profile: {
   }
 
   if (profile.openShowCount > 0) {
-    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews');
+    const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
     faqs.push({
       question: `Does ${profile.name} have any shows currently on Broadway?`,
       answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} on Broadway: ${running.map(s => s.title).join(', ')}.`,
@@ -912,7 +914,7 @@ export function generateActorFAQSchema(profile: {
 
   // Only claim actor is currently on Broadway if they're in the current cast
   const currentlyIn = profile.shows.filter(s =>
-    (s.status === 'open' || s.status === 'previews') && s.castType === 'current'
+    (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && s.castType === 'current'
   );
   if (currentlyIn.length > 0) {
     faqs.push({

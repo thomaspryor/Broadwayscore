@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+import { BASE_URL } from '@/lib/seo';
+import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Broadway Scorecard is a labor of love built by a Broadway fan. Learn about the project and how you can help.',
+  description: 'Broadway Scorecard is a one-person, independent project aggregating Broadway reviews. Always free, no ads, no paywalls.',
   alternates: {
     canonical: `${BASE_URL}/about`,
   },
@@ -24,58 +24,28 @@ export default function AboutPage() {
 
         {/* Main Card */}
         <div className="card p-6 sm:p-8 mb-6">
-          <div className="space-y-5 text-gray-300 leading-relaxed">
-            <p className="text-lg">
-              Broadway Scorecard was built by a Broadway fan as a labor of love.
+          <div className="space-y-5 text-gray-300 leading-relaxed text-lg">
+            <p>
+              I&apos;m Tom &mdash; I built Broadway Scorecard because I see 60+ shows a year and got tired
+              of not having a single place to compare reviews across critics.
             </p>
             <p>
-              The idea is simple: aggregate every professional critic review for every Broadway show into a single,
-              transparent score. No pay-to-play listings, no editorial bias &mdash; just the reviews, scored
-              by AI trained on hundreds of critic-rated reviews, with every source linked so you can read them yourself.
+              Every show is scored using a weighted system that analyzes reviews from major critics
+              and publications. It&apos;s a one-person project, completely independent, and it&apos;ll
+              always be free &mdash; no ads, no paywalls.
             </p>
             <p>
-              Beyond critic scores, we track audience reception &mdash; aggregating ratings from Show Score,
-              Mezzanine, and Reddit &mdash; so you get both the critical and crowd perspective in one place.
-            </p>
-            <p>
-              The site updates itself automatically: new shows are discovered daily and reviews are gathered
-              continuously. The goal is a resource that&apos;s always
-              current and always useful, whether you&apos;re deciding what to see tonight or researching
-              Broadway history.
+              Have feedback or ideas? Use the{' '}
+              <Link href="/feedback" className="text-brand hover:text-brand-hover underline underline-offset-2 transition-colors">
+                Submit Feedback
+              </Link>
+              {' '}button to let me know.
             </p>
           </div>
         </div>
 
-        {/* Get Involved */}
-        <div className="card p-6 sm:p-8 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Get Involved</h2>
-          <div className="space-y-4 text-gray-300 leading-relaxed">
-            <p>
-              Feedback, ideas, corrections, and encouragement are all welcomed. This is a community-minded
-              project and it gets better with your input.
-            </p>
-            <div className="flex flex-wrap gap-3 mt-4">
-              <Link
-                href="/feedback"
-                className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
-              >
-                Give Feedback
-              </Link>
-              <Link
-                href="/submit-review"
-                className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
-              >
-                Submit a Missing Review
-              </Link>
-              <Link
-                href="/methodology"
-                className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
-              >
-                How Scores Work
-              </Link>
-            </div>
-          </div>
-        </div>
+        {/* Buy Me a Coffee */}
+        <BuyMeACoffeeWidget />
 
         {/* Back Link */}
         <div className="text-center mt-8">

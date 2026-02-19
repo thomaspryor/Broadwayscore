@@ -90,7 +90,7 @@ function buildAllProfiles() {
               venue: show.venue,
               openingDate: show.openingDate || null,
               closingDate: show.closingDate || null,
-              status: (show.status === 'previews' && show.tags?.includes('upcoming')) ? 'upcoming' : show.status,
+              status: show.status,
               type: show.type,
               thumbnail: show.images?.thumbnail || null,
               isRevival: !!(show.tags && show.tags.includes('revival')),
@@ -184,7 +184,7 @@ function buildAllProfiles() {
       avgScore,
       highScore,
       lowScore,
-      openShowCount: shows.filter(s => (s.status === 'open' || s.status === 'previews') && s.castType === 'current').length,
+      openShowCount: shows.filter(s => (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && s.castType === 'current').length,
       closedShowCount: shows.filter(s => s.status === 'closed').length,
       hasBroadwayDebut,
     };

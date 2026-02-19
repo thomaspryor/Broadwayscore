@@ -20,7 +20,7 @@ on:
         required: false
         default: 'false'
       source_mode:
-        description: 'Candidate source: failed-fetches (dead URLs) or incomplete (truncated/excerpt reviews)'
+        description: 'Candidate source: failed-fetches (dead URLs), incomplete (truncated reviews), or reviews-json (reviews with URLs but no files)'
         required: false
         default: 'failed-fetches'
 

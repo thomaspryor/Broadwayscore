@@ -179,15 +179,34 @@ jobs:
 
           echo "Gap shows: $TOTAL, parallel jobs: $JOBS"
 
-          # Round-robin distribution
+          # Load-balanced round-robin: sort shows by review count descending
+          # then distribute, so heavy shows spread evenly across batches
+          SORTED_SHOWS=$(node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const shows = process.argv.slice(1);
+            const base = 'data/review-texts';
+            const counts = shows.map(s => {
+              try {
+                const dir = path.join(base, s.trim());
+                const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+                return { id: s.trim(), count: files.length };
+              } catch { return { id: s.trim(), count: 0 }; }
+            });
+            counts.sort((a, b) => b.count - a.count);
+            console.log(counts.map(c => c.id).join(','));
+          " "${SHOW_ARRAY[@]}" 2>/dev/null || echo "$GAP_SHOWS")
+
+          IFS=',' read -ra SORTED_ARRAY <<< "$SORTED_SHOWS"
+
           declare -a BATCHES
           for i in $(seq 0 $((JOBS - 1))); do
             BATCHES[$i]=""
           done
 
-          for i in "${!SHOW_ARRAY[@]}"; do
+          for i in "${!SORTED_ARRAY[@]}"; do
             BATCH_IDX=$((i % JOBS))
-            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)
+            SHOW=$(echo "${SORTED_ARRAY[$i]}" | xargs)
             if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
               BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
             else

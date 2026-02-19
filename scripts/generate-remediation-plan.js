@@ -246,6 +246,7 @@ Specify: operation (move, delete, rename), source path, destination path
 - Keep it minimal — only what's needed to fix the bug
 - Assess risk honestly: Low (data-only, easily reversible), Medium (multiple files, review file ops), High (structural changes)
 - Write the summary in plain English as if explaining to a friend
+- CRITICAL: Only use show IDs and production details that appear in the Show Data above. Do NOT guess production years, revival numbers, or historical facts. If the show data doesn't include specific shows mentioned in the diagnosis, use generic references (e.g., "the Sweeney Todd entry") and set showId to null with a note that the correct show ID needs to be looked up.
 
 Respond with ONLY a JSON object:
 {

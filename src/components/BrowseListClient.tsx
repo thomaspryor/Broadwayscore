@@ -82,7 +82,7 @@ const ShowCard = memo(function ShowCard({
   isMixedStatus: boolean;
   scoreMode: ScoreMode;
 }) {
-  const isOpen = show.status === 'open' || show.status === 'previews';
+  const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
   const duration = isOpen ? getBroadwayDuration(show.openingDate) : null;
 
   // Determine which score/tier to display
@@ -141,7 +141,7 @@ const ShowCard = memo(function ShowCard({
                     {duration && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
                 )}
-                {show.status === 'previews' && show.openingDate && (
+                {(show.status === 'previews' || show.status === 'upcoming') && show.openingDate && (
                   <span className="text-purple-400">
                     Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
