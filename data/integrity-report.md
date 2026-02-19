@@ -1,13 +1,13 @@
-# Data Integrity Report - 2026-02-18
+# Data Integrity Report - 2026-02-19
 
 ## Summary
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 23923 | 1684 | +22239 |
-| Unknown Outlets | 35 | 0 | +35 |
-| Duplicates | 7 | 0 | +7 |
-| Sync Delta | 7366 | 399 | +6967 |
+| Total Reviews | 23923 | 23923 | - |
+| Unknown Outlets | 35 | 35 | - |
+| Duplicates | 7 | 7 | - |
+| Sync Delta | 7367 | 7366 | +1 |
 
 ## Issues Found
 
@@ -35,15 +35,7 @@
 
 ### 🔴 sync_delta
 
-review-texts (23923) and reviews.json (16557) are out of sync by 7366 reviews
-
-### 🟡 unknown_outlets_degradation
-
-Unknown outlets increased from 0 to 35
-
-### 🟡 duplicates_degradation
-
-Duplicates increased from 0 to 7
+review-texts (23923) and reviews.json (16556) are out of sync by 7367 reviews
 
 ## Recommendations
 
@@ -53,4 +45,4 @@ Duplicates increased from 0 to 7
 
 ---
 
-*Report generated: 2026-02-18T23:13:49.606Z*
+*Report generated: 2026-02-19T00:14:52.460Z*
