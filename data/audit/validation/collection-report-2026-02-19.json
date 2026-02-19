@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-19T04:24:09.163Z",
+  "runDate": "2026-02-19T04:26:11.209Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 95,
+    "processed": 6,
+    "failed": 94,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "6.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -22,8 +22,8 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 86,
-    "archive": 5
+    "archiveToday": 85,
+    "archive": 6
   },
   "statistics": {
     "tier1Attempts": 91,
@@ -33,17 +33,17 @@
     "tier1_5Attempts": 40,
     "tier1_5Success": 0,
     "tier2Attempts": 91,
-    "tier2Success": 0,
-    "tier3Attempts": 91,
+    "tier2Success": 1,
+    "tier3Attempts": 90,
     "tier3Success": 0,
     "tier3_6Attempts": 86,
-    "tier3_6Success": 86,
+    "tier3_6Success": 85,
     "tier4Attempts": 28,
-    "tier4Success": 3,
-    "totalFailed": 95,
-    "scrapingBeeCreditsUsed": 31,
+    "tier4Success": 2,
+    "totalFailed": 94,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 40,
-    "browserbaseMinutesUsed": 13.4,
+    "browserbaseMinutesUsed": 13.1,
     "urlDiscoveryAttempts": 6,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -53,6 +53,7 @@
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "gypsy-2024/newyorker--naomi-fry.json",
     "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+    "lombardi-2010/newyorker--uncredited.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
   ],
   "failed": [
@@ -137,7 +138,6 @@
     "leopoldstadt-2022/newyorker--vinson-cunningham.json",
     "les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
     "linda-vista-2019/newyorker--hilton-als.json",
-    "lombardi-2010/newyorker--uncredited.json",
     "long-days-journey-into-night-2016/newyorker--hilton-als.json",
     "machinal-2014/newyorker--hilton-als.json",
     "mcneal-2024/newyorker--naomi-fry.json",
@@ -232,7 +232,6 @@
       "data/review-texts/leopoldstadt-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
       "data/review-texts/linda-vista-2019/newyorker--hilton-als.json",
-      "data/review-texts/lombardi-2010/newyorker--uncredited.json",
       "data/review-texts/long-days-journey-into-night-2016/newyorker--hilton-als.json",
       "data/review-texts/machinal-2014/newyorker--hilton-als.json",
       "data/review-texts/mcneal-2024/newyorker--naomi-fry.json",
@@ -251,6 +250,7 @@
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "gypsy-2024/newyorker--naomi-fry.json",
       "little-bear-ridge-road-2025/newyorker--helen-shaw.json",
+      "lombardi-2010/newyorker--uncredited.json",
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
     ]
   },
