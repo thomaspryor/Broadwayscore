@@ -10,7 +10,17 @@
     "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
     "a-view-from-the-bridge-2015/washpost--peter-marks.json",
     "all-my-sons-2008/washpost--peter-marks.json",
-    "all-my-sons-2019/washpost--peter-marks.json"
+    "all-my-sons-2019/washpost--peter-marks.json",
+    "allegiance-2015/washpost--peter-marks.json",
+    "amelie-a-new-musical-2017/washpost--peter-marks.json",
+    "american-buffalo-2022/washpost--peter-marks.json",
+    "american-psycho-2016/washpost--peter-marks.json",
+    "american-son-2018/washpost--peter-marks.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+    "anastasia-2017/washpost--peter-marks.json",
+    "annie-2012/ap--jennifer-farrar.json",
+    "annie-2012/washpost--peter-marks.json",
+    "anything-goes-2011/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -27,12 +37,20 @@
       "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
       "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
-      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json"
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
+      "data/review-texts/allegiance-2015/washpost--peter-marks.json",
+      "data/review-texts/amelie-a-new-musical-2017/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/american-son-2018/washpost--peter-marks.json",
+      "data/review-texts/an-enemy-of-the-people-2024/washpost--peter-marks.json",
+      "data/review-texts/anastasia-2017/washpost--peter-marks.json",
+      "data/review-texts/annie-2012/ap--jennifer-farrar.json",
+      "data/review-texts/anything-goes-2011/washpost--peter-marks.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-19T01:42:12.116Z",
-  "lastProcessed": "all-my-sons-2019/washpost--peter-marks.json",
+  "lastProcessed": "anything-goes-2011/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-02-19T01:42:32.188Z",
@@ -119,6 +137,94 @@
     },
     {
       "t": "2026-02-19T01:47:39.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:48:11.619Z",
+      "event": "bb-session",
+      "session": "6e72d587",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/allegiance-review-geo"
+    },
+    {
+      "t": "2026-02-19T01:48:13.534Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:48:35.289Z",
+      "event": "bb-session",
+      "session": "a0390ca5",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-amelie-a-new-m"
+    },
+    {
+      "t": "2026-02-19T01:48:44.187Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:49:06.264Z",
+      "event": "bb-session",
+      "session": "ef8f4323",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-02-19T01:49:08.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:49:33.232Z",
+      "event": "bb-session",
+      "session": "98ad71e4",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
+    },
+    {
+      "t": "2026-02-19T01:49:35.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:49:58.228Z",
+      "event": "bb-session",
+      "session": "a84f5562",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+    },
+    {
+      "t": "2026-02-19T01:50:00.263Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:50:21.940Z",
+      "event": "bb-session",
+      "session": "3228ee41",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
+    },
+    {
+      "t": "2026-02-19T01:50:24.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:50:46.906Z",
+      "event": "bb-session",
+      "session": "7e797743",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
+    },
+    {
+      "t": "2026-02-19T01:50:48.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-19T01:51:17.798Z",
+      "event": "bb-session",
+      "session": "ff91b228",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-02-19T01:51:19.742Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
