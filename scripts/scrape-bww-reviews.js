@@ -939,7 +939,7 @@ function gitCheckpoint(count, total, label) {
 
   const { execSync } = require('child_process');
   try {
-    execSync('git add data/review-texts/ data/aggregator-archive/', { stdio: 'pipe' });
+    execSync('git add data/aggregator-archive/', { stdio: 'pipe' });
     const staged = execSync('git diff --cached --name-only', { stdio: 'pipe' }).toString().trim().split('\n').filter(Boolean).length;
     if (staged > 0) {
       execSync(`git commit -m "data: BWW checkpoint ${count}/${total} — ${staged} files (${label})"`, { stdio: 'pipe' });
