@@ -1,57 +1,63 @@
 {
   "processed": [
-    "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-    "hughie-2016/act-three-the-reviews--doug-marino.json",
-    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-    "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
-    "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
-    "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-    "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json",
-    "stereophonic-2024/broadwaynews--brittani-samuel.json",
-    "swept-away-2024/broadwaynews--brittani-samuel.json",
-    "the-cher-show-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "the-prom-2018/theatre-reviews-limited--joseph-verlezza.json",
-    "trouble-in-mind-2021/broadwaynews--charles-isherwood.json"
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "the-outsiders-2024/culturesauce--thom-geier.json",
+    "all-my-sons-2019/nyt-theater--raven-snook.json",
+    "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "carousel-2018/theatre-reviews-limited--joseph-verlezza.json",
+    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+    "good-night-oscar-2023/thewrap--robert-hofler.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+    "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
+    "lempicka-2024/broadwaynews--brittani-samuel.json",
+    "mcneal-2024/broadwaynews--brittani-samuel.json",
+    "mcneal-2024/theatre-reviews-limited--david-roberts.json",
+    "suffs-2024/broadwaynews--brittani-samuel.json",
+    "sylvia-2015/reviewing-the-drama--robin-riegelhaupt.json",
+    "tammy-faye/broadwaynews--brittani-samuel.json",
+    "the-nap-2018/theatre-reviews-limited--david-roberts.json",
+    "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "just-in-time-2025/broadwaynews--brittani-samuel.json",
-    "a-strange-loop-2022/thewrap--robert-hofler.json",
-    "bad-cinderella-2023/thewrap--robert-hofler.json",
-    "romeo-juliet-2024/thewrap--robert-hofler.json"
+    "amelie-a-new-musical-2017/nytg--david-gordon.json",
+    "falsettos-2016/nytg--david-roberts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "hughie-2016/act-three-the-reviews--doug-marino.json",
-      "mean-girls-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "romeo-juliet-2024/theatre-reviews-limited--david-roberts.json",
-      "the-cher-show-2018/theatre-reviews-limited--joseph-verlezza.json",
-      "the-prom-2018/theatre-reviews-limited--joseph-verlezza.json"
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "the-outsiders-2024/culturesauce--thom-geier.json",
+      "call-me-izzy-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "carousel-2018/theatre-reviews-limited--joseph-verlezza.json",
+      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+      "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
+      "mcneal-2024/theatre-reviews-limited--david-roberts.json",
+      "sylvia-2015/reviewing-the-drama--robin-riegelhaupt.json",
+      "the-nap-2018/theatre-reviews-limited--david-roberts.json"
     ],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "good-night-oscar-2023/thewrap--robert-hofler.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json",
+      "data/review-texts/falsettos-2016/nytg--david-roberts.json"
+    ],
     "archive": [
-      "buena-vista-social-club-2025/theater-pizzazz--carol-rocamora.json",
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-      "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
-      "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json",
-      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
-      "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-      "stereophonic-2024/broadwaynews--brittani-samuel.json",
-      "swept-away-2024/broadwaynews--brittani-samuel.json",
-      "trouble-in-mind-2021/broadwaynews--charles-isherwood.json"
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+      "all-my-sons-2019/nyt-theater--raven-snook.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "mcneal-2024/broadwaynews--brittani-samuel.json",
+      "suffs-2024/broadwaynews--brittani-samuel.json",
+      "tammy-faye/broadwaynews--brittani-samuel.json",
+      "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-19T08:18:33.383Z",
-  "lastProcessed": "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
+  "startTime": "2026-02-19T08:19:02.490Z",
+  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
   "log": []
 }
