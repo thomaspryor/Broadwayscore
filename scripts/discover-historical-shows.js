@@ -406,6 +406,16 @@ async function discoverHistoricalShows() {
     show.slug = id;
     show.id = id;
 
+    // STEP 0: Slug collision check (catches cross-season duplicates like shows straddling season boundaries)
+    const existingBySlug = data.shows.find(s => s.id === id || s.slug === id);
+    if (existingBySlug) {
+      skippedDuplicates.push({
+        title: show.title, season: show.season,
+        reason: `Slug "${id}" already exists (${existingBySlug.title})`, existingId: existingBySlug.id
+      });
+      continue;
+    }
+
     // STEP 1: Tour detection
     const tourCheck = isTourProduction(show);
     if (tourCheck.isTour) {
