@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { OutletProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix, TierBadge } from '@/lib/critic-page-utils';
-import { ToggleBar } from '@/components/show-cards';
+import { ToggleBar, StatGrid } from '@/components/show-cards';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -137,26 +137,12 @@ export default function OutletDetailClient({ outlet }: { outlet: OutletProfile }
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Reviews</p>
-            <p className="text-2xl font-bold text-white">{outlet.reviewCount}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
-            <p className="text-2xl font-bold" style={{ color: getScoreTextColor(outlet.avgScore) }}>
-              {Math.round(outlet.avgScore)}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-            <p className="text-2xl font-bold text-white">{outlet.highScore}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-            <p className="text-2xl font-bold text-white">{outlet.lowScore}</p>
-          </div>
-        </div>
+        <StatGrid className="mb-4" stats={[
+          { label: 'Reviews', value: outlet.reviewCount },
+          { label: 'Average', value: Math.round(outlet.avgScore), color: getScoreTextColor(outlet.avgScore) },
+          { label: 'Highest', value: outlet.highScore },
+          { label: 'Lowest', value: outlet.lowScore },
+        ]} />
 
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">

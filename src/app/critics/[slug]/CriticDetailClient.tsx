@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
-import { ToggleBar } from '@/components/show-cards';
+import { ToggleBar, StatGrid } from '@/components/show-cards';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -145,26 +145,12 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Reviews</p>
-            <p className="text-2xl font-bold text-white">{critic.reviewCount}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Average</p>
-            <p className="text-2xl font-bold" style={{ color: getScoreTextColor(critic.avgScore) }}>
-              {Math.round(critic.avgScore)}
-            </p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Highest</p>
-            <p className="text-2xl font-bold text-white">{critic.highScore}</p>
-          </div>
-          <div className="card p-4 text-center">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Lowest</p>
-            <p className="text-2xl font-bold text-white">{critic.lowScore}</p>
-          </div>
-        </div>
+        <StatGrid className="mb-4" stats={[
+          { label: 'Reviews', value: critic.reviewCount },
+          { label: 'Average', value: Math.round(critic.avgScore), color: getScoreTextColor(critic.avgScore) },
+          { label: 'Highest', value: critic.highScore },
+          { label: 'Lowest', value: critic.lowScore },
+        ]} />
 
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
