@@ -14,52 +14,25 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Default rule for all crawlers
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-      // OpenAI crawlers
-      {
-        userAgent: 'GPTBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'ChatGPT-User',
-        allow: '/',
-      },
-      {
-        userAgent: 'OAI-SearchBot',
-        allow: '/',
-      },
-      // Anthropic (Claude) crawlers
-      {
-        userAgent: 'ClaudeBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'Claude-Web',
-        allow: '/',
-      },
-      {
-        userAgent: 'anthropic-ai',
-        allow: '/',
-      },
-      // Perplexity crawler
-      {
-        userAgent: 'PerplexityBot',
-        allow: '/',
-      },
-      // Google AI crawler
-      {
-        userAgent: 'Google-Extended',
-        allow: '/',
-      },
-      // Apple AI crawler
-      {
-        userAgent: 'Applebot-Extended',
-        allow: '/',
-      },
+      // Search engines (ALLOWED — index us for search results)
+      { userAgent: 'Googlebot', allow: '/' },
+      { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'Slurp', allow: '/' },
+      { userAgent: 'DuckDuckBot', allow: '/' },
+      // ChatGPT search (ALLOWED — shows us in ChatGPT web search results)
+      { userAgent: 'OAI-SearchBot', allow: '/' },
+      // AI training crawlers (BLOCKED — prevent content from training AI models)
+      { userAgent: 'GPTBot', disallow: '/' },
+      { userAgent: 'Google-Extended', disallow: '/' },
+      { userAgent: 'CCBot', disallow: '/' },
+      { userAgent: 'anthropic-ai', disallow: '/' },
+      { userAgent: 'ClaudeBot', disallow: '/' },
+      { userAgent: 'Bytespider', disallow: '/' },
+      { userAgent: 'Cohere-ai', disallow: '/' },
+      { userAgent: 'Meta-ExternalAgent', disallow: '/' },
+      { userAgent: 'PerplexityBot', disallow: '/' },
+      // Default: allow everything else
+      { userAgent: '*', allow: '/' },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
   };
