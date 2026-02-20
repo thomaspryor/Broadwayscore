@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-20T18:02:59.446Z",
+  "runDate": "2026-02-20T18:37:36.912Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 200,
+    "batchSize": 5,
+    "maxReviews": 10,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,40 +12,41 @@
   },
   "summary": {
     "processed": 70,
-    "failed": 212,
+    "failed": 222,
     "skipped": 0,
-    "successRate": "24.8%"
+    "successRate": "24.0%"
   },
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
     "browserbase": 0,
+    "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 32,
+    "archiveToday": 41,
     "archive": 19
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 9,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Attempts": 9,
+    "tier2Success": 0,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 2,
-    "totalFailed": 81,
-    "scrapingBeeCreditsUsed": 92,
+    "tier3_6Attempts": 9,
+    "tier3_6Success": 9,
+    "tier4Attempts": 9,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 1,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 82,
-    "urlDiscoverySuccess": 5,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -332,7 +333,17 @@
     "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
     "waitress-2021/nytimes--charles-isherwood.json",
     "waitress-2021/nytimes--jesse-green.json",
-    "the-sound-inside-2019/chicagotribune--jesse-green.json"
+    "the-sound-inside-2019/chicagotribune--jesse-green.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -427,7 +438,16 @@
       "data/review-texts/a-view-from-the-bridge-2015/hot-pepper-theater--kayla-sklar.json",
       "data/review-texts/ann-2013/backstage--erik-haagensen.json",
       "data/review-texts/ann-2013/ny1--roma-torre.json",
-      "data/review-texts/bernhardthamlet-2018/gotham-playgoer--robert-sholiton.json"
+      "data/review-texts/bernhardthamlet-2018/gotham-playgoer--robert-sholiton.json",
+      "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
+      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
+      "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
+      "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
+      "data/review-texts/wicked-2003/newyorker--john-lahr.json",
+      "data/review-texts/1984-2017/newyorker--hilton-als.json",
+      "data/review-texts/a-christmas-carol-2019/newyorker--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2022/newyorker--naomi-fry.json"
     ],
     "archive": [
       "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
@@ -452,31 +472,5 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "schmigadoon-2026/nytimes--margaret-lyons.json",
-      "oldUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
-      "newUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html"
-    },
-    {
-      "reviewId": "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2007/04/10/theater/reviews/10moon.html",
-      "newUrl": "https://www.nytimes.com/2015/08/10/theater/review-in-a-moon-for-the-misbegotten-audra-mcdonald-is-front-and-center.html"
-    },
-    {
-      "reviewId": "annie-2012/nytimes--laura-collins-hughes.json",
-      "oldUrl": "https://www.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html",
-      "newUrl": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/10/09/heiress-annie-draw-well-in-early-previews-on-broadway/"
-    },
-    {
-      "reviewId": "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
-      "oldUrl": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html",
-      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
-    },
-    {
-      "reviewId": "the-encounter-2016/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html",
-      "newUrl": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
