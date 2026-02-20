@@ -240,7 +240,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # review-texts now pushed via push-review-texts composite action
-          git add data/reviews.json
+          # Core data files pushed to private repo by push-core-data action
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

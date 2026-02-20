@@ -133,8 +133,8 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/reviews.json
-          git add data/critic-registry.json data/audit/critic-outlet-affinity.json 2>/dev/null || true
+          # Core data files pushed to private repo by push-core-data action
+          git add data/audit/critic-outlet-affinity.json 2>/dev/null || true
 
           BEFORE=${{ steps.before.outputs.count }}
           AFTER=${{ steps.after.outputs.count }}
@@ -181,6 +181,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-reviews'
+
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+
       - name: Auto-trigger LLM scoring if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

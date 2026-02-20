@@ -54,6 +54,16 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Verify core data freshness
+        run: |
+          # Canary: shows.json must exist and be valid after checkout-core-data
+          node -e "const d=JSON.parse(require('fs').readFileSync('data/shows.json','utf8'));
+                   if(!d.length) throw new Error('shows.json is empty');
+                   console.log('shows.json: '+d.length+' shows');"
+          node -e "const d=JSON.parse(require('fs').readFileSync('data/reviews.json','utf8'));
+                   if(!d.length) throw new Error('reviews.json is empty');
+                   console.log('reviews.json: '+d.length+' reviews');"
+
       - name: Guard — no copyrighted content in public repo
         run: |
           # Fail immediately if ANY review-text files are tracked in the public repo

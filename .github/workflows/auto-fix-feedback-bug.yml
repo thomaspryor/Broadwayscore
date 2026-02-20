@@ -77,7 +77,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
-          git add data/shows.json data/commercial.json data/audience-buzz.json
+          # Core data files pushed to private repo by push-core-data action
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

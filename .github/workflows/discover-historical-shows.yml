@@ -97,7 +97,7 @@ jobs:
           # Reset any dirty tracked files from validate step (prevents rebase conflicts)
           git checkout -- data/audit/ 2>/dev/null || true
 
-          git add data/shows.json
+          # Core data files pushed to private repo by push-core-data action
           if [ -f data/historical-shows-pending.json ]; then
             git add data/historical-shows-pending.json
           fi
@@ -122,7 +122,7 @@ jobs:
               git pull --no-rebase -X theirs origin main || true
             }
             # Re-stage our files in case rebase dropped them
-            git add data/shows.json
+            # Core data files pushed to private repo by push-core-data action
             if [ -f data/historical-shows-pending.json ]; then
               git add data/historical-shows-pending.json
             fi

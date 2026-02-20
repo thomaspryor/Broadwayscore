@@ -112,7 +112,7 @@ jobs:
 
           WEEK_ENDING=$(jq -r '.weekEnding // "unknown"' data/grosses.json)
 
-          git add data/grosses.json data/grosses-history.json
+          # Core data files pushed to private repo by push-core-data action
           git commit -m "data: Update Broadway grosses for week ending $WEEK_ENDING
 
           Automated weekly update of box office data.
@@ -147,6 +147,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from weekly-grosses'
+
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+
       - name: Summary
         if: always()
         run: |

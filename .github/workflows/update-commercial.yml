@@ -86,7 +86,7 @@ jobs:
       - name: Commit and push changes
         if: always()
         run: |
-          git add data/commercial.json data/commercial-changelog.json
+          git add data/commercial-changelog.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

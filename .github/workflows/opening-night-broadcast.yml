@@ -176,7 +176,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reviews.json data/critic-consensus.json 2>/dev/null || true
+          # Core data files pushed to private repo by push-core-data action
           git add --force data/opening-night-sent.json 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git diff --staged --quiet && break
@@ -202,3 +202,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from opening-night-broadcast'
+
+      - name: Trigger deploy (core data changed)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"

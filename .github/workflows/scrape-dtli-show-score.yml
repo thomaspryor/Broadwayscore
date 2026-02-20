@@ -329,7 +329,7 @@ jobs:
       - name: Commit and push
         if: always()
         run: |
-          git add data/reviews.json data/critic-registry.json data/audit/
+          git add data/audit/
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
           git commit -m "data: Extract + rebuild after DTLI/Show Score scrape"

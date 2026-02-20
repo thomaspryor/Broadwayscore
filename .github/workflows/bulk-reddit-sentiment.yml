@@ -260,7 +260,7 @@ jobs:
       - name: Commit merged results
         if: always()
         run: |
-          git add data/audience-buzz.json
+          # Core data files pushed to private repo by push-core-data action
           # Also remove shard directory if cleanup worked
           git add -A data/reddit-shards/ 2>/dev/null || true
 

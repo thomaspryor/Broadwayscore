@@ -18,17 +18,11 @@ on:
       - 'package.json'
       - 'package-lock.json'
       # Build-relevant data files (imported at build time)
-      - 'data/shows.json'
-      - 'data/reviews.json'
-      - 'data/grosses.json'
-      - 'data/grosses-history.json'
-      - 'data/commercial.json'
-      - 'data/audience-buzz.json'
-      - 'data/critic-consensus.json'
+      # NOTE: Core data files (shows.json, reviews.json, etc.) are in private repo
+      # and won't trigger deploys via path match. Terminal workflows dispatch deploys directly.
       - 'data/lottery-rush.json'
       - 'data/awards.json'
       - 'data/gold-lists-computed.json'
-      - 'data/critic-registry.json'
   workflow_dispatch: # Manual trigger
 
 jobs:

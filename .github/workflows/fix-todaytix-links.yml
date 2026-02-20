@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/shows.json
+          # Core data files pushed to private repo by push-core-data action
           git commit -m "fix: Auto-fix ${{ steps.fix.outputs.summary }} TodayTix links" || exit 0
           # Retry push with rebase in case remote has new commits
           for i in 1 2 3 4 5; do
