@@ -3,7 +3,10 @@
     "1984-2017/vulture--jesse-green.json",
     "betrayal-2019/vulture--jesse-green.json",
     "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
-    "bullets-over-broadway-2014/vulture--jesse-green.json"
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "falsettos-2016/vulture--jesse-green.json"
   ],
   "failed": [
     "hells-kitchen-2024/vulture--helen-shaw.json",
@@ -21,11 +24,21 @@
     "cabaret-2024/vulture--helen-shaw.json",
     "call-me-izzy-2025/vulture--jackson-mchenry.json",
     "call-me-izzy-2025/vulture--unknown.json",
-    "camelot-2023/vulture--unknown.json"
+    "camelot-2023/vulture--unknown.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "elf-2012/vulture--jesse-green.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "come-from-away-2017/vulture--jesse-green.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
@@ -35,16 +48,18 @@
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
       "data/review-texts/a-christmas-carol-2019/vulture--jesse-green.json",
       "data/review-texts/bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
-      "data/review-texts/cabaret-2024/vulture--helen-shaw.json"
+      "data/review-texts/cabaret-2024/vulture--helen-shaw.json",
+      "data/review-texts/escape-to-margaritaville-2018/vulture--jesse-green.json"
     ],
     "archive": [
       "1984-2017/vulture--jesse-green.json",
       "betrayal-2019/vulture--jesse-green.json",
       "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
-      "bullets-over-broadway-2014/vulture--jesse-green.json"
+      "bullets-over-broadway-2014/vulture--jesse-green.json",
+      "falsettos-2016/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-02-20T09:51:14.920Z",
-  "lastProcessed": "camelot-2023/vulture--unknown.json",
+  "lastProcessed": "farinelli-and-the-king-2017/vulture--jesse-green.json",
   "log": []
 }
