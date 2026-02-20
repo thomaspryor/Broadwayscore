@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-20T06:56:47.394Z",
-  "processed": 2,
-  "failed": 58,
-  "successRate": "3.3%",
+  "updatedAt": "2026-02-20T06:57:05.629Z",
+  "processed": 15,
+  "failed": 85,
+  "successRate": "15.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 6,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 2
+    "archiveToday": 29,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 23,
+  "recentActivity": [
+    {
+      "t": "2026-02-20T06:04:07.189Z",
+      "event": "bb-session",
+      "session": "3d5bb048",
+      "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+    },
+    {
+      "t": "2026-02-20T06:04:09.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:05:49.261Z",
+      "event": "bb-session",
+      "session": "f5b686a1",
+      "url": "https://www.nytimes.com/2010/05/10/theater/reviews/10collected.html"
+    },
+    {
+      "t": "2026-02-20T06:05:51.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:07:07.039Z",
+      "event": "bb-session",
+      "session": "610cd697",
+      "url": "https://www.nytimes.com/2010/03/26/theater/reviews/26come.html"
+    },
+    {
+      "t": "2026-02-20T06:07:09.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:08:31.541Z",
+      "event": "bb-session",
+      "session": "cfe3409c",
+      "url": "https://www.nytimes.com/2017/03/12/theater/come-from-away-review.html?rref=colle"
+    },
+    {
+      "t": "2026-02-20T06:08:33.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:09:48.424Z",
+      "event": "bb-session",
+      "session": "ec91b228",
+      "url": "https://www.nytimes.com/2006/11/30/theater/reviews/30comp.html"
+    },
+    {
+      "t": "2026-02-20T06:09:50.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:11:03.173Z",
+      "event": "bb-session",
+      "session": "1d24c679",
+      "url": "http://theater.nytimes.com/2007/05/03/theater/reviews/03cora.html?pagewanted=2"
+    },
+    {
+      "t": "2026-02-20T06:11:05.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:12:19.817Z",
+      "event": "bb-session",
+      "session": "29c10ace",
+      "url": "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html"
+    },
+    {
+      "t": "2026-02-20T06:12:22.263Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:13:39.110Z",
+      "event": "bb-session",
+      "session": "0a25e131",
+      "url": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html"
+    },
+    {
+      "t": "2026-02-20T06:13:41.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:14:55.670Z",
+      "event": "bb-session",
+      "session": "02a387db",
+      "url": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holm"
+    },
+    {
+      "t": "2026-02-20T06:14:58.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-20T06:16:21.744Z",
+      "event": "bb-session",
+      "session": "d56e9fff",
+      "url": "https://www.nytimes.com/2009/04/28/theater/reviews/28desire.html"
+    },
+    {
+      "t": "2026-02-20T06:16:24.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
