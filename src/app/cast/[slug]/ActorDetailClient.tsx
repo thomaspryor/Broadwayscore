@@ -61,12 +61,12 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
           </span>
-          {show.castType === 'obc' && !show.isRevival && (
+          {(show.castType === 'obc' || show.wasObc) && !show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Original Broadway Cast">
               OBC
             </span>
           )}
-          {show.castType === 'obc' && show.isRevival && (
+          {(show.castType === 'obc' || show.wasObc) && show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/10 text-gray-400 border-white/15" title="Opening night cast of this revival">
               Opening Cast
             </span>
@@ -106,9 +106,11 @@ const INITIAL_SHOWS = 50;
 export default function ActorDetailClient({
   profile,
   rank,
+  highestRatedRank,
 }: {
   profile: ActorProfile;
   rank: number;
+  highestRatedRank: number;
 }) {
   const [sortCol, setSortCol] = useState<SortCol>('date');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
@@ -125,9 +127,10 @@ export default function ActorDetailClient({
     setShowCount(INITIAL_SHOWS);
   }
 
-  // Shows currently running — include 'current' cast, or OBC of open shows (fallback when currentCast data hasn't been scraped)
+  // Shows currently running — only actors confirmed in currentCast
+  // OBC members of open shows are NOT included (they may have left years ago)
   const openShows = useMemo(() =>
-    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && (s.castType === 'current' || s.castType === 'obc')),
+    profile.shows.filter(s => (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && s.castType === 'current'),
     [profile.shows]
   );
 
@@ -164,8 +167,25 @@ export default function ActorDetailClient({
   // Suppress stats for single-show actors (PM feedback: stats look thin)
   const showStats = profile.showCount >= 2;
 
+  // OBC = Original Broadway Cast (non-revival shows only). Revival opening casts don't count.
+  const obcCount = useMemo(() =>
+    profile.shows.filter(s => (s.castType === 'obc' || s.wasObc) && !s.isRevival).length,
+    [profile.shows]
+  );
+  const musicalCount = useMemo(() =>
+    profile.shows.filter(s => s.type === 'Musical').length,
+    [profile.shows]
+  );
+  const playCount = useMemo(() =>
+    profile.shows.filter(s => s.type === 'Play').length,
+    [profile.shows]
+  );
+
+  const highTier = profile.highScore ? getScoreTier(profile.highScore.score) : null;
+  const lowTier = profile.lowScore ? getScoreTier(profile.lowScore.score) : null;
+
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <Breadcrumb items={[
         { label: 'Home', href: '/' },
         { label: 'Cast', href: '/cast' },
@@ -173,7 +193,7 @@ export default function ActorDetailClient({
       ]} />
 
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center gap-4 mb-3">
           {profile.headshot && !imgFailed ? (
             <img
@@ -196,24 +216,33 @@ export default function ActorDetailClient({
 
         {/* Stats — only show for actors with 2+ shows */}
         {showStats && (
-          <StatGrid className="mb-4" stats={[
-            { label: 'Shows', value: profile.showCount },
+          <StatGrid className="mb-3" stats={[
+            { label: 'Shows', value: profile.showCount, subValue: obcCount > 0 ? `${obcCount} OBC` : undefined, subValueColor: '#eab308' },
             { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null },
-            { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
-            { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
+            { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', color: highTier?.color, dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
+            { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', color: lowTier?.color, dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
           ]} />
         )}
 
-        {/* Rank + IBDB link */}
-        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400">
-          {showStats && <span>{ordinalSuffix(rank)} most prolific Broadway actor</span>}
+        {/* Genre split + Ranks + IBDB link */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-400">
+          {showStats && (musicalCount > 0 || playCount > 0) && (
+            <span>{[musicalCount > 0 && `${musicalCount} musical${musicalCount !== 1 ? 's' : ''}`, playCount > 0 && `${playCount} play${playCount !== 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span>
+          )}
+          {showStats && rank <= 200 && (
+            <><span className="text-gray-600">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
+          )}
+          {showStats && highestRatedRank > 0 && highestRatedRank <= 200 && (
+            <><span className="text-gray-600">·</span><span>{ordinalSuffix(highestRatedRank)} highest-rated</span></>
+          )}
+          <span className="text-gray-600">·</span>
           <a
             href={`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-brand transition-colors inline-flex items-center gap-1"
           >
-            View on IBDB
+            IBDB
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -223,8 +252,8 @@ export default function ActorDetailClient({
 
       {/* Currently Appearing In */}
       {openShows.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-3">
+        <section className="mb-4 sm:mb-6">
+          <h2 className="text-lg font-bold text-white mb-2">
             Currently Appearing In
             <span className="text-sm font-normal text-gray-400 ml-2">({openShows.length})</span>
           </h2>
@@ -238,8 +267,8 @@ export default function ActorDetailClient({
 
       {/* Upcoming */}
       {upcomingShows.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-3">
+        <section className="mb-4 sm:mb-6">
+          <h2 className="text-lg font-bold text-white mb-2">
             Upcoming
             <span className="text-sm font-normal text-gray-400 ml-2">({upcomingShows.length})</span>
           </h2>
@@ -258,7 +287,7 @@ export default function ActorDetailClient({
             Broadway Credits
             <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
           </h2>
-          <p className="text-xs text-gray-500 mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
+          <p className="text-xs text-gray-500 mb-2">Covers productions from 1970. Critic scores available from 2005.</p>
 
           {/* Column headers — clickable sort */}
           {closedShows.length > 1 && (

@@ -16,6 +16,7 @@ interface CreativeProfileSummary {
   slug: string;
   unifiedSlug?: string;
   showCount: number;
+  scoredShowCount?: number;
   avgScore: number | null;
   openShowCount: number;
   roles: string[];
@@ -116,6 +117,7 @@ export default function CreativeIndexClient({
   showObcFilter,
   subtitle,
   defaultMinShows = 0,
+  defaultSort = 'shows' as SortColumn,
 }: {
   profiles: CreativeProfileSummary[];
   categoryLabel: string;
@@ -124,9 +126,10 @@ export default function CreativeIndexClient({
   showObcFilter?: boolean;
   subtitle?: string;
   defaultMinShows?: number;
+  defaultSort?: SortColumn;
 }) {
   const [search, setSearch] = useState('');
-  const [sortCol, setSortCol] = useState<SortColumn>('shows');
+  const [sortCol, setSortCol] = useState<SortColumn>(defaultSort);
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [visibleCount, setVisibleCount] = useState(100);
   const [obcOnly, setObcOnly] = useState(false);
@@ -145,7 +148,7 @@ export default function CreativeIndexClient({
   const filtered = useMemo(() => {
     let list = profiles;
     if (minShows > 0) {
-      list = list.filter(p => p.showCount >= minShows);
+      list = list.filter(p => (p.scoredShowCount ?? p.showCount) >= minShows);
     }
     if (search) {
       const q = search.toLowerCase();
@@ -208,7 +211,7 @@ export default function CreativeIndexClient({
       {/* Filters — min credits + OBC only */}
       {showObcFilter && (
         <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Min credits:</span>
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Min scored:</span>
           {MIN_SHOW_OPTIONS.map(n => (
             <button
               key={n}
@@ -278,7 +281,7 @@ export default function CreativeIndexClient({
       {/* Result count */}
       {sorted.length > 0 && (search.trim() || obcOnly || minShows > 0) && (
         <p className="text-center text-sm text-gray-500 mt-6">
-          {sorted.length.toLocaleString()} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''}{minShows > 0 ? ` with ${minShows}+ credits` : ''}{search.trim() ? ` matching \u201c${search}\u201d` : ''}{obcOnly ? ' (OBC only)' : ''}
+          {sorted.length.toLocaleString()} {categoryLabel.toLowerCase().replace(/s$/, '')}{sorted.length !== 1 ? 's' : ''}{minShows > 0 ? ` with ${minShows}+ scored shows` : ''}{search.trim() ? ` matching \u201c${search}\u201d` : ''}{obcOnly ? ' (OBC only)' : ''}
         </p>
       )}
     </div>

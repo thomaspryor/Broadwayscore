@@ -95,9 +95,11 @@ jobs:
             git commit -m "chore: Auto-update show statuses"
           fi
           # Retry push with rebase in case remote has new commits
+          PUSH_OK=false
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
+              PUSH_OK=true
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
@@ -113,6 +115,10 @@ jobs:
             fi
             sleep $((10 + RANDOM % 20))
           done
+          if [ "$PUSH_OK" != "true" ]; then
+            echo "ERROR: All 5 push attempts failed"
+            exit 1
+          fi
 
   # Create issue for new shows that need review data
   create-issue:
@@ -182,32 +188,6 @@ jobs:
               body: issueBody,
               labels: ['new-show', 'needs-review-data', 'automated']
             });
-
-      - name: Send Discord notification for new shows
-        env:
-          DISCORD_WEBHOOK_NEWSHOWS: ${{ secrets.DISCORD_WEBHOOK_NEWSHOWS }}
-        run: |
-          node -e "
-            const fs = require('fs');
-            const { sendNewShowNotification } = require('./scripts/lib/discord-notify.js');
-
-            try {
-              const pendingData = JSON.parse(fs.readFileSync('data/new-shows-pending.json', 'utf8'));
-              const shows = pendingData.shows || [];
-
-              for (const show of shows) {
-                sendNewShowNotification({
-                  showTitle: show.title,
-                  venue: show.venue || 'TBA',
-                  openingDate: show.openingDate || 'TBA',
-                  event: show.status === 'previews' ? 'discovered' : 'opened',
-                  url: 'https://broadwayscorecard.com/show/' + show.slug
-                }).catch(e => console.error('Discord notification failed for ' + show.title + ':', e.message));
-              }
-            } catch (err) {
-              console.error('Failed to send Discord notifications:', err.message);
-            }
-          "
 
   # Optional: Trigger review data gathering workflow
   # Note: Only triggers for shows that have opened (not previews)
@@ -411,10 +391,65 @@ jobs:
               }
             }
 
-      - name: Record pipeline success
-        if: success()
+      - name: Trigger review text collection for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger full text collection for each newly opened show
+            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'collect-review-texts.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug,
+                    max_reviews: '0'
+                  }
+                });
+                console.log(`Triggered review text collection for: ${slug}`);
+                await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Review text collection trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+  # Alert on consecutive failures
+  alert-on-failure:
+    needs: update-shows
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check consecutive failures
+        id: check
         run: |
-          mkdir -p data/audit/pipeline-health
-          date -u > data/audit/pipeline-health/update-show-status.last-success
-          git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record update-show-status success" && git push || true
+          # Count recent consecutive failures
+          FAILURES=$(gh run list --workflow="Update Shows" --limit=5 --json conclusion -q '[.[] | select(.conclusion == "failure")] | length')
+          echo "Recent failures: $FAILURES out of last 5 runs"
+          echo "failure_count=$FAILURES" >> $GITHUB_OUTPUT
+
+      - name: Send alert on 3+ consecutive failures
+        if: steps.check.outputs.failure_count >= 3
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          node -e "
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            sendAlert({
+              title: 'Show Discovery Pipeline — ${{ steps.check.outputs.failure_count }} consecutive failures',
+              description: 'The Update Shows workflow has failed ${{ steps.check.outputs.failure_count }} of the last 5 runs. New shows may not be getting discovered. Check Broadway.org scraper and API credits.',
+              severity: 'error',
+              email: true,
+              url: 'https://github.com/thomaspryor/Broadwayscore/actions/workflows/update-show-status.yml'
+            }).catch(e => console.error('Alert failed:', e.message));
+          "
