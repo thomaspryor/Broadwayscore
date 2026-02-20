@@ -1,17 +1,128 @@
 {
-  "updatedAt": "2026-02-20T08:24:31.301Z",
+  "updatedAt": "2026-02-20T08:25:18.268Z",
   "processed": 4,
-  "failed": 76,
-  "successRate": "5.0%",
+  "failed": 96,
+  "successRate": "4.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 4
+    "archiveToday": 83,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 23,
+  "recentActivity": [
+    {
+      "t": "2026-02-20T06:13:19.012Z",
+      "event": "bb-session",
+      "session": "58a3b733",
+      "url": "https://www.newyorker.com/magazine/2015/12/07/views-from-the-bridge"
+    },
+    {
+      "t": "2026-02-20T06:13:21.398Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:15:23.657Z",
+      "event": "bb-session",
+      "session": "0c4c8759",
+      "url": "https://www.newyorker.com/magazine/2014/05/05/act-one"
+    },
+    {
+      "t": "2026-02-20T06:15:28.488Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:17:25.448Z",
+      "event": "bb-session",
+      "session": "a7419b73",
+      "url": "https://www.newyorker.com/magazine/2008/10/27/family-plots"
+    },
+    {
+      "t": "2026-02-20T06:17:27.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:19:39.634Z",
+      "event": "bb-session",
+      "session": "21538572",
+      "url": "https://www.newyorker.com/magazine/2008/11/03/fathers-and-sons-2"
+    },
+    {
+      "t": "2026-02-20T06:19:42.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:21:45.085Z",
+      "event": "bb-session",
+      "session": "1fa46174",
+      "url": "https://www.newyorker.com/magazine/2019/05/06/all-my-sons-and-burn-this-on-broad"
+    },
+    {
+      "t": "2026-02-20T06:21:47.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:23:46.389Z",
+      "event": "bb-session",
+      "session": "5830c483",
+      "url": "https://www.newyorker.com/magazine/2014/04/07/the-great-society"
+    },
+    {
+      "t": "2026-02-20T06:23:48.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:25:56.545Z",
+      "event": "bb-session",
+      "session": "2e69ee23",
+      "url": "https://www.newyorker.com/magazine/2022/11/21/almost-famous-the-musical-review"
+    },
+    {
+      "t": "2026-02-20T06:25:58.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:27:57.487Z",
+      "event": "bb-session",
+      "session": "979e160a",
+      "url": "https://www.newyorker.com/magazine/2016/05/09/american-psycho-the-musical-on-bro"
+    },
+    {
+      "t": "2026-02-20T06:27:59.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:29:57.192Z",
+      "event": "bb-session",
+      "session": "d81b34b4",
+      "url": "https://www.newyorker.com/magazine/2024/03/25/an-enemy-of-the-people-theatre-rev"
+    },
+    {
+      "t": "2026-02-20T06:29:59.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-20T06:31:59.265Z",
+      "event": "bb-session",
+      "session": "799d94d5",
+      "url": "https://www.newyorker.com/magazine/2017/05/08/anastasia-and-dear-evan-hansen"
+    },
+    {
+      "t": "2026-02-20T06:32:01.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
