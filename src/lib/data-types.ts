@@ -516,6 +516,7 @@ export interface CreativeProfile {
   roles: string[];
   shows: CreativeShowEntry[];
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   highScore: number | null;
   lowScore: number | null;
@@ -545,6 +546,7 @@ export interface UnifiedCreativeProfile {
   allRoles: string[];
   shows: UnifiedCreativeShowEntry[];
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   highScore: number | null;
   lowScore: number | null;
@@ -603,6 +605,7 @@ export interface ActorProfile {
   headshot: string | null;
   shows: ActorShowEntry[];
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   highScore: { score: number; showTitle: string } | null;
   lowScore: { score: number; showTitle: string } | null;
