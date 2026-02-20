@@ -111,6 +111,10 @@ function checkSync() {
         fileCount += files.length;
       }
     }
+    // review-texts live in a private repo — if not checked out, skip this check
+    if (fileCount === 0) {
+      return { name: 'Sync: review-texts vs reviews.json', status: 'pass', message: 'Skipped — review-texts not checked out (private repo)' };
+    }
     const reviews = readJSON(path.join(DATA_DIR, 'reviews.json'));
     const reviewCount = reviews._meta?.stats?.totalReviews || 0;
     // Deficit = reviews.json has MORE entries than source files (phantom reviews)
