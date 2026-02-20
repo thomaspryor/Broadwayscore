@@ -42,7 +42,7 @@ jobs:
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
           ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
-          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || echo "0")
+          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || true)
           echo "purge_count=$COUNT" >> "$GITHUB_OUTPUT"
           if [ "$COUNT" = "0" ]; then
             echo "Nothing to purge — all target paths already clean!"
