@@ -193,8 +193,8 @@ export default function ActorDetailClient({
       ]} />
 
       {/* Header */}
-      <div className="mb-4 sm:mb-6">
-        <div className="flex items-center gap-4 mb-3">
+      <div className="mb-3 sm:mb-5">
+        <div className="flex items-center gap-4 mb-2">
           {profile.headshot && !imgFailed ? (
             <img
               src={profile.headshot}
@@ -211,20 +211,33 @@ export default function ActorDetailClient({
               </span>
             </div>
           )}
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.name}</h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.name}</h1>
+            <a
+              href={`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-brand transition-colors inline-flex items-center gap-1 text-xs"
+            >
+              IBDB
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         {/* Stats — only show for actors with 2+ shows */}
         {showStats && (
-          <StatGrid className="mb-3" stats={[
+          <StatGrid className="mb-2" stats={[
             { label: 'Shows', value: profile.showCount, subValue: obcCount > 0 ? `${obcCount} OBC` : undefined, subValueColor: '#eab308' },
-            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null },
+            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null, subValue: highestRatedRank > 0 && highestRatedRank <= 200 ? `${ordinalSuffix(highestRatedRank)} highest-rated` : undefined },
             { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', color: highTier?.color, dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
             { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', color: lowTier?.color, dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
           ]} />
         )}
 
-        {/* Genre split + Ranks + IBDB link */}
+        {/* Genre split + prolific rank */}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-400">
           {showStats && (musicalCount > 0 || playCount > 0) && (
             <span>{[musicalCount > 0 && `${musicalCount} musical${musicalCount !== 1 ? 's' : ''}`, playCount > 0 && `${playCount} play${playCount !== 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span>
@@ -232,27 +245,12 @@ export default function ActorDetailClient({
           {showStats && rank <= 200 && (
             <><span className="text-gray-600">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
           )}
-          {showStats && highestRatedRank > 0 && highestRatedRank <= 200 && (
-            <><span className="text-gray-600">·</span><span>{ordinalSuffix(highestRatedRank)} highest-rated</span></>
-          )}
-          <span className="text-gray-600">·</span>
-          <a
-            href={`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-brand transition-colors inline-flex items-center gap-1"
-          >
-            IBDB
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
         </div>
       </div>
 
       {/* Currently Appearing In */}
       {openShows.length > 0 && (
-        <section className="mb-4 sm:mb-6">
+        <section className="mb-3 sm:mb-6">
           <h2 className="text-lg font-bold text-white mb-2">
             Currently Appearing In
             <span className="text-sm font-normal text-gray-400 ml-2">({openShows.length})</span>
@@ -267,7 +265,7 @@ export default function ActorDetailClient({
 
       {/* Upcoming */}
       {upcomingShows.length > 0 && (
-        <section className="mb-4 sm:mb-6">
+        <section className="mb-3 sm:mb-6">
           <h2 className="text-lg font-bold text-white mb-2">
             Upcoming
             <span className="text-sm font-normal text-gray-400 ml-2">({upcomingShows.length})</span>
@@ -287,7 +285,7 @@ export default function ActorDetailClient({
             Broadway Credits
             <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
           </h2>
-          <p className="text-xs text-gray-500 mb-2">Covers productions from 1970. Critic scores available from 2005.</p>
+          <p className="text-xs text-gray-500 mb-1">Covers productions from 1970. Critic scores available from 2005.</p>
 
           {/* Column headers — clickable sort */}
           {closedShows.length > 1 && (
