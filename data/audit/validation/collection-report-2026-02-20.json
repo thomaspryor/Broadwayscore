@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-20T11:43:54.020Z",
+  "runDate": "2026-02-20T14:46:09.897Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 87,
+    "processed": 11,
+    "failed": 79,
     "skipped": 0,
-    "successRate": "3.3%"
+    "successRate": "12.2%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,11 +23,11 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 74,
-    "tier1Success": 74,
+    "tier1Attempts": 68,
+    "tier1Success": 68,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,8 +39,8 @@
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 85,
-    "tier4Success": 15,
-    "totalFailed": 87,
+    "tier4Success": 20,
+    "totalFailed": 79,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -49,23 +49,28 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
+    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
     "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
+    "misery-2015/financial-times-uk--brendan-lemon.json",
+    "misery-2015/financialtimes--unknown.json",
+    "on-your-feet-2015/financialtimes--unknown.json",
+    "picnic-2013/financialtimes--brendan-lemon.json",
     "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json",
+    "waiting-for-godot-2013/financialtimes--brendan-lemon.json"
   ],
   "failed": [
     "book-of-mormon-2011/financialtimes--brendan-lemon.json",
     "harry-potter-2021/financial-times-uk--charles-isherwood.json",
     "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
     "american-idiot-2010/financialtimes--brendan-lemon.json",
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
     "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
     "betrayal-2013/financialtimes--brendan-lemon.json",
     "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
     "carousel-2018/financial-times-uk--max-mcguinness.json",
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
     "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
     "come-from-away-2017/financial-times-uk--max-mcguinness.json",
     "constellations-2015/financialtimes--brendan-lemon.json",
     "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
@@ -99,8 +104,6 @@
     "matilda-the-musical-2013/financialtimes--unknown.json",
     "mean-girls-2018/financial-times-uk--max-mcguinness.json",
     "meteor-shower-2017/financial-times-uk--max-mcguinness.json",
-    "misery-2015/financial-times-uk--brendan-lemon.json",
-    "misery-2015/financialtimes--unknown.json",
     "mothers-and-sons-2014/financialtimes--brendan-lemon.json",
     "my-name-is-lucy-barton-2020/financialtimes--ian-shuttleworth.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/financial-times-uk--max-mcguinness.json",
@@ -110,10 +113,8 @@
     "on-the-town-2014/financialtimes--brendan-lemon.json",
     "on-the-twentieth-century-2015/financial-times-uk--brendan-lemon.json",
     "on-your-feet-2015/financial-times-uk--brendan-lemon.json",
-    "on-your-feet-2015/financialtimes--unknown.json",
     "orphans-2013/financialtimes--brendan-lemon.json",
     "oslo-2017/financial-times-uk--max-mcguinness.json",
-    "picnic-2013/financialtimes--brendan-lemon.json",
     "purpose-2025/financialtimes--rhoda-feng.json",
     "rocky-2014/financialtimes--brendan-lemon.json",
     "romeo-and-juliet-2013/financialtimes--brendan-lemon.json",
@@ -139,7 +140,6 @@
     "three-tall-women-2018/financial-times-uk--max-mcguinness.json",
     "tootsie-2019/financial-times-uk--max-mcguinness.json",
     "venus-in-fur-2011/financialtimes--brendan-lemon.json",
-    "waiting-for-godot-2013/financialtimes--brendan-lemon.json",
     "west-side-story-2020/financialtimes--financial-times.json"
   ],
   "tierDetails": {
@@ -150,9 +150,17 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
+      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
+      "choir-boy-2019/financial-times-uk--max-mcguinness.json",
       "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
+      "misery-2015/financial-times-uk--brendan-lemon.json",
+      "misery-2015/financialtimes--unknown.json",
+      "on-your-feet-2015/financialtimes--unknown.json",
+      "picnic-2013/financialtimes--brendan-lemon.json",
       "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-      "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json",
+      "waiting-for-godot-2013/financialtimes--brendan-lemon.json"
     ]
   },
   "failuresByOutlet": {},

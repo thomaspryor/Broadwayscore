@@ -379,7 +379,7 @@ const ARTICLE_BOUNDARY_PATTERNS = [
   /now playing at the [A-Z][a-z]+ Theatre/gi,
   /currently running at the [A-Z][a-z]+ Theatre/gi,
   /playing at the [A-Z][a-z]+ Theatre/gi,
-  /at the (Belasco|St\. James|Winter Garden|Booth|Lyceum|Shubert|Imperial|Majestic|Broadhurst|Barrymore|Palace|Lunt-Fontanne|Gershwin|Marquis|Nederlander|Neil Simon|Rodgers|Schoenfeld|Brooks Atkinson|Circle in the Square|Helen Hayes|Jacobs|Eugene O'Neill|Longacre|Ambassador|Cort|Gerald Schoenfeld|Stephen Sondheim|Vivian Beaumont|August Wilson|Music Box|Lyric|Al Hirschfeld|American Airlines)/gi,
+  /(?:playing|running|opens?|opened|performs?|performing|staged|is) at the (Belasco|St\. James|Winter Garden|Booth|Lyceum|Shubert|Imperial|Majestic|Broadhurst|Barrymore|Palace|Lunt-Fontanne|Gershwin|Marquis|Nederlander|Neil Simon|Rodgers|Schoenfeld|Brooks Atkinson|Circle in the Square|Helen Hayes|Jacobs|Eugene O'Neill|Longacre|Ambassador|Cort|Gerald Schoenfeld|Stephen Sondheim|Vivian Beaumont|August Wilson|Music Box|Lyric|Al Hirschfeld|American Airlines)/gi,
   /The (?:charming|brilliant|stunning|captivating|delightful|exciting|thrilling) new (?:musical|play|revival)/gi,
   /The most recent revival of/gi,
   /Director [A-Z][a-z]+ [A-Z][a-z]+…$/gm,  // EW article teasers end with director name + ellipsis
@@ -461,6 +461,8 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'the audience', 'master class', 'the performers', 'the present', 'the price',
   'the real thing', 'all the way', 'liberation', 'slave play',
   'bug', 'juno', 'fela', 'fun', 'leap', 'loot',
+  'junk', 'high', 'well', 'good', 'match', 'legend', 'broadway', 'the act',
+  'the father', 'swept away', 'race', 'rose', 'dream', 'tribute',
 ]);
 
 /**
