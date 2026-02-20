@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-02-19T00:14:52.460Z",
+  "timestamp": "2026-02-20T00:11:13.016Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-02-20",
+    "totalReviews": 24156,
+    "unknownOutlets": 32,
+    "duplicates": 0,
+    "syncDelta": 7677
+  },
+  "previous": {
     "date": "2026-02-19",
     "totalReviews": 23923,
     "unknownOutlets": 35,
     "duplicates": 7,
     "syncDelta": 7367
   },
-  "previous": {
-    "date": "2026-02-18",
-    "totalReviews": 23923,
-    "unknownOutlets": 35,
-    "duplicates": 7,
-    "syncDelta": 7366
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "35 reviews have unknown outlets",
+      "message": "32 reviews have unknown outlets",
       "examples": [
         {
           "file": "data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json",
@@ -74,50 +74,15 @@
       ]
     },
     {
-      "type": "duplicates",
-      "severity": "warning",
-      "message": "7 duplicate reviews detected",
-      "examples": [
-        {
-          "file": "data/review-texts/1984-2017/newsday--elizabeth-vincentelli.json",
-          "key": "1984-2017|newsday|elizabeth vincentelli"
-        },
-        {
-          "file": "data/review-texts/august-osage-county-2007/nydailynews--unknown.json",
-          "key": "august-osage-county-2007|nydailynews|unknown"
-        },
-        {
-          "file": "data/review-texts/book-of-mormon-2011/vulture--scott-brown.json",
-          "key": "book-of-mormon-2011|newyorkmagazine|scott brown"
-        },
-        {
-          "file": "data/review-texts/buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
-          "key": "buena-vista-social-club-2025|nytimes|elizabeth vincentelli"
-        },
-        {
-          "file": "data/review-texts/fences-2010/hollywood-reporter--unknown.json",
-          "key": "fences-2010|hollywood-reporter|unknown"
-        },
-        {
-          "file": "data/review-texts/race-2009/hollywood-reporter--unknown.json",
-          "key": "race-2009|hollywood-reporter|unknown"
-        },
-        {
-          "file": "data/review-texts/the-normal-heart-2011/newsday--unknown.json",
-          "key": "the-normal-heart-2011|newsday|unknown"
-        }
-      ]
-    },
-    {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (23923) and reviews.json (16556) are out of sync by 7367 reviews"
+      "message": "review-texts (24156) and reviews.json (16479) are out of sync by 7677 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 23923,
-    "unknownOutlets": 35,
-    "duplicates": 7,
-    "syncDelta": 7367
+    "totalReviews": 24156,
+    "unknownOutlets": 32,
+    "duplicates": 0,
+    "syncDelta": 7677
   }
 }
