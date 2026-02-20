@@ -167,6 +167,12 @@ async function main() {
       if (result.currentCast && result.currentCast.length > 0) {
         castFile.currentCast = result.currentCast;
         castFile.currentCastUpdatedAt = new Date().toISOString();
+      } else if ((show.status === 'open' || show.status === 'previews') && result.openingNightCast.length > 0) {
+        // IBDB only creates a CurrentCast section after replacements are recorded.
+        // For shows with no replacements yet, the OBC IS the current cast.
+        castFile.currentCast = result.openingNightCast;
+        castFile.currentCastUpdatedAt = new Date().toISOString();
+        console.log(`  ℹ️  No CurrentCast on IBDB — using OBC as current (${result.openingNightCast.length} members)`);
       }
 
       // Include replacements if available

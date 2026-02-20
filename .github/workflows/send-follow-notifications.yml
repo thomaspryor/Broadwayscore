@@ -30,7 +30,6 @@ jobs:
         id: send
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/send-follow-notifications.js
 
       - name: Commit updates
