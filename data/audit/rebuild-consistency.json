@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-20T15:59:33.438Z",
+  "generatedAt": "2026-02-20T21:47:14.690Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -32,6 +32,14 @@
       "outlet": "digital-journal",
       "critic": "Markos Papadatos",
       "detail": "originalRating \"5/5\" (=100) vs score 25 (source: human-review)"
+    },
+    {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "lysistrata-jones-2011",
+      "outlet": "nytimes",
+      "critic": "Ben Brantley",
+      "detail": "Critics_Pick but score=43 (source: llmScore)"
     },
     {
       "type": "rating-score-mismatch",
