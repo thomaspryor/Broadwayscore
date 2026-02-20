@@ -287,13 +287,19 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const domain = OUTLET_DOMAINS[outletId];
 
   // Build search query — include year to disambiguate revivals
+  // Include critic name as an unquoted boost when available and trustworthy.
+  // Web-search sourced reviews often have fabricated critic names — skip those.
   const yearClause = showInfo.year ? ` ${showInfo.year}` : '';
+  const criticName = (review.criticName && review.criticName !== 'Unknown'
+    && review.source !== 'web-search') ? review.criticName : '';
+  const criticClause = criticName ? ` ${criticName}` : '';
+  const outletName = review.outlet || outletId;
+
   let query;
   if (domain) {
-    query = `site:${domain} "${showInfo.title}" Broadway review${yearClause}`;
+    query = `site:${domain} "${showInfo.title}" Broadway review${yearClause}${criticClause}`;
   } else {
-    const outletName = review.outlet || outletId;
-    query = `"${showInfo.title}" Broadway review${yearClause} "${outletName}"`;
+    query = `"${showInfo.title}" Broadway review${yearClause} "${outletName}"${criticClause}`;
   }
 
   log(`  [URL Discovery] Searching: ${query}`);
@@ -314,8 +320,27 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   }
 
   if (!results.length) {
-    log('    ✗ No search results found');
-    return null;
+    // Fallback: broader search without site: restriction, using outlet + critic name
+    // This catches articles Google didn't index under the domain (URL changes, redirects)
+    if (criticName && domain) {
+      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" Broadway review${yearClause}`;
+      log(`    Fallback search (no site:): ${fallbackQuery}`);
+      results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log);
+      provider = 'scrapingbee-fallback';
+      if (!results) {
+        results = await _serpViaBrightData(fallbackQuery, brightDataKey, log);
+        provider = 'brightdata-fallback';
+      }
+      if (results === null) {
+        log('    ✗ All SERP providers unavailable');
+        return '__SERP_UNAVAILABLE__';
+      }
+    }
+
+    if (!results || !results.length) {
+      log('    ✗ No search results found');
+      return null;
+    }
   }
 
   log(`    Using ${provider} (${results.length} results)`);
