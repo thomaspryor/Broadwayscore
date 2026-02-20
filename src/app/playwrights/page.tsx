@@ -49,6 +49,8 @@ export default function PlaywrightsIndexPage() {
         categoryLabel={config.labelPlural}
         routePath={config.routePath}
         totalShows={totalShows}
+        defaultMinShows={3}
+        defaultSort="avg"
       />
     </div>
   );
