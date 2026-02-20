@@ -418,6 +418,54 @@ Or if you cannot create an actionable plan:
   if (!plan.canCreatePlan) {
     console.log(`Cannot create plan: ${plan.reason}`);
     output('plan_created', 'false');
+
+    // Send a fallback notification email so the owner knows manual attention is needed
+    const ownerEmail = process.env.OWNER_EMAIL;
+    if (ownerEmail) {
+      const who = diagnosis.submitterName && diagnosis.submitterName !== 'Anonymous' ? diagnosis.submitterName : 'Someone';
+      const showRef = diagnosis.submitterShow ? ` about <strong>${diagnosis.submitterShow}</strong>` : '';
+      const issueUrl = `https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}`;
+
+      const fallbackHtml = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+<p style="margin:0 0 12px;padding:10px 14px;background-color:#fef3c7;border:1px solid #f59e0b;border-radius:6px;color:#92400e;font-size:14px;">&#9888;&#65039; <strong>Needs your attention</strong> &mdash; auto-fix and plan generator both couldn't handle this one.</p>
+<p style="margin:0;">${who} reported a bug${showRef}:</p>
+<br>
+${diagnosis.originalMessage
+  ? `<p style="margin:0;padding-left:16px;border-left:3px solid #ddd;color:#555;font-style:italic;">${diagnosis.originalMessage.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`
+  : `<p style="margin:0;color:#999;font-style:italic;">(no message text available)</p>`}
+<br>
+<p style="margin:0;"><strong>Diagnosis:</strong> ${(diagnosis.summary || 'No summary available').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+<br>
+<p style="margin:0;color:#555;"><strong>Why it couldn't be auto-planned:</strong> ${(plan.reason || 'Unknown reason').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+<br>
+<table cellpadding="0" cellspacing="0" border="0" style="margin:0;"><tr>
+  <td align="center" bgcolor="#3b82f6" style="border-radius:6px;padding:0;"><a href="${issueUrl}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">View Issue on GitHub</a></td>
+</tr></table>
+<br>
+<p style="margin:0;color:#999;font-size:13px;">Issue: <a href="${issueUrl}" style="color:#999;">#${issueNumber}</a></p>
+</body></html>`;
+
+      const fallbackSubject = diagnosis.submitterShow
+        ? `Manual Fix Needed: ${diagnosis.submitterShow} (#${issueNumber})`
+        : `Manual Fix Needed (#${issueNumber})`;
+
+      try {
+        await sendEmail(
+          ownerEmail,
+          'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+          fallbackSubject,
+          fallbackHtml
+        );
+        console.log(`Fallback notification email sent to ${ownerEmail}`);
+      } catch (err) {
+        console.error('Failed to send fallback email:', err.message);
+      }
+    } else {
+      console.log('No OWNER_EMAIL set — skipping fallback email');
+    }
+
     return;
   }
 
