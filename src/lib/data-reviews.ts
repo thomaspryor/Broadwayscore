@@ -164,7 +164,6 @@ const GARBAGE_OUTLET_IDS = new Set([
   'keep-things-speeding-along',
   'beetlejuice-beetlejuice',
   'ricky-martin',
-  'is-not-only-an-ewent',
 ]);
 
 // ============================================

@@ -42,14 +42,22 @@ jobs:
             echo "No tracking changes to commit"
           else
             git commit -m "chore: update processed review submissions tracking"
-            MAX_RETRIES=3
-            RETRY_COUNT=0
-            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            for i in 1 2 3 4 5; do
               if git push origin main; then
-                echo "Pushed tracking update"
+                echo "Push succeeded on attempt $i"
                 break
               fi
-              RETRY_COUNT=$((RETRY_COUNT + 1))
-              git pull --rebase origin main
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              echo "--- Unstaged files before cleanup ---"
+              git status --porcelain 2>/dev/null || true
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              if git pull --rebase -X theirs origin main; then
+                echo "Rebase succeeded, retrying push..."
+              else
+                echo "Rebase failed, aborting..."
+                git rebase --abort 2>/dev/null || true
+              fi
+              sleep $((10 + RANDOM % 20))
             done
           fi
