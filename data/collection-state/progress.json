@@ -1,41 +1,133 @@
 {
   "processed": [
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+    "1984-2017/vulture--jesse-green.json",
+    "betrayal-2019/vulture--jesse-green.json",
+    "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
+    "bullets-over-broadway-2014/vulture--jesse-green.json",
+    "call-me-izzy-2025/vulture--unknown.json",
+    "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "falsettos-2016/vulture--jesse-green.json"
   ],
   "failed": [
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
-    "american-idiot-2010/financialtimes--brendan-lemon.json",
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
-    "betrayal-2013/financialtimes--brendan-lemon.json",
-    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
-    "carousel-2018/financial-times-uk--max-mcguinness.json",
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
-    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
-    "constellations-2015/financialtimes--brendan-lemon.json",
-    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
-    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
-    "enron-2010/financial-times--brandan-lemon.json",
-    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
-    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
-    "frozen-2018/financial-times-uk--max-mcguinness.json"
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--jackson-mchenry.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
+    "a-christmas-carol-2019/vulture--jesse-green.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "anastasia-2017/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "cabaret-2024/vulture--helen-shaw.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "catch-me-if-you-can-2011/vulture--jesse-green.json",
+    "company-2021/vulture--helen-shaw.json",
+    "elf-2012/vulture--jesse-green.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "come-from-away-2017/vulture--jesse-green.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+      "data/review-texts/a-christmas-carol-2019/vulture--jesse-green.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+      "data/review-texts/cabaret-2024/vulture--helen-shaw.json",
+      "data/review-texts/escape-to-margaritaville-2018/vulture--jesse-green.json"
+    ],
     "archive": [
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+      "1984-2017/vulture--jesse-green.json",
+      "betrayal-2019/vulture--jesse-green.json",
+      "bob-fosses-dancin-2023/vulture--jackson-mchenry.json",
+      "bullets-over-broadway-2014/vulture--jesse-green.json",
+      "call-me-izzy-2025/vulture--unknown.json",
+      "falsettos-2016/vulture--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-20T04:56:18.571Z",
-  "lastProcessed": "frozen-2018/financial-times-uk--max-mcguinness.json",
-  "log": []
+  "startTime": "2026-02-20T04:55:52.334Z",
+  "lastProcessed": "farinelli-and-the-king-2017/vulture--jesse-green.json",
+  "log": [
+    {
+      "t": "2026-02-20T04:56:21.610Z",
+      "event": "bb-session",
+      "session": "16c03b7c",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-20T04:56:23.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T04:57:38.637Z",
+      "event": "bb-session",
+      "session": "b1abe2e0",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-20T04:57:40.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T04:58:40.575Z",
+      "event": "bb-session",
+      "session": "069de842",
+      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+    },
+    {
+      "t": "2026-02-20T04:58:42.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T04:59:59.135Z",
+      "event": "bb-session",
+      "session": "e221a9cc",
+      "url": "https://www.vulture.com/2010/10/theater_bloody_bloody_andrew_j.html"
+    },
+    {
+      "t": "2026-02-20T05:00:01.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:01:13.842Z",
+      "event": "bb-session",
+      "session": "3e7bbbf8",
+      "url": "https://www.vulture.com/article/cabaret-broadway-review-kit-kat-club.html"
+    },
+    {
+      "t": "2026-02-20T05:01:15.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:03:39.874Z",
+      "event": "bb-session",
+      "session": "43ae7839",
+      "url": "https://www.vulture.com/2018/03/theater-review-escape-to-margaritaville.html"
+    },
+    {
+      "t": "2026-02-20T05:03:41.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
