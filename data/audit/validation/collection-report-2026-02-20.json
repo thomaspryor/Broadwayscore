@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-20T17:27:13.654Z",
+  "runDate": "2026-02-20T17:32:44.196Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 75,
-    "failed": 167,
+    "processed": 84,
+    "failed": 157,
     "skipped": 0,
-    "successRate": "31.0%"
+    "successRate": "34.9%"
   },
   "tierBreakdown": {
     "playwright": 23,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 48
+    "archiveToday": 14,
+    "archive": 55
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 10,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 10,
+    "tier2Success": 7,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 32,
-    "scrapingBeeCreditsUsed": 32,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 83,
+    "tier4Success": 54,
+    "totalFailed": 89,
+    "scrapingBeeCreditsUsed": 212,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 32,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 142,
+    "urlDiscoverySuccess": 84,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -123,7 +123,16 @@
     "spring-awakening-2006/nytimes--charles-isherwood.json",
     "stereophonic-2024/nytimes--jesse-green.json",
     "sunset-boulevard-2017/nytimes--jesse-green.json",
-    "sweat-2017/nytimes--charles-isherwood.json"
+    "sweat-2017/nytimes--charles-isherwood.json",
+    "tammy-faye/nytimes--elisabeth-vincentelli.json",
+    "the-boys-in-the-band-2018/nytimes--ben-brantley.json",
+    "the-little-mermaid-2008/nytimes--noel-murray.json",
+    "the-piano-lesson-2022/nytimes--maya-phillips.json",
+    "the-seafarer-2007/nytimes--ben-brantley.json",
+    "title-of-show-2008/nytimes--anita-gates.json",
+    "twelfth-night-2013/nytimes--laura-collins-hughes.json",
+    "waiting-for-godot-2013/nytimes--laura-collins-hughes.json",
+    "wit-2012/nytimes--ben-brantley.json"
   ],
   "failed": [
     "just-in-time-2025/broadwaynews--brittani-samuel.json",
@@ -261,38 +270,28 @@
     "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
     "sweeney-todd-2005/nytimes--ben-brantley.json",
     "sweeney-todd-2005/nytimes--jesse-green.json",
-    "chicago-1996/bloomberg--jeremy-gerard.json",
-    "deuce-2007/bloomberg-news--philip-boroff.json",
-    "fela-2009/bloomberg-news--john-simon.json",
-    "fela-2012/bloomberg-news--john-simon.json",
-    "motown-the-musical-2016/bloomberg-news--unknown.json",
-    "priscilla-queen-of-the-desert-2011/bloomberg-news--jeremy-gerard.json",
-    "promises-promises-2010/bloomberg-news--john-simon.json",
-    "race-2009/bloomberg-news--john-simon.json",
-    "the-addams-family-2010/bloomberg-news--john-simon.json",
-    "the-glass-menagerie-2013/bloomberg-news--unknown.json",
-    "the-glass-menagerie-2017/bloomberg-news--unknown.json",
-    "the-peewee-herman-show-2010/bloomberg-news--john-simon.json",
-    "time-stands-still-2010/bloomberg-news--john-simon.json",
-    "wonderland-2011/bloomberg-news--philip-boroff.json",
-    "wonderland-2011/bloomberg-news--phillip-boroff.json",
-    "after-midnight-2013/bloomberg--jeremy-gerard.json",
-    "big-fish-2013/bloomberg--jeremy-gerard.json",
-    "cat-on-a-hot-tin-roof-2008/bloomberg--jeremy-gerard.json",
-    "chinglish-2011/bloomberg--jeremy-gerard.json",
-    "evita-2012/bloomberg--jeremy-gerard.json",
-    "fun-home-2015/bloomberg--jeremy-gerard.json",
-    "ghost-the-musical-2012/bloomberg--jeremy-gerard.json",
-    "nice-work-if-you-can-get-it-2012/bloomberg--jeremy-gerard.json",
-    "rain-2010/bloomberg--jeremy-gerard.json",
-    "rodgers-hammersteins-cinderella-2013/bloomberg--jeremy-gerard.json",
-    "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
-    "sweeney-todd-2005/bloomberg--mark-leydorf.json",
-    "sweeney-todd-2005/bloomberg-mark-leydorf--mark-leydorf.json",
-    "the-addams-family-2010/bloomberg--john-simon.json",
-    "the-anarchist-2012/bloomberg--jeremy-gerard.json",
-    "the-snow-geese-2013/bloomberg--jeremy-gerard.json",
-    "the-trip-to-bountiful-2013/bloomberg--jeremy-gerard.json"
+    "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--elisabeth-vincentelli.json",
+    "the-children-2017/nytimes--jesse-green.json",
+    "the-color-purple-2005/nytimes--alissa-wilkinson.json",
+    "the-color-purple-2015/nytimes--ben-brantley.json",
+    "the-encounter-2016/nytimes--ben-brantley.json",
+    "the-last-five-years-2025/nytimes--jesse-green.json",
+    "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json",
+    "the-prom-2018/nytimes--unknown.json",
+    "the-real-thing-2014/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--jesse-green.json",
+    "the-seagull-2008/nytimes--jesse-green.json",
+    "the-threepenny-opera-2006/nytimes--charles-isherwood.json",
+    "the-visit-2015/nytimes--ben-brantley.json",
+    "the-visit-2015/nytimes--unknown.json",
+    "title-of-show-2008/nytimes--ben-brantley.json",
+    "topdog-underdog-2022/nytimes--ben-brantley.json",
+    "translations-2007/nytimes--ben-brantley.json",
+    "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
+    "waitress-2021/nytimes--charles-isherwood.json",
+    "waitress-2021/nytimes--jesse-green.json",
+    "the-sound-inside-2019/chicagotribune--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -327,7 +326,9 @@
       "cymbeline-2007/nytimes--ben-brantley.json",
       "girl-from-the-north-country-2022/nytimes--ben-brantley.json",
       "glengarry-glen-ross-2012/nytimes--jesse-green.json",
-      "motown-the-musical-2016/nytimes--charles-isherwood.json"
+      "motown-the-musical-2016/nytimes--charles-isherwood.json",
+      "tammy-faye/nytimes--elisabeth-vincentelli.json",
+      "title-of-show-2008/nytimes--anita-gates.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -343,7 +344,8 @@
       "data/review-texts/leopoldstadt-2022/new-york-sun--unknown.json",
       "data/review-texts/m-butterfly-2017/broadwaynews--charles-isherwood.json",
       "data/review-texts/god-of-carnage-2009/nytimes--ben-brantley.json",
-      "data/review-texts/merrily-we-roll-along-2023/nytimes--calum-marsh.json"
+      "data/review-texts/merrily-we-roll-along-2023/nytimes--calum-marsh.json",
+      "data/review-texts/the-children-2017/nytimes--jesse-green.json"
     ],
     "archive": [
       "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
@@ -393,9 +395,437 @@
       "spring-awakening-2006/nytimes--charles-isherwood.json",
       "stereophonic-2024/nytimes--jesse-green.json",
       "sunset-boulevard-2017/nytimes--jesse-green.json",
-      "sweat-2017/nytimes--charles-isherwood.json"
+      "sweat-2017/nytimes--charles-isherwood.json",
+      "the-boys-in-the-band-2018/nytimes--ben-brantley.json",
+      "the-little-mermaid-2008/nytimes--noel-murray.json",
+      "the-piano-lesson-2022/nytimes--maya-phillips.json",
+      "the-seafarer-2007/nytimes--ben-brantley.json",
+      "twelfth-night-2013/nytimes--laura-collins-hughes.json",
+      "waiting-for-godot-2013/nytimes--laura-collins-hughes.json",
+      "wit-2012/nytimes--ben-brantley.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
+      "newUrl": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html"
+    },
+    {
+      "reviewId": "giant-2026/nytimes--houman-barekat.json",
+      "oldUrl": "https://www.nytimes.com/2024/09/27/theater/giant-royal-court-roald-dahl-antisemitism.html",
+      "newUrl": "https://www.nytimes.com/2012/11/16/theater/reviews/giant-with-brian-darcy-james-at-the-public-theater.html"
+    },
+    {
+      "reviewId": "hamilton-2015/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2015/02/18/theater/review-in-hamilton-lin-manuel-miranda-forges-democracy-through-rap.html",
+      "newUrl": "https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html"
+    },
+    {
+      "reviewId": "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/08/05/theater/moulin-rouge-the-musical-review.html",
+      "newUrl": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+    },
+    {
+      "reviewId": "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oldUrl": "https://www.nytimes.com/2024/02/07/theater/cole-escola-oh-mary-mary-todd-lincoln.html",
+      "newUrl": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html"
+    },
+    {
+      "reviewId": "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "oldUrl": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+      "newUrl": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "reviewId": "schmigadoon-2026/nytimes--margaret-lyons.json",
+      "oldUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
+      "newUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html"
+    },
+    {
+      "reviewId": "stranger-things-2024/nytimes--houman-barekat.json",
+      "oldUrl": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
+      "newUrl": "https://www.nytimes.com/2025/04/22/theater/stranger-things-first-shadow-review-broadway.html"
+    },
+    {
+      "reviewId": "a-bronx-tale-2007/nytimes--unknown.json",
+      "oldUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
+      "newUrl": "https://www.nytimes.com/2007/10/26/theater/reviews/26bron.html"
+    },
+    {
+      "reviewId": "a-bronx-tale-the-musical-2016/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
+      "newUrl": "https://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html"
+    },
+    {
+      "reviewId": "a-christmas-carol-2019/nytimes--alexis-soloski.json",
+      "oldUrl": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+      "newUrl": "https://www.nytimes.com/2019/11/20/theater/a-christmas-carol-review.html"
+    },
+    {
+      "reviewId": "a-streetcar-named-desire-2012/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2025/03/11/theater/streetcar-named-desire-review-mescal-ferran.html",
+      "newUrl": "https://www.nytimes.com/2012/04/23/theater/reviews/a-streetcar-named-desire-at-the-broadhurst-theater.html"
+    },
+    {
+      "reviewId": "all-my-sons-2008/nytimes--jesse-green.json",
+      "oldUrl": "http://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+      "newUrl": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html"
+    },
+    {
+      "reviewId": "an-enemy-of-the-people-2012/nytimes--unknown.json",
+      "oldUrl": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
+      "newUrl": "https://www.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html"
+    },
+    {
+      "reviewId": "annie-2012/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2024/12/17/theater/annie-review-whoopi-goldberg.html",
+      "newUrl": "https://www.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html"
+    },
+    {
+      "reviewId": "betrayal-2013/nytimes--matt-wolf.json",
+      "oldUrl": "https://www.nytimes.com/2019/03/28/theater/pinter-betrayal-tom-hiddleston.html",
+      "newUrl": "https://www.nytimes.com/2013/10/28/theater/reviews/daniel-craig-and-rachel-weisz-star-in-betrayal-on-broadway.html"
+    },
+    {
+      "reviewId": "bye-bye-birdie-2009/nytimes--ben-brantley.json",
+      "oldUrl": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/10/09/arts-leisure-preview-bye-bye-birdie-ken-jacobs-garry-shandling-and-more/",
+      "newUrl": "https://archive.nytimes.com/www.nytimes.com/2009/10/16/theater/reviews/16byebye.html"
+    },
+    {
+      "reviewId": "cymbeline-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/08/22/theater/reviews/22cymb.html",
+      "newUrl": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html"
+    },
+    {
+      "reviewId": "cyrano-de-bergerac-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2019/11/07/theater/cyrano-review-peter-dinklage.html",
+      "newUrl": "https://www.nytimes.com/2007/11/02/theater/reviews/02cyra.html"
+    },
+    {
+      "reviewId": "cyrano-de-bergerac-2012/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2019/11/07/theater/cyrano-review-peter-dinklage.html",
+      "newUrl": "https://www.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html"
+    },
+    {
+      "reviewId": "death-of-a-salesman-2012/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/10/09/theater/review-death-of-a-salesman.html",
+      "newUrl": "https://www.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html"
+    },
+    {
+      "reviewId": "deuce-2007/nytimes--charles-isherwood.json",
+      "oldUrl": "http://theater.nytimes.com/2010/12/15/theater/reviews/15donny.html?pagewanted=2",
+      "newUrl": "https://www.nytimes.com/2007/05/07/theater/reviews/07deuc.html"
+    },
+    {
+      "reviewId": "elf-2012/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html"
+    },
+    {
+      "reviewId": "eureka-day-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/06/18/theater/eureka-day-review.html",
+      "newUrl": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html"
+    },
+    {
+      "reviewId": "evita-2012/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2019/11/15/theater/evita-city-center-review.html",
+      "newUrl": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-starring-elena-roger-at-the-marquis-theater.html"
+    },
+    {
+      "reviewId": "fat-ham-2023/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/05/13/theater/fat-ham-review.html",
+      "newUrl": "https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html"
+    },
+    {
+      "reviewId": "fela-2012/nytimes--ben-brantley.json",
+      "oldUrl": "https://theater.nytimes.com/2009/11/24/theater/reviews/24fela.html?partner=rss&emc=rss",
+      "newUrl": "https://www.nytimes.com/2012/07/13/theater/reviews/fela-on-broadway-at-al-hirschfeld-theater.html"
+    },
+    {
+      "reviewId": "finding-neverland-2015/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2014/08/15/theater/finding-neverland-opens-at-american-repertory-theater.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2015/04/16/theater/review-finding-neverland-a-broadway-musical-with-matthew-morrison.html"
+    },
+    {
+      "reviewId": "girl-from-the-north-country-2022/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2017/07/26/theater/girl-from-north-country-review-bob-dylan.html",
+      "newUrl": "https://www.nytimes.com/2020/03/05/theater/girl-from-the-north-country-review.html"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-2012/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2025/03/31/theater/glengarry-glen-ross-review-culkin-odenkirk-burr.html",
+      "newUrl": "https://www.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.html"
+    },
+    {
+      "reviewId": "god-of-carnage-2009/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2016/01/31/nyregion/review-god-of-carnage-puts-parents-in-a-metaphoric-bull-ring.html",
+      "newUrl": "https://www.nytimes.com/2011/11/13/nyregion/god-of-carnage-is-at-hudson-stage-theater-review.html"
+    },
+    {
+      "reviewId": "grease-2007/nytimes--ben-brantley.json",
+      "oldUrl": "http://theater.nytimes.com/2012/10/05/theater/reviews/grace-with-paul-rudd-and-michael-shannon-at-cort-theater.html?ref=theater",
+      "newUrl": "https://www.nytimes.com/2007/08/20/theater/reviews/20grea.html"
+    },
+    {
+      "reviewId": "gypsy-2008/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/12/20/theater/gypsy-review-audra-mcdonald.html",
+      "newUrl": "https://www.nytimes.com/2008/03/28/theater/reviews/28gyps.html"
+    },
+    {
+      "reviewId": "harvey-2012/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2014/04/24/theater/casa-valentina-a-new-play-by-harvey-fierstein.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2012/06/15/theater/reviews/harvey-with-jim-parsons-at-studio-54.html"
+    },
+    {
+      "reviewId": "heisenberg-2016/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2016/06/04/theater/heisenberg-review-mary-louise-parker-denis-arndt.html",
+      "newUrl": "https://www.nytimes.com/2016/10/14/theater/heisenberg-review.html"
+    },
+    {
+      "reviewId": "indecent-2017/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2016/05/18/theater/review-indecent-revisits-a-play-colliding-with-broadway-mores-and-more.html?partner=rss&emc=rss",
+      "newUrl": "https://www.nytimes.com/2017/04/18/theater/indecent-review-paula-vogel-broadway.html"
+    },
+    {
+      "reviewId": "irving-berlins-white-christmas-2009/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2013/12/15/nyregion/a-review-of-irving-berlins-white-christmas-in-northport.html",
+      "newUrl": "https://www.nytimes.com/2011/12/04/nyregion/irving-berlins-white-christmas-at-the-paper-mill-playhouse-review.html"
+    },
+    {
+      "reviewId": "is-this-a-room-2021/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2019/10/24/theater/is-this-a-room-review-reality-winner.html",
+      "newUrl": "https://www.nytimes.com/2021/10/11/theater/is-this-a-room-review.html"
+    },
+    {
+      "reviewId": "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyde-at-the-marquis-theater.html?pagewanted=all&_r=0",
+      "newUrl": "https://www.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyde-at-the-marquis-theater.html"
+    },
+    {
+      "reviewId": "job-2024/nytimes--ben-brantley.json",
+      "oldUrl": "http://theater.nytimes.com/2010/11/19/theater/reviews/19free.html?ref=theater&pagewanted=1",
+      "newUrl": "https://www.nytimes.com/2024/07/30/theater/job-review-broadway.html"
+    },
+    {
+      "reviewId": "lempicka-2024/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2018/07/26/theater/lempicka-review-williamstown.html",
+      "newUrl": "https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html"
+    },
+    {
+      "reviewId": "les-liaisons-dangereuses-2008/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+      "newUrl": "https://www.nytimes.com/2008/05/02/theater/reviews/02liai.html"
+    },
+    {
+      "reviewId": "les-liaisons-dangereuses-2016/nytimes--matt-wolf.json",
+      "oldUrl": "https://www.nytimes.com/2015/12/26/arts/international/review-les-liaisons-dangereuses-and-linda.html",
+      "newUrl": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
+    },
+    {
+      "reviewId": "living-on-love-2015/nytimes--alexis-soloski.json",
+      "oldUrl": "http://www.nytimes.com/2014/07/21/theater/in-living-on-love-renee-fleming-moves-beyond-opera.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2015/04/21/theater/review-renee-fleming-plays-against-type-in-living-on-love.html"
+    },
+    {
+      "reviewId": "looped-2010/nytimes--charles-isherwood.json",
+      "oldUrl": "https://theater.nytimes.com/2010/10/22/theater/reviews/22lomb.html?src=twt&twt=nytimesTheater",
+      "newUrl": "https://www.nytimes.com/2010/03/15/theater/reviews/15looped.html"
+    },
+    {
+      "reviewId": "lysistrata-jones-2011/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2011/06/06/theater/reviews/lysistrata-jones-at-judson-memorial-church-review.html",
+      "newUrl": "https://www.nytimes.com/2011/12/15/theater/reviews/lysistrata-jones-at-walter-kerr-theater-review.html"
+    },
+    {
+      "reviewId": "macbeth-2008/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2008/06/23/theater/reviews/23macb.html",
+      "newUrl": "https://www.nytimes.com/2008/02/15/theater/reviews/15macb.html"
+    },
+    {
+      "reviewId": "macbeth-2008/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2008/02/15/theater/reviews/15macb.html"
+    },
+    {
+      "reviewId": "macbeth-2013/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2013/04/22/theater/reviews/macbeth-with-alan-cumming-at-the-barrymore-theater.html"
+    },
+    {
+      "reviewId": "merrily-we-roll-along-2023/nytimes--calum-marsh.json",
+      "oldUrl": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html",
+      "newUrl": "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html"
+    },
+    {
+      "reviewId": "motown-the-musical-2016/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2016/07/22/theater/review-motown-the-musical-offers-easy-nostalgia-and-a-jolt-of-racial-relevance.html"
+    },
+    {
+      "reviewId": "natasha-pierre-and-the-great-comet-of-1812-2016/nytimes--unknown.json",
+      "oldUrl": "http://www.nytimes.com/2013/05/17/theater/reviews/natasha-pierre-and-the-great-comet-of-1812-at-kazino.html?pagewanted=all&_r=0",
+      "newUrl": "https://www.nytimes.com/2016/11/15/theater/natasha-pierre-and-the-great-comet-of-1812-review.html"
+    },
+    {
+      "reviewId": "oklahoma-2019/nytimes--benedict-nightingale.json",
+      "oldUrl": "https://www.nytimes.com/2002/03/17/theater/theater-the-briton-who-revived-oklahoma.html",
+      "newUrl": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html"
+    },
+    {
+      "reviewId": "on-a-clear-day-you-can-see-forever-2011/nytimes--jesse-green.json",
+      "oldUrl": "http://www.nytimes.com/2018/06/28/theater/review-on-a-clear-day-you-can-see-forever-irish-rep.html",
+      "newUrl": "https://www.nytimes.com/2011/12/12/theater/reviews/on-a-clear-day-you-can-see-forever-at-st-james-review.html"
+    },
+    {
+      "reviewId": "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
+      "oldUrl": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html",
+      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "reviewId": "once-upon-a-one-more-time-2023/nytimes--maya-phillips.json",
+      "oldUrl": "https://www.nytimes.com/2021/12/23/theater/once-upon-a-one-more-time-a-strange-loop.html",
+      "newUrl": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+    },
+    {
+      "reviewId": "outside-mullingar-2014/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2014/10/19/nyregion/a-review-of-outside-mullingar-at-the-george-street-playhouse-in-new-brunswick.html",
+      "newUrl": "https://www.nytimes.com/2015/04/26/nyregion/review-of-outside-mullingar-in-armonk.html"
+    },
+    {
+      "reviewId": "ragtime-2009/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html",
+      "newUrl": "https://www.nytimes.com/2009/11/16/theater/reviews/16ragtime.html"
+    },
+    {
+      "reviewId": "rain-2010/nytimes--elisabeth-vincentelli.json",
+      "oldUrl": "https://www.nytimes.com/2025/11/08/theater/purple-rain-review-prince.html",
+      "newUrl": "https://www.nytimes.com/2010/10/27/theater/reviews/27rain.html"
+    },
+    {
+      "reviewId": "rock-n-roll-2007/nytimes--naveen-kumar.json",
+      "oldUrl": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
+      "newUrl": "https://www.nytimes.com/2007/11/05/theater/reviews/05rock.html"
+    },
+    {
+      "reviewId": "romeo-juliet/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-kit-carson-rachel-zegler.html",
+      "newUrl": "https://www.nytimes.com/2022/07/25/theater/romeo-juliet-review-hudson-valley-shakespeare-festival.html"
+    },
+    {
+      "reviewId": "significant-other-2017/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2015/06/19/theater/review-in-significant-other-a-young-man-pines-as-his-pals-pair-off.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2017/03/02/theater/significant-other-review.html"
+    },
+    {
+      "reviewId": "spring-awakening-2006/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2015/09/28/theater/review-spring-awakening-by-deaf-west-theater-brings-a-new-sensation-to-broadway.html?_r=1",
+      "newUrl": "https://www.nytimes.com/2006/12/11/theater/reviews/11spri.html"
+    },
+    {
+      "reviewId": "stereophonic-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2023/10/29/theater/stereophonic-review-david-adjmi-will-butler.html",
+      "newUrl": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html"
+    },
+    {
+      "reviewId": "sunset-boulevard-2017/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html",
+      "newUrl": "https://www.nytimes.com/2017/02/09/theater/sunset-boulevard-review.html"
+    },
+    {
+      "reviewId": "sweat-2017/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2016/11/04/theater/review-the-jobs-are-gone-in-sweat-so-are-peoples-hopes.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html"
+    },
+    {
+      "reviewId": "tammy-faye/nytimes--elisabeth-vincentelli.json",
+      "oldUrl": "https://www.nytimes.com/2022/10/27/theater/tammy-faye-review-almeida.html",
+      "newUrl": "https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html"
+    },
+    {
+      "reviewId": "the-boys-in-the-band-2018/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2020/09/30/movies/the-boys-in-the-band-review.html",
+      "newUrl": "https://www.nytimes.com/2018/05/31/theater/the-boys-in-the-band-review-jim-parsons-zachary-quinto.html"
+    },
+    {
+      "reviewId": "the-children-2017/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html?smid=tw-nytimesarts&smtyp=cur&_r=0",
+      "newUrl": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html"
+    },
+    {
+      "reviewId": "the-color-purple-2005/nytimes--alissa-wilkinson.json",
+      "oldUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html",
+      "newUrl": "https://www.nytimes.com/2005/12/02/theater/02purp.html"
+    },
+    {
+      "reviewId": "the-color-purple-2015/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html?_r=1",
+      "newUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html"
+    },
+    {
+      "reviewId": "the-encounter-2016/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html",
+      "newUrl": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
+    },
+    {
+      "reviewId": "the-last-five-years-2025/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2021/04/14/theater/review-the-last-five-years-jason-michael-webb.html",
+      "newUrl": "https://www.nytimes.com/2025/04/06/theater/last-five-years-broadway-nick-jonas-adrienne-warren.html"
+    },
+    {
+      "reviewId": "the-little-mermaid-2008/nytimes--noel-murray.json",
+      "oldUrl": "https://www.nytimes.com/2019/11/06/arts/television/review-the-little-mermaid-live-disney.html?emc=rss&partner=rss",
+      "newUrl": "https://www.nytimes.com/2008/01/11/theater/reviews/11merm.html"
+    },
+    {
+      "reviewId": "the-piano-lesson-2022/nytimes--maya-phillips.json",
+      "oldUrl": "https://www.nytimes.com/2024/11/21/movies/the-piano-lesson-review.html",
+      "newUrl": "https://www.nytimes.com/2022/10/13/theater/the-piano-lesson-review.html"
+    },
+    {
+      "reviewId": "the-prom-2018/nytimes--unknown.json",
+      "oldUrl": "https://www.nytimes.com/2020/12/10/movies/the-prom-review.html",
+      "newUrl": "https://www.nytimes.com/2018/11/15/theater/the-prom-review.html"
+    },
+    {
+      "reviewId": "the-seafarer-2007/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2018/04/18/theater/the-seafarer-review-matthew-broderick.html",
+      "newUrl": "https://www.nytimes.com/2007/12/07/theater/reviews/07seaf.html"
+    },
+    {
+      "reviewId": "the-visit-2015/nytimes--ben-brantley.json",
+      "oldUrl": "http://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html"
+    },
+    {
+      "reviewId": "the-visit-2015/nytimes--unknown.json",
+      "oldUrl": "https://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html"
+    },
+    {
+      "reviewId": "title-of-show-2008/nytimes--anita-gates.json",
+      "oldUrl": "https://www.nytimes.com/2010/11/28/nyregion/28theatnj.html?_r=1",
+      "newUrl": "https://www.nytimes.com/2021/08/17/theater/title-of-show-review.html"
+    },
+    {
+      "reviewId": "topdog-underdog-2022/nytimes--ben-brantley.json",
+      "oldUrl": "https://theater.nytimes.com/mem/theater/treview.html?res=9f05e6d7153df93ba35757c0a9649c8b63",
+      "newUrl": "https://www.nytimes.com/2022/10/20/theater/topdog-underdog-review.html"
+    },
+    {
+      "reviewId": "twelfth-night-2013/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html",
+      "newUrl": "https://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html"
+    },
+    {
+      "reviewId": "waiting-for-godot-2013/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2025/09/28/theater/waiting-for-godot-review-keanu-reeves.html",
+      "newUrl": "https://www.nytimes.com/2013/11/25/theater/reviews/no-mans-land-and-waiting-for-godot-at-the-cort.html"
+    },
+    {
+      "reviewId": "wit-2012/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2012/08/10/theater/reviews/into-the-woods-by-stephen-sondheim-and-james-lapine.html",
+      "newUrl": "https://www.nytimes.com/2012/01/27/theater/reviews/cynthia-nixon-in-wit-at-manhattan-theater-club.html"
+    }
+  ]
 }
