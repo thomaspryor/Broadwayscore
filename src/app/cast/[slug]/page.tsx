@@ -45,10 +45,11 @@ export default function ActorDetailPage({ params }: { params: { slug: string } }
   const allProfiles = getAllActorProfiles();
   const rank = allProfiles.findIndex(p => p.slug === profile.slug) + 1;
 
-  // Highest-rated rank: position among actors with avgScore, sorted desc
-  const scoredProfiles = allProfiles.filter(p => p.avgScore !== null);
+  // Highest-rated rank: position among actors with avgScore and 3+ credits, sorted desc
+  // Filtering to 3+ credits prevents single-show actors from skewing the ranking
+  const scoredProfiles = allProfiles.filter(p => p.avgScore !== null && p.scoredShowCount >= 3);
   scoredProfiles.sort((a, b) => (b.avgScore ?? 0) - (a.avgScore ?? 0));
-  const highestRatedRank = profile.avgScore !== null
+  const highestRatedRank = (profile.avgScore !== null && profile.scoredShowCount >= 3)
     ? scoredProfiles.findIndex(p => p.slug === profile.slug) + 1
     : 0;
 
