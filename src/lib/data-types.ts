@@ -592,6 +592,7 @@ export interface ActorShowEntry {
   isRevival: boolean;
   score: number | null;
   audienceScore: number | null;
+  wasObc?: boolean;
   flags?: string[];
 }
 

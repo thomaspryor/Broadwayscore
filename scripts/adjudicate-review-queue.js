@@ -228,15 +228,22 @@ function findSourceFile(review) {
 
   if (!outletId || !criticName) return null;
 
-  const filename = `${outletId}--${criticName}.json`;
+  // Normalize critic name to kebab-case (file naming convention)
+  const kebabCritic = criticName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const filename = `${outletId}--${kebabCritic}.json`;
   const filePath = path.join(showDir, filename);
 
   if (fs.existsSync(filePath)) return filePath;
 
-  // Try case-insensitive fallback
+  // Try case-insensitive fallback with original name
   const files = fs.readdirSync(showDir);
-  const match = files.find(f => f.toLowerCase() === filename.toLowerCase());
+  const origFilename = `${outletId}--${criticName}.json`;
+  const match = files.find(f => f.toLowerCase() === origFilename.toLowerCase());
   if (match) return path.join(showDir, match);
+
+  // Try matching just the outlet prefix + kebab critic
+  const outletMatch = files.find(f => f.startsWith(outletId + '--') && f.toLowerCase().includes(kebabCritic));
+  if (outletMatch) return path.join(showDir, outletMatch);
 
   return null;
 }
