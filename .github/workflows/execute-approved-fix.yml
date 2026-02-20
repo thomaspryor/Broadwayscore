@@ -101,23 +101,29 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const result = process.env.FIX_RESULT || 'error';
-            const issueNumber = parseInt(process.env.FIX_ISSUE_NUMBER);
+            const rawIssue = process.env.FIX_ISSUE_NUMBER || '';
+            const issueNumber = parseInt(rawIssue);
+            const isSystematic = rawIssue.includes('-systematic');
 
             if (result === 'fixed') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: '## Fix Applied\n\nThe approved remediation plan has been executed. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+                body: isSystematic
+                  ? '## Systematic Fix Applied\n\nThe approved systematic remediation plan has been executed across the dataset. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+                  : '## Fix Applied\n\nThe approved remediation plan has been executed. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
               });
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: issueNumber, labels: ['auto-fixed']
+                issue_number: issueNumber, labels: [isSystematic ? 'systematic-fix-applied' : 'auto-fixed']
               });
-              await github.rest.issues.update({
-                owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: issueNumber,
-                state: 'closed', state_reason: 'completed'
-              });
+              if (!isSystematic) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed', state_reason: 'completed'
+                });
+              }
             } else if (result === 'already-applied') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
