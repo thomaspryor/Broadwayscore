@@ -208,8 +208,8 @@ export default function CreativeIndexClient({
         </div>
       </div>
 
-      {/* Filters — min credits + OBC only */}
-      {showObcFilter && (
+      {/* Filters — min scored + OBC only (OBC parts only for cast pages) */}
+      {(showObcFilter || defaultMinShows > 0) && (
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Min scored:</span>
           {MIN_SHOW_OPTIONS.map(n => (
@@ -225,17 +225,21 @@ export default function CreativeIndexClient({
               {n === 0 ? 'All' : `${n}+`}
             </button>
           ))}
-          <span className="text-gray-600 mx-1">|</span>
-          <button
-            onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
-            className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${
-              obcOnly
-                ? 'text-brand bg-brand/15 border-brand/40'
-                : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
-            }`}
-          >
-            <span title="Original Broadway Cast">OBC</span> Only
-          </button>
+          {showObcFilter && (
+            <>
+              <span className="text-gray-600 mx-1">|</span>
+              <button
+                onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
+                className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${
+                  obcOnly
+                    ? 'text-brand bg-brand/15 border-brand/40'
+                    : 'text-gray-400 bg-surface-overlay border-white/10 hover:text-white hover:border-white/20'
+                }`}
+              >
+                <span title="Original Broadway Cast">OBC</span> Only
+              </button>
+            </>
+          )}
         </div>
       )}
 
