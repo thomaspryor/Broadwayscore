@@ -101,8 +101,17 @@ jobs:
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
-            git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
+            echo "--- Unstaged files before cleanup ---"
+            git status --porcelain 2>/dev/null || true
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              echo "Rebase succeeded, retrying push..."
+            else
+              echo "Rebase failed, aborting..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            sleep $((10 + RANDOM % 20))
           done
 
   # Create issue for new shows that need review data
