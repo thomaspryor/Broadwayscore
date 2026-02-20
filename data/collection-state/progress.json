@@ -1,37 +1,26 @@
 {
-  "processed": [
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "700-sundays-2013/nytimes--ben-brantley.json",
-    "a-dolls-house-part-2-2017/nytimes--unknown.json",
-    "an-enemy-of-the-people-2024/nytimes--jesse-green.json"
-  ],
+  "processed": [],
   "failed": [
-    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "1776-2022/nytimes--jesse-green.json",
-    "33-variations-2009/nytimes--ben-brantley.json",
-    "9-to-5-2009/nytimes--ben-brantley.json",
-    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
-    "a-catered-affair-2008/nytimes--ben-brantley.json",
-    "a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
-    "a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
-    "after-midnight-2013/nytimes--unknown.json",
-    "after-miss-julie-2009/nytimes--.json",
-    "after-miss-julie-2009/nytimes--ben-brantley.json",
-    "all-about-me-2010/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--ben-brantley.json",
-    "allegiance-2015/nytimes--charles-isherwood.json",
-    "an-act-of-god-2016/nytimes--ben-brantley.json",
-    "anastasia-2017/nytimes--ben-brantley.json",
-    "ann-2013/nytimes--ben-brantley.json",
-    "ann-2013/nytimes--charles-isherwood.json",
-    "baby-its-you-2011/nytimes--ben-brantley.json",
-    "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "bad-cinderella-2023/nytimes--unknown.json",
-    "bandstand-2017/nytimes--ben-brantley.json",
-    "bandstand-2017/nytimes--michael-sommers.json",
-    "bernhardthamlet-2018/nytimes--ben-brantley.json"
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+    "stranger-things-2024/broadwaynews--brittani-samuel.json",
+    "bug-2026/nysr--new-york-notebook-sandy-macdonald.json",
+    "death-becomes-her-2024/dread-central--caroline-cao.json",
+    "death-becomes-her-2024/the-gold-knight--chris-stack.json",
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json",
+    "hells-kitchen-2024/lighting-and-sound-america--david-barbour.json",
+    "hells-kitchen-2024/rollingstone--brittany-spanos.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+    "hells-kitchen-2024/the-interested-bystander--cary-wong.json",
+    "hells-kitchen-2024/theater-pizzazz--carol-rocamora.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -41,111 +30,13 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/33-variations-2009/nytimes--ben-brantley.json",
-      "data/review-texts/a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
-      "data/review-texts/a-man-for-all-seasons-2008/nytimes--ben-brantley.json",
-      "data/review-texts/a-naked-girl-on-the-appian-way-2005/nytimes--ben-brantley.json",
-      "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
-      "data/review-texts/after-midnight-2013/nytimes--unknown.json",
-      "data/review-texts/after-miss-julie-2009/nytimes--ben-brantley.json"
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/death-becomes-her-2024/the-gold-knight--chris-stack.json",
+      "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json"
     ],
-    "archive": [
-      "the-lion-king-1997/nytimes--ben-brantley.json",
-      "700-sundays-2013/nytimes--ben-brantley.json",
-      "a-dolls-house-part-2-2017/nytimes--unknown.json",
-      "an-enemy-of-the-people-2024/nytimes--jesse-green.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-20T02:32:42.340Z",
-  "lastProcessed": "bernhardthamlet-2018/nytimes--ben-brantley.json",
-  "log": [
-    {
-      "t": "2026-02-20T02:33:50.280Z",
-      "event": "bb-session",
-      "session": "a6533f32",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
-    },
-    {
-      "t": "2026-02-20T02:33:52.426Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:35:12.995Z",
-      "event": "bb-session",
-      "session": "58a8bb64",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-20T02:35:15.353Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:36:44.438Z",
-      "event": "bb-session",
-      "session": "4d8d1cdf",
-      "url": "https://www.nytimes.com/2008/10/19/theater/reviews/19seasons.html"
-    },
-    {
-      "t": "2026-02-20T02:36:46.641Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:38:01.402Z",
-      "event": "bb-session",
-      "session": "3f00c111",
-      "url": "https://www.nytimes.com/2005/10/17/theater/reviews/17nake.html"
-    },
-    {
-      "t": "2026-02-20T02:38:03.435Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:39:34.430Z",
-      "event": "bb-session",
-      "session": "3f7f59c7",
-      "url": "https://www.nytimes.com/2024/11/12/theater/a-wonderful-world-review.html"
-    },
-    {
-      "t": "2026-02-20T02:39:36.453Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:41:01.810Z",
-      "event": "bb-session",
-      "session": "87671be9",
-      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
-    },
-    {
-      "t": "2026-02-20T02:41:04.281Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:42:42.190Z",
-      "event": "bb-session",
-      "session": "85fc047f",
-      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
-    },
-    {
-      "t": "2026-02-20T02:42:44.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-20T02:44:22.586Z",
-      "event": "bb-session",
-      "session": "dce56612",
-      "url": "http://www.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at-viv"
-    },
-    {
-      "t": "2026-02-20T02:44:25.043Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-02-20T03:55:31.995Z",
+  "lastProcessed": "hells-kitchen-2024/usatoday--david-oliver.json",
+  "log": []
 }
