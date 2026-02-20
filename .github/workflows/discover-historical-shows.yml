@@ -42,6 +42,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -126,6 +131,13 @@ jobs:
           done
 
   # Create issue for historical shows
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from discover-historical-shows'
   create-issue:
     needs: discover-historical
     if: needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
@@ -136,6 +148,11 @@ jobs:
         with:
           ref: main
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Create issue for historical shows
         uses: actions/github-script@v7
         with:

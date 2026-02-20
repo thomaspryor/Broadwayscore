@@ -43,6 +43,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -109,6 +114,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -185,6 +195,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -262,6 +277,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -340,6 +360,13 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-dtli-show-score'
       - name: Auto-trigger text collection if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

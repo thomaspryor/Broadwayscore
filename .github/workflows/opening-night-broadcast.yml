@@ -28,6 +28,11 @@ jobs:
           ref: main
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -189,3 +194,11 @@ jobs:
             fi
             sleep $((10 + RANDOM % 20))
           done
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from opening-night-broadcast'
