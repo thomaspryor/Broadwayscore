@@ -464,6 +464,7 @@ async function sendCriticalAlert(results, history) {
     title: `Data Health Check — Day ${history.consecutiveErrorDays} of Failures`,
     description: `${errors.length} error-level check${errors.length > 1 ? 's' : ''} failing for ${history.consecutiveErrorDays} consecutive days.`,
     severity: 'error',
+    email: true,
     fields: fields.slice(0, 10),
   }).catch(e => console.error('[Discord] Alert failed:', e.message));
 }

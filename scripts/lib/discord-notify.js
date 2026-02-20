@@ -103,6 +103,80 @@ async function sendToWebhook(webhookUrl, payload) {
 }
 
 /**
+ * Send an email alert via Resend (for truly critical issues)
+ * Requires RESEND_API_KEY and OWNER_EMAIL env vars.
+ */
+async function sendEmailAlert({ title, description, severity = 'error', fields = [], url }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const ownerEmail = process.env.OWNER_EMAIL;
+
+  if (!apiKey || !ownerEmail) {
+    console.log('[Email] RESEND_API_KEY or OWNER_EMAIL not set, skipping email alert');
+    return false;
+  }
+
+  const severityLabel = { error: 'CRITICAL', warning: 'WARNING', info: 'INFO' };
+  const fieldsHtml = fields.map(f => `<li><strong>${f.name}:</strong> ${f.value}</li>`).join('\n');
+  const html = `
+    <div style="font-family: system-ui, sans-serif; max-width: 600px;">
+      <h2 style="color: ${severity === 'error' ? '#e74c3c' : severity === 'warning' ? '#f39c12' : '#3498db'}">
+        [${severityLabel[severity] || 'ALERT'}] ${title}
+      </h2>
+      <p>${description}</p>
+      ${fieldsHtml ? `<ul>${fieldsHtml}</ul>` : ''}
+      ${url ? `<p><a href="${url}">View details</a></p>` : ''}
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+      <p style="color: #999; font-size: 12px;">Broadway Scorecard automated alert</p>
+    </div>
+  `;
+
+  return new Promise((resolve) => {
+    try {
+      const data = JSON.stringify({
+        from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
+        to: [ownerEmail],
+        subject: `[${severityLabel[severity] || 'ALERT'}] ${title}`,
+        html,
+      });
+
+      const req = https.request({
+        hostname: 'api.resend.com',
+        path: '/emails',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Length': Buffer.byteLength(data),
+        },
+      }, (res) => {
+        let body = '';
+        res.on('data', (chunk) => body += chunk);
+        res.on('end', () => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            console.log('[Email] Alert email sent successfully');
+            resolve(true);
+          } else {
+            console.error(`[Email] Failed to send: ${res.statusCode} ${body}`);
+            resolve(false);
+          }
+        });
+      });
+
+      req.on('error', (err) => {
+        console.error('[Email] Request error:', err.message);
+        resolve(false);
+      });
+
+      req.write(data);
+      req.end();
+    } catch (err) {
+      console.error('[Email] Error:', err.message);
+      resolve(false);
+    }
+  });
+}
+
+/**
  * Send an alert notification (CI failures, critical issues)
  *
  * @param {Object} options - Alert options
@@ -111,8 +185,9 @@ async function sendToWebhook(webhookUrl, payload) {
  * @param {'error'|'warning'|'info'} options.severity - Severity level
  * @param {Array<{name: string, value: string}>} [options.fields] - Additional fields
  * @param {string} [options.url] - Link to more details
+ * @param {boolean} [options.email] - Also send email alert (for critical issues)
  */
-async function sendAlert({ title, description, severity = 'error', fields = [], url }) {
+async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false }) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_ALERTS;
 
   const embed = {
@@ -137,10 +212,17 @@ async function sendAlert({ title, description, severity = 'error', fields = [], 
     embed.url = url;
   }
 
-  return sendToWebhook(webhookUrl, {
+  const discordResult = await sendToWebhook(webhookUrl, {
     username: 'Broadway Scorecard',
     embeds: [embed],
   });
+
+  // Also send email for critical alerts
+  if (email) {
+    await sendEmailAlert({ title, description, severity, fields, url });
+  }
+
+  return discordResult;
 }
 
 /**
