@@ -11,7 +11,7 @@
 #   ./scripts/setup-local-data.sh           # Setup core data only
 #   ./scripts/setup-local-data.sh --all     # Setup core data + review texts
 
-set -euo pipefail
+set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -20,14 +20,14 @@ DATA_DIR="$PROJECT_DIR/data"
 echo "=== Broadway Scorecard Local Data Setup ==="
 echo ""
 
-# Determine auth method
+# Determine auth method (token takes priority if explicitly set)
 TOKEN="${REVIEW_TEXTS_TOKEN:-}"
-if [ -z "$TOKEN" ] && command -v gh &>/dev/null; then
-  echo "Using GitHub CLI for authentication..."
-  AUTH_METHOD="gh"
-elif [ -n "$TOKEN" ]; then
+if [ -n "$TOKEN" ]; then
   echo "Using REVIEW_TEXTS_TOKEN for authentication..."
   AUTH_METHOD="token"
+elif command -v gh &>/dev/null; then
+  echo "Using GitHub CLI for authentication..."
+  AUTH_METHOD="gh"
 else
   echo "ERROR: No authentication method available."
   echo ""
@@ -47,14 +47,15 @@ TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" EXIT
 
 if [ "$AUTH_METHOD" = "gh" ]; then
-  gh repo clone thomaspryor/broadway-scorecard-data "$TEMP_DIR/core-data" -- --depth 1 2>/dev/null
+  if ! gh repo clone thomaspryor/broadway-scorecard-data "$TEMP_DIR/core-data" -- --depth 1 2>/dev/null; then
+    echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+    exit 1
+  fi
 else
-  git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$TEMP_DIR/core-data" 2>/dev/null
-fi
-
-if [ $? -ne 0 ]; then
-  echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
-  exit 1
+  if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$TEMP_DIR/core-data" 2>/dev/null; then
+    echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+    exit 1
+  fi
 fi
 
 COUNT=0
@@ -80,14 +81,15 @@ if [ "${1:-}" = "--all" ]; then
   mkdir -p "$DATA_DIR/review-texts"
 
   if [ "$AUTH_METHOD" = "gh" ]; then
-    gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1 2>/dev/null
+    if ! gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1 2>/dev/null; then
+      echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
+      exit 1
+    fi
   else
-    git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null
-  fi
-
-  if [ $? -ne 0 ]; then
-    echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
-    exit 1
+    if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
+      echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
+      exit 1
+    fi
   fi
 
   # Copy review text directories (exclude .git)
