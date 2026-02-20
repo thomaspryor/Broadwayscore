@@ -3,7 +3,8 @@
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "chicago-1996/ew--melissa-rose-bernardo.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
@@ -101,11 +102,22 @@
     "on-the-town-2014/newyorker--hilton-als.json",
     "passing-strange-2008/newyorker--hilton-als.json",
     "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "present-laughter-2017/newyorker--hilton-als.json"
+    "present-laughter-2017/newyorker--hilton-als.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "chess-2025/nytimes--elisabeth-vincentelli.json",
+    "mj-2022/variety--charles-isherwood.json",
+    "mj-2022/variety--peter-marks.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/bloomberg-news--jeremy-gerard.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "chicago-1996/ew--melissa-rose-bernardo.json"
+    ],
     "amp": [],
     "browserbase": [],
     "scrapingbee": [
@@ -203,6 +215,6 @@
     ]
   },
   "startTime": "2026-02-20T13:00:43.267Z",
-  "lastProcessed": "present-laughter-2017/newyorker--hilton-als.json",
+  "lastProcessed": "chicago-1996/ew--melissa-rose-bernardo.json",
   "log": []
 }
