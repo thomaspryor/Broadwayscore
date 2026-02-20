@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-02-19T07:47:07.656Z",
-  "consecutiveErrorDays": 1,
+  "lastRun": "2026-02-20T07:44:17.331Z",
+  "consecutiveErrorDays": 2,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,38 +9,38 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "warn",
-      "message": "2d old (warn threshold: 2d)"
+      "status": "pass",
+      "message": "8h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "error",
-      "message": "reviews.json has 16507 more entries than source files"
+      "message": "reviews.json has 16538 more entries than source files"
     },
     {
       "name": "Sync: open show coverage",
@@ -50,12 +50,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "728 shows, 27 open, 16507 reviews (all at or above baseline)"
+      "message": "1997 shows, 27 open, 16538 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 2h ago"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -65,7 +65,7 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 2h ago"
+      "message": "Last success 16h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
@@ -79,13 +79,13 @@
     },
     {
       "name": "Pipeline: test",
-      "status": "warn",
-      "message": "Last success 11d ago (threshold: 2d)"
+      "status": "pass",
+      "message": "Last success 7h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "97.4% scored (16507/16951)"
+      "message": "97.8% scored (16538/16914)"
     },
     {
       "name": "Cookies: expiration",
