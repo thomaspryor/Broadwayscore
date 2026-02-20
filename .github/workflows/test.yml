@@ -58,11 +58,11 @@ jobs:
         run: |
           # Canary: shows.json must exist and be valid after checkout-core-data
           node -e "const d=JSON.parse(require('fs').readFileSync('data/shows.json','utf8'));
-                   if(!d.length) throw new Error('shows.json is empty');
-                   console.log('shows.json: '+d.length+' shows');"
+                   const shows=d.shows||d; if(!shows.length) throw new Error('shows.json is empty');
+                   console.log('shows.json: '+shows.length+' shows');"
           node -e "const d=JSON.parse(require('fs').readFileSync('data/reviews.json','utf8'));
-                   if(!d.length) throw new Error('reviews.json is empty');
-                   console.log('reviews.json: '+d.length+' reviews');"
+                   const reviews=d.reviews||d; if(!reviews.length) throw new Error('reviews.json is empty');
+                   console.log('reviews.json: '+reviews.length+' reviews');"
 
       - name: Guard — no copyrighted content in public repo
         run: |
