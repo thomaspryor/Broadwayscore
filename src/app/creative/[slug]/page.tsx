@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getUnifiedCreativeProfile, getUnifiedCreativeSlugs, getAllUnifiedCreativeProfiles, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { generateBreadcrumbSchema, generateUnifiedCreativePersonSchema, generateUnifiedCreativeFAQSchema, BASE_URL } from '@/lib/seo';
-import { featureFlags } from '@/config/feature-flags';
 import UnifiedCreativeDetailClient from '@/components/creative/UnifiedCreativeDetailClient';
 
 export function generateStaticParams() {
@@ -34,7 +33,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 export default function UnifiedCreativeDetailPage({ params }: { params: { slug: string } }) {
   const profile = getUnifiedCreativeProfile(params.slug);
-  if (!featureFlags.creativePages || !profile) notFound();
+  if (!profile) notFound();
 
   const categoryLabels = profile.categories.map(c => CREATIVE_CATEGORY_CONFIG[c].label);
 
