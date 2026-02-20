@@ -480,6 +480,31 @@ function hasCookiesForUrl(url) {
 }
 
 /**
+ * Build an HTTP Cookie header string for a URL's domain.
+ * Returns "name1=val1; name2=val2" or null if no cookies available.
+ * Used for ScrapingBee forward_headers and direct HTTP fetch with subscriber auth.
+ */
+function buildCookieHeaderForUrl(url) {
+  const domain = hasCookiesForUrl(url);
+  if (!domain) return null;
+
+  const cookies = loadCookiesForDomain(domain);
+  if (!cookies || cookies.length === 0) return null;
+
+  // Filter to cookies matching this domain, build header string
+  const hostname = new URL(url).hostname.replace(/^www\./, '');
+  return cookies
+    .filter(c => c.name && c.value && c.domain)
+    .filter(c => {
+      const cookieDomain = c.domain.replace(/^\./, '');
+      return hostname === cookieDomain || hostname.endsWith('.' + cookieDomain) ||
+             cookieDomain === hostname || cookieDomain.endsWith('.' + hostname);
+    })
+    .map(c => `${c.name}=${c.value}`)
+    .join('; ');
+}
+
+/**
  * Inject cookies into a Playwright browser context.
  * Filters cookies to ensure they have required fields for Playwright's addCookies().
  */
@@ -558,6 +583,7 @@ let state = {
     playwright: [],
     amp: [],
     browserbase: [],
+    directCookies: [],
     scrapingbee: [],
     brightdata: [],
     archiveToday: [],
@@ -2216,7 +2242,14 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
   const proxyType = useStealth ? 'stealth_proxy' : 'premium_proxy';
   const credits = useStealth ? 75 : 10;
-  console.log(`    ScrapingBee (${proxyType}, ${credits} credits)...`);
+
+  // Forward subscriber cookies via ScrapingBee's header forwarding
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (cookieHeader) {
+    console.log(`    ScrapingBee (${proxyType}, ${credits} credits, +cookies ${cookieHeader.length} chars)...`);
+  } else {
+    console.log(`    ScrapingBee (${proxyType}, ${credits} credits)...`);
+  }
 
   try {
     const params = {
@@ -2234,10 +2267,23 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       params.premium_proxy = true;
     }
 
-    const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
+    // Forward subscriber cookies to the target site
+    if (cookieHeader) {
+      params.forward_headers = true;
+    }
+
+    // Build request config — add Spb-Cookie header for cookie forwarding
+    const requestConfig = {
       params,
       timeout: CONFIG.apiTimeout,
-    });
+    };
+    if (cookieHeader) {
+      requestConfig.headers = {
+        'Spb-Cookie': cookieHeader,
+      };
+    }
+
+    const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
     stats.scrapingBeeCreditsUsed += credits;
 
@@ -2276,6 +2322,88 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       } else {
         throw new Error(`ScrapingBee error (${status}): ${message}`);
       }
+    }
+    throw error;
+  }
+}
+
+// ============================================================================
+// TIER 1.8: Direct HTTP fetch with subscriber cookies (no proxy, free)
+// ============================================================================
+
+/**
+ * Fetch a URL directly with subscriber cookies — bypasses headless browser detection
+ * because it's a plain HTTP request (no JS fingerprinting). Uses the same approach
+ * as recover-wsj-subscriber.js. Free (no API credits), fast, and avoids the headless
+ * Chrome fingerprinting that defeats Playwright + cookies on sites like New Yorker.
+ */
+async function fetchWithDirectCookies(url) {
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (!cookieHeader) {
+    throw new Error('No cookies available for this domain');
+  }
+
+  console.log(`    Direct HTTP fetch (+cookies, ${cookieHeader.length} chars)...`);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    // Determine referrer based on domain
+    const hostname = new URL(url).hostname;
+    const referrer = `https://${hostname}/`;
+
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Cookie': cookieHeader,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': referrer,
+        'Sec-Ch-Ua': '"Not A(Brand";v="99", "Google Chrome";v="122", "Chromium";v="122"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"macOS"',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'Cache-Control': 'max-age=0',
+      },
+      redirect: 'follow',
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
+
+    if (resp.status === 403 || resp.status === 401) {
+      throw new Error(`Auth rejected (HTTP ${resp.status}) — cookies may be expired`);
+    }
+    if (resp.status === 404) {
+      throw new Error(`404 Not Found`);
+    }
+    if (resp.status !== 200) {
+      throw new Error(`HTTP ${resp.status}`);
+    }
+
+    const html = await resp.text();
+
+    if (isBlocked(html)) {
+      throw new Error('Paywall/block detected in direct fetch response');
+    }
+
+    const text = extractTextFromHtml(html, url);
+
+    if (text && text.length > 500) {
+      return { html, text };
+    }
+
+    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error.name === 'AbortError') {
+      throw new Error('Direct fetch timed out (30s)');
     }
     throw error;
   }
@@ -3208,7 +3336,32 @@ function buildTierChain(ctx, review) {
       onFailure: (error) => { ctx.anyTierFailed = true; },
     },
 
-    // TIER 2: ScrapingBee API
+    // TIER 1.8: Direct HTTP fetch with subscriber cookies (free, no proxy)
+    // Bypasses headless browser fingerprinting that defeats Playwright/Browserbase.
+    // Plain HTTP request with cookies + realistic headers — sites can't detect headless Chrome.
+    {
+      id: 'direct-cookies',
+      tierNumber: 1.8,
+      method: 'direct-cookies',
+      label: 'Direct HTTP fetch with cookies',
+      shouldRun: () => {
+        // Only run if we have cookies for this domain AND previous tiers failed
+        if (!ctx.hasCookiesLoaded) return false;
+        return ctx.anyTierFailed || ctx.sawPaywall || ctx.sawCaptcha;
+      },
+      execute: (url) => fetchWithDirectCookies(url),
+      onSuccess: (review, result) => {
+        // Track in scrapingbee breakdown since we don't have a separate counter
+        // (adds zero cost — this is a free tier)
+      },
+      onFailure: (error) => {
+        ctx.anyTierFailed = true;
+        const msg = error.message || '';
+        if (msg.includes('expired')) ctx._cookiesExpired = true;
+      },
+    },
+
+    // TIER 2: ScrapingBee API (now with cookie forwarding for paywalled sites)
     {
       id: 'scrapingbee',
       tierNumber: 2,
@@ -4302,7 +4455,7 @@ function loadState() {
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
+          state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
           for (const key of ['playwright', 'amp', 'browserbase', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
             if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
@@ -4338,6 +4491,7 @@ function saveState() {
       playwright: state.tierBreakdown?.playwright?.length || 0,
       amp: state.tierBreakdown?.amp?.length || 0,
       browserbase: state.tierBreakdown?.browserbase?.length || 0,
+      directCookies: state.tierBreakdown?.directCookies?.length || 0,
       scrapingbee: state.tierBreakdown?.scrapingbee?.length || 0,
       brightdata: state.tierBreakdown?.brightdata?.length || 0,
       archiveToday: state.tierBreakdown?.archiveToday?.length || 0,
@@ -5209,9 +5363,10 @@ async function processReview(review) {
       }
     }
 
-    // Track tier breakdown
-    if (result.method && state.tierBreakdown[result.method]) {
-      state.tierBreakdown[result.method].push(review.reviewId);
+    // Track tier breakdown (normalize hyphenated method names to camelCase keys)
+    const methodKey = result.method === 'direct-cookies' ? 'directCookies' : result.method;
+    if (methodKey && state.tierBreakdown[methodKey]) {
+      state.tierBreakdown[methodKey].push(review.reviewId);
     }
 
     // Clear any previous failure tracking on success
@@ -5297,8 +5452,9 @@ async function processReview(review) {
           const validation = validateReviewText(retryResult.text, review);
           updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
 
-          if (retryResult.method && state.tierBreakdown[retryResult.method]) {
-            state.tierBreakdown[retryResult.method].push(review.reviewId);
+          const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;
+          if (retryMethodKey && state.tierBreakdown[retryMethodKey]) {
+            state.tierBreakdown[retryMethodKey].push(review.reviewId);
           }
 
           return { success: true, method: retryResult.method + '+url-discovery', validation };
@@ -5439,6 +5595,7 @@ function generateReport() {
       playwright: state.tierBreakdown.playwright?.length || 0,
       amp: state.tierBreakdown.amp?.length || 0,
       browserbase: state.tierBreakdown.browserbase?.length || 0,
+      directCookies: state.tierBreakdown.directCookies?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee?.length || 0,
       brightdata: state.tierBreakdown.brightdata?.length || 0,
       archiveToday: state.tierBreakdown.archiveToday?.length || 0,
@@ -5490,6 +5647,7 @@ function generateReport() {
   console.log(`║ ├─ Tier 1 (Playwright):  ${String(report.tierBreakdown.playwright).padStart(31)} ║`);
   console.log(`║ ├─ Tier 1.1 (AMP):       ${String(report.tierBreakdown.amp).padStart(31)} ║`);
   console.log(`║ ├─ Tier 1.5 (Browserbase):${String(report.tierBreakdown.browserbase).padStart(30)} ║`);
+  console.log(`║ ├─ Tier 1.8 (Direct+Cook):${String(report.tierBreakdown.directCookies).padStart(30)} ║`);
   console.log(`║ ├─ Tier 2 (ScrapingBee): ${String(report.tierBreakdown.scrapingbee).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3 (Bright Data): ${String(report.tierBreakdown.brightdata).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3.6 (archive.ph):${String(report.tierBreakdown.archiveToday).padStart(31)} ║`);
