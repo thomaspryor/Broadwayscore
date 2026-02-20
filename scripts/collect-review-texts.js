@@ -2804,18 +2804,19 @@ async function discoverCorrectUrl(review) {
   const domain = CONFIG.outletDomains[outletId];
 
   // Build search query — include year to disambiguate revivals (Our Town 2024 vs 2009)
-  // NOTE: We intentionally omit the critic name from the query. Fabricated reviews
-  // (source: "web-search") often have wrong critic attributions, and including a
-  // non-existent critic name kills the search (0 results). The goal is to find
-  // the real review URL at the outlet, not to verify the critic.
+  // Include critic name as an unquoted boost when available and trustworthy.
+  // Web-search sourced reviews often have fabricated critic names — skip those.
   const yearClause = showYear ? ` ${showYear}` : '';
+  const criticName = (review.criticName && review.criticName !== 'Unknown'
+    && review.source !== 'web-search') ? review.criticName : '';
+  const criticClause = criticName ? ` ${criticName}` : '';
+  const outletName = review.outlet || outletId;
+
   let query;
   if (domain) {
-    query = `site:${domain} "${showTitle}" Broadway review${yearClause}`;
+    query = `site:${domain} "${showTitle}" Broadway review${yearClause}${criticClause}`;
   } else {
-    // No known domain - use outlet name
-    const outletName = review.outlet || outletId;
-    query = `"${showTitle}" Broadway review${yearClause} "${outletName}"`;
+    query = `"${showTitle}" Broadway review${yearClause} "${outletName}"${criticClause}`;
   }
 
   console.log(`  [URL Discovery] Searching: ${query}`);
@@ -2837,8 +2838,28 @@ async function discoverCorrectUrl(review) {
     }
 
     if (!results.length) {
-      console.log(`    ✗ No search results found (via ${provider})`);
-      return null;
+      // Fallback: broader search without site: restriction, using outlet + critic name
+      // This catches articles Google didn't index under the domain (URL changes, redirects)
+      if (criticName && domain) {
+        stats.urlDiscoveryAttempts++; // counts against per-run cap
+        const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" Broadway review${yearClause}`;
+        console.log(`    Fallback search (no site:): ${fallbackQuery}`);
+        results = await _serpViaScrapingBee(fallbackQuery);
+        provider = 'scrapingbee-fallback';
+        if (!results) {
+          results = await _serpViaBrightData(fallbackQuery);
+          provider = 'brightdata-fallback';
+        }
+        if (results === null) {
+          console.log(`    ✗ All SERP providers unavailable`);
+          return '__SERP_UNAVAILABLE__';
+        }
+      }
+
+      if (!results || !results.length) {
+        console.log(`    ✗ No search results found (via ${provider})`);
+        return null;
+      }
     }
 
     // Extract the old URL's domain for comparison
