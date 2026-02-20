@@ -3,7 +3,7 @@
  * Universal Web Scraper with Fallback
  *
  * Tries multiple scraping services in order:
- * 1. Bright Data (primary - returns markdown)
+ * 1. Bright Data (primary - returns HTML via Web Unlocker)
  * 2. ScrapingBee (fallback - returns HTML)
  * 3. Playwright (last resort - requires browser)
  *
@@ -13,6 +13,7 @@
  *
  * Environment variables:
  *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
+ *   BRIGHTDATA_ZONE - Bright Data zone name (default: mcp_unlocker)
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
@@ -20,12 +21,13 @@ const https = require('https');
 const { chromium } = require('playwright');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 let playwright = null; // Lazy load only if needed
 
 /**
- * Fetch page using Bright Data API (markdown output)
+ * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
 async function fetchWithBrightData(url) {
   if (!BRIGHTDATA_TOKEN) {
@@ -35,7 +37,7 @@ async function fetchWithBrightData(url) {
   try {
     const apiUrl = 'https://api.brightdata.com/request';
     const body = JSON.stringify({
-      zone: 'scraping_browser',
+      zone: BRIGHTDATA_ZONE,
       url: url,
       format: 'raw'
     });
