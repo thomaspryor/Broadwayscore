@@ -714,6 +714,7 @@ export function generateCreativePersonSchema(profile: {
   slug: string;
   category: string;
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   shows: Array<{ title: string; slug: string }>;
 }, routePath: string, jobTitle: string, verbPast?: string) {
@@ -724,14 +725,14 @@ export function generateCreativePersonSchema(profile: {
     url: `${BASE_URL}/${routePath}/${profile.slug}`,
     jobTitle,
     knowsAbout: 'Broadway Theater',
-    description: `${profile.name} has ${verbPast ? verbPast + ' ' : ''}${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
-    ...(profile.avgScore !== null && {
+    description: `${profile.name} has ${verbPast ? verbPast + ' ' : ''}${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    ...(profile.avgScore !== null && profile.scoredShowCount >= 3 && {
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: toFiveStarScale(profile.avgScore),
         bestRating: 5,
         worstRating: 1,
-        ratingCount: profile.showCount,
+        ratingCount: profile.scoredShowCount,
       },
     }),
   };
@@ -742,6 +743,7 @@ export function generateCreativeFAQSchema(profile: {
   name: string;
   category: string;
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   highScore: number | null;
   openShowCount: number;
@@ -751,7 +753,7 @@ export function generateCreativeFAQSchema(profile: {
 
   faqs.push({
     question: `How many Broadway shows has ${profile.name} ${verbPast}?`,
-    answer: `${profile.name} has ${verbPast} ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    answer: `${profile.name} has ${verbPast} ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
   });
 
   if (profile.highScore !== null) {
@@ -793,6 +795,7 @@ export function generateUnifiedCreativePersonSchema(profile: {
   name: string;
   slug: string;
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   shows: Array<{ title: string; slug: string }>;
 }, categoryLabels: string[]) {
@@ -803,14 +806,14 @@ export function generateUnifiedCreativePersonSchema(profile: {
     url: `${BASE_URL}/creative/${profile.slug}`,
     jobTitle: categoryLabels,
     knowsAbout: 'Broadway Theater',
-    description: `${profile.name} is a Broadway ${categoryLabels.join(', ').toLowerCase()} with ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` and an average critic score of ${profile.avgScore}/100` : ''}.`,
-    ...(profile.avgScore !== null && {
+    description: `${profile.name} is a Broadway ${categoryLabels.join(', ').toLowerCase()} with ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? ` and an average critic score of ${profile.avgScore}/100` : ''}.`,
+    ...(profile.avgScore !== null && profile.scoredShowCount >= 3 && {
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: toFiveStarScale(profile.avgScore),
         bestRating: 5,
         worstRating: 1,
-        ratingCount: profile.showCount,
+        ratingCount: profile.scoredShowCount,
       },
     }),
   };
@@ -820,6 +823,7 @@ export function generateUnifiedCreativePersonSchema(profile: {
 export function generateUnifiedCreativeFAQSchema(profile: {
   name: string;
   showCount: number;
+  scoredShowCount: number;
   avgScore: number | null;
   highScore: number | null;
   openShowCount: number;
@@ -830,7 +834,7 @@ export function generateUnifiedCreativeFAQSchema(profile: {
 
   faqs.push({
     question: `How many Broadway shows has ${profile.name} worked on?`,
-    answer: `${profile.name} has worked on ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''} as a ${rolesText}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    answer: `${profile.name} has worked on ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''} as a ${rolesText}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
   });
 
   if (profile.highScore !== null) {
