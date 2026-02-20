@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, ToggleBar } from '@/components/show-cards';
+import { ScoreBadge, ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type StatusFilter = 'current' | 'all' | 'dark';
@@ -70,12 +70,14 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
       </div>
 
       {/* Past show count */}
-      <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
+      <div className="w-10 sm:w-16 flex items-center justify-center flex-shrink-0">
         <p className="text-sm font-bold text-white">{theater.showCount}</p>
       </div>
 
       {/* Avg Critic Score */}
-      <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
+      <div className="w-10 sm:w-14 flex items-center justify-center flex-shrink-0">
+        <ScoreBadge score={theater.avgScore ?? undefined} size="sm" />
+      </div>
     </Link>
   );
 }
@@ -134,6 +136,7 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         <p className="text-gray-400">
           {theaters.length} theaters · {playingCount} with shows currently running
         </p>
+        <p className="text-xs text-gray-500 mt-1">Past show counts cover 1970 to present.</p>
       </div>
 
       {/* Search */}
@@ -151,8 +154,8 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         />
       </div>
 
-      {/* Status & Sort — matching homepage pattern */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
+      {/* Status filter */}
+      <div className="mb-4 sm:mb-6 text-sm">
         <ToggleBar
           label="STATUS:"
           options={[
@@ -164,33 +167,15 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
           onChange={setStatusFilter}
           ariaLabel="Filter by theater status"
         />
-        <ToggleBar
-          label="SORT:"
-          options={[
-            { value: 'shows' as SortMode, label: 'MOST SHOWS' },
-            { value: 'capacity' as SortMode, label: 'CAPACITY' },
-            { value: 'score' as SortMode, label: 'SCORE' },
-            { value: 'alpha' as SortMode, label: 'A-Z' },
-          ]}
-          value={sortMode}
-          onChange={setSortMode}
-          ariaLabel="Sort theaters"
-        />
       </div>
 
-      {/* Column headers */}
-      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2">
+      {/* Column headers — also serve as sort controls */}
+      <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 mb-2" role="group" aria-label="Sort theaters">
         <div className="w-10 flex-shrink-0" />
-        <div className="flex-1 min-w-0" />
-        <div className="w-14 hidden sm:flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Seats</span>
-        </div>
-        <div className="w-10 sm:w-12 flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Past</span>
-        </div>
-        <div className="w-10 flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Score</span>
-        </div>
+        <ColumnHeader label="Theater" active={sortMode === 'alpha'} onClick={() => setSortMode('alpha')} flex align="left" />
+        <ColumnHeader label="Seats" active={sortMode === 'capacity'} onClick={() => setSortMode('capacity')} className="w-14 hidden sm:flex items-center justify-center flex-shrink-0" />
+        <ColumnHeader label="Past Shows" mobileLabel="Shows" active={sortMode === 'shows'} onClick={() => setSortMode('shows')} className="w-10 sm:w-16 flex-shrink-0" />
+        <ColumnHeader label="Avg Score" mobileLabel="Score" active={sortMode === 'score'} onClick={() => setSortMode('score')} className="w-10 sm:w-14 flex-shrink-0" />
       </div>
 
       {/* Theater List */}

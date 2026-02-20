@@ -12,40 +12,6 @@ interface TheaterTipsCardProps {
 // Icons
 // ============================================
 
-function SeatIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 19h16M5 7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V7zm2 0v8h10V7H7z" />
-    </svg>
-  );
-}
-
-function ParkingIcon() {
-  return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth={2} />
-      <text x="12" y="17" textAnchor="middle" fill="currentColor" fontSize="14" fontWeight="bold" fontFamily="system-ui">P</text>
-    </svg>
-  );
-}
-
-function DiningIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v6c0 1.1.9 2 2 2h1v10h2V11h1c1.1 0 2-.9 2-2V3M8 3v4M5 3v4M19 3c0 0-2 1-2 5v3h2v10h2V11h2V8c0-4-2-5-2-5" />
-    </svg>
-  );
-}
-
-function DirectionsIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  );
-}
-
 function CheckIcon() {
   return (
     <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -71,33 +37,10 @@ function WalkIcon() {
 }
 
 // ============================================
-// Tab definitions
+// Section renderers
 // ============================================
 
-type TabKey = 'seating' | 'parking' | 'dining' | 'logistics';
-
-// Explicit class maps — Tailwind JIT can't detect dynamic class construction
-const TAB_ACTIVE_CLASSES: Record<TabKey, string> = {
-  seating: 'bg-purple-500/15 text-purple-400 border-purple-500/20',
-  parking: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
-  dining: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  logistics: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-};
-
-const ALL_TABS: TabKey[] = ['seating', 'parking', 'dining', 'logistics'];
-
-const TAB_CONFIG: Record<TabKey, { label: string; icon: React.ReactNode }> = {
-  seating: { label: 'Seating', icon: <SeatIcon /> },
-  parking: { label: 'Parking', icon: <ParkingIcon /> },
-  dining: { label: 'Dining', icon: <DiningIcon /> },
-  logistics: { label: 'Getting There', icon: <DirectionsIcon /> },
-};
-
-// ============================================
-// Sub-components
-// ============================================
-
-function SeatingTab({ seating }: { seating: NonNullable<TheaterStructuredTips['seating']> }) {
+function SeatingSection({ seating }: { seating: NonNullable<TheaterStructuredTips['seating']> }) {
   return (
     <div className="space-y-3">
       {seating.bestSeats && (
@@ -133,7 +76,7 @@ function SeatingTab({ seating }: { seating: NonNullable<TheaterStructuredTips['s
   );
 }
 
-function ParkingTab({ parking }: { parking: NonNullable<TheaterStructuredTips['parking']> }) {
+function ParkingSection({ parking }: { parking: NonNullable<TheaterStructuredTips['parking']> }) {
   return (
     <div className="space-y-3">
       {parking.nearestGarages && parking.nearestGarages.length > 0 && (
@@ -163,7 +106,7 @@ function ParkingTab({ parking }: { parking: NonNullable<TheaterStructuredTips['p
   );
 }
 
-function DiningTab({ dining }: { dining: NonNullable<TheaterStructuredTips['dining']> }) {
+function DiningSection({ dining }: { dining: NonNullable<TheaterStructuredTips['dining']> }) {
   const sections: { key: keyof typeof dining; label: string; labelClass: string }[] = [
     { key: 'preShow', label: 'Pre-Show', labelClass: 'text-amber-400' },
     { key: 'postShow', label: 'Post-Show', labelClass: 'text-purple-400' },
@@ -205,7 +148,7 @@ function DiningTab({ dining }: { dining: NonNullable<TheaterStructuredTips['dini
   );
 }
 
-function LogisticsTab({ logistics }: { logistics: NonNullable<TheaterStructuredTips['logistics']> }) {
+function LogisticsSection({ logistics }: { logistics: NonNullable<TheaterStructuredTips['logistics']> }) {
   const items: { label: string; value: string; labelClass: string }[] = [
     logistics.nearestSubway ? { label: 'Nearest Subway', value: logistics.nearestSubway, labelClass: 'text-emerald-400' } : null,
     logistics.entrance ? { label: 'Entrance', value: logistics.entrance, labelClass: 'text-blue-400' } : null,
@@ -225,25 +168,50 @@ function LogisticsTab({ logistics }: { logistics: NonNullable<TheaterStructuredT
   );
 }
 
+// Section header with icon and color
+const SECTION_CONFIG = {
+  seating: { label: 'Seating', color: 'text-purple-400', icon: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 19h16M5 7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V7zm2 0v8h10V7H7z" />
+    </svg>
+  )},
+  parking: { label: 'Parking', color: 'text-blue-400', icon: (
+    <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth={2} />
+      <text x="12" y="17" textAnchor="middle" fill="currentColor" fontSize="14" fontWeight="bold" fontFamily="system-ui">P</text>
+    </svg>
+  )},
+  dining: { label: 'Dining', color: 'text-amber-400', icon: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v6c0 1.1.9 2 2 2h1v10h2V11h1c1.1 0 2-.9 2-2V3M8 3v4M5 3v4M19 3c0 0-2 1-2 5v3h2v10h2V11h2V8c0-4-2-5-2-5" />
+    </svg>
+  )},
+  logistics: { label: 'Getting There', color: 'text-emerald-400', icon: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  )},
+} as const;
+
+type SectionKey = keyof typeof SECTION_CONFIG;
+
 // ============================================
 // Main component
 // ============================================
 
 export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardProps) {
-  // Determine which tabs have content
-  const tabsWithData = new Set(ALL_TABS.filter(key => {
-    if (key === 'seating') return !!tips.seating;
-    if (key === 'parking') return !!tips.parking;
-    if (key === 'dining') return !!tips.dining;
-    if (key === 'logistics') return !!tips.logistics;
-    return false;
-  }));
+  const [expanded, setExpanded] = useState(false);
 
-  const firstAvailable = ALL_TABS.find(k => tabsWithData.has(k)) || 'seating';
-  const [activeTab, setActiveTab] = useState<TabKey>(firstAvailable);
+  // Build list of sections that have data
+  const sections: SectionKey[] = [];
+  if (tips.seating) sections.push('seating');
+  if (tips.parking) sections.push('parking');
+  if (tips.dining) sections.push('dining');
+  if (tips.logistics) sections.push('logistics');
 
   // If no structured tips at all, show fallback
-  if (tabsWithData.size === 0) {
+  if (sections.length === 0) {
     if (fallbackTips) {
       return (
         <div className="card p-4 mb-4 border border-white/5">
@@ -254,51 +222,42 @@ export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardP
     return null;
   }
 
+  // Always show first section; rest behind "Show more"
+  const visibleSections = expanded ? sections : sections.slice(0, 1);
+  const hiddenCount = sections.length - 1;
+
+  function renderSection(key: SectionKey) {
+    const config = SECTION_CONFIG[key];
+    return (
+      <div key={key}>
+        <div className={`flex items-center gap-1.5 mb-2 ${config.color}`}>
+          {config.icon}
+          <p className="text-xs font-semibold uppercase tracking-wider">{config.label}</p>
+        </div>
+        {key === 'seating' && tips.seating && <SeatingSection seating={tips.seating} />}
+        {key === 'parking' && tips.parking && <ParkingSection parking={tips.parking} />}
+        {key === 'dining' && tips.dining && <DiningSection dining={tips.dining} />}
+        {key === 'logistics' && tips.logistics && <LogisticsSection logistics={tips.logistics} />}
+      </div>
+    );
+  }
+
   return (
     <section className="card p-4 sm:p-5 mb-4" aria-labelledby="theater-tips-heading">
       <h3 id="theater-tips-heading" className="text-base font-bold text-white mb-3">Theater Tips</h3>
 
-      {/* Tab bar */}
-      <div className="flex gap-1 mb-4 overflow-x-auto -mx-1 px-1" role="tablist" aria-label="Theater tips sections">
-        {ALL_TABS.map(key => {
-          const config = TAB_CONFIG[key];
-          const isActive = activeTab === key;
-          const hasData = tabsWithData.has(key);
-          return (
-            <button
-              key={key}
-              id={`tab-${key}`}
-              role="tab"
-              aria-selected={isActive}
-              aria-controls={`tips-panel-${key}`}
-              aria-disabled={!hasData || undefined}
-              onClick={() => hasData && setActiveTab(key)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border ${
-                !hasData
-                  ? 'text-gray-600 border-transparent cursor-default opacity-50'
-                  : isActive
-                    ? TAB_ACTIVE_CLASSES[key]
-                    : 'text-gray-500 hover:text-gray-300 border-transparent'
-              }`}
-            >
-              {config.icon}
-              {config.label}
-            </button>
-          );
-        })}
+      <div className="space-y-5">
+        {visibleSections.map(renderSection)}
       </div>
 
-      {/* Tab panels */}
-      <div
-        id={`tips-panel-${activeTab}`}
-        role="tabpanel"
-        aria-labelledby={`tab-${activeTab}`}
-      >
-        {activeTab === 'seating' && tips.seating && <SeatingTab seating={tips.seating} />}
-        {activeTab === 'parking' && tips.parking && <ParkingTab parking={tips.parking} />}
-        {activeTab === 'dining' && tips.dining && <DiningTab dining={tips.dining} />}
-        {activeTab === 'logistics' && tips.logistics && <LogisticsTab logistics={tips.logistics} />}
-      </div>
+      {hiddenCount > 0 && !expanded && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="mt-4 w-full py-2.5 text-sm text-brand hover:text-white border border-brand/30 hover:border-brand/60 hover:bg-brand/10 rounded-lg transition-colors font-medium"
+        >
+          More Tips: {sections.slice(1).map(k => SECTION_CONFIG[k].label).join(', ')}
+        </button>
+      )}
     </section>
   );
 }

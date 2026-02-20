@@ -1,19 +1,19 @@
-# Data Integrity Report - 2026-02-19
+# Data Integrity Report - 2026-02-20
 
 ## Summary
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 23923 | 23923 | - |
-| Unknown Outlets | 35 | 35 | - |
-| Duplicates | 7 | 7 | - |
-| Sync Delta | 7367 | 7366 | +1 |
+| Total Reviews | 24156 | 23923 | +233 |
+| Unknown Outlets | 32 | 35 | -3 |
+| Duplicates | 0 | 7 | -7 |
+| Sync Delta | 7677 | 7367 | +310 |
 
 ## Issues Found
 
 ### 🔴 unknown_outlets
 
-35 reviews have unknown outlets
+32 reviews have unknown outlets
 
 **Examples:**
 - `data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json` (outletId: is-intense-in-a-way-ive-never-seen-on-broadway) (outlet: is-intense-in-a-way-ive-never-seen-on-broadway)
@@ -22,27 +22,15 @@
 - `data/review-texts/a-night-with-janis-joplin-2013/unknown--unknown.json` (outletId: unknown) (outlet: unknown)
 - `data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json` (outletId: its-a-brave-writer-who-would-contrive-this-show) (outlet: its-a-brave-writer-who-would-contrive-this-show)
 
-### 🟡 duplicates
-
-7 duplicate reviews detected
-
-**Examples:**
-- `data/review-texts/1984-2017/newsday--elizabeth-vincentelli.json`
-- `data/review-texts/august-osage-county-2007/nydailynews--unknown.json`
-- `data/review-texts/book-of-mormon-2011/vulture--scott-brown.json`
-- `data/review-texts/buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json`
-- `data/review-texts/fences-2010/hollywood-reporter--unknown.json`
-
 ### 🔴 sync_delta
 
-review-texts (23923) and reviews.json (16556) are out of sync by 7367 reviews
+review-texts (24156) and reviews.json (16479) are out of sync by 7677 reviews
 
 ## Recommendations
 
 - Run `node scripts/audit-outlet-registry.js` to identify and add missing outlets
-- Run `node scripts/audit-review-duplicates.js` to identify duplicate reviews
 - Run `node scripts/rebuild-all-reviews.js` to sync reviews.json with review-texts
 
 ---
 
-*Report generated: 2026-02-19T00:14:52.460Z*
+*Report generated: 2026-02-20T00:11:13.016Z*

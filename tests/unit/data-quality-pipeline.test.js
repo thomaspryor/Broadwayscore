@@ -183,11 +183,18 @@ test('current review-texts pass validation', () => {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const validOutlets = new Set(Object.keys(registry.outlets));
 
-  // Add aliases
+  // Add aliases from _aliasIndex
   if (registry._aliasIndex) {
     Object.keys(registry._aliasIndex).forEach(alias => {
       if (alias !== '_note') validOutlets.add(alias);
     });
+  }
+
+  // Add per-outlet aliases
+  for (const outlet of Object.values(registry.outlets)) {
+    if (outlet.aliases) {
+      outlet.aliases.forEach(alias => validOutlets.add(alias));
+    }
   }
 
   let unknownOutlets = 0;

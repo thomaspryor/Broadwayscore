@@ -4,3 +4,5 @@ export { StatusBadge, FormatPill, ProductionPill, AudienceChip } from './ShowPil
 export { ToggleBar } from './ToggleBar';
 export { ScoreToggle } from './ScoreToggle';
 export { StatGrid } from './StatGrid';
+export { ColumnHeader } from './ColumnHeader';
+export type { ColumnHeaderProps } from './ColumnHeader';

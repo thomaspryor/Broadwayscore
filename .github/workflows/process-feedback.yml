@@ -60,10 +60,31 @@ jobs:
                 break
               fi
               echo "Push attempt $i failed, retrying..."
+              echo "--- Unstaged files before cleanup ---"
+              git status --porcelain 2>/dev/null || true
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              if git pull --rebase -X theirs origin main; then
+                echo "Rebase succeeded, retrying push..."
+              else
+                echo "Rebase failed, aborting..."
+                git rebase --abort 2>/dev/null || true
+              fi
               sleep $((10 + RANDOM % 20))
-              git pull --rebase -X theirs origin main
             done
           fi
+
+      - name: Ensure owner is not watching repo (prevents GitHub notification emails)
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          # Set repo to "not watching" — owner only gets @mentions, not every issue/comment.
+          # All pipeline notifications go via custom emails (Resend), not GitHub.
+          curl -sf -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/subscription" \
+            -d '{"subscribed":false}' > /dev/null 2>&1 || echo "Note: could not update subscription (may need notifications scope)"
 
       - name: Create GitHub Issue for Summary
         if: success() && steps.process.outputs.has_submissions == 'true'
