@@ -49,6 +49,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
 - **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`
 - **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
+- **Note:** Discord notification for new shows removed Feb 20, 2026 (noise reduction)
 
 ## `opening-night-reviews.yml`
 - **Runs:** Daily at 5 AM UTC (midnight EST), or manually
@@ -64,12 +65,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Full opening-night pipeline: discovers reviews via SERP, gathers from aggregators, rebuilds/scores, generates consensus, sends broadcast email to all subscribers via Resend
 - **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → generate consensus → send broadcast → commit
 - **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
-- **Readiness gate:** 12+ scored reviews required before sending
+- **Readiness gate:** 8+ scored reviews required before sending (lowered from 12 on Feb 20, 2026)
+- **Scoring:** Tier-weighted composite (matches website: T1=1.0, T2=0.75, T3=0.45) via outlet-registry.json lookup
 - **Budget gate:** Cap at 95 sends per run (Resend 100/day limit, leaves headroom for per-show follows)
 - **Multi-show coalescing:** If 2+ shows open same night, sends single email with multiple score cards
-- **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored). If interrupted, next cron run picks up where it left off.
+- **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored but `git add --force` in commit step). If interrupted, next cron run picks up where it left off.
+- **Double-send prevention:** `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored. Without `--force`, the file was silently skipped and every cron run thought no broadcast had been sent.
 - **Scripts:** `scripts/discover-opening-night-reviews.js`, `scripts/send-opening-night-broadcast.js`
-- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_TOKEN, FORMSPREE_FOLLOW_FORM_ID
+- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID
 - **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
 - **Related:** `opening-night-reviews.yml` (older, simpler — just triggers gather-reviews). The broadcast workflow is a superset that includes review discovery + scoring + email sending.
 
@@ -406,4 +409,21 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
 - **Tests:** Data validation (duplicates, required fields, dates, status), **text quality audit** (35% full, <40% truncated, <5% unknown), E2E tests (homepage, show pages, navigation, filters, mobile)
 - **Quality thresholds:** Fails if review text quality drops below standards
-- **On Failure:** Auto-creates GitHub issue
+- **On Failure:** Auto-creates GitHub issue (Discord alerts removed Feb 20, 2026)
+
+## `check-secrets-health.yml`
+- **Runs:** Weekly on Mondays at 12 PM UTC (7 AM EST), or manually
+- **Does:** Tests 9 critical service API keys/tokens for validity + balance/quota where available
+- **Services tested:**
+  - Anthropic, OpenAI, Gemini: key validity via `GET /models` (free, no token cost)
+  - OpenRouter: key validity + `limit_remaining` balance (warns <$5, fails <$1)
+  - ScrapingBee: key validity + credit usage (warns >90%, fails >95%)
+  - Private Repo PAT (`REVIEW_TEXTS_TOKEN`): repo access
+  - Vercel: token validity via `GET /v2/user`
+  - Sentry: token validity via project API
+  - Resend: token validity via `GET /domains`
+- **All checks run in parallel** via `Promise.all()` for speed
+- **On failure:** Sends Discord alert + email to owner (`email: true`)
+- **Script:** `scripts/check-secrets-health.js`
+- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
+- **Manual trigger:** `gh workflow run "Check Secrets Health"`

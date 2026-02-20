@@ -3,7 +3,7 @@
  * send-opening-night-broadcast.js
  *
  * Broadcasts opening-night emails to ALL general subscribers when a show
- * opens on Broadway and has 12+ scored reviews.
+ * opens on Broadway and has 8+ scored reviews.
  *
  * Reads shows.json, reviews.json, critic-consensus.json, subscribers.json,
  * and opening-night-sent.json. Sends via Resend.
@@ -33,9 +33,13 @@ const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
 const SUBSCRIBERS_PATH = path.join(DATA_DIR, 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 
+const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
-const MIN_REVIEWS = 12;
+const MIN_REVIEWS = 8;
 const BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Resend 100/day)
+
+// Tier weights — must match src/config/scoring.ts
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
 
 function loadJSON(filePath) {
   try {
@@ -164,6 +168,15 @@ async function main() {
     process.exit(0);
   }
 
+  // Load outlet registry for tier-weighted scoring
+  const outletRegistry = loadJSON(OUTLET_REGISTRY_PATH) || {};
+  const outlets = outletRegistry.outlets || outletRegistry;
+
+  function getOutletTier(outletId) {
+    const entry = outlets[outletId];
+    return (entry && entry.tier) || 3; // Default to Tier 3
+  }
+
   // Build show data for email template
   const showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
@@ -171,11 +184,19 @@ async function main() {
     const showConsensus = consensusShows[showId] || consensusShows[show.slug];
     const consensusText = showConsensus?.text || showConsensus?.consensus || null;
 
-    // Compute score from reviews
+    // Compute tier-weighted score (matches website's engine.ts)
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
-    const avgScore = showReviews.length > 0
-      ? Math.round(showReviews.reduce((sum, r) => sum + r.assignedScore, 0) / showReviews.length)
-      : null;
+    let avgScore = null;
+    if (showReviews.length > 0) {
+      let weightedSum = 0, totalWeight = 0;
+      for (const r of showReviews) {
+        const tier = getOutletTier(r.outletId);
+        const weight = TIER_WEIGHTS[tier] || 0.45;
+        weightedSum += r.assignedScore * weight;
+        totalWeight += weight;
+      }
+      avgScore = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : null;
+    }
 
     // Show image
     const imagePath = show.images?.thumbnail || show.images?.poster || show.images?.hero;

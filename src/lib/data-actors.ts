@@ -96,6 +96,7 @@ function buildAllProfiles() {
               isRevival: !!(show.tags && show.tags.includes('revival')),
               score: show.criticScore?.score ?? null,
               audienceScore: buzz?.combinedScore ?? null,
+              wasObc: castType === 'obc',
             },
             flags: new Set(member.flags || []),
           });
@@ -105,6 +106,10 @@ function buildAllProfiles() {
           // even if they were originally OBC (they're still performing)
           if (castType === 'current') {
             existing.entry.castType = 'current';
+          }
+          // Preserve wasObc flag if they were originally in the opening night cast
+          if (castType === 'obc') {
+            existing.entry.wasObc = true;
           }
           if (member.flags) {
             for (const flag of member.flags) existing.flags.add(flag);

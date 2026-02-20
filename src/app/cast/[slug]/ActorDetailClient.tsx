@@ -61,12 +61,12 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/5 text-gray-400 border-white/10">
             {show.role}
           </span>
-          {show.castType === 'obc' && !show.isRevival && (
+          {(show.castType === 'obc' || show.wasObc) && !show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30" title="Original Broadway Cast">
               OBC
             </span>
           )}
-          {show.castType === 'obc' && show.isRevival && (
+          {(show.castType === 'obc' || show.wasObc) && show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-white/10 text-gray-400 border-white/15" title="Opening night cast of this revival">
               Opening Cast
             </span>
@@ -167,9 +167,9 @@ export default function ActorDetailClient({
   // Suppress stats for single-show actors (PM feedback: stats look thin)
   const showStats = profile.showCount >= 2;
 
-  // Computed stats
+  // OBC = Original Broadway Cast (non-revival shows only). Revival opening casts don't count.
   const obcCount = useMemo(() =>
-    profile.shows.filter(s => s.castType === 'obc').length,
+    profile.shows.filter(s => (s.castType === 'obc' || s.wasObc) && !s.isRevival).length,
     [profile.shows]
   );
   const musicalCount = useMemo(() =>
@@ -193,7 +193,7 @@ export default function ActorDetailClient({
       ]} />
 
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center gap-4 mb-3">
           {profile.headshot && !imgFailed ? (
             <img
@@ -252,8 +252,8 @@ export default function ActorDetailClient({
 
       {/* Currently Appearing In */}
       {openShows.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold text-white mb-3">
+        <section className="mb-4 sm:mb-6">
+          <h2 className="text-lg font-bold text-white mb-2">
             Currently Appearing In
             <span className="text-sm font-normal text-gray-400 ml-2">({openShows.length})</span>
           </h2>
@@ -267,8 +267,8 @@ export default function ActorDetailClient({
 
       {/* Upcoming */}
       {upcomingShows.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold text-white mb-3">
+        <section className="mb-4 sm:mb-6">
+          <h2 className="text-lg font-bold text-white mb-2">
             Upcoming
             <span className="text-sm font-normal text-gray-400 ml-2">({upcomingShows.length})</span>
           </h2>
@@ -287,7 +287,7 @@ export default function ActorDetailClient({
             Broadway Credits
             <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
           </h2>
-          <p className="text-xs text-gray-500 mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
+          <p className="text-xs text-gray-500 mb-2">Covers productions from 1970. Critic scores available from 2005.</p>
 
           {/* Column headers — clickable sort */}
           {closedShows.length > 1 && (
