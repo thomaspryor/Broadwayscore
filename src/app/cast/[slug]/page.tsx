@@ -45,13 +45,20 @@ export default function ActorDetailPage({ params }: { params: { slug: string } }
   const allProfiles = getAllActorProfiles();
   const rank = allProfiles.findIndex(p => p.slug === profile.slug) + 1;
 
+  // Highest-rated rank: position among actors with avgScore, sorted desc
+  const scoredProfiles = allProfiles.filter(p => p.avgScore !== null);
+  scoredProfiles.sort((a, b) => (b.avgScore ?? 0) - (a.avgScore ?? 0));
+  const highestRatedRank = profile.avgScore !== null
+    ? scoredProfiles.findIndex(p => p.slug === profile.slug) + 1
+    : 0;
+
   return (
     <div className="min-h-screen bg-surface">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, personSchema, faqSchema]) }}
       />
-      <ActorDetailClient profile={profile} rank={rank} />
+      <ActorDetailClient profile={profile} rank={rank} highestRatedRank={highestRatedRank} />
     </div>
   );
 }

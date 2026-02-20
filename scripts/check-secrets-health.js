@@ -1,0 +1,286 @@
+#!/usr/bin/env node
+/**
+ * Weekly Secret & Service Health Check
+ *
+ * Tests all critical API keys and tokens by making minimal free API calls.
+ * Alerts via Discord + email if any service is unreachable or key is invalid.
+ *
+ * Checks:
+ *   1. Anthropic API key (list models)
+ *   2. OpenAI API key (list models)
+ *   3. Gemini API key (list models)
+ *   4. OpenRouter API key (check key info + remaining credits)
+ *   5. ScrapingBee API key (usage endpoint)
+ *   6. Private repo PAT (API call to private repo)
+ *   7. Vercel token (get user info)
+ *   8. Sentry auth token (get project)
+ *   9. Resend API key (list domains)
+ *
+ * Exit code: 0 = all pass, 1 = failures detected
+ */
+
+const https = require('https');
+
+// --- HTTP helpers ---
+
+function httpsGet(url, headers = {}) {
+  return new Promise((resolve) => {
+    const parsed = new URL(url);
+    const options = {
+      hostname: parsed.hostname,
+      path: parsed.pathname + parsed.search,
+      method: 'GET',
+      headers: { ...headers },
+      timeout: 15000,
+    };
+
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', (chunk) => body += chunk);
+      res.on('end', () => resolve({ status: res.statusCode, body, headers: res.headers }));
+    });
+
+    req.on('error', (err) => resolve({ status: 0, body: err.message, headers: {} }));
+    req.on('timeout', () => { req.destroy(); resolve({ status: 0, body: 'timeout', headers: {} }); });
+    req.end();
+  });
+}
+
+// --- Checks ---
+
+async function checkAnthropic() {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { name: 'Anthropic', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet('https://api.anthropic.com/v1/models', {
+    'x-api-key': key,
+    'anthropic-version': '2023-06-01',
+  });
+
+  if (res.status === 200) return { name: 'Anthropic', status: 'pass', message: 'Key valid' };
+  if (res.status === 401) return { name: 'Anthropic', status: 'fail', message: 'Key invalid or revoked' };
+  return { name: 'Anthropic', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkOpenAI() {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return { name: 'OpenAI', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet('https://api.openai.com/v1/models', {
+    'Authorization': `Bearer ${key}`,
+  });
+
+  if (res.status === 200) return { name: 'OpenAI', status: 'pass', message: 'Key valid' };
+  if (res.status === 401) return { name: 'OpenAI', status: 'fail', message: 'Key invalid or revoked' };
+  if (res.status === 429) return { name: 'OpenAI', status: 'warn', message: 'Rate limited or quota exceeded' };
+  return { name: 'OpenAI', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkGemini() {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return { name: 'Gemini', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+
+  if (res.status === 200) return { name: 'Gemini', status: 'pass', message: 'Key valid' };
+  if (res.status === 400 || res.status === 403) return { name: 'Gemini', status: 'fail', message: 'Key invalid or restricted' };
+  return { name: 'Gemini', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkOpenRouter() {
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) return { name: 'OpenRouter', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet('https://openrouter.ai/api/v1/key', {
+    'Authorization': `Bearer ${key}`,
+  });
+
+  if (res.status === 401) return { name: 'OpenRouter', status: 'fail', message: 'Key invalid or revoked' };
+  if (res.status !== 200) return { name: 'OpenRouter', status: 'warn', message: `Unexpected status ${res.status}` };
+
+  try {
+    const data = JSON.parse(res.body);
+    const remaining = data.data?.limit_remaining;
+    const usage = data.data?.usage;
+    const limit = data.data?.limit;
+
+    if (remaining !== null && remaining !== undefined && remaining < 1.0) {
+      return { name: 'OpenRouter', status: 'fail', message: `Credits critically low: $${remaining.toFixed(2)} remaining (used $${usage?.toFixed(2)} of $${limit?.toFixed(2)})` };
+    }
+    if (remaining !== null && remaining !== undefined && remaining < 5.0) {
+      return { name: 'OpenRouter', status: 'warn', message: `Credits low: $${remaining.toFixed(2)} remaining` };
+    }
+    const msg = remaining !== null && remaining !== undefined
+      ? `Key valid ($${remaining.toFixed(2)} remaining)`
+      : `Key valid (no limit set, $${(usage || 0).toFixed(2)} used)`;
+    return { name: 'OpenRouter', status: 'pass', message: msg };
+  } catch {
+    return { name: 'OpenRouter', status: 'pass', message: 'Key valid (could not parse balance)' };
+  }
+}
+
+async function checkScrapingBee() {
+  const key = process.env.SCRAPINGBEE_API_KEY;
+  if (!key) return { name: 'ScrapingBee', status: 'skip', message: 'Key not set' };
+
+  // ScrapingBee usage endpoint
+  const res = await httpsGet(`https://app.scrapingbee.com/api/v1/usage?api_key=${key}`);
+
+  if (res.status === 200) {
+    try {
+      const data = JSON.parse(res.body);
+      const used = data.used_api_credit || 0;
+      const max = data.max_api_credit || 0;
+      const remaining = max - used;
+      const pctUsed = max > 0 ? Math.round((used / max) * 100) : 0;
+
+      if (remaining <= 0) return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used)` };
+      if (pctUsed >= 90) return { name: 'ScrapingBee', status: 'warn', message: `${pctUsed}% credits used (${remaining} remaining)` };
+      return { name: 'ScrapingBee', status: 'pass', message: `${remaining} credits remaining (${pctUsed}% used)` };
+    } catch {
+      return { name: 'ScrapingBee', status: 'pass', message: 'Key valid (could not parse usage)' };
+    }
+  }
+  if (res.status === 401 || res.status === 403) return { name: 'ScrapingBee', status: 'fail', message: 'Key invalid' };
+  return { name: 'ScrapingBee', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkPrivateRepoPAT() {
+  const token = process.env.REVIEW_TEXTS_TOKEN;
+  if (!token) return { name: 'Private Repo PAT', status: 'skip', message: 'Token not set' };
+
+  const res = await httpsGet('https://api.github.com/repos/thomaspryor/broadway-review-texts', {
+    'Authorization': `token ${token}`,
+    'User-Agent': 'broadway-scorecard-health-check',
+    'Accept': 'application/vnd.github+json',
+  });
+
+  if (res.status === 200) return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, repo accessible' };
+  if (res.status === 401) return { name: 'Private Repo PAT', status: 'fail', message: 'Token invalid or revoked — ALL collection workflows will fail' };
+  if (res.status === 404) return { name: 'Private Repo PAT', status: 'fail', message: 'Repo not found or token lacks repo scope' };
+  return { name: 'Private Repo PAT', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkVercel() {
+  const token = process.env.VERCEL_TOKEN;
+  if (!token) return { name: 'Vercel', status: 'skip', message: 'Token not set' };
+
+  const res = await httpsGet('https://api.vercel.com/v2/user', {
+    'Authorization': `Bearer ${token}`,
+  });
+
+  if (res.status === 200) return { name: 'Vercel', status: 'pass', message: 'Token valid' };
+  if (res.status === 401 || res.status === 403) return { name: 'Vercel', status: 'fail', message: 'Token invalid or revoked — deploys will fail' };
+  return { name: 'Vercel', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkSentry() {
+  const token = process.env.SENTRY_AUTH_TOKEN;
+  if (!token) return { name: 'Sentry', status: 'skip', message: 'Token not set' };
+
+  const res = await httpsGet('https://sentry.io/api/0/projects/broadway-scorecard/broadway-scorecard/', {
+    'Authorization': `Bearer ${token}`,
+  });
+
+  if (res.status === 200) return { name: 'Sentry', status: 'pass', message: 'Token valid' };
+  if (res.status === 401) return { name: 'Sentry', status: 'fail', message: 'Token invalid or expired' };
+  return { name: 'Sentry', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { name: 'Resend', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet('https://api.resend.com/domains', {
+    'Authorization': `Bearer ${key}`,
+  });
+
+  if (res.status === 200) return { name: 'Resend', status: 'pass', message: 'Key valid' };
+  if (res.status === 401) return { name: 'Resend', status: 'fail', message: 'Key invalid — email sending will fail' };
+  return { name: 'Resend', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+// --- Main ---
+
+async function main() {
+  console.log('=== Weekly Secret & Service Health Check ===\n');
+
+  const checks = [
+    checkAnthropic,
+    checkOpenAI,
+    checkGemini,
+    checkOpenRouter,
+    checkScrapingBee,
+    checkPrivateRepoPAT,
+    checkVercel,
+    checkSentry,
+    checkResend,
+  ];
+
+  // Run all checks in parallel
+  const results = await Promise.all(checks.map(fn => fn().catch(err => ({
+    name: fn.name.replace('check', ''),
+    status: 'warn',
+    message: `Check threw error: ${err.message}`,
+  }))));
+
+  // Print results
+  const icons = { pass: '\u2705', fail: '\u274C', warn: '\u26A0\uFE0F', skip: '\u23ED\uFE0F' };
+  for (const r of results) {
+    console.log(`${icons[r.status] || '?'} ${r.name}: ${r.message}`);
+  }
+
+  const failures = results.filter(r => r.status === 'fail');
+  const warnings = results.filter(r => r.status === 'warn');
+  const passed = results.filter(r => r.status === 'pass');
+
+  console.log(`\n--- Summary: ${passed.length} pass, ${warnings.length} warn, ${failures.length} fail ---\n`);
+
+  // Send alert if any failures
+  if (failures.length > 0) {
+    const { sendAlert } = require('./lib/discord-notify');
+
+    const fields = failures.map(f => ({
+      name: f.name,
+      value: f.message,
+      inline: false,
+    }));
+
+    if (warnings.length > 0) {
+      fields.push({
+        name: `${warnings.length} Warning(s)`,
+        value: warnings.map(w => `${w.name}: ${w.message}`).join('\n'),
+        inline: false,
+      });
+    }
+
+    await sendAlert({
+      title: `Secret Health Check — ${failures.length} Failed`,
+      description: `${failures.length} critical service${failures.length > 1 ? 's' : ''} ${failures.length > 1 ? 'are' : 'is'} down or has expired credentials. Immediate action required.`,
+      severity: 'error',
+      email: true,
+      fields: fields.slice(0, 10),
+    }).catch(e => console.error('[Alert] Failed to send:', e.message));
+
+    process.exit(1);
+  }
+
+  // Send warning-only alert (Discord only, no email)
+  if (warnings.length > 0) {
+    const { sendAlert } = require('./lib/discord-notify');
+
+    await sendAlert({
+      title: `Secret Health Check — ${warnings.length} Warning(s)`,
+      description: `All critical services are up, but ${warnings.length} warning${warnings.length > 1 ? 's' : ''} detected.`,
+      severity: 'warning',
+      fields: warnings.map(w => ({ name: w.name, value: w.message, inline: false })),
+    }).catch(e => console.error('[Alert] Failed to send:', e.message));
+  }
+
+  console.log('All critical services healthy.');
+}
+
+main().catch(err => {
+  console.error('Health check failed:', err);
+  process.exit(1);
+});

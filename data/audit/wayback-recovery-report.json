@@ -1,20 +1,21 @@
 {
-  "totalCandidates": 131,
-  "cdxFound": 111,
-  "cdxNotFound": 5,
-  "recovered": 108,
+  "totalCandidates": 500,
+  "cdxFound": 74,
+  "cdxNotFound": 254,
+  "recovered": 59,
   "recoveredByTier": {
-    "1": 0,
+    "1": 59,
     "2": 0,
-    "3": 108
+    "3": 0
   },
   "recoveredByDomain": {
-    "curtainup.com": 108
+    "wsj.com": 50,
+    "washingtonpost.com": 9
   },
-  "tooShort": 9,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 15,
-  "notInArchive": 5
+  "errors": 172,
+  "notInArchive": 254
 }

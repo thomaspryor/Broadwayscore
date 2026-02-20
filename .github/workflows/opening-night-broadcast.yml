@@ -157,7 +157,6 @@ jobs:
         if: always() && steps.check.outputs.pending_shows != ''
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/send-opening-night-broadcast.js
 
 
