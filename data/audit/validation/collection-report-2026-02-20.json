@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-20T18:39:55.634Z",
+  "runDate": "2026-02-20T21:41:54.701Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,18 +11,19 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 94,
+    "processed": 8,
+    "failed": 92,
     "skipped": 0,
-    "successRate": "6.0%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "directCookies": 3,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 82,
+    "archiveToday": 81,
     "archive": 4
   },
   "statistics": {
@@ -32,34 +33,35 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 87,
-    "tier2Success": 3,
-    "tier3Attempts": 84,
+    "tier2Attempts": 83,
+    "tier2Success": 1,
+    "tier3Attempts": 82,
     "tier3Success": 0,
-    "tier3_6Attempts": 84,
-    "tier3_6Success": 82,
-    "tier4Attempts": 90,
-    "tier4Success": 4,
-    "totalFailed": 94,
-    "scrapingBeeCreditsUsed": 119,
+    "tier3_6Attempts": 82,
+    "tier3_6Success": 81,
+    "tier4Attempts": 89,
+    "tier4Success": 6,
+    "totalFailed": 92,
+    "scrapingBeeCreditsUsed": 68,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 9,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "gypsy-2024/newyorker--naomi-fry.json",
     "king-kong-2018/newyorker--vinson-cunningham.json",
+    "lombardi-2010/newyorker--uncredited.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "pictures-from-home-2023/newyorker--helen-shaw.json"
   ],
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
     "mj-2022/newyorker--naomi-fry.json",
     "the-outsiders-2024/newyorker--naomi-fry.json",
@@ -131,7 +133,6 @@
     "leopoldstadt-2022/newyorker--vinson-cunningham.json",
     "les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
     "linda-vista-2019/newyorker--hilton-als.json",
-    "lombardi-2010/newyorker--uncredited.json",
     "long-days-journey-into-night-2016/newyorker--hilton-als.json",
     "machinal-2014/newyorker--hilton-als.json",
     "mcneal-2024/newyorker--naomi-fry.json",
@@ -156,13 +157,18 @@
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "scrapingbee": [
+    "directCookies": [
       "grey-house-2023/newyorker--dan-stahl.json",
-      "gypsy-2024/newyorker--naomi-fry.json"
+      "gypsy-2024/newyorker--naomi-fry.json",
+      "king-kong-2018/newyorker--vinson-cunningham.json"
+    ],
+    "scrapingbee": [
+      "hells-kitchen-2024/newyorker--naomi-fry.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
+      "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
       "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "data/review-texts/mj-2022/newyorker--naomi-fry.json",
       "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
@@ -186,7 +192,6 @@
       "data/review-texts/august-osage-county-2007/newyorker--.json",
       "data/review-texts/august-osage-county-2007/newyorker--hilton-als.json",
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
-      "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
       "data/review-texts/clydes-2021/newyorker--hilton-als.json",
       "data/review-texts/clydes-2021/newyorker--naomi-fry.json",
@@ -227,7 +232,6 @@
       "data/review-texts/leopoldstadt-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
       "data/review-texts/linda-vista-2019/newyorker--hilton-als.json",
-      "data/review-texts/lombardi-2010/newyorker--uncredited.json",
       "data/review-texts/long-days-journey-into-night-2016/newyorker--hilton-als.json",
       "data/review-texts/machinal-2014/newyorker--hilton-als.json",
       "data/review-texts/mcneal-2024/newyorker--naomi-fry.json",
@@ -247,14 +251,14 @@
     ],
     "archive": [
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "king-kong-2018/newyorker--vinson-cunningham.json",
+      "lombardi-2010/newyorker--uncredited.json",
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "pictures-from-home-2023/newyorker--helen-shaw.json"
     ]
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 2,
+      "count": 1,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,

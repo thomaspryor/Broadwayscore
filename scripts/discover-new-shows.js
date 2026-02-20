@@ -2,16 +2,15 @@
 /**
  * Broadway New Show Discovery
  *
- * Discovers new Broadway shows by checking Broadway.org listings
- * and adds them to shows.json with basic metadata.
- *
- * Uses Playwright to scrape JavaScript-rendered content.
+ * Discovers new Broadway shows using TodayTix API (primary) with
+ * Broadway.org scraping as fallback.
  *
  * Usage: node scripts/discover-new-shows.js [--dry-run]
  */
 
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
@@ -28,6 +27,66 @@ const dryRun = process.argv.includes('--dry-run');
 
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
+
+// TodayTix API - public, no auth required, no Cloudflare
+function fetchTodayTixPage(offset = 0, limit = 100) {
+  return new Promise((resolve, reject) => {
+    const url = `https://api.todaytix.com/api/v2/shows?location=1&limit=${limit}&offset=${offset}`;
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch { reject(new Error('Failed to parse TodayTix API response')); }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+async function fetchShowsFromTodayTix() {
+  console.log('Fetching Broadway shows from TodayTix API...');
+  const allShows = [];
+  let offset = 0;
+  const limit = 100;
+
+  while (true) {
+    const response = await fetchTodayTixPage(offset, limit);
+    if (!response.data || response.data.length === 0) break;
+    allShows.push(...response.data);
+    if (allShows.length >= (response.pagination?.total || 0)) break;
+    offset += limit;
+  }
+
+  // Filter to Broadway shows only (subcategories includes "Broadway")
+  const broadwayShows = allShows.filter(s =>
+    s.subcategories?.some(sc => sc.name === 'Broadway')
+  );
+
+  // Deduplicate by displayName (API sometimes has duplicate listings)
+  const seen = new Set();
+  const showsList = [];
+  for (const show of broadwayShows) {
+    const title = (show.displayName || show.name || '').trim();
+    if (!title || title.length < 3 || seen.has(title)) continue;
+    seen.add(title);
+
+    showsList.push({
+      title,
+      venue: show.venue?.name || 'TBA',
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: show.startDate || null,
+      closingDate: show.endDate === 'null' ? null : show.endDate || null,
+    });
+  }
+
+  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${showsList.length} unique`);
+  return showsList;
+}
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -142,22 +201,32 @@ async function discoverShows() {
   console.log(`Existing shows in database: ${data.shows.length}`);
   console.log('');
 
-  // Fetch shows from Broadway.org using Playwright
+  // Primary: TodayTix API (public JSON, no Cloudflare)
+  // Fallback: Broadway.org scraping (often blocked by Cloudflare)
   let discoveredShows;
   try {
-    discoveredShows = await fetchShowsFromBroadwayOrg();
-    console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
-    if (discoveredShows.length === 0) {
-      console.error('ERROR: Broadway.org returned 0 shows. Scraper is broken (DOM structure change, Cloudflare block, or site outage).');
-      process.exitCode = 1;
-    }
-    console.log('');
+    discoveredShows = await fetchShowsFromTodayTix();
+    console.log(`Found ${discoveredShows.length} shows via TodayTix API`);
   } catch (e) {
-    console.error('ERROR: Failed to fetch Broadway.org:', e.message);
-    console.log('');
-    process.exitCode = 1;
-    return { newShows: [], count: 0 };
+    console.log(`TodayTix API failed (${e.message}), falling back to Broadway.org...`);
+    discoveredShows = [];
   }
+
+  if (discoveredShows.length === 0) {
+    try {
+      discoveredShows = await fetchShowsFromBroadwayOrg();
+      console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
+      if (discoveredShows.length === 0) {
+        console.error('ERROR: Both TodayTix API and Broadway.org returned 0 shows.');
+        process.exitCode = 1;
+      }
+    } catch (e) {
+      console.error('ERROR: Both sources failed. TodayTix API and Broadway.org:', e.message);
+      process.exitCode = 1;
+      return { newShows: [], count: 0 };
+    }
+  }
+  console.log('');
 
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];

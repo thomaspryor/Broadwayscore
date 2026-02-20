@@ -11,6 +11,15 @@ name: "Purge copyrighted/sensitive paths from git history"
 #   - data/mezzanine-screenshots/
 #   - data/bug-reviews.json
 #   - .mcp.json                   (sensitive config)
+#   - data/shows.json             (competitive data — moved to private repo)
+#   - data/reviews.json           (competitive data — moved to private repo)
+#   - data/grosses.json           (competitive data — moved to private repo)
+#   - data/grosses-history.json   (competitive data — moved to private repo)
+#   - data/commercial.json        (competitive data — moved to private repo)
+#   - data/audience-buzz.json     (competitive data — moved to private repo)
+#   - data/critic-consensus.json  (competitive data — moved to private repo)
+#   - data/critic-registry.json   (competitive data — moved to private repo)
+#   - data/outlet-registry.json   (competitive data — moved to private repo)
 #
 # Strategy: Runs weekly Saturday 1 AM EST. Once clean, auto-exits in seconds. If other
 # workflows are active, it waits up to 30 minutes for them to finish naturally.
@@ -42,7 +51,7 @@ jobs:
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
           ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
-          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || true)
+          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json|data/shows\.json|data/reviews\.json|data/grosses\.json|data/grosses-history\.json|data/commercial\.json|data/audience-buzz\.json|data/critic-consensus\.json|data/critic-registry\.json|data/outlet-registry\.json)' || true)
           echo "purge_count=$COUNT" >> "$GITHUB_OUTPUT"
           if [ "$COUNT" = "0" ]; then
             echo "Nothing to purge — all target paths already clean!"
@@ -117,6 +126,15 @@ jobs:
             --path data/mezzanine-screenshots/ \
             --path data/bug-reviews.json \
             --path .mcp.json \
+            --path data/shows.json \
+            --path data/reviews.json \
+            --path data/grosses.json \
+            --path data/grosses-history.json \
+            --path data/commercial.json \
+            --path data/audience-buzz.json \
+            --path data/critic-consensus.json \
+            --path data/critic-registry.json \
+            --path data/outlet-registry.json \
             --invert-paths --force
 
           echo "Commits after: $(git log --oneline | wc -l)"
