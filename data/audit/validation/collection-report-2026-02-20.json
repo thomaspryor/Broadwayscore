@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-20T08:28:10.364Z",
+  "runDate": "2026-02-20T11:43:54.020Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 85,
+    "processed": 3,
+    "failed": 87,
     "skipped": 0,
-    "successRate": "5.6%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,11 +23,11 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 69,
-    "tier1Success": 69,
+    "tier1Attempts": 74,
+    "tier1Success": 74,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,8 +39,8 @@
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 85,
-    "tier4Success": 20,
-    "totalFailed": 85,
+    "tier4Success": 15,
+    "totalFailed": 87,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -49,11 +49,9 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
     "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
     "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json",
-    "waiting-for-godot-2013/financialtimes--brendan-lemon.json"
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
   ],
   "failed": [
     "book-of-mormon-2011/financialtimes--brendan-lemon.json",
@@ -67,6 +65,7 @@
     "carousel-2018/financial-times-uk--max-mcguinness.json",
     "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
     "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
+    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
     "come-from-away-2017/financial-times-uk--max-mcguinness.json",
     "constellations-2015/financialtimes--brendan-lemon.json",
     "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
@@ -140,6 +139,7 @@
     "three-tall-women-2018/financial-times-uk--max-mcguinness.json",
     "tootsie-2019/financial-times-uk--max-mcguinness.json",
     "venus-in-fur-2011/financialtimes--brendan-lemon.json",
+    "waiting-for-godot-2013/financialtimes--brendan-lemon.json",
     "west-side-story-2020/financialtimes--financial-times.json"
   ],
   "tierDetails": {
@@ -150,11 +150,9 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json",
       "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
       "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-      "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json",
-      "waiting-for-godot-2013/financialtimes--brendan-lemon.json"
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
     ]
   },
   "failuresByOutlet": {},
