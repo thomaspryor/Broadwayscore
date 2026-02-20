@@ -69,7 +69,7 @@ jobs:
       - name: Commit and push changes
         if: always()
         run: |
-          git add data/audience-buzz.json data/show-score-urls.json
+          git add data/show-score-urls.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

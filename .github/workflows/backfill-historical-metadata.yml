@@ -71,7 +71,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json data/auto-fix-results.json
+          git add data/auto-fix-results.json
           git commit -m "chore: Backfill historical show metadata (synopsis + creative team)
 
           Fixed ${{ steps.changes.outputs.fixed }} issues via TodayTix + Claude API.
@@ -86,7 +86,7 @@ jobs:
             echo "Push failed (attempt $i), pulling and rebasing..."
             git checkout -- . && git clean -fd
             git pull --rebase -X theirs origin main || git rebase --abort
-            git add data/shows.json data/auto-fix-results.json
+            git add data/auto-fix-results.json
             git commit -m "chore: Backfill historical show metadata" --allow-empty
             sleep $((RANDOM % 20 + 10))
           done

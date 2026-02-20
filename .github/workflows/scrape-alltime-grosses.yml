@@ -88,7 +88,7 @@ jobs:
 
           SHOW_COUNT=$(node -e "const d=require('./data/grosses.json'); console.log(Object.keys(d.shows).length)")
 
-          git add data/grosses.json
+          # Core data files pushed to private repo by push-core-data action
           git commit -m "data: Update all-time grosses ($SHOW_COUNT shows)
 
           Automated cumulative grosses scrape from BroadwayWorld."

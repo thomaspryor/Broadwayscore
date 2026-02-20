@@ -90,7 +90,7 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
 
-          git add data/reviews.json
+          # Core data files pushed to private repo by push-core-data action
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

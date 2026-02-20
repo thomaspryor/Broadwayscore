@@ -112,7 +112,7 @@ jobs:
       - name: Commit and push changes
         if: always()  # Run even if previous step failed/timed out
         run: |
-          git add data/audience-buzz.json
+          # Core data files pushed to private repo by push-core-data action
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

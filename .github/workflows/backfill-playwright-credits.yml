@@ -92,7 +92,7 @@ jobs:
       - name: Commit remaining changes
         if: always() && inputs.dry_run != 'true'
         run: |
-          git add data/shows.json
+          # Core data files pushed to private repo by push-core-data action
           if git diff --cached --quiet; then
             echo "No uncommitted changes"
             exit 0

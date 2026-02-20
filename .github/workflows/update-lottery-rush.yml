@@ -55,7 +55,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/lottery-rush.json data/shows.json
+          git add data/lottery-rush.json
           git commit -m "chore: Update lottery/rush data from BwayRush + Playbill
 
           Automated weekly update of Broadway lottery and rush ticket policies.

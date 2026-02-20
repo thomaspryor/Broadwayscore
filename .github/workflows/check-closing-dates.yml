@@ -55,7 +55,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json
+          # Core data files pushed to private repo by push-core-data action
           git commit -m "chore: Update closing dates (automated check)
 
           - New closing dates detected via Broadway.org scrape

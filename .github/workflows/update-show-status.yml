@@ -88,7 +88,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json
+          # Core data files pushed to private repo by push-core-data action
           if [ -f data/new-shows-pending.json ]; then
             git add data/new-shows-pending.json
           fi
@@ -133,6 +133,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-show-status'
+
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.git-check.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+
   create-issue:
     needs: update-shows
     if: needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0'
