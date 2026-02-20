@@ -362,6 +362,7 @@ Each edit must specify: file, showId/slug, field, oldValue, newValue
 ### 2. run-script — Run a pipeline script
 Allowed scripts: ${ALLOWED_SCRIPTS.join(', ')}
 Specify: script name, arguments (optional)
+IMPORTANT: Do NOT include validate-data.js as an action — validation runs automatically after data edits.
 
 ### 3. review-file-op — Move/delete review files in data/review-texts/
 Specify: operation (move, delete, rename), source path, destination path
@@ -520,6 +521,191 @@ Or if you cannot create an actionable plan:
 
   output('plan_created', 'true');
   console.log('Remediation plan generated successfully');
+
+  // 8. Systematic issue detection — scan for similar patterns across the dataset
+  try {
+    const systematic = detectSystematicIssue(plan, shows);
+    if (systematic && systematic.totalMatches > 0) {
+      console.log(`\nSystematic issue detected: ${systematic.totalMatches} similar entries across ${systematic.showCount} shows`);
+
+      // Save systematic plan
+      const sysPlanId = `${issueNumber}-systematic`;
+      const sysPlanFile = path.join(ROOT, 'data/pending-fixes', `${sysPlanId}.json`);
+      const sysPlanData = {
+        issueNumber: sysPlanId,
+        parentIssue: parseInt(issueNumber),
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        isSystematic: true,
+        diagnosis: {
+          summary: `Systematic: ${systematic.summary}`,
+          whatsHappening: systematic.description,
+          fixType: 'data',
+          confidence: 'high',
+          showId: null,
+          showSlug: null,
+        },
+        submitter: planData.submitter,
+        plan: {
+          summary: systematic.summary,
+          steps: systematic.steps,
+          riskLevel: systematic.riskLevel,
+          actions: systematic.actions,
+        },
+        verification: { passed: true, skipped: true, issues: [], confidence: null },
+      };
+
+      fs.writeFileSync(sysPlanFile, JSON.stringify(sysPlanData, null, 2) + '\n');
+      console.log(`Systematic plan saved to ${sysPlanFile}`);
+
+      // Send separate systematic email
+      if (ownerEmail) {
+        const sysApproveUrl = generateApprovalUrl('approve', sysPlanId, secret);
+        const sysRejectUrl = generateApprovalUrl('reject', sysPlanId, secret);
+
+        const { subject: sysSubject, html: sysHtml } = buildFixApprovalEmail({
+          submitterName: 'System (auto-detected)',
+          showTitle: `Systematic issue from #${issueNumber}`,
+          originalMessage: `While fixing the spot issue (${plan.summary}), we detected the same pattern in ${systematic.totalMatches} additional entries across ${systematic.showCount} shows. This is a separate approval — the spot fix above can be approved independently.`,
+          planSummary: systematic.summary,
+          planSteps: systematic.steps,
+          riskLevel: systematic.riskLevel,
+          currentState: systematic.sampleEntries || [],
+          verification: { verified: true, skipped: true },
+          approveUrl: sysApproveUrl,
+          rejectUrl: sysRejectUrl,
+          issueNumber: parseInt(issueNumber),
+        });
+
+        try {
+          await sendEmail(
+            ownerEmail,
+            'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+            `Systematic Fix: ${systematic.summary.slice(0, 60)} (#${issueNumber})`,
+            sysHtml
+          );
+          console.log('Systematic approval email sent');
+        } catch (err) {
+          console.error('Failed to send systematic email:', err.message);
+        }
+      }
+    } else {
+      console.log('\nNo systematic issue detected');
+    }
+  } catch (err) {
+    console.error('Systematic detection failed (non-fatal):', err.message);
+  }
+}
+
+// --- Systematic issue detection ---
+
+function detectSystematicIssue(plan, shows) {
+  const showsList = Array.isArray(shows) ? shows : Object.values(shows);
+
+  for (const action of (plan.actions || [])) {
+    if (action.type !== 'data-edit') continue;
+
+    // Pattern: combined roles in creativeTeam (comma-separated)
+    if (action.field === 'creativeTeam') {
+      const oldRoles = (action.oldValue || []).map(ct => ct.role);
+      const newRoles = (action.newValue || []).map(ct => ct.role);
+      if (newRoles.length > oldRoles.length) {
+        return detectCombinedRoles(showsList, action.showId);
+      }
+    }
+
+    // Pattern: field value correction that might apply to other shows
+    // (e.g., wrong venue name, typo in a recurring value)
+    if (action.field && action.oldValue && typeof action.oldValue === 'string') {
+      const fieldMatches = [];
+      for (const show of showsList) {
+        if (show.id === action.showId) continue;
+        if (show[action.field] === action.oldValue) {
+          fieldMatches.push({ showId: show.id, showTitle: show.title });
+        }
+      }
+      if (fieldMatches.length >= 2) {
+        return {
+          totalMatches: fieldMatches.length,
+          showCount: fieldMatches.length,
+          summary: `${fieldMatches.length} other shows have the same ${action.field} value "${action.oldValue}" that was corrected`,
+          description: `The spot fix corrected ${action.field} from "${action.oldValue}" to "${action.newValue}". ${fieldMatches.length} other shows have the same value.`,
+          steps: [
+            `Found ${fieldMatches.length} shows with ${action.field} = "${action.oldValue}"`,
+            `Apply the same correction to all matching shows`,
+          ],
+          riskLevel: fieldMatches.length > 20 ? 'Medium' : 'Low',
+          actions: fieldMatches.map(m => ({
+            type: 'data-edit',
+            file: action.file,
+            showId: m.showId,
+            field: action.field,
+            oldValue: action.oldValue,
+            newValue: action.newValue,
+            description: `Apply same ${action.field} fix to ${m.showTitle}`,
+          })),
+          sampleEntries: fieldMatches.slice(0, 5).map(m => ({
+            showTitle: m.showTitle, showId: m.showId,
+            field: action.field, currentValue: action.oldValue,
+            proposedChange: `Change to "${action.newValue}"`,
+          })),
+        };
+      }
+    }
+  }
+
+  return null;
+}
+
+function detectCombinedRoles(showsList, excludeShowId) {
+  const matches = [];
+  for (const show of showsList) {
+    if (!show.creativeTeam || show.id === excludeShowId) continue;
+    for (const ct of show.creativeTeam) {
+      if (ct.role && ct.role.includes(', ')) {
+        matches.push({
+          showId: show.id,
+          showTitle: show.title,
+          name: ct.name,
+          combinedRole: ct.role,
+          splitRoles: ct.role.split(', ').map(r => r.trim()),
+        });
+      }
+    }
+  }
+
+  if (matches.length === 0) return null;
+
+  const affectedShows = new Set(matches.map(m => m.showId));
+
+  return {
+    totalMatches: matches.length,
+    showCount: affectedShows.size,
+    summary: `${matches.length} combined creativeTeam roles across ${affectedShows.size} shows need splitting`,
+    description: `The spot fix split a combined role (e.g., "Director, Scenic Design") into separate entries. The same pattern exists in ${matches.length} other creativeTeam entries across ${affectedShows.size} shows.`,
+    steps: [
+      `Scan all shows for creativeTeam entries with comma-separated roles`,
+      `Split each combined role into separate entries (e.g., "Director, Scenic Design" → "Director" + "Scenic Design")`,
+      `${affectedShows.size} shows affected with ${matches.length} combined roles total`,
+    ],
+    riskLevel: matches.length > 50 ? 'Medium' : 'Low',
+    actions: [{
+      type: 'batch-transform',
+      file: 'shows.json',
+      field: 'creativeTeam',
+      transform: 'split-comma-roles',
+      affectedShows: affectedShows.size,
+      affectedEntries: matches.length,
+      description: `Split all ${matches.length} comma-separated creativeTeam roles into individual entries across ${affectedShows.size} shows`,
+    }],
+    sampleEntries: matches.slice(0, 5).map(m => ({
+      showTitle: m.showTitle,
+      showId: m.showId,
+      field: 'creativeTeam',
+      currentValue: `${m.name} (${m.combinedRole})`,
+      proposedChange: `Split into: ${m.splitRoles.map(r => `${m.name} (${r})`).join(' + ')}`,
+    })),
+  };
 }
 
 main().catch(err => {
