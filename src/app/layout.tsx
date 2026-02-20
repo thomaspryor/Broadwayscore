@@ -250,6 +250,8 @@ export default function RootLayout({
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <HeaderSubscribeButton />
                 <span className="text-gray-500 hidden sm:inline">|</span>
+                <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>
               </div>
               <p className="text-xs text-gray-500 mt-1">

@@ -78,7 +78,6 @@ Any script processing >10 items in CI MUST save progress incrementally.
 ### 7a. Private Review-Texts Repo (CRITICAL — ALL SESSIONS READ THIS)
 **NEVER commit copyrighted review text, scraped full-text content, or third-party API keys to the public repo.** This is a legal/DMCA risk. All 24,000+ full-text reviews live in a private repo only.
 - **`data/review-texts/`** → private repo (`thomaspryor/broadway-review-texts`), gitignored from public repo.
-- **`reviews.json`** → public repo, but contains ONLY metadata (scores, outlets, URLs) — NO `fullText` field.
 - **CI workflows** use composite actions to check out / push review-texts:
   - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
   - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
@@ -88,6 +87,21 @@ Any script processing >10 items in CI MUST save progress incrementally.
 - **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
 - **Automated guard:** `test.yml` data-validation job verifies zero review-text files are tracked in the public repo. Fails the build if any leak in.
 - **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
+
+### 7b. Private Core Data Repo (CRITICAL — ALL SESSIONS READ THIS)
+**9 competitively sensitive data files are in a private repo**, NOT the public repo. This prevents competitors from scraping aggregated scores and review data.
+- **Private repo:** `thomaspryor/broadway-scorecard-data`
+- **Files:** `shows.json`, `reviews.json`, `grosses.json`, `grosses-history.json`, `commercial.json`, `audience-buzz.json`, `critic-consensus.json`, `critic-registry.json`, `outlet-registry.json`
+- **CI workflows** use composite actions:
+  - `.github/actions/checkout-core-data/` — clones private repo to `.core-data-checkout/`, copies 9 JSON files to `data/`
+  - `.github/actions/push-core-data/` — copies files back, commits + pushes (5-retry, `if: always()`)
+- **Secret:** `REVIEW_TEXTS_TOKEN` (same PAT — covers all private repos)
+- **Public repo:** All 9 files are in `.gitignore`. `git add data/shows.json` etc. is a no-op.
+- **Scripts unchanged:** Scripts read/write `data/*.json` as before. Composite actions handle private repo sync.
+- **New workflows** that read core data MUST include `checkout-core-data`. Workflows that WRITE core data MUST also include `push-core-data` with `if: always()`.
+- **Deploy:** Core data files no longer trigger `vercel-deploy.yml` via path match. Terminal workflows (rebuild-reviews, weekly-grosses, update-show-status, opening-night-broadcast) dispatch deploys directly.
+- **Local dev:** Files may not exist after fresh clone. To get data: clone private repo and copy JSON files to `data/`.
+- **Staleness canary:** `test.yml` verifies shows.json and reviews.json exist and are non-empty after checkout.
 
 ### 8. Design System — Use Shared Components
 **NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`

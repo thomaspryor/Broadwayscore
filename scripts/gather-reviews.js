@@ -2001,7 +2001,23 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
       const result = await searchForReview(show.title, year, outlet);
 
+      // Validate URL exists before accepting (Claude fabricates URLs without web search tool)
       if (result && result.url) {
+        try {
+          const headResp = await fetch(result.url, { method: 'HEAD', redirect: 'follow',
+            headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
+            signal: AbortSignal.timeout(8000) });
+          if (headResp.status === 404 || headResp.status === 410) {
+            console.log(`✗ URL returned ${headResp.status} (likely fabricated)`);
+            result.found = false;
+          }
+        } catch (e) {
+          // Timeout/network error — URL might be behind paywall, keep it but flag
+          console.log(`⚠ URL check failed (${e.message}), accepting tentatively`);
+        }
+      }
+
+      if (result && result.url && result.found !== false) {
         console.log('✓ Found');
         foundReviews.push({
           showId,

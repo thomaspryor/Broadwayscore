@@ -4,8 +4,11 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 
 ## Data Sync Architecture
 
-**Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files)
-**Derived file:** `data/reviews.json` (aggregated for website consumption)
+**Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files in private repo `thomaspryor/broadway-review-texts`)
+**Derived file:** `data/reviews.json` (aggregated for website consumption, in private repo `thomaspryor/broadway-scorecard-data`)
+
+### Private Repo Pattern (core data)
+9 core data files (`shows.json`, `reviews.json`, `grosses.json`, etc.) live in `thomaspryor/broadway-scorecard-data`. All workflows check them out via `.github/actions/checkout-core-data/` and push changes via `.github/actions/push-core-data/`. See root `CLAUDE.md` §7b for full details.
 
 | Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
 |----------|----------------------|----------------------|-------|
