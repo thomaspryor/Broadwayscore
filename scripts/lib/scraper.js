@@ -37,7 +37,7 @@ async function fetchWithBrightData(url) {
     const body = JSON.stringify({
       zone: 'scraping_browser',
       url: url,
-      format: 'markdown'
+      format: 'raw'
     });
 
     const response = await new Promise((resolve, reject) => {
@@ -68,7 +68,7 @@ async function fetchWithBrightData(url) {
 
     return {
       content: response,
-      format: 'markdown',
+      format: 'html',
       source: 'brightdata'
     };
   } catch (error) {

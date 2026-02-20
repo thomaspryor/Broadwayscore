@@ -186,6 +186,7 @@ function buildAllProfiles() {
       headshot: actorImages[data.ibdbPersonId]?.imageUrl || null,
       shows,
       showCount: shows.length,
+      scoredShowCount: scoredShows.length,
       avgScore,
       highScore,
       lowScore,
