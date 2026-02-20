@@ -4792,6 +4792,9 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+        // Skip fabricated entries (URLs hallucinated by LLM without web search)
+        if (data.fabricatedEntry === true) continue;
+
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
         const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;
         if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
