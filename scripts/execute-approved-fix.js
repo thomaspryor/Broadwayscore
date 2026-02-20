@@ -257,6 +257,56 @@ function executeReviewFileOp(action) {
   return { ok: false, reason: `Unknown operation: ${operation}` };
 }
 
+function executeBatchTransform(action) {
+  const { file, field, transform } = action;
+
+  if (file !== 'shows.json') {
+    return { ok: false, reason: `batch-transform only supports shows.json, got "${file}"` };
+  }
+
+  if (transform === 'split-comma-roles' && field === 'creativeTeam') {
+    const relPath = 'data/shows.json';
+    const data = loadJsonFile(relPath);
+    const shows = data.shows || data;
+    const showsList = Array.isArray(shows) ? shows : Object.values(shows);
+
+    let splitCount = 0;
+    let showsAffected = 0;
+
+    for (const show of showsList) {
+      if (!show.creativeTeam) continue;
+      let hasCombined = false;
+      for (const ct of show.creativeTeam) {
+        if (ct.role && ct.role.includes(', ')) { hasCombined = true; break; }
+      }
+      if (!hasCombined) continue;
+
+      showsAffected++;
+      const newTeam = [];
+      for (const ct of show.creativeTeam) {
+        if (ct.role && ct.role.includes(', ')) {
+          splitCount++;
+          for (const role of ct.role.split(', ')) {
+            newTeam.push({ name: ct.name, role: role.trim() });
+          }
+        } else {
+          newTeam.push(ct);
+        }
+      }
+      show.creativeTeam = newTeam;
+    }
+
+    if (splitCount === 0) {
+      return { ok: true, msg: 'No combined roles found — already fixed' };
+    }
+
+    saveJsonFile(relPath, Array.isArray(data) ? shows : data);
+    return { ok: true, msg: `Split ${splitCount} combined roles across ${showsAffected} shows` };
+  }
+
+  return { ok: false, reason: `Unknown transform: ${transform}` };
+}
+
 // --- Main ---
 
 async function main() {
@@ -306,6 +356,9 @@ async function main() {
         break;
       case 'review-file-op':
         result = executeReviewFileOp(action);
+        break;
+      case 'batch-transform':
+        result = executeBatchTransform(action);
         break;
       default:
         result = { ok: false, reason: `Unknown action type: ${action.type}` };

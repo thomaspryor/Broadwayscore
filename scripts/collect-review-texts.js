@@ -3481,6 +3481,12 @@ async function extractArticleText(page) {
             if (text.length > bestText.length) {
               bestText = text;
             }
+            // Early exit: if a specific selector (not 'article' or 'main')
+            // returns enough text, prefer it over broader selectors that
+            // might include sidebar/related-posts content
+            if (text.length >= 500 && selector !== 'article' && selector !== 'main' && selector !== 'main article') {
+              break;
+            }
           } else {
             const text = el.textContent.trim();
             if (text.length > bestText.length) {
@@ -3551,6 +3557,37 @@ function extractTextFromHtml(html, url) {
     .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
     .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
 
+  // Strip known sidebar/cruft sections before extracting <p> tags.
+  // This is more reliable than trying to regex-match container boundaries
+  // (nested divs make [\s\S]*? unreliable).
+  text = text
+    .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
+    .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
+
+  // Try to isolate article body container using broad class matches.
+  // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.
+  const containerSelectors = [
+    'entry-content', 'post-content', 'article-body', 'review-content',
+    'entry clearfix', 'article-content', 'post-body', 'story-body',
+  ];
+  for (const cls of containerSelectors) {
+    const escapedCls = cls.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Match from container open tag to end of article/next major section
+    const pattern = new RegExp(
+      '<div[^>]*class="[^"]*' + escapedCls + '[^"]*"[^>]*>([\\s\\S]*?)(?:<\\/article>|<div[^>]*class="[^"]*(?:comment|related|sidebar|footer|author-bio|post-nav)[^"]*"|<section[^>]*class="[^"]*comment|$)',
+      'i'
+    );
+    const containerMatch = text.match(pattern);
+    if (containerMatch && containerMatch[1]) {
+      const containerPs = [...containerMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi)];
+      if (containerPs.length >= 3) {
+        text = containerMatch[1];
+        break;
+      }
+    }
+  }
+
   // Extract paragraph content
   const paragraphs = [];
   const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
@@ -3581,7 +3618,26 @@ function extractTextFromHtml(html, url) {
     }
   }
 
-  return paragraphs.join('\n\n');
+  let result = paragraphs.join('\n\n');
+
+  // Strip trailing blog cruft: author bios, pingbacks, related post lists
+  // These patterns detect where the actual review ends and boilerplate begins
+  const cruftPatterns = [
+    /\n\nView all posts by \w+.*$/s,
+    /\n\n\[&#8230;\].*$/s,
+    /\n\nPingback:.*$/s,
+    /\n\nAbout the Author.*$/si,
+    /\n\nShare this:.*$/si,
+    /\n\nLike this:.*$/si,
+    /\n\nRelated\n.*$/si,
+    /\n\nFiled Under:.*$/si,
+    /\n\nTagged With:.*$/si,
+  ];
+  for (const pattern of cruftPatterns) {
+    result = result.replace(pattern, '');
+  }
+
+  return result;
 }
 
 /**
