@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { getCreativeProfiles, getUnifiedSlugForName, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { featureFlags } from '@/config/feature-flags';
 import CreativeIndexClient from '@/components/creative/CreativeIndexClient';
 
 const CAT = 'playwright' as const;
@@ -20,6 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default function PlaywrightsIndexPage() {
+  if (!featureFlags.creativePages) notFound();
   const profiles = getCreativeProfiles(CAT);
   const totalShows = new Set(profiles.flatMap(p => p.shows.map(s => s.slug))).size;
 

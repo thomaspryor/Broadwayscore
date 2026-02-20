@@ -663,7 +663,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Creative Team — show only principal roles */}
-        {show.creativeTeam && show.creativeTeam.length > 0 && (() => {
+        {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (() => {
           const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
           const principals = show.creativeTeam.filter(m => PRINCIPAL_ROLES.test(m.role));
           return principals.length > 0 ? (
