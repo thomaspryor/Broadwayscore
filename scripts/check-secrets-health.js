@@ -149,16 +149,31 @@ async function checkPrivateRepoPAT() {
   const token = process.env.REVIEW_TEXTS_TOKEN;
   if (!token) return { name: 'Private Repo PAT', status: 'skip', message: 'Token not set' };
 
-  const res = await httpsGet('https://api.github.com/repos/thomaspryor/broadway-review-texts', {
+  const headers = {
     'Authorization': `token ${token}`,
     'User-Agent': 'broadway-scorecard-health-check',
     'Accept': 'application/vnd.github+json',
-  });
+  };
 
-  if (res.status === 200) return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, repo accessible' };
-  if (res.status === 401) return { name: 'Private Repo PAT', status: 'fail', message: 'Token invalid or revoked — ALL collection workflows will fail' };
-  if (res.status === 404) return { name: 'Private Repo PAT', status: 'fail', message: 'Repo not found or token lacks repo scope' };
-  return { name: 'Private Repo PAT', status: 'warn', message: `Unexpected status ${res.status}` };
+  // Check both private repos that use this token
+  const [reviewTexts, coreData] = await Promise.all([
+    httpsGet('https://api.github.com/repos/thomaspryor/broadway-review-texts', headers),
+    httpsGet('https://api.github.com/repos/thomaspryor/broadway-scorecard-data', headers),
+  ]);
+
+  if (reviewTexts.status === 401 || coreData.status === 401) {
+    return { name: 'Private Repo PAT', status: 'fail', message: 'Token invalid or revoked — ALL workflows will fail' };
+  }
+
+  const issues = [];
+  if (reviewTexts.status !== 200) issues.push(`review-texts: ${reviewTexts.status}`);
+  if (coreData.status !== 200) issues.push(`scorecard-data: ${coreData.status}`);
+
+  if (issues.length > 0) {
+    return { name: 'Private Repo PAT', status: 'fail', message: `Repo access failed — ${issues.join(', ')}` };
+  }
+
+  return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, both private repos accessible' };
 }
 
 async function checkVercel() {
