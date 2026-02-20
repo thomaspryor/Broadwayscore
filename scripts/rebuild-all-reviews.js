@@ -1921,7 +1921,16 @@ showDirs.forEach(showId => {
         })(),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
-        contentTier: data.contentTier || 'none'
+        contentTier: data.contentTier || 'none',
+        // Ensemble scoring metadata (for confidence analysis + auditing)
+        ...(data.ensembleData ? {
+          scoreDelta: data.ensembleData.scoreDelta || 0,
+          modelAgreement: data.ensembleData.modelAgreement || null,
+          needsReview: data.ensembleData.needsReview || false,
+        } : {}),
+        ...(data.llmScore ? {
+          scoreConfidence: data.llmScore.confidence || null,
+        } : {})
       };
 
       // Sanitize display fields: decode HTML entities in critic name, outlet, pullQuote
