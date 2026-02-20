@@ -167,9 +167,9 @@ export default function ActorDetailClient({
   // Suppress stats for single-show actors (PM feedback: stats look thin)
   const showStats = profile.showCount >= 2;
 
-  // Computed stats
+  // OBC = Original Broadway Cast (non-revival shows only). Revival opening casts don't count.
   const obcCount = useMemo(() =>
-    profile.shows.filter(s => s.castType === 'obc' || s.wasObc).length,
+    profile.shows.filter(s => (s.castType === 'obc' || s.wasObc) && !s.isRevival).length,
     [profile.shows]
   );
   const musicalCount = useMemo(() =>
