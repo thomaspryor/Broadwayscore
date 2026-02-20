@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-20T21:21:25.826Z",
+  "runDate": "2026-02-20T21:41:54.701Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -21,10 +21,10 @@
     "amp": 0,
     "browserbase": 0,
     "directCookies": 3,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 79,
-    "archive": 5
+    "archiveToday": 81,
+    "archive": 4
   },
   "statistics": {
     "tier1Attempts": 87,
@@ -34,23 +34,23 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 83,
-    "tier2Success": 0,
-    "tier3Attempts": 83,
+    "tier2Success": 1,
+    "tier3Attempts": 82,
     "tier3Success": 0,
     "tier3_6Attempts": 82,
-    "tier3_6Success": 79,
+    "tier3_6Success": 81,
     "tier4Attempts": 89,
     "tier4Success": 6,
     "totalFailed": 92,
-    "scrapingBeeCreditsUsed": 30,
+    "scrapingBeeCreditsUsed": 68,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 10,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "august-osage-county-2007/newyorker--.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "gypsy-2024/newyorker--naomi-fry.json",
@@ -62,7 +62,6 @@
   "failed": [
     "book-of-mormon-2011/newyorker--hilton-als.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "hells-kitchen-2024/newyorker--naomi-fry.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
     "mj-2022/newyorker--naomi-fry.json",
     "the-outsiders-2024/newyorker--naomi-fry.json",
@@ -85,6 +84,7 @@
     "anastasia-2017/newyorker--hilton-als.json",
     "angels-in-america-2018/newyorker--hilton-als.json",
     "anything-goes-2011/newyorker--john-lahr.json",
+    "august-osage-county-2007/newyorker--.json",
     "august-osage-county-2007/newyorker--hilton-als.json",
     "beetlejuice-2019/newyorker--hilton-als.json",
     "bernhardthamlet-2018/newyorker--hilton-als.json",
@@ -162,12 +162,13 @@
       "gypsy-2024/newyorker--naomi-fry.json",
       "king-kong-2018/newyorker--vinson-cunningham.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hells-kitchen-2024/newyorker--naomi-fry.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/book-of-mormon-2011/newyorker--hilton-als.json",
       "data/review-texts/hadestown-2019/newyorker--hilton-als.json",
-      "data/review-texts/hells-kitchen-2024/newyorker--naomi-fry.json",
       "data/review-texts/maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "data/review-texts/mj-2022/newyorker--naomi-fry.json",
       "data/review-texts/the-outsiders-2024/newyorker--naomi-fry.json",
@@ -188,9 +189,9 @@
       "data/review-texts/anastasia-2017/newyorker--hilton-als.json",
       "data/review-texts/angels-in-america-2018/newyorker--hilton-als.json",
       "data/review-texts/anything-goes-2011/newyorker--john-lahr.json",
+      "data/review-texts/august-osage-county-2007/newyorker--.json",
       "data/review-texts/august-osage-county-2007/newyorker--hilton-als.json",
       "data/review-texts/beetlejuice-2019/newyorker--hilton-als.json",
-      "data/review-texts/bernhardthamlet-2018/newyorker--hilton-als.json",
       "data/review-texts/betrayal-2013/newyorker--john-lahr.json",
       "data/review-texts/clydes-2021/newyorker--hilton-als.json",
       "data/review-texts/clydes-2021/newyorker--naomi-fry.json",
@@ -216,9 +217,12 @@
       "data/review-texts/hangmen-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/harmony-2023/newyorker--naomi-fry.json",
       "data/review-texts/hillary-and-clinton-2019/newyorker--hilton-als.json",
+      "data/review-texts/indecent-2017/newyorker--hilton-als.json",
       "data/review-texts/into-the-woods-2022/newyorker--naomi-fry.json",
       "data/review-texts/is-this-a-room-2021/newyorker--naomi-fry.json",
       "data/review-texts/junk-2017/newyorker--hilton-als.json",
+      "data/review-texts/just-for-us-2023/newyorker--naomi-fry.json",
+      "data/review-texts/kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
       "data/review-texts/king-charles-iii-2015/newyorker--hilton-als.json",
       "data/review-texts/king-kong-2018/newyorker--hilton-als.json",
       "data/review-texts/kinky-boots-2013/newyorker--hilton-als.json",
@@ -246,7 +250,6 @@
       "data/review-texts/prima-facie-2023/newyorker--naomi-fry.json"
     ],
     "archive": [
-      "august-osage-county-2007/newyorker--.json",
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "lombardi-2010/newyorker--uncredited.json",
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
@@ -255,7 +258,7 @@
   },
   "failuresByOutlet": {
     "The New Yorker": {
-      "count": 3,
+      "count": 1,
       "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
