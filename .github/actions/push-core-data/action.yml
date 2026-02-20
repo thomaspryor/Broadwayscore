@@ -1,0 +1,54 @@
+name: Push core data
+description: Commits and pushes core data changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update core data'
+
+runs:
+  using: composite
+  steps:
+    - name: Sync core data files to checkout
+      shell: bash
+      run: |
+        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json; do
+          [ -f "data/$f" ] && cp -f "data/$f" .core-data-checkout/
+        done
+
+    - name: Commit and push core data
+      shell: bash
+      working-directory: .core-data-checkout
+      env:
+        CORE_DATA_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
+
+        git add -A
+
+        if git diff --staged --quiet; then
+          echo "No core data changes to push"
+          exit 0
+        fi
+
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        for i in 1 2 3 4 5; do
+          if git pull --rebase -X theirs origin main && git push origin main; then
+            echo "Core data pushed successfully (attempt $i)"
+            exit 0
+          fi
+          git rebase --abort 2>/dev/null || true
+          sleep $((RANDOM % 10 + 5))
+        done
+
+        echo "WARNING: Failed to push core data after 5 attempts"
+        exit 1

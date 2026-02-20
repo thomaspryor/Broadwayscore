@@ -40,6 +40,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -94,6 +99,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -187,6 +197,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Pull latest (includes shard commits)
         run: git pull origin main
 
@@ -278,6 +293,13 @@ jobs:
             echo "✓ Merge complete"
           fi
 
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from bulk-reddit-sentiment'
       - name: Count remaining shows
         id: count-remaining
         run: |
@@ -302,6 +324,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Chain next run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

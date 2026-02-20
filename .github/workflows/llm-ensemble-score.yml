@@ -104,6 +104,11 @@ jobs:
           fetch-depth: 0
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -295,6 +300,13 @@ jobs:
 
           echo "All push attempts failed"
           exit 1
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from llm-ensemble-score'
 
       - name: Auto-trigger rebuild for non-chain runs
         if: ${{ github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}

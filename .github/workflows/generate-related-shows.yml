@@ -30,6 +30,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:

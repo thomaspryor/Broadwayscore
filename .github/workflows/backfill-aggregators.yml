@@ -39,6 +39,11 @@ jobs:
           ref: main
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -121,6 +126,11 @@ jobs:
           ref: main
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -213,6 +223,13 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-aggregators'
   rebuild:
     needs: [backfill]
     if: always() && needs.backfill.result != 'cancelled'
@@ -225,6 +242,11 @@ jobs:
           ref: main
 
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -282,3 +304,11 @@ jobs:
           done
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-aggregators'

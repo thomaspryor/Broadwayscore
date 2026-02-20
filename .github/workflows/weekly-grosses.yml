@@ -28,6 +28,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -135,6 +140,13 @@ jobs:
             sleep $((10 + RANDOM % 20))
           done
 
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from weekly-grosses'
       - name: Summary
         if: always()
         run: |
