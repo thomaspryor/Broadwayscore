@@ -1253,12 +1253,14 @@ console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\
 // Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
+const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
+  if (s.closingDate && s.status === 'closed') showClosingDateMap[s.id] = new Date(s.closingDate);
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCreativeTeamIndex[s.id] = new Set();
@@ -1584,6 +1586,50 @@ showDirs.forEach(showId => {
               daysBefore: Math.round(daysBefore), score: data.assignedScore
             });
             stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
+            return;
+          }
+        }
+      }
+
+      // Post-closing date guard: skip reviews published >6 months after show closed
+      // These are likely from revivals, off-Broadway productions, or tours
+      // Reviews with allowLateDate: true bypass this (e.g., retrospective pieces)
+      // Uses URL-extracted dates (reliable) + publishDate only when it's a proper ISO/dated format
+      // Skips unreliable bulk-import dates like "April 22, 2014" that don't correlate with actual review dates
+      if (showClosingDateMap[showId] && !data.allowLateDate) {
+        let effectiveDate = null;
+        let dateSource = null;
+        // Prefer URL date (most reliable — can't be a metadata artifact)
+        if (data.url) {
+          const m = data.url.match(/\/(\d{4})[/-](\d{2})[/-](\d{2})/);
+          if (m) {
+            const ud = new Date(`${m[1]}-${m[2]}-${m[3]}`);
+            if (!isNaN(ud.getTime())) { effectiveDate = ud; dateSource = 'url'; }
+          }
+        }
+        // Fall back to publishDate only if it looks like a real date (ISO format with time, or matches URL)
+        if (!effectiveDate && data.publishDate) {
+          const pd = new Date(data.publishDate);
+          if (!isNaN(pd.getTime())) {
+            // Only trust publishDate if it contains a timestamp (T or time component) — bulk imports are plain dates
+            const hasTimestamp = /T\d|:\d/.test(data.publishDate);
+            if (hasTimestamp) { effectiveDate = pd; dateSource = 'publishDate'; }
+          }
+        }
+        if (effectiveDate) {
+          const closingDate = showClosingDateMap[showId];
+          const monthsAfter = (effectiveDate - closingDate) / (1000 * 60 * 60 * 24 * 30);
+          if (monthsAfter > 6) {
+            console.log(`  [LATE DATE GUARD] ${showId}/${file}: ${dateSource}=${effectiveDate.toISOString().split('T')[0]}, show closed ${closingDate.toISOString().split('T')[0]} (${Math.round(monthsAfter)} months after)`);
+            if (!stats.suspectedLateReviews) stats.suspectedLateReviews = [];
+            stats.suspectedLateReviews.push({
+              showId, file, outlet: data.outletId || data.outlet,
+              critic: data.criticName, effectiveDate: effectiveDate.toISOString().split('T')[0],
+              closingDate: closingDate.toISOString().split('T')[0],
+              monthsAfter: Math.round(monthsAfter), score: data.assignedScore,
+              dateSource,
+            });
+            stats.skippedLateDateMismatch = (stats.skippedLateDateMismatch || 0) + 1;
             return;
           }
         }
@@ -2492,6 +2538,16 @@ if (stats.suspectedWrongProduction && stats.suspectedWrongProduction.length > 0)
   }
   console.log('  These are likely from off-Broadway, West End, or TV productions.');
   console.log('  To include a review despite early date, add "allowEarlyDate": true to the review file.');
+}
+
+// Report auto-detected post-closing reviews
+if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
+  console.log(`\nAUTO-EXCLUDED ${stats.suspectedLateReviews.length} review(s) published >6 months after show closed:`);
+  for (const r of stats.suspectedLateReviews) {
+    console.log(`  ${r.showId}: ${r.outlet}/${r.critic} (${r.monthsAfter} months after closing, score=${r.score})`);
+  }
+  console.log('  These are likely from revivals, off-Broadway, tours, or TV adaptations.');
+  console.log('  To include a review despite late date, add "allowLateDate": true to the review file.');
 }
 
 console.log('\n=== DONE ===');
