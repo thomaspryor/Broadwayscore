@@ -48,15 +48,20 @@ module.exports = async (req, res) => {
   // Handle rejection
   if (actionType === 'reject') {
     // Comment on the issue to note rejection
+    // Extract numeric issue number for GitHub API (e.g., "133-systematic" → 133)
+    const ghIssueNumber = parseInt(issue);
+    const isSystematic = String(issue).includes('-systematic');
     const ghToken = process.env.GH_DISPATCH_TOKEN;
     const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
-    if (ghToken) {
+    if (ghToken && !isNaN(ghIssueNumber)) {
       try {
-        await githubApi(`/repos/${repo}/issues/${issue}/comments`, 'POST', {
-          body: '## Fix Rejected\n\nThe proposed fix was rejected by the admin via email approval link.\n\nThis issue needs manual attention.'
+        await githubApi(`/repos/${repo}/issues/${ghIssueNumber}/comments`, 'POST', {
+          body: isSystematic
+            ? '## Systematic Fix Rejected\n\nThe proposed systematic fix was rejected by the admin via email approval link.'
+            : '## Fix Rejected\n\nThe proposed fix was rejected by the admin via email approval link.\n\nThis issue needs manual attention.'
         }, ghToken);
-        await githubApi(`/repos/${repo}/issues/${issue}/labels`, 'POST', {
-          labels: ['fix-rejected']
+        await githubApi(`/repos/${repo}/issues/${ghIssueNumber}/labels`, 'POST', {
+          labels: [isSystematic ? 'systematic-fix-rejected' : 'fix-rejected']
         }, ghToken);
       } catch (err) {
         console.error('Failed to update issue:', err.message);
@@ -88,9 +93,10 @@ module.exports = async (req, res) => {
       `<p>You can try again or manually trigger the workflow from <a href="https://github.com/${repo}/actions">GitHub Actions</a>.</p>`));
   }
 
+  const isSystematicApproval = String(issue).includes('-systematic');
   return res.status(200).send(htmlPage('Fix Approved',
     '<h1>Fix Approved!</h1>' +
-    `<p>The fix for issue #${issue} is now being applied. You'll get a confirmation email once it's done.</p>` +
+    `<p>The ${isSystematicApproval ? 'systematic ' : ''}fix for issue #${parseInt(issue)} is now being applied. You'll get a confirmation email once it's done.</p>` +
     '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>'));
 };
 

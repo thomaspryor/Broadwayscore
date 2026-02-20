@@ -190,7 +190,7 @@ function buildAllProfiles() {
       avgScore,
       highScore,
       lowScore,
-      openShowCount: shows.filter(s => (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && s.castType === 'current').length,
+      openShowCount: shows.filter(s => (s.status === 'open' || s.status === 'previews') && s.castType === 'current').length,
       closedShowCount: shows.filter(s => s.status === 'closed').length,
       hasBroadwayDebut,
     };
