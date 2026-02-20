@@ -61,12 +61,16 @@ export default function UnifiedCreativeDetailClient({
           ))}
         </div>
 
-        {/* Stats */}
+        {/* Stats — only show score stats when 2+ scored shows */}
         <StatGrid className="mb-4" stats={[
-          { label: 'Shows', value: profile.showCount },
-          { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', dimmed: profile.avgScore === null },
-          { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—', dimmed: profile.highScore === null },
-          { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '—', dimmed: profile.lowScore === null },
+          { label: 'Shows', value: profile.showCount, subValue: profile.scoredShowCount > 0 && profile.scoredShowCount < profile.showCount ? `${profile.scoredShowCount} scored` : undefined },
+          ...(profile.scoredShowCount >= 2 ? [
+            { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—' as string | number, dimmed: profile.avgScore === null },
+            { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—' as string | number, dimmed: profile.highScore === null },
+            { label: 'Lowest', value: profile.lowScore !== null ? Math.round(profile.lowScore) : '—' as string | number, dimmed: profile.lowScore === null },
+          ] : profile.scoredShowCount === 1 ? [
+            { label: 'Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—' as string | number, dimmed: profile.avgScore === null, subtitle: '1 scored show' },
+          ] : []),
         ]} />
 
         {/* Rank */}
