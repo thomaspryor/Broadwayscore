@@ -295,6 +295,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         size="lg"
                         reviewCount={show.criticScore?.reviewCount}
                         status={show.status}
+                        showCrown
                       />
                       {audienceGrade && audienceGrade.grade !== '—' && (
                         <AudienceChip grade={audienceGrade} />

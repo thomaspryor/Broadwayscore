@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
@@ -247,6 +247,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               size="lg"
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
+              showCrown
             />
             {audienceGrade && (
               <div className="mt-1">
@@ -272,38 +273,45 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
       prefetch={false}
       className="flex-shrink-0 w-28 sm:w-32 group"
     >
-      {/* Poster container - 2:3 aspect ratio matches standard Broadway poster dimensions */}
-      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3] mb-1.5">
-        <ShowImage
-          sources={[
-            show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
-            show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
-            show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
-          ]}
-          alt={`${show.title} Broadway ${show.type}`}
-          priority={priority}
-          loading={priority ? "eager" : "lazy"}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          fallback={
-            <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
-              <div className="text-2xl mb-1">🎭</div>
-              {(show.status === 'previews' || show.status === 'upcoming') && (
-                <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
-              )}
-            </div>
-          }
-        />
-        {/* Score overlay */}
+      {/* Poster container wrapper — relative so score overlay can escape overflow-hidden */}
+      <div className="relative mb-1.5">
+        <div className="rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
+          <ShowImage
+            sources={[
+              show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
+              show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
+              show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
+            ]}
+            alt={`${show.title} Broadway ${show.type}`}
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fallback={
+              <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
+                <div className="text-2xl mb-1">🎭</div>
+                {(show.status === 'previews' || show.status === 'upcoming') && (
+                  <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
+                )}
+              </div>
+            }
+          />
+        </div>
+        {/* Score overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-            score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-            score >= 85 ? 'score-must-see' :
-            score >= 75 ? 'score-great' :
-            score >= 65 ? 'score-good' :
-            score >= 55 ? 'score-tepid' :
-            'score-skip'
-          }`}>
-            {score !== undefined && score !== null ? Math.round(score) : '—'}
+          <div className="relative overflow-visible">
+            {score !== undefined && score !== null && score >= 85 && (
+              <MustSeeCrown size="mini" />
+            )}
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
+              score >= 85 ? 'score-must-see' :
+              score >= 75 ? 'score-great' :
+              score >= 65 ? 'score-good' :
+              score >= 55 ? 'score-tepid' :
+              'score-skip'
+            }`}>
+              {score !== undefined && score !== null ? Math.round(score) : '—'}
+            </div>
           </div>
         </div>
       </div>

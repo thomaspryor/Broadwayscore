@@ -49,14 +49,32 @@ export function getScoreTier(score: number | null | undefined): ScoreTier | null
   return SCORE_TIERS.stayAway;
 }
 
+function MustSeeCrown({ size }: { size: 'sm' | 'md' | 'lg' | 'mini' }) {
+  const dims = { mini: { w: 9, h: 6, top: -5 }, sm: { w: 10, h: 7, top: -6 }, md: { w: 13, h: 8, top: -7 }, lg: { w: 15, h: 9, top: -8 } }[size];
+  return (
+    <svg
+      className="absolute left-1/2 -translate-x-1/2 z-10 pointer-events-none"
+      style={{ top: dims.top, filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }}
+      width={dims.w} height={dims.h} viewBox="0 0 20 12"
+      aria-hidden="true"
+    >
+      <polygon points="1,11 3.5,3.5 7,7 10,1 13,7 16.5,3.5 19,11" fill="#FFD700" stroke="#B8860B" strokeWidth="0.8"/>
+      <rect x="1" y="10" width="18" height="1.5" rx="0.5" fill="#DAA520"/>
+    </svg>
+  );
+}
+
+export { MustSeeCrown };
+
 export interface ScoreBadgeProps {
   score?: number | null;
   size?: 'sm' | 'md' | 'lg';
   reviewCount?: number;
   status?: string;
+  showCrown?: boolean;
 }
 
-export function ScoreBadge({ score, size = 'md', reviewCount, status }: ScoreBadgeProps) {
+export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
@@ -110,9 +128,20 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status }: ScoreBad
     label = 'Skip';
   }
 
-  return (
+  const badge = (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
       {roundedScore}
     </div>
   );
+
+  if (showCrown && roundedScore >= 85) {
+    return (
+      <div className="relative overflow-visible">
+        <MustSeeCrown size={size} />
+        {badge}
+      </div>
+    );
+  }
+
+  return badge;
 }

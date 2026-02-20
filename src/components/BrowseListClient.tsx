@@ -202,7 +202,7 @@ const ShowCard = memo(function ShowCard({
                   {tier.label}
                 </span>
               ) : null}
-              <ScoreBadge score={displayScore} size="md" />
+              <ScoreBadge score={displayScore} size="md" showCrown />
               {show.audienceGrade && (
                 <div className="mt-0.5">
                   <AudienceChip grade={show.audienceGrade} />
