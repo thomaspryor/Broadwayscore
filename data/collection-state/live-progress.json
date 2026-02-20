@@ -1,71 +1,126 @@
 {
-  "updatedAt": "2026-02-20T05:49:09.578Z",
-  "processed": 4,
-  "failed": 16,
-  "successRate": "20.0%",
+  "updatedAt": "2026-02-20T05:49:16.065Z",
+  "processed": 19,
+  "failed": 81,
+  "successRate": "19.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 4
+    "archiveToday": 33,
+    "archive": 16
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 38,
   "recentActivity": [
     {
-      "t": "2026-02-20T05:42:54.428Z",
+      "t": "2026-02-20T05:33:01.685Z",
       "event": "bb-session",
-      "session": "7c8d8364",
-      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+      "session": "9848c512",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
     },
     {
-      "t": "2026-02-20T05:42:56.849Z",
+      "t": "2026-02-20T05:33:04.039Z",
+      "event": "bb-session",
+      "session": "7536a85c",
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-rev"
+    },
+    {
+      "t": "2026-02-20T05:33:04.129Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-20T05:44:29.894Z",
-      "event": "bb-session",
-      "session": "952b5608",
-      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
-    },
-    {
-      "t": "2026-02-20T05:44:31.990Z",
+      "t": "2026-02-20T05:33:06.257Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-20T05:45:35.846Z",
+      "t": "2026-02-20T05:33:59.812Z",
       "event": "bb-session",
-      "session": "6d9453df",
-      "url": "https://www.vulture.com/2019/11/theater-review-a-christmas-carol-on-broadway.htm"
+      "session": "ede87d95",
+      "url": "https://www.vulture.com/2018/07/theater-review-straight-white-men-dares-to-be-co"
     },
     {
-      "t": "2026-02-20T05:45:38.025Z",
+      "t": "2026-02-20T05:34:02.016Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-20T05:47:07.936Z",
+      "t": "2026-02-20T05:34:46.061Z",
       "event": "bb-session",
-      "session": "a54d507e",
-      "url": "https://www.vulture.com/2010/10/theater_bloody_bloody_andrew_j.html"
+      "session": "9ae6bb31",
+      "url": "https://www.vulture.com/2018/04/theater-review-summer-the-donna-summer-musical.h"
     },
     {
-      "t": "2026-02-20T05:47:10.085Z",
+      "t": "2026-02-20T05:34:47.941Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-20T05:48:26.070Z",
+      "t": "2026-02-20T05:38:36.692Z",
       "event": "bb-session",
-      "session": "ccb14f85",
-      "url": "https://www.vulture.com/article/cabaret-broadway-review-kit-kat-club.html"
+      "session": "68ea71a0",
+      "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-wi"
     },
     {
-      "t": "2026-02-20T05:48:28.142Z",
+      "t": "2026-02-20T05:38:38.799Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:38:51.150Z",
+      "event": "bb-session",
+      "session": "1026338d",
+      "url": "https://www.vulture.com/2017/02/theater-review-sunset-boulevard.html"
+    },
+    {
+      "t": "2026-02-20T05:38:53.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:39:55.435Z",
+      "event": "bb-session",
+      "session": "052bfc8d",
+      "url": "https://www.vulture.com/2017/03/theater-review-sweat-on-broadway.html"
+    },
+    {
+      "t": "2026-02-20T05:39:57.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:41:06.333Z",
+      "event": "bb-session",
+      "session": "f644da03",
+      "url": "https://www.vulture.com/2022/04/theater-review-take-me-out-revival-broadway.html"
+    },
+    {
+      "t": "2026-02-20T05:41:08.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:42:11.031Z",
+      "event": "bb-session",
+      "session": "b7129e80",
+      "url": "https://www.vulture.com/2011/03/theater_review_that_champions.html"
+    },
+    {
+      "t": "2026-02-20T05:42:13.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-20T05:46:10.833Z",
+      "event": "bb-session",
+      "session": "631795ec",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
+    },
+    {
+      "t": "2026-02-20T05:46:13.023Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
     }
