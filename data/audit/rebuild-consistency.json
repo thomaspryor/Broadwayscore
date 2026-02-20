@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-20T03:10:25.896Z",
+  "generatedAt": "2026-02-20T09:45:23.528Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -16,14 +16,6 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "originalRating \"D\" (=35) vs score 78 (source: human-review)"
-    },
-    {
-      "type": "designation-score-mismatch",
-      "severity": "medium",
-      "showId": "disaster-2016",
-      "outlet": "nytimes",
-      "critic": "Charles Isherwood",
-      "detail": "Critics_Pick but score=52 (source: llmScore)"
     },
     {
       "type": "rating-score-mismatch",
@@ -108,6 +100,22 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "the-normal-heart-2011",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"1/5\" (=20) vs score 81 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-peewee-herman-show-2010",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 53 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "the-trip-to-bountiful-2013",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
@@ -116,10 +124,50 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "the-winslow-boy-2013",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "originalRating \"1/5\" (=20) vs score 48 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "time-stands-still-2010",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "originalRating \"D\" (=35) vs score 90 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "venus-in-fur-2011",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 51 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "war-horse-2011",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 55 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "wicked-2003",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "wit-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 61 (source: llmScore-lowconf)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -264,12 +312,6 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "humanReviewScore 90 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "all-out-2025",
-      "detail": "8/15 reviews (53%) scored exactly 80"
     }
   ]
 }
