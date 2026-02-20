@@ -4,7 +4,7 @@
     "lastUpdated": "2026-02-20",
     "generatedBy": "scripts/audit-critic-outlets.js",
     "totalCritics": 407,
-    "totalReviews": 18040
+    "totalReviews": 18051
   },
   "critics": {
     "ben-brantley": {
@@ -20,9 +20,9 @@
         "vulture",
         "new-york-times"
       ],
-      "totalReviews": 433,
+      "totalReviews": 436,
       "outletCounts": {
-        "nytimes": 426,
+        "nytimes": 429,
         "access-atlanta": 1,
         "guardian": 1,
         "ap": 1,
@@ -423,12 +423,12 @@
         "culturesauce",
         "npr"
       ],
-      "totalReviews": 751,
+      "totalReviews": 753,
       "outletCounts": {
         "chauvin-queerty": 1,
         "mandell-new-york-theater": 1,
         "new-york-theater": 1,
-        "nytimes": 110,
+        "nytimes": 112,
         "metro-uk": 1,
         "newsday": 25,
         "amny": 20,
@@ -683,12 +683,12 @@
         "village-voice",
         "uk-guardian"
       ],
-      "totalReviews": 154,
+      "totalReviews": 155,
       "outletCounts": {
         "guardian": 106,
         "village-voice": 2,
         "the-guardian-uk": 32,
-        "nytimes": 13,
+        "nytimes": 14,
         "uk-guardian": 1
       },
       "isFreelancer": true
@@ -862,11 +862,11 @@
         "newyorker",
         "newyorkmagazine"
       ],
-      "totalReviews": 565,
+      "totalReviews": 567,
       "outletCounts": {
-        "nytimes": 189,
+        "nytimes": 192,
         "vulture": 242,
-        "theatermania": 64,
+        "theatermania": 63,
         "newyorker": 1,
         "guardian": 37,
         "observer": 15,
@@ -1120,26 +1120,28 @@
       "primaryOutlet": "deadline",
       "knownOutlets": [
         "deadline",
-        "bloomberg-news",
         "bloomberg",
+        "bloomberg-news",
         "theater-news-online",
         "theatre-news-online",
         "theatre-news-online-jeremy-gerard",
         "bloombeg-news",
+        "bloombergcom",
         "bloomgberg-news",
         "business-week",
         "theater-news-online-jeremy-gerard",
         "bloomgberg"
       ],
-      "totalReviews": 239,
+      "totalReviews": 242,
       "outletCounts": {
         "deadline": 105,
         "theatre-news-online-jeremy-gerard": 3,
         "bloomberg-news": 49,
-        "bloomberg": 49,
+        "bloomberg": 51,
         "theater-news-online": 21,
         "theatre-news-online": 7,
         "bloombeg-news": 1,
+        "bloombergcom": 1,
         "bloomgberg-news": 1,
         "business-week": 1,
         "theater-news-online-jeremy-gerard": 1,
@@ -2714,16 +2716,14 @@
       "primaryOutlet": "telegraph",
       "knownOutlets": [
         "telegraph",
-        "the-telegraph-uk",
-        "variety"
+        "the-telegraph-uk"
       ],
-      "totalReviews": 10,
+      "totalReviews": 9,
       "outletCounts": {
         "telegraph": 8,
-        "the-telegraph-uk": 1,
-        "variety": 1
+        "the-telegraph-uk": 1
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "simon-saltzman": {
       "displayName": "Simon Saltzman",
@@ -4535,18 +4535,6 @@
       },
       "isFreelancer": false
     },
-    "demetrios-matheou": {
-      "displayName": "Demetrios Matheou",
-      "primaryOutlet": "hollywood-reporter",
-      "knownOutlets": [
-        "hollywood-reporter"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "hollywood-reporter": 3
-      },
-      "isFreelancer": false
-    },
     "henry-hitchings": {
       "displayName": "Henry Hitchings",
       "primaryOutlet": "evening-standard",
@@ -5181,9 +5169,9 @@
       "knownOutlets": [
         "nytimes"
       ],
-      "totalReviews": 17,
+      "totalReviews": 18,
       "outletCounts": {
-        "nytimes": 17
+        "nytimes": 18
       },
       "isFreelancer": false
     },
@@ -5526,6 +5514,18 @@
       "totalReviews": 5,
       "outletCounts": {
         "ew": 5
+      },
+      "isFreelancer": false
+    },
+    "houman-barekat": {
+      "displayName": "Houman Barekat",
+      "primaryOutlet": "nytimes",
+      "knownOutlets": [
+        "nytimes"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "nytimes": 3
       },
       "isFreelancer": false
     },
