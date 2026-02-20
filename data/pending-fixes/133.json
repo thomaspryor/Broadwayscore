@@ -1,6 +1,6 @@
 {
   "issueNumber": 133,
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-02-20T09:36:41.555Z",
   "diagnosis": {
     "summary": "John Doyle is correctly listed as Director on both Sweeney Todd (2005) and The Color Purple (2015) in the show data, but his director profile page is likely not linking back to those shows.",
@@ -206,5 +206,23 @@
       "The proposed fix for The Color Purple (2015) is correct regarding John Doyle's role as 'Director, Scenic Design', but the fix incorrectly splits this into 'Scenic Design' instead of just 'Scenic Design'."
     ],
     "confidence": "high"
-  }
+  },
+  "executedAt": "2026-02-20T13:15:37.633Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for sweeney-todd-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-color-purple-2015"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script validate-data.js failed: Command failed: node scripts/validate-data.js"
+    }
+  ]
 }
