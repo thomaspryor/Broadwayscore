@@ -1,20 +1,21 @@
 {
-  "totalCandidates": 134,
-  "cdxFound": 2,
-  "cdxNotFound": 73,
-  "recovered": 2,
+  "totalCandidates": 100,
+  "cdxFound": 43,
+  "cdxNotFound": 13,
+  "recovered": 42,
   "recoveredByTier": {
-    "1": 2,
+    "1": 0,
     "2": 0,
-    "3": 0
+    "3": 42
   },
   "recoveredByDomain": {
-    "newyorker.com": 2
+    "bloomberg.com": 28,
+    "businessweek.com": 14
   },
-  "tooShort": 0,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 59,
-  "notInArchive": 73
+  "errors": 44,
+  "notInArchive": 13
 }
