@@ -1526,6 +1526,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip fabricated entries (URLs fabricated by web-search LLM, confirmed dead via HTTP check)
+      if (data.fabricatedEntry === true) {
+        stats.skippedFabricated = (stats.skippedFabricated || 0) + 1;
+        return;
+      }
+
       // Skip non-reviews (profiles, interviews, previews, features, news articles)
       if (data.isNonReview === true) {
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
@@ -2267,6 +2273,7 @@ const output = {
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
+      skippedFabricated: stats.skippedFabricated || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
     }
@@ -2376,6 +2383,7 @@ console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (fabricated entry): ${stats.skippedFabricated || 0}`);
 console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
