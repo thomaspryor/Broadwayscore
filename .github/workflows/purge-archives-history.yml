@@ -7,7 +7,6 @@ name: "Purge copyrighted/sensitive paths from git history"
 #   - data/master-review-list.json
 #   - data/review-texts-quarantine/
 #   - data/calibration/calibration-examples.json
-#   - data/aggregator-archive/    (archived aggregator HTML)
 #   - data/collected-reviews/
 #   - data/mezzanine-screenshots/
 #   - data/bug-reviews.json
@@ -43,7 +42,7 @@ jobs:
           git clone --bare --filter=blob:none https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git /tmp/check-repo
           cd /tmp/check-repo
           ALL_FILES=$(git log --all --pretty=format: --name-only 2>/dev/null || true)
-          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/aggregator-archive/|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || echo "0")
+          COUNT=$(echo "$ALL_FILES" | grep -cE '^(data/archives/|data/review-texts/|data/master-review-list\.json|data/review-texts-quarantine/|data/calibration/calibration-examples\.json|data/collected-reviews/|data/mezzanine-screenshots/|data/bug-reviews\.json|\.mcp\.json)' || echo "0")
           echo "purge_count=$COUNT" >> "$GITHUB_OUTPUT"
           if [ "$COUNT" = "0" ]; then
             echo "Nothing to purge — all target paths already clean!"
@@ -84,6 +83,19 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create local branches for all remote branches
+        if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
+        run: |
+          # filter-repo only rewrites local branches, so we must create local
+          # tracking branches for ALL remote branches before running it
+          for branch in $(git branch -r | grep -v HEAD | sed 's|origin/||'); do
+            if [ "$branch" != "main" ] && ! git branch --list "$branch" | grep -q .; then
+              echo "Creating local branch: $branch"
+              git checkout -b "$branch" "origin/$branch" 2>/dev/null || true
+            fi
+          done
+          git checkout main
+
       - name: Install git-filter-repo
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
         run: pip3 install git-filter-repo
@@ -101,7 +113,6 @@ jobs:
             --path data/master-review-list.json \
             --path data/review-texts-quarantine/ \
             --path data/calibration/calibration-examples.json \
-            --path data/aggregator-archive/ \
             --path data/collected-reviews/ \
             --path data/mezzanine-screenshots/ \
             --path data/bug-reviews.json \
