@@ -1,18 +1,113 @@
 {
-  "updatedAt": "2026-02-21T09:46:06.790Z",
-  "processed": 56,
-  "failed": 144,
-  "successRate": "28.0%",
+  "updatedAt": "2026-02-21T10:02:51.754Z",
+  "processed": 80,
+  "failed": 160,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 35,
-    "amp": 0,
+    "playwright": 50,
+    "amp": 6,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 34,
-    "archive": 19
+    "archiveToday": 48,
+    "archive": 28
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 9,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T09:32:43.618Z",
+      "event": "bb-session",
+      "session": "b1206362",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
+    },
+    {
+      "t": "2026-02-21T09:35:18.212Z",
+      "event": "bb-session",
+      "session": "90df218e",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-21T09:35:20.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-21T09:47:07.688Z",
+      "event": "bb-session",
+      "session": "9a1045b2",
+      "url": "https://nymag.com/daily/entertainment/2010/11/theater_review_the_low-key_ple.htm"
+    },
+    {
+      "t": "2026-02-21T09:47:09.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-21T09:47:10.130Z",
+      "event": "bb-session",
+      "session": "be1fc7af",
+      "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-is-godspell-worthy.h"
+    },
+    {
+      "t": "2026-02-21T09:47:12.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-21T09:48:06.040Z",
+      "event": "bb-session",
+      "session": "607ea2dd",
+      "url": "https://variety.com/2024/legit/reviews/gypsy-broadway-review-audra-mcdonald-1236"
+    },
+    {
+      "t": "2026-02-21T09:48:08.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-21T09:54:52.912Z",
+      "event": "bb-session",
+      "session": "4fb0f579",
+      "url": "https://nymag.com/daily/entertainment/2011/03/stage_dive_how_daniel_radcliff.htm"
+    },
+    {
+      "t": "2026-02-21T09:54:54.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-02-21T09:54:59.462Z",
+      "event": "bb-session",
+      "session": "f691a18a",
+      "url": "https://www.nytimes.com/2022/07/11/theater/into-the-woods-review.html"
+    },
+    {
+      "t": "2026-02-21T09:55:01.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T09:55:44.038Z",
+      "event": "bb-session",
+      "session": "7c8ee9c6",
+      "url": "https://www.nytimes.com/2009/04/17/theater/reviews/17joe.html"
+    },
+    {
+      "t": "2026-02-21T09:55:46.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T10:02:25.722Z",
+      "event": "bb-session",
+      "session": "fce30aa5",
+      "url": "https://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.htm"
+    },
+    {
+      "t": "2026-02-21T10:02:28.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    }
+  ]
 }
