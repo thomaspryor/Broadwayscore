@@ -42,7 +42,10 @@ runs:
         git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
 
         for i in 1 2 3 4 5; do
-          if git pull --rebase -X theirs origin main && git push origin main; then
+          # Use -X ours: locally-rebuilt derived data (reviews.json etc.) should
+          # take precedence over remote state, since rebuilds are serialized via
+          # concurrency group and always produce the most up-to-date version.
+          if git pull --rebase -X ours origin main && git push origin main; then
             echo "Core data pushed successfully (attempt $i)"
             exit 0
           fi
