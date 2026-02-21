@@ -100,9 +100,6 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
-        {/* Preconnect to image CDN for faster image loading */}
-        <link rel="preconnect" href="https://images.ctfassets.net" />
-        <link rel="dns-prefetch" href="https://images.ctfassets.net" />
       </head>
       <body className="min-h-screen font-sans pt-16">
         {/* Site-wide structured data */}

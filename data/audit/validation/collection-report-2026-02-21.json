@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T13:40:44.632Z",
+  "runDate": "2026-02-21T13:50:46.721Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,61 +11,90 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 9,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "47.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 3,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 7
   },
   "statistics": {
     "tier1Attempts": 4,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 4,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 4,
-    "tier3Attempts": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 41,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 14,
+    "tier4Success": 7,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 5,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 0.9,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
+    "august-osage-county-2007/newyorker--.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "king-kong-2018/newyorker--vinson-cunningham.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json"
+  ],
   "failed": [
-    "betrayal-2013/telegraph--matt-wolf.json",
-    "butley-2006/telegraph--matt-wolf.json",
-    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
-    "matilda-the-musical-2013/telegraph--unknown.json",
-    "west-side-story-2020/telegraph--diane-snyder.json"
+    "wicked-2003/newyorker--.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+    "time-stands-still-2010/newyorker--uncredited.json",
+    "rent-1996/new-yorker--john-lahr-1996.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/time-stands-still-2010/newyorker--uncredited.json"
+    ],
+    "archive": [
+      "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
+      "august-osage-county-2007/newyorker--.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "gypsy-2024/newyorker--naomi-fry.json",
+      "king-kong-2018/newyorker--vinson-cunningham.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
