@@ -43,6 +43,12 @@ const SITES = {
     testUrl: 'https://www.bloomberg.com/',
     profileDir: '/tmp/bloomberg-browser-profile',
   },
+  newyorker: {
+    name: 'New Yorker',
+    loginUrl: 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB',
+    testUrl: 'https://www.newyorker.com/',
+    profileDir: '/tmp/newyorker-browser-profile',
+  },
   newspapers: {
     name: 'Newspapers.com',
     loginUrl: 'https://www.newspapers.com/signin/',
