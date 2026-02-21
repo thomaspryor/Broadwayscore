@@ -9,7 +9,7 @@
  * 1. Search aggregators (DTLI, Show Score) for reviews
  *    - Show Score: Uses Playwright to scroll through carousel and extract ALL critic reviews
  *    - URL patterns try -broadway suffix first to avoid redirects to off-broadway shows
- * 2. Search individual outlets via Claude API web search
+ * 2. Search individual outlets via Google SERP (ScrapingBee/Bright Data)
  * 3. Create review-text files for each found review
  * 4. Rebuild reviews.json
  *
@@ -24,9 +24,9 @@
  *   node scripts/gather-reviews.js --shows=all-out-2025
  *
  * Environment Variables:
- *   ANTHROPIC_API_KEY - Required for Claude API web search
- *   BRIGHTDATA_TOKEN - Optional for scraping
- *   SCRAPINGBEE_API_KEY - Optional for scraping fallback
+ *   SCRAPINGBEE_API_KEY - Required for SERP-based outlet discovery
+ *   BRIGHTDATA_TOKEN - Fallback for SERP discovery
+ *   ANTHROPIC_API_KEY - Optional (used by other pipelines, not by this script)
  *
  * Dependencies:
  *   - playwright (optional but recommended for full Show Score extraction)
@@ -53,6 +53,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
+const { discoverCorrectUrl } = require('./lib/url-discovery');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -142,88 +143,31 @@ function loadOutlets() {
 }
 
 /**
- * Search for reviews using Claude API with web search
+ * Search for a review via real Google SERP (ScrapingBee / Bright Data).
+ * Returns { url } on success, null on failure or no results.
  */
-async function searchForReview(showTitle, year, outlet) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.log('    ⚠️  ANTHROPIC_API_KEY not set, skipping web search');
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey) {
+  if (!scrapingBeeKey && !brightDataKey) {
     return null;
   }
 
-  const searchQuery = `"${showTitle}" Broadway review ${year} site:${outlet.domain}`;
+  // Build a minimal review-like object for discoverCorrectUrl()
+  const reviewObj = {
+    showId,
+    outletId: outlet.id,
+    outlet: outlet.name,
+    criticName: 'Unknown',
+    source: 'serp-discovery',
+    url: '', // no existing URL
+  };
 
-  const prompt = `Search for: ${searchQuery}
+  const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
+    brightDataKey,
+    log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
+  });
 
-I need you to search the web and find if there's a review of "${showTitle}" (Broadway, ${year}) on ${outlet.name} (${outlet.domain}).
-
-If you find a review, extract:
-1. The exact URL of the review
-2. The critic's name
-3. Any explicit rating (stars, letter grade, etc.) if present
-4. A brief excerpt or pull quote from the review (1-2 sentences)
-5. The publish date (in format like "January 25, 2026")
-
-If you CANNOT find a review after searching, respond with: {"found": false}
-
-If you FIND a review, respond with JSON only:
-{
-  "found": true,
-  "url": "full URL",
-  "critic": "Critic Name",
-  "originalRating": "4/5 stars" or null,
-  "excerpt": "Brief quote from the review",
-  "publishDate": "Month Day, Year"
-}
-
-Important: Only report a review if you actually find one via web search. Do not guess or make up URLs.`;
-
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        const status = response.status;
-        if ((status === 429 || status >= 500) && attempt < 2) {
-          console.log(`    ⚠️  API ${status}, retrying in ${(attempt + 1) * 5}s...`);
-          await sleep((attempt + 1) * 5000);
-          continue;
-        }
-        throw new Error(`API error ${status}: ${error.substring(0, 200)}`);
-      }
-
-      const data = await response.json();
-      const content = data.content[0].text;
-
-      // Parse JSON from response
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const result = JSON.parse(jsonMatch[0]);
-        return result.found ? result : null;
-      }
-      return null;
-    } catch (error) {
-      if (attempt < 2 && (error.message.includes('ECONNRESET') || error.message.includes('fetch failed'))) {
-        console.log(`    ⚠️  Network error, retrying in ${(attempt + 1) * 5}s...`);
-        await sleep((attempt + 1) * 5000);
-        continue;
-      }
-      console.log(`    ⚠️  Search error: ${error.message}`);
-      return null;
-    }
+  if (result && result !== '__SERP_UNAVAILABLE__') {
+    return { url: result };
   }
   return null;
 }
@@ -1758,7 +1702,7 @@ function createReviewFile(showId, reviewData) {
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
-    dtliExcerpt: cleanText(reviewData.dtliExcerpt || reviewData.excerpt) || null,
+    dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
     originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating, normalizedOutletId) : null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
@@ -1766,7 +1710,7 @@ function createReviewFile(showId, reviewData) {
     dtliUrl: reviewData.dtliUrl || null,
     bwwExcerpt: cleanText(reviewData.bwwExcerpt) || null,
     bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
-    showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || reviewData.excerpt) || null
+    showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null
   };
 
   // Auto-tag known roundup outlets whose URLs always cover multiple shows
@@ -1986,55 +1930,63 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   }
   await sleep(DELAY_MS);
 
-  // STEP 2: Search ALL outlets via web search (comprehensive coverage)
+  // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)
   if (aggregatorsOnly) {
-    console.log(`\n[2/4] SKIPPED web search (--aggregators-only mode)`);
+    console.log(`\n[2/4] SKIPPED SERP search (--aggregators-only mode)`);
   } else {
-    console.log(`\n[2/4] Searching all ${outlets.length} outlets via web search...`);
+    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
+    const brightDataKey = process.env.BRIGHTDATA_TOKEN || '';
 
-    // Search ALL tiers - we're a comprehensive site, every review matters
-    // Tier 1 outlets first, then Tier 2, then Tier 3
-    const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+    if (!scrapingBeeKey && !brightDataKey) {
+      console.log(`\n[2/4] SKIPPED SERP search (no SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN)`);
+    } else {
+      // Build set of outlets already found by aggregators to skip
+      const foundOutletIds = new Set(
+        foundReviews.map(r => (r.outletId || '').toLowerCase())
+      );
 
-    for (const outlet of allOutlets) {
-      process.stdout.write(`  ${outlet.name}... `);
+      // Tier 1 first, then Tier 2, then Tier 3
+      const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+      const SERP_BUDGET = 150;
+      let serpCallCount = 0;
 
-      const result = await searchForReview(show.title, year, outlet);
+      console.log(`\n[2/4] Searching ${allOutlets.length} outlets via SERP (budget: ${SERP_BUDGET})...`);
 
-      // Validate URL exists before accepting (Claude fabricates URLs without web search tool)
-      if (result && result.url) {
-        try {
-          const headResp = await fetch(result.url, { method: 'HEAD', redirect: 'follow',
-            headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-            signal: AbortSignal.timeout(8000) });
-          if (headResp.status === 404 || headResp.status === 410) {
-            console.log(`✗ URL returned ${headResp.status} (likely fabricated)`);
-            result.found = false;
-          }
-        } catch (e) {
-          // Timeout/network error — URL might be behind paywall, keep it but flag
-          console.log(`⚠ URL check failed (${e.message}), accepting tentatively`);
+      for (const outlet of allOutlets) {
+        if (serpCallCount >= SERP_BUDGET) {
+          console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} calls)`);
+          break;
         }
+
+        // Skip outlets already found by aggregators
+        if (foundOutletIds.has(outlet.id.toLowerCase())) {
+          console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
+          continue;
+        }
+
+        process.stdout.write(`  ${outlet.name}... `);
+        serpCallCount++;
+
+        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey);
+
+        if (result && result.url) {
+          console.log('✓ Found');
+          foundReviews.push({
+            showId,
+            outletId: outlet.id,
+            outlet: outlet.name,
+            criticName: 'Unknown',
+            url: result.url,
+            source: 'serp-discovery'
+          });
+        } else {
+          console.log('✗');
+        }
+
+        await sleep(DELAY_MS);
       }
 
-      if (result && result.url && result.found !== false) {
-        console.log('✓ Found');
-        foundReviews.push({
-          showId,
-          outletId: outlet.id,
-          outlet: outlet.name,
-          criticName: result.critic,
-          url: result.url,
-          publishDate: normalizePublishDate(result.publishDate),
-          excerpt: result.excerpt,
-          originalRating: result.originalRating,
-          source: 'web-search'
-        });
-      } else {
-        console.log('✗');
-      }
-
-      await sleep(DELAY_MS);
+      console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
     }
   }
 
@@ -2207,9 +2159,10 @@ async function main() {
   console.log('Broadway Review Gatherer');
   console.log('========================================');
   console.log(`Shows to process: ${showIds.join(', ')}`);
-  console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + web search)'}`);
+  console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
   if (!aggregatorsOnly) {
-    console.log(`ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? 'Set' : 'NOT SET'}`);
+    console.log(`SCRAPINGBEE_API_KEY: ${process.env.SCRAPINGBEE_API_KEY ? 'Set' : 'NOT SET'}`);
+    console.log(`BRIGHTDATA_TOKEN: ${process.env.BRIGHTDATA_TOKEN ? 'Set' : 'NOT SET'}`);
   }
 
   const results = [];
