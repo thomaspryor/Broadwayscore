@@ -593,8 +593,9 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
     return 2;
   };
 
+  const showCategory = show.category || 'broadway';
   const scored = allShows
-    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5)
+    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5 && (s.category || 'broadway') === showCategory)
     .map(candidate => {
       let score = 0;
 
