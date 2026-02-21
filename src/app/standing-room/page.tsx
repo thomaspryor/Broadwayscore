@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -146,7 +146,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
 }
 
 export default function StandingRoomPage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lastUpdated = getLotteryRushLastUpdated();
 
   // Get shows with SRO data, sorted by price (cheapest first)

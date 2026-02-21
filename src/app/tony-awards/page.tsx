@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getScoreTier } from '@/components/show-cards/ScoreBadge';
 import TonyPredictionsTable from '@/components/TonyPredictionsTable';
@@ -247,7 +247,7 @@ const faqSchema = {
 // --- Page ---
 
 export default function TonyAwardsPage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
   const categories = groupIntoCategories(eligible);
   const historicalWinners = getHistoricalWinners(allShows);
