@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     fontFamily: {
       sans: [
+        'var(--font-inter)',
         'Inter',
         'ui-sans-serif',
         '-apple-system',
