@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -10,6 +11,13 @@ import { getDataStats } from '@/lib/data-core';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -72,7 +80,7 @@ export default function RootLayout({
   const { totalReviews } = getDataStats();
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {/* Preconnect to image CDN for faster LCP */}
@@ -85,24 +93,6 @@ export default function RootLayout({
           rel="dns-prefetch"
           href="https://images.ctfassets.net"
         />
-        {/* Preload Inter font for faster text rendering */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-        {/* Preconnect to image CDN for faster image loading */}
-        <link rel="preconnect" href="https://images.ctfassets.net" />
-        <link rel="dns-prefetch" href="https://images.ctfassets.net" />
       </head>
       <body className="min-h-screen font-sans pt-16">
         {/* Site-wide structured data */}
@@ -136,6 +126,11 @@ export default function RootLayout({
                 <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   Reviews
                 </Link>
+                {featureFlags.westEnd && (
+                  <Link href="/west-end" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                    West End
+                  </Link>
+                )}
                 <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   ☕ Support
                 </a>
@@ -196,6 +191,7 @@ export default function RootLayout({
                   {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
                   {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
                   {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
+                  {featureFlags.westEnd && <li><Link href="/west-end" className="hover:text-white transition-colors">West End</Link></li>}
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
