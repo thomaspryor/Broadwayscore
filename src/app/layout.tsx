@@ -131,6 +131,11 @@ export default function RootLayout({
                     West End
                   </Link>
                 )}
+                {featureFlags.offBroadway && (
+                  <Link href="/off-broadway" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                    Off-Broadway
+                  </Link>
+                )}
                 <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                   ☕ Support
                 </a>
@@ -192,6 +197,7 @@ export default function RootLayout({
                   {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
                   {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
                   {featureFlags.westEnd && <li><Link href="/west-end" className="hover:text-white transition-colors">West End</Link></li>}
+                  {featureFlags.offBroadway && <li><Link href="/off-broadway" className="hover:text-white transition-colors">Off-Broadway</Link></li>}
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>

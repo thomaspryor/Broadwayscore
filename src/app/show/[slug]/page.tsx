@@ -35,7 +35,7 @@ import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
-import { StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge } from '@/components/show-cards';
 import TicketLink from '@/components/TicketLink';
 
 export function generateStaticParams() {
@@ -53,10 +53,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
   const isWestEndMeta = show.category === 'west-end';
-  const siteName = isWestEndMeta ? 'West End Scorecard' : 'Broadway Scorecard';
+  const isOffBroadwayMeta = show.category === 'off-broadway';
+  const siteName = isWestEndMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
+  const marketLabel = isWestEndMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const description = score
     ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
-    : `Reviews and scores for ${show.title} ${isWestEndMeta ? 'in the West End' : 'on Broadway'}. ${synopsisSnippet}`;
+    : `Reviews and scores for ${show.title} ${marketLabel}. ${synopsisSnippet}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -186,10 +188,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const lastUpdated = getShowLastUpdated(show.id);
   const showSchema = generateShowSchema(show, lastUpdated || undefined);
   const isWestEnd = show.category === 'west-end';
+  const isOffBroadway = show.category === 'off-broadway';
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     ...(isWestEnd
       ? [{ name: 'West End', url: `${BASE_URL}/west-end` }]
+      : isOffBroadway
+      ? [{ name: 'Off-Broadway', url: `${BASE_URL}/off-broadway` }]
       : [{ name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
     ),
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
@@ -241,6 +246,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           { label: 'Home', href: '/' },
           ...(isWestEnd
             ? [{ label: 'West End', href: '/west-end' }]
+            : isOffBroadway
+            ? [{ label: 'Off-Broadway', href: '/off-broadway' }]
             : [{ label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
           ),
           { label: show.title },
@@ -277,6 +284,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex-1 min-w-0">
               {/* Pills row */}
               <div className="flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
+                <CategoryBadge category={show.category} />
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
@@ -290,7 +298,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
               {/* Meta line — inline text so it wraps naturally on mobile */}
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
-                {isWestEnd ? (
+                {isWestEnd || isOffBroadway ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
@@ -770,7 +778,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="sm:col-span-2">
               <dt className="text-gray-500">Theater</dt>
               <dd className="text-white mt-0.5">
-                {isWestEnd ? (
+                {isWestEnd || isOffBroadway ? (
                   <span>{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
