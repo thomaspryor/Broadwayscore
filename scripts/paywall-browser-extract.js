@@ -92,6 +92,54 @@ const SITES = {
       });
     },
   },
+  newyorker: {
+    name: 'New Yorker',
+    outletId: 'newyorker',
+    outlet: 'New Yorker',
+    profileDir: '/tmp/newyorker-browser-profile',
+    selectors: [], // Uses customExtract instead
+    removeSelectors: [],
+    // New Yorker splits content across multiple article__body divs and marks
+    // subscriber-only paragraphs with a "paywall" CSS class. We need to grab
+    // text from ALL body containers plus all paywall-class elements.
+    customExtract: async (page) => {
+      return page.evaluate(() => {
+        // Remove noise elements
+        document.querySelectorAll('figure, aside, div[class*="newsletter"], div[class*="recirc"]').forEach(el => el.remove());
+
+        // Collect text from all visible article__body containers
+        const bodies = document.querySelectorAll('div.article__body');
+        const bodyTexts = Array.from(bodies)
+          .filter(b => b.offsetHeight > 0)
+          .map(b => b.innerText?.trim())
+          .filter(t => t);
+
+        // Also collect paywall-class paragraphs (subscriber-only content)
+        const paywallEls = document.querySelectorAll('p.paywall, blockquote.paywall');
+        const paywallTexts = Array.from(paywallEls)
+          .map(p => p.innerText?.trim())
+          .filter(t => t);
+
+        // Combine: body containers first, then paywall paragraphs
+        // Deduplicate by checking if paywall text is already in body text
+        const bodyText = bodyTexts.join('\n\n');
+        const extraPaywall = paywallTexts.filter(t => !bodyText.includes(t));
+        const combined = bodyText + (extraPaywall.length ? '\n\n' + extraPaywall.join('\n\n') : '');
+
+        return combined;
+      });
+    },
+    extractMeta: async (page) => {
+      return page.evaluate(() => {
+        const headline = document.querySelector('h1')?.textContent?.trim() || '';
+        const byline = document.querySelector('[class*="byline"] a, [class*="Byline"] a')?.textContent?.trim()
+          || document.querySelector('[class*="byline"], [class*="Byline"]')?.textContent?.trim()?.replace(/^by\s+/i, '') || '';
+        const dateEl = document.querySelector('time[datetime]');
+        const date = dateEl?.getAttribute('datetime')?.split('T')[0] || '';
+        return { headline, byline, date };
+      });
+    },
+  },
   bloomberg: {
     name: 'Bloomberg',
     outletId: 'bloomberg',
@@ -138,6 +186,15 @@ function parseArgs() {
  * Extract article text from a page using site-specific selectors.
  */
 async function extractArticleText(page, siteConfig) {
+  // Some sites need custom extraction logic (e.g., New Yorker splits content
+  // across multiple containers with paywall-class elements)
+  if (siteConfig.customExtract) {
+    const text = await siteConfig.customExtract(page);
+    if (text && text.length > 200) {
+      return { text: text.trim(), selector: 'customExtract' };
+    }
+  }
+
   // Remove noise elements first
   await page.evaluate((removeSelectors) => {
     for (const sel of removeSelectors) {
@@ -285,7 +342,12 @@ async function processUrl(page, siteConfig, url, opts) {
 
   // Save seed file if show ID provided
   if (opts.show) {
-    const criticName = opts.critic || meta.byline?.replace(/^by\s+/i, '').trim() || 'unknown';
+    const detectedByline = meta.byline?.replace(/^by\s+/i, '').trim() || '';
+    let criticName = detectedByline || opts.critic || 'unknown';
+    if (opts.critic && detectedByline && opts.critic.toLowerCase() !== detectedByline.toLowerCase()) {
+      console.log(`  ⚠ Byline mismatch: --critic="${opts.critic}" but page says "${detectedByline}" — using detected byline`);
+      criticName = detectedByline;
+    }
     saveSeedFile(
       opts.show,
       siteConfig.outletId,
