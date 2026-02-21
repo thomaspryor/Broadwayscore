@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T13:32:44.157Z",
+  "runDate": "2026-02-21T13:40:44.632Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,90 +11,61 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 10,
+    "processed": 0,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "47.4%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 3,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 6
+    "archiveToday": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 4,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 6,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 14,
-    "tier4Success": 2,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 5,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 1.6,
-    "urlDiscoveryAttempts": 5,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 41,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-    "august-osage-county-2007/newyorker--.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "king-kong-2018/newyorker--vinson-cunningham.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json",
-    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
-  ],
+  "processed": [],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "pretty-woman-the-musical-2018/newyorker--michael-schulman.json",
-    "south-pacific-2008/newyorker--john-lahr.json",
-    "time-stands-still-2010/newyorker--uncredited.json",
-    "rent-1996/new-yorker--john-lahr-1996.json"
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "data/review-texts/time-stands-still-2010/newyorker--uncredited.json"
-    ],
-    "archive": [
-      "august-osage-county-2007/newyorker--.json",
-      "gypsy-2024/newyorker--naomi-fry.json",
-      "king-kong-2018/newyorker--vinson-cunningham.json",
-      "lombardi-2010/newyorker--uncredited.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "pictures-from-home-2023/newyorker--helen-shaw.json"
-    ]
+    "archiveToday": [],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
