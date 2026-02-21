@@ -1,0 +1,50 @@
+{
+  "showId": "the-snow-geese-2013",
+  "outletId": "timeout",
+  "outlet": "Time Out",
+  "criticName": "Adam Feldman",
+  "score": 40,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "high",
+  "keyPhrases": [
+    {
+      "text": "to similarly uninspired effect",
+      "sentiment": "negative"
+    },
+    {
+      "text": "the very fine Burstein",
+      "sentiment": "positive"
+    },
+    {
+      "text": "does not share those works' depth of feeling or insight",
+      "sentiment": "negative"
+    },
+    {
+      "text": "feels jarringly, unevenly contemporary",
+      "sentiment": "negative"
+    },
+    {
+      "text": "pretty but unsatisfying meal, undercooked and overstuffed",
+      "sentiment": "negative"
+    },
+    {
+      "text": "doesn't take root",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "Predominantly negative review with harsh criticisms of the writing and execution. While there's one praise for Burstein's performance, the overwhelming tone is critical, calling it 'uninspired,' 'unsatisfying,' and comparing it unfavorably to classic works. The bottom line explicitly states it 'doesn't take root.'",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "3/5",
+      "expectedRange": "55-72",
+      "actualScore": 40
+    }
+  ],
+  "scoredAt": "2026-02-21T15:34:36.215Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "3/5",
+  "dtliThumb": null,
+  "bwwThumb": null
+}
