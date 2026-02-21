@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade } from '@/lib/data-audience';
 import type { AudienceBuzzData } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -70,7 +70,7 @@ const gradeScale = [
 ];
 
 export default function AudienceBuzzPage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lastUpdated = getAudienceBuzzLastUpdated();
 
   // Get all shows with audience buzz data
