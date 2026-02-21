@@ -2,9 +2,9 @@ name: Reddit Engagement Digest
 
 on:
   schedule:
-    # 8 AM ET (1 PM UTC in EST, noon UTC in EDT — close enough)
+    # ~8 AM ET (1 PM UTC = 8 AM EST / 9 AM EDT)
     - cron: '0 13 * * *'
-    # 8 PM ET (1 AM UTC next day in EST, midnight UTC in EDT)
+    # ~8 PM ET (1 AM UTC = 8 PM EST / 9 PM EDT)
     - cron: '0 1 * * *'
 
   workflow_dispatch:

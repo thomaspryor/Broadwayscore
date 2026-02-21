@@ -117,7 +117,7 @@ function log(msg) {
 /**
  * Call Claude Messages API directly (no SDK dependency)
  */
-function callClaude(systemPrompt, userMessage, maxTokens = 4000) {
+function callClaude(systemPrompt, userMessage, maxTokens = 4000, timeoutMs = 120000) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model: 'claude-sonnet-4-5-20250929',
@@ -130,6 +130,7 @@ function callClaude(systemPrompt, userMessage, maxTokens = 4000) {
       hostname: 'api.anthropic.com',
       path: '/v1/messages',
       method: 'POST',
+      timeout: timeoutMs,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.ANTHROPIC_API_KEY,
@@ -153,6 +154,10 @@ function callClaude(systemPrompt, userMessage, maxTokens = 4000) {
           reject(new Error(`Claude API ${res.statusCode}: ${data.slice(0, 500)}`));
         }
       });
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`Claude API timed out after ${timeoutMs / 1000}s`));
     });
     req.on('error', reject);
     req.write(body);
