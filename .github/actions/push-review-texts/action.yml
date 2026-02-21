@@ -102,27 +102,26 @@ runs:
                 git show HEAD:"$f" > /tmp/ff_theirs.json 2>/dev/null || echo "[]" > /tmp/ff_theirs.json
 
                 python3 -c "
-import json, sys
-try:
-    with open('/tmp/ff_ours.json') as f: ours = json.load(f)
-except: ours = []
-try:
-    with open('/tmp/ff_theirs.json') as f: theirs = json.load(f)
-except: theirs = []
-if not isinstance(ours, list): ours = []
-if not isinstance(theirs, list): theirs = []
-# Index by reviewId — theirs first, then ours overwrites (ours = more recent local state)
-merged = {}
-for entry in theirs:
-    rid = entry.get('reviewId', '')
-    if rid: merged[rid] = entry
-for entry in ours:
-    rid = entry.get('reviewId', '')
-    if rid: merged[rid] = entry
-result = list(merged.values())
-with open('/tmp/ff_merged.json', 'w') as f: json.dump(result, f, indent=2)
-print(f'  failed-fetches.json: merged arrays (ours={len(ours)} + theirs={len(theirs)} -> {len(result)} unique)')
-" 2>/dev/null
+                import json, sys
+                try:
+                    with open('/tmp/ff_ours.json') as f: ours = json.load(f)
+                except: ours = []
+                try:
+                    with open('/tmp/ff_theirs.json') as f: theirs = json.load(f)
+                except: theirs = []
+                if not isinstance(ours, list): ours = []
+                if not isinstance(theirs, list): theirs = []
+                merged = {}
+                for entry in theirs:
+                    rid = entry.get('reviewId', '')
+                    if rid: merged[rid] = entry
+                for entry in ours:
+                    rid = entry.get('reviewId', '')
+                    if rid: merged[rid] = entry
+                result = list(merged.values())
+                with open('/tmp/ff_merged.json', 'w') as f: json.dump(result, f, indent=2)
+                print(f'  failed-fetches.json: merged arrays (ours={len(ours)} + theirs={len(theirs)} -> {len(result)} unique)')
+                " 2>/dev/null
 
                 if [ -f /tmp/ff_merged.json ] && python3 -c "import json; json.load(open('/tmp/ff_merged.json'))" 2>/dev/null; then
                   cp /tmp/ff_merged.json "$f"
