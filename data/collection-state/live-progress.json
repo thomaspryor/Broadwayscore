@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-21T04:07:21.220Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-02-21T04:12:19.194Z",
+  "processed": 3,
+  "failed": 17,
+  "successRate": "15.0%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 0
+    "archiveToday": 11,
+    "archive": 3
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-21T04:00:31.900Z",
@@ -108,6 +108,17 @@
       "t": "2026-02-21T04:06:54.117Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:11:45.052Z",
+      "event": "bb-session",
+      "session": "a00c658b",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-21T04:11:47.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
