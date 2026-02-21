@@ -1,56 +1,56 @@
 {
-  "lastRun": "2026-02-20T07:44:17.331Z",
-  "consecutiveErrorDays": 2,
+  "lastRun": "2026-02-21T07:29:22.407Z",
+  "consecutiveErrorDays": 3,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "13h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "3d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
-      "status": "error",
-      "message": "reviews.json has 16538 more entries than source files"
+      "status": "pass",
+      "message": "Skipped — review-texts not checked out (private repo)"
     },
     {
       "name": "Sync: open show coverage",
-      "status": "pass",
-      "message": "27 open shows all have reviews and grosses"
+      "status": "error",
+      "message": "69 open shows missing reviews (Little Women the Musical, Singfeld! A Musical About Nothing, The Other Place, The Unknown, The Waterfall); 69 open shows missing grosses"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "1997 shows, 27 open, 16538 reviews (all at or above baseline)"
+      "message": "2143 shows, 96 open, 16260 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -65,27 +65,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 16h ago"
+      "message": "Last success 7h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
-      "status": "warn",
-      "message": "No timestamp file (workflow may not have run yet)"
+      "status": "pass",
+      "message": "Last success 13h ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 8h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 7h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "97.8% scored (16538/16914)"
+      "message": "97.9% scored (16260/16602)"
     },
     {
       "name": "Cookies: expiration",
