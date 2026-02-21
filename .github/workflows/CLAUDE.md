@@ -430,3 +430,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/check-secrets-health.js`
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
 - **Manual trigger:** `gh workflow run "Check Secrets Health"`
+
+## `check-seo-health.yml`
+- **Runs:** Weekly on Sundays at 8 AM UTC, or manually
+- **Does:** Comprehensive SEO health monitoring via Google Search Console APIs. 5 features: (1) search performance tracking (clicks, impressions, CTR, position vs prior week + top queries/pages), (2) index coverage sampling (URL Inspection API on 50 random show URLs), (3) sitemap status verification, (4) new page indexing (auto-resubmits shows opened 2-7 days ago if not indexed), (5) stale page detection (resubmits pages with lastCrawlTime >30 days, capped at 50/week)
+- **Anomaly detection:** Compares current week to 4-week rolling average. Alerts on clicks down >25%, impressions down >30%, position worse by >5. Seasonality guard: if 52+ weeks of history, suppresses alerts that match same-week-last-year pattern (within 30%).
+- **Data persistence:** `data/audit/seo-health.json` (latest snapshot), `data/audit/seo-performance-history.json` (52-week rolling history), `data/audit/indexing-api-usage.json` (shared daily quota ledger, 200/day)
+- **Script:** `scripts/check-seo-health.js` (imports from `scripts/submit-google-indexing.js`)
+- **Requires:** GOOGLE_INDEXING_KEY, DISCORD_WEBHOOK_ALERTS, RESEND_API_KEY, OWNER_EMAIL, REVIEW_TEXTS_TOKEN (for checkout-core-data)
+- **Alerts:** Discord for warnings, Discord + email for errors (>20% traffic drop or >10% deindexing)
+- **Manual trigger:** `gh workflow run "Check SEO Health"`
+- **Note:** Audit data pushes do NOT trigger Vercel deploys (seo-* paths not in deploy trigger list). Commit uses `[skip ci]`.
