@@ -361,9 +361,9 @@ function flattenComments(response) {
     if (!children) return;
     for (const child of children) {
       if (child.kind === 't1' && child.data) {
-        const { id, body, score } = child.data;
+        const { id, author, body, score } = child.data;
         if (body && body !== '[deleted]' && body !== '[removed]') {
-          comments.push({ id, body, score: score || 0 });
+          comments.push({ id, author, body, score: score || 0 });
         }
         if (child.data.replies?.data?.children) {
           extractComments(child.data.replies.data.children);

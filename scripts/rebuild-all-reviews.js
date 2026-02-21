@@ -1534,7 +1534,8 @@ showDirs.forEach(showId => {
 
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Allows 14-day grace period for preview coverage
-      if (data.publishDate && showDateMap[showId]) {
+      // Reviews with allowEarlyDate: true bypass this (e.g., off-Broadway → Broadway transfers)
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
