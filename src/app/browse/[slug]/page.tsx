@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -24,7 +24,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // Get top show poster for OG image, or use default
   const browseList = getBrowseList(params.slug);
   const topPoster = browseList?.shows[0]?.images?.hero || browseList?.shows[0]?.images?.poster;
-  const ogImageUrl = topPoster || `${BASE_URL}/og/home.png`;
+  const ogImageUrl = topPoster ? toAbsoluteUrl(topPoster) : `${BASE_URL}/og/home.png`;
 
   return {
     title: config.metaTitle,
