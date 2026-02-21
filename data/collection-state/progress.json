@@ -10,7 +10,17 @@
     "all-my-sons-2008/washpost--peter-marks.json",
     "all-my-sons-2019/washpost--peter-marks.json",
     "american-buffalo-2022/washpost--peter-marks.json",
-    "american-psycho-2016/washpost--peter-marks.json"
+    "american-psycho-2016/washpost--peter-marks.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "american-psycho-2016/nydailynews--joe-dziemianowicz.json",
+    "birthday-candles-2022/nydailynews--chris-jones.json",
+    "bring-it-on-the-musical-2012/nydailynews--joe-dziemianowicz.json",
+    "call-me-izzy-2025/nydailynews--chris-jones.json",
+    "clybourne-park-2012/nydailynews--joe-dziemianowicz.json",
+    "dead-outlaw-2025/nydailynews--chris-jones.json",
+    "dead-outlaw-2025/nydailynews--unknown.json",
+    "escape-to-margaritaville-2018/nydailynews--joe-dziemianowicz.json",
+    "farinelli-and-the-king-2017/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,12 +44,13 @@
       "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
-      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json"
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-21T04:00:15.406Z",
-  "lastProcessed": "american-psycho-2016/washpost--peter-marks.json",
+  "lastProcessed": "farinelli-and-the-king-2017/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-02-21T04:00:31.900Z",
@@ -134,6 +145,17 @@
       "t": "2026-02-21T04:06:54.117Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:12:52.457Z",
+      "event": "bb-session",
+      "session": "61879c8d",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-21T04:12:54.781Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
