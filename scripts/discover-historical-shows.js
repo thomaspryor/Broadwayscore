@@ -416,8 +416,10 @@ async function discoverHistoricalShows() {
       continue;
     }
 
-    // STEP 1: Tour detection
-    const tourCheck = isTourProduction(show);
+    // STEP 1: Tour detection (check venue category first for off-Broadway awareness)
+    const venueCategory = validateVenue(show.venue)?.category;
+    const isOffBroadway = show.category === 'off-broadway' || venueCategory === 'off-broadway';
+    const tourCheck = isTourProduction(show, { allowOffBroadway: isOffBroadway });
     if (tourCheck.isTour) {
       skippedTours.push({
         title: show.title, season: show.season,
