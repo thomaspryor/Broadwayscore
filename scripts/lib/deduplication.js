@@ -92,7 +92,7 @@ function slugify(title) {
   return title
     .toLowerCase()
     .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
-    .replace(/[!?'":\-–—,\.+\/\[\]()]/g, '')           // Strip punctuation + brackets
+    .replace(/[!?'":\-–—,\.+\/\[\]()|*#@{}]/g, '')      // Strip punctuation + brackets + special chars
     .replace(/[&]/g, 'and')
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')

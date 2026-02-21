@@ -55,11 +55,26 @@ export function getAllShows(): ComputedShow[] {
 }
 
 /**
- * Get all Broadway shows (excludes off-Broadway from public listings).
+ * Check if a show belongs to Broadway (default category).
+ * Shows with no category or category='broadway' are Broadway shows.
+ */
+function isBroadwayShow(show: ComputedShow): boolean {
+  return !show.category || show.category === 'broadway';
+}
+
+/**
+ * Get all Broadway shows (excludes off-Broadway and west-end from public listings).
  * Use getAllShows() for internal queries that need all shows (e.g., static page generation).
  */
 export function getBroadwayShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category !== 'off-broadway');
+  return getAllShows().filter(isBroadwayShow);
+}
+
+/**
+ * Get all West End shows
+ */
+export function getWestEndShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'west-end');
 }
 
 /**
@@ -68,7 +83,7 @@ export function getBroadwayShows(): ComputedShow[] {
 export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all', options?: { includeOffBroadway?: boolean }): ComputedShow[] {
   const allShows = getAllShows();
   const includeOB = options?.includeOffBroadway ?? false;
-  const filtered = includeOB ? allShows : allShows.filter(show => show.category !== 'off-broadway');
+  const filtered = includeOB ? allShows : allShows.filter(isBroadwayShow);
   if (status === 'all') return filtered;
   return filtered.filter(show => show.status === status);
 }
@@ -105,7 +120,7 @@ export function getAllShowSlugs(): string[] {
  * Get shows sorted by composite score (excludes off-Broadway from public listings)
  */
 export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[] {
-  return [...getAllShows()].filter(show => show.category !== 'off-broadway').sort((a, b) => {
+  return [...getAllShows()].filter(isBroadwayShow).sort((a, b) => {
     const scoreA = a.compositeScore ?? -1;
     const scoreB = b.compositeScore ?? -1;
     return ascending ? scoreA - scoreB : scoreB - scoreA;
@@ -208,7 +223,7 @@ export function slugify(name: string): string {
  * Get all unique directors with their shows
  */
 export function getAllDirectors(): Director[] {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const directorMap = new Map<string, ComputedShow[]>();
 
   for (const show of allShows) {
@@ -266,7 +281,7 @@ let _theatersCache: Theater[] | null = null;
 export function getAllTheaters(): Theater[] {
   if (_theatersCache) return _theatersCache;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
   for (const show of allShows) {
@@ -390,7 +405,7 @@ export function getBestOfList(category: BestOfCategory): BestOfList | undefined 
   const config = BEST_OF_CONFIG[category];
   if (!config) return undefined;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const filteredShows = allShows
     .filter(config.filter)
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
@@ -422,7 +437,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const config = BROWSE_PAGES[slug];
   if (!config) return undefined;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   let filteredShows = allShows.filter(config.filter);
 
   if (config.sort === 'score') {

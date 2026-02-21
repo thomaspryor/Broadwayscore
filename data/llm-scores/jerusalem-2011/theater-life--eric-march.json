@@ -1,0 +1,42 @@
+{
+  "showId": "jerusalem-2011",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Eric March",
+  "score": 75,
+  "bucket": "Positive",
+  "thumb": "Up",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "extremely moving episode",
+      "sentiment": "positive"
+    },
+    {
+      "text": "few dry eyes in the audience",
+      "sentiment": "positive"
+    },
+    {
+      "text": "happily declares",
+      "sentiment": "positive"
+    },
+    {
+      "text": "plentifully illustrated",
+      "sentiment": "positive"
+    }
+  ],
+  "reasoning": "Positive descriptive review highlighting emotional impact and audience engagement. Uses appreciative language ('extremely moving,' 'few dry eyes') and presents Fisher's story favorably, but lacks strong superlatives or explicit recommendation that would push it to rave territory.",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "5/5",
+      "expectedRange": "85-100",
+      "actualScore": 75
+    }
+  ],
+  "scoredAt": "2026-02-21T14:38:15.720Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "4.5/5 stars",
+  "dtliThumb": null,
+  "bwwThumb": null
+}
