@@ -30,6 +30,7 @@ const INDEXING_API_URL = 'https://indexing.googleapis.com/v3/urlNotifications:pu
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const SCOPE_INDEXING = 'https://www.googleapis.com/auth/indexing';
 const SCOPE_WEBMASTERS = 'https://www.googleapis.com/auth/webmasters.readonly';
+const SCOPE_WEBMASTERS_WRITE = 'https://www.googleapis.com/auth/webmasters';
 const QUOTA_LEDGER_PATH = path.join(__dirname, '../data/audit/indexing-api-usage.json');
 
 // Parse args
@@ -185,7 +186,7 @@ function getQuotaRemaining() {
 // --- Sitemap Submission via Search Console API ---
 
 async function submitSitemapToGSC(serviceAccount) {
-  const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS);
+  const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS_WRITE);
   const siteUrl = encodeURIComponent(SITE_URL_GSC);
   const feedpath = encodeURIComponent('https://broadwayscorecard.com/sitemap.xml');
 
@@ -342,7 +343,7 @@ async function main() {
 }
 
 // Export for use by other scripts
-module.exports = { getAccessToken, loadServiceAccount, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC };
+module.exports = { getAccessToken, loadServiceAccount, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SCOPE_WEBMASTERS_WRITE, SITE_HOST, SITE_URL_GSC };
 
 // Only run main() when executed directly (not when required as module)
 if (require.main === module) {
