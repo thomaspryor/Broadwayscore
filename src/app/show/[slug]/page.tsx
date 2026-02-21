@@ -53,6 +53,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
   const isWestEndMeta = show.category === 'west-end';
+  const siteName = isWestEndMeta ? 'West End Scorecard' : 'Broadway Scorecard';
   const description = score
     ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
     : `Reviews and scores for ${show.title} ${isWestEndMeta ? 'in the West End' : 'on Broadway'}. ${synopsisSnippet}`;
@@ -68,14 +69,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   return {
     title: roundedScore
-      ? `${show.title} Reviews — Broadway Scorecard | Critic Score: ${roundedScore} | ${reviewCount} Reviews`
-      : `${show.title} Reviews — Broadway Scorecard`,
+      ? `${show.title} Reviews — ${siteName} | Critic Score: ${roundedScore} | ${reviewCount} Reviews`
+      : `${show.title} Reviews — ${siteName}`,
     description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${show.title} - Broadway Scorecard`,
+      title: `${show.title} - ${siteName}`,
       description,
       url: canonicalUrl,
       type: 'article',
@@ -83,7 +84,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - ${siteName}`,
       }],
     },
     twitter: {
@@ -94,7 +95,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - ${siteName}`,
       }],
     },
   };
@@ -289,7 +290,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
               {/* Meta line — inline text so it wraps naturally on mobile */}
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
-                <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                {isWestEnd ? (
+                  <span className="text-gray-300">{show.venue}</span>
+                ) : (
+                  <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                )}
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
@@ -765,7 +770,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="sm:col-span-2">
               <dt className="text-gray-500">Theater</dt>
               <dd className="text-white mt-0.5">
-                <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
+                {isWestEnd ? (
+                  <span>{show.venue}</span>
+                ) : (
+                  <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
+                )}
                 {show.theaterAddress && (
                   <>
                     {' — '}

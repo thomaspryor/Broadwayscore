@@ -31,7 +31,7 @@ export function generateOrganizationSchema() {
 }
 
 // Parse address string like "226 W 46th St, New York, NY 10036" into PostalAddress
-function toPostalAddress(address: string) {
+function toPostalAddress(address: string, country: string = 'US') {
   const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
   if (match) {
     return {
@@ -40,7 +40,7 @@ function toPostalAddress(address: string) {
       addressLocality: match[2],
       addressRegion: match[3],
       postalCode: match[4],
-      addressCountry: 'US',
+      addressCountry: country,
     };
   }
   return address;
@@ -113,6 +113,9 @@ export function generateReviewSchema(review: {
 
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
+  const isWestEnd = show.category === 'west-end';
+  const country = isWestEnd ? 'GB' : 'US';
+  const currency = isWestEnd ? 'GBP' : 'USD';
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -123,7 +126,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     location: {
       '@type': 'PerformingArtsTheater',
       name: show.venue,
-      address: toPostalAddress(show.theaterAddress || show.venue),
+      address: toPostalAddress(show.theaterAddress || show.venue, country),
     },
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
@@ -155,7 +158,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     schema.offers = show.ticketLinks.map(link => ({
       '@type': 'Offer',
       url: link.url,
-      priceCurrency: 'USD',
+      priceCurrency: currency,
       price: link.priceFrom,
       availability: 'https://schema.org/InStock',
       seller: {
@@ -216,6 +219,7 @@ export function generateItemListSchema(items: {
   description?: string;
   status?: string;
   ticketLinks?: { platform: string; url: string; priceFrom?: number }[];
+  category?: string;
 }[], listName: string) {
   return {
     '@context': 'https://schema.org',
@@ -277,10 +281,11 @@ export function generateItemListSchema(items: {
 
       // Ticket offers
       if (item.ticketLinks && item.ticketLinks.length > 0) {
+        const itemCurrency = item.category === 'west-end' ? 'GBP' : 'USD';
         event.offers = item.ticketLinks.map(link => ({
           '@type': 'Offer',
           url: link.url,
-          priceCurrency: 'USD',
+          priceCurrency: itemCurrency,
           ...(link.priceFrom && { price: link.priceFrom }),
           availability: 'https://schema.org/InStock',
           seller: {
@@ -397,8 +402,13 @@ export function generateShowFAQSchema(show: ComputedShow) {
 // FAQPage Schema for browse/category pages
 export function generateBrowseFAQSchema(
   pageTitle: string,
-  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string }[],
+  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
+  const isWestEnd = shows.length > 0 && shows[0].category === 'west-end';
+  const marketLabel = isWestEnd ? 'in the West End' : 'on Broadway';
+  const outletNames = isWestEnd
+    ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
+    : 'The New York Times, Vulture, and Variety';
   if (shows.length === 0) return null;
 
   const faqs: { question: string; answer: string }[] = [];
@@ -414,7 +424,7 @@ export function generateBrowseFAQSchema(
       .join(', ');
     faqs.push({
       question: `What are the ${pageTitle.toLowerCase()}?`,
-      answer: `Based on aggregated critic reviews, the top-rated are: ${listStr}. Scores are based on reviews from major outlets including The New York Times, Vulture, and Variety.`,
+      answer: `Based on aggregated critic reviews, the top-rated are: ${listStr}. Scores are based on reviews from major outlets including ${outletNames}.`,
     });
   }
 
@@ -422,8 +432,8 @@ export function generateBrowseFAQSchema(
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
   if (openShows.length > 0) {
     faqs.push({
-      question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently on Broadway?`,
-      answer: `There are currently ${openShows.length} ${pageTitle.toLowerCase().replace('best ', '')} playing on Broadway.`,
+      question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently ${marketLabel}?`,
+      answer: `There are currently ${openShows.length} ${pageTitle.toLowerCase().replace('best ', '')} playing ${marketLabel}.`,
     });
   }
 

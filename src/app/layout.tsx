@@ -127,7 +127,7 @@ export default function RootLayout({
                   Reviews
                 </Link>
                 {featureFlags.westEnd && (
-                  <Link href="/west-end" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  <Link href="/west-end" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     West End
                   </Link>
                 )}
