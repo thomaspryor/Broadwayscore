@@ -32,6 +32,7 @@ interface Show {
   id: string;
   title: string;
   slug: string;
+  category?: 'broadway' | 'off-broadway';
 }
 
 interface FetchResult {
@@ -124,15 +125,23 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
-  // Try URL patterns in order of reliability
-  // Pattern 1: {slug}-broadway (for shows with multiple productions like hadestown-broadway)
-  // Pattern 2: {slug} (simple case)
-  // Pattern 3: {slug}-the-musical-broadway (for musicals)
-  const urlPatterns = [
-    `https://www.show-score.com/broadway-shows/${baseSlug}-broadway`,
-    `https://www.show-score.com/broadway-shows/${baseSlug}`,
-    `https://www.show-score.com/broadway-shows/${baseSlug}-the-musical-broadway`,
-  ];
+  // URL patterns depend on show category
+  const isOffBroadway = show.category === 'off-broadway';
+  const showScoreBase = isOffBroadway
+    ? 'https://www.show-score.com/off-broadway-shows'
+    : 'https://www.show-score.com/broadway-shows';
+  const expectedPath = isOffBroadway ? '/off-broadway-shows/' : '/broadway-shows/';
+
+  const urlPatterns = isOffBroadway
+    ? [
+        `${showScoreBase}/${baseSlug}`,
+        `${showScoreBase}/${baseSlug}-the-musical`,
+      ]
+    : [
+        `${showScoreBase}/${baseSlug}-broadway`,
+        `${showScoreBase}/${baseSlug}`,
+        `${showScoreBase}/${baseSlug}-the-musical-broadway`,
+      ];
 
   try {
     for (const tryUrl of urlPatterns) {
@@ -141,13 +150,18 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 
       const pageUrl = page.url();
 
-      // Reject if redirected to off-Broadway
-      if (pageUrl.includes('/off-broadway-shows/') || pageUrl.includes('/off-off-broadway-shows/')) {
-        continue; // Try next pattern
+      // Always reject off-off-broadway
+      if (pageUrl.includes('/off-off-broadway-shows/')) {
+        continue;
       }
 
-      // Check if we landed on a valid Broadway show page
-      if (!pageUrl.includes('/broadway-shows/') || pageUrl.includes('/search')) {
+      // Reject if redirected to wrong category
+      if (!isOffBroadway && pageUrl.includes('/off-broadway-shows/')) {
+        continue;
+      }
+
+      // Check if we landed on a valid show page for our category
+      if (!pageUrl.includes(expectedPath) || pageUrl.includes('/search')) {
         continue; // Try next pattern
       }
 

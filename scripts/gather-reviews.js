@@ -9,7 +9,7 @@
  * 1. Search aggregators (DTLI, Show Score) for reviews
  *    - Show Score: Uses Playwright to scroll through carousel and extract ALL critic reviews
  *    - URL patterns try -broadway suffix first to avoid redirects to off-broadway shows
- * 2. Search individual outlets via Claude API web search
+ * 2. Search individual outlets via Google SERP (ScrapingBee/Bright Data)
  * 3. Create review-text files for each found review
  * 4. Rebuild reviews.json
  *
@@ -24,9 +24,9 @@
  *   node scripts/gather-reviews.js --shows=all-out-2025
  *
  * Environment Variables:
- *   ANTHROPIC_API_KEY - Required for Claude API web search
- *   BRIGHTDATA_TOKEN - Optional for scraping
- *   SCRAPINGBEE_API_KEY - Optional for scraping fallback
+ *   SCRAPINGBEE_API_KEY - Required for SERP-based outlet discovery
+ *   BRIGHTDATA_TOKEN - Fallback for SERP discovery
+ *   ANTHROPIC_API_KEY - Optional (used by other pipelines, not by this script)
  *
  * Dependencies:
  *   - playwright (optional but recommended for full Show Score extraction)
@@ -53,6 +53,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
+const { discoverCorrectUrl } = require('./lib/url-discovery');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -142,88 +143,31 @@ function loadOutlets() {
 }
 
 /**
- * Search for reviews using Claude API with web search
+ * Search for a review via real Google SERP (ScrapingBee / Bright Data).
+ * Returns { url } on success, null on failure or no results.
  */
-async function searchForReview(showTitle, year, outlet) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.log('    ⚠️  ANTHROPIC_API_KEY not set, skipping web search');
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey) {
+  if (!scrapingBeeKey && !brightDataKey) {
     return null;
   }
 
-  const searchQuery = `"${showTitle}" Broadway review ${year} site:${outlet.domain}`;
+  // Build a minimal review-like object for discoverCorrectUrl()
+  const reviewObj = {
+    showId,
+    outletId: outlet.id,
+    outlet: outlet.name,
+    criticName: 'Unknown',
+    source: 'serp-discovery',
+    url: '', // no existing URL
+  };
 
-  const prompt = `Search for: ${searchQuery}
+  const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
+    brightDataKey,
+    log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
+  });
 
-I need you to search the web and find if there's a review of "${showTitle}" (Broadway, ${year}) on ${outlet.name} (${outlet.domain}).
-
-If you find a review, extract:
-1. The exact URL of the review
-2. The critic's name
-3. Any explicit rating (stars, letter grade, etc.) if present
-4. A brief excerpt or pull quote from the review (1-2 sentences)
-5. The publish date (in format like "January 25, 2026")
-
-If you CANNOT find a review after searching, respond with: {"found": false}
-
-If you FIND a review, respond with JSON only:
-{
-  "found": true,
-  "url": "full URL",
-  "critic": "Critic Name",
-  "originalRating": "4/5 stars" or null,
-  "excerpt": "Brief quote from the review",
-  "publishDate": "Month Day, Year"
-}
-
-Important: Only report a review if you actually find one via web search. Do not guess or make up URLs.`;
-
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        const status = response.status;
-        if ((status === 429 || status >= 500) && attempt < 2) {
-          console.log(`    ⚠️  API ${status}, retrying in ${(attempt + 1) * 5}s...`);
-          await sleep((attempt + 1) * 5000);
-          continue;
-        }
-        throw new Error(`API error ${status}: ${error.substring(0, 200)}`);
-      }
-
-      const data = await response.json();
-      const content = data.content[0].text;
-
-      // Parse JSON from response
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const result = JSON.parse(jsonMatch[0]);
-        return result.found ? result : null;
-      }
-      return null;
-    } catch (error) {
-      if (attempt < 2 && (error.message.includes('ECONNRESET') || error.message.includes('fetch failed'))) {
-        console.log(`    ⚠️  Network error, retrying in ${(attempt + 1) * 5}s...`);
-        await sleep((attempt + 1) * 5000);
-        continue;
-      }
-      console.log(`    ⚠️  Search error: ${error.message}`);
-      return null;
-    }
+  if (result && result !== '__SERP_UNAVAILABLE__') {
+    return { url: result };
   }
   return null;
 }
@@ -446,28 +390,38 @@ async function searchDTLI(show) {
     show.title.toLowerCase().replace(/-the-/g, '-').replace(/[^a-z0-9]+/g, '-'),
   ];
 
-  // PRIORITY: Try -bway suffix FIRST for Broadway shows
-  // This avoids hitting Off-Broadway or prior production pages
+  // PRIORITY: Suffix order depends on category
+  const isOffBroadway = show.category === 'off-broadway';
   const allVariations = [];
 
-  // First, try all variations WITH -bway suffix (highest priority for Broadway)
-  for (const base of baseVariations) {
-    allVariations.push(base + '-bway');
-  }
+  if (isOffBroadway) {
+    // Off-Broadway: try -off-broadway suffix first, then no suffix, then base
+    for (const base of baseVariations) {
+      allVariations.push(base + '-off-broadway');
+    }
+    for (const base of baseVariations) {
+      allVariations.push(base);
+    }
+  } else {
+    // Broadway: try -bway suffix FIRST to avoid off-Broadway pages
+    for (const base of baseVariations) {
+      allVariations.push(base + '-bway');
+    }
 
-  // Then try -broadway suffix
-  for (const base of baseVariations) {
-    allVariations.push(base + '-broadway');
-  }
+    // Then try -broadway suffix
+    for (const base of baseVariations) {
+      allVariations.push(base + '-broadway');
+    }
 
-  // Then try -revival suffix
-  for (const base of baseVariations) {
-    allVariations.push(base + '-revival');
-  }
+    // Then try -revival suffix
+    for (const base of baseVariations) {
+      allVariations.push(base + '-revival');
+    }
 
-  // Finally, try without suffix (lowest priority - may hit wrong production)
-  for (const base of baseVariations) {
-    allVariations.push(base);
+    // Finally, try without suffix (lowest priority - may hit wrong production)
+    for (const base of baseVariations) {
+      allVariations.push(base);
+    }
   }
 
   // Special cases for known patterns (revivals, common name conflicts)
@@ -543,42 +497,59 @@ async function searchShowScore(show) {
   const year = new Date(show.openingDate).getFullYear();
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
+  const isOffBroadway = show.category === 'off-broadway';
 
   // For musicals, Show Score often appends "-the-musical-broadway"
   const isMusical = show.type === 'musical';
 
-  // Try more specific patterns first (with -broadway suffix) to avoid
-  // redirects to off-broadway shows with similar names
-  const variations = [
-    // Most specific: -broadway suffix patterns first
-    `${titleSlug}-broadway`,
-    `${titleNoColonSlug}-broadway`,
-    `${show.slug}-broadway`,
-    // For musicals, Show Score often uses "-the-musical-broadway"
-    ...(isMusical ? [
-      `${titleSlug}-the-musical-broadway`,
-      `${titleNoColonSlug}-the-musical-broadway`,
-      `${show.slug}-the-musical-broadway`,
-    ] : []),
-    // For plays, might use "-play-broadway"
-    ...(!isMusical ? [
-      `${titleSlug}-play-broadway`,
-      `${titleNoColonSlug}-play-broadway`,
-    ] : []),
-    // Then try without suffix (less specific, may redirect to wrong shows)
-    show.slug,
-    titleSlug,
-    titleNoColonSlug,
-    // Some shows include the year
-    `${titleSlug}-${year}`,
-    `${titleNoColonSlug}-${year}`,
-  ];
+  // Show Score URL base depends on category
+  const showScoreBase = isOffBroadway
+    ? 'https://www.show-score.com/off-broadway-shows'
+    : 'https://www.show-score.com/broadway-shows';
+
+  // Build slug variations based on category
+  let variations;
+  if (isOffBroadway) {
+    // Off-Broadway: no -broadway suffix needed
+    variations = [
+      show.slug,
+      titleSlug,
+      titleNoColonSlug,
+      ...(isMusical ? [
+        `${titleSlug}-the-musical`,
+        `${titleNoColonSlug}-the-musical`,
+      ] : []),
+      `${titleSlug}-${year}`,
+      `${titleNoColonSlug}-${year}`,
+    ];
+  } else {
+    // Broadway: try -broadway suffix first to avoid redirects
+    variations = [
+      `${titleSlug}-broadway`,
+      `${titleNoColonSlug}-broadway`,
+      `${show.slug}-broadway`,
+      ...(isMusical ? [
+        `${titleSlug}-the-musical-broadway`,
+        `${titleNoColonSlug}-the-musical-broadway`,
+        `${show.slug}-the-musical-broadway`,
+      ] : []),
+      ...(!isMusical ? [
+        `${titleSlug}-play-broadway`,
+        `${titleNoColonSlug}-play-broadway`,
+      ] : []),
+      show.slug,
+      titleSlug,
+      titleNoColonSlug,
+      `${titleSlug}-${year}`,
+      `${titleNoColonSlug}-${year}`,
+    ];
+  }
 
   // Try Playwright first if available (to get ALL reviews via carousel scrolling)
   if (chromium) {
     for (const slug of [...new Set(variations)]) {
-      const url = `https://www.show-score.com/broadway-shows/${slug}`;
-      const result = await scrapeShowScoreWithPlaywright(url);
+      const url = `${showScoreBase}/${slug}`;
+      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway });
       if (result) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html, reviews: result.reviews };
@@ -588,15 +559,16 @@ async function searchShowScore(show) {
   } else {
     // Fall back to HTTP scraping if Playwright not available
     for (const slug of [...new Set(variations)]) {
-      const url = `https://www.show-score.com/broadway-shows/${slug}`;
+      const url = `${showScoreBase}/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
-      // Check that we got actual show content, not the homepage or off-broadway shows
+      // Check that we got actual show content, not the homepage
+      // For off-broadway shows, accept /off-broadway-shows/ but still reject /off-off-broadway-shows/
       if (result.found && result.html &&
           result.html.includes('score') &&
           !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
-          !result.html.includes('/off-broadway-shows/') &&
-          !result.html.includes('/off-off-broadway-shows/')) {
+          !result.html.includes('/off-off-broadway-shows/') &&
+          (isOffBroadway || !result.html.includes('/off-broadway-shows/'))) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html };
       }
@@ -612,7 +584,8 @@ async function searchShowScore(show) {
  * Scrape Show Score page using Playwright with carousel navigation
  * This allows us to get ALL critic reviews, not just the first 8
  */
-async function scrapeShowScoreWithPlaywright(url) {
+async function scrapeShowScoreWithPlaywright(url, options = {}) {
+  const { isOffBroadway = false } = options;
   let browser = null;
   try {
     browser = await chromium.launch({ headless: true });
@@ -623,10 +596,15 @@ async function scrapeShowScoreWithPlaywright(url) {
 
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
 
-    // Check if we got redirected to a different type of show (off-broadway, off-off-broadway)
+    // Check if we got redirected to a different type of show
     const finalUrl = page.url();
-    if (finalUrl.includes('/off-broadway-shows/') || finalUrl.includes('/off-off-broadway-shows/')) {
-      // We got redirected to a non-Broadway show - this is the wrong show
+    // Always reject off-off-broadway
+    if (finalUrl.includes('/off-off-broadway-shows/')) {
+      await browser.close();
+      return null;
+    }
+    // For Broadway shows, reject off-broadway redirects
+    if (!isOffBroadway && finalUrl.includes('/off-broadway-shows/')) {
       await browser.close();
       return null;
     }
@@ -1603,7 +1581,7 @@ function archiveAggregatorPage(aggregator, showId, url, html) {
  * Create a review-text file
  * Uses centralized normalization to prevent duplicate files with different naming
  */
-function createReviewFile(showId, reviewData) {
+function createReviewFile(showId, reviewData, options = {}) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
@@ -1623,8 +1601,10 @@ function createReviewFile(showId, reviewData) {
   }
 
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
+  // For off-broadway shows, allow off-broadway content through
   const outletText = reviewData.outlet || reviewData.outletId || '';
-  if (isNotBroadway(outletText)) {
+  const allowOffBroadway = options.allowOffBroadway || false;
+  if (isNotBroadway(outletText, { allowOffBroadway })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return false;
   }
@@ -1758,7 +1738,7 @@ function createReviewFile(showId, reviewData) {
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
-    dtliExcerpt: cleanText(reviewData.dtliExcerpt || reviewData.excerpt) || null,
+    dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
     originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating, normalizedOutletId) : null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
@@ -1766,7 +1746,7 @@ function createReviewFile(showId, reviewData) {
     dtliUrl: reviewData.dtliUrl || null,
     bwwExcerpt: cleanText(reviewData.bwwExcerpt) || null,
     bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
-    showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || reviewData.excerpt) || null
+    showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null
   };
 
   // Auto-tag known roundup outlets whose URLs always cover multiple shows
@@ -1882,6 +1862,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   const foundReviews = [];
   const outlets = loadOutlets();
+  const isOffBroadway = show.category === 'off-broadway';
 
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
   console.log('\n[1/4] Checking aggregators...');
@@ -1973,7 +1954,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
     const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
-    if (isNotBroadway(roundupTitle) ||
+    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway }) ||
         /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
@@ -1986,55 +1967,63 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   }
   await sleep(DELAY_MS);
 
-  // STEP 2: Search ALL outlets via web search (comprehensive coverage)
+  // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)
   if (aggregatorsOnly) {
-    console.log(`\n[2/4] SKIPPED web search (--aggregators-only mode)`);
+    console.log(`\n[2/4] SKIPPED SERP search (--aggregators-only mode)`);
   } else {
-    console.log(`\n[2/4] Searching all ${outlets.length} outlets via web search...`);
+    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
+    const brightDataKey = process.env.BRIGHTDATA_TOKEN || '';
 
-    // Search ALL tiers - we're a comprehensive site, every review matters
-    // Tier 1 outlets first, then Tier 2, then Tier 3
-    const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+    if (!scrapingBeeKey && !brightDataKey) {
+      console.log(`\n[2/4] SKIPPED SERP search (no SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN)`);
+    } else {
+      // Build set of outlets already found by aggregators to skip
+      const foundOutletIds = new Set(
+        foundReviews.map(r => (r.outletId || '').toLowerCase())
+      );
 
-    for (const outlet of allOutlets) {
-      process.stdout.write(`  ${outlet.name}... `);
+      // Tier 1 first, then Tier 2, then Tier 3
+      const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+      const SERP_BUDGET = 150;
+      let serpCallCount = 0;
 
-      const result = await searchForReview(show.title, year, outlet);
+      console.log(`\n[2/4] Searching ${allOutlets.length} outlets via SERP (budget: ${SERP_BUDGET})...`);
 
-      // Validate URL exists before accepting (Claude fabricates URLs without web search tool)
-      if (result && result.url) {
-        try {
-          const headResp = await fetch(result.url, { method: 'HEAD', redirect: 'follow',
-            headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-            signal: AbortSignal.timeout(8000) });
-          if (headResp.status === 404 || headResp.status === 410) {
-            console.log(`✗ URL returned ${headResp.status} (likely fabricated)`);
-            result.found = false;
-          }
-        } catch (e) {
-          // Timeout/network error — URL might be behind paywall, keep it but flag
-          console.log(`⚠ URL check failed (${e.message}), accepting tentatively`);
+      for (const outlet of allOutlets) {
+        if (serpCallCount >= SERP_BUDGET) {
+          console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} calls)`);
+          break;
         }
+
+        // Skip outlets already found by aggregators
+        if (foundOutletIds.has(outlet.id.toLowerCase())) {
+          console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
+          continue;
+        }
+
+        process.stdout.write(`  ${outlet.name}... `);
+        serpCallCount++;
+
+        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey);
+
+        if (result && result.url) {
+          console.log('✓ Found');
+          foundReviews.push({
+            showId,
+            outletId: outlet.id,
+            outlet: outlet.name,
+            criticName: 'Unknown',
+            url: result.url,
+            source: 'serp-discovery'
+          });
+        } else {
+          console.log('✗');
+        }
+
+        await sleep(DELAY_MS);
       }
 
-      if (result && result.url && result.found !== false) {
-        console.log('✓ Found');
-        foundReviews.push({
-          showId,
-          outletId: outlet.id,
-          outlet: outlet.name,
-          criticName: result.critic,
-          url: result.url,
-          publishDate: normalizePublishDate(result.publishDate),
-          excerpt: result.excerpt,
-          originalRating: result.originalRating,
-          source: 'web-search'
-        });
-      } else {
-        console.log('✗');
-      }
-
-      await sleep(DELAY_MS);
+      console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
     }
   }
 
@@ -2044,7 +2033,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   let created = 0;
   for (const review of foundReviews) {
     if (review.url && !review.needsUrl) {
-      if (createReviewFile(showId, review)) {
+      if (createReviewFile(showId, review, { allowOffBroadway: isOffBroadway })) {
         created++;
       }
     }
@@ -2110,7 +2099,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '')) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }
@@ -2207,9 +2196,10 @@ async function main() {
   console.log('Broadway Review Gatherer');
   console.log('========================================');
   console.log(`Shows to process: ${showIds.join(', ')}`);
-  console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + web search)'}`);
+  console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
   if (!aggregatorsOnly) {
-    console.log(`ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? 'Set' : 'NOT SET'}`);
+    console.log(`SCRAPINGBEE_API_KEY: ${process.env.SCRAPINGBEE_API_KEY ? 'Set' : 'NOT SET'}`);
+    console.log(`BRIGHTDATA_TOKEN: ${process.env.BRIGHTDATA_TOKEN ? 'Set' : 'NOT SET'}`);
   }
 
   const results = [];
