@@ -255,6 +255,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then break; fi
             git checkout -- . 2>/dev/null || true
@@ -262,6 +263,9 @@ jobs:
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
             sleep $((RANDOM % 21 + 10))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
   # Job 2: Gather reviews for gap shows in parallel (aggregators only — no web search)
   gather-gaps:
@@ -371,6 +375,7 @@ jobs:
                   TOTAL_COMMITTED=$((TOTAL_COMMITTED + STAGED))
                   git commit -m "data: Batch ${{ matrix.batch_id }} checkpoint $COUNT/$TOTAL — $STAGED files (${{ inputs.era }})" || true
 
+                  pushed=false
                   for i in 1 2 3 4 5; do
                     if git push origin main; then
                       echo "Checkpoint pushed ($TOTAL_COMMITTED total files so far)"
@@ -382,6 +387,9 @@ jobs:
                     git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
                     sleep $((RANDOM % 21 + 10))
                   done
+                  if [ "$pushed" != "true" ]; then
+                    echo "::warning::All push attempts failed"
+                  fi
                 fi
               else
                 echo "No new files since last checkpoint"
@@ -415,6 +423,7 @@ jobs:
           STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
           if [ "$STAGED" -gt 0 ]; then
             git commit -m "data: Batch ${{ matrix.batch_id }} final — $STAGED remaining files (${{ inputs.era }})" || true
+            pushed=false
             for i in 1 2 3 4 5; do
               if git push origin main; then break; fi
               git checkout -- . 2>/dev/null || true
@@ -422,6 +431,9 @@ jobs:
               git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
               sleep $((RANDOM % 21 + 10))
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi
 
       - name: Upload failure report
@@ -519,6 +531,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then break; fi
             git checkout -- . 2>/dev/null || true
@@ -526,6 +539,9 @@ jobs:
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
             sleep $((RANDOM % 21 + 10))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
   # Job 4: Validate and rebuild reviews.json
   rebuild:
@@ -593,6 +609,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then break; fi
             git checkout -- . 2>/dev/null || true
@@ -600,6 +617,9 @@ jobs:
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
             sleep $((RANDOM % 21 + 10))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
 
       - name: Push core data to private repo

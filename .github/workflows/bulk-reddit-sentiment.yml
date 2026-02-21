@@ -163,6 +163,7 @@ jobs:
               Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
               # Retry push with robust conflict handling
+              pushed=false
               for i in 1 2 3 4 5; do
                 if git push origin main; then
                   echo "Push succeeded on attempt $i"
@@ -180,6 +181,9 @@ jobs:
                 fi
                 sleep $((RANDOM % 20 + 10))
               done
+              if [ "$pushed" != "true" ]; then
+                echo "::warning::All push attempts failed"
+              fi
             fi
           else
             echo "No shard file produced"
@@ -273,6 +277,7 @@ jobs:
 
             Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+            pushed=false
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
@@ -290,6 +295,9 @@ jobs:
               fi
               sleep $((RANDOM % 20 + 10))
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
             echo "✓ Merge complete"
           fi
 

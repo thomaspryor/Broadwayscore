@@ -112,6 +112,7 @@ jobs:
           git commit -m "data: Update Mezzanine audience scores"
 
           # Retry push with rebase (handles concurrent pushes)
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push successful"
@@ -122,6 +123,9 @@ jobs:
             git checkout -- . && git clean -fd
             git pull --rebase -X theirs origin main || git rebase --abort
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
           echo "Failed to push after 5 attempts"
           exit 1

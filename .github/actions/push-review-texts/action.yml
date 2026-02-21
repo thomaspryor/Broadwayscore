@@ -96,38 +96,18 @@ runs:
                   echo "  $f: kept theirs (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
                 fi
               elif [[ "$f" == "failed-fetches.json" ]]; then
-                # Merge failed-fetches arrays: union by reviewId, keep newer entries
-                # Use temp files to avoid shell quoting issues with JSON content
+                # Merge failed-fetches arrays: union by reviewId, keep newer (ours) entries
                 git show REBASE_HEAD:"$f" > /tmp/ff_ours.json 2>/dev/null || echo "[]" > /tmp/ff_ours.json
                 git show HEAD:"$f" > /tmp/ff_theirs.json 2>/dev/null || echo "[]" > /tmp/ff_theirs.json
-
-                python3 -c "
-                import json, sys
-                try:
-                    with open('/tmp/ff_ours.json') as f: ours = json.load(f)
-                except: ours = []
-                try:
-                    with open('/tmp/ff_theirs.json') as f: theirs = json.load(f)
-                except: theirs = []
-                if not isinstance(ours, list): ours = []
-                if not isinstance(theirs, list): theirs = []
-                merged = {}
-                for entry in theirs:
-                    rid = entry.get('reviewId', '')
-                    if rid: merged[rid] = entry
-                for entry in ours:
-                    rid = entry.get('reviewId', '')
-                    if rid: merged[rid] = entry
-                result = list(merged.values())
-                with open('/tmp/ff_merged.json', 'w') as f: json.dump(result, f, indent=2)
-                print(f'  failed-fetches.json: merged arrays (ours={len(ours)} + theirs={len(theirs)} -> {len(result)} unique)')
-                " 2>/dev/null
-
-                if [ -f /tmp/ff_merged.json ] && python3 -c "import json; json.load(open('/tmp/ff_merged.json'))" 2>/dev/null; then
+                OURS_CT=$(jq 'if type == "array" then length else 0 end' /tmp/ff_ours.json 2>/dev/null || echo 0)
+                THEIRS_CT=$(jq 'if type == "array" then length else 0 end' /tmp/ff_theirs.json 2>/dev/null || echo 0)
+                # Concat theirs+ours (ours last = wins on duplicate), group by reviewId, keep last
+                if jq -n --slurpfile ours /tmp/ff_ours.json --slurpfile theirs /tmp/ff_theirs.json '(($theirs[0] // []) + ($ours[0] // [])) | group_by(.reviewId) | map(last)' > /tmp/ff_merged.json 2>/dev/null; then
                   cp /tmp/ff_merged.json "$f"
+                  MERGED_CT=$(jq 'length' /tmp/ff_merged.json 2>/dev/null || echo "?")
+                  echo "  $f: merged arrays (ours=$OURS_CT + theirs=$THEIRS_CT -> $MERGED_CT unique)"
                 else
-                  # Fallback: if merge fails, keep ours (existing behavior)
-                  echo "  $f: merge script failed, keeping ours"
+                  echo "  $f: jq merge failed, keeping ours"
                   git show REBASE_HEAD:"$f" > "$f" 2>/dev/null || git checkout --ours "$f" 2>/dev/null
                 fi
                 rm -f /tmp/ff_ours.json /tmp/ff_theirs.json /tmp/ff_merged.json

@@ -77,12 +77,16 @@ jobs:
           Shows with awards: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}"
 
           # Push with retry for concurrent workflows
+          pushed=false
           for i in 1 2 3 4 5; do
-            git push && break
+            git push && pushed=true && break
             echo "Push failed, attempt $i/5, rebasing..."
             git pull --rebase origin main
             sleep 2
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
       - name: Summary
         run: |

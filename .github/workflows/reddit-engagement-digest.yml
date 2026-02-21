@@ -2,9 +2,9 @@ name: Reddit Engagement Digest
 
 on:
   schedule:
-    # 8 AM ET (1 PM UTC in EST, noon UTC in EDT — close enough)
+    # ~8 AM ET (1 PM UTC = 8 AM EST / 9 AM EDT)
     - cron: '0 13 * * *'
-    # 8 PM ET (1 AM UTC next day in EST, midnight UTC in EDT)
+    # ~8 PM ET (1 AM UTC = 8 PM EST / 9 PM EDT)
     - cron: '0 1 * * *'
 
   workflow_dispatch:
@@ -60,20 +60,29 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          if ! git diff --quiet data/reddit-digest-history.json 2>/dev/null; then
-            git add data/reddit-digest-history.json
-            git commit -m "data: Update Reddit digest history [automated]"
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                break
+          if [ -f data/reddit-digest-history.json ]; then
+            git add --force data/reddit-digest-history.json
+            if ! git diff --cached --quiet; then
+              git commit -m "data: Update Reddit digest history [automated]"
+              pushed=false
+              for i in 1 2 3 4 5; do
+                if git push origin main; then
+                  echo "Push succeeded on attempt $i"
+                  break
+                fi
+                echo "Push failed (attempt $i), pulling and rebasing..."
+                git checkout -- . 2>/dev/null || true
+                git pull --rebase origin main
+                sleep $((RANDOM % 5 + 2))
+              done
+              if [ "$pushed" != "true" ]; then
+                echo "::warning::All push attempts failed"
               fi
-              echo "Push failed (attempt $i), pulling and rebasing..."
-              git pull --rebase origin main
-              sleep $((RANDOM % 5 + 2))
-            done
+            else
+              echo "No changes to digest history"
+            fi
           else
-            echo "No changes to digest history"
+            echo "No digest history file found"
           fi
 
       - name: Job summary

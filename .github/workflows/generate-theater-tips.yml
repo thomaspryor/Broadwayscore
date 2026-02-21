@@ -98,6 +98,7 @@ jobs:
             echo "No changes to theater tips"
           else
             git commit -m "chore: Update theater tips data (automated)"
+            pushed=false
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
@@ -107,4 +108,7 @@ jobs:
               git pull --rebase origin main
               sleep $((RANDOM % 5 + 2))
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi

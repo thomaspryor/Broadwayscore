@@ -372,6 +372,7 @@ jobs:
             echo "No changes to reviews.json"
           else
             git commit -m "data: Auto-rebuild reviews.json after gather (${{ inputs.shows }})"
+            pushed=false
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
@@ -383,6 +384,9 @@ jobs:
               git clean -fd 2>/dev/null || true
               git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; git pull --no-rebase -X ours origin main; }
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi
 
 

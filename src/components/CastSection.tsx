@@ -6,6 +6,15 @@ import type { CastMemberOBC } from '@/lib/data-types';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { TrophyIcon } from '@/components/icons';
 
+function abbreviateTonyCategory(categories: string[]): string {
+  // Show first acting category abbreviated, e.g. "Actor" or "Featured Actress"
+  const first = categories[0] || '';
+  return first
+    .replace('Best ', '')
+    .replace(' in a Musical', '')
+    .replace(' in a Play', '');
+}
+
 interface CastSectionProps {
   openingNightCast: CastMemberOBC[];
   currentCast?: CastMemberOBC[] | null;
@@ -51,13 +60,13 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: {
                 {member.role}
               </span>
               {tonyInfo && (
-                <span className={`inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded border sm:ml-1.5 ${
+                <span className={`self-start inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded border sm:ml-1.5 ${
                   tonyInfo.won
                     ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
                     : 'bg-sky-500/15 text-sky-400 border-sky-500/25'
                 }`} title={tonyInfo.categories.join(', ')}>
                   <TrophyIcon className="w-2.5 h-2.5" />
-                  {tonyInfo.won ? 'Tony Winner' : 'Tony Nom'}
+                  {tonyInfo.won ? 'Winner' : 'Nom'}: {abbreviateTonyCategory(tonyInfo.categories)}
                 </span>
               )}
               {member.flags && member.flags.length > 0 && (

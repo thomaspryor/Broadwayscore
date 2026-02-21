@@ -400,6 +400,7 @@ export interface FetchOptions {
   sources?: ('broadwayworld' | 'didtheylikeit' | 'showscore' | 'direct')[];
   verbose?: boolean;
   timeout?: number;
+  category?: string;
 }
 
 /**
@@ -454,7 +455,8 @@ export async function fetchReviewsForShow(
 
         case 'showscore':
           // Show-Score URL pattern
-          const ssUrl = `https://www.show-score.com/broadway/${slugifiedTitle}`;
+          const ssBase = options.category === 'off-broadway' ? 'off-broadway-shows' : 'broadway';
+          const ssUrl = `https://www.show-score.com/${ssBase}/${slugifiedTitle}`;
           try {
             html = await fetchWithRetry(ssUrl, { timeout: options.timeout });
             parsedReviews = parseShowScoreReviews(html, showTitle);
