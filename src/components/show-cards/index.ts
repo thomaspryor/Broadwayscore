@@ -1,6 +1,6 @@
 export { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown } from './ScoreBadge';
 export type { ScoreTier, ScoreBadgeProps } from './ScoreBadge';
-export { StatusBadge, FormatPill, ProductionPill, AudienceChip } from './ShowPills';
+export { StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge } from './ShowPills';
 export { ToggleBar } from './ToggleBar';
 export { ScoreToggle } from './ScoreToggle';
 export { StatGrid } from './StatGrid';

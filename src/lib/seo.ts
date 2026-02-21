@@ -310,7 +310,8 @@ export function generateShowFAQSchema(show: ComputedShow) {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isWestEnd = show.category === 'west-end';
-  const marketLabel = isWestEnd ? 'in the West End' : 'on Broadway';
+  const isOffBroadway = show.category === 'off-broadway';
+  const marketLabel = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
@@ -405,7 +406,8 @@ export function generateBrowseFAQSchema(
   shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
   const isWestEnd = shows.length > 0 && shows[0].category === 'west-end';
-  const marketLabel = isWestEnd ? 'in the West End' : 'on Broadway';
+  const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
+  const marketLabel = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
   const outletNames = isWestEnd
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
     : 'The New York Times, Vulture, and Variety';

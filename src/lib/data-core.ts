@@ -78,6 +78,13 @@ export function getWestEndShows(): ComputedShow[] {
 }
 
 /**
+ * Get all Off-Broadway shows
+ */
+export function getOffBroadwayShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'off-broadway');
+}
+
+/**
  * Get shows filtered by status (excludes off-Broadway from public listings)
  */
 export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all', options?: { includeOffBroadway?: boolean }): ComputedShow[] {

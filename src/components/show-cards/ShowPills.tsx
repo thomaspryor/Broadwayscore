@@ -52,6 +52,31 @@ export function AudienceChip({ grade }: { grade: { grade: string; color: string;
   );
 }
 
+// Category badge - for Off-Broadway and West End shows
+export function CategoryBadge({ category }: { category?: string }) {
+  if (!category || category === 'broadway') return null;
+
+  const config: Record<string, { label: string; colorClass: string }> = {
+    'off-broadway': {
+      label: 'OFF-BROADWAY',
+      colorClass: 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30',
+    },
+    'west-end': {
+      label: 'WEST END',
+      colorClass: 'bg-teal-500/15 text-teal-400 border border-teal-500/30',
+    },
+  };
+
+  const cfg = config[category];
+  if (!cfg) return null;
+
+  return (
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${cfg.colorClass}`}>
+      {cfg.label}
+    </span>
+  );
+}
+
 // Production pill - solid muted fill
 export function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
