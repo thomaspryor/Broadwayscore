@@ -41,12 +41,13 @@ export async function GET(request: NextRequest) {
   const theater = searchParams.get('theater') || '';
   const posterUrl = searchParams.get('poster') || '';
   const subtitle = searchParams.get('subtitle') || '';
+  const category = searchParams.get('category') || '';
 
   // For browse pages
   const posters = searchParams.get('posters')?.split(',').filter(Boolean) || [];
 
   if (type === 'show') {
-    return generateShowOG(title, score, reviewCount, theater, posterUrl);
+    return generateShowOG(title, score, reviewCount, theater, posterUrl, category);
   } else if (type === 'browse') {
     return generateBrowseOG(title, subtitle, posters);
   } else if (type === 'home') {
@@ -62,10 +63,12 @@ async function generateShowOG(
   score: number | null,
   reviewCount: number,
   theater: string,
-  posterUrl: string
+  posterUrl: string,
+  category?: string
 ) {
   const scoreColor = getScoreColor(score, reviewCount);
-  const displayScore = reviewCount >= 5 && score !== null ? Math.round(score) : null;
+  const minReviews = category === 'off-broadway' ? 3 : 5;
+  const displayScore = reviewCount >= minReviews && score !== null ? Math.round(score) : null;
   const scoreLabel = displayScore ? getScoreLabel(displayScore) : 'Awaiting Reviews';
 
   return new ImageResponse(
