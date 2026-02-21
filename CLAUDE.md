@@ -127,3 +127,23 @@ Per-show: `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_
 Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`.
+
+---
+
+## File Hygiene — Preventing Bloat (MANDATORY)
+CLAUDE.md and MEMORY.md are loaded into **every conversation**. Bloat wastes thousands of tokens per session. These files have been cleaned up 3 times already. Follow these rules to prevent a 4th:
+
+**CLAUDE.md** (currently ~130 lines, limit: **150 lines**) — project rules and reference only.
+- **Add** a rule here only if it applies to EVERY session regardless of task type.
+- **Don't add** backstory, incident post-mortems, migration details, or "why this rule exists" narratives. Put those in memory topic files.
+- **When adding a rule**, check if an existing section already covers it. Extend, don't duplicate.
+- **One-line rules preferred.** If a rule needs >5 lines of explanation, the explanation goes in a memory topic file with a one-line summary + pointer here.
+
+**MEMORY.md** (currently ~110 lines, limit: **180 lines**) — learned knowledge and state index only.
+- **Add** gotchas, API details, operational state, and lessons learned from incidents.
+- **Don't add** anything already covered in CLAUDE.md. Don't duplicate rules — reference them (`see CLAUDE.md §7a`).
+- **New subsystems or multi-paragraph topics** → create a `memory/{topic}.md` file and add a one-line pointer to the Subsystem Pointers section.
+- **Completed one-time tasks** → `memory/completed-migrations.md`, not MEMORY.md.
+- **Session handoff files** → delete after the receiving session picks them up.
+
+**Before editing either file**, check its current line count: `wc -l FILE`. If adding content would exceed the limit, compress or move existing content to topic files first.
