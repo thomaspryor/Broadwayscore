@@ -43,7 +43,7 @@ export default function TonyLeaderboardClient({
     if (filter === 'acting') {
       return rows
         .filter(r => r.actingNominations > 0)
-        .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations, categories: r.categories.filter(c => isActingCategory(c)) }))
+        .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations, showCount: r.actingShowCount, categories: r.categories.filter(c => isActingCategory(c)) }))
         .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
     }
     // creative = non-acting
@@ -53,6 +53,7 @@ export default function TonyLeaderboardClient({
         ...r,
         wins: r.wins - r.actingWins,
         nominations: r.nominations - r.actingNominations,
+        showCount: r.creativeShowCount,
         categories: r.categories.filter(c => !isActingCategory(c)),
       }))
       .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);

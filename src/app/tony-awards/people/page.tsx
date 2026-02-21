@@ -29,6 +29,8 @@ export interface LeaderboardRow {
   actingWins: number;
   categories: string[];
   showCount: number;
+  actingShowCount: number;
+  creativeShowCount: number;
   profileUrl: string | null;
 }
 
@@ -66,6 +68,8 @@ export default function TonyLeaderboardPage() {
       actingWins: entry.actingWins,
       categories: entry.categories,
       showCount: entry.shows.length,
+      actingShowCount: entry.actingShowCount,
+      creativeShowCount: entry.creativeShowCount,
       profileUrl,
     };
   });
