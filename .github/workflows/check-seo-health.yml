@@ -50,8 +50,9 @@ jobs:
       - name: Push audit data
         if: always()
         run: |
+          pushed=false
           for i in 1 2 3 4 5; do
-            git push origin main && break
+            git push origin main && pushed=true && break
             echo "Push attempt $i failed, rebasing..."
             sleep $((RANDOM % 10 + 5))
             git pull --rebase origin main || {
@@ -59,3 +60,7 @@ jobs:
               exit 1
             }
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::error::All 5 push attempts failed"
+            exit 1
+          fi
