@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-21T11:17:58.067Z",
-  "processed": 5,
-  "failed": 85,
-  "successRate": "5.6%",
+  "updatedAt": "2026-02-21T11:19:21.025Z",
+  "processed": 3,
+  "failed": 273,
+  "successRate": "1.1%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -11,8 +11,53 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 3
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-21T10:48:19.725Z",
+      "event": "bb-session",
+      "session": "359cf7d6",
+      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.htm"
+    },
+    {
+      "t": "2026-02-21T10:48:21.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T10:54:14.733Z",
+      "event": "bb-session",
+      "session": "199190b5",
+      "url": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
+    },
+    {
+      "t": "2026-02-21T10:54:16.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:05:27.663Z",
+      "event": "bb-session",
+      "session": "ebf9c529",
+      "url": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-fost"
+    },
+    {
+      "t": "2026-02-21T11:05:29.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:08:24.663Z",
+      "event": "bb-session",
+      "session": "96696476",
+      "url": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-you"
+    },
+    {
+      "t": "2026-02-21T11:08:26.494Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
