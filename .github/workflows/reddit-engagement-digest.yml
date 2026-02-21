@@ -70,6 +70,7 @@ jobs:
                   break
                 fi
                 echo "Push failed (attempt $i), pulling and rebasing..."
+                git checkout -- . 2>/dev/null || true
                 git pull --rebase origin main
                 sleep $((RANDOM % 5 + 2))
               done
