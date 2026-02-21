@@ -92,6 +92,9 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
 /** Minimum number of reviews required to display a score */
 export const MIN_REVIEWS_FOR_SCORE = 5;
 
+/** Minimum reviews for off-Broadway (fewer reviews available in the ecosystem) */
+export const MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY = 3;
+
 /** Minimum tier 1 reviews for high confidence */
 export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 
@@ -145,8 +148,9 @@ export function getScoreBgColor(score: number | null): string {
 /**
  * Check if a score meets the minimum threshold for display
  */
-export function hasEnoughReviews(reviewCount: number): boolean {
-  return reviewCount >= MIN_REVIEWS_FOR_SCORE;
+export function hasEnoughReviews(reviewCount: number, category?: string): boolean {
+  const min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY : MIN_REVIEWS_FOR_SCORE;
+  return reviewCount >= min;
 }
 
 // ===========================================
