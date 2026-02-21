@@ -2,7 +2,7 @@ name: Collect Review Texts
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
 concurrency:
-  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}
+  group: collect-reviews-${{ github.event.inputs.show_filter || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.exclude_domains && 'excl' || 'noexcl' }}-${{ github.event.inputs.reason_filter || 'any-reason' }}
   cancel-in-progress: false
 
 on:
