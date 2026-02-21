@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-02-20",
+    "lastUpdated": "2026-02-21",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 24159,
-    "skippedFiles": 4886,
+    "totalFilesScanned": 24172,
+    "skippedFiles": 4903,
     "totalCritics": 1107,
-    "registryCritics": 408,
-    "flaggedReviews": 37
+    "registryCritics": 407,
+    "flaggedReviews": 38
   },
   "flaggedReviews": [
     {
@@ -85,7 +85,7 @@
       "outletShare": 1,
       "primaryOutlet": "nypost",
       "primaryShare": 99,
-      "totalReviews": 155
+      "totalReviews": 154
     },
     {
       "critic": "Sara Holdren",
@@ -107,7 +107,7 @@
       "outletShare": 1,
       "primaryOutlet": "curtainup",
       "primaryShare": 99,
-      "totalReviews": 98
+      "totalReviews": 99
     },
     {
       "critic": "Max McGuinness",
@@ -363,6 +363,17 @@
       "totalReviews": 12
     },
     {
+      "critic": "John Lahr",
+      "criticSlug": "john-lahr",
+      "outlet": "new-yorker",
+      "showId": "rent-1996",
+      "file": "new-yorker--john-lahr-1996.json",
+      "outletShare": 4,
+      "primaryOutlet": "newyorker",
+      "primaryShare": 96,
+      "totalReviews": 23
+    },
+    {
       "critic": "Carol Rocamora",
       "criticSlug": "carol-rocamora",
       "outlet": "broad-street-review",
@@ -432,7 +443,7 @@
         "vulture",
         "new-york-times"
       ],
-      "totalReviews": 452
+      "totalReviews": 456
     },
     {
       "critic": "David Finkle",
@@ -535,7 +546,7 @@
         "guardian",
         "financialtimes"
       ],
-      "totalReviews": 540
+      "totalReviews": 544
     },
     {
       "critic": "Brittani Samuel",
@@ -593,7 +604,6 @@
         "dcmetro",
         "the-los-angeles-times-charles-mcnulty",
         "the-star-ledger",
-        "playbill",
         "new-york-theatre",
         "new-york-sun",
         "boston-herald",
@@ -603,6 +613,7 @@
         "washington-times",
         "guardian",
         "star-ledger",
+        "playbill",
         "the-times",
         "ct-now",
         "broadway-blog",
@@ -690,7 +701,7 @@
         "culturesauce",
         "npr"
       ],
-      "totalReviews": 755
+      "totalReviews": 753
     },
     {
       "critic": "Brian Scott Lipton",
@@ -841,7 +852,7 @@
         "newyorker",
         "newyorkmagazine"
       ],
-      "totalReviews": 577
+      "totalReviews": 578
     },
     {
       "critic": "Howard Miller",
@@ -874,7 +885,7 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 388
+      "totalReviews": 387
     },
     {
       "critic": "Peter Marks",
@@ -926,7 +937,6 @@
         "wsj",
         "northjerseycom",
         "amnycom",
-        "theatermania",
         "amnew-york",
         "am-newyork",
         "nydailynews",
@@ -937,7 +947,7 @@
         "timeout",
         "off-script-with-dan-dwyer"
       ],
-      "totalReviews": 411
+      "totalReviews": 410
     },
     {
       "critic": "Jason Zinoman",
@@ -959,6 +969,7 @@
         "theater-news-online",
         "theatre-news-online",
         "theatre-news-online-jeremy-gerard",
+        "variety",
         "bloombeg-news",
         "bloombergcom",
         "bloomgberg-news",
@@ -966,7 +977,7 @@
         "theater-news-online-jeremy-gerard",
         "bloomgberg"
       ],
-      "totalReviews": 242
+      "totalReviews": 244
     },
     {
       "critic": "Robert Kahn",
@@ -1005,7 +1016,7 @@
         "variety",
         "newyorktheatreguide"
       ],
-      "totalReviews": 405
+      "totalReviews": 394
     },
     {
       "critic": "Thom Geier",
@@ -1123,7 +1134,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 443
+      "totalReviews": 441
     },
     {
       "critic": "Frank Scheck",
@@ -1182,7 +1193,7 @@
         "vuture",
         "new-york-magazine"
       ],
-      "totalReviews": 89
+      "totalReviews": 88
     },
     {
       "critic": "Martin Denton",
@@ -1421,6 +1432,16 @@
         "the-times-clive-davis",
         "the-times-uk",
         "the-times"
+      ],
+      "totalReviews": 10
+    },
+    {
+      "critic": "Matt Wolf",
+      "slug": "matt-wolf",
+      "outlets": [
+        "telegraph",
+        "the-telegraph-uk",
+        "variety"
       ],
       "totalReviews": 10
     },
@@ -2025,15 +2046,6 @@
       "outlets": [
         "whatsonstage",
         "the-independent"
-      ],
-      "totalReviews": 3
-    },
-    {
-      "critic": "Michael Billington",
-      "slug": "michael-billington",
-      "outlets": [
-        "the-guardian-uk",
-        "guardian"
       ],
       "totalReviews": 3
     },
