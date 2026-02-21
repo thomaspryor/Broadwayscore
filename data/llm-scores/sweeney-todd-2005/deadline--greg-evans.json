@@ -1,0 +1,37 @@
+{
+  "showId": "sweeney-todd-2005",
+  "outletId": "deadline",
+  "outlet": "Deadline",
+  "criticName": "Greg Evans",
+  "score": 42,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "lovely, pared-down minimalism",
+      "sentiment": "positive"
+    },
+    {
+      "text": "intriguing starkness",
+      "sentiment": "positive"
+    },
+    {
+      "text": "less-is-more near-concert-style presentations",
+      "sentiment": "positive"
+    }
+  ],
+  "reasoning": "Review is incomplete/cut off after establishing context about the Broadway season's minimalist trend, making it impossible to assess the actual critique of Sweeney Todd. The ellipsis suggests negative assessment may follow the setup contrasting other successful minimalist productions.",
+  "flags": [
+    {
+      "type": "bww_thumb_mismatch",
+      "bwwThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T14:17:53.754Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": null,
+  "bwwThumb": "Up"
+}

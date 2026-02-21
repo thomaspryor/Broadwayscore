@@ -1,0 +1,37 @@
+{
+  "showId": "titanique-2026",
+  "outletId": "wsj",
+  "outlet": "Wall Street Journal",
+  "criticName": "Charles Isherwood",
+  "score": 40,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "low",
+  "keyPhrases": [
+    {
+      "text": "Many theater obsessives have lamented",
+      "sentiment": "negative"
+    },
+    {
+      "text": "blocking new shows from emerging",
+      "sentiment": "negative"
+    },
+    {
+      "text": "changed the calculus to a striking degree",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "This appears to be an incomplete review fragment that focuses on broader Broadway industry concerns rather than reviewing 'Titanique' specifically. The tone is critical of long-running shows and industry trends, but lacks specific praise or criticism of the production itself, making scoring difficult with low confidence.",
+  "flags": [
+    {
+      "type": "bww_thumb_mismatch",
+      "bwwThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T14:20:47.461Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": null,
+  "bwwThumb": "Up"
+}
