@@ -7,6 +7,8 @@
 
 export type ShowStatus = 'previews' | 'opened' | 'closing' | 'closed';
 
+export type ShowCategory = 'broadway' | 'off-broadway';
+
 export interface ShowMetadata {
   id: string;
   title: string;
@@ -16,6 +18,7 @@ export interface ShowMetadata {
   closingDate?: string; // ISO date, if announced/known
   status: ShowStatus;
   type: 'musical' | 'play' | 'special';
+  category?: ShowCategory; // 'broadway' (default) or 'off-broadway'
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
 }
@@ -175,6 +178,7 @@ export interface ShowListItem {
   slug: string;
   venue: string;
   status: ShowStatus;
+  category?: ShowCategory;
   criticScore?: number;
   audienceScore?: number;
   buzzScore?: number;

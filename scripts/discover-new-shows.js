@@ -5,7 +5,7 @@
  * Discovers new Broadway shows using TodayTix API (primary) with
  * Broadway.org scraping as fallback.
  *
- * Usage: node scripts/discover-new-shows.js [--dry-run]
+ * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway]
  */
 
 const fs = require('fs');
@@ -24,6 +24,7 @@ const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
 
 const dryRun = process.argv.includes('--dry-run');
+const includeOffBroadway = process.argv.includes('--include-off-broadway');
 
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
@@ -62,10 +63,40 @@ async function fetchShowsFromTodayTix() {
     offset += limit;
   }
 
-  // Filter to Broadway shows only (subcategories includes "Broadway")
+  // Filter by subcategories: Broadway always, Off-Broadway when flag is set
   const broadwayShows = allShows.filter(s =>
     s.subcategories?.some(sc => sc.name === 'Broadway')
   );
+  const offBroadwayShows = includeOffBroadway ? allShows.filter(s => {
+    if (!s.subcategories?.some(sc => sc.name === 'Off Broadway')) return false;
+    if (s.subcategories?.some(sc => sc.name === 'Broadway')) return false; // exclude shows tagged as both
+
+    // Filter out non-theater content (comedy clubs, magic shows, concerts, dance, opera, etc.)
+    const title = (s.displayName || s.name || '').toLowerCase();
+    const nonTheaterPatterns = [
+      'comedy club', 'comedy night', 'stand-up', 'standup',
+      'magic', 'magick', 'bubble show',
+      'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
+      'quartet', 'quintet', 'ensemble',
+      'selected shorts', 'book club', 'in conversation with',
+      'nt live:', 'london\'s west end:',
+      'dance company', 'dance +', 'ballet',
+      'lottery', 'accessible lottery',
+      'meet the music', 'lyrics & lyricists',
+      'uptown showdown', 'amateur night',
+      'flamenco festival', 'circus',
+      'in concert', 'concert performance',
+      'company xiv', // burlesque/cabaret company
+      'rakugo', // Japanese storytelling
+    ];
+    // Also filter out opera (Classical subcategory is the main signal)
+    const subcatNames = (s.subcategories || []).map(sc => sc.name);
+    if (subcatNames.includes('Classical')) return false; // Opera (La Traviata, Turandot, etc.)
+    for (const pattern of nonTheaterPatterns) {
+      if (title.includes(pattern)) return false;
+    }
+    return true;
+  }) : [];
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
   const seen = new Set();
@@ -84,7 +115,22 @@ async function fetchShowsFromTodayTix() {
     });
   }
 
-  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${showsList.length} unique`);
+  for (const show of offBroadwayShows) {
+    const title = (show.displayName || show.name || '').trim();
+    if (!title || title.length < 3 || seen.has(title)) continue;
+    seen.add(title);
+
+    showsList.push({
+      title,
+      venue: show.venue?.name || 'TBA',
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: show.startDate || null,
+      closingDate: show.endDate === 'null' ? null : show.endDate || null,
+      category: 'off-broadway',
+    });
+  }
+
+  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway-tagged, ${showsList.length} unique`);
   return showsList;
 }
 
@@ -276,11 +322,17 @@ async function discoverShows() {
   }
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
-  if (newShows.length > 0) {
+  // Skip off-Broadway shows — IBDB only covers Broadway
+  const broadwayNewShows = newShows.filter(s => s.category !== 'off-broadway');
+  const offBroadwayNewShows = newShows.filter(s => s.category === 'off-broadway');
+  if (offBroadwayNewShows.length > 0) {
+    console.log(`⏭️  Skipping IBDB enrichment for ${offBroadwayNewShows.length} off-Broadway shows (IBDB is Broadway-only)`);
+  }
+  if (broadwayNewShows.length > 0) {
     console.log('');
     console.log('🔎 Enriching dates from IBDB...');
     try {
-      const lookupList = newShows.map(s => ({
+      const lookupList = broadwayNewShows.map(s => ({
         title: s.title,
         openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : new Date().getFullYear(),
         venue: s.venue
@@ -288,7 +340,7 @@ async function discoverShows() {
 
       const ibdbResults = await batchLookupIBDBDates(lookupList);
 
-      for (const show of newShows) {
+      for (const show of broadwayNewShows) {
         const ibdb = ibdbResults.get(show.title);
         if (!ibdb || !ibdb.found) {
           // IBDB lookup failed: treat Broadway.org "Begins:" as previewsStartDate
@@ -442,7 +494,7 @@ async function discoverShows() {
         tags.push('new'); // Flag for manual verification
       }
 
-      data.shows.push({
+      const showEntry = {
         id: show.id,
         title: show.title,
         slug: show.slug,
@@ -462,7 +514,14 @@ async function discoverShows() {
         ticketLinks: [],
         cast: [],
         creativeTeam: show.creativeTeam || [],
-      });
+      };
+
+      // Set category for off-broadway shows
+      if (show.category === 'off-broadway') {
+        showEntry.category = 'off-broadway';
+      }
+
+      data.shows.push(showEntry);
     }
 
     saveShows(data);

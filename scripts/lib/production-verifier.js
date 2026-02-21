@@ -96,18 +96,22 @@ const UK_PUBLICATIONS = [
  * @param {string} params.publishDate - Publish date string
  * @param {string} params.text - Review text content (fullText or excerpt)
  * @param {Object} params.showData - Show metadata from shows.json (optional)
+ * @param {string} params.category - Show category ('broadway' or 'off-broadway')
  * @returns {Object} { isValid, issues, confidence, shouldReject }
  */
-function verifyProduction({ showId, url, publishDate, text, showData }) {
+function verifyProduction({ showId, url, publishDate, text, showData, category }) {
   const issues = [];
   let confidence = 'low';
+  const isOffBroadway = category === 'off-broadway';
 
   // Extract expected year from show ID
   const yearMatch = showId.match(/-(\d{4})$/);
   const expectedYear = yearMatch ? parseInt(yearMatch[1]) : null;
 
-  // Get show-specific indicators
-  const indicators = KNOWN_WRONG_INDICATORS[showId];
+  // Get show-specific indicators — skip for off-Broadway shows since their
+  // wrongIndicators include "off-Broadway", "Public Theater", etc. which are
+  // CORRECT for off-Broadway productions
+  const indicators = isOffBroadway ? null : KNOWN_WRONG_INDICATORS[showId];
 
   // NOTE: Do NOT extract years from URLs. URL patterns are inconsistent across outlets
   // (republished content, migrated URLs, article IDs that look like years, etc.).
