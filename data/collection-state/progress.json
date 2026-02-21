@@ -1,83 +1,268 @@
 {
   "processed": [
-    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-    "august-osage-county-2007/newyorker--.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "gypsy-2024/newyorker--naomi-fry.json"
+    "beetlejuice-2019/washpost--peter-marks.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json"
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "700-sundays-2013/washpost--peter-marks.json",
+    "a-chorus-line-2006/washpost--peter-marks.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
+    "all-my-sons-2008/washpost--peter-marks.json",
+    "all-my-sons-2019/washpost--peter-marks.json",
+    "american-buffalo-2022/washpost--peter-marks.json",
+    "american-psycho-2016/washpost--peter-marks.json",
+    "american-son-2018/washpost--peter-marks.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+    "anastasia-2017/washpost--peter-marks.json",
+    "annie-2012/ap--jennifer-farrar.json",
+    "annie-2012/washpost--peter-marks.json",
+    "anything-goes-2011/washpost--peter-marks.json",
+    "appropriate-2023/washpost--peter-marks.json",
+    "beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
+    "betrayal-2013/washpost--peter-marks.json",
+    "betrayal-2019/washpost--peter-marks.json",
+    "bring-it-on-the-musical-2012/washpost--peter-marks.json",
+    "bronx-bombers-2014/ap--mark-kennedy.json",
+    "bronx-bombers-2014/washpost--unknown.json",
+    "camelot-2023/washpost--peter-marks.json",
+    "carousel-2018/washpost--peter-marks.json",
+    "cats-2016/washpost--peter-marks.json",
+    "china-doll-2015/washpost--peter-marks.json",
+    "chinglish-2011/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "beetlejuice-2019/washpost--peter-marks.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-      "grey-house-2023/newyorker--dan-stahl.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
+      "data/review-texts/700-sundays-2013/washpost--peter-marks.json",
+      "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/american-son-2018/washpost--peter-marks.json",
+      "data/review-texts/an-enemy-of-the-people-2024/washpost--peter-marks.json",
+      "data/review-texts/anastasia-2017/washpost--peter-marks.json",
+      "data/review-texts/annie-2012/ap--jennifer-farrar.json",
+      "data/review-texts/anything-goes-2011/washpost--peter-marks.json",
+      "data/review-texts/appropriate-2023/washpost--peter-marks.json",
+      "data/review-texts/beautiful-the-carole-king-musical-2014/ap--mark-kennedy.json",
+      "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/washpost--peter-marks.json",
+      "data/review-texts/betrayal-2013/washpost--peter-marks.json",
+      "data/review-texts/betrayal-2019/washpost--peter-marks.json",
+      "data/review-texts/bring-it-on-the-musical-2012/washpost--peter-marks.json",
+      "data/review-texts/bronx-bombers-2014/ap--mark-kennedy.json",
+      "data/review-texts/bronx-bombers-2014/washpost--unknown.json",
+      "data/review-texts/camelot-2023/washpost--peter-marks.json",
+      "data/review-texts/carousel-2018/washpost--peter-marks.json",
+      "data/review-texts/cats-2016/washpost--peter-marks.json",
+      "data/review-texts/china-doll-2015/washpost--peter-marks.json",
+      "data/review-texts/chinglish-2011/washpost--peter-marks.json"
     ],
-    "archive": [
-      "august-osage-county-2007/newyorker--.json",
-      "gypsy-2024/newyorker--naomi-fry.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-21T13:16:41.355Z",
-  "lastProcessed": "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+  "startTime": "2026-02-21T13:16:30.608Z",
+  "lastProcessed": "chinglish-2011/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-21T13:18:43.766Z",
+      "t": "2026-02-21T13:16:39.785Z",
       "event": "bb-session",
-      "session": "c68252e8",
-      "url": "https://www.newyorker.com/magazine/2024/04/01/an-enemy-of-the-people-theatre-rev"
+      "session": "85ff9422",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
     },
     {
-      "t": "2026-02-21T13:18:45.971Z",
+      "t": "2026-02-21T13:16:41.808Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:21:16.641Z",
+      "t": "2026-02-21T13:17:06.944Z",
       "event": "bb-session",
-      "session": "28782c0a",
-      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+      "session": "5b6dfa5d",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
     },
     {
-      "t": "2026-02-21T13:21:18.477Z",
+      "t": "2026-02-21T13:17:09.093Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:23:04.709Z",
+      "t": "2026-02-21T13:17:58.739Z",
       "event": "bb-session",
-      "session": "f0cc9982",
-      "url": "https://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charli"
+      "session": "284df55b",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
     },
     {
-      "t": "2026-02-21T13:23:07.079Z",
+      "t": "2026-02-21T13:18:00.748Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:25:17.988Z",
+      "t": "2026-02-21T13:18:24.392Z",
       "event": "bb-session",
-      "session": "f864e5da",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+      "session": "6a9915c5",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
     },
     {
-      "t": "2026-02-21T13:25:20.072Z",
+      "t": "2026-02-21T13:18:26.477Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:19:03.478Z",
+      "event": "bb-session",
+      "session": "186c637f",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-02-21T13:19:05.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:20:03.108Z",
+      "event": "bb-session",
+      "session": "afcd601a",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-02-21T13:20:05.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:21:29.250Z",
+      "event": "bb-session",
+      "session": "05d8b3e1",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/10/16/AR2008101603518"
+    },
+    {
+      "t": "2026-02-21T13:21:31.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:21:48.611Z",
+      "event": "bb-session",
+      "session": "6e6381d8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
+    },
+    {
+      "t": "2026-02-21T13:21:50.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:22:22.806Z",
+      "event": "bb-session",
+      "session": "1125ced5",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-02-21T13:22:25.831Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:22:58.945Z",
+      "event": "bb-session",
+      "session": "10d918a3",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
+    },
+    {
+      "t": "2026-02-21T13:23:01.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:23:25.224Z",
+      "event": "bb-session",
+      "session": "cbc6d1f5",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+    },
+    {
+      "t": "2026-02-21T13:23:28.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:23:56.128Z",
+      "event": "bb-session",
+      "session": "a9c6e0ff",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
+    },
+    {
+      "t": "2026-02-21T13:23:58.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:24:21.878Z",
+      "event": "bb-session",
+      "session": "75eb324b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
+    },
+    {
+      "t": "2026-02-21T13:24:25.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:13.137Z",
+      "event": "bb-session",
+      "session": "0259ac59",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-02-21T13:25:15.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:52.973Z",
+      "event": "bb-session",
+      "session": "c79e1e97",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-02-21T13:25:55.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:26:37.388Z",
+      "event": "bb-session",
+      "session": "074d36e0",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-carole-king-musical-be"
+    },
+    {
+      "t": "2026-02-21T13:26:39.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:27:20.013Z",
+      "event": "bb-session",
+      "session": "95d0d779",
+      "url": "https://www.washingtonpost.com/lifestyle/style/bengal-tiger-at-the-baghdad-zoo-r"
+    },
+    {
+      "t": "2026-02-21T13:27:22.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
