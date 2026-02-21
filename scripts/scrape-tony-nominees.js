@@ -58,6 +58,14 @@ const CATEGORY_MAP = {
   'Best Sound Design of a Musical': 'Best Sound Design of a Musical',
   'Best Sound Design of a Play': 'Best Sound Design of a Play',
   'Best Sound Design': 'Best Sound Design',
+  // Older/retired categories
+  'Best Actor in Play': 'Best Actor in a Play',
+  'Best Lyrics': 'Best Original Score',
+  'Most Innovative Production of a Revival': 'Best Revival of a Musical',
+  'Reproduction (Play or Musical)': 'Best Revival of a Play',
+  'Best Reproduction (Play or Musical)': 'Best Revival of a Play',
+  'Best Reproduction': 'Best Revival of a Play',
+  'Best Revival': 'Best Revival of a Play',
 };
 
 function mapCategory(ibdbCategory) {
