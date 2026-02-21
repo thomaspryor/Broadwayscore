@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -208,7 +208,7 @@ function ValueShowCard({ show, discountData, cheapestPrice, index }: ValueShowCa
 }
 
 export default function BestValuePage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lastUpdated = getLotteryRushLastUpdated();
 
   // Get shows with any discount option, sorted by cheapest price
