@@ -66,6 +66,28 @@
       ],
       "destination": "https://broadwayscorecard.com/$1",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "westendscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/west-end",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.westendscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/west-end",
+      "permanent": true
     }
   ],
   "headers": [
