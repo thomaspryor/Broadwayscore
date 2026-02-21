@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-02-21T12:10:59.850Z",
-  "processed": 77,
-  "failed": 123,
-  "successRate": "38.5%",
+  "updatedAt": "2026-02-21T12:23:10.189Z",
+  "processed": 15,
+  "failed": 85,
+  "successRate": "15.0%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 16
+    "archiveToday": 79,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T11:09:16.425Z",
+      "event": "bb-session",
+      "session": "a2d5251d",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
+    },
+    {
+      "t": "2026-02-21T11:09:18.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:10:34.719Z",
+      "event": "bb-session",
+      "session": "1e81de59",
+      "url": "https://www.wsj.com/articles/theater-review-act-one-1398378000"
+    },
+    {
+      "t": "2026-02-21T11:10:37.046Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:12:08.419Z",
+      "event": "bb-session",
+      "session": "279021db",
+      "url": "https://www.wsj.com/articles/SB10001424052702304281004579229472825648634"
+    },
+    {
+      "t": "2026-02-21T11:12:10.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:13:36.656Z",
+      "event": "bb-session",
+      "session": "ad492363",
+      "url": "https://www.wsj.com/articles/aint-no-mo-review-jordan-e-cooper-takes-aim-at-amer"
+    },
+    {
+      "t": "2026-02-21T11:13:39.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:16:19.791Z",
+      "event": "bb-session",
+      "session": "5e4b4687",
+      "url": "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway"
+    },
+    {
+      "t": "2026-02-21T11:16:22.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:17:49.662Z",
+      "event": "bb-session",
+      "session": "2635427b",
+      "url": "https://www.wsj.com/articles/SB122401234567890123"
+    },
+    {
+      "t": "2026-02-21T11:17:51.906Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:19:16.793Z",
+      "event": "bb-session",
+      "session": "d58c75d1",
+      "url": "https://www.wsj.com/articles/allegiance-review-george-takei-musical-about-japane"
+    },
+    {
+      "t": "2026-02-21T11:19:18.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:21:30.300Z",
+      "event": "bb-session",
+      "session": "8adac6b9",
+      "url": "https://www.wsj.com/articles/almost-famous-broadway-review-a-less-than-rocking-r"
+    },
+    {
+      "t": "2026-02-21T11:21:32.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:23:03.056Z",
+      "event": "bb-session",
+      "session": "aa542690",
+      "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-ro"
+    },
+    {
+      "t": "2026-02-21T11:23:05.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-21T11:25:00.264Z",
+      "event": "bb-session",
+      "session": "b13c2cb6",
+      "url": "https://www.wsj.com/articles/amelie-a-new-musical-review-whimsy-without-magic-14"
+    },
+    {
+      "t": "2026-02-21T11:25:02.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
