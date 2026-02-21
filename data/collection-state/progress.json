@@ -1,8 +1,12 @@
 {
   "processed": [
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-    "misery-2015/financialtimes--unknown.json",
-    "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json"
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json",
+    "death-becomes-her-2024/theater-scene--joel-benjamin.json"
   ],
   "failed": [
     "book-of-mormon-2011/financialtimes--brendan-lemon.json",
@@ -163,17 +167,28 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/theater-scene--samuel-l-leiter.json",
+      "death-becomes-her-2024/theater-scene--joel-benjamin.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/death-becomes-her-2024/the-gold-knight--chris-stack.json",
+      "data/review-texts/hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/moulin-rouge-2019/buy-tickets--unknown.json",
+      "data/review-texts/moulin-rouge-2019/curtainup--charles-wright.json"
+    ],
     "archive": [
-      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-      "misery-2015/financialtimes--unknown.json",
-      "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json"
+      "hells-kitchen-2024/chelsea-community-news--michael-musto.json"
     ]
   },
   "startTime": "2026-02-21T10:11:10.028Z",
