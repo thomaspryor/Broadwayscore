@@ -85,7 +85,8 @@ const ShowCard = memo(function ShowCard({
 }) {
   const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
   const isWestEnd = show.category === 'west-end';
-  const durationSuffix = isWestEnd ? 'in the West End' : 'on Broadway';
+  const isOffBroadway = show.category === 'off-broadway';
+  const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
   const duration = isOpen ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
 
   // Determine which score/tier to display
@@ -205,7 +206,7 @@ const ShowCard = memo(function ShowCard({
                   {tier.label}
                 </span>
               ) : null}
-              <ScoreBadge score={displayScore} size="md" showCrown />
+              <ScoreBadge score={displayScore} size="md" showCrown reviewCount={show.criticScore?.reviewCount} category={show.category} />
               {show.criticScore?.reviewCount && show.criticScore.reviewCount <= 2 ? (
                 <span className="text-[9px] text-gray-500 whitespace-nowrap">
                   {show.criticScore.reviewCount} review{show.criticScore.reviewCount > 1 ? 's' : ''}
