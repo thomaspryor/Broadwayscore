@@ -76,6 +76,7 @@ export default function WestEndPage() {
         : undefined,
       audienceCombinedScore: buzz?.combinedScore ?? null,
       audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      category: 'west-end',
     };
   });
 
