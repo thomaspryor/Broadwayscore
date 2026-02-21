@@ -1768,7 +1768,8 @@ function createReviewFile(showId, reviewData, options = {}) {
       showId,
       url: reviewData.url,
       publishDate: reviewData.publishDate,
-      text: reviewData.excerpt || reviewData.fullText
+      text: reviewData.excerpt || reviewData.fullText,
+      category: allowOffBroadway ? 'off-broadway' : undefined
     });
 
     if (verification.shouldReject) {
