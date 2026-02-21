@@ -234,10 +234,14 @@ function downloadPage(url, filepath) {
           redirectUrl = `${urlObj.protocol}//${urlObj.host}${redirectUrl}`;
         }
 
-        // CRITICAL: Reject redirects from Broadway to off-Broadway/off-off-Broadway
-        // Show Score sometimes redirects broadway-shows/* to off-broadway-shows/*
-        if (url.includes('/broadway-shows/') &&
-            (redirectUrl.includes('/off-broadway-shows/') || redirectUrl.includes('/off-off-broadway-shows/'))) {
+        // Always reject off-off-broadway redirects
+        if (redirectUrl.includes('/off-off-broadway-shows/')) {
+          resolve({ error: true, message: `Redirect to off-off-broadway: ${redirectUrl}` });
+          return;
+        }
+        // Reject redirects from Broadway to off-Broadway (wrong category)
+        // But allow off-Broadway to off-Broadway (correct category)
+        if (url.includes('/broadway-shows/') && redirectUrl.includes('/off-broadway-shows/')) {
           resolve({ error: true, message: `Redirect to wrong show type: ${redirectUrl}` });
           return;
         }

@@ -163,26 +163,38 @@ function generateCandidateUrls(show) {
   const showSlug = (show.slug || show.id).replace(/-\d{4}$/, '');
   const isMusical = show.type === 'musical' ||
     (show.tags && show.tags.some(t => /musical/i.test(t)));
+  const isOffBroadway = show.category === 'off-broadway';
 
-  const candidates = [
-    `${titleSlug}-broadway`,
-    `${titleNoColonSlug}-broadway`,
-    `${showSlug}-broadway`,
-  ];
+  const candidates = [];
 
-  if (isMusical) {
+  if (isOffBroadway) {
+    // Off-Broadway: no -broadway suffix needed
+    candidates.push(titleSlug, titleNoColonSlug, showSlug);
+    if (isMusical) {
+      candidates.push(`${titleSlug}-the-musical`, `${titleNoColonSlug}-the-musical`);
+    }
+  } else {
     candidates.push(
-      `${titleSlug}-the-musical-broadway`,
-      `${titleNoColonSlug}-the-musical-broadway`,
+      `${titleSlug}-broadway`,
+      `${titleNoColonSlug}-broadway`,
+      `${showSlug}-broadway`,
     );
+    if (isMusical) {
+      candidates.push(
+        `${titleSlug}-the-musical-broadway`,
+        `${titleNoColonSlug}-the-musical-broadway`,
+      );
+    }
+    candidates.push(titleSlug, showSlug);
   }
 
-  candidates.push(titleSlug, showSlug);
+  // URL base depends on category
+  const base = isOffBroadway
+    ? 'https://www.show-score.com/off-broadway-shows'
+    : 'https://www.show-score.com/broadway-shows';
 
   // Deduplicate while preserving order
-  return [...new Set(candidates)].map(
-    slug => `https://www.show-score.com/broadway-shows/${slug}`
-  );
+  return [...new Set(candidates)].map(slug => `${base}/${slug}`);
 }
 
 /**
@@ -239,14 +251,17 @@ function extractJsonLdName(html) {
  * @param {string} url - Page URL
  * @param {string} [showTitle] - Expected show title (for title validation)
  */
-function isValidShowScorePage(html, url, showTitle) {
+function isValidShowScorePage(html, url, showTitle, options = {}) {
+  const { allowOffBroadway = false } = options;
   if (!html) return false;
   // Not a 404
   if (html.includes('Page not found') || html.includes('404 -')) return false;
   // Not the homepage
   if (html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) return false;
-  // Not off-broadway (check canonical URL in JSON-LD, not just the request URL)
-  if (url.includes('/off-broadway-shows/') || url.includes('/off-off-broadway-shows/')) return false;
+  // Always reject off-off-broadway
+  if (url.includes('/off-off-broadway-shows/')) return false;
+  // Reject off-broadway unless show is off-broadway
+  if (!allowOffBroadway && url.includes('/off-broadway-shows/')) return false;
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const match of jsonLdMatch) {
@@ -254,8 +269,13 @@ function isValidShowScorePage(html, url, showTitle) {
         const content = match.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
         const data = JSON.parse(content);
         if (data.aggregateRating && typeof data.aggregateRating.ratingValue === 'number') {
-          // Check canonical URL isn't off-broadway
-          if (data.url && (/\/off-broadway-shows\//.test(data.url) || /\/off-off-broadway-shows\//.test(data.url))) {
+          // Check canonical URL isn't off-off-broadway (always rejected)
+          if (data.url && /\/off-off-broadway-shows\//.test(data.url)) {
+            if (verbose) console.log(`    Rejected: canonical URL is off-off-broadway (${data.url})`);
+            return false;
+          }
+          // Reject off-broadway canonical unless show is off-broadway
+          if (!allowOffBroadway && data.url && /\/off-broadway-shows\//.test(data.url)) {
             if (verbose) console.log(`    Rejected: canonical URL is off-broadway (${data.url})`);
             return false;
           }
@@ -308,7 +328,7 @@ async function discoverShowScoreUrl(show) {
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
-      if (isValidShowScorePage(html, url, show.title)) {
+      if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway' })) {
         console.log(`  ✓ Discovered: ${url}`);
         return url;
       }

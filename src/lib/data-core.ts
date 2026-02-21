@@ -55,16 +55,18 @@ export function getAllShows(): ComputedShow[] {
 }
 
 /**
- * Get shows filtered by status
+ * Get shows filtered by status (excludes off-Broadway from public listings)
  */
-export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all'): ComputedShow[] {
+export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all', options?: { includeOffBroadway?: boolean }): ComputedShow[] {
   const allShows = getAllShows();
-  if (status === 'all') return allShows;
-  return allShows.filter(show => show.status === status);
+  const includeOB = options?.includeOffBroadway ?? false;
+  const filtered = includeOB ? allShows : allShows.filter(show => show.category !== 'off-broadway');
+  if (status === 'all') return filtered;
+  return filtered.filter(show => show.status === status);
 }
 
 /**
- * Get currently running shows (default homepage view)
+ * Get currently running shows (default homepage view — Broadway only)
  */
 export function getCurrentShows(): ComputedShow[] {
   return getShowsByStatus('open');
@@ -92,10 +94,10 @@ export function getAllShowSlugs(): string[] {
 }
 
 /**
- * Get shows sorted by composite score
+ * Get shows sorted by composite score (excludes off-Broadway from public listings)
  */
 export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[] {
-  return [...getAllShows()].sort((a, b) => {
+  return [...getAllShows()].filter(show => show.category !== 'off-broadway').sort((a, b) => {
     const scoreA = a.compositeScore ?? -1;
     const scoreB = b.compositeScore ?? -1;
     return ascending ? scoreA - scoreB : scoreB - scoreA;

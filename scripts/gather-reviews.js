@@ -390,28 +390,38 @@ async function searchDTLI(show) {
     show.title.toLowerCase().replace(/-the-/g, '-').replace(/[^a-z0-9]+/g, '-'),
   ];
 
-  // PRIORITY: Try -bway suffix FIRST for Broadway shows
-  // This avoids hitting Off-Broadway or prior production pages
+  // PRIORITY: Suffix order depends on category
+  const isOffBroadway = show.category === 'off-broadway';
   const allVariations = [];
 
-  // First, try all variations WITH -bway suffix (highest priority for Broadway)
-  for (const base of baseVariations) {
-    allVariations.push(base + '-bway');
-  }
+  if (isOffBroadway) {
+    // Off-Broadway: try -off-broadway suffix first, then no suffix, then base
+    for (const base of baseVariations) {
+      allVariations.push(base + '-off-broadway');
+    }
+    for (const base of baseVariations) {
+      allVariations.push(base);
+    }
+  } else {
+    // Broadway: try -bway suffix FIRST to avoid off-Broadway pages
+    for (const base of baseVariations) {
+      allVariations.push(base + '-bway');
+    }
 
-  // Then try -broadway suffix
-  for (const base of baseVariations) {
-    allVariations.push(base + '-broadway');
-  }
+    // Then try -broadway suffix
+    for (const base of baseVariations) {
+      allVariations.push(base + '-broadway');
+    }
 
-  // Then try -revival suffix
-  for (const base of baseVariations) {
-    allVariations.push(base + '-revival');
-  }
+    // Then try -revival suffix
+    for (const base of baseVariations) {
+      allVariations.push(base + '-revival');
+    }
 
-  // Finally, try without suffix (lowest priority - may hit wrong production)
-  for (const base of baseVariations) {
-    allVariations.push(base);
+    // Finally, try without suffix (lowest priority - may hit wrong production)
+    for (const base of baseVariations) {
+      allVariations.push(base);
+    }
   }
 
   // Special cases for known patterns (revivals, common name conflicts)
@@ -487,42 +497,59 @@ async function searchShowScore(show) {
   const year = new Date(show.openingDate).getFullYear();
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
+  const isOffBroadway = show.category === 'off-broadway';
 
   // For musicals, Show Score often appends "-the-musical-broadway"
   const isMusical = show.type === 'musical';
 
-  // Try more specific patterns first (with -broadway suffix) to avoid
-  // redirects to off-broadway shows with similar names
-  const variations = [
-    // Most specific: -broadway suffix patterns first
-    `${titleSlug}-broadway`,
-    `${titleNoColonSlug}-broadway`,
-    `${show.slug}-broadway`,
-    // For musicals, Show Score often uses "-the-musical-broadway"
-    ...(isMusical ? [
-      `${titleSlug}-the-musical-broadway`,
-      `${titleNoColonSlug}-the-musical-broadway`,
-      `${show.slug}-the-musical-broadway`,
-    ] : []),
-    // For plays, might use "-play-broadway"
-    ...(!isMusical ? [
-      `${titleSlug}-play-broadway`,
-      `${titleNoColonSlug}-play-broadway`,
-    ] : []),
-    // Then try without suffix (less specific, may redirect to wrong shows)
-    show.slug,
-    titleSlug,
-    titleNoColonSlug,
-    // Some shows include the year
-    `${titleSlug}-${year}`,
-    `${titleNoColonSlug}-${year}`,
-  ];
+  // Show Score URL base depends on category
+  const showScoreBase = isOffBroadway
+    ? 'https://www.show-score.com/off-broadway-shows'
+    : 'https://www.show-score.com/broadway-shows';
+
+  // Build slug variations based on category
+  let variations;
+  if (isOffBroadway) {
+    // Off-Broadway: no -broadway suffix needed
+    variations = [
+      show.slug,
+      titleSlug,
+      titleNoColonSlug,
+      ...(isMusical ? [
+        `${titleSlug}-the-musical`,
+        `${titleNoColonSlug}-the-musical`,
+      ] : []),
+      `${titleSlug}-${year}`,
+      `${titleNoColonSlug}-${year}`,
+    ];
+  } else {
+    // Broadway: try -broadway suffix first to avoid redirects
+    variations = [
+      `${titleSlug}-broadway`,
+      `${titleNoColonSlug}-broadway`,
+      `${show.slug}-broadway`,
+      ...(isMusical ? [
+        `${titleSlug}-the-musical-broadway`,
+        `${titleNoColonSlug}-the-musical-broadway`,
+        `${show.slug}-the-musical-broadway`,
+      ] : []),
+      ...(!isMusical ? [
+        `${titleSlug}-play-broadway`,
+        `${titleNoColonSlug}-play-broadway`,
+      ] : []),
+      show.slug,
+      titleSlug,
+      titleNoColonSlug,
+      `${titleSlug}-${year}`,
+      `${titleNoColonSlug}-${year}`,
+    ];
+  }
 
   // Try Playwright first if available (to get ALL reviews via carousel scrolling)
   if (chromium) {
     for (const slug of [...new Set(variations)]) {
-      const url = `https://www.show-score.com/broadway-shows/${slug}`;
-      const result = await scrapeShowScoreWithPlaywright(url);
+      const url = `${showScoreBase}/${slug}`;
+      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway });
       if (result) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html, reviews: result.reviews };
@@ -532,15 +559,16 @@ async function searchShowScore(show) {
   } else {
     // Fall back to HTTP scraping if Playwright not available
     for (const slug of [...new Set(variations)]) {
-      const url = `https://www.show-score.com/broadway-shows/${slug}`;
+      const url = `${showScoreBase}/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
-      // Check that we got actual show content, not the homepage or off-broadway shows
+      // Check that we got actual show content, not the homepage
+      // For off-broadway shows, accept /off-broadway-shows/ but still reject /off-off-broadway-shows/
       if (result.found && result.html &&
           result.html.includes('score') &&
           !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
-          !result.html.includes('/off-broadway-shows/') &&
-          !result.html.includes('/off-off-broadway-shows/')) {
+          !result.html.includes('/off-off-broadway-shows/') &&
+          (isOffBroadway || !result.html.includes('/off-broadway-shows/'))) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html };
       }
@@ -556,7 +584,8 @@ async function searchShowScore(show) {
  * Scrape Show Score page using Playwright with carousel navigation
  * This allows us to get ALL critic reviews, not just the first 8
  */
-async function scrapeShowScoreWithPlaywright(url) {
+async function scrapeShowScoreWithPlaywright(url, options = {}) {
+  const { isOffBroadway = false } = options;
   let browser = null;
   try {
     browser = await chromium.launch({ headless: true });
@@ -567,10 +596,15 @@ async function scrapeShowScoreWithPlaywright(url) {
 
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
 
-    // Check if we got redirected to a different type of show (off-broadway, off-off-broadway)
+    // Check if we got redirected to a different type of show
     const finalUrl = page.url();
-    if (finalUrl.includes('/off-broadway-shows/') || finalUrl.includes('/off-off-broadway-shows/')) {
-      // We got redirected to a non-Broadway show - this is the wrong show
+    // Always reject off-off-broadway
+    if (finalUrl.includes('/off-off-broadway-shows/')) {
+      await browser.close();
+      return null;
+    }
+    // For Broadway shows, reject off-broadway redirects
+    if (!isOffBroadway && finalUrl.includes('/off-broadway-shows/')) {
       await browser.close();
       return null;
     }
@@ -1547,7 +1581,7 @@ function archiveAggregatorPage(aggregator, showId, url, html) {
  * Create a review-text file
  * Uses centralized normalization to prevent duplicate files with different naming
  */
-function createReviewFile(showId, reviewData) {
+function createReviewFile(showId, reviewData, options = {}) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
@@ -1567,8 +1601,10 @@ function createReviewFile(showId, reviewData) {
   }
 
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
+  // For off-broadway shows, allow off-broadway content through
   const outletText = reviewData.outlet || reviewData.outletId || '';
-  if (isNotBroadway(outletText)) {
+  const allowOffBroadway = options.allowOffBroadway || false;
+  if (isNotBroadway(outletText, { allowOffBroadway })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return false;
   }
@@ -1826,6 +1862,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   const foundReviews = [];
   const outlets = loadOutlets();
+  const isOffBroadway = show.category === 'off-broadway';
 
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
   console.log('\n[1/4] Checking aggregators...');
@@ -1917,7 +1954,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
     const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
-    if (isNotBroadway(roundupTitle) ||
+    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway }) ||
         /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
@@ -1996,7 +2033,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   let created = 0;
   for (const review of foundReviews) {
     if (review.url && !review.needsUrl) {
-      if (createReviewFile(showId, review)) {
+      if (createReviewFile(showId, review, { allowOffBroadway: isOffBroadway })) {
         created++;
       }
     }
@@ -2062,7 +2099,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '')) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }
