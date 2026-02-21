@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-21T10:53:00.049Z",
+  "updatedAt": "2026-02-21T10:55:08.618Z",
   "processed": 3,
-  "failed": 127,
-  "successRate": "2.3%",
+  "failed": 137,
+  "successRate": "2.1%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-21T10:48:19.725Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-02-21T10:48:21.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T10:54:14.733Z",
+      "event": "bb-session",
+      "session": "199190b5",
+      "url": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
+    },
+    {
+      "t": "2026-02-21T10:54:16.801Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
