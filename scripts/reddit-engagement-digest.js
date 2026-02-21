@@ -349,14 +349,21 @@ function loadShowsSeenContext() {
   const favorites = sorted.slice(0, 10).map(s => s.title).join(', ');
   const least = sorted.filter(s => s.rating <= 2.5).map(s => `${s.title} (${s.rating})`).join(', ');
 
+  // Upcoming shows
+  const upcoming = (data.upcoming || []).map(s => `- ${s.title} (${s.date})`);
+  const upcomingBlock = upcoming.length > 0
+    ? `\nUpcoming (has tickets):\n${upcoming.join('\n')}`
+    : '';
+
   return `\nTHOMAS'S SHOW HISTORY (${unique.length} unique shows, ${data.shows.length} total viewings):
 Top-rated: ${favorites}
 Shows he didn't love: ${least || 'none'}
+${upcomingBlock}
 
 Full list (most recent first):
 ${lines.join('\n')}
 
-IMPORTANT: Use this history to know which shows Thomas has ACTUALLY seen. Only reference personal experience for shows on this list. If the draft says "I saw X" — verify X is on this list. Shows he saw multiple times (marked "seen Nx") are ones he really loves.`;
+IMPORTANT: Use this history to know which shows Thomas has ACTUALLY seen. Only reference personal experience for shows on this list. If the draft says "I saw X" — verify X is on this list. Shows he saw multiple times (marked "seen Nx") are ones he really loves. Upcoming shows = has tickets but hasn't seen yet.`;
 }
 
 // ── Claude Evaluation ───────────────────────────────────────────────────────
@@ -682,6 +689,10 @@ async function main() {
   const sent = await sendDigest(subject, html);
 
   // 5. Update history
+  // Track promo digests BEFORE incrementing count (so the recorded number matches)
+  if (suggestions.some(s => s.promoLink)) {
+    history.promoDigests.push(history.digestCount + 1);
+  }
   history.digestCount++;
   history.lastDigestAt = new Date().toISOString();
   for (const s of suggestions) {
@@ -690,10 +701,6 @@ async function main() {
   // Keep history from growing unbounded
   if (history.suggestedThreadIds.length > 1000) {
     history.suggestedThreadIds = history.suggestedThreadIds.slice(-500);
-  }
-  // Track promo digests
-  if (suggestions.some(s => s.promoLink)) {
-    history.promoDigests.push(history.digestCount);
   }
   if (history.promoDigests.length > 100) {
     history.promoDigests = history.promoDigests.slice(-50);
