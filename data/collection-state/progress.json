@@ -1,100 +1,64 @@
 {
   "processed": [
-    "aladdin-2014/wsj--terry-teachout.json",
-    "bug-2026/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "harry-potter-2021/wsj--terry-teachout.json"
+    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
+    "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json"
   ],
   "failed": [
-    "death-becomes-her-2024/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--charles-isherwood.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json"
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
+    "american-idiot-2010/financialtimes--brendan-lemon.json",
+    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
+    "betrayal-2013/financialtimes--brendan-lemon.json",
+    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
+    "carousel-2018/financial-times-uk--max-mcguinness.json",
+    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
+    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
+    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
+    "constellations-2015/financialtimes--brendan-lemon.json",
+    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
+    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
+    "enron-2010/financial-times--brandan-lemon.json",
+    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
+    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
+    "frozen-2018/financial-times-uk--max-mcguinness.json",
+    "glengarry-glen-ross-2012/financialtimes--brendan-lemon.json",
+    "grand-horizons-2020/financialtimes--unknown.json",
+    "hedwig-and-the-angry-inch-2014/financial-times-uk--brendan-lemon.json",
+    "hedwig-and-the-angry-inch-2014/financialtimes--unknown.json",
+    "heisenberg-2016/financial-times-uk--brendan-lemon.json",
+    "hello-dolly-2017/financial-times-uk--max-mcguinness.json",
+    "hughie-2016/financial-times-uk--max-mcguinness.json",
+    "indecent-2017/financial-times-uk--max-mcguinness.json",
+    "ink-2019/financialtimes--max-mcguinness.json",
+    "jesus-christ-superstar-2012/financialtimes--brendan-lemon.json",
+    "junk-2017/financial-times-uk--max-mcguinness.json",
+    "king-kong-2018/financial-times-uk--max-mcguinness.json",
+    "kinky-boots-2013/financial-times-uk--brendan-lemon.json",
+    "kinky-boots-2013/financialtimes--brendan-lemon.json",
+    "la-cage-aux-folles-2010/financialtimes--sarah-hemming.json",
+    "latin-history-for-morons-2017/financial-times-uk--max-mcguinness.json",
+    "les-liaisons-dangereuses-2008/financial-times-uk--ian-shuttleworth.json",
+    "les-liaisons-dangereuses-2016/financial-times-uk--max-mcguinness.json",
+    "living-on-love-2015/financialtimes--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "grey-house-2023/newyorker--dan-stahl.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
-      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
-      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
-      "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "aladdin-2014/wsj--terry-teachout.json",
-      "bug-2026/wsj--charles-isherwood.json",
-      "hadestown-2019/wsj--terry-teachout.json",
-      "hamilton-2015/wsj--terry-teachout.json",
-      "harry-potter-2021/wsj--terry-teachout.json"
+      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+      "choir-boy-2019/financial-times-uk--max-mcguinness.json",
+      "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json"
     ]
   },
-  "startTime": "2026-02-21T01:18:11.499Z",
-  "lastProcessed": "moulin-rouge-2019/wsj--terry-teachout.json",
-  "log": [
-    {
-      "t": "2026-02-21T01:19:05.995Z",
-      "event": "bb-session",
-      "session": "cd80139b",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
-    {
-      "t": "2026-02-21T01:19:07.962Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T01:20:40.519Z",
-      "event": "bb-session",
-      "session": "1c3a9678",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-21T01:20:42.407Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T01:22:19.168Z",
-      "event": "bb-session",
-      "session": "8fd31444",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
-    },
-    {
-      "t": "2026-02-21T01:22:20.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T01:23:47.497Z",
-      "event": "bb-session",
-      "session": "09a43290",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-02-21T01:23:49.580Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T01:25:38.337Z",
-      "event": "bb-session",
-      "session": "12c69f14",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-21T01:25:40.199Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-02-21T01:17:24.183Z",
+  "lastProcessed": "living-on-love-2015/financialtimes--brendan-lemon.json",
+  "log": []
 }
