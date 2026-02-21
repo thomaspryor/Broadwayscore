@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-21T19:25:52.212Z",
+  "runDate": "2026-02-21T19:33:01.651Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 112,
-    "failed": 218,
+    "processed": 121,
+    "failed": 264,
     "skipped": 0,
-    "successRate": "33.9%"
+    "successRate": "31.4%"
   },
   "tierBreakdown": {
     "playwright": 79,
@@ -24,7 +24,7 @@
     "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 56,
-    "archive": 25
+    "archive": 34
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -39,14 +39,14 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 31,
-    "scrapingBeeCreditsUsed": 31,
+    "tier4Attempts": 13,
+    "tier4Success": 8,
+    "totalFailed": 77,
+    "scrapingBeeCreditsUsed": 86,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 31,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 86,
+    "urlDiscoverySuccess": 13,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -161,7 +161,16 @@
     "hadestown-west-end-2024/guardian--arifa-akbar.json",
     "blackout-songs-2026/lighting-and-sound-america--david-barbour.json",
     "blackout-songs-2026/nysr--frank-scheck.json",
-    "this-is-my-favorite-song-2024/lighting-and-sound-america--david-barbour.json"
+    "this-is-my-favorite-song-2024/lighting-and-sound-america--david-barbour.json",
+    "hamilton-2015/nytimes--ben-brantley.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "cymbeline-2007/nytimes--charles-isherwood.json",
+    "eclipsed-2016/nytimes--charles-isherwood.json",
+    "fela-2012/nytimes--.json",
+    "take-me-out-2022/nytimes--jesse-green.json",
+    "the-encounter-2016/nytimes--ben-brantley.json",
+    "the-humans-2016/nytimes--charles-isherwood.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "bug-2026/theatre-reviews-limited--david-roberts.json",
@@ -351,37 +360,83 @@
     "hello-dolly-2017/theater-pizzazz--jk-clarke.json",
     "here-lies-love-2023/bergen-record--robert-feldberg.json",
     "high-2011/scheckontheater--frank-scheck.json",
-    "giant-2026/bloomberg--philip-boroff.json",
-    "deuce-2007/bloomberg-news--philip-boroff.json",
-    "fela-2009/bloomberg-news--john-simon.json",
-    "fela-2012/bloomberg-news--john-simon.json",
-    "motown-the-musical-2016/bloomberg-news--unknown.json",
-    "priscilla-queen-of-the-desert-2011/bloomberg-news--jeremy-gerard.json",
-    "promises-promises-2010/bloomberg-news--john-simon.json",
-    "race-2009/bloomberg-news--john-simon.json",
-    "the-addams-family-2010/bloomberg-news--john-simon.json",
-    "the-glass-menagerie-2013/bloomberg-news--unknown.json",
-    "the-glass-menagerie-2017/bloomberg-news--unknown.json",
-    "the-peewee-herman-show-2010/bloomberg-news--john-simon.json",
-    "time-stands-still-2010/bloomberg-news--john-simon.json",
-    "wonderland-2011/bloomberg-news--philip-boroff.json",
-    "wonderland-2011/bloomberg-news--phillip-boroff.json",
-    "after-midnight-2013/bloomberg--jeremy-gerard.json",
-    "an-enemy-of-the-people-2024/bloomberg--jeremy-gerard.json",
-    "evita-2012/bloomberg--jeremy-gerard.json",
-    "fun-home-2015/bloomberg--jeremy-gerard.json",
-    "ghost-the-musical-2012/bloomberg--jeremy-gerard.json",
-    "la-cage-aux-folles-2010/bloomberg--jeremy-gerard.json",
-    "nice-work-if-you-can-get-it-2012/bloomberg--jeremy-gerard.json",
-    "rodgers-hammersteins-cinderella-2013/bloomberg--jeremy-gerard.json",
-    "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
-    "sweeney-todd-2005/bloomberg--mark-leydorf.json",
-    "sweeney-todd-2005/bloomberg-mark-leydorf--mark-leydorf.json",
-    "the-addams-family-2010/bloomberg--john-simon.json",
-    "the-anarchist-2012/bloomberg--jeremy-gerard.json",
-    "the-snow-geese-2013/bloomberg--jeremy-gerard.json",
-    "the-trip-to-bountiful-2013/bloomberg--jeremy-gerard.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+    "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "giant-2026/nytimes--houman-barekat.json",
+    "schmigadoon-2026/nytimes--margaret-lyons.json",
+    "titanique-2026/nytimes--elisabeth-vincentelli.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "a-bronx-tale-the-musical-2016/nytimes--charles-isherwood.json",
+    "a-christmas-carol-2022/nytimes--ben-brantley.json",
+    "a-christmas-carol-2022/nytimes--jesse-green.json",
+    "a-little-night-music-2009/nytimes--matt-wolf.json",
+    "a-steady-rain-2009/nytimes--ben-brantley.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+    "after-the-night-and-the-music-2005/nytimes--ben-brantley.json",
+    "annie-2012/nytimes--laura-collins-hughes.json",
+    "beetlejuice-2022/nytimes--ben-brantley.json",
+    "betrayal-2013/nytimes--matt-wolf.json",
+    "billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
+    "cabaret-2014/nytimes--jesse-green.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-1982/nytimes--jesse-green.json",
+    "colin-quinn-long-story-short-2010/nytimes--jason-zinoman.json",
+    "company-2006/nytimes--jesse-green.json",
+    "cymbeline-2007/nytimes--ben-brantley.json",
+    "cyrano-de-bergerac-2007/nytimes--ben-brantley.json",
+    "cyrano-de-bergerac-2012/nytimes--ben-brantley.json",
+    "deuce-2007/nytimes--charles-isherwood.json",
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "eureka-day-2024/nytimes--jesse-green.json",
+    "evita-2012/nytimes--jesse-green.json",
+    "exit-the-king-2009/nytimes--ben-brantley.json",
+    "fat-ham-2023/nytimes--jesse-green.json",
+    "finding-neverland-2015/nytimes--ben-brantley.json",
+    "finians-rainbow-2009/nytimes--charles-isherwood.json",
+    "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+    "hairspray-2002/nytimes--unknown.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "heisenberg-2016/nytimes--charles-isherwood.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nytimes--sylviane-gold.json",
+    "illinoise-2024/nytimes--jesse-green.json",
+    "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+    "les-liaisons-dangereuses-2016/nytimes--matt-wolf.json",
+    "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+    "next-to-normal-2009/nytimes--ben-brantley.json",
+    "oklahoma-2019/nytimes--benedict-nightingale.json",
+    "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
+    "once-upon-a-one-more-time-2023/nytimes--maya-phillips.json",
+    "pal-joey-2008/nytimes--jesse-green.json",
+    "pictures-from-home-2023/nytimes--jesse-green.json",
+    "purpose/nytimes--jesse-green.json",
+    "rain-2010/nytimes--elisabeth-vincentelli.json",
+    "reasons-to-be-pretty-2009/nytimes--ben-brantley.json",
+    "rent-1996/nytimes--ben-brantley-1996-offbway.json",
+    "rent-1996/nytimes--ben-brantley.json",
+    "seascape-2005/nytimes--ben-brantley.json",
+    "significant-other-2017/nytimes--charles-isherwood.json",
+    "slave-play-2021/nytimes--jesse-green.json",
+    "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
+    "sweeney-todd-2005/nytimes--ben-brantley.json",
+    "sweeney-todd-2005/nytimes--jesse-green.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--elisabeth-vincentelli.json",
+    "the-children-2017/nytimes--jesse-green.json",
+    "the-constant-wife-2005/nytimes--ben-brantley.json",
+    "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json",
+    "the-real-thing-2014/nytimes--ben-brantley.json",
+    "the-ritz-2007/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--jesse-green.json",
+    "the-seagull-2008/nytimes--jesse-green.json",
+    "the-threepenny-opera-2006/nytimes--charles-isherwood.json",
+    "the-visit-2015/nytimes--ben-brantley.json",
+    "the-visit-2015/nytimes--unknown.json",
+    "three-days-of-rain-2006/nytimes--ben-brantley.json",
+    "title-of-show-2008/nytimes--ben-brantley.json",
+    "translations-2007/nytimes--ben-brantley.json",
+    "urinetown-2001/nytimes--bruce-weber-offbway.json",
+    "waiting-for-godot-2009/nytimes--laura-collins-hughes.json",
+    "waitress-2021/nytimes--jesse-green.json",
+    "the-sound-inside-2019/chicagotribune--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -562,10 +617,85 @@
       "angels-in-america-2018/broadway-blog--matthew-wexler.json",
       "perfect-crime-1987/nydailynews--joe-dziemianowicz.json",
       "call-me-izzy-2025/one-minute-critic--unknown.json",
-      "glengarry-glen-ross-2025/nysun--elysa-gardner.json"
+      "glengarry-glen-ross-2025/nysun--elysa-gardner.json",
+      "hamilton-2015/nytimes--ben-brantley.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "cymbeline-2007/nytimes--charles-isherwood.json",
+      "eclipsed-2016/nytimes--charles-isherwood.json",
+      "fela-2012/nytimes--.json",
+      "take-me-out-2022/nytimes--jesse-green.json",
+      "the-encounter-2016/nytimes--ben-brantley.json",
+      "the-humans-2016/nytimes--charles-isherwood.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
     ],
     "amp": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
+      "newUrl": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html"
+    },
+    {
+      "reviewId": "hamilton-2015/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html",
+      "newUrl": "https://www.nytimes.com/2015/02/18/theater/review-in-hamilton-lin-manuel-miranda-forges-democracy-through-rap.html"
+    },
+    {
+      "reviewId": "schmigadoon-2026/nytimes--margaret-lyons.json",
+      "oldUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
+      "newUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html"
+    },
+    {
+      "reviewId": "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "oldUrl": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+      "newUrl": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html"
+    },
+    {
+      "reviewId": "cymbeline-2007/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html",
+      "newUrl": "https://www.nytimes.com/2007/05/04/theater/reviews/04cymb.html"
+    },
+    {
+      "reviewId": "cymbeline-2007/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2007/08/23/theater/reviews/23cymb.html",
+      "newUrl": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html"
+    },
+    {
+      "reviewId": "eclipsed-2016/nytimes--charles-isherwood.json",
+      "oldUrl": "http://www.nytimes.com/2016/03/07/theater/review-in-eclipsed-a-captive-lupita-nyongo-is-captivating.html",
+      "newUrl": "https://www.nytimes.com/2016/03/07/theater/review-in-eclipsed-a-captive-lupita-nyongo-is-captivating.html"
+    },
+    {
+      "reviewId": "fela-2012/nytimes--.json",
+      "oldUrl": "https://theater.nytimes.com/2009/11/24/theater/reviews/24fela.html?pagewanted=1&ref=arts",
+      "newUrl": "https://www.nytimes.com/2012/07/13/theater/reviews/fela-on-broadway-at-al-hirschfeld-theater.html"
+    },
+    {
+      "reviewId": "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
+      "oldUrl": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html",
+      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "reviewId": "take-me-out-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/04/05/theater/take-me-out-review.html",
+      "newUrl": "https://www.nytimes.com/2022/04/04/theater/take-me-out-review.html"
+    },
+    {
+      "reviewId": "the-encounter-2016/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html",
+      "newUrl": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html"
+    },
+    {
+      "reviewId": "the-humans-2016/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html?_r=0",
+      "newUrl": "https://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html"
+    },
+    {
+      "reviewId": "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2023/05/05/theater/the-sign-in-sidney-brusteins-window-review.html",
+      "newUrl": "https://www.nytimes.com/2023/02/27/theater/the-sign-in-sidney-brusteins-window-bam-review.html"
+    }
+  ]
 }
