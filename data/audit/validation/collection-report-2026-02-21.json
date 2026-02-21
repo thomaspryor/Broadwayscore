@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T18:37:27.586Z",
+  "runDate": "2026-02-21T18:50:28.381Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 101,
-    "failed": 117,
+    "processed": 109,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "46.3%"
+    "successRate": "47.2%"
   },
   "tierBreakdown": {
-    "playwright": 70,
+    "playwright": 75,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 32,
-    "archive": 24
+    "archive": 26
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 8,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 5,
-    "tier3_6Success": 5,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 32,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -150,7 +150,15 @@
     "bad-cinderella-2023/bloomberg-chris-rovzar--chris-rovzar.json",
     "beetlejuice-2025/stagezine--scott-harrah.json",
     "birthday-candles-2022/theater-life--barry-gordin.json",
-    "blackbird-2016/latimes--unknown.json"
+    "blackbird-2016/latimes--unknown.json",
+    "data-2026/nytimes--tim-teeman.json",
+    "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json",
+    "blackout-songs-2026/theatermania--pete-hempstead.json",
+    "data-2026/theatermania--zachary-stewart.json",
+    "hate-radio-2026/theatermania--zachary-stewart.json",
+    "masquerade-2025/theatermania--meg-masseron.json",
+    "this-is-my-favorite-song-2024/theatermania--pete-hempstead.json",
+    "hadestown-west-end-2024/londontheatre--marianka-swain.json"
   ],
   "failed": [
     "bug-2026/theatre-reviews-limited--david-roberts.json",
@@ -237,15 +245,16 @@
     "anastasia-2017/nbcny--david-quinn.json",
     "anastasia-2017/stageandcinema--frances-burroughs.json",
     "angels-in-america-2018/escape-into-life--scott-klavan.json",
-    "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
-    "angels-in-america-2018/talkinbroadway--matthew-murray.json",
-    "annie-2012/ap--mark-kennedy.json",
+    "the-monsters-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "hans-litten-the-jew-who-crossexamined-hitler-2026/theater-scene--darryl-reilly.json",
+    "perfect-crime-1987/woman-around-town--quan-lam.json",
+    "death-of-a-salesman-2022/deadline--pete-hammond.json",
+    "in-the-heights-2008/nypost--.json",
+    "ink-2019/deadline--pete-hammond.json",
+    "american-buffalo-2022/rollingstone--johnny-oleksinski.json",
+    "american-psycho-2016/americanpsychothemusicalcomlottery--unknown.json",
     "annie-2012/playbill--unknown.json",
-    "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
-    "back-to-the-future-2023/theater-pizzazz--sandi-durell.json",
-    "bad-cinderella-2023/ap--mark-kennedy.json",
-    "bad-cinderella-2023/theater-life--david-sheward.json",
-    "bad-cinderella-2023/theater-scene--victor-gluck.json",
+    "beetlejuice-2022/albuquerque-journal--adrian-gomez.json",
     "beetlejuice-2025/artsfuse--chris-caggiano.json",
     "beetlejuice-2025/broadway-blog--matthew-wexler.json",
     "beetlejuice-2025/exeunt-magazine--jordan-g-teicher.json",
@@ -269,7 +278,11 @@
     "once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
     "prince-of-broadway-2017/cabaret-scenes--elizabeth-ahlfors.json",
     "prince-of-broadway-2017/film-festival-traveler--kevin-filipski.json",
-    "sweeney-todd-2023/queerty--matthew-wexler.json"
+    "sweeney-todd-2023/queerty--matthew-wexler.json",
+    "perfect-crime-1987/nytimes--jason-zinoman.json",
+    "pen-pals-2025/theatermania--dan-rubins.json",
+    "the-monsters-2026/theatermania--pete-hempstead.json",
+    "oh-mary-west-end-2025/londontheatre--marianka-swain.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -342,9 +355,13 @@
       "angels-in-america-2018/thestage--mark-shenton.json",
       "angels-in-america-2018/village-voice--michael-feingold.json",
       "back-to-the-future-2023/exeunt-magazine--lane-williamson.json",
-      "beetlejuice-2025/stagezine--scott-harrah.json"
+      "beetlejuice-2025/stagezine--scott-harrah.json",
+      "blackout-songs-2026/theatermania--pete-hempstead.json",
+      "data-2026/theatermania--zachary-stewart.json",
+      "hate-radio-2026/theatermania--zachary-stewart.json",
+      "masquerade-2025/theatermania--meg-masseron.json",
+      "this-is-my-favorite-song-2024/theatermania--pete-hempstead.json"
     ],
-    "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
@@ -354,7 +371,9 @@
       "a-delicate-balance-2014/latimes--unknown.json",
       "angels-in-america-2018/njcom--christopher-kelly.json",
       "angels-in-america-2018/vanityfair--richard-lawson.json",
-      "blackbird-2016/latimes--unknown.json"
+      "blackbird-2016/latimes--unknown.json",
+      "data-2026/nytimes--tim-teeman.json",
+      "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -379,8 +398,7 @@
       "data/review-texts/how-i-learned-to-drive-2022/theatrely--juan-a-ramirez.json",
       "data/review-texts/a-moon-for-the-misbegotten-2007/click-here--unknown.json",
       "data/review-texts/aint-too-proud-2019/talkinbroadway--matthew-murray.json",
-      "data/review-texts/angels-in-america-2018/talkinbroadway--matthew-murray.json",
-      "data/review-texts/annie-2012/ap--mark-kennedy.json",
+      "data/review-texts/american-psycho-2016/americanpsychothemusicalcomlottery--unknown.json",
       "data/review-texts/annie-2012/playbill--unknown.json",
       "data/review-texts/blackbird-2016/ap--mark-kennedy.json",
       "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
@@ -389,7 +407,8 @@
       "data/review-texts/fully-committed-2016/ap--unknown.json",
       "data/review-texts/living-on-love-2015/ap--unknown.json",
       "data/review-texts/noises-off-2016/ap--unknown.json",
-      "data/review-texts/once-on-this-island-2017/film-festival-traveler--kevin-filipski.json"
+      "data/review-texts/once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/perfect-crime-1987/nytimes--jason-zinoman.json"
     ],
     "archive": [
       "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
@@ -414,25 +433,13 @@
       "a-soldiers-play-2020/theater-life--barry-gordin.json",
       "aint-too-proud-2019/front-row-center--donna-herman.json",
       "angels-in-america-2018/broadway-blog--matthew-wexler.json",
-      "bad-cinderella-2023/bloomberg-chris-rovzar--chris-rovzar.json",
-      "birthday-candles-2022/theater-life--barry-gordin.json"
-    ]
+      "perfect-crime-1987/nydailynews--joe-dziemianowicz.json",
+      "call-me-izzy-2025/one-minute-critic--unknown.json",
+      "glengarry-glen-ross-2025/nysun--elysa-gardner.json",
+      "hadestown-west-end-2024/londontheatre--marianka-swain.json"
+    ],
+    "amp": []
   },
-  "failuresByOutlet": {
-    "Stage Buddy": {
-      "count": 1,
-      "domain": "stagebuddy.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Cabaret Scenes": {
-      "count": 1,
-      "domain": "cabaretscenes.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
