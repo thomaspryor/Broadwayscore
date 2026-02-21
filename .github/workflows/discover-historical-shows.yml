@@ -110,6 +110,7 @@ jobs:
           fi
 
           # Retry push with rebase
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
@@ -129,6 +130,9 @@ jobs:
             git diff --cached --quiet || git commit -m "chore: Add historical shows from ${{ inputs.seasons }} (retry $i)"
             sleep $((RANDOM % 10 + 5))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
   # Create issue for historical shows
 

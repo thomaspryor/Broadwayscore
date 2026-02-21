@@ -254,14 +254,18 @@ jobs:
             git commit -m "feat: Collect hard-paywall review texts via Archive.org (${{ inputs.domain }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
+            pushed=false
             for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push && break || {
+              git pull --rebase origin main && git push && pushed=true && break || {
                 echo "Push attempt $i failed, retrying..."
                 sleep $((RANDOM % 10 + 5))
                 git rebase --abort 2>/dev/null || true
                 git pull --no-rebase -X ours origin main
               }
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -597,14 +601,18 @@ jobs:
             git commit -m "feat: Collect hard-paywall review texts via Archive.org (${{ matrix.domain }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
+            pushed=false
             for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push && break || {
+              git pull --rebase origin main && git push && pushed=true && break || {
                 echo "Push attempt $i failed, retrying..."
                 sleep $((RANDOM % 10 + 5))
                 git rebase --abort 2>/dev/null || true
                 git pull --no-rebase -X ours origin main
               }
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi
 
       - name: Upload collection report

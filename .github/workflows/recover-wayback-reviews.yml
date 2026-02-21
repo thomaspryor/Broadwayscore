@@ -101,13 +101,17 @@ jobs:
 
           Co-Authored-By: GitHub Action <action@github.com>"
 
+          pushed=false
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main && git push origin main && break || {
+            git pull --rebase origin main && git push origin main && pushed=true && break || {
               echo "Push attempt $i failed, retrying..."
               git rebase --abort 2>/dev/null || true
               sleep $((RANDOM % 10 + 5))
             }
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
       - name: Trigger rebuild
         if: always()

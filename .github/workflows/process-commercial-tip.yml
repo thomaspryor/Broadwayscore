@@ -53,11 +53,15 @@ jobs:
 
             Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+            pushed=false
             for i in 1 2 3; do
               if git push origin main; then break; fi
               git pull --rebase origin main
               sleep 2
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi
 
 

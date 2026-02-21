@@ -121,6 +121,7 @@ jobs:
           Build: Site builds successfully"
 
           # Retry push with rebase in case remote has new commits
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
@@ -139,6 +140,9 @@ jobs:
             fi
             sleep $((10 + RANDOM % 20))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
 
       - name: Push core data to private repo

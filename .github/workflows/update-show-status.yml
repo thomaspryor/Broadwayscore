@@ -101,6 +101,7 @@ jobs:
           fi
           # Retry push with rebase in case remote has new commits
           PUSH_OK=false
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
@@ -120,6 +121,9 @@ jobs:
             fi
             sleep $((10 + RANDOM % 20))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
           if [ "$PUSH_OK" != "true" ]; then
             echo "ERROR: All 5 push attempts failed"
             exit 1
