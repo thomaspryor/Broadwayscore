@@ -1,18 +1,36 @@
 {
-  "updatedAt": "2026-02-21T09:29:42.136Z",
-  "processed": 55,
-  "failed": 135,
-  "successRate": "28.9%",
+  "updatedAt": "2026-02-21T09:38:05.263Z",
+  "processed": 80,
+  "failed": 140,
+  "successRate": "36.4%",
   "tierBreakdown": {
-    "playwright": 34,
-    "amp": 0,
+    "playwright": 50,
+    "amp": 6,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 32,
-    "archive": 19
+    "archiveToday": 41,
+    "archive": 28
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T09:32:43.618Z",
+      "event": "bb-session",
+      "session": "b1206362",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
+    },
+    {
+      "t": "2026-02-21T09:35:18.212Z",
+      "event": "bb-session",
+      "session": "90df218e",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-21T09:35:20.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
