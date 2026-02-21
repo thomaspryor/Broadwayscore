@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories } from '@/lib/data-core';
 import type { BestOfCategory } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
 import type { BrowseShow } from '@/components/BrowseListClient';
@@ -18,6 +18,8 @@ export function generateMetadata({ params }: { params: { category: string } }): 
   if (!list) return { title: 'List Not Found' };
 
   const canonicalUrl = `${BASE_URL}/best/${params.category}`;
+  const topImage = list.shows[0]?.images?.hero || list.shows[0]?.images?.poster;
+  const ogImageUrl = topImage ? toAbsoluteUrl(topImage) : `${BASE_URL}/og/home.png`;
 
   return {
     title: `${list.title} ${new Date().getFullYear()}`,
@@ -30,12 +32,13 @@ export function generateMetadata({ params }: { params: { category: string } }): 
       description: list.description,
       url: canonicalUrl,
       type: 'article',
-      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: list.title }],
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: list.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: list.title,
       description: list.description,
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: list.title }],
     },
   };
 }

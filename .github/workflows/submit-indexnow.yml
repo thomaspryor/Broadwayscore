@@ -82,6 +82,17 @@ jobs:
             node scripts/submit-indexnow.js
           fi
 
+      - name: Submit to Google Indexing API (show pages only)
+        if: steps.mode.outputs.mode == 'shows' && env.GOOGLE_INDEXING_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          SHOWS="${{ steps.mode.outputs.shows }}"
+          if [ -n "$SHOWS" ]; then
+            node scripts/submit-google-indexing.js --shows "$SHOWS"
+          fi
+
       - name: Summary
         run: |
           echo "## IndexNow Submission Complete" >> $GITHUB_STEP_SUMMARY
@@ -94,4 +105,8 @@ jobs:
           echo "- Seznam" >> $GITHUB_STEP_SUMMARY
           echo "- Naver" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "*Note: Google does not currently support IndexNow*" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ secrets.GOOGLE_INDEXING_KEY }}" ]; then
+            echo "URLs also submitted to **Google Indexing API**." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "*Google Indexing API: not configured (set GOOGLE_INDEXING_KEY secret)*" >> $GITHUB_STEP_SUMMARY
+          fi

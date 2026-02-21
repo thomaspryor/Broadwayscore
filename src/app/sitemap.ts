@@ -5,6 +5,7 @@ import {
   getAllBestOfCategories,
   getAllTheaterSlugs,
   getAllBrowseSlugs,
+  getDataFreshness,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
 import { getCreativeSlugs, getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
@@ -23,6 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const guideSlugs = getAllGuideSlugs();
   const currentYear = new Date().getFullYear();
 
+  // Use actual data freshness dates instead of build-time new Date()
+  const freshness = getDataFreshness();
+  const showsDate = new Date(freshness.showsLastUpdated);
+  const reviewsDate = new Date(freshness.reviewsLastUpdated);
+  // Use the most recent data update for hub pages
+  const latestDate = new Date(Math.max(showsDate.getTime(), reviewsDate.getTime()));
+
   // Show pages - prioritize open shows higher than closed shows
   const showPages = showSlugs.map((slug) => {
     const show = getShowBySlug(slug);
@@ -30,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     return {
       url: `${BASE_URL}/show/${slug}`,
-      lastModified: new Date(),
+      lastModified: isOpen ? latestDate : showsDate,
       changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
       priority: isOpen ? 0.9 : 0.6,
     };
@@ -39,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Best-of list pages - high priority, updated frequently
   const bestOfPages = bestOfCategories.map((category) => ({
     url: `${BASE_URL}/best/${category}`,
-    lastModified: new Date(),
+    lastModified: latestDate,
     changeFrequency: 'weekly' as const,
     priority: 0.85,
   }));
@@ -56,7 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(slug => !redirectedBrowseSlugs.has(slug))
     .map((slug) => ({
       url: `${BASE_URL}/browse/${slug}`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     }));
@@ -64,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Theater pages - medium priority
   const theaterPages = theaterSlugs.map((slug) => ({
     url: `${BASE_URL}/theater/${slug}`,
-    lastModified: new Date(),
+    lastModified: showsDate,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
@@ -73,7 +81,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Homepage - highest priority
     {
       url: BASE_URL,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'daily',
       priority: 1,
     },
@@ -85,7 +93,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (isOldYear) return null;
       return {
         url: `${BASE_URL}/guides/${slug}`,
-        lastModified: new Date(),
+        lastModified: latestDate,
         changeFrequency: year ? 'monthly' as const : 'weekly' as const,
         priority: year ? 0.7 : 0.85,
       };
@@ -93,7 +101,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Guides index page
     {
       url: `${BASE_URL}/guides`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
@@ -104,35 +112,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Tony Awards predictions
     {
       url: `${BASE_URL}/tony-awards`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     // West End page
     {
       url: `${BASE_URL}/west-end`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     // Rankings hub page
     {
       url: `${BASE_URL}/rankings`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     // Broadway theaters map
     {
       url: `${BASE_URL}/broadway-theaters-map`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     // Index pages - good for SEO crawling
     {
       url: `${BASE_URL}/theater`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
@@ -143,98 +151,98 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Static pages
     {
       url: `${BASE_URL}/methodology`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     // Data pages - high value for AI citations
     {
       url: `${BASE_URL}/box-office`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/biz`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
     // Lottery and Rush pages - high value for discount ticket seekers
     {
       url: `${BASE_URL}/lotteries`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/rush`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/standing-room`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/best-value`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     // Audience data pages
     {
       url: `${BASE_URL}/audience-buzz`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     // Critic & Outlet pages - high value for authority and AI citations
     {
       url: `${BASE_URL}/critics`,
-      lastModified: new Date(),
+      lastModified: reviewsDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/critics/outlets`,
-      lastModified: new Date(),
+      lastModified: reviewsDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     ...getAllCriticSlugs().map((slug) => ({
       url: `${BASE_URL}/critics/${slug}`,
-      lastModified: new Date(),
+      lastModified: reviewsDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
     ...getAllOutletSlugs().map((slug) => ({
       url: `${BASE_URL}/critics/outlets/${slug}`,
-      lastModified: new Date(),
+      lastModified: reviewsDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
     // Creative team index pages (directors, playwrights, composers, lyricists)
     ...ALL_CREATIVE_CATEGORIES.map(cat => ({
       url: `${BASE_URL}/${CREATIVE_CATEGORY_CONFIG[cat].routePath}`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),
     // Unified creative person pages (/creative/[slug])
     ...getUnifiedCreativeSlugs().map(slug => ({
       url: `${BASE_URL}/creative/${slug}`,
-      lastModified: new Date(),
+      lastModified: showsDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
     // Gold List pages - curated ranking lists
     {
       url: `${BASE_URL}/lists`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
@@ -243,13 +251,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return [
         {
           url: `${BASE_URL}/lists/${config.type}/all-time`,
-          lastModified: new Date(),
+          lastModified: latestDate,
           changeFrequency: 'weekly' as const,
           priority: 0.8,
         },
         ...seasons.map(season => ({
           url: `${BASE_URL}/lists/${config.type}/${season}`,
-          lastModified: new Date(),
+          lastModified: latestDate,
           changeFrequency: 'monthly' as const,
           priority: 0.7,
         })),
@@ -258,13 +266,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Compare pages - programmatic SEO goldmine
     {
       url: `${BASE_URL}/compare`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     ...getAllComparisonSlugs().map((slug) => ({
       url: `${BASE_URL}/compare/${slug}`,
-      lastModified: new Date(),
+      lastModified: latestDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),

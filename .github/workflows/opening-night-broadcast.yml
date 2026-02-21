@@ -208,3 +208,36 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      - name: Submit show pages to Google Indexing API
+        if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Convert show IDs to slugs for URL submission
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.find.outputs.shows }}'.split(',');
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? s.slug : id;
+            });
+            console.log(slugs.join(','));
+          ")
+          node scripts/submit-google-indexing.js --shows "$SLUGS"
+
+      - name: Submit show pages to IndexNow
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        run: |
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.find.outputs.shows }}'.split(',');
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? s.slug : id;
+            });
+            console.log(slugs.join(','));
+          ")
+          node scripts/submit-indexnow.js --shows "$SLUGS"
