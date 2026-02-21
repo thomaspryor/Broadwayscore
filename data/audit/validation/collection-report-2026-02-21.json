@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T17:00:43.889Z",
+  "runDate": "2026-02-21T17:07:37.582Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,56 +11,52 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 23,
+    "processed": 7,
+    "failed": 38,
     "skipped": 0,
-    "successRate": "32.4%"
+    "successRate": "15.6%"
   },
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 27,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 1
+    "archiveToday": 23,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 17,
+    "tier1Attempts": 32,
+    "tier1Success": 13,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 5,
+    "tier2Attempts": 17,
+    "tier2Success": 3,
+    "tier3Attempts": 14,
     "tier3Success": 0,
-    "tier3_6Attempts": 5,
-    "tier3_6Success": 5,
-    "tier4Attempts": 7,
-    "tier4Success": 2,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40,
+    "tier3_6Attempts": 14,
+    "tier3_6Success": 14,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 28,
+    "scrapingBeeCreditsUsed": 92,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "anonymous-2026/off-off-online--walter-murphy.json",
-    "the-disappear-2026/off-off-online--adrienne-onofri.json",
-    "the-monsters-2026/pages-on-stages--mason-pilevsky.json",
-    "the-waterfall-2026/off-off-online--adrienne-onofri.json",
-    "the-waterfall-2026/pages-on-stages--mason-pilevsky.json",
-    "ulysses-2026/off-off-online--charles-wright.json",
-    "ulysses-2026/pages-on-stages--mason-pilevsky.json",
-    "ghetto-klown-2011/bloomberg--jeremy-gerard.json",
-    "latin-history-for-morons-2017/stage-left--william-wolf.json",
-    "the-little-prince-2022/exeunt-magazine--juliet-hindell.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+    "the-monsters-2026/vulture--jackson-mchenry.json",
+    "betrayal-2019/londontheatre--mark-shenton.json",
+    "between-riverside-and-crazy-2022/but-rent-controlled--king-lear.json",
+    "ink-2019/limelight-magazine-au--clive-paget.json",
+    "king-kong-2018/limelight-magazine-au--clive-paget.json",
+    "mean-girls-2018/film-festival-traveler--kevin-filipski.json",
+    "waitress-2016/stagebuddy--jose-solis.json"
   ],
   "failed": [
     "the-lion-king-1997/washpost--lloyd-rose.json",
@@ -73,19 +69,34 @@
     "all-my-sons-2019/washpost--peter-marks.json",
     "american-buffalo-2022/washpost--peter-marks.json",
     "american-psycho-2016/washpost--peter-marks.json",
-    "an-enemy-of-the-people-2024/slantmagazine--dan-rubins.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json",
-    "call-me-izzy-2025/exeunt-magazine--unknown.json",
-    "collected-stories-2010/bloomberg--jeremy-gerard.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
-    "la-cage-aux-folles-2010/bloomberg--jeremy-gerard.json",
-    "marvins-room-2017/broadway-blog--samuel-l-leiter.json",
-    "paradise-square-2022/pages-on-stages--mason-pilevsky.json",
-    "prince-of-broadway-2017/theatres-leiter-side--samuel-l-leiter.json",
-    "shucked-2023/slantmagazine--dan-rubins.json",
-    "the-music-man-2022/exeunt-magazine--lane-williamson.json",
-    "the-prom-2018/stage-left--robert-russo.json",
-    "tuck-everlasting-2016/theatres-leiter-side--samuel-l-leiter.json"
+    "be-more-chill-2019/hypable--irvin-k.json",
+    "camelot-2023/queerty--unknown.json",
+    "carousel-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "escape-to-margaritaville-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "fully-committed-2016/ap--unknown.json",
+    "heisenberg-2016/stagebuddy--tami-shaloum.json",
+    "i-need-that-2023/stagebuddy--elyse-trevers.json",
+    "in-transit-2016/cabaret-scenes--elizabeth-ahlfors.json",
+    "living-on-love-2015/ap--unknown.json",
+    "noises-off-2016/ap--unknown.json",
+    "once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/cabaret-scenes--elizabeth-ahlfors.json",
+    "prince-of-broadway-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
+    "she-loves-me-2016/whatsonstage--scott-mitchell.json",
+    "six-degrees-of-separation-2017/film-festival-traveler--kevin-filipski.json",
+    "spamalot-2023/queerty--matthew-wexler.json",
+    "sweeney-todd-2023/queerty--matthew-wexler.json",
+    "sylvia-2015/film-festival-traveler--kevin-filipski.json",
+    "the-crucible-2016/whatsonstage--scott-mitchell.json",
+    "the-humans-2016/ap--unknown.json",
+    "the-humans-2016/whatsonstage--scott-mitchell.json",
+    "the-last-five-years-2025/hypable--unknown.json",
+    "the-little-foxes-2017/film-festival-traveler--kevin-filipski.json",
+    "the-notebook-2024/vu--sara-holdren.json",
+    "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json",
+    "the-prom-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "the-terms-of-my-surrender-2017/film-festival-traveler--kevin-filipski.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -113,21 +124,16 @@
       "little-women-the-musical-2026/the-stage-uk--julia-rank.json",
       "the-unknown-2026/lighting-and-sound-america--david-barbour.json",
       "the-waterfall-2026/lighting-and-sound-america--david-barbour.json",
-      "anonymous-2026/off-off-online--walter-murphy.json",
-      "the-disappear-2026/off-off-online--adrienne-onofri.json",
-      "the-monsters-2026/pages-on-stages--mason-pilevsky.json",
-      "the-waterfall-2026/off-off-online--adrienne-onofri.json",
-      "the-waterfall-2026/pages-on-stages--mason-pilevsky.json",
-      "ulysses-2026/off-off-online--charles-wright.json",
-      "ulysses-2026/pages-on-stages--mason-pilevsky.json",
-      "ghetto-klown-2011/bloomberg--jeremy-gerard.json",
-      "the-little-prince-2022/exeunt-magazine--juliet-hindell.json"
+      "betrayal-2019/londontheatre--mark-shenton.json",
+      "mean-girls-2018/film-festival-traveler--kevin-filipski.json",
+      "waitress-2016/stagebuddy--jose-solis.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+      "ink-2019/limelight-magazine-au--clive-paget.json",
+      "king-kong-2018/limelight-magazine-au--clive-paget.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -140,16 +146,41 @@
       "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
       "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
-      "data/review-texts/call-me-izzy-2025/exeunt-magazine--unknown.json",
-      "data/review-texts/collected-stories-2010/bloomberg--jeremy-gerard.json",
-      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
-      "data/review-texts/la-cage-aux-folles-2010/bloomberg--jeremy-gerard.json",
-      "data/review-texts/marvins-room-2017/broadway-blog--samuel-l-leiter.json"
+      "data/review-texts/be-more-chill-2019/hypable--irvin-k.json",
+      "data/review-texts/fully-committed-2016/ap--unknown.json",
+      "data/review-texts/living-on-love-2015/ap--unknown.json",
+      "data/review-texts/noises-off-2016/ap--unknown.json",
+      "data/review-texts/once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/she-loves-me-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/six-degrees-of-separation-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/the-crucible-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/the-humans-2016/ap--unknown.json",
+      "data/review-texts/the-humans-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
+      "data/review-texts/the-little-foxes-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/the-terms-of-my-surrender-2017/film-festival-traveler--kevin-filipski.json"
     ],
     "archive": [
-      "latin-history-for-morons-2017/stage-left--william-wolf.json"
+      "the-monsters-2026/vulture--jackson-mchenry.json",
+      "between-riverside-and-crazy-2022/but-rent-controlled--king-lear.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Stage Buddy": {
+      "count": 1,
+      "domain": "stagebuddy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Cabaret Scenes": {
+      "count": 1,
+      "domain": "cabaretscenes.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
