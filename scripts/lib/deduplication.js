@@ -233,6 +233,16 @@ function isMultiProduction(newShow, existing) {
 }
 
 /**
+ * Check if two shows are in different markets (e.g., Broadway vs West End).
+ * Cross-market shows with the same title are NOT duplicates.
+ */
+function isCrossMarket(newShow, existing) {
+  const newCat = newShow.category || 'broadway';
+  const existingCat = existing.category || 'broadway';
+  return newCat !== existingCat;
+}
+
+/**
  * Check if a show might be a duplicate of an existing show
  * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
  *
@@ -248,6 +258,9 @@ function checkForDuplicate(newShow, existingShows) {
     const existingTitleLower = existing.title.toLowerCase().trim();
     const existingTitleNormalized = normalizeTitle(existing.title);
     const existingVenue = existing.venue?.toLowerCase().trim();
+
+    // Skip cross-market pairs (e.g., Broadway vs West End) — same title is expected
+    if (isCrossMarket(newShow, existing)) continue;
 
     // Check 1: Exact title match (case-insensitive)
     if (newTitleLower === existingTitleLower) {
@@ -401,5 +414,6 @@ module.exports = {
   levenshteinDistance,
   areTitlesSimilar,
   checkKnownDuplicates,
+  isCrossMarket,
   KNOWN_DUPLICATES
 };
