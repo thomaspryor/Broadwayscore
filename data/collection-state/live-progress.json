@@ -1,129 +1,52 @@
 {
-  "updatedAt": "2026-02-21T11:04:36.735Z",
-  "processed": 9,
-  "failed": 91,
-  "successRate": "9.0%",
+  "updatedAt": "2026-02-21T11:06:50.463Z",
+  "processed": 3,
+  "failed": 205,
+  "successRate": "1.4%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 82,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 3
   },
-  "browserbaseSessions": 40,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-21T10:31:55.661Z",
+      "t": "2026-02-21T10:48:19.725Z",
       "event": "bb-session",
-      "session": "ab5087d9",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/04/24/AR2008042403189"
+      "session": "359cf7d6",
+      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.htm"
     },
     {
-      "t": "2026-02-21T10:31:57.636Z",
+      "t": "2026-02-21T10:48:21.762Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-21T10:32:21.045Z",
+      "t": "2026-02-21T10:54:14.733Z",
       "event": "bb-session",
-      "session": "342cd566",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-re"
+      "session": "199190b5",
+      "url": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
     },
     {
-      "t": "2026-02-21T10:32:22.944Z",
+      "t": "2026-02-21T10:54:16.801Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-21T10:33:07.168Z",
+      "t": "2026-02-21T11:05:27.663Z",
       "event": "bb-session",
-      "session": "15652bb4",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebeck"
+      "session": "ebf9c529",
+      "url": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-fost"
     },
     {
-      "t": "2026-02-21T10:33:09.188Z",
+      "t": "2026-02-21T11:05:29.798Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:33:31.433Z",
-      "event": "bb-session",
-      "session": "8b911397",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/dear-evan-hansen-revi"
-    },
-    {
-      "t": "2026-02-21T10:33:33.493Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:34:46.728Z",
-      "event": "bb-session",
-      "session": "f065f1d6",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/04/27/AR2009042703054"
-    },
-    {
-      "t": "2026-02-21T10:34:48.982Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:35:32.473Z",
-      "event": "bb-session",
-      "session": "6a82ab72",
-      "url": "https://www.washingtonpost.com/entertainment/theater_and_dance/eclipsed-brings-t"
-    },
-    {
-      "t": "2026-02-21T10:35:34.661Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:36:10.002Z",
-      "event": "bb-session",
-      "session": "aa7bad93",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/end-of-the-rainbow-on"
-    },
-    {
-      "t": "2026-02-21T10:36:11.894Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:37:37.811Z",
-      "event": "bb-session",
-      "session": "b341989d",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/27/AR2010042703647"
-    },
-    {
-      "t": "2026-02-21T10:37:39.871Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:38:10.302Z",
-      "event": "bb-session",
-      "session": "a1fa9167",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/evita-review-ricky-ma"
-    },
-    {
-      "t": "2026-02-21T10:38:12.301Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T10:38:49.404Z",
-      "event": "bb-session",
-      "session": "5ff6ce7c",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/falsettos-review-a-br"
-    },
-    {
-      "t": "2026-02-21T10:38:51.384Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "nytimes.com"
     }
   ]
 }
