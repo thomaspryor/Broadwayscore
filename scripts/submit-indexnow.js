@@ -55,8 +55,32 @@ Options:
   }
 }
 
+async function getUrlsFromBuildSitemap() {
+  // Try to read URLs from the build output sitemap (stays in sync automatically)
+  const sitemapPath = path.join(__dirname, '../out/sitemap.xml');
+  if (!fs.existsSync(sitemapPath)) return null;
+
+  const xml = fs.readFileSync(sitemapPath, 'utf8');
+  const urls = [];
+  const locRegex = /<loc>([^<]+)<\/loc>/g;
+  let match;
+  while ((match = locRegex.exec(xml)) !== null) {
+    urls.push(match[1]);
+  }
+  return urls.length > 0 ? urls : null;
+}
+
 async function getUrlsFromSitemap() {
-  // Read the generated sitemap or build URL list from shows.json
+  // Prefer build output sitemap — always in sync with actual deployed sitemap
+  const buildUrls = await getUrlsFromBuildSitemap();
+  if (buildUrls) {
+    console.log(`Read ${buildUrls.length} URLs from build sitemap (out/sitemap.xml)`);
+    return buildUrls;
+  }
+
+  console.log('Build sitemap not found, falling back to data-driven URL generation');
+
+  // Fallback: build URL list from shows.json + hardcoded page types
   const showsPath = path.join(__dirname, '../data/shows.json');
 
   if (!fs.existsSync(showsPath)) {
@@ -64,7 +88,8 @@ async function getUrlsFromSitemap() {
     return [];
   }
 
-  const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const shows = showsData.shows || showsData;
   const urls = [];
 
   // Key static pages
@@ -72,12 +97,21 @@ async function getUrlsFromSitemap() {
     `https://${SITE_HOST}/`,
     `https://${SITE_HOST}/rankings`,
     `https://${SITE_HOST}/methodology`,
+    `https://${SITE_HOST}/tony-awards`,
+    `https://${SITE_HOST}/broadway-theaters-map`,
     `https://${SITE_HOST}/lotteries`,
     `https://${SITE_HOST}/rush`,
+    `https://${SITE_HOST}/standing-room`,
     `https://${SITE_HOST}/best-value`,
     `https://${SITE_HOST}/audience-buzz`,
     `https://${SITE_HOST}/box-office`,
-    `https://${SITE_HOST}/biz-buzz`
+    `https://${SITE_HOST}/biz`,
+    `https://${SITE_HOST}/critics`,
+    `https://${SITE_HOST}/critics/outlets`,
+    `https://${SITE_HOST}/guides`,
+    `https://${SITE_HOST}/lists`,
+    `https://${SITE_HOST}/compare`,
+    `https://${SITE_HOST}/theater`
   );
 
   // All show pages
@@ -103,6 +137,22 @@ async function getUrlsFromSitemap() {
   const bestPages = ['musicals', 'plays', 'new-shows', 'revivals', 'comedies', 'dramas', 'family'];
   for (const page of bestPages) {
     urls.push(`https://${SITE_HOST}/best/${page}`);
+  }
+
+  // Guide pages
+  const guidePages = [
+    'best-broadway-shows', 'best-broadway-musicals', 'best-broadway-plays',
+    'broadway-shows-closing-soon', 'best-broadway-shows-for-kids',
+    'best-broadway-shows-for-date-night', 'cheap-broadway-tickets'
+  ];
+  for (const page of guidePages) {
+    urls.push(`https://${SITE_HOST}/guides/${page}`);
+  }
+
+  // Creative index pages
+  const creativeIndexes = ['directors', 'playwrights', 'composers', 'lyricists'];
+  for (const page of creativeIndexes) {
+    urls.push(`https://${SITE_HOST}/${page}`);
   }
 
   return urls;
