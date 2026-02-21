@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-02-21T11:06:50.463Z",
+  "updatedAt": "2026-02-21T11:09:36.722Z",
   "processed": 3,
-  "failed": 205,
+  "failed": 215,
   "successRate": "1.4%",
   "tierBreakdown": {
     "playwright": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-21T10:48:19.725Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-02-21T11:05:29.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:08:24.663Z",
+      "event": "bb-session",
+      "session": "96696476",
+      "url": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-you"
+    },
+    {
+      "t": "2026-02-21T11:08:26.494Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
