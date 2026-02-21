@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-02-20T21:42:51.119Z",
-  "processed": 8,
-  "failed": 92,
-  "successRate": "8.0%",
+  "updatedAt": "2026-02-21T00:31:34.554Z",
+  "processed": 84,
+  "failed": 353,
+  "successRate": "19.2%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 59,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 3,
-    "scrapingbee": 0,
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 79,
-    "archive": 5
+    "archiveToday": 33,
+    "archive": 23
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-21T00:13:43.534Z",
+      "event": "bb-session",
+      "session": "504abd94",
+      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/10/09/arts-leisure-p"
+    },
+    {
+      "t": "2026-02-21T00:13:45.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T00:16:49.367Z",
+      "event": "bb-session",
+      "session": "86fa9d05",
+      "url": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "t": "2026-02-21T00:16:51.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
