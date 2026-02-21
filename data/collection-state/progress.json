@@ -1,44 +1,39 @@
 {
   "processed": [
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "hadestown-2019/caroleditosti--carole-di-tosti.json",
+    "hadestown-2019/medium--christian-lewis.json"
   ],
   "failed": [
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
-    "american-idiot-2010/financialtimes--brendan-lemon.json",
-    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
-    "betrayal-2013/financialtimes--brendan-lemon.json",
-    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
-    "carousel-2018/financial-times-uk--max-mcguinness.json",
-    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
-    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
-    "constellations-2015/financialtimes--brendan-lemon.json",
-    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
-    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
-    "enron-2010/financial-times--brandan-lemon.json",
-    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
-    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
-    "frozen-2018/financial-times-uk--max-mcguinness.json"
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/amny--matt-windman.json",
+    "hadestown-2019/buy-tickets--unknown.json",
+    "hadestown-2019/towleroad--naveen-kumar.json",
+    "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/caroleditosti--carole-di-tosti.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/buy-tickets--unknown.json"
+    ],
     "archive": [
-      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "hadestown-2019/medium--christian-lewis.json"
     ]
   },
-  "startTime": "2026-02-21T04:22:34.651Z",
-  "lastProcessed": "frozen-2018/financial-times-uk--max-mcguinness.json",
+  "startTime": "2026-02-21T04:32:02.766Z",
+  "lastProcessed": "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
   "log": []
 }
