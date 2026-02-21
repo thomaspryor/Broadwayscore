@@ -527,6 +527,7 @@ export interface CreativeProfile {
 export interface UnifiedCreativeShowEntry {
   title: string;
   slug: string;
+  showId: string;
   venue: string;
   openingDate: string | null;
   closingDate: string | null;

@@ -3,10 +3,11 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { ActorProfile } from '@/lib/data-types';
+import type { PersonTonyStats, ShowTonyInfo } from '@/lib/data-tony-noms';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
-// getScoreClass no longer needed — using ScoreBadge component
 import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid, ColumnHeader } from '@/components/show-cards';
+import { TrophyIcon } from '@/components/icons';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortCol = 'date' | 'score';
@@ -17,7 +18,7 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
 
-function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; loading?: 'eager' | 'lazy' }) {
+function ShowCard({ show, loading = 'lazy', tonyInfo }: { show: ActorProfile['shows'][0]; loading?: 'eager' | 'lazy'; tonyInfo?: ShowTonyInfo }) {
   const tier = show.score !== null ? getScoreTier(show.score) : null;
 
   return (
@@ -81,6 +82,19 @@ function ShowCard({ show, loading = 'lazy' }: { show: ActorProfile['shows'][0]; 
               Broadway Debut
             </span>
           )}
+          {tonyInfo && (
+            <span
+              className={`text-[10px] font-medium px-1.5 py-0.5 rounded border inline-flex items-center gap-0.5 ${
+                tonyInfo.won
+                  ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                  : 'bg-sky-500/15 text-sky-400 border-sky-500/25'
+              }`}
+              title={tonyInfo.categories.join(', ')}
+            >
+              <TrophyIcon className="w-2.5 h-2.5" />
+              {tonyInfo.won ? 'Tony Winner' : 'Tony Nom'}
+            </span>
+          )}
         </div>
       </div>
 
@@ -107,10 +121,14 @@ export default function ActorDetailClient({
   profile,
   rank,
   highestRatedRank,
+  tonyStats,
+  tonyByShow,
 }: {
   profile: ActorProfile;
   rank: number;
   highestRatedRank: number;
+  tonyStats: PersonTonyStats | null;
+  tonyByShow: Record<string, ShowTonyInfo>;
 }) {
   const [sortCol, setSortCol] = useState<SortCol>('date');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
@@ -231,6 +249,12 @@ export default function ActorDetailClient({
         {showStats && (
           <StatGrid className="mb-2" stats={[
             { label: 'Shows', value: profile.showCount, subValue: obcCount > 0 ? `${obcCount} OBC` : undefined, subValueColor: '#eab308' },
+            ...(tonyStats ? [{
+              label: 'Tonys',
+              value: tonyStats.wins > 0 ? `${tonyStats.wins} win${tonyStats.wins !== 1 ? 's' : ''}` : `${tonyStats.nominations} nom${tonyStats.nominations !== 1 ? 's' : ''}`,
+              subValue: tonyStats.wins > 0 ? `${tonyStats.nominations} nom${tonyStats.nominations !== 1 ? 's' : ''}` : undefined,
+              subValueColor: '#fbbf24',
+            }] : []),
             { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—', color: profile.avgScore !== null ? getScoreTextColor(profile.avgScore) : undefined, dimmed: profile.avgScore === null, subValue: highestRatedRank > 0 && highestRatedRank <= 200 ? `${ordinalSuffix(highestRatedRank)} highest-rated` : undefined },
             { label: 'Highest', value: profile.highScore ? profile.highScore.score : '—', color: highTier?.color, dimmed: !profile.highScore, subtitle: profile.highScore?.showTitle },
             { label: 'Lowest', value: profile.lowScore ? profile.lowScore.score : '—', color: lowTier?.color, dimmed: !profile.lowScore, subtitle: profile.lowScore?.showTitle },
@@ -257,7 +281,7 @@ export default function ActorDetailClient({
           </h2>
           <div className="space-y-2">
             {openShows.map((show, i) => (
-              <ShowCard key={show.showId} show={show} loading={i < 4 ? 'eager' : 'lazy'} />
+              <ShowCard key={show.showId} show={show} loading={i < 4 ? 'eager' : 'lazy'} tonyInfo={tonyByShow[show.showId]} />
             ))}
           </div>
         </section>
@@ -272,7 +296,7 @@ export default function ActorDetailClient({
           </h2>
           <div className="space-y-2">
             {upcomingShows.map((show, i) => (
-              <ShowCard key={show.showId} show={show} loading="lazy" />
+              <ShowCard key={show.showId} show={show} loading="lazy" tonyInfo={tonyByShow[show.showId]} />
             ))}
           </div>
         </section>
@@ -302,6 +326,7 @@ export default function ActorDetailClient({
                 key={show.showId}
                 show={show}
                 loading={openShows.length === 0 && i < 4 ? 'eager' : 'lazy'}
+                tonyInfo={tonyByShow[show.showId]}
               />
             ))}
           </div>

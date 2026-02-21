@@ -218,6 +218,7 @@ function buildUnifiedProfiles() {
     const baseEntry = {
       title: show.title,
       slug: show.slug,
+      showId: show.id,
       venue: show.venue,
       openingDate: show.openingDate || null,
       closingDate: show.closingDate || null,

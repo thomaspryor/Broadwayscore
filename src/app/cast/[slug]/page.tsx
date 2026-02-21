@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getActorBySlug, getAllActorSlugs, getAllActorProfiles } from '@/lib/data-actors';
+import { getPersonTonyStats, getShowTonyMap } from '@/lib/data-tony-noms';
 import { generateBreadcrumbSchema, generateActorPersonSchema, generateActorFAQSchema, BASE_URL } from '@/lib/seo';
 import ActorDetailClient from './ActorDetailClient';
 
@@ -59,7 +60,13 @@ export default function ActorDetailPage({ params }: { params: { slug: string } }
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, personSchema, faqSchema]) }}
       />
-      <ActorDetailClient profile={profile} rank={rank} highestRatedRank={highestRatedRank} />
+      <ActorDetailClient
+        profile={profile}
+        rank={rank}
+        highestRatedRank={highestRatedRank}
+        tonyStats={getPersonTonyStats(profile.ibdbPersonId)}
+        tonyByShow={getShowTonyMap(profile.ibdbPersonId)}
+      />
     </div>
   );
 }

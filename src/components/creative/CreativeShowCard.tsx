@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass } from '@/lib/critic-page-utils';
+import { TrophyIcon } from '@/components/icons';
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -23,10 +25,12 @@ export function CreativeShowCard({
   show,
   roles,
   loading = 'lazy',
+  tonyInfo,
 }: {
   show: CreativeShow;
   roles: string[];
   loading?: 'eager' | 'lazy';
+  tonyInfo?: ShowTonyInfo;
 }) {
   return (
     <Link
@@ -78,6 +82,19 @@ export function CreativeShowCard({
           {show.isRevival && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded border bg-amber-500/20 text-amber-400 border-amber-500/30">
               Revival
+            </span>
+          )}
+          {tonyInfo && (
+            <span
+              className={`text-[10px] font-medium px-1.5 py-0.5 rounded border inline-flex items-center gap-0.5 ${
+                tonyInfo.won
+                  ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                  : 'bg-sky-500/15 text-sky-400 border-sky-500/25'
+              }`}
+              title={tonyInfo.categories.join(', ')}
+            >
+              <TrophyIcon className="w-2.5 h-2.5" />
+              {tonyInfo.won ? 'Tony Winner' : 'Tony Nom'}
             </span>
           )}
         </div>
