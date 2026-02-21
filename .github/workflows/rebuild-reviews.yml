@@ -26,6 +26,11 @@ on:
         required: false
         default: false
         type: boolean
+      allow_regression:
+        description: 'Allow review count regression (e.g. after flagging fabricated entries)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -88,6 +93,7 @@ jobs:
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
+          ALLOW_REGRESSION: ${{ github.event.inputs.allow_regression }}
         run: node scripts/rebuild-all-reviews.js
 
       - name: Audit wrong-production reviews
