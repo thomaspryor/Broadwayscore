@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ComputedShow } from './engine';
-import { getAllShows } from './data-core';
+import { getBroadwayShows } from './data-core';
 import { getShowGrosses } from './data-grosses';
 import {
   GuidePageConfig,
@@ -114,7 +114,7 @@ export function getGuideList(slug: string): GuideList | null {
   if (!config) return null;
 
   const { year } = parseGuideSlug(slug);
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
 
   // Filter
   let filtered = allShows.filter(show => config.filter(show));
