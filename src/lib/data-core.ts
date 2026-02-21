@@ -223,7 +223,7 @@ export function slugify(name: string): string {
  * Get all unique directors with their shows
  */
 export function getAllDirectors(): Director[] {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const directorMap = new Map<string, ComputedShow[]>();
 
   for (const show of allShows) {
@@ -281,7 +281,7 @@ let _theatersCache: Theater[] | null = null;
 export function getAllTheaters(): Theater[] {
   if (_theatersCache) return _theatersCache;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
   for (const show of allShows) {
@@ -405,7 +405,7 @@ export function getBestOfList(category: BestOfCategory): BestOfList | undefined 
   const config = BEST_OF_CONFIG[category];
   if (!config) return undefined;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const filteredShows = allShows
     .filter(config.filter)
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
@@ -437,7 +437,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const config = BROWSE_PAGES[slug];
   if (!config) return undefined;
 
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   let filteredShows = allShows.filter(config.filter);
 
   if (config.sort === 'score') {
