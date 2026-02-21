@@ -20,7 +20,7 @@ const { chromium } = require('playwright');
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'tony-nominations.json');
 const CHECKPOINT_FILE = path.join(__dirname, '..', 'data', 'tony-nominations-checkpoint.json');
-const DELAY_MS = 2500; // 2.5s between requests
+const DELAY_MS = 3500; // 3.5s between requests (slower to avoid rate limiting)
 
 // Map IBDB's verbose category names to our short-form names
 const CATEGORY_MAP = {
@@ -89,19 +89,29 @@ async function scrapeShowAwards(page, ibdbUrl, showId, season) {
   const url = ibdbUrl + '#Awards';
 
   try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
 
     // Wait for the Awards tab content to load
-    // Click the Awards link to reveal the section
-    const awardsLink = page.locator('a[href="#Awards"]').first();
-    if (await awardsLink.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await awardsLink.click();
-      await sleep(500);
-    }
+    // Click the Awards link to reveal the section — try up to 2 times
+    let hasTony = false;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const awardsLink = page.locator('a[href="#Awards"]').first();
+      if (await awardsLink.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await awardsLink.click();
+        await sleep(attempt === 0 ? 1500 : 3000);
+      }
 
-    // Wait for Tony Award heading to appear
-    const tonyHeading = page.locator('h3:has-text("Tony Award")');
-    const hasTony = await tonyHeading.isVisible({ timeout: 5000 }).catch(() => false);
+      // Wait for Tony Award heading to appear
+      const tonyHeading = page.locator('h3:has-text("Tony Award")');
+      hasTony = await tonyHeading.isVisible({ timeout: 8000 }).catch(() => false);
+      if (hasTony) break;
+
+      // If first attempt failed, scroll to trigger lazy load
+      if (attempt === 0) {
+        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+        await sleep(1000);
+      }
+    }
 
     if (!hasTony) {
       console.log(`  No Tony Award section found for ${showId}`);
@@ -318,8 +328,8 @@ async function main() {
       }
 
       // Stop if too many consecutive errors (likely rate-limited)
-      if (consecutiveErrors >= 5) {
-        console.error('⛔ 5 consecutive errors — likely rate-limited. Stopping. Run with --resume to continue.');
+      if (consecutiveErrors >= 10) {
+        console.error('⛔ 10 consecutive errors — likely rate-limited. Stopping. Run with --resume to continue.');
         saveCheckpoint(allNominations, processedShows);
         break;
       }
