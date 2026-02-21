@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getUnifiedCreativeProfile, getUnifiedCreativeSlugs, getAllUnifiedCreativeProfiles, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
+import { getPersonTonyStatsByName, getShowTonyMapByName } from '@/lib/data-tony-noms';
 import { generateBreadcrumbSchema, generateUnifiedCreativePersonSchema, generateUnifiedCreativeFAQSchema, BASE_URL } from '@/lib/seo';
 import UnifiedCreativeDetailClient from '@/components/creative/UnifiedCreativeDetailClient';
 
@@ -59,6 +60,8 @@ export default function UnifiedCreativeDetailPage({ params }: { params: { slug: 
         profile={profile}
         categoryLabels={categoryLabels}
         rank={rank}
+        tonyStats={getPersonTonyStatsByName(profile.name)}
+        tonyByShow={getShowTonyMapByName(profile.name)}
       />
     </div>
   );
