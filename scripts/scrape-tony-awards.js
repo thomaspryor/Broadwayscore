@@ -21,7 +21,7 @@ const { matchTitleToShow } = require('./lib/show-matching');
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
 // Year range is dynamic - no manual updates needed each year
-const START_YEAR = 2005;
+const START_YEAR = 1970;
 const CURRENT_YEAR = new Date().getFullYear();
 
 const TONY_CEREMONIES = [];
