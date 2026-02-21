@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T21:52:53.538Z",
+  "runDate": "2026-02-21T22:08:25.527Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 84,
-    "failed": 260,
+    "processed": 85,
+    "failed": 285,
     "skipped": 0,
-    "successRate": "24.4%"
+    "successRate": "23.0%"
   },
   "tierBreakdown": {
     "playwright": 15,
@@ -23,29 +23,29 @@
     "directCookies": 2,
     "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 56,
-    "archive": 55
+    "archiveToday": 68,
+    "archive": 56
   },
   "statistics": {
-    "tier1Attempts": 75,
-    "tier1Success": 27,
+    "tier1Attempts": 28,
+    "tier1Success": 10,
     "ampAttempts": 6,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 48,
-    "tier2Success": 3,
-    "tier3Attempts": 45,
+    "tier2Attempts": 12,
+    "tier2Success": 0,
+    "tier3Attempts": 12,
     "tier3Success": 0,
-    "tier3_6Attempts": 43,
-    "tier3_6Success": 43,
-    "tier4Attempts": 24,
-    "tier4Success": 0,
-    "totalFailed": 84,
-    "scrapingBeeCreditsUsed": 55,
+    "tier3_6Attempts": 12,
+    "tier3_6Success": 12,
+    "tier4Attempts": 19,
+    "tier4Success": 1,
+    "totalFailed": 25,
+    "scrapingBeeCreditsUsed": 9,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
+    "urlDiscoveryAttempts": 9,
     "urlDiscoverySuccess": 6,
     "urlDiscoveryCapped": 0
   },
@@ -133,7 +133,8 @@
     "macbeth-2008/nytimes--jesse-green.json",
     "merrily-we-roll-along-2023/nytimes--calum-marsh.json",
     "motown-the-musical-2016/nytimes--charles-isherwood.json",
-    "network-2018/vulture--jesse-green.json"
+    "network-2018/vulture--jesse-green.json",
+    "the-shark-is-broken-2023/theater-pizzazz--alix-cohen.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -395,7 +396,32 @@
     "the-price-2017/chicagotribune--chris-jones.json",
     "the-price-2017/dcmetro--richard-seff.json",
     "the-road-to-mecca-2012/bergen-record--robert-feldberg.json",
-    "war-horse-2011/chicagotribune--.json"
+    "war-horse-2011/chicagotribune--.json",
+    "anastasia-2017/ew--david-canfield.json",
+    "bullets-over-broadway-2014/ew--unknown.json",
+    "king-lear-2019/ew--allison-adato.json",
+    "king-lear-2019/ew--unknown.json",
+    "kiss-me-kate-2019/ew--kristen-baldwin.json",
+    "parade-2023/ew--kristen-baldwin.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/northjerseycom--robert-feldberg.json",
+    "the-scottsboro-boys-2010/ny1--roma-torre.json",
+    "the-snow-geese-2013/bergen-record--robert-feldberg.json",
+    "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
+    "the-winslow-boy-2013/bergen-record--robert-feldberg.json",
+    "tuck-everlasting-2016/lighting-and-sound-america--david-barbour.json",
+    "uncle-vanya/nysr--david-finkle.json",
+    "uncle-vanya/nysr--melissa-rose-bernardo.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/ny1--david-cote.json",
+    "venus-in-fur-2011/northjerseycom--robert-feldberg.json",
+    "violet-2014/bergen-record--robert-feldberg.json",
+    "waiting-for-godot-2009/bergen-record--robert-feldberg.json",
+    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+    "waiting-for-godot-2013/northjerseycom--robert-feldberg.json",
+    "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json",
+    "walking-with-ghosts-2022/theater-pizzazz--jk-clarke.json",
+    "war-horse-2011/chicagotribune--chris-jones.json",
+    "war-horse-2011/scheckontheater--frank-scheck.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -497,7 +523,19 @@
       "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-price-2017/chicagotribune--chris-jones.json",
       "data/review-texts/the-road-to-mecca-2012/bergen-record--robert-feldberg.json",
-      "data/review-texts/war-horse-2011/chicagotribune--.json"
+      "data/review-texts/war-horse-2011/chicagotribune--.json",
+      "data/review-texts/the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+      "data/review-texts/the-scottsboro-boys-2010/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-snow-geese-2013/bergen-record--robert-feldberg.json",
+      "data/review-texts/the-waverly-gallery-2018/chicagotribune--chris-jones.json",
+      "data/review-texts/the-winslow-boy-2013/bergen-record--robert-feldberg.json",
+      "data/review-texts/venus-in-fur-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/violet-2014/bergen-record--robert-feldberg.json",
+      "data/review-texts/waiting-for-godot-2009/bergen-record--robert-feldberg.json",
+      "data/review-texts/waiting-for-godot-2009/chicagotribune--chris-jones.json",
+      "data/review-texts/waiting-for-godot-2013/northjerseycom--robert-feldberg.json",
+      "data/review-texts/war-horse-2011/chicagotribune--chris-jones.json",
+      "data/review-texts/war-horse-2011/scheckontheater--frank-scheck.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -554,27 +592,21 @@
       "left-on-tenth-2024/nytimes--jesse-green.json",
       "macbeth-2008/nytimes--ben-brantley.json",
       "macbeth-2008/nytimes--jesse-green.json",
-      "motown-the-musical-2016/nytimes--charles-isherwood.json"
+      "motown-the-musical-2016/nytimes--charles-isherwood.json",
+      "the-shark-is-broken-2023/theater-pizzazz--alix-cohen.json"
     ]
   },
   "failuresByOutlet": {
-    "Associated Press": {
-      "count": 3,
-      "domain": "google.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "NY1": {
-      "count": 5,
+      "count": 2,
       "domain": "ny1.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "NY 1": {
+    "Theater Pizzazz": {
       "count": 1,
-      "domain": "statenisland.ny1.com",
+      "domain": "theaterpizzazz.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -584,32 +616,32 @@
     {
       "reviewId": "anastasia-2017/ew--david-canfield.json",
       "oldUrl": "https://ew.com/theater/2017/04/25/anastasia-broadway-review",
-      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOoo220cAwQqRUuWAeFD1hP-ZBp8PR4taIVUQ8vVAbyZCdHVBPn8u"
+      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOopHYa_x4QgJvWhDN0KN6e2z70ERR1NCkcw9NjR46SroJfZrJ-ic"
     },
     {
       "reviewId": "bullets-over-broadway-2014/ew--unknown.json",
       "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20805531,00.html",
-      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOorarRcjbXEcQtipE4aHQh8xXxa7UtPVOpwpF3BNekX_wXR1qbZj"
+      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOopqvkgxuzUxeEHcAvTm6-qgCQ9lai8BYW4qLf8dgU7olksmEg8n"
     },
     {
-      "reviewId": "here-lies-love-2023/ew--joey-nolfi.json",
-      "oldUrl": "https://ew.com/theater/here-lies-love-broadway-review",
-      "newUrl": "https://ew.com/theater/theater-reviews/here-lies-love-review-broadway-david-byrne/?srsltid=AfmBOopaMAw46V3gwM0Tqwb-aiVHqsACyI2dOaE7ub9YZ7bGOnNtijP8"
+      "reviewId": "king-lear-2019/ew--allison-adato.json",
+      "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOopl85coLLS5v0e1tuZToEQgXhmS5fdYbHMuhzTgZbHnM09zzB4z"
     },
     {
       "reviewId": "king-lear-2019/ew--unknown.json",
       "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOoopxbrhxinvabANXzy1ZbLYvy_8-ATe9aQcuPlJWGmbjS0c0ZRs"
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOopj6HwWjjhY4SfAQ9Vk_2woLV0DXn8iJe9GOuIaKCIhBbXckT23"
     },
     {
       "reviewId": "kiss-me-kate-2019/ew--kristen-baldwin.json",
       "oldUrl": "https://ew.com/theater/2019/03/15/kiss-me-kate-broadway-review",
-      "newUrl": "https://ew.com/theater-reviews/2019/03/14/kiss-me-kate-review/?srsltid=AfmBOoojby2cvIwrrNeL0staxL-Oo7X9sH5vJ2Jfj4IB5RPjLQXJ1LPS"
+      "newUrl": "https://ew.com/theater-reviews/2019/03/14/kiss-me-kate-review/?srsltid=AfmBOorI288umvETll9N7ZwuEa5mGtDTqS1yTI78Vm9Imb36r4xfQW9Q"
     },
     {
       "reviewId": "parade-2023/ew--kristen-baldwin.json",
       "oldUrl": "https://ew.com/theater/reviews/parade-broadway-review-2023",
-      "newUrl": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/?srsltid=AfmBOoqadkCJ6a2Bn-UamYmqo9aq9E9iMwDedVs40CLrqLo9m3pBOZKF"
+      "newUrl": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/?srsltid=AfmBOoqPMfXe4GOV1yxhs8YemynTN-qc9j0cIKE8QWbGN3y3DSXyKIDj"
     }
   ]
 }
