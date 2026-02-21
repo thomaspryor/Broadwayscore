@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T17:14:31.919Z",
+  "runDate": "2026-02-21T17:20:41.413Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 49,
-    "failed": 69,
+    "processed": 50,
+    "failed": 78,
     "skipped": 0,
-    "successRate": "41.5%"
+    "successRate": "39.1%"
   },
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 20,
     "amp": 3,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 18,
-    "archive": 25
+    "archiveToday": 23,
+    "archive": 27
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 7,
+    "tier1Attempts": 15,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 5,
+    "tier3_6Success": 5,
+    "tier4Attempts": 5,
     "tier4Success": 1,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 0,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 12,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -98,7 +98,8 @@
     "fela-2009/bloomberg--john-simon.json",
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/lighting-and-sound-america--david-barbour.json",
     "gettin-the-band-back-together-2018/the-stage-uk--mark-shenton.json",
-    "pen-pals-2025/off-off-online--marc-miller.json"
+    "blackout-songs-2026/vulture--jackson-mchenry.json",
+    "data-2026/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -163,13 +164,22 @@
     "fun-home-2015/wnbc--robert-kahn.json",
     "funny-girl-2022/theater-scene--darryl-reilly.json",
     "godspell-2011/ap--mark-kennedy.json",
-    "an-enemy-of-the-people-2024/slantmagazine--dan-rubins.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json",
-    "prince-of-broadway-2017/theatres-leiter-side--samuel-l-leiter.json",
-    "shucked-2023/slantmagazine--dan-rubins.json",
-    "the-music-man-2022/exeunt-magazine--lane-williamson.json",
-    "the-prom-2018/stage-left--robert-russo.json",
-    "tuck-everlasting-2016/theatres-leiter-side--samuel-l-leiter.json"
+    "an-ark-2026/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/londontheatre--marianka-swain.json",
+    "be-more-chill-2019/hypable--irvin-k.json",
+    "camelot-2023/queerty--unknown.json",
+    "carousel-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "escape-to-margaritaville-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "fully-committed-2016/ap--unknown.json",
+    "heisenberg-2016/stagebuddy--tami-shaloum.json",
+    "i-need-that-2023/stagebuddy--elyse-trevers.json",
+    "in-transit-2016/cabaret-scenes--elizabeth-ahlfors.json",
+    "living-on-love-2015/ap--unknown.json",
+    "noises-off-2016/ap--unknown.json",
+    "once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/cabaret-scenes--elizabeth-ahlfors.json",
+    "prince-of-broadway-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/stagebuddy--ariana-rudes.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -192,8 +202,7 @@
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--alex-wood.json",
       "the-waterfall-2026/front-row-center--brittany-crowell.json",
       "fela-2009/bloomberg--john-simon.json",
-      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/lighting-and-sound-america--david-barbour.json",
-      "pen-pals-2025/off-off-online--marc-miller.json"
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/lighting-and-sound-america--david-barbour.json"
     ],
     "amp": [
       "data/review-texts/an-act-of-god-2016/the-record-bergen--robert-feldberg.json",
@@ -226,7 +235,12 @@
       "data/review-texts/charlie-and-the-chocolate-factory-2017/the-stage-uk--mark-shenton.json",
       "data/review-texts/clybourne-park-2012/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/elf-2012/ap--peter-santilli.json",
-      "data/review-texts/godspell-2011/ap--mark-kennedy.json"
+      "data/review-texts/godspell-2011/ap--mark-kennedy.json",
+      "data/review-texts/be-more-chill-2019/hypable--irvin-k.json",
+      "data/review-texts/fully-committed-2016/ap--unknown.json",
+      "data/review-texts/living-on-love-2015/ap--unknown.json",
+      "data/review-texts/noises-off-2016/ap--unknown.json",
+      "data/review-texts/once-on-this-island-2017/film-festival-traveler--kevin-filipski.json"
     ],
     "archive": [
       "buena-vista-social-club-2025/nytimes--jesse-green.json",
@@ -253,9 +267,26 @@
       "my-neighbour-totoro-west-end-2025/whatsonstage--theo-bosanquet.json",
       "oliver-west-end-2024/the-stage--sam-marlowe.json",
       "oliver-west-end-2024/whatsonstage--sarah-crompton.json",
-      "gettin-the-band-back-together-2018/the-stage-uk--mark-shenton.json"
+      "gettin-the-band-back-together-2018/the-stage-uk--mark-shenton.json",
+      "blackout-songs-2026/vulture--jackson-mchenry.json",
+      "data-2026/vulture--jackson-mchenry.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Stage Buddy": {
+      "count": 1,
+      "domain": "stagebuddy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Cabaret Scenes": {
+      "count": 1,
+      "domain": "cabaretscenes.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
