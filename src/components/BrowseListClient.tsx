@@ -206,11 +206,15 @@ const ShowCard = memo(function ShowCard({
                 </span>
               ) : null}
               <ScoreBadge score={displayScore} size="md" showCrown />
-              {show.audienceGrade && (
+              {show.criticScore?.reviewCount && show.criticScore.reviewCount <= 2 ? (
+                <span className="text-[9px] text-gray-500 whitespace-nowrap">
+                  {show.criticScore.reviewCount} review{show.criticScore.reviewCount > 1 ? 's' : ''}
+                </span>
+              ) : show.audienceGrade ? (
                 <div className="mt-0.5">
                   <AudienceChip grade={show.audienceGrade} />
                 </div>
-              )}
+              ) : null}
             </>
           )}
         </div>
