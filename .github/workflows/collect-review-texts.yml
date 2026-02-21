@@ -6,9 +6,10 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  schedule:
+  # schedule:
     # Nightly at 2 AM UTC (9 PM EST) - automated backfill of truncated/stub reviews
-    - cron: '0 2 * * *'
+    # TEMPORARILY DISABLED: not_attempted backfill chain running — re-enable after completion
+    # - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       batch_size:
