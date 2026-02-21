@@ -1,11 +1,5 @@
 {
-  "processed": [
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json",
-    "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
-    "misery-2015/financial-times-uk--brendan-lemon.json",
-    "misery-2015/financialtimes--unknown.json"
-  ],
+  "processed": [],
   "failed": [
     "the-lion-king-1997/washpost--lloyd-rose.json",
     "700-sundays-2013/washpost--peter-marks.json",
@@ -26,27 +20,46 @@
     "an-act-of-god-2016/observer--rex-reed.json",
     "anastasia-2017/ew--caitlin-brody.json",
     "anastasia-2017/ew--david-canfield.json",
-    "anastasia-2017/observer--rex-reed.json"
+    "anastasia-2017/observer--rex-reed.json",
+    "angels-in-america-2018/observer--rex-reed.json",
+    "arcadia-2011/ew--melissa-rose-bernardo.json",
+    "baby-its-you-2011/ew--.json",
+    "baby-its-you-2011/ew--clark-collis.json",
+    "baby-its-you-2011/ew--thom-geier.json",
+    "bandstand-2017/ew--breanne-l-heldman.json",
+    "betrayal-2019/observer--jesse-green.json",
+    "blackbird-2016/observer--rex-reed.json",
+    "bonnie-and-clyde-2011/ew--thom-geier.json",
+    "born-yesterday-2011/observer--jesse-oxfeld.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
+      "come-from-away-2017/vulture--jesse-green.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "grey-house-2023/newyorker--dan-stahl.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": [
-      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json",
-      "john-lithgow-stories-by-heart-2018/financial-times-uk--max-mcguinness.json",
-      "misery-2015/financial-times-uk--brendan-lemon.json",
-      "misery-2015/financialtimes--unknown.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
+      "data/review-texts/700-sundays-2013/washpost--peter-marks.json",
+      "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json"
+    ],
+    "archive": []
   },
   "startTime": "2026-02-21T04:00:15.406Z",
-  "lastProcessed": "anastasia-2017/observer--rex-reed.json",
+  "lastProcessed": "born-yesterday-2011/observer--jesse-oxfeld.json",
   "log": [
     {
       "t": "2026-02-21T04:00:31.900Z",
