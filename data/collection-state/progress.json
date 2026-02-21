@@ -2,8 +2,7 @@
   "processed": [
     "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
     "misery-2015/financialtimes--unknown.json",
-    "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
+    "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json"
   ],
   "failed": [
     "book-of-mormon-2011/financialtimes--brendan-lemon.json",
@@ -73,25 +72,36 @@
     "sondheim-on-sondheim-2010/financial-times--brendan-lemon.json",
     "sunday-in-the-park-with-george-2008/financial-times-uk--max-mcguinness.json",
     "sweat-2017/financial-times-uk--max-mcguinness.json",
-    "tammy-faye-2024/financialtimes--sarah-hemming.json",
-    "the-addams-family-2010/financialtimes--brendan-lemon.json",
-    "the-bands-visit-2017/financial-times-uk--max-mcguinness.json",
-    "the-children-2017/financial-times-uk--max-mcguinness.json",
-    "the-crucible-2016/financial-times-uk--max-mcguinness.json",
-    "the-elephant-man-2014/financialtimes--brendan-lemon.json",
-    "the-elephant-man-2014/financialtimes--financial-times.json",
-    "the-encounter-2016/financial-times-uk--ian-shuttleworth.json",
-    "the-father-2016/financial-times-uk--max-mcguinness.json",
-    "the-hills-of-california-2024/financialtimes--sarah-hemming.json",
-    "the-inheritance-2019/financialtimes--financial-times.json",
-    "the-parisian-woman-2017/financial-times-uk--max-mcguinness.json",
-    "the-river-2014/financialtimes--brendan-lemon.json",
-    "the-river-2014/financialtimes--financial-times.json",
-    "three-tall-women-2018/financial-times-uk--max-mcguinness.json",
-    "tootsie-2019/financial-times-uk--max-mcguinness.json",
-    "venus-in-fur-2011/financialtimes--brendan-lemon.json",
-    "waiting-for-godot-2013/financialtimes--brendan-lemon.json",
-    "west-side-story-2020/financialtimes--financial-times.json"
+    "all-out-2025/nytimes--elisabeth-vincentelli.json",
+    "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "giant-2026/nytimes--houman-barekat.json",
+    "schmigadoon-2026/nytimes--margaret-lyons.json",
+    "titanique-2026/nytimes--elisabeth-vincentelli.json",
+    "wicked-2003/nytimes--ben-brantley.json",
+    "13-2008/nytimes--ben-brantley.json",
+    "1984-2017/nytimes--ben-brantley.json",
+    "a-bronx-tale-the-musical-2016/nytimes--charles-isherwood.json",
+    "a-christmas-carol-2022/nytimes--ben-brantley.json",
+    "a-christmas-carol-2022/nytimes--jesse-green.json",
+    "a-delicate-balance-2014/nytimes--ben-brantley.json",
+    "a-little-night-music-2009/nytimes--matt-wolf.json",
+    "a-steady-rain-2009/nytimes--ben-brantley.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--unknown.json",
+    "after-the-night-and-the-music-2005/nytimes--ben-brantley.json",
+    "airline-highway-2015/nytimes--charles-isherwood.json",
+    "annie-2012/nytimes--laura-collins-hughes.json",
+    "beetlejuice-2022/nytimes--ben-brantley.json",
+    "betrayal-2013/nytimes--matt-wolf.json",
+    "billy-elliot-the-musical-2008/nytimes--ben-brantley.json",
+    "cabaret-2014/nytimes--jesse-green.json",
+    "cats-1982/nytimes--charles-isherwood.json",
+    "cats-1982/nytimes--jesse-green.json",
+    "chita-rivera-the-dancers-life-2005/nytimes--unknown.json",
+    "colin-quinn-long-story-short-2010/nytimes--jason-zinoman.json",
+    "company-2006/nytimes--jesse-green.json",
+    "cyrano-de-bergerac-2007/nytimes--ben-brantley.json",
+    "cyrano-de-bergerac-2012/nytimes--ben-brantley.json",
+    "deuce-2007/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -105,11 +115,22 @@
     "archive": [
       "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
       "misery-2015/financialtimes--unknown.json",
-      "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json",
-      "the-curious-incident-of-the-dog-in-the-nighttime-2014/financialtimes--financial-times.json"
+      "school-of-rock-the-musical-2015/financialtimes--brendan-lemon.json"
     ]
   },
   "startTime": "2026-02-21T10:11:10.028Z",
-  "lastProcessed": "west-side-story-2020/financialtimes--financial-times.json",
-  "log": []
+  "lastProcessed": "deuce-2007/nytimes--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-02-21T10:48:19.725Z",
+      "event": "bb-session",
+      "session": "359cf7d6",
+      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.htm"
+    },
+    {
+      "t": "2026-02-21T10:48:21.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
