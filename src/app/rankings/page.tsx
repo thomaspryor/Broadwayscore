@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getAllBrowseSlugs, getBrowseList } from '@/lib/data-core';
+import { getBroadwayShows, getAllBrowseSlugs, getBrowseList } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { BROWSE_PAGES } from '@/config/browse-pages';
 import { featureFlags } from '@/config/feature-flags';
@@ -118,7 +118,7 @@ function RankingCard({ href, title, description, showCount, icon, color = 'text-
 
 export default function RankingsPage() {
   const currentYear = new Date().getFullYear();
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const openShows = allShows.filter(s => s.status === 'open');
 
   // Get show counts for browse pages
