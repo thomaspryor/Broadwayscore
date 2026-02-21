@@ -4,34 +4,57 @@
     "august-osage-county-2007/newyorker--.json",
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "grey-house-2023/newyorker--dan-stahl.json",
-    "gypsy-2024/newyorker--naomi-fry.json"
+    "gypsy-2024/newyorker--naomi-fry.json",
+    "the-disappear-2026/nytg--caroline-cao.json",
+    "the-disappear-2026/vulture--sara-holdren.json",
+    "the-unknown-2026/nyt-theater--jonathan-mandell.json",
+    "the-unknown-2026/nytg--joe-dziemianowicz.json",
+    "the-unknown-2026/nytimes--helen-shaw.json",
+    "the-unknown-2026/vulture--jackson-mchenry.json",
+    "back-to-the-future-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "cyrano-de-bergerac-west-end-2026/guardian--arifa-akbar.json",
+    "friends-the-musical-parody-2022/theatermania--hayley-levitt.json"
   ],
   "failed": [
     "wicked-2003/newyorker--.json",
     "1776-2022/newyorker--helen-shaw.json",
     "brief-encounter-2010/newyorker--uncredited.json",
     "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json"
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "the-disappear-2026/nytimes--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-disappear-2026/nytg--caroline-cao.json",
+      "the-unknown-2026/nyt-theater--jonathan-mandell.json",
+      "the-unknown-2026/nytg--joe-dziemianowicz.json",
+      "cyrano-de-bergerac-west-end-2026/guardian--arifa-akbar.json",
+      "friends-the-musical-parody-2022/theatermania--hayley-levitt.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [
       "grey-house-2023/newyorker--dan-stahl.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-unknown-2026/nytimes--helen-shaw.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-disappear-2026/nytimes--helen-shaw.json"
+    ],
     "archive": [
       "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
       "august-osage-county-2007/newyorker--.json",
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "gypsy-2024/newyorker--naomi-fry.json"
+      "gypsy-2024/newyorker--naomi-fry.json",
+      "the-disappear-2026/vulture--sara-holdren.json",
+      "the-unknown-2026/vulture--jackson-mchenry.json",
+      "back-to-the-future-west-end-2021/timeout-london--andrzej-lukowski.json"
     ]
   },
   "startTime": "2026-02-21T16:22:08.585Z",
-  "lastProcessed": "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+  "lastProcessed": "friends-the-musical-parody-2022/theatermania--hayley-levitt.json",
   "log": []
 }
