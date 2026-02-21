@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-21T10:49:25.758Z",
-  "processed": 4,
-  "failed": 86,
-  "successRate": "4.4%",
+  "updatedAt": "2026-02-21T10:50:43.915Z",
+  "processed": 3,
+  "failed": 97,
+  "successRate": "3.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -11,8 +11,20 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T10:48:19.725Z",
+      "event": "bb-session",
+      "session": "359cf7d6",
+      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.htm"
+    },
+    {
+      "t": "2026-02-21T10:48:21.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
