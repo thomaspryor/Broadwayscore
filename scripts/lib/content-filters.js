@@ -12,20 +12,32 @@
  * regional, film/TV, streaming, West End, etc.)
  *
  * @param {string} text - Title, outlet name, or article text to check
+ * @param {Object} options - { allowOffBroadway: boolean }
  * @returns {boolean}
  */
-function isNotBroadway(text) {
+function isNotBroadway(text, options = {}) {
   if (!text) return false;
   const lower = text.toLowerCase();
+  const { allowOffBroadway = false } = options;
+
+  // Off-Broadway / regional — skip these checks if allowOffBroadway
+  if (!allowOffBroadway) {
+    if (lower.includes('off-broadway') ||
+        lower.includes('off broadway') ||
+        // Off-Broadway venues
+        lower.includes('public theater') || lower.includes('at the public') ||
+        // World premieres — many off-Broadway shows ARE world premieres
+        lower.includes('world premiere')) {
+      return true;
+    }
+  }
+
   return (
-    // Off-Broadway / regional
-    lower.includes('off-broadway') ||
-    lower.includes('off broadway') ||
+    // Always rejected regardless of category
     lower.includes('west end') ||
     lower.includes('london') ||
     lower.includes('opera') ||
     lower.includes('in chicago') ||
-    lower.includes('world premiere') ||
     // Touring
     lower.includes('national tour') ||
     lower.includes('north american tour') ||
@@ -39,10 +51,9 @@ function isNotBroadway(text) {
     lower.includes('movie') ||
     lower.includes('on film') ||
     lower.includes('on screen') ||
-    // Regional / off-Broadway venues
+    // Regional venues (NOT off-Broadway NYC venues)
     lower.includes('playhouse theatre') ||
     lower.includes('chicago shakespeare') ||
-    lower.includes('public theater') || lower.includes('at the public') ||
     lower.includes('old globe') || lower.includes('la jolla') ||
     lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
     // TV specials and streaming
