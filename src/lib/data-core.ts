@@ -55,6 +55,14 @@ export function getAllShows(): ComputedShow[] {
 }
 
 /**
+ * Get all Broadway shows (excludes off-Broadway from public listings).
+ * Use getAllShows() for internal queries that need all shows (e.g., static page generation).
+ */
+export function getBroadwayShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category !== 'off-broadway');
+}
+
+/**
  * Get shows filtered by status (excludes off-Broadway from public listings)
  */
 export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all', options?: { includeOffBroadway?: boolean }): ComputedShow[] {
@@ -120,17 +128,17 @@ export function getDataFreshness() {
  * Get raw data counts for stats
  */
 export function getDataStats() {
-  const allShows = getAllShows();
-  const totalReviews = allShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
+  const broadwayShows = getBroadwayShows();
+  const totalReviews = broadwayShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
 
   // Count unique outlets and critics from reviews data
   const uniqueOutlets = new Set(baseReviews.map(r => r.outletId));
   const uniqueCritics = new Set(baseReviews.map(r => r.criticName).filter(Boolean));
 
   return {
-    totalShows: allShows.filter(s => (s.criticScore?.reviewCount || 0) > 0).length,
-    openShows: shows.filter(s => s.status === 'open').length,
-    closedShows: shows.filter(s => s.status === 'closed').length,
+    totalShows: broadwayShows.filter(s => (s.criticScore?.reviewCount || 0) > 0).length,
+    openShows: broadwayShows.filter(s => s.status === 'open').length,
+    closedShows: broadwayShows.filter(s => s.status === 'closed').length,
     totalReviews,
     totalOutlets: uniqueOutlets.size,
     totalCritics: uniqueCritics.size,
@@ -180,9 +188,7 @@ export function getShowLastUpdated(showId: string): string | null {
  * Get upcoming shows (in previews) - sorted by soonest opening date first
  */
 export function getUpcomingShows(): ComputedShow[] {
-  const allShows = getAllShows();
-
-  return allShows
+  return getBroadwayShows()
     .filter(show => show.status === 'previews' || show.status === 'upcoming')
     .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
 }

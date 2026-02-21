@@ -1,5 +1,5 @@
 // Server component — loads data at build time, passes serialized props to client
-import { getAllShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
+import { getBroadwayShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import HomePageClient from '@/components/HomePageClient';
@@ -31,7 +31,7 @@ function serializeShow(show: ComputedShow): HomepageShow {
 }
 
 export default function HomePage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const stats = getDataStats();
   const upcomingShows = getUpcomingShows();
 
