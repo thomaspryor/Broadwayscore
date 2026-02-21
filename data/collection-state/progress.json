@@ -1,159 +1,33 @@
 {
-  "processed": [],
+  "processed": [
+    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json"
+  ],
   "failed": [
-    "the-lion-king-1997/washpost--lloyd-rose.json",
-    "700-sundays-2013/washpost--peter-marks.json",
-    "a-chorus-line-2006/washpost--peter-marks.json",
-    "a-christmas-carol-2022/washpost--peter-marks.json",
-    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
-    "a-view-from-the-bridge-2015/washpost--peter-marks.json",
-    "all-my-sons-2008/washpost--peter-marks.json",
-    "all-my-sons-2019/washpost--peter-marks.json",
-    "american-buffalo-2022/washpost--peter-marks.json",
-    "american-psycho-2016/washpost--peter-marks.json",
-    "mj-2022/ew--joey-nolfi.json",
-    "mj-2022/ew--kristen-baldwin.json",
-    "aint-too-proud-2019/ew--leah-greenblat.json",
-    "aint-too-proud-2019/ew--leah-greenblatt.json",
-    "amelie-a-new-musical-2017/ew--marc-snetiker.json",
-    "american-psycho-2016/observer--rex-reed.json",
-    "an-act-of-god-2016/observer--rex-reed.json",
-    "anastasia-2017/ew--caitlin-brody.json",
-    "anastasia-2017/ew--david-canfield.json",
-    "anastasia-2017/observer--rex-reed.json",
-    "angels-in-america-2018/observer--rex-reed.json",
-    "arcadia-2011/ew--melissa-rose-bernardo.json",
-    "baby-its-you-2011/ew--.json",
-    "baby-its-you-2011/ew--clark-collis.json",
-    "baby-its-you-2011/ew--thom-geier.json",
-    "bandstand-2017/ew--breanne-l-heldman.json",
-    "betrayal-2019/observer--jesse-green.json",
-    "blackbird-2016/observer--rex-reed.json",
-    "bonnie-and-clyde-2011/ew--thom-geier.json",
-    "born-yesterday-2011/observer--jesse-oxfeld.json"
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
+    "american-idiot-2010/financialtimes--brendan-lemon.json",
+    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
+    "betrayal-2013/financialtimes--brendan-lemon.json",
+    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
+    "carousel-2018/financial-times-uk--max-mcguinness.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
-      "come-from-away-2017/vulture--jesse-green.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "grey-house-2023/newyorker--dan-stahl.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
-      "data/review-texts/700-sundays-2013/washpost--peter-marks.json",
-      "data/review-texts/a-chorus-line-2006/washpost--peter-marks.json",
-      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
-      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
-      "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
-      "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
-      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
-      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json"
-    ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
+      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json"
+    ]
   },
-  "startTime": "2026-02-21T04:00:15.406Z",
-  "lastProcessed": "born-yesterday-2011/observer--jesse-oxfeld.json",
-  "log": [
-    {
-      "t": "2026-02-21T04:00:31.900Z",
-      "event": "bb-session",
-      "session": "d7a746eb",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-02-21T04:00:33.906Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:01:01.748Z",
-      "event": "bb-session",
-      "session": "c9557efd",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
-    },
-    {
-      "t": "2026-02-21T04:01:03.820Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:01:46.725Z",
-      "event": "bb-session",
-      "session": "57079445",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
-    },
-    {
-      "t": "2026-02-21T04:02:48.807Z",
-      "event": "bb-session",
-      "session": "09d4d167",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
-    },
-    {
-      "t": "2026-02-21T04:02:50.848Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:03:17.866Z",
-      "event": "bb-session",
-      "session": "3c8d35b8",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
-    },
-    {
-      "t": "2026-02-21T04:03:20.186Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:04:18.546Z",
-      "event": "bb-session",
-      "session": "b7c1a476",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
-    },
-    {
-      "t": "2026-02-21T04:04:20.588Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:05:49.358Z",
-      "event": "bb-session",
-      "session": "c0752b1d",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/10/16/AR2008101603518"
-    },
-    {
-      "t": "2026-02-21T04:05:51.192Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:06:22.957Z",
-      "event": "bb-session",
-      "session": "6e0b4140",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
-    },
-    {
-      "t": "2026-02-21T04:06:25.225Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-21T04:06:52.039Z",
-      "event": "bb-session",
-      "session": "baad12c2",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
-    },
-    {
-      "t": "2026-02-21T04:06:54.117Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    }
-  ]
+  "startTime": "2026-02-21T04:22:34.651Z",
+  "lastProcessed": "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
+  "log": []
 }
