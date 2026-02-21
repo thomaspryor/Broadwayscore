@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-02-21T04:07:21.220Z",
+  "updatedAt": "2026-02-21T04:14:22.055Z",
   "processed": 0,
-  "failed": 10,
+  "failed": 20,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 2,
@@ -10,10 +10,10 @@
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
+    "archiveToday": 10,
     "archive": 0
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-21T04:00:31.900Z",
@@ -108,6 +108,17 @@
       "t": "2026-02-21T04:06:54.117Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:12:52.457Z",
+      "event": "bb-session",
+      "session": "61879c8d",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-21T04:12:54.781Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
