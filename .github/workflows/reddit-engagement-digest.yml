@@ -1,0 +1,95 @@
+name: Reddit Engagement Digest
+
+on:
+  schedule:
+    # 8 AM ET (1 PM UTC in EST, noon UTC in EDT — close enough)
+    - cron: '0 13 * * *'
+    # 8 PM ET (1 AM UTC next day in EST, midnight UTC in EDT)
+    - cron: '0 1 * * *'
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Generate but do not send email'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate and send digest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run --verbose"
+          fi
+          node scripts/reddit-engagement-digest.js $ARGS
+
+      - name: Commit history
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if ! git diff --quiet data/reddit-digest-history.json 2>/dev/null; then
+            git add data/reddit-digest-history.json
+            git commit -m "data: Update Reddit digest history [automated]"
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+          else
+            echo "No changes to digest history"
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Reddit Engagement Digest" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/reddit-digest-result.json ]; then
+            node -e "
+              const r = require('/tmp/reddit-digest-result.json');
+              console.log('**Digest #' + r.digestNumber + '**');
+              console.log('');
+              console.log('- Threads evaluated: ' + r.threadsEvaluated);
+              console.log('- Threads suggested: ' + r.threadsSuggested);
+              console.log('- Promo links: ' + r.promoLinksIncluded);
+              console.log('- Email sent: ' + r.sent);
+              if (r.dryRun) console.log('*(Dry run — not sent)*');
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No result file — script may have exited early (no qualifying threads)" >> $GITHUB_STEP_SUMMARY
+          fi
