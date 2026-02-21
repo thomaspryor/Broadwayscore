@@ -57,6 +57,7 @@ export interface RawShow {
   closingDate: string | null;
   status: string;
   type: string;
+  category?: string;  // 'broadway' (default) or 'off-broadway'
   runtime: string;
   intermissions: number;
   images?: ShowImages;
@@ -195,6 +196,7 @@ export interface ComputedShow {
   closingDate: string | null;
   status: string;
   type: string;
+  category?: string;  // 'broadway' (default) or 'off-broadway'
   runtime: string;
   intermissions?: number;
   images?: ShowImages;
@@ -596,6 +598,7 @@ export function computeShowData(
     closingDate: show.closingDate,
     status: show.status === 'previews' && show.previewsStartDate && show.previewsStartDate > new Date().toISOString().slice(0, 10) ? 'upcoming' : show.status,
     type: show.type,
+    category: show.category,
     runtime: show.runtime,
     intermissions: show.intermissions,
     images: show.images,

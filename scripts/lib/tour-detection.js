@@ -234,10 +234,12 @@ function indicatesOffBroadway(text) {
  * Main function: Determine if a show is a tour (not Broadway)
  *
  * @param {Object} show - Show object with title and venue
- * @returns {{ isTour: boolean, reason?: string, type?: string }}
+ * @param {Object} options - { allowOffBroadway: boolean }
+ * @returns {{ isTour: boolean, reason?: string, type?: string, category?: string }}
  */
-function isTourProduction(show) {
+function isTourProduction(show, options = {}) {
   const { title, venue, description } = show;
+  const { allowOffBroadway = false } = options;
 
   // 1. Check if title explicitly says "tour" - strongest signal
   if (titleIndicatesTour(title)) {
@@ -250,6 +252,9 @@ function isTourProduction(show) {
 
   // 2. Check if description/title indicates Off-Broadway
   if (indicatesOffBroadway(title) || indicatesOffBroadway(description)) {
+    if (allowOffBroadway) {
+      return { isTour: false, category: 'off-broadway' };
+    }
     return {
       isTour: true,
       reason: 'Listed as Off-Broadway or Off-Off-Broadway',
@@ -260,7 +265,7 @@ function isTourProduction(show) {
   // 3. If venue is an OFFICIAL Broadway theater, it's definitely not a tour
   // This check comes BEFORE touring venue check to avoid false positives
   if (venue && isOfficialBroadwayTheater(venue)) {
-    return { isTour: false };
+    return { isTour: false, category: 'broadway' };
   }
 
   // 4. Check if venue is a known touring venue
@@ -274,6 +279,9 @@ function isTourProduction(show) {
 
   // 5. Check if venue is Off-Broadway
   if (isOffBroadwayVenue(venue)) {
+    if (allowOffBroadway) {
+      return { isTour: false, category: 'off-broadway' };
+    }
     return {
       isTour: true,
       reason: `Venue "${venue}" is Off-Broadway`,
@@ -283,6 +291,10 @@ function isTourProduction(show) {
 
   // 6. Check if venue is NOT a recognized Broadway theater (unknown venue)
   if (venue && venue !== 'TBA') {
+    // If allowOffBroadway and the show is explicitly categorized, don't reject unknown venues
+    if (allowOffBroadway && show.category === 'off-broadway') {
+      return { isTour: false, category: 'off-broadway' };
+    }
     return {
       isTour: true,
       reason: `Venue "${venue}" is not a recognized Broadway theater`,
@@ -295,17 +307,19 @@ function isTourProduction(show) {
 }
 
 /**
- * Validate that a show should be added to Broadway database
+ * Validate that a show should be added to the database
  *
  * @param {Object} show - Show to validate
- * @returns {{ isValid: boolean, issues: string[], warnings: string[] }}
+ * @param {Object} options - { allowOffBroadway: boolean }
+ * @returns {{ isValid: boolean, issues: string[], warnings: string[], category?: string }}
  */
-function validateBroadwayProduction(show) {
+function validateBroadwayProduction(show, options = {}) {
   const issues = [];
   const warnings = [];
+  const { allowOffBroadway = false } = options;
 
   // Check for tour
-  const tourCheck = isTourProduction(show);
+  const tourCheck = isTourProduction(show, { allowOffBroadway });
   if (tourCheck.isTour) {
     issues.push(tourCheck.reason);
   }
@@ -314,8 +328,10 @@ function validateBroadwayProduction(show) {
   if (!show.venue) {
     warnings.push('No venue specified');
   } else if (!isOfficialBroadwayTheater(show.venue)) {
-    // Already handled by isTourProduction, but add warning if not an issue
-    if (!tourCheck.isTour) {
+    // For off-Broadway, an off-Broadway venue is expected
+    if (allowOffBroadway && isOffBroadwayVenue(show.venue)) {
+      // This is fine — off-Broadway show at off-Broadway venue
+    } else if (!tourCheck.isTour) {
       warnings.push(`Venue "${show.venue}" not in official Broadway theater list`);
     }
   }
@@ -336,7 +352,8 @@ function validateBroadwayProduction(show) {
   return {
     isValid: issues.length === 0,
     issues,
-    warnings
+    warnings,
+    category: tourCheck.category
   };
 }
 
