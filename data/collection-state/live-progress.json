@@ -1,41 +1,18 @@
 {
-  "updatedAt": "2026-02-21T10:55:26.358Z",
-  "processed": 3,
-  "failed": 145,
-  "successRate": "2.0%",
+  "updatedAt": "2026-02-21T11:00:17.270Z",
+  "processed": 7,
+  "failed": 23,
+  "successRate": "23.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 3
+    "archiveToday": 5,
+    "archive": 1
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-21T10:48:19.725Z",
-      "event": "bb-session",
-      "session": "359cf7d6",
-      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.htm"
-    },
-    {
-      "t": "2026-02-21T10:48:21.762Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-21T10:54:14.733Z",
-      "event": "bb-session",
-      "session": "199190b5",
-      "url": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
-    },
-    {
-      "t": "2026-02-21T10:54:16.801Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
