@@ -1,63 +1,129 @@
 {
-  "updatedAt": "2026-02-21T13:25:52.696Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-21T13:31:33.465Z",
+  "processed": 1,
+  "failed": 29,
+  "successRate": "3.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 2,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 2
+    "archiveToday": 27,
+    "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 17,
   "recentActivity": [
     {
-      "t": "2026-02-21T13:18:43.766Z",
+      "t": "2026-02-21T13:21:48.611Z",
       "event": "bb-session",
-      "session": "c68252e8",
-      "url": "https://www.newyorker.com/magazine/2024/04/01/an-enemy-of-the-people-theatre-rev"
+      "session": "6e6381d8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
     },
     {
-      "t": "2026-02-21T13:18:45.971Z",
+      "t": "2026-02-21T13:21:50.412Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:21:16.641Z",
+      "t": "2026-02-21T13:22:22.806Z",
       "event": "bb-session",
-      "session": "28782c0a",
-      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+      "session": "1125ced5",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
     },
     {
-      "t": "2026-02-21T13:21:18.477Z",
+      "t": "2026-02-21T13:22:25.831Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:23:04.709Z",
+      "t": "2026-02-21T13:22:58.945Z",
       "event": "bb-session",
-      "session": "f0cc9982",
-      "url": "https://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charli"
+      "session": "10d918a3",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
     },
     {
-      "t": "2026-02-21T13:23:07.079Z",
+      "t": "2026-02-21T13:23:01.019Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:25:17.988Z",
+      "t": "2026-02-21T13:23:25.224Z",
       "event": "bb-session",
-      "session": "f864e5da",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+      "session": "cbc6d1f5",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
     },
     {
-      "t": "2026-02-21T13:25:20.072Z",
+      "t": "2026-02-21T13:23:28.192Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:23:56.128Z",
+      "event": "bb-session",
+      "session": "a9c6e0ff",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
+    },
+    {
+      "t": "2026-02-21T13:23:58.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:24:21.878Z",
+      "event": "bb-session",
+      "session": "75eb324b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
+    },
+    {
+      "t": "2026-02-21T13:24:25.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:13.137Z",
+      "event": "bb-session",
+      "session": "0259ac59",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-02-21T13:25:15.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:52.973Z",
+      "event": "bb-session",
+      "session": "c79e1e97",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-02-21T13:25:55.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:26:37.388Z",
+      "event": "bb-session",
+      "session": "074d36e0",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-carole-king-musical-be"
+    },
+    {
+      "t": "2026-02-21T13:26:39.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:27:20.013Z",
+      "event": "bb-session",
+      "session": "95d0d779",
+      "url": "https://www.washingtonpost.com/lifestyle/style/bengal-tiger-at-the-baghdad-zoo-r"
+    },
+    {
+      "t": "2026-02-21T13:27:22.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
