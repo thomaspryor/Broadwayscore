@@ -209,7 +209,17 @@
     "sunday-in-the-park-with-george-2008/nytimes--ben-brantley.json",
     "sweeney-todd-2005/nytimes--ben-brantley.json",
     "sweeney-todd-2005/nytimes--jesse-green.json",
-    "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--elisabeth-vincentelli.json"
+    "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--elisabeth-vincentelli.json",
+    "the-children-2017/nytimes--jesse-green.json",
+    "the-color-purple-2015/nytimes--ben-brantley.json",
+    "the-encounter-2016/nytimes--ben-brantley.json",
+    "the-phantom-of-the-opera-1988/nytimes--walter-kerr.json",
+    "the-real-thing-2014/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--ben-brantley.json",
+    "the-royal-family-2009/nytimes--jesse-green.json",
+    "the-seagull-2008/nytimes--jesse-green.json",
+    "the-threepenny-opera-2006/nytimes--charles-isherwood.json",
+    "the-visit-2015/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -227,7 +237,7 @@
     ]
   },
   "startTime": "2026-02-21T10:11:10.028Z",
-  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--elisabeth-vincentelli.json",
+  "lastProcessed": "the-visit-2015/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-21T10:48:19.725Z",
@@ -259,6 +269,17 @@
     },
     {
       "t": "2026-02-21T11:05:29.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:08:24.663Z",
+      "event": "bb-session",
+      "session": "96696476",
+      "url": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-you"
+    },
+    {
+      "t": "2026-02-21T11:08:26.494Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
