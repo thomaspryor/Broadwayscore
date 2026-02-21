@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T17:42:22.283Z",
+  "runDate": "2026-02-21T17:54:50.728Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 22,
-    "failed": 45,
+    "failed": 64,
     "skipped": 0,
-    "successRate": "32.8%"
+    "successRate": "25.6%"
   },
   "tierBreakdown": {
     "playwright": 14,
@@ -23,29 +23,29 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 16,
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 6,
+    "tier1Attempts": 25,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 13,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 13,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 13,
+    "tier3_6Success": 13,
+    "tier4Attempts": 3,
     "tier4Success": 1,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 0,
+    "totalFailed": 26,
+    "scrapingBeeCreditsUsed": 42,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -112,13 +112,32 @@
     "a-bronx-tale-2007/theatre-reviews-limited--david-roberts.json",
     "a-bronx-tale-2007/thewrap--robert-hofler.json",
     "a-strange-loop-2022/thewrap--robert-hofler.json",
-    "an-enemy-of-the-people-2024/slantmagazine--dan-rubins.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json",
-    "prince-of-broadway-2017/theatres-leiter-side--samuel-l-leiter.json",
-    "shucked-2023/slantmagazine--dan-rubins.json",
-    "the-music-man-2022/exeunt-magazine--lane-williamson.json",
-    "the-prom-2018/stage-left--robert-russo.json",
-    "tuck-everlasting-2016/theatres-leiter-side--samuel-l-leiter.json"
+    "an-ark-2026/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/londontheatre--marianka-swain.json",
+    "be-more-chill-2019/hypable--irvin-k.json",
+    "camelot-2023/queerty--unknown.json",
+    "carousel-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "escape-to-margaritaville-2018/cabaret-scenes--elizabeth-ahlfors.json",
+    "fully-committed-2016/ap--unknown.json",
+    "heisenberg-2016/stagebuddy--tami-shaloum.json",
+    "i-need-that-2023/stagebuddy--elyse-trevers.json",
+    "in-transit-2016/cabaret-scenes--elizabeth-ahlfors.json",
+    "living-on-love-2015/ap--unknown.json",
+    "noises-off-2016/ap--unknown.json",
+    "once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/cabaret-scenes--elizabeth-ahlfors.json",
+    "prince-of-broadway-2017/film-festival-traveler--kevin-filipski.json",
+    "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
+    "she-loves-me-2016/whatsonstage--scott-mitchell.json",
+    "six-degrees-of-separation-2017/film-festival-traveler--kevin-filipski.json",
+    "spamalot-2023/queerty--matthew-wexler.json",
+    "sweeney-todd-2023/queerty--matthew-wexler.json",
+    "sylvia-2015/film-festival-traveler--kevin-filipski.json",
+    "the-crucible-2016/whatsonstage--scott-mitchell.json",
+    "the-humans-2016/ap--unknown.json",
+    "the-humans-2016/whatsonstage--scott-mitchell.json",
+    "the-last-five-years-2025/hypable--unknown.json",
+    "the-little-foxes-2017/film-festival-traveler--kevin-filipski.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -145,7 +164,20 @@
     "archiveToday": [
       "data/review-texts/hamilton-2015/backstage-barbie--backstage-barbie.json",
       "data/review-texts/the-dinosaurs-2026/talkinbroadway--marc-miller.json",
-      "data/review-texts/on-the-twentieth-century-2015/nytg--tulis-mccall.json"
+      "data/review-texts/on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+      "data/review-texts/be-more-chill-2019/hypable--irvin-k.json",
+      "data/review-texts/fully-committed-2016/ap--unknown.json",
+      "data/review-texts/living-on-love-2015/ap--unknown.json",
+      "data/review-texts/noises-off-2016/ap--unknown.json",
+      "data/review-texts/once-on-this-island-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/she-loves-me-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/six-degrees-of-separation-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/the-crucible-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/the-humans-2016/ap--unknown.json",
+      "data/review-texts/the-humans-2016/whatsonstage--scott-mitchell.json",
+      "data/review-texts/the-last-five-years-2025/hypable--unknown.json",
+      "data/review-texts/the-little-foxes-2017/film-festival-traveler--kevin-filipski.json"
     ],
     "archive": [
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
@@ -158,6 +190,21 @@
       "american-buffalo-2022/thewrap--thom-geier.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Stage Buddy": {
+      "count": 1,
+      "domain": "stagebuddy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Cabaret Scenes": {
+      "count": 1,
+      "domain": "cabaretscenes.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
