@@ -133,9 +133,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   };
 
-  // Add aggregate rating if we have scores and reviewCount
+  // Add aggregate rating if we have scores and sufficient reviews (3+)
   // Uses 1-5 star scale for Google rich snippet compatibility
-  if (show.criticScore?.score && show.criticScore?.reviewCount) {
+  if (show.criticScore?.score && show.criticScore?.reviewCount >= 3) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),
@@ -263,9 +263,9 @@ export function generateItemListSchema(items: {
         url: BASE_URL,
       };
 
-      // Aggregate rating (with required reviewCount)
+      // Aggregate rating (with required reviewCount, minimum 3)
       // Uses 1-5 star scale for Google rich snippet compatibility
-      if (item.score && item.reviewCount) {
+      if (item.score && item.reviewCount && item.reviewCount >= 3) {
         event.aggregateRating = {
           '@type': 'AggregateRating',
           ratingValue: toFiveStarScale(item.score),
@@ -304,6 +304,8 @@ export function generateItemListSchema(items: {
 export function generateShowFAQSchema(show: ComputedShow) {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
+  const isWestEnd = show.category === 'west-end';
+  const marketLabel = isWestEnd ? 'in the West End' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
@@ -323,9 +325,9 @@ export function generateShowFAQSchema(show: ComputedShow) {
 
   // Q: Is it still running?
   faqs.push({
-    question: `Is ${show.title} still running on Broadway?`,
+    question: `Is ${show.title} still running ${marketLabel}?`,
     answer: show.status === 'open'
-      ? `Yes, ${show.title} is currently playing at ${show.venue} on Broadway.${show.closingDate ? ` It is scheduled to close on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : ''}`
+      ? `Yes, ${show.title} is currently playing at ${show.venue} ${marketLabel}.${show.closingDate ? ` It is scheduled to close on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : ''}`
       : show.status === 'previews'
       ? `${show.title} is currently in previews at ${show.venue}. It officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
       : show.status === 'upcoming'
@@ -336,7 +338,7 @@ export function generateShowFAQSchema(show: ComputedShow) {
   // Q: Where is it playing?
   if (show.status !== 'closed') {
     faqs.push({
-      question: `Where is ${show.title} playing on Broadway?`,
+      question: `Where is ${show.title} playing ${marketLabel}?`,
       answer: `${show.title} is playing at ${show.venue}${show.theaterAddress ? `, located at ${show.theaterAddress}` : ''}.`,
     });
   }
