@@ -188,6 +188,12 @@ async function searchBWWRoundup(show) {
   for (const url of searchUrls) {
     const result = await httpGet(url);
     if (result.found && result.html) {
+      // Reject BWW homepage / soft 404s (generic pages without article content)
+      const pageTitle = (result.html.match(/<title>([^<]+)<\/title>/i) || ['', ''])[1];
+      if (pageTitle.includes('BroadwayWorld:') && !pageTitle.includes('Review Roundup')) {
+        continue; // This is the BWW homepage, not an article
+      }
+
       // Verify it's a Broadway roundup (not Off-Broadway)
       const isBroadway = result.html.includes('Broadway') &&
         !result.html.includes('Off-Broadway') &&
@@ -196,7 +202,12 @@ async function searchBWWRoundup(show) {
       // For revivals, also check if it's about the right production
       const isRightYear = result.html.includes(String(year));
 
-      if (result.html.includes('Review Roundup') && (isBroadway || isRightYear)) {
+      // Verify the show title appears in the page (prevents wrong-show matches)
+      const { titleWordsMatch } = require('./lib/show-matching');
+      const h1Text = (result.html.match(/<h1[^>]*>([^<]+)<\/h1>/i) || ['', ''])[1];
+      const showInPage = titleWordsMatch(show.title, pageTitle + ' ' + h1Text);
+
+      if (result.html.includes('Review Roundup') && (isBroadway || isRightYear) && showInPage) {
         console.log(`  ✓ Found at: ${url}`);
         return { url, html: result.html };
       }
@@ -256,12 +267,14 @@ async function searchWebForBWWRoundup(show) {
         const pageResult = await httpGet(url);
 
         if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
-          // Verify it mentions the show title
-          const titleWords = show.title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-          const htmlLower = pageResult.html.toLowerCase();
-          const matchCount = titleWords.filter(w => htmlLower.includes(w)).length;
+          // Verify the page mentions the show title using robust word matching
+          // (filters generic words like "comedy", "about", "all" to prevent false matches)
+          const { titleWordsMatch } = require('./lib/show-matching');
+          const pageTitle = (pageResult.html.match(/<title>([^<]+)<\/title>/i) || ['', ''])[1];
+          const h1Text = (pageResult.html.match(/<h1[^>]*>([^<]+)<\/h1>/i) || ['', ''])[1];
+          const combinedText = pageTitle + ' ' + h1Text + ' ' + url;
 
-          if (matchCount >= Math.min(2, titleWords.length)) {
+          if (titleWordsMatch(show.title, combinedText)) {
             console.log(`  ✓ Found via Google search: ${url}`);
             saveUrlOverride(show.id, url);
             return { url, html: pageResult.html };

@@ -557,20 +557,19 @@ function matchTitleToShow(externalTitle, shows, options) {
     }
   }
 
-  // 5. Partial containment (lower confidence) — try all variants (collect all)
+  // 5. Word-based matching (lower confidence) — uses titleWordsMatch to prevent
+  //    false positives from common words (e.g., "out" in "Reviews Are Out" matching "All Out")
   for (const variant of titleVariants) {
     if (variant.length > 2) {
-      const containmentMatches = [];
+      const wordMatches = [];
       for (const show of shows) {
-        const showTitle = (show.title || '').toLowerCase().trim();
-        if (showTitle.length > 2) {
-          if (showTitle.includes(variant) || variant.includes(showTitle)) {
-            containmentMatches.push(show);
-          }
+        const showTitle = (show.title || '').trim();
+        if (showTitle.length > 2 && titleWordsMatch(showTitle, variant)) {
+          wordMatches.push(show);
         }
       }
-      if (containmentMatches.length > 0) {
-        return { show: pickBestProduction(containmentMatches, targetYear), confidence: 'medium' };
+      if (wordMatches.length > 0) {
+        return { show: pickBestProduction(wordMatches, targetYear), confidence: 'medium' };
       }
     }
   }
@@ -598,7 +597,9 @@ const TITLE_GENERIC_WORDS = new Set([
   'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for', 'to',
   'is', 'it', 'my', 'all', 'be', 'or', 'no', 'so', 'do', 'we', 'up', 'if',
   'me', 'us', 'by', 'with', 'from', 'review', 'reviews', 'roundup', 'critics',
-  'verdict', 'what', 'are', 'says', 'think', 'say',
+  'verdict', 'what', 'are', 'says', 'think', 'say', 'out', 'into', 'off',
+  'opens', 'opening', 'open', 'how', 'now', 'just', 'come', 'go', 'get',
+  'has', 'had', 'have', 'was', 'not', 'but', 'one', 'two', 'can', 'will',
 ]);
 
 /**
@@ -614,10 +615,19 @@ const TITLE_GENERIC_WORDS = new Set([
  * @returns {boolean} Whether the candidate matches the show title
  */
 function titleWordsMatch(showTitle, candidateText) {
+  // First try the pre-colon part (e.g., "All Out" from "All Out: Comedy About Ambition")
   const showTitleLower = showTitle.toLowerCase()
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
-  const showSlugWords = showTitleLower.split(/[\s,]+/)
+  let showSlugWords = showTitleLower.split(/[\s,]+/)
     .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+
+  // If pre-colon part has no meaningful words, use the FULL title including subtitle
+  // (e.g., "All Out: Comedy About Ambition" → "ambition" is the only distinctive word)
+  if (showSlugWords.length === 0) {
+    const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
+    showSlugWords = fullTitleLower.split(/[\s,:()]+/)
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+  }
 
   const candidateLower = candidateText.toLowerCase();
 
