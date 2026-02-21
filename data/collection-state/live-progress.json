@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-02-21T04:45:34.716Z",
-  "processed": 11,
-  "failed": 29,
-  "successRate": "27.5%",
+  "updatedAt": "2026-02-21T04:46:25.617Z",
+  "processed": 31,
+  "failed": 69,
+  "successRate": "31.0%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 5
+    "archiveToday": 26,
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 31,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T04:27:30.385Z",
+      "event": "bb-session",
+      "session": "d0482a9d",
+      "url": "https://www.vulture.com/2017/03/theater-review-sweat-on-broadway.html"
+    },
+    {
+      "t": "2026-02-21T04:27:32.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:28:28.916Z",
+      "event": "bb-session",
+      "session": "a0655459",
+      "url": "https://www.vulture.com/2022/04/theater-review-take-me-out-revival-broadway.html"
+    },
+    {
+      "t": "2026-02-21T04:28:30.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:29:17.363Z",
+      "event": "bb-session",
+      "session": "a9fde42f",
+      "url": "https://www.vulture.com/2011/03/theater_review_that_champions.html"
+    },
+    {
+      "t": "2026-02-21T04:29:19.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:32:58.840Z",
+      "event": "bb-session",
+      "session": "b8b7920a",
+      "url": "https://www.vulture.com/2012/12/theater-review-the-anarchist.html"
+    },
+    {
+      "t": "2026-02-21T04:33:00.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:42:10.883Z",
+      "event": "bb-session",
+      "session": "1cad73be",
+      "url": "http://www.vulture.com/2017/03/theater-review-sally-field-in-a-reimagined-glass-"
+    },
+    {
+      "t": "2026-02-21T04:42:13.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:42:23.194Z",
+      "event": "bb-session",
+      "session": "fdd1d720",
+      "url": "https://www.vulture.com/article/theater-review-the-hills-of-california.html"
+    },
+    {
+      "t": "2026-02-21T04:42:23.871Z",
+      "event": "bb-session",
+      "session": "255f96c6",
+      "url": "https://www.vulture.com/2012/11/theater-review-the-heiress.html"
+    },
+    {
+      "t": "2026-02-21T04:42:25.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:42:25.259Z",
+      "event": "bb-session",
+      "session": "57f64511",
+      "url": "https://www.vulture.com/2017/03/theater-review-the-glass-menagerie.html"
+    },
+    {
+      "t": "2026-02-21T04:42:25.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:42:27.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:46:05.231Z",
+      "event": "bb-session",
+      "session": "7de7d39c",
+      "url": "https://www.vulture.com/2022/04/theater-review-little-prince-broadway-nyc.html"
+    },
+    {
+      "t": "2026-02-21T04:46:07.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-21T04:46:07.752Z",
+      "event": "bb-session",
+      "session": "06de459b",
+      "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-"
+    },
+    {
+      "t": "2026-02-21T04:46:09.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    }
+  ]
 }
