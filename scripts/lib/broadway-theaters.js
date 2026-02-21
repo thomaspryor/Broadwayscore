@@ -408,24 +408,38 @@ function getCanonicalVenueName(venueName) {
 
 /**
  * Validate a venue and return details
+ * Returns category: 'broadway', 'off-broadway', or null (unknown)
  */
 function validateVenue(venueName) {
   const theater = findTheater(venueName);
 
-  if (!theater) {
+  if (theater) {
     return {
-      isValid: false,
+      isValid: true,
+      category: 'broadway',
+      canonical: theater.canonical,
+      seats: theater.seats,
+      address: theater.address,
+      wasRenamed: theater.renamed ? true : false
+    };
+  }
+
+  // Check off-Broadway venues (imported from tour-detection.js)
+  const { isOffBroadwayVenue } = require('./tour-detection');
+  if (isOffBroadwayVenue(venueName)) {
+    return {
+      isValid: true,
+      category: 'off-broadway',
       canonical: venueName,
-      reason: `"${venueName}" is not a recognized Broadway theater`
+      reason: `"${venueName}" is an Off-Broadway venue`
     };
   }
 
   return {
-    isValid: true,
-    canonical: theater.canonical,
-    seats: theater.seats,
-    address: theater.address,
-    wasRenamed: theater.renamed ? true : false
+    isValid: false,
+    category: null,
+    canonical: venueName,
+    reason: `"${venueName}" is not a recognized Broadway or Off-Broadway theater`
   };
 }
 

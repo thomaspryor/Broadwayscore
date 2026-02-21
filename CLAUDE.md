@@ -1,274 +1,149 @@
 # Broadway Scorecard Project Context
 
-## CRITICAL RULES - READ FIRST
+## CRITICAL RULES
 
 ### 1. NEVER Ask User to Run Local Commands
-The user is **non-technical and often on their phone**. They cannot run terminal commands.
-- Make code changes and push to Git
-- Create/update GitHub Actions for automation
-- If something truly requires local execution, create a GitHub Action to do it
+User is **non-technical, often on phone**. Push to Git, use GitHub Actions. Create a workflow if local execution is needed.
 
-### 2. ALWAYS ASK: Quick Fix or Preview? (MANDATORY)
-**Before making ANY code/design changes, Claude MUST ask:**
-> "Is this a **quick fix** (ship directly to production) or do you want to **preview it first** (staging branch)?"
+### 2. ALWAYS ASK: Quick Fix or Preview?
+Before ANY code/design changes, ask: **quick fix** (→ `main`) or **preview** (→ `staging`)?
+Exceptions: Pure data updates, documentation, clearly broken bug fixes.
 
-- "Quick fix" / "Ship it" → Work on `main`, push directly
-- "Preview" / "Staging" → Work on `staging` branch, provide preview URL
-- **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
+### 3. Git Workflow
+- **Quick fix** → `main`, push. Auto-deploy via `vercel-deploy.yml` (~13 min).
+- **Preview** → `staging` branch, push. Get preview URL: `gh run view $(gh run list --workflow=vercel-preview.yml --limit=1 --json databaseId -q '.[0].databaseId') --log 2>&1 | grep 'Preview URL:'`. After approval, merge to `main`.
+- **Production:** https://broadwayscorecard.com | Only `main` or `staging` — no PRs, no feature branches.
+- **BRANCH CHECK:** `git branch --show-current` before ANY commit/push. Sessions frequently leave wrong branch checked out.
 
-### 3. Git Workflow - Two Paths
-**Path A: Quick Fix** → Work on `main`, push. Vercel deploys via Deploy Hook (~2 min).
-**Path B: Preview** → Branch `staging` from `main`, push. Vercel preview URL is generated automatically (~13 min). Get URL from: `gh run view $(gh run list --workflow=vercel-preview.yml --limit=1 --json databaseId -q '.[0].databaseId') --log 2>&1 | grep 'Preview URL:'`. After approval, merge to `main` and delete staging.
-**Production:** https://broadwayscorecard.com | **Branch:** `main`
-**NEVER:** Create PRs or random feature branches (only `main` or `staging`).
-**BRANCH CHECK:** Before ANY git commit/push, run `git branch --show-current` to verify you're on the correct branch. Other sessions and stash operations frequently leave the local checkout on `staging` when you need `main` (or vice versa). Don't waste time — check first.
+### 3a. Vercel Deployment
+Git-triggered builds are **BLOCKED** (`exit 0` in dashboard). Deploys ONLY via Vercel CLI in `vercel-deploy.yml`:
+- Builds on GitHub Actions (`vercel build --prod`) → uploads (`vercel deploy --prebuilt --prod`). Free, bypasses Vercel git integration.
+- Pushes touching `src/`, `public/`, `content/`, config, key `data/*.json` → auto-deploy. Data-only pushes → no deploy.
+- Manual deploy: `gh workflow run "Deploy to Vercel"`. Secret: `VERCEL_TOKEN`.
+- **DO NOT:** remove `exit 0` from dashboard, add `ignoreCommand` to vercel.json, use deploy hooks/API, remove `--prod` flag.
+- **Preview:** `vercel-preview.yml` — same approach without `--prod`, triggers on `staging`.
+- **"Pushed" ≠ "Deployed"** — confirm workflow triggered, check status before ending session. If failed → fix. If in-progress → tell user the run ID.
 
-### 3a. Vercel Deployment (IMPORTANT — ALL SESSIONS READ THIS)
-**Git-triggered builds are BLOCKED** (`exit 0` in dashboard Ignored Build Step). This prevents data checkpoint commits from burning build minutes.
-**Deploys happen ONLY via Vercel CLI** in `.github/workflows/vercel-deploy.yml`:
-- The workflow builds on GitHub Actions (`vercel build --prod`), then uploads prebuilt output (`vercel deploy --prebuilt --prod`). This completely bypasses Vercel's git integration.
-- Pushes changing `src/`, `public/`, `content/`, config files, or key `data/*.json` → **deploy triggers automatically** (~13 min)
-- Pushes changing only `data/review-texts/`, `data/archives/`, etc. → **no deploy** (intentional)
-- To force a manual deploy: `gh workflow run "Deploy to Vercel"`
-- **DO NOT remove `exit 0`** from dashboard Ignored Build Step — it blocks 30+ checkpoint builds per hour.
-- **DO NOT add `ignoreCommand` to `vercel.json`** — it has NO ignoreCommand. Dashboard only.
-- **DO NOT use deploy hooks or Deployments API** — both get blocked/auto-canceled. Only the CLI approach works.
-- **Secret:** `VERCEL_TOKEN` (CLI auth)
+### 3b. Commit Frequently (MANDATORY)
+Multiple concurrent sessions. Context expires without warning. Uncommitted work WILL be lost.
+- **Commit** after each logical unit (one component, one fix). Never >2 uncommitted files.
+- **Push** every ~30 min or after milestones. Pushes to `main` touching `src/` trigger deploys.
+- **15+ min without committing → stop and commit NOW.** WIP commits are fine.
+- **Before QA/testing → commit AND push first.**
 
-**Preview deploys** (`vercel-preview.yml`): Same CLI approach but without `--prod`. Triggers on pushes to `staging`. Generates a unique preview URL (e.g., `broadwayscore-abc123.vercel.app`). Builds on GitHub Actions (free). After user approves, merge staging → main to deploy to production.
-
-**"Pushed" ≠ "Deployed" — NEVER declare work complete after just pushing.** Deploys take ~13 min and often fail (rate limits, build errors, timeouts). After pushing code that triggers a deploy:
-1. **Confirm the workflow triggered:** `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion,createdAt,databaseId`
-2. **If you have other work to do**, do it while the deploy runs. Check back before wrapping up.
-3. **Before ending the session**, check deploy status: `gh run list --workflow=vercel-deploy.yml --limit=1 --json status,conclusion -q '.[0]'`
-   - If `completed` + `success`: verify production looks correct, THEN say "done"
-   - If `completed` + `failure`: investigate and fix. Do NOT leave a failed deploy for the next session.
-   - If still `in_progress`: tell the user "Deploy is still running (run #ID). Check back in X minutes." Do NOT say "all done."
-
-### 3b. Commit Frequently — Uncommitted Work WILL Be Lost (MANDATORY)
-**Multiple sessions run concurrently. Any session can run out of context at any time. Uncommitted changes are destroyed by: context expiration, other sessions doing git operations, stash pops, branch switches, or linters.**
-
-**Commit vs Push — different cadences:**
-- **Commit locally after each logical unit of work** — one component extracted, one bug fixed, one page updated. Never accumulate more than 1-2 changed files without committing. Commits are free and instant.
-- **Push at natural checkpoints** — after completing a sprint task, after a feature works end-to-end, or before starting QA. Pushes to `main` that touch `src/` trigger a ~13 min deploy workflow, so don't push every 5 minutes. But DO push at least every 30 min or after each major milestone — a local-only commit is still vulnerable to other sessions doing `git checkout` or `git stash pop`.
-
-**Other rules:**
-- **If you've been working for 15+ minutes without committing, stop and commit NOW.** A WIP commit is infinitely better than lost work.
-- **Before starting visual QA or testing, commit AND push first.** QA often runs out of context. If changes aren't committed, the QA session's feedback is useless because the code it reviewed no longer exists.
-- **Commit messages for WIP are fine:** `git commit -m "wip: extract StatGrid component"` — clean up later with a final commit message if needed.
-- **Never batch all changes into one final commit.** This is the #1 cause of lost work. A session that modifies 25 files across 4 features and never commits WILL lose everything.
-
-**Why this rule exists:** A session completed 4 component extractions across ~25 files but never committed. The session ran out of context. Another session's git operation overwrote the working tree. Hours of work permanently lost.
-
-### 4. Automate Everything — SET AND FORGET
-All data pipelines must be fully automated via GitHub Actions with dynamic date ranges. Never ask user to manually fetch data or update year constants.
-
-### 5. NEVER Guess or Fake Data
-Never give approximate ranges. If you can't access a source, say so.
-
-### 6. NEVER Extract Metadata from URLs
-URL structure is wildly inconsistent. NEVER extract years, production info, or identifiers from URL patterns. Use publish date, review text content, and exact URL matching instead.
+### 4–6. Core Data Rules
+- **§4 Automate everything** — GitHub Actions with dynamic dates. Never ask user to fetch data.
+- **§5 Never guess/fake data** — if you can't access a source, say so.
+- **§6 Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 
 ### 7. Batch Scripts MUST Checkpoint
-Any script processing >10 items in CI MUST save progress incrementally.
-- Use `if: always()` on archive/commit/push steps (timeouts silently lose ALL data without this)
-- Use 5-retry push with `--rebase -X theirs`
-- `rebuild-all-reviews.js` writes back to `data/review-texts/` — the `push-review-texts` composite action handles pushing those changes to the private repo
+Scripts processing >10 items in CI: save progress incrementally, `if: always()` on commit/push steps, 5-retry push with `--rebase -X theirs`.
 
-### 7a. Private Review-Texts Repo (CRITICAL — ALL SESSIONS READ THIS)
-**NEVER commit copyrighted review text, scraped full-text content, or third-party API keys to the public repo.** This is a legal/DMCA risk. All 24,000+ full-text reviews live in a private repo only.
-- **`data/review-texts/`** → private repo (`thomaspryor/broadway-review-texts`), gitignored from public repo.
-- **CI workflows** use composite actions to check out / push review-texts:
-  - `.github/actions/checkout-review-texts/` — checks out private repo into `data/review-texts/`
-  - `.github/actions/push-review-texts/` — commits + pushes changes to private repo (5-retry, `if: always()`)
-- **Secret:** `REVIEW_TEXTS_TOKEN` (PAT with `repo` scope, no expiration)
-- **Public repo:** `data/review-texts/` is in `.gitignore`. `git add data/review-texts/` is a no-op.
-- **Scripts unchanged:** No script modifications needed. Workflow-level composite actions handle the private repo.
-- **New workflows** that read or write `data/review-texts/` MUST include both composite actions.
-- **Automated guard:** `test.yml` data-validation job verifies zero review-text files are tracked in the public repo. Fails the build if any leak in.
-- **Local dev:** Files may exist on disk from before migration but aren't git-tracked. To get fresh data locally, clone the private repo into `data/review-texts/`.
+### 7a. Private Review-Texts Repo
+**NEVER commit copyrighted text or API keys to public repo** (DMCA risk).
+- `data/review-texts/` → private repo `thomaspryor/broadway-review-texts`, gitignored.
+- CI: `.github/actions/checkout-review-texts/` and `push-review-texts/` composite actions.
+- Secret: `REVIEW_TEXTS_TOKEN` (PAT, `repo` scope). Guard: `test.yml` fails if review-text files leak.
+- New workflows reading/writing review-texts MUST include both composite actions.
 
-### 7b. Private Core Data Repo (CRITICAL — ALL SESSIONS READ THIS)
-**9 competitively sensitive data files are in a private repo**, NOT the public repo. This prevents competitors from scraping aggregated scores and review data.
-- **Private repo:** `thomaspryor/broadway-scorecard-data`
-- **Files:** `shows.json`, `reviews.json`, `grosses.json`, `grosses-history.json`, `commercial.json`, `audience-buzz.json`, `critic-consensus.json`, `critic-registry.json`, `outlet-registry.json`
-- **CI workflows** use composite actions:
-  - `.github/actions/checkout-core-data/` — clones private repo to `.core-data-checkout/`, copies 9 JSON files to `data/`
-  - `.github/actions/push-core-data/` — copies files back, commits + pushes (5-retry, `if: always()`)
-- **Secret:** `REVIEW_TEXTS_TOKEN` (same PAT — covers all private repos)
-- **Public repo:** All 9 files are in `.gitignore`. `git add data/shows.json` etc. is a no-op.
-- **Scripts unchanged:** Scripts read/write `data/*.json` as before. Composite actions handle private repo sync.
-- **New workflows** that read core data MUST include `checkout-core-data`. Workflows that WRITE core data MUST also include `push-core-data` with `if: always()`.
-- **Deploy:** Core data files no longer trigger `vercel-deploy.yml` via path match. Terminal workflows (rebuild-reviews, weekly-grosses, update-show-status, opening-night-broadcast) dispatch deploys directly.
-- **Local dev:** Files may not exist after fresh clone. To get data: clone private repo and copy JSON files to `data/`.
-- **Staleness canary:** `test.yml` verifies shows.json and reviews.json exist and are non-empty after checkout.
+### 7b. Private Core Data Repo
+9 sensitive JSON files in private repo `thomaspryor/broadway-scorecard-data`:
+`shows.json`, `reviews.json`, `grosses.json`, `grosses-history.json`, `commercial.json`, `audience-buzz.json`, `critic-consensus.json`, `critic-registry.json`, `outlet-registry.json`
+- CI: `.github/actions/checkout-core-data/` and `push-core-data/` (with `if: always()`).
+- Same PAT (`REVIEW_TEXTS_TOKEN`). All 9 files gitignored. Staleness canary in `test.yml`.
+- Deploy: terminal workflows dispatch deploys directly (not path-triggered).
+- New workflows: MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
 
-### 8. Design System — Use Shared Components
-**NEVER create custom versions of existing UI components.** Library: `src/components/show-cards/`
-- `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `getScoreTier()`, `ShowImage`, `getOptimizedImageUrl()`
-- `ToggleBar<T>` — generic labeled toggle row for sort/filter controls. Props: `label`, `options`, `value`, `onChange`, `size?: 'default' | 'compact'`, `className?`. Use `compact` for dense pages (critics, outlets, creatives). Use `default` (has 36px mobile tap targets) for main pages.
-- `ScoreToggle` — Critics/Audience segmented control. Props: `value`, `onChange`, `audienceFirst?`, `size?: 'default' | 'large'`, `className?`. Side effects (like forcing sort on audience switch) go in the parent's `onChange` handler, not the component.
-- Import: `import { ScoreBadge, StatusBadge, ToggleBar, ScoreToggle, ... } from '@/components/show-cards';`
-- New pages MUST use these. Add new components to `show-cards/` barrel — never inline.
+### 8. Design System
+Use shared components from `src/components/show-cards/` — never create custom versions.
+- Components: `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `ShowImage`, `getOptimizedImageUrl()`, `getScoreTier()`
+- `ToggleBar<T>` — labeled toggle row. `size='compact'` for dense pages, `'default'` for main (36px tap targets).
+- `ScoreToggle` — Critics/Audience control. `audienceFirst` for NVP, `size='large'` for NVP. Side effects in parent `onChange`.
+- Import from `@/components/show-cards`. Add new components to barrel, never inline.
 
-### 8a. Visual QA for UI Changes (MANDATORY)
-**When changing UI across 2+ files, you MUST do before/after screenshot comparison BEFORE committing.**
-1. **Before making changes**: Screenshot production (`broadwayscorecard.com`) at mobile (375px) and desktop (1280px) for every affected page
-2. **After making changes**: Build locally (`npx next build`), serve (`npx serve out -l 3099`), screenshot same pages at same sizes
-3. **Compare**: View before/after pairs side-by-side. Only commit if layout is identical (data count differences from pipeline runs are OK)
-4. **Playwright script pattern**:
-```js
-const { chromium } = require('playwright');
-const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 375, height: 900 } });
-const page = await ctx.newPage();
-await page.goto(url, { waitUntil: 'networkidle' });
-await page.screenshot({ path: '/tmp/before-pagename-375.png' });
-```
-**This rule exists because** a session proposed this exact testing plan, then skipped it and pushed without comparing. The refactor happened to be pixel-perfect, but we got lucky.
+### 8a. Visual QA (MANDATORY for UI Changes)
+**Never deploy UI changes without visual verification.** User is non-technical — broken deploys waste their time.
+1. Dev server: `PORT=3456 npm run dev > /tmp/dev-server.log 2>&1 &` (~2s startup)
+2. Screenshot with Playwright at 375px (mobile) and 1280px (desktop) for affected pages
+3. Check: score badge position, card spacing, overflow, text wrapping, toggle states
+4. For multi-file changes: screenshot production BEFORE changes for comparison
+5. Only after visual confirmation → commit, push, deploy. Kill server: `kill $(lsof -ti:3456)`
+- **Score badges are sacred** — never change size/position/shape. Score column: `w-20 sm:w-24`.
+- **Card layout: `[Thumbnail] [Info] [Score]`** — three flex children. Test with real data edge cases.
+- **Padding changes cascade** — changing `p-4` to `p-3` affects every card.
 
 ### 9. Roadmap Discipline
-Before starting work, run `gh issue view 50 --repo thomaspryor/Broadwayscore`.
+Read roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
+- **Finishing session:** Move completed items to "Recently Done" (with date). Post comment summarizing work.
+- **New discoveries:** Add to Backlog section + comment. Don't context-switch.
 
-**When finishing a session**, you MUST:
-1. **Update the roadmap issue body** — move completed items to "Recently Done" with a one-line summary and date. Move newly started items to "In Progress."
-2. **Post a comment** summarizing what was done in this session.
+### 10. Infrastructure Change Planning (MANDATORY)
+For changes touching 3+ workflows, CI/CD, data pipelines, or cross-repo operations:
+- **Plan:** Write changes, agent review for gaps, list assumptions, include testing phase.
+- **Test:** 3 representative workflows (simple, complex, write-heavy). Wait for completion. Check all step statuses. Test failure paths.
+- **Gotchas:** `git add <gitignored>` → exit code 1; nested `.git` dirs confuse git; `set -e` kills on any non-zero; parallel sessions switch branches.
 
-**When you discover work that should be done but WON'T do now**, you MUST:
-1. **Add it to the roadmap** — put it in the appropriate Backlog section (UI/Design, New Features, Infrastructure, etc.) with a one-line description.
-2. **Post a comment** explaining why it matters and why you're not doing it now.
-3. This prevents good ideas from being lost when sessions compact, get distracted, or fail. If it's not on the roadmap, it doesn't exist.
-
-**Rabbit hole prevention:** New discoveries → Backlog entry + comment. Don't context-switch.
-
-### 10. Planning & Testing for Infrastructure Changes (MANDATORY)
-For any change touching **3+ workflow files**, **CI/CD infrastructure**, **data pipelines**, or **cross-repo operations**:
-
-**Planning phase:**
-1. Write the plan (what changes, where, why)
-2. Have a separate agent review the plan for gaps (use `/critique` for high-stakes changes)
-3. **Explicitly list assumptions** that could be wrong (e.g., "git add on gitignored path is a no-op" — it's NOT, it returns exit code 1)
-4. **Include a testing phase in the plan itself** — not as afterthought, but as a numbered phase with specific workflows to test
-
-**Testing phase (before declaring done):**
-1. **Test at least 3 representative workflows** — one simple (NYSR), one complex (rebuild), one write-heavy (collect-review-texts)
-2. **Wait for runs to complete** and check ALL step statuses (not just overall pass/fail)
-3. **Check for interaction effects** — gitignore + git add, nested repos + file size checks, composite actions + error handling
-4. **Test the failure path** — what happens when a step fails? Does `if: always()` work? Do subsequent steps still run?
-
-**Common gotchas to check:**
-- `git add <gitignored-path>` → exit code 1 (not a silent no-op)
-- Nested `.git` directories from multi-repo checkouts → triggers size checks, confuses git commands
-- `set -e` in bash steps → any non-zero exit kills the step, even from benign commands
-- Parallel sessions switching branches → always verify branch before commit, or use Git Data API
-
-### 11. Pipeline Operations — Test, Monitor, Parallelize
-**MANDATORY: End-to-end test before ANY large dispatch.** Never dispatch 5+ runs or 50+ reviews without first running a tiny test (5 reviews, 1 batch, same params) and verifying data lands in the private repo. We lost a full week of credits (Feb 18-19, 2026) running 3 rounds of 5 runs that all failed for different infrastructure bugs — each taking hours to discover because the runs themselves take hours. The test takes 10 minutes and catches everything.
-- Verify: did checkpoint push to private repo work? (`gh api repos/thomaspryor/broadway-review-texts/commits`)
-- Verify: did final push-review-texts step succeed?
-- Verify: no `git add` errors on gitignored paths?
-- Only THEN dispatch at scale. Check within 30 min after dispatch.
-
-**Before:** Verify secrets (test 1 workflow first), check slots (<35 in-progress), 10s+ spacing between `gh workflow run`, shard scoring to 10 (`-f shard=N -f total_shards=10`).
-**During:** Check within 15 min. Verify chaining created next run.
-**After:** Trigger rebuild if needed. Verify data landed **in the private repo**.
-**Collection MUST be chained:** Always use `-f chain=true -f remaining_batches=10`. `remaining_batches` defaults to 0 = NO CHAINING.
-For launch patterns and known pitfalls, read `memory/CLAUDE-reference.md`.
-
-### 12. Visual Preview Before Deploying UI Changes (MANDATORY)
-**NEVER deploy UI changes to staging/production without visually verifying them first.** The user is non-technical and on their phone — every broken deploy wastes their time reviewing garbage.
-
-**Workflow for ANY visual/layout change:**
-1. Start dev server: `PORT=3456 npm run dev > /tmp/dev-server.log 2>&1 &` (~2 sec startup, hot-reloads on save)
-2. Screenshot with Playwright script (MCP Playwright often fails — use this instead):
-   ```js
-   node -e "const{chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:420,height:900}});await p.goto('http://localhost:3456/PAGE',{waitUntil:'networkidle'});await p.screenshot({path:'/tmp/ss.png'});await b.close();})()"
-   ```
-3. Review the screenshot yourself — check layout, spacing, alignment, overflow, text wrapping
-4. If it looks wrong, fix and re-screenshot. Dev server hot-reloads changes automatically.
-5. Only after visual confirmation: commit, push, and trigger deploy
-6. Kill the server when done: `kill $(lsof -ti:3456)`
-
-**Why dev server over full build:** `npm run dev` starts in ~2 seconds vs ~4 minutes for `npm run build` + `npx serve out`. Pages are identical for visual/layout work. Use full build only if you need to verify static export behavior.
-
-**What to check in screenshots:**
-- Score badges are in the same position/size as production (never shift badge position)
-- Cards have consistent spacing and don't look squished or bloated
-- New elements don't overflow their containers or push other elements around
-- Text wraps correctly, doesn't clip, and is readable
-- Toggle states all look correct (check each mode)
-
-**If you can't build locally** (e.g., branch conflicts), at minimum describe exactly what will change visually and flag any uncertainty to the user before deploying.
-
-### 13. UI Change Principles
-- **Score badges are sacred** — never change their size, position, or shape. The score column (`w-20 sm:w-24`) is fixed. New elements go around it, not inside it.
-- **Card layout is `[Thumbnail] [Info] [Score]`** — three flex children. Add new elements between Info and Score as separate flex children, not nested inside existing ones.
-- **Test with real data** — long show titles, missing images, shows in previews, closed shows, shows with/without audience scores. Edge cases break layouts.
-- **Padding changes cascade** — changing `p-4` to `p-3` affects every card. Always check the visual result.
+### 11. Pipeline Operations
+**E2E test before any large dispatch** (5+ runs or 50+ reviews). Test 5 reviews, 1 batch, verify data lands in private repo.
+- **Before:** Verify secrets, check slots (<35), 10s+ spacing, shard scoring to 10.
+- **During:** Check within 15 min. Verify chaining.
+- **After:** Rebuild if needed. Verify data in private repo.
+- **Collection:** Always `-f chain=true -f remaining_batches=10` (default=0=no chaining).
 
 ---
 
-## Project Overview
+## Project Reference
 
-Broadway review aggregator. Next.js 14, TypeScript, Tailwind CSS, static export.
-**Production:** https://broadwayscorecard.com (Vercel, auto-deploys from `main`)
-**State:** 727+ shows, 14,000+ scored reviews, 420+ outlets, 870+ critics. Critics-only scoring (V1).
+**Stack:** Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwayscorecard.com
+**Scale:** 727+ shows, 14,000+ scored reviews, 420+ outlets, 870+ critics. Critics-only scoring (V1).
 
-## Scoring
+### Scoring
+Composite = tier-weighted average. **T1** (NYT, Vulture, Variety): 1.0 | **T2** (TheaterMania, NY Post): 0.75 | **T3** (blogs): 0.45
+Hierarchy: P0→P0.5→P0b→P1(LLM)→P2(aggregator)→P3(LLM low). Config: `src/config/scoring.ts`.
 
-- **Composite = Critic Score** (tier-weighted average)
-- **Tier 1** (NYT, Vulture, Variety): 1.0 | **Tier 2** (TheaterMania, NY Post): 0.75 | **Tier 3** (blogs): 0.45
-- Letter grade map: `src/config/scoring.ts`
-- Hierarchy: P0 (explicit ratings) → P0.5 (humanReviewScore) → P0b (originalScore) → P1 (LLM high/med) → P2 (aggregator override) → P3 (LLM low)
-- Excerpt-only reviews (<100 chars) get confidence downgraded to "low". `scoreSource` tracks method.
+### Data Structure
+`data/` — `shows.json` (source of truth), `reviews.json` (derived via rebuild), `review-texts/{show-id}/` (private repo §7a), grosses/commercial/audience-buzz/critic-consensus/critic-registry JSON files.
+Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full` for fullText.
 
-## Data Structure
+### Key Files
+**App:** `engine.ts`, `data-core.ts`, `page.tsx`, `show/[slug]/page.tsx`, `scoring.ts`, `commercial.ts`, `ShowImage.tsx`
+**Data:** `data-types.ts`, `data-core.ts`, `data-grosses.ts`, `data-awards.ts`, `data-audience.ts`, `data-commercial.ts`, `data-consensus.ts`, `data-lottery.ts`
+**Scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`, `enrich-ibdb-dates.js`, `scrape-grosses.ts`, `generate-critic-consensus.js`, `fetch-show-images-auto.js` (PINNED_IMAGES — never overwrite)
 
-> **Querying:** `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full` for fullText.
+### Content Quality
+5 tiers: complete → truncated → excerpt → stub → invalid (`content-quality.js`). 5-layer quality gates on rebuild.
+Flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded. 4-layer wrong-production prevention.
 
-```
-data/
-  shows.json                 # Source of truth (status: "open"|"previews"|"closed")
-  reviews.json               # Derived from review-texts/ via rebuild
-  review-texts/{show-id}/    # PRIVATE REPO (thomaspryor/broadway-review-texts) — see §7a
-  grosses.json / grosses-history.json / commercial.json / audience-buzz.json
-  critic-consensus.json / critic-registry.json / aggregator-archive/
-```
+### Automation
+Source: `data/review-texts/` → Derived: `reviews.json`. See `.github/workflows/CLAUDE.md`.
+Run `node scripts/validate-data.js` before pushing. Secrets via `env:` blocks. Local keys in `.env`.
 
-**Not displayed on site:** `cast` field (not rendered yet), `creativeTeam` design roles (Scenic, Costume, etc.)
-For full schemas, read `memory/CLAUDE-reference.md`.
+### Web Scraping
+Fallback: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
+6 aggregators: Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
+Per-show: `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
 
-## Key Files
+### Commercial (`/biz`)
+Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation.
 
-**App:** `engine.ts` (scoring), `data-core.ts` (shows/reviews), `page.tsx` (homepage), `show/[slug]/page.tsx` (show pages), `scoring.ts` + `commercial.ts` (config), `ShowImage.tsx`
-**Data modules:** `data-types.ts`, `data-core.ts`, `data-grosses.ts`, `data-awards.ts`, `data-audience.ts`, `data-commercial.ts`, `data-consensus.ts`, `data-lottery.ts`
-**Core scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`, `enrich-ibdb-dates.js`, `scrape-grosses.ts`, `generate-critic-consensus.js`, `fetch-show-images-auto.js` (has PINNED_IMAGES — never overwrite)
-**Tests:** `tests/unit/`, `tests/e2e/`
-For full library/audit script listings, read `memory/CLAUDE-reference.md`.
+For full details on any subsystem: `memory/CLAUDE-reference.md`.
 
-## Content Quality
+---
 
-5 tiers: `complete` → `truncated` → `excerpt` → `stub` → `invalid`. Classified by `content-quality.js`.
-5-layer quality gates run automatically on rebuild. Details in `memory/CLAUDE-reference.md`.
-Quality flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` — excluded from reviews.json.
-4-layer wrong-production prevention (scraper → write-time → rebuild-time → audit).
+## File Hygiene — Preventing Bloat (MANDATORY)
+CLAUDE.md and MEMORY.md are loaded into **every conversation**. Bloat wastes thousands of tokens per session. These files have been cleaned up 3 times already. Follow these rules to prevent a 4th:
 
-## Automation
+**CLAUDE.md** (currently ~130 lines, limit: **150 lines**) — project rules and reference only.
+- **Add** a rule here only if it applies to EVERY session regardless of task type.
+- **Don't add** backstory, incident post-mortems, migration details, or "why this rule exists" narratives. Put those in memory topic files.
+- **When adding a rule**, check if an existing section already covers it. Extend, don't duplicate.
+- **One-line rules preferred.** If a rule needs >5 lines of explanation, the explanation goes in a memory topic file with a one-line summary + pointer here.
 
-**Source of truth:** `data/review-texts/` (private repo — see §7a) → **Derived:** `data/reviews.json`
-See `.github/workflows/CLAUDE.md` for workflow descriptions and schedules.
-**Always run `node scripts/validate-data.js` before pushing.**
-**Secrets MUST be passed via `env:` blocks** (NOT auto-available). **Local keys:** `.env` at project root.
+**MEMORY.md** (currently ~110 lines, limit: **180 lines**) — learned knowledge and state index only.
+- **Add** gotchas, API details, operational state, and lessons learned from incidents.
+- **Don't add** anything already covered in CLAUDE.md. Don't duplicate rules — reference them (`see CLAUDE.md §7a`).
+- **New subsystems or multi-paragraph topics** → create a `memory/{topic}.md` file and add a one-line pointer to the Subsystem Pointers section.
+- **Completed one-time tasks** → `memory/completed-migrations.md`, not MEMORY.md.
+- **Session handoff files** → delete after the receiving session picks them up.
 
-## Web Scraping & Collection
-
-Scraper fallback: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
-6 aggregator sources: Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
-**Per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
-For detailed source info, secrets table, and subscription access, read `memory/CLAUDE-reference.md`.
-
-## Commercial (`/biz`)
-
-Config: `src/config/commercial.ts` (designation criteria source of truth). Components: `src/components/biz/`.
-**Recoupment rules:** Never mark `recouped: true` without trade press citation. Deep Research shows protected from automated overwrites.
-For schemas, designation table, and validation gotchas, read `memory/CLAUDE-reference.md`.
+**Before editing either file**, check its current line count: `wc -l FILE`. If adding content would exceed the limit, compress or move existing content to topic files first.
