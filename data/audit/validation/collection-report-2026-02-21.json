@@ -1,116 +1,85 @@
 {
-  "runDate": "2026-02-21T16:33:33.080Z",
+  "runDate": "2026-02-21T16:46:41.185Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 5,
+    "batchSize": 10,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
-    "aggressive": false,
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 17,
-    "failed": 8,
+    "processed": 1,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "68.0%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 1,
+    "directCookies": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 7
+    "archiveToday": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 41,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-    "august-osage-county-2007/newyorker--.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "gypsy-2024/newyorker--naomi-fry.json",
-    "the-disappear-2026/nytg--caroline-cao.json",
-    "the-disappear-2026/vulture--sara-holdren.json",
-    "the-unknown-2026/nyt-theater--jonathan-mandell.json",
-    "the-unknown-2026/nytg--joe-dziemianowicz.json",
-    "the-unknown-2026/nytimes--helen-shaw.json",
-    "the-unknown-2026/vulture--jackson-mchenry.json",
-    "back-to-the-future-west-end-2021/timeout-london--andrzej-lukowski.json",
-    "cyrano-de-bergerac-west-end-2026/guardian--arifa-akbar.json",
-    "friends-the-musical-parody-2022/theatermania--hayley-levitt.json",
-    "the-disappear-2026/theater-scene--victor-gluck.json",
-    "the-tragedy-of-coriolanus-2026/theater-scene--victor-gluck.json",
-    "ulysses-2026/theater-scene--victor-gluck.json"
+    "hadestown-west-end-2024/telegraph--dominic-cavendish.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "1776-2022/newyorker--helen-shaw.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "charlie-and-the-chocolate-factory-2017/newyorker--michael-schulman.json",
-    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "the-disappear-2026/nytimes--helen-shaw.json",
-    "an-enemy-of-the-people-2024/theater-scene--victor-gluck.json",
-    "boop-2025/theater-scene--joseph-pisano.json"
+    "oh-mary-west-end-2025/telegraph--dominic-cavendish.json",
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-disappear-2026/nytg--caroline-cao.json",
-      "the-unknown-2026/nyt-theater--jonathan-mandell.json",
-      "the-unknown-2026/nytg--joe-dziemianowicz.json",
-      "cyrano-de-bergerac-west-end-2026/guardian--arifa-akbar.json",
-      "friends-the-musical-parody-2022/theatermania--hayley-levitt.json",
-      "the-disappear-2026/theater-scene--victor-gluck.json",
-      "the-tragedy-of-coriolanus-2026/theater-scene--victor-gluck.json",
-      "ulysses-2026/theater-scene--victor-gluck.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "grey-house-2023/newyorker--dan-stahl.json"
-    ],
-    "scrapingbee": [
-      "the-unknown-2026/nytimes--helen-shaw.json"
-    ],
+    "directCookies": [],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-disappear-2026/nytimes--helen-shaw.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "an-enemy-of-the-people-2024/newyorker--naomi-fry.json",
-      "august-osage-county-2007/newyorker--.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "gypsy-2024/newyorker--naomi-fry.json",
-      "the-disappear-2026/vulture--sara-holdren.json",
-      "the-unknown-2026/vulture--jackson-mchenry.json",
-      "back-to-the-future-west-end-2021/timeout-london--andrzej-lukowski.json"
+      "hadestown-west-end-2024/telegraph--dominic-cavendish.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
