@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-02-21T15:01:40.479Z",
-  "processed": 42,
-  "failed": 108,
-  "successRate": "28.0%",
+  "updatedAt": "2026-02-21T15:06:05.868Z",
+  "processed": 46,
+  "failed": 54,
+  "successRate": "46.0%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 31,
-    "archive": 13
+    "archiveToday": 35,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 17,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T13:33:25.801Z",
+      "event": "bb-session",
+      "session": "a97fd452",
+      "url": "https://www.nytimes.com/2008/10/19/theater/reviews/19seasons.html"
+    },
+    {
+      "t": "2026-02-21T13:33:27.953Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:34:42.842Z",
+      "event": "bb-session",
+      "session": "909346b2",
+      "url": "https://www.nytimes.com/2005/10/17/theater/reviews/17nake.html"
+    },
+    {
+      "t": "2026-02-21T13:34:44.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:36:40.633Z",
+      "event": "bb-session",
+      "session": "49dcaf36",
+      "url": "https://www.nytimes.com/2012/04/23/theater/reviews/a-streetcar-named-desire-at-t"
+    },
+    {
+      "t": "2026-02-21T13:36:42.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:38:06.716Z",
+      "event": "bb-session",
+      "session": "ec042cef",
+      "url": "https://www.nytimes.com/2024/11/12/theater/a-wonderful-world-review.html"
+    },
+    {
+      "t": "2026-02-21T13:38:08.775Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:39:37.785Z",
+      "event": "bb-session",
+      "session": "a02dcf4e",
+      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
+    },
+    {
+      "t": "2026-02-21T13:39:40.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:41:07.871Z",
+      "event": "bb-session",
+      "session": "45a8aa0b",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-02-21T13:41:09.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:42:47.936Z",
+      "event": "bb-session",
+      "session": "d8f26bd8",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-02-21T13:42:49.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:44:15.213Z",
+      "event": "bb-session",
+      "session": "0b755b4c",
+      "url": "http://theater.nytimes.com/2010/03/19/theater/reviews/19allaboutme.html?ref=thea"
+    },
+    {
+      "t": "2026-02-21T13:44:17.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:46:23.374Z",
+      "event": "bb-session",
+      "session": "87b98251",
+      "url": "http://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-le"
+    },
+    {
+      "t": "2026-02-21T13:46:25.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T13:47:41.585Z",
+      "event": "bb-session",
+      "session": "e982a718",
+      "url": "https://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-l"
+    },
+    {
+      "t": "2026-02-21T13:47:43.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
