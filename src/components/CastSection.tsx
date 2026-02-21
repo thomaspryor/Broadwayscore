@@ -7,12 +7,17 @@ import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { TrophyIcon } from '@/components/icons';
 
 function abbreviateTonyCategory(categories: string[]): string {
-  // Show first acting category abbreviated, e.g. "Actor" or "Featured Actress"
-  const first = categories[0] || '';
-  return first
-    .replace('Best ', '')
-    .replace(' in a Musical', '')
-    .replace(' in a Play', '');
+  // Prefer acting categories in cast context (more relevant than "Book" or "Score")
+  const actingCats = categories.filter(c =>
+    c.includes('Actor') || c.includes('Actress')
+  );
+  const cat = (actingCats.length > 0 ? actingCats[0] : categories[0]) || '';
+  let s = cat.replace('Best ', '');
+  if (s.includes(' in a Musical')) return s.replace(' in a Musical', '') + ' (Musical)';
+  if (s.includes(' in a Play')) return s.replace(' in a Play', '') + ' (Play)';
+  if (s.includes(' of a Musical')) return s.replace(' of a Musical', '') + ' (Musical)';
+  if (s.includes(' of a Play')) return s.replace(' of a Play', '') + ' (Play)';
+  return s;
 }
 
 interface CastSectionProps {

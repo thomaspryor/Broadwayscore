@@ -36,6 +36,8 @@ export interface LeaderboardEntry {
   actingWins: number;
   categories: string[];
   shows: string[]; // unique showIds
+  actingShowCount: number;
+  creativeShowCount: number;
 }
 
 interface TonyNominationsFile {
@@ -259,6 +261,7 @@ export function getTonyLeaderboard(): LeaderboardEntry[] {
   const entries: LeaderboardEntry[] = [];
   for (const [personId, noms] of Array.from(byPersonId!.entries())) {
     const actingNoms = noms.filter((n: TonyNomination) => isActingCategory(n.category));
+    const creativeNoms = noms.filter((n: TonyNomination) => !isActingCategory(n.category));
     entries.push({
       name: noms[0].name,
       ibdbPersonId: personId,
@@ -268,6 +271,8 @@ export function getTonyLeaderboard(): LeaderboardEntry[] {
       actingWins: actingNoms.filter((n: TonyNomination) => n.won).length,
       categories: Array.from(new Set(noms.map((n: TonyNomination) => n.category))),
       shows: Array.from(new Set(noms.map((n: TonyNomination) => n.showId))),
+      actingShowCount: new Set(actingNoms.map((n: TonyNomination) => n.showId)).size,
+      creativeShowCount: new Set(creativeNoms.map((n: TonyNomination) => n.showId)).size,
     });
   }
 
