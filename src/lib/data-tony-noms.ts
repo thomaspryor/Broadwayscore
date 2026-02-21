@@ -62,6 +62,8 @@ const data = tonyData as unknown as TonyNominationsFile;
 let byPersonId: Map<string, TonyNomination[]> | null = null;
 // show ID → nominations
 let byShowId: Map<string, TonyNomination[]> | null = null;
+// person name → nominations (for creative profiles without ibdbPersonId)
+let byName: Map<string, TonyNomination[]> | null = null;
 // person ID → LeaderboardEntry (sorted by wins desc)
 let leaderboardCache: LeaderboardEntry[] | null = null;
 
@@ -88,6 +90,20 @@ function ensureShowIndex() {
       existing.push(nom);
     } else {
       byShowId.set(nom.showId, [nom]);
+    }
+  }
+}
+
+function ensureNameIndex() {
+  if (byName) return;
+  byName = new Map();
+  for (const nom of data.nominations) {
+    if (!nom.name || nom.name === '(show-level)') continue;
+    const existing = byName.get(nom.name);
+    if (existing) {
+      existing.push(nom);
+    } else {
+      byName.set(nom.name, [nom]);
     }
   }
 }
@@ -141,6 +157,74 @@ export function hasPersonTonyForShow(ibdbPersonId: string, showId: string): { no
     nominated: true,
     won: showEntries.some(n => n.won),
   };
+}
+
+/**
+ * Get all Tony nominations for a person by name (for creative profiles without ibdbPersonId)
+ */
+export function getTonyNominationsByName(name: string): TonyNomination[] {
+  ensureNameIndex();
+  return byName!.get(name) || [];
+}
+
+/**
+ * Get aggregated Tony stats for a person by name
+ */
+export function getPersonTonyStatsByName(name: string): PersonTonyStats | null {
+  const entries = getTonyNominationsByName(name);
+  if (entries.length === 0) return null;
+
+  const actingEntries = entries.filter((n: TonyNomination) => isActingCategory(n.category));
+
+  return {
+    nominations: entries.length,
+    wins: entries.filter((n: TonyNomination) => n.won).length,
+    actingNominations: actingEntries.length,
+    actingWins: actingEntries.filter((n: TonyNomination) => n.won).length,
+    entries,
+  };
+}
+
+/** Serializable per-show Tony info for passing as props */
+export interface ShowTonyInfo {
+  nominated: boolean;
+  won: boolean;
+  categories: string[];
+}
+
+/**
+ * Compute per-show Tony info for a person (by ibdbPersonId).
+ * Returns a plain object suitable for serialization as React props.
+ */
+export function getShowTonyMap(ibdbPersonId: string): Record<string, ShowTonyInfo> {
+  const entries = getTonyNominationsByPersonId(ibdbPersonId);
+  const result: Record<string, ShowTonyInfo> = {};
+  for (const nom of entries) {
+    if (!result[nom.showId]) {
+      result[nom.showId] = { nominated: true, won: nom.won, categories: [nom.category] };
+    } else {
+      if (nom.won) result[nom.showId].won = true;
+      result[nom.showId].categories.push(nom.category);
+    }
+  }
+  return result;
+}
+
+/**
+ * Compute per-show Tony info for a person (by name).
+ */
+export function getShowTonyMapByName(name: string): Record<string, ShowTonyInfo> {
+  const entries = getTonyNominationsByName(name);
+  const result: Record<string, ShowTonyInfo> = {};
+  for (const nom of entries) {
+    if (!result[nom.showId]) {
+      result[nom.showId] = { nominated: true, won: nom.won, categories: [nom.category] };
+    } else {
+      if (nom.won) result[nom.showId].won = true;
+      result[nom.showId].categories.push(nom.category);
+    }
+  }
+  return result;
 }
 
 /**

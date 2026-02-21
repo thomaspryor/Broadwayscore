@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { UnifiedCreativeProfile } from '@/lib/data-types';
+import type { PersonTonyStats, ShowTonyInfo } from '@/lib/data-tony-noms';
 import { ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
 import { CreativeShowCard } from './CreativeShowCard';
@@ -16,10 +17,14 @@ export default function UnifiedCreativeDetailClient({
   profile,
   categoryLabels,
   rank,
+  tonyStats,
+  tonyByShow,
 }: {
   profile: UnifiedCreativeProfile;
   categoryLabels: string[];
   rank: number;
+  tonyStats: PersonTonyStats | null;
+  tonyByShow: Record<string, ShowTonyInfo>;
 }) {
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [showCount, setShowCount] = useState(INITIAL_SHOWS);
@@ -64,6 +69,12 @@ export default function UnifiedCreativeDetailClient({
         {/* Stats — only show score stats when 2+ scored shows */}
         <StatGrid className="mb-4" stats={[
           { label: 'Shows', value: profile.showCount, subValue: profile.scoredShowCount > 0 && profile.scoredShowCount < profile.showCount ? `${profile.scoredShowCount} scored` : undefined },
+          ...(tonyStats ? [{
+            label: 'Tonys',
+            value: (tonyStats.wins > 0 ? `${tonyStats.wins} win${tonyStats.wins !== 1 ? 's' : ''}` : `${tonyStats.nominations} nom${tonyStats.nominations !== 1 ? 's' : ''}`) as string | number,
+            subValue: tonyStats.wins > 0 ? `${tonyStats.nominations} nom${tonyStats.nominations !== 1 ? 's' : ''}` : undefined,
+            subValueColor: '#fbbf24',
+          }] : []),
           ...(profile.scoredShowCount >= 2 ? [
             { label: 'Avg Score', value: profile.avgScore !== null ? Math.round(profile.avgScore) : '—' as string | number, dimmed: profile.avgScore === null },
             { label: 'Highest', value: profile.highScore !== null ? Math.round(profile.highScore) : '—' as string | number, dimmed: profile.highScore === null },
@@ -88,7 +99,7 @@ export default function UnifiedCreativeDetailClient({
           </h2>
           <div className="space-y-2">
             {openShows.map((show, i) => (
-              <CreativeShowCard key={show.slug} show={show} roles={show.roles} loading={i < 4 ? 'eager' : 'lazy'} />
+              <CreativeShowCard key={show.slug} show={show} roles={show.roles} loading={i < 4 ? 'eager' : 'lazy'} tonyInfo={tonyByShow[show.showId]} />
             ))}
           </div>
         </section>
@@ -122,6 +133,7 @@ export default function UnifiedCreativeDetailClient({
                 show={show}
                 roles={show.roles}
                 loading={openShows.length === 0 && i < 4 ? 'eager' : 'lazy'}
+                tonyInfo={tonyByShow[show.showId]}
               />
             ))}
           </div>
