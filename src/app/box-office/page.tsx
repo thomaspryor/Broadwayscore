@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
@@ -52,7 +52,7 @@ const faqSchema = {
 };
 
 export default function BoxOfficePage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const weekEnding = getGrossesWeekEnding();
   const lastUpdated = getGrossesLastUpdated();
 
