@@ -25,6 +25,7 @@ export interface BrowseShow {
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   performances?: number;
   reviewYearNote?: string;
+  category?: string;
 }
 
 type ScoreMode = 'critics' | 'audience';
@@ -83,7 +84,9 @@ const ShowCard = memo(function ShowCard({
   scoreMode: ScoreMode;
 }) {
   const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
-  const duration = isOpen ? getBroadwayDuration(show.openingDate) : null;
+  const isWestEnd = show.category === 'west-end';
+  const durationSuffix = isWestEnd ? 'in the West End' : 'on Broadway';
+  const duration = isOpen ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
 
   // Determine which score/tier to display
   let tier: ScoreTier | null = null;
@@ -110,7 +113,7 @@ const ShowCard = memo(function ShowCard({
           {show.images?.thumbnail ? (
             <img
               src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-              alt={`${show.title} Broadway ${show.type}`}
+              alt={`${show.title} ${isWestEnd ? 'West End' : 'Broadway'} ${show.type}`}
               className="w-full h-full object-cover"
               loading="lazy"
             />
