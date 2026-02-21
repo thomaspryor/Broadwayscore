@@ -3,25 +3,12 @@
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
-  "score": 40,
-  "bucket": "Negative",
+  "score": 30,
+  "bucket": "Pan",
   "thumb": "Down",
-  "confidence": "medium",
-  "keyPhrases": [
-    {
-      "text": "yet another attempt",
-      "sentiment": "negative"
-    },
-    {
-      "text": "smug 1882 satire",
-      "sentiment": "negative"
-    },
-    {
-      "text": "hypocriticAl",
-      "sentiment": "negative"
-    }
-  ],
-  "reasoning": "The review opens with dismissive language ('yet another attempt') and describes the source material as 'smug,' indicating a fundamentally negative stance toward this adaptation. The truncated nature limits full analysis, but the tone suggests more criticism than praise.",
+  "confidence": "low",
+  "keyPhrases": [],
+  "reasoning": "Review contains only basic production information (cast, venue, dates, pricing) with no evaluative content or critical assessment",
   "flags": [
     {
       "type": "bww_thumb_mismatch",
@@ -29,7 +16,7 @@
       "llmThumb": "Down"
     }
   ],
-  "scoredAt": "2026-02-21T03:20:46.561Z",
+  "scoredAt": "2026-02-21T15:22:57.974Z",
   "promptVersion": "3.0.0-calibrated",
   "originalScore": null,
   "dtliThumb": null,
