@@ -228,6 +228,26 @@ export function getShowTonyMapByName(name: string): Record<string, ShowTonyInfo>
 }
 
 /**
+ * Get Tony nominee info for a specific show, keyed by ibdbPersonId.
+ * Used to add Tony tags to show detail page cast sections.
+ */
+export function getShowCastTonyMap(showId: string): Record<string, ShowTonyInfo> {
+  ensureShowIndex();
+  const noms = byShowId!.get(showId) || [];
+  const result: Record<string, ShowTonyInfo> = {};
+  for (const nom of noms) {
+    if (!nom.ibdbPersonId || nom.name === '(show-level)') continue;
+    if (!result[nom.ibdbPersonId]) {
+      result[nom.ibdbPersonId] = { nominated: true, won: nom.won, categories: [nom.category] };
+    } else {
+      if (nom.won) result[nom.ibdbPersonId].won = true;
+      result[nom.ibdbPersonId].categories.push(nom.category);
+    }
+  }
+  return result;
+}
+
+/**
  * Build leaderboard of people with most Tony nominations/wins.
  * Only includes people (not show-level entries).
  */

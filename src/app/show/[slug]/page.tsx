@@ -12,6 +12,7 @@ import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
 import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
+import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
@@ -707,6 +708,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             replacements={castFile.replacements}
             showStatus={show.status}
             actorSlugs={castActorSlugs}
+            tonyMap={getShowCastTonyMap(show.id)}
           />
         )}
 

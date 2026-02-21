@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { CastMemberOBC } from '@/lib/data-types';
+import type { ShowTonyInfo } from '@/lib/data-tony-noms';
+import { TrophyIcon } from '@/components/icons';
 
 interface CastSectionProps {
   openingNightCast: CastMemberOBC[];
@@ -11,6 +13,7 @@ interface CastSectionProps {
   replacements?: CastMemberOBC[] | null;
   showStatus: string;
   actorSlugs?: Record<string, string>;  // ibdbPersonId → slug
+  tonyMap?: Record<string, ShowTonyInfo>;  // ibdbPersonId → Tony info for this show
 }
 
 const INITIAL_COUNT = 8;
@@ -24,7 +27,7 @@ function formatDate(dateStr: string): string {
   }
 }
 
-function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs }: { cast: CastMemberOBC[]; initialCount?: number; actorSlugs?: Record<string, string> }) {
+function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: { cast: CastMemberOBC[]; initialCount?: number; actorSlugs?: Record<string, string>; tonyMap?: Record<string, ShowTonyInfo> }) {
   const [expanded, setExpanded] = useState(false);
   const visible = expanded ? cast : cast.slice(0, initialCount);
   const hasMore = cast.length > initialCount;
@@ -34,8 +37,9 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs }: { cast: Ca
       <ul className="space-y-2 sm:space-y-1.5">
         {visible.map((member, i) => {
           const slug = member.ibdbPersonId && actorSlugs?.[member.ibdbPersonId];
+          const tonyInfo = member.ibdbPersonId && tonyMap?.[member.ibdbPersonId];
           return (
-            <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
+            <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0 flex-wrap">
               {slug ? (
                 <Link href={`/cast/${slug}`} className="text-white font-medium hover:text-brand transition-colors">
                   {member.name}
@@ -46,6 +50,16 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs }: { cast: Ca
               <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">
                 {member.role}
               </span>
+              {tonyInfo && (
+                <span className={`inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded border sm:ml-1.5 ${
+                  tonyInfo.won
+                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                    : 'bg-sky-500/15 text-sky-400 border-sky-500/25'
+                }`} title={tonyInfo.categories.join(', ')}>
+                  <TrophyIcon className="w-2.5 h-2.5" />
+                  {tonyInfo.won ? 'Tony Winner' : 'Tony Nom'}
+                </span>
+              )}
               {member.flags && member.flags.length > 0 && (
                 <span className="text-xs text-amber-500/70 sm:ml-2">
                   {member.flags.join(', ')}
@@ -67,7 +81,7 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs }: { cast: Ca
   );
 }
 
-export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, actorSlugs }: CastSectionProps) {
+export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, actorSlugs, tonyMap }: CastSectionProps) {
   const hasOBC = openingNightCast.length > 0;
   const hasCurrentCast = currentCast && currentCast.length > 0;
   const hasReplacements = replacements && replacements.length > 0;
@@ -87,7 +101,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
                 <span className="text-xs text-gray-500">Updated {formatDate(currentCastUpdatedAt)}</span>
               )}
             </div>
-            <CastList cast={currentCast!} actorSlugs={actorSlugs} />
+            <CastList cast={currentCast!} actorSlugs={actorSlugs} tonyMap={tonyMap} />
             {hasOBC && <div className="border-t border-white/10 my-5" />}
           </>
         )}
@@ -98,7 +112,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
               Original Broadway Cast
             </h2>
-            <CastList cast={openingNightCast} actorSlugs={actorSlugs} />
+            <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
         )}
 
@@ -109,7 +123,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
               Notable Replacements
             </h2>
-            <CastList cast={replacements!} actorSlugs={actorSlugs} />
+            <CastList cast={replacements!} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
         )}
       </div>
