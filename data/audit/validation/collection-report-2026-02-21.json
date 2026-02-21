@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T22:56:59.645Z",
+  "runDate": "2026-02-21T23:20:47.097Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 85,
-    "failed": 375,
+    "failed": 414,
     "skipped": 0,
-    "successRate": "18.5%"
+    "successRate": "17.0%"
   },
   "tierBreakdown": {
     "playwright": 15,
@@ -23,29 +23,29 @@
     "directCookies": 2,
     "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 114,
+    "archiveToday": 137,
     "archive": 56
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 9,
+    "tier1Attempts": 39,
+    "tier1Success": 11,
     "ampAttempts": 6,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
+    "tier2Attempts": 25,
     "tier2Success": 0,
-    "tier3Attempts": 9,
+    "tier3Attempts": 25,
     "tier3Success": 0,
-    "tier3_6Attempts": 9,
-    "tier3_6Success": 9,
+    "tier3_6Attempts": 23,
+    "tier3_6Success": 23,
     "tier4Attempts": 18,
-    "tier4Success": 1,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 8,
+    "tier4Success": 0,
+    "totalFailed": 39,
+    "scrapingBeeCreditsUsed": 19,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 8,
+    "urlDiscoveryAttempts": 9,
     "urlDiscoverySuccess": 6,
     "urlDiscoveryCapped": 0
   },
@@ -511,7 +511,46 @@
     "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json",
     "walking-with-ghosts-2022/theater-pizzazz--jk-clarke.json",
     "war-horse-2011/chicagotribune--chris-jones.json",
-    "war-horse-2011/scheckontheater--frank-scheck.json"
+    "war-horse-2011/scheckontheater--frank-scheck.json",
+    "anastasia-2017/ew--david-canfield.json",
+    "bullets-over-broadway-2014/ew--unknown.json",
+    "king-lear-2019/ew--allison-adato.json",
+    "king-lear-2019/ew--unknown.json",
+    "kiss-me-kate-2019/ew--kristen-baldwin.json",
+    "parade-2023/ew--kristen-baldwin.json",
+    "little-bear-ridge-road-2025/nysr--unknown.json",
+    "lombardi-2010/ny1--roma-torre.json",
+    "lysistrata-jones-2011/northjerseycom--robert-feldberg.json",
+    "prince-of-broadway-2017/theater-life--isa-goldberg.json",
+    "prince-of-broadway-2017/theater-life--paulanne-simmons.json",
+    "priscilla-queen-of-the-desert-2011/chicagotribune--.json",
+    "priscilla-queen-of-the-desert-2011/northjerseycom--robert-feldberg.json",
+    "promises-promises-2010/ap--.json",
+    "punch-2025/nysr--unknown.json",
+    "rain-2010/ap--mark-kennedy.json",
+    "rain-2010/northjerseycom--robert-feldberg.json",
+    "rain-2010/ny1--roma-torre.json",
+    "reasons-to-be-pretty-2009/northjersycom--robert-feldberg.json",
+    "relatively-speaking-2011/scheckontheater--frank-scheck.json",
+    "something-rotten-2015/northjerseycom--robert-feldberg.json",
+    "sondheim-on-sondheim-2010/bergen-record--robert-feldberg.json",
+    "the-gin-game-2015/northjerseycom--robert-feldberg.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-heidi-chronicles-2015/bergen-record--robert-feldberg.json",
+    "the-heiress-2012/northjerseycom--robert-feldberg.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--.json",
+    "the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+    "the-house-of-blue-leaves-2011/scheckontheater--frank-scheck.json",
+    "the-lyons-2012/bergen-record--robert-feldberg.json",
+    "the-miracle-worker-2010/chicagotribune--chris-jones.json",
+    "the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+    "the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
+    "the-normal-heart-2011/scheckontheater--frank-scheck.json",
+    "the-notebook-2024/theater-life--samuel-l-leiter.json",
+    "the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+    "the-price-2017/chicagotribune--chris-jones.json",
+    "the-price-2017/dcmetro--richard-seff.json",
+    "the-road-to-mecca-2012/bergen-record--robert-feldberg.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -671,7 +710,30 @@
       "data/review-texts/waiting-for-godot-2009/chicagotribune--chris-jones.json",
       "data/review-texts/waiting-for-godot-2013/northjerseycom--robert-feldberg.json",
       "data/review-texts/war-horse-2011/chicagotribune--chris-jones.json",
-      "data/review-texts/war-horse-2011/scheckontheater--frank-scheck.json"
+      "data/review-texts/war-horse-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/lysistrata-jones-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/chicagotribune--.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/promises-promises-2010/ap--.json",
+      "data/review-texts/rain-2010/northjerseycom--robert-feldberg.json",
+      "data/review-texts/reasons-to-be-pretty-2009/northjersycom--robert-feldberg.json",
+      "data/review-texts/relatively-speaking-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/something-rotten-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/sondheim-on-sondheim-2010/bergen-record--robert-feldberg.json",
+      "data/review-texts/the-gin-game-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+      "data/review-texts/the-heidi-chronicles-2015/bergen-record--robert-feldberg.json",
+      "data/review-texts/the-heiress-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/chicagotribune--.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/chicagotribune--chris-jones.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/the-lyons-2012/bergen-record--robert-feldberg.json",
+      "data/review-texts/the-miracle-worker-2010/chicagotribune--chris-jones.json",
+      "data/review-texts/the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-normal-heart-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-road-to-mecca-2012/bergen-record--robert-feldberg.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -734,8 +796,22 @@
   },
   "failuresByOutlet": {
     "NY1": {
-      "count": 2,
+      "count": 1,
       "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Associated Press": {
+      "count": 1,
+      "domain": "google.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY 1": {
+      "count": 1,
+      "domain": "statenisland.ny1.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -745,32 +821,32 @@
     {
       "reviewId": "anastasia-2017/ew--david-canfield.json",
       "oldUrl": "https://ew.com/theater/2017/04/25/anastasia-broadway-review",
-      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOoqbm2KlqYaIZGXcLEnnBqJu0ejFpw3rcAJLI1-EaWI0VuvhfNKF"
+      "newUrl": "https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOorx5fVKtugd4To7bSk3HGGsLh8QjdBHF7x5JlTkeQfTqKZpg1Ov"
     },
     {
       "reviewId": "bullets-over-broadway-2014/ew--unknown.json",
       "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20805531,00.html",
-      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOoq3MTYxwLDB7dF8T7e0kUL_nj1xLpAuaTnZLC7nP2vRQjmxfgbS"
+      "newUrl": "https://ew.com/article/1994/10/21/movie-review-bullets-over-broadway-2/?srsltid=AfmBOooRqd75NWN0Jv5rBq-WzDlMKZNFJv0mALfYX9r7V1xU9KpPArXO"
     },
     {
       "reviewId": "king-lear-2019/ew--allison-adato.json",
       "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOool7NUBCZIoDYHQwq8xCvee5DxHN2H40KaKIbbsQqu1gMim4RYC"
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOoqyTE3ub6nMwouwhtPQXhfKcfYjVqI3OCHlbazosbIGwFIxBuk6"
     },
     {
       "reviewId": "king-lear-2019/ew--unknown.json",
       "oldUrl": "https://www.ew.com/ew/article/0,,20364394_20840673,00.html",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOorrqTtrETxTHGZMoiRGVx9lnTkg3ZXNIW1QdLPji2p9omeKUOLp"
+      "newUrl": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/?srsltid=AfmBOoqt9vc86Q9Eb85H4aNL2ogQ-GyiFFID6W1pRbI0Ps09H_zKSiKu"
     },
     {
       "reviewId": "kiss-me-kate-2019/ew--kristen-baldwin.json",
       "oldUrl": "https://ew.com/theater/2019/03/15/kiss-me-kate-broadway-review",
-      "newUrl": "https://ew.com/theater-reviews/2019/03/14/kiss-me-kate-review/?srsltid=AfmBOoqPryVcrcBjT-p8jKCJTlvElgchx5UQZVx74xpXLM-tdq3UPYBe"
+      "newUrl": "https://ew.com/theater-reviews/2019/03/14/kiss-me-kate-review/?srsltid=AfmBOorD4HU7HFthAFTRxoMAfayWcEAecowzAamN0XWfGbd818ECs1L4"
     },
     {
       "reviewId": "parade-2023/ew--kristen-baldwin.json",
       "oldUrl": "https://ew.com/theater/reviews/parade-broadway-review-2023",
-      "newUrl": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/?srsltid=AfmBOoqfjER92B0ItiXrNe5fA31tc53ltaxDlO5WW23RsmAf8xsA8ceN"
+      "newUrl": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/?srsltid=AfmBOoqsC--8nBXYLolw22ltPOC1P0DFwF_AtrxpE5WZ166wI0ja5eCd"
     }
   ]
 }
