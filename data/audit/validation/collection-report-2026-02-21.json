@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-21T02:42:18.308Z",
+  "runDate": "2026-02-21T03:10:01.628Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 81,
+    "processed": 18,
+    "failed": 82,
     "skipped": 0,
-    "successRate": "19.0%"
+    "successRate": "18.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,7 +24,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 74,
-    "archive": 19
+    "archive": 18
   },
   "statistics": {
     "tier1Attempts": 74,
@@ -32,7 +32,7 @@
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 40,
-    "tier1_5Success": 2,
+    "tier1_5Success": 1,
     "tier2Attempts": 74,
     "tier2Success": 0,
     "tier3Attempts": 74,
@@ -41,8 +41,8 @@
     "tier3_6Success": 74,
     "tier4Attempts": 94,
     "tier4Success": 19,
-    "totalFailed": 81,
-    "scrapingBeeCreditsUsed": 56,
+    "totalFailed": 82,
+    "scrapingBeeCreditsUsed": 76,
     "browserbaseSessionsUsed": 40,
     "browserbaseMinutesUsed": 23.3,
     "urlDiscoveryAttempts": 6,
@@ -52,6 +52,7 @@
   "processed": [
     "aladdin-2014/wsj--terry-teachout.json",
     "bug-2026/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj--terry-teachout.json",
     "hamilton-2015/wsj--terry-teachout.json",
     "harry-potter-2021/wsj--terry-teachout.json",
     "ragtime-2025/wsj--charles-isherwood.json",
@@ -62,18 +63,15 @@
     "amazing-grace-2015/wsj--terry-teachout.json",
     "american-buffalo-2022/wsj--charles-isherwood.json",
     "american-idiot-2010/wsj--terry-teachout.json",
+    "american-son-2018/wsj--terry-teachout.json",
     "appropriate-2023/wsj--charles-isherwood.json",
     "bad-cinderella-2023/wsj--charles-isherwood.json",
-    "be-more-chill-2019/wsj--terry-teachout.json",
-    "blackbird-2016/wsj--terry-teachout.json",
     "camelot-2023/wsj--charles-isherwood.json",
-    "carousel-2018/wsj--terry-teachout.json",
     "cats-1982/wsj--terry-teachout.json"
   ],
   "failed": [
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "hadestown-2019/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--terry-teachout.json",
     "maybe-happy-ending-2024/wsj--charles-isherwood.json",
     "mj-2022/wsj--charles-isherwood.json",
     "moulin-rouge-2019/wsj--terry-teachout.json",
@@ -112,7 +110,6 @@
     "amelie-a-new-musical-2017/wsj--terry-teachout.json",
     "american-buffalo-2008/wsj--terry-teachout.json",
     "american-psycho-2016/wsj--terry-teachout.json",
-    "american-son-2018/wsj--terry-teachout.json",
     "an-act-of-god-2016/wsj--terry-teachout.json",
     "an-american-in-paris-2015/wsj--terry-teachout.json",
     "an-enemy-of-the-people-2012/wsj--terry-teachout.json",
@@ -125,11 +122,13 @@
     "baby-its-you-2011/wsj--terry-teachout.json",
     "back-to-the-future-2023/wsj--charles-isherwood.json",
     "bandstand-2017/wsj--terry-teachout.json",
+    "be-more-chill-2019/wsj--terry-teachout.json",
     "bengal-tiger-at-the-baghdad-zoo-2011/wsj--terry-teachout.json",
     "bernhardthamlet-2018/wsj--terry-teachout.json",
     "betrayal-2013/wsj--terry-teachout.json",
     "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
     "big-fish-2013/wsj--terry-teachout.json",
+    "blackbird-2016/wsj--terry-teachout.json",
     "breakfast-at-tiffanys-2013/wsj--terry-teachout.json",
     "bright-star-2016/wsj--terry-teachout.json",
     "bullets-over-broadway-2014/wsj--terry-teachout.json",
@@ -139,6 +138,7 @@
     "call-me-izzy-2025/wsj--unknown.json",
     "camelot-2023/wsj--terry-teachout.json",
     "caroline-or-change-2021/wsj--terry-teachout.json",
+    "carousel-2018/wsj--terry-teachout.json",
     "catch-me-if-you-can-2011/wsj--terry-teachout.json",
     "cats-2016/wsj--terry-teachout.json",
     "chaplin-2012/wsj--terry-teachout.json",
@@ -163,7 +163,6 @@
     "archiveToday": [
       "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
       "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
       "data/review-texts/mj-2022/wsj--charles-isherwood.json",
       "data/review-texts/moulin-rouge-2019/wsj--terry-teachout.json",
@@ -199,7 +198,6 @@
       "data/review-texts/amelie-a-new-musical-2017/wsj--terry-teachout.json",
       "data/review-texts/american-buffalo-2008/wsj--terry-teachout.json",
       "data/review-texts/american-psycho-2016/wsj--terry-teachout.json",
-      "data/review-texts/american-son-2018/wsj--terry-teachout.json",
       "data/review-texts/an-american-in-paris-2015/wsj--terry-teachout.json",
       "data/review-texts/an-enemy-of-the-people-2012/wsj--terry-teachout.json",
       "data/review-texts/an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
@@ -211,6 +209,7 @@
       "data/review-texts/baby-its-you-2011/wsj--terry-teachout.json",
       "data/review-texts/back-to-the-future-2023/wsj--charles-isherwood.json",
       "data/review-texts/bandstand-2017/wsj--terry-teachout.json",
+      "data/review-texts/be-more-chill-2019/wsj--terry-teachout.json",
       "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/wsj--terry-teachout.json",
       "data/review-texts/bernhardthamlet-2018/wsj--terry-teachout.json",
       "data/review-texts/between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
@@ -223,6 +222,7 @@
       "data/review-texts/call-me-izzy-2025/wsj--unknown.json",
       "data/review-texts/camelot-2023/wsj--terry-teachout.json",
       "data/review-texts/caroline-or-change-2021/wsj--terry-teachout.json",
+      "data/review-texts/carousel-2018/wsj--terry-teachout.json",
       "data/review-texts/catch-me-if-you-can-2011/wsj--terry-teachout.json",
       "data/review-texts/cats-2016/wsj--terry-teachout.json",
       "data/review-texts/chaplin-2012/wsj--terry-teachout.json",
@@ -239,6 +239,7 @@
     "archive": [
       "aladdin-2014/wsj--terry-teachout.json",
       "bug-2026/wsj--charles-isherwood.json",
+      "hadestown-2019/wsj--terry-teachout.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/wsj--terry-teachout.json",
       "ragtime-2025/wsj--charles-isherwood.json",
@@ -249,12 +250,10 @@
       "amazing-grace-2015/wsj--terry-teachout.json",
       "american-buffalo-2022/wsj--charles-isherwood.json",
       "american-idiot-2010/wsj--terry-teachout.json",
+      "american-son-2018/wsj--terry-teachout.json",
       "appropriate-2023/wsj--charles-isherwood.json",
       "bad-cinderella-2023/wsj--charles-isherwood.json",
-      "be-more-chill-2019/wsj--terry-teachout.json",
-      "blackbird-2016/wsj--terry-teachout.json",
       "camelot-2023/wsj--charles-isherwood.json",
-      "carousel-2018/wsj--terry-teachout.json",
       "cats-1982/wsj--terry-teachout.json"
     ]
   },
@@ -263,12 +262,12 @@
     {
       "reviewId": "bernhardthamlet-2018/wsj--terry-teachout.json",
       "oldUrl": "https://www.wsj.com/articles/brooklyn-playwright-cooks-up-dinner-theater-1532629422?gaa_at=eafs&amp;gaa_n=AWEtsqfApvjeoYMampGfL74bZlwtS1pcwfNt1pWuhGUpAV3thqYesSWBl-HG&amp;gaa_ts=699475c9&amp;gaa_sig=s-Xm1nlMSOnx6lTYglTWC1FL2nUFx5HVViuaPdplMxcSEpL7uXeS-0ZjXX0cCanwvcL2d1biJNkAmEUyE7wsnw%3D%3D#:~:text=Rebeck%20is%20such%20a%20popular,Sarah%20Bernhardt's%20tackling%20of%20the",
-      "newUrl": "https://www.wsj.com/articles/bernhardt-hamlet-review-she-that-plays-the-prince-1537992031?gaa_at=eafs&gaa_n=AWEtsqeeEiQ8TgtHOJgMxlLsT9uXQRZxpviGR2popg-xvCb7_6sLVZg_23r6&gaa_ts=6999184b&gaa_sig=E2hi29KOmgmMDBlqX1nekU8EAmlllQuESw6u1cnkPe73h7zQf8dztIQggP_kXRW7JHS8ZcbAFGuc11tzg0V95w%3D%3D"
+      "newUrl": "https://www.wsj.com/articles/bernhardt-hamlet-review-she-that-plays-the-prince-1537992031?gaa_at=eafs&gaa_n=AWEtsqdOLWzK9OHu8kAf7dZ5kHeTNLlZiQmnzStfI3VsKBWLd0TcdIHzjswv&gaa_ts=69991df6&gaa_sig=tC65EHZO5aFx2SUpw4Jon_zoA0YuTbzibrRopoBw1h-KCGZnwxddmESz3FL5MA7WIqHMLTT_A66o121t_fnuIA%3D%3D"
     },
     {
       "reviewId": "china-doll-2015/wsj--unknown.json",
       "oldUrl": "https://www.wsj.com/articles/china-doll-review-david-mamets-return-1449203401",
-      "newUrl": "https://www.wsj.com/articles/china-doll-review-david-mamets-return-1449203401?gaa_at=eafs&gaa_n=AWEtsqceuL0xz9OBkX9OFDw9TOBcM4RYvLR_VaHoHffqlUc1gspIEpxRJ4sG&gaa_ts=69991ca8&gaa_sig=-LcrjPesELDyVmQw7m0y99xrDLiBx-QMT4d_8alwa4dYDQGzuP25ExN0ZFa1Fm7MtsU1lHDjrIU_Y417Ohxfzw%3D%3D"
+      "newUrl": "https://www.wsj.com/articles/china-doll-review-david-mamets-return-1449203401?gaa_at=eafs&gaa_n=AWEtsqc8JvQ9hi_wIWdV_QwmlT4T6vIHtufsyI9onrBYrE-lkHol-TkliYzI&gaa_ts=6999231c&gaa_sig=aMRGPAsD7NJQN25q1Zxudx57TKArbHSfT6GYeEyVfLedT-Pp3p4qolxTFoYUYWUk5VZl8NyyVuV-o8vtTeL8UQ%3D%3D"
     }
   ]
 }
