@@ -292,7 +292,7 @@ jobs:
           retention-days: 30
 
       - name: Count remaining reviews needing text
-        if: ${{ inputs.chain == 'true' }}
+        if: always() && inputs.chain == 'true'
         id: count-remaining
         run: |
           REMAINING=$(node -e "
