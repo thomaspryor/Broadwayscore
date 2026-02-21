@@ -14,7 +14,9 @@
     "an-enemy-of-the-people-2012/nytimes--unknown.json",
     "an-enemy-of-the-people-2024/nytimes--jesse-green.json",
     "ann-2013/nytimes--ben-brantley.json",
-    "ann-2013/nytimes--charles-isherwood.json"
+    "ann-2013/nytimes--charles-isherwood.json",
+    "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
+    "mean-girls-2018/observer--rex-reed.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -41,17 +43,28 @@
     "anastasia-2017/nytimes--ben-brantley.json",
     "baby-its-you-2011/nytimes--charles-isherwood.json",
     "bad-cinderella-2023/nytimes--unknown.json",
-    "bandstand-2017/nytimes--ben-brantley.json"
+    "bandstand-2017/nytimes--ben-brantley.json",
+    "friends-the-musical-parody-2022/broadwayworld--victoria-ordin.json",
+    "once-2012/hollywood-reporter--david-rooney.json",
+    "sister-act-2011/hollywood-reporter--david-rooney.json",
+    "betrayal-2019/observer--jesse-green.json",
+    "pass-over-2021/observer--jesse-green.json",
+    "allegiance-2015/tackles-an-underexplored-dark-chapter-in-our-history--george-takei.json",
+    "allegiance-2015/times-square-chronicles--suzanna-bowling.json",
+    "amazing-grace-2015/stagezine--david-nounou.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "a-streetcar-named-desire-2012/nytimes--jesse-green.json",
-      "ann-2013/nytimes--charles-isherwood.json"
+      "ann-2013/nytimes--charles-isherwood.json",
+      "friends-the-musical-parody-2022/broadwayworld--victoria-ordin.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -78,10 +91,11 @@
       "all-my-sons-2008/nytimes--jesse-green.json",
       "an-enemy-of-the-people-2012/nytimes--unknown.json",
       "an-enemy-of-the-people-2024/nytimes--jesse-green.json",
-      "ann-2013/nytimes--ben-brantley.json"
+      "ann-2013/nytimes--ben-brantley.json",
+      "mean-girls-2018/observer--rex-reed.json"
     ]
   },
   "startTime": "2026-02-21T16:21:46.954Z",
-  "lastProcessed": "bandstand-2017/nytimes--ben-brantley.json",
+  "lastProcessed": "amazing-grace-2015/stagezine--david-nounou.json",
   "log": []
 }
