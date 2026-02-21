@@ -307,6 +307,21 @@ export default function TonyAwardsPage() {
           </Link>
         </div>
 
+        {/* Leaderboard link */}
+        {featureFlags.tonyPeople && (
+          <Link href="/tony-awards/people" className="block mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Tony Awards Leaderboard</h2>
+                <p className="text-sm text-gray-400 mt-1">Browse all-time Tony winners and nominees ranked by wins and nominations.</p>
+              </div>
+              <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </Link>
+        )}
+
         {/* Category Sections */}
         {categories.reduce<{ elements: React.ReactNode[]; runningIndex: number }>(
           (acc, cat) => {
