@@ -1532,6 +1532,25 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip pre-opening reviews (published before show opened — wrong production)
+      // Allows 14-day grace period for preview coverage
+      if (data.publishDate && showDateMap[showId]) {
+        const pubDate = new Date(data.publishDate);
+        const openDate = showDateMap[showId];
+        const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
+        if (daysBefore > 14) {
+          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+          stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
+          // Also flag the source file for future reference
+          if (!data.wrongProduction) {
+            data.wrongProduction = true;
+            data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
+            fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+          }
+          return;
+        }
+      }
+
       // Skip non-reviews (profiles, interviews, previews, features, news articles)
       if (data.isNonReview === true) {
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
