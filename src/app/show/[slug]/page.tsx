@@ -51,9 +51,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
+  const isWestEndMeta = show.category === 'west-end';
   const description = score
     ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
-    : `Reviews and scores for ${show.title} on Broadway. ${synopsisSnippet}`;
+    : `Reviews and scores for ${show.title} ${isWestEndMeta ? 'in the West End' : 'on Broadway'}. ${synopsisSnippet}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -182,9 +183,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
   const lastUpdated = getShowLastUpdated(show.id);
   const showSchema = generateShowSchema(show, lastUpdated || undefined);
+  const isWestEnd = show.category === 'west-end';
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+    ...(isWestEnd
+      ? [{ name: 'West End', url: `${BASE_URL}/west-end` }]
+      : [{ name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
+    ),
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
   ]);
   const faqSchema = generateShowFAQSchema(show);
@@ -232,7 +237,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={[
           { label: 'Home', href: '/' },
-          { label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+          ...(isWestEnd
+            ? [{ label: 'West End', href: '/west-end' }]
+            : [{ label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
+          ),
           { label: show.title },
         ]} />
 
