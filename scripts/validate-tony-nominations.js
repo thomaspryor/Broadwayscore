@@ -134,7 +134,12 @@ function validate() {
   for (const file of castFiles) {
     try {
       const cast = JSON.parse(fs.readFileSync(path.join(CAST_DIR, file), 'utf8'));
-      for (const member of (cast.cast || [])) {
+      const allMembers = [
+        ...(cast.openingNightCast || []),
+        ...(cast.currentCast || []),
+        ...(cast.replacements || []),
+      ];
+      for (const member of allMembers) {
         if (member.ibdbPersonId) castPersonIds.add(member.ibdbPersonId);
       }
     } catch (e) { /* skip bad files */ }
