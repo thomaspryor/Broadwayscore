@@ -19,4 +19,5 @@ export const featureFlags = {
   awards: enabledFeatures.has('awards'),
   tonyPredictions: enabledFeatures.has('tonyPredictions'),
   castPages: enabledFeatures.has('castPages'),
+  westEnd: enabledFeatures.has('westEnd'),
 } as const;
