@@ -520065,20 +520065,20 @@
     ]
   },
   {
-    "startedAt": "2026-02-21T19:19:48.992Z",
-    "completedAt": "2026-02-21T19:32:01.680Z",
+    "startedAt": "2026-02-21T19:19:21.931Z",
+    "completedAt": "2026-02-21T19:34:47.154Z",
     "totalReviews": 24403,
-    "processed": 2,
+    "processed": 0,
     "skipped": 24192,
     "errors": 0,
     "tokensUsed": {
-      "input": 103050,
-      "output": 1992,
-      "total": 233297
+      "input": 91266,
+      "output": 1596,
+      "total": 214130
     },
     "errorDetails": [],
     "calibration": {
-      "count": 16161,
+      "count": 16160,
       "mae": 0.79,
       "rmse": 3.42,
       "meanBias": -0.18,
@@ -520086,7 +520086,7 @@
       "bucketAccuracy": 95.7,
       "byConfidence": {
         "high": {
-          "count": 8336,
+          "count": 8335,
           "mae": 0.67
         },
         "medium": {
@@ -520110,15 +520110,15 @@
           "meanBias": -1.64
         },
         "tier3": {
-          "count": 12186,
+          "count": 12185,
           "mae": 0.48,
           "meanBias": 0.01
         }
       },
       "outletBias": {
         "The New York Times": {
-          "count": 593,
-          "meanBias": 0.09780775716694773
+          "count": 592,
+          "meanBias": 0.10472972972972973
         },
         "Theater Life": {
           "count": 402,
@@ -524437,10 +524437,10 @@
       {
         "showId": "driving-miss-daisy-2010",
         "ourDistribution": {
-          "up": 20,
+          "up": 19,
           "flat": 3,
           "down": 4,
-          "total": 27
+          "total": 26
         },
         "dtliDistribution": {
           "up": 3,
@@ -531403,8 +531403,8 @@
         "ourDistribution": {
           "up": 6,
           "flat": 2,
-          "down": 15,
-          "total": 23
+          "down": 14,
+          "total": 22
         },
         "dtliDistribution": {
           "up": 1,
@@ -531413,7 +531413,7 @@
           "total": 11
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 26% (ours: 65%, theirs: 91%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 27% (ours: 64%, theirs: 91%)"
       },
       {
         "showId": "the-lyons-2012",
