@@ -121,6 +121,7 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
           # Robust push retry — handles conflicts from parallel workflows
+          pushed=false
           for i in 1 2 3 4 5; do
             if git push origin HEAD:$BRANCH; then
               echo "Push succeeded on attempt $i"
@@ -140,6 +141,9 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             sleep $((RANDOM % 20 + 10))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
       - name: Summary
         if: always()

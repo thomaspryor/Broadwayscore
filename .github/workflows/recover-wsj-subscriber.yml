@@ -105,12 +105,16 @@ jobs:
           RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
           git commit -m "feat: WSJ subscriber recovery - ${RECOVERED} reviews recovered"
 
+          pushed=false
           for i in 1 2 3 4 5; do
-            git pull --rebase -X theirs origin main && git push origin main && break
+            git pull --rebase -X theirs origin main && git push origin main && pushed=true && break
             echo "Push attempt $i failed, retrying..."
             git rebase --abort 2>/dev/null || true
             sleep $((3 + RANDOM % 5))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
       - name: Trigger rebuild
         if: always() && env.SKIP != 'true'

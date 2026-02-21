@@ -59,6 +59,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
+            pushed=false
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
@@ -77,6 +78,9 @@ jobs:
               fi
               sleep $((10 + RANDOM % 20))
             done
+            if [ "$pushed" != "true" ]; then
+              echo "::warning::All push attempts failed"
+            fi
           fi
 
       - name: Ensure owner is not watching repo (prevents GitHub notification emails)

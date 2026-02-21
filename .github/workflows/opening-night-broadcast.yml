@@ -178,9 +178,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Core data files pushed to private repo by push-core-data action
           git add --force data/opening-night-sent.json 2>/dev/null || true
+          pushed=false
           for i in 1 2 3 4 5; do
-            git diff --staged --quiet && break
-            git commit -m "data: Opening night broadcast updates" && git push origin main && break
+            git diff --staged --quiet && pushed=true && break
+            git commit -m "data: Opening night broadcast updates" && git push origin main && pushed=true && break
             echo "Push failed (attempt $i), pulling and rebasing..."
             echo "--- Unstaged files before cleanup ---"
             git status --porcelain 2>/dev/null || true
@@ -194,6 +195,9 @@ jobs:
             fi
             sleep $((10 + RANDOM % 20))
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
 
       - name: Push core data to private repo
