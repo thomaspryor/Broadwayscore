@@ -1,74 +1,113 @@
 {
-  "updatedAt": "2026-02-21T04:31:37.486Z",
-  "processed": 5,
-  "failed": 5,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-21T04:33:20.790Z",
+  "processed": 7,
+  "failed": 93,
+  "successRate": "7.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 5
+    "archiveToday": 9,
+    "archive": 3
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-02-21T04:23:33.005Z",
+      "t": "2026-02-21T04:00:31.900Z",
       "event": "bb-session",
-      "session": "7e7279ab",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+      "session": "d7a746eb",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
     },
     {
-      "t": "2026-02-21T04:23:34.969Z",
+      "t": "2026-02-21T04:00:33.906Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T04:25:00.323Z",
+      "t": "2026-02-21T04:01:01.748Z",
       "event": "bb-session",
-      "session": "367d5010",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+      "session": "c9557efd",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/billy-crystal-brings-"
     },
     {
-      "t": "2026-02-21T04:25:02.494Z",
+      "t": "2026-02-21T04:01:03.820Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T04:26:38.018Z",
+      "t": "2026-02-21T04:01:46.725Z",
       "event": "bb-session",
-      "session": "eb23cdba",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+      "session": "57079445",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
     },
     {
-      "t": "2026-02-21T04:26:40.644Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T04:27:54.719Z",
+      "t": "2026-02-21T04:02:48.807Z",
       "event": "bb-session",
-      "session": "7a9773fd",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+      "session": "09d4d167",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
     },
     {
-      "t": "2026-02-21T04:27:57.097Z",
+      "t": "2026-02-21T04:02:50.848Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T04:30:57.839Z",
+      "t": "2026-02-21T04:03:17.866Z",
       "event": "bb-session",
-      "session": "c5367e4e",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+      "session": "3c8d35b8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
     },
     {
-      "t": "2026-02-21T04:30:59.973Z",
+      "t": "2026-02-21T04:03:20.186Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:04:18.546Z",
+      "event": "bb-session",
+      "session": "b7c1a476",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridg"
+    },
+    {
+      "t": "2026-02-21T04:04:20.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:05:49.358Z",
+      "event": "bb-session",
+      "session": "c0752b1d",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2008/10/16/AR2008101603518"
+    },
+    {
+      "t": "2026-02-21T04:05:51.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:06:22.957Z",
+      "event": "bb-session",
+      "session": "6e0b4140",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
+    },
+    {
+      "t": "2026-02-21T04:06:25.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:06:52.039Z",
+      "event": "bb-session",
+      "session": "baad12c2",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-02-21T04:06:54.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
