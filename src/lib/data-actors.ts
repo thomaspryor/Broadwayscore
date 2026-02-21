@@ -5,7 +5,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import type { ActorProfile, ActorShowEntry, ShowCastFile, CastMemberOBC } from './data-types';
-import { getAllShows, slugify } from './data-core';
+import { getBroadwayShows, slugify } from './data-core';
 import { getAudienceBuzz } from './data-audience';
 
 const CAST_DIR = path.join(process.cwd(), 'data', 'cast');
@@ -32,7 +32,7 @@ function ensureBuilt() {
 // ============================================
 
 function buildAllProfiles() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const showMap = new Map(allShows.map(s => [s.id, s]));
 
   // Accumulate: ibdbPersonId → { name, showEntries }

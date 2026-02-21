@@ -3,7 +3,7 @@
 // Import directly — NOT through data.ts barrel (bundle protection)
 
 import type { CreativeCategory, CreativeProfile, CreativeShowEntry, UnifiedCreativeProfile, UnifiedCreativeShowEntry } from './data-types';
-import { getAllShows } from './data-core';
+import { getBroadwayShows } from './data-core';
 import { slugify } from './data-core';
 
 // ============================================
@@ -88,7 +88,7 @@ const categoryProfiles = new Map<CreativeCategory, CreativeProfile[]>();
 const categorySlugs = new Map<CreativeCategory, Map<string, CreativeProfile>>();
 
 function buildAllProfiles() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
 
   // Accumulate per category
   const accum: Record<CreativeCategory, BuildAccum> = {
@@ -203,7 +203,7 @@ const unifiedSlugMap = new Map<string, UnifiedCreativeProfile>();
 const nameToUnifiedSlug = new Map<string, string>();
 
 function buildUnifiedProfiles() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
 
   // person name → { categories, roles, showMap: slug → { entry, roles } }
   const personMap = new Map<string, {
