@@ -1,44 +1,40 @@
 {
   "processed": [
-    "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-    "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-    "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "chess-2025/theater-scene--samuel-l-leiter.json"
   ],
   "failed": [
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "a-bronx-tale-2007/financial-times-uk--max-mcguinness.json",
-    "american-idiot-2010/financialtimes--brendan-lemon.json",
-    "angels-in-america-2018/financial-times-uk--max-mcguinness.json",
-    "betrayal-2013/financialtimes--brendan-lemon.json",
-    "breakfast-at-tiffanys-2013/financialtimes--brendan-lemon.json",
-    "carousel-2018/financial-times-uk--max-mcguinness.json",
-    "charlie-and-the-chocolate-factory-2017/financialtimes--unknown.json",
-    "come-from-away-2017/financial-times-uk--max-mcguinness.json",
-    "constellations-2015/financialtimes--brendan-lemon.json",
-    "dear-evan-hansen-2016/financial-times-uk--max-mcguinness.json",
-    "eclipsed-2016/financial-times-uk--brendan-lemon.json",
-    "enron-2010/financial-times--brandan-lemon.json",
-    "finding-neverland-2015/financial-times-uk--brendan-lemon.json",
-    "fish-in-the-dark-2015/financial-times-uk--brendan-lemon.json",
-    "frozen-2018/financial-times-uk--max-mcguinness.json"
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "ragtime-2025/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/theater-scene--samuel-l-leiter.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json"
+    ],
     "archive": [
-      "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
-      "cat-on-a-hot-tin-roof-2008/financialtimes--brendan-lemon.json",
-      "choir-boy-2019/financial-times-uk--max-mcguinness.json"
+      "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-21T04:22:34.651Z",
-  "lastProcessed": "frozen-2018/financial-times-uk--max-mcguinness.json",
+  "startTime": "2026-02-21T04:31:56.688Z",
+  "lastProcessed": "chess-2025/theater-scene--samuel-l-leiter.json",
   "log": []
 }
