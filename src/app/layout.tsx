@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -10,6 +11,13 @@ import { getDataStats } from '@/lib/data-core';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -72,7 +80,7 @@ export default function RootLayout({
   const { totalReviews } = getDataStats();
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {/* Preconnect to image CDN for faster LCP */}
@@ -84,21 +92,6 @@ export default function RootLayout({
         <link
           rel="dns-prefetch"
           href="https://images.ctfassets.net"
-        />
-        {/* Preload Inter font for faster text rendering */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
         />
       </head>
       <body className="min-h-screen font-sans pt-16">

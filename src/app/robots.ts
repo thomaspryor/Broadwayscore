@@ -19,8 +19,9 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Bingbot', allow: '/' },
       { userAgent: 'Slurp', allow: '/' },
       { userAgent: 'DuckDuckBot', allow: '/' },
-      // ChatGPT search (ALLOWED — shows us in ChatGPT web search results)
+      // AI search bots (ALLOWED — shows us in AI search results with citations)
       { userAgent: 'OAI-SearchBot', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/' },
       // AI training crawlers (BLOCKED — prevent content from training AI models)
       { userAgent: 'GPTBot', disallow: '/' },
       { userAgent: 'Google-Extended', disallow: '/' },
@@ -30,7 +31,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Bytespider', disallow: '/' },
       { userAgent: 'Cohere-ai', disallow: '/' },
       { userAgent: 'Meta-ExternalAgent', disallow: '/' },
-      { userAgent: 'PerplexityBot', disallow: '/' },
       // Default: allow everything else
       { userAgent: '*', allow: '/' },
     ],
