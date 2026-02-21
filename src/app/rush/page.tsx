@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -183,7 +183,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
 }
 
 export default function RushPage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lastUpdated = getLotteryRushLastUpdated();
 
   // Get shows with rush data, sorted by rush price (cheapest first)
