@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-21T00:15:09.704Z",
+  "updatedAt": "2026-02-21T00:17:13.912Z",
   "processed": 83,
-  "failed": 239,
-  "successRate": "25.8%",
+  "failed": 249,
+  "successRate": "25.0%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 33,
     "archive": 23
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-21T00:13:43.534Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-02-21T00:13:45.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T00:16:49.367Z",
+      "event": "bb-session",
+      "session": "86fa9d05",
+      "url": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "t": "2026-02-21T00:16:51.574Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
