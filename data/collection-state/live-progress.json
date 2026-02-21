@@ -1,85 +1,129 @@
 {
-  "updatedAt": "2026-02-21T13:50:11.431Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-21T13:53:26.238Z",
+  "processed": 8,
+  "failed": 72,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 2,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 4
+    "archiveToday": 63,
+    "archive": 0
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 17,
   "recentActivity": [
     {
-      "t": "2026-02-21T13:39:26.755Z",
+      "t": "2026-02-21T13:21:48.611Z",
       "event": "bb-session",
-      "session": "4fafa285",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+      "session": "6e6381d8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
     },
     {
-      "t": "2026-02-21T13:39:28.870Z",
+      "t": "2026-02-21T13:21:50.412Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:42:00.878Z",
+      "t": "2026-02-21T13:22:22.806Z",
       "event": "bb-session",
-      "session": "40c37a9a",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+      "session": "1125ced5",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
     },
     {
-      "t": "2026-02-21T13:42:03.121Z",
+      "t": "2026-02-21T13:22:25.831Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:43:28.495Z",
+      "t": "2026-02-21T13:22:58.945Z",
       "event": "bb-session",
-      "session": "fa1fb2c1",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+      "session": "10d918a3",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
     },
     {
-      "t": "2026-02-21T13:43:31.123Z",
+      "t": "2026-02-21T13:23:01.019Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:46:06.715Z",
+      "t": "2026-02-21T13:23:25.224Z",
       "event": "bb-session",
-      "session": "7083133e",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+      "session": "cbc6d1f5",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
     },
     {
-      "t": "2026-02-21T13:46:08.763Z",
+      "t": "2026-02-21T13:23:28.192Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:47:24.788Z",
+      "t": "2026-02-21T13:23:56.128Z",
       "event": "bb-session",
-      "session": "ff7d7f2b",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+      "session": "a9c6e0ff",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-anastasia-is-a"
     },
     {
-      "t": "2026-02-21T13:47:27.527Z",
+      "t": "2026-02-21T13:23:58.105Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-02-21T13:49:31.785Z",
+      "t": "2026-02-21T13:24:21.878Z",
       "event": "bb-session",
-      "session": "62561079",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+      "session": "75eb324b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-c"
     },
     {
-      "t": "2026-02-21T13:49:33.952Z",
+      "t": "2026-02-21T13:24:25.000Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:13.137Z",
+      "event": "bb-session",
+      "session": "0259ac59",
+      "url": "https://www.washingtonpost.com/lifestyle/style/anything-goes-on-broadway-sublime"
+    },
+    {
+      "t": "2026-02-21T13:25:15.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:25:52.973Z",
+      "event": "bb-session",
+      "session": "c79e1e97",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-02-21T13:25:55.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:26:37.388Z",
+      "event": "bb-session",
+      "session": "074d36e0",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-carole-king-musical-be"
+    },
+    {
+      "t": "2026-02-21T13:26:39.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T13:27:20.013Z",
+      "event": "bb-session",
+      "session": "95d0d779",
+      "url": "https://www.washingtonpost.com/lifestyle/style/bengal-tiger-at-the-baghdad-zoo-r"
+    },
+    {
+      "t": "2026-02-21T13:27:22.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
