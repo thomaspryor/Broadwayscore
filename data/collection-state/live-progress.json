@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-02-21T11:42:57.249Z",
-  "processed": 57,
-  "failed": 83,
-  "successRate": "40.7%",
+  "updatedAt": "2026-02-21T11:44:40.145Z",
+  "processed": 44,
+  "failed": 56,
+  "successRate": "44.0%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 22,
     "brightdata": 0,
-    "archiveToday": 21,
-    "archive": 13
+    "archiveToday": 26,
+    "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 40,
+  "recentActivity": [
+    {
+      "t": "2026-02-21T11:09:34.577Z",
+      "event": "bb-session",
+      "session": "25a5582f",
+      "url": "https://www.nytimes.com/2008/11/21/theater/reviews/21estate.html"
+    },
+    {
+      "t": "2026-02-21T11:09:36.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:10:49.954Z",
+      "event": "bb-session",
+      "session": "b965cb27",
+      "url": "https://www.nytimes.com/2010/10/26/theater/reviews/26daisy.html"
+    },
+    {
+      "t": "2026-02-21T11:10:52.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:12:04.205Z",
+      "event": "bb-session",
+      "session": "d67f6a52",
+      "url": "https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at"
+    },
+    {
+      "t": "2026-02-21T11:12:06.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:13:24.221Z",
+      "event": "bb-session",
+      "session": "00968fbc",
+      "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html#:~:text=Revi"
+    },
+    {
+      "t": "2026-02-21T11:13:26.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:14:45.351Z",
+      "event": "bb-session",
+      "session": "12957137",
+      "url": "http://theater.nytimes.com/2010/04/28/theater/reviews/28enron.html?ref=theater"
+    },
+    {
+      "t": "2026-02-21T11:14:47.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:16:55.065Z",
+      "event": "bb-session",
+      "session": "ce31f1a2",
+      "url": "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html"
+    },
+    {
+      "t": "2026-02-21T11:16:57.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:18:18.109Z",
+      "event": "bb-session",
+      "session": "d308a83c",
+      "url": "http://theater.nytimes.com/2010/04/30/theater/reviews/30everyday.html?ref=theate"
+    },
+    {
+      "t": "2026-02-21T11:18:20.294Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:19:57.522Z",
+      "event": "bb-session",
+      "session": "a895dbf0",
+      "url": "https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html"
+    },
+    {
+      "t": "2026-02-21T11:19:59.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:21:15.579Z",
+      "event": "bb-session",
+      "session": "aa615769",
+      "url": "https://www.nytimes.com/2009/11/24/theater/reviews/24fela.html"
+    },
+    {
+      "t": "2026-02-21T11:21:17.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T11:22:33.156Z",
+      "event": "bb-session",
+      "session": "4690da68",
+      "url": "https://theater.nytimes.com/2009/11/24/theater/reviews/24fela.html?pagewanted=1&"
+    },
+    {
+      "t": "2026-02-21T11:22:35.871Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
