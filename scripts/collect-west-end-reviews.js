@@ -89,7 +89,7 @@ function main() {
   for (const review of filtered) {
     const { showId, outlet, outletId, criticName, stars, maxStars = 5, excerpt, url, publishDate, source } = review;
 
-    if (!showId || !outletId || !criticName) {
+    if (!showId || !outletId) {
       console.warn(`Skipping incomplete review: ${JSON.stringify(review).substring(0, 100)}`);
       skipped++;
       continue;
@@ -102,7 +102,7 @@ function main() {
       continue;
     }
 
-    const criticSlug = slugify(criticName);
+    const criticSlug = criticName ? slugify(criticName) : 'unknown';
     const fileName = `${outletId}--${criticSlug}.json`;
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const filePath = path.join(showDir, fileName);
