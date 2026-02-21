@@ -58,7 +58,7 @@ NEVER:
 - Use Reddit jargon (EDIT:, TL;DR, FTFY, /s, etc.)
 - Open with "Great question!" or any generic AI opener
 - Write more than 120 words
-- Fabricate specific personal experiences (but can assume he's seen popular current shows)
+- Fabricate personal experiences — ONLY reference shows listed in the SHOW HISTORY section below. If a show isn't on that list, he hasn't seen it.
 - Fabricate knowledge about specific performers, their careers, or cast histories — if the thread is about a performer Thomas wouldn't reasonably know, respond to the ENERGY of the post (excitement, surprise, curiosity) rather than pretending to know the person. Ask genuine questions instead of faking expertise.
 - Sound like a bot, PR person, or marketing account
 - Hedge every opinion — have takes, back them with data
@@ -313,9 +313,55 @@ function loadShowContext() {
   return `Current/recent Broadway shows (${lines.length} shows):\n${lines.join('\n')}`;
 }
 
+/**
+ * Load Thomas's personal show watch history for Claude context
+ */
+function loadShowsSeenContext() {
+  const data = loadJSON(path.join(DATA_DIR, 'shows-seen.json'));
+  if (!data?.shows?.length) return '';
+
+  // Deduplicate (keep highest rating per show title) and sort by year desc
+  const bestRating = new Map();
+  const viewCounts = new Map();
+  for (const s of data.shows) {
+    const key = s.title;
+    viewCounts.set(key, (viewCounts.get(key) || 0) + 1);
+    const existing = bestRating.get(key);
+    if (!existing || (s.rating != null && (existing.rating == null || s.rating > existing.rating))) {
+      bestRating.set(key, s);
+    }
+  }
+
+  const unique = Array.from(bestRating.values())
+    .filter(s => s.rating != null)
+    .sort((a, b) => b.year - a.year || b.rating - a.rating);
+
+  const stars = r => r >= 4.5 ? 'loved' : r >= 3.5 ? 'liked' : r >= 2.5 ? 'mixed' : 'disliked';
+
+  const lines = unique.map(s => {
+    const views = viewCounts.get(s.title);
+    const repeat = views > 1 ? ` (seen ${views}x)` : '';
+    return `- ${s.title} (${s.year}): ${s.rating}/5 [${stars(s.rating)}]${repeat}`;
+  });
+
+  // Top 5s and bottom 5s for quick reference
+  const sorted = [...unique].sort((a, b) => b.rating - a.rating);
+  const favorites = sorted.slice(0, 10).map(s => s.title).join(', ');
+  const least = sorted.filter(s => s.rating <= 2.5).map(s => `${s.title} (${s.rating})`).join(', ');
+
+  return `\nTHOMAS'S SHOW HISTORY (${unique.length} unique shows, ${data.shows.length} total viewings):
+Top-rated: ${favorites}
+Shows he didn't love: ${least || 'none'}
+
+Full list (most recent first):
+${lines.join('\n')}
+
+IMPORTANT: Use this history to know which shows Thomas has ACTUALLY seen. Only reference personal experience for shows on this list. If the draft says "I saw X" — verify X is on this list. Shows he saw multiple times (marked "seen Nx") are ones he really loves.`;
+}
+
 // ── Claude Evaluation ───────────────────────────────────────────────────────
 
-function buildSystemPrompt(promoPhase, showContext, lastDigestHadPromo) {
+function buildSystemPrompt(promoPhase, showContext, showsSeenContext, lastDigestHadPromo) {
   let promoInstructions;
   if (promoPhase === 'no-mention') {
     promoInstructions = 'DO NOT mention Broadway Scorecard, the website, scores from it, or any data source. You are just a knowledgeable theater fan engaging in conversation.';
@@ -338,6 +384,7 @@ SELF-PROMOTION RULES (CRITICAL — follow exactly):
 ${promoInstructions}
 
 ${showContext}
+${showsSeenContext}
 
 YOUR TASK:
 Evaluate the provided threads. For each, rate reply-worthiness (1-10, where 7+ = worth replying to).
@@ -374,7 +421,7 @@ Respond with ONLY a valid JSON array (no markdown fences, no explanation):
 ]
 
 Categories: "recommendation" | "debate" | "reaction" | "industry" | "meta"
-assumesSaw: set to show name string if the draft assumes personal experience, null otherwise.
+assumesSaw: set to show name string if the draft references personal experience seeing a show. Only reference shows from the SHOW HISTORY list above. null if no personal experience referenced.
 Target 3-7 threads. Quality over quantity. Return [] if nothing qualifies.`;
 }
 
@@ -406,10 +453,12 @@ async function evaluateThreads(threads, history) {
   const promoPhase = getPromoPhase(history.digestCount);
   const lastDigestHadPromo = history.promoDigests.includes(history.digestCount - 1);
   const showContext = loadShowContext();
+  const showsSeenContext = loadShowsSeenContext();
 
   console.log(`Evaluating ${threads.length} threads (phase: ${promoPhase}, digest #${history.digestCount + 1})...`);
+  if (showsSeenContext) log(`  Shows-seen context: ${showsSeenContext.split('\n').length} lines`);
 
-  const systemPrompt = buildSystemPrompt(promoPhase, showContext, lastDigestHadPromo);
+  const systemPrompt = buildSystemPrompt(promoPhase, showContext, showsSeenContext, lastDigestHadPromo);
   const userMessage = formatThreadsForClaude(threads);
 
   log(`  System prompt: ${systemPrompt.length} chars`);
