@@ -347,6 +347,16 @@ Criteria for high scores:
 - Topic where data or personal experience adds value
 - NOT: memes, photos, ticket resale, personal stories, accessibility questions, posts with 100+ comments (he'd be buried)
 
+CRITICAL — ADDING VALUE (most important rule):
+Read the existing comments carefully. Your draft reply MUST add something the existing comments DON'T already cover. This means:
+- A specific data point nobody mentioned (critic scores, box office numbers, review counts)
+- A genuinely different angle or framing that recontextualizes the discussion
+- Personal experience or insider knowledge that goes beyond the obvious consensus
+- A contrarian but defensible take backed by evidence
+- A specific, concrete recommendation when others are being vague
+
+If the top comments already make the obvious points well, DO NOT draft a reply that restates them. Either find a fresh angle or skip the thread entirely (score it below 7). Repeating what others said — even with better phrasing — is worse than not replying. It's better to suggest 1-2 genuinely additive replies than 5 that blend into the noise.
+
 For each qualifying thread (score 7+), draft a complete reply ready to paste.
 
 Respond with ONLY a valid JSON array (no markdown fences, no explanation):
