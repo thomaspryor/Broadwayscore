@@ -80,19 +80,34 @@ async function fetchWestEndShows() {
     'dining experience', 'immersive dining',
     'prehistoric planet', 'discovering dinosaurs',
   ];
+  // Shows that match nonTheatrePatterns but ARE legitimate theatre (allowlist)
+  const allowlist = [
+    'the phantom of the opera',
+    'la boheme',           // if a theatrical staging ever appears
+  ];
   // Solo artist names (no show title, just performer concerts)
   const soloArtistPatterns = [
     'sierra boggess', 'megan hilty', 'jamie muscato',
   ];
+  // Known Off West End venues — not in the official 40 West End theatres
+  const offWestEndVenues = [
+    'charing cross theatre',
+    // London Hippodrome kept as borderline — TodayTix tags it WE
+  ];
 
   const theatreShows = westEndShows.filter(s => {
     const title = (s.displayName || s.name || '').toLowerCase();
+    const venue = (s.venue?.name || '').toLowerCase();
+    // Check allowlist first — overrides nonTheatrePatterns
+    if (allowlist.some(a => title.includes(a))) return true;
     for (const pattern of nonTheatrePatterns) {
       if (title.includes(pattern)) return false;
     }
     for (const pattern of soloArtistPatterns) {
       if (title === pattern) return false;
     }
+    // Filter Off West End venues
+    if (offWestEndVenues.some(v => venue.includes(v))) return false;
     return true;
   });
 
@@ -125,6 +140,15 @@ async function fetchWestEndShows() {
       const parsed = new Date(show.endDate);
       if (!isNaN(parsed.getTime())) {
         closingDate = parsed.toISOString().split('T')[0];
+      }
+    }
+
+    // Filter one-off events: skip shows with < 7 day run (concerts, specials)
+    if (openingDate && closingDate) {
+      const runDays = Math.ceil((new Date(closingDate) - new Date(openingDate)) / (1000 * 60 * 60 * 24));
+      if (runDays < 7) {
+        console.log(`  Skipping "${title}" — ${runDays}-day run (one-off event)`);
+        continue;
       }
     }
 

@@ -74,6 +74,17 @@ function main() {
   const reviews = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
   console.log(`Loaded ${reviews.length} reviews from ${inputFile}`);
 
+  // Load show opening dates for pre-opening validation
+  const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
+  const showOpenDates = {};
+  if (fs.existsSync(showsPath)) {
+    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const s of showsData.shows || []) {
+      const earliest = s.previewsStartDate || s.openingDate;
+      if (earliest) showOpenDates[s.id] = earliest;
+    }
+  }
+
   const filtered = showFilter
     ? reviews.filter(r => r.showId === showFilter)
     : reviews;
@@ -84,6 +95,7 @@ function main() {
 
   let created = 0;
   let skipped = 0;
+  let skippedPreOpening = 0;
   const showCounts = {};
 
   for (const review of filtered) {
@@ -93,6 +105,18 @@ function main() {
       console.warn(`Skipping incomplete review: ${JSON.stringify(review).substring(0, 100)}`);
       skipped++;
       continue;
+    }
+
+    // Skip reviews published before the show opened (wrong production)
+    if (publishDate && showOpenDates[showId]) {
+      const pubDate = new Date(publishDate);
+      const openDate = new Date(showOpenDates[showId]);
+      const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
+      if (daysBefore > 14) {
+        console.warn(`Skipping pre-opening review: ${showId} ${outletId} published ${daysBefore} days before opening`);
+        skippedPreOpening++;
+        continue;
+      }
     }
 
     const assignedScore = convertStarRating(stars, maxStars);
@@ -152,6 +176,7 @@ function main() {
   console.log('');
   console.log(`Created: ${created} review files`);
   console.log(`Skipped: ${skipped} (existing or incomplete)`);
+  if (skippedPreOpening > 0) console.log(`Skipped pre-opening: ${skippedPreOpening} (published before show opened)`);
   console.log(`Shows with reviews: ${Object.keys(showCounts).length}`);
   console.log('');
 

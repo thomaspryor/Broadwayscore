@@ -123,6 +123,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.85,
     },
+    // Off-Broadway page
+    {
+      url: `${BASE_URL}/off-broadway`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
     // Rankings hub page
     {
       url: `${BASE_URL}/rankings`,

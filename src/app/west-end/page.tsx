@@ -46,6 +46,7 @@ export default function WestEndPage() {
       startDate: show.openingDate,
       endDate: show.closingDate,
       status: show.status,
+      category: 'west-end',
     })),
     'West End Shows'
   );
@@ -82,6 +83,17 @@ export default function WestEndPage() {
 
   const scoredCount = serializedShows.filter(s => s.criticScore?.score).length;
 
+  // Compute data freshness from latest review publish date
+  const latestReviewDate = shows.reduce((latest, s) => {
+    for (const r of s.criticScore?.reviews || []) {
+      if (r.publishDate && r.publishDate > latest) return r.publishDate;
+    }
+    return latest;
+  }, '');
+  const dataFreshness = latestReviewDate
+    ? new Date(latestReviewDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
   return (
     <>
       <script
@@ -110,7 +122,7 @@ export default function WestEndPage() {
             Critic scores for London&apos;s West End, aggregated from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.
           </p>
           <p className="text-gray-500 text-sm mt-3">
-            {shows.length} shows ({scoredCount} scored) | Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            {shows.length} shows ({scoredCount} scored) | Last updated: {dataFreshness}
           </p>
         </div>
 

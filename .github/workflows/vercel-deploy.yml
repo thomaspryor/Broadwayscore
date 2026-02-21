@@ -23,6 +23,7 @@ on:
       - 'data/lottery-rush.json'
       - 'data/awards.json'
       - 'data/gold-lists-computed.json'
+      # NOTE: data/audit/seo-* is NOT listed here, so SEO health check pushes won't trigger deploys
   workflow_dispatch: # Manual trigger
 
 jobs:
@@ -119,3 +120,16 @@ jobs:
             exit 1
           fi
           echo "Smoke test passed — production is live"
+
+      - name: Notify search engines of updated sitemap
+        if: success()
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Bing ping (still functional)
+          curl -s "https://www.bing.com/ping?sitemap=https://broadwayscorecard.com/sitemap.xml" || true
+          # Google: re-submit sitemap via Search Console Sitemaps API
+          if [ -n "$GOOGLE_INDEXING_KEY" ]; then
+            node scripts/submit-google-indexing.js --submit-sitemap || true
+          fi

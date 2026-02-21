@@ -1,0 +1,66 @@
+name: Check SEO Health
+
+on:
+  schedule:
+    - cron: '0 8 * * 0'  # Sunday 8 AM UTC
+  workflow_dispatch: {}
+
+concurrency:
+  group: seo-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run SEO health check
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-seo-health.js
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Only add specific SEO audit files — never git add -A
+          git add --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No audit data changes to commit"
+          else
+            git commit -m "chore: Update SEO health audit data [skip ci]"
+          fi
+
+      - name: Push audit data
+        if: always()
+        run: |
+          pushed=false
+          for i in 1 2 3 4 5; do
+            git push origin main && pushed=true && break
+            echo "Push attempt $i failed, rebasing..."
+            sleep $((RANDOM % 10 + 5))
+            git pull --rebase origin main || {
+              echo "::error::Rebase failed — audit data may conflict with concurrent push"
+              exit 1
+            }
+          done
+          if [ "$pushed" != "true" ]; then
+            echo "::error::All 5 push attempts failed"
+            exit 1
+          fi

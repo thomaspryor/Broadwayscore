@@ -232,6 +232,7 @@ jobs:
 
           # Robust push with retry and conflict resolution
           MAX_RETRIES=5
+          pushed=false
           for i in $(seq 1 $MAX_RETRIES); do
             echo "Push attempt $i of $MAX_RETRIES..."
 
@@ -297,6 +298,9 @@ jobs:
               sleep $((i * 2))
             fi
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::warning::All push attempts failed"
+          fi
 
           echo "All push attempts failed"
           exit 1

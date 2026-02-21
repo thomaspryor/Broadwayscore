@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { TrophyIcon } from '@/components/icons';
 import { ToggleBar } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
+import { isActingCategory } from '@/config/awards';
 import type { LeaderboardRow } from './page';
 
 type FilterMode = 'all' | 'acting' | 'creative';
@@ -42,7 +43,7 @@ export default function TonyLeaderboardClient({
     if (filter === 'acting') {
       return rows
         .filter(r => r.actingNominations > 0)
-        .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations }))
+        .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations, categories: r.categories.filter(c => isActingCategory(c)) }))
         .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
     }
     // creative = non-acting
@@ -52,9 +53,23 @@ export default function TonyLeaderboardClient({
         ...r,
         wins: r.wins - r.actingWins,
         nominations: r.nominations - r.actingNominations,
+        categories: r.categories.filter(c => !isActingCategory(c)),
       }))
       .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
   }, [rows, filter]);
+
+  // Compute tied ranks: same wins+noms = same rank
+  const ranks = useMemo(() => {
+    const result: number[] = [];
+    let rank = 1;
+    for (let i = 0; i < filtered.length; i++) {
+      if (i > 0 && (filtered[i].wins !== filtered[i - 1].wins || filtered[i].nominations !== filtered[i - 1].nominations)) {
+        rank = i + 1;
+      }
+      result.push(rank);
+    }
+    return result;
+  }, [filtered]);
 
   const visible = filtered.slice(0, showCount);
   const remaining = filtered.length - showCount;
@@ -74,14 +89,14 @@ export default function TonyLeaderboardClient({
           Tony Awards Leaderboard
         </h1>
         <p className="text-gray-400 text-sm mt-1">
-          All-time Tony Award winners and nominees ({coverage}). {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
+          Tony Award winners and nominees for tracked shows. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
         </p>
       </div>
 
       {/* Filter */}
       <div className="mb-4">
         <ToggleBar
-          label="SHOW:"
+          label="FILTER:"
           options={[
             { value: 'all' as FilterMode, label: 'ALL' },
             { value: 'acting' as FilterMode, label: 'ACTING' },
@@ -93,6 +108,12 @@ export default function TonyLeaderboardClient({
           size="compact"
         />
       </div>
+
+      {filter !== 'all' && (
+        <p className="text-xs text-gray-500 mb-3">
+          Showing {filter === 'acting' ? 'acting' : 'creative'} nominations only. People with both acting and creative nominations may have different totals in each view.
+        </p>
+      )}
 
       {/* Table */}
       <div className="overflow-x-auto">
@@ -109,7 +130,7 @@ export default function TonyLeaderboardClient({
           <tbody>
             {visible.map((row, i) => (
               <tr key={row.ibdbPersonId || row.name} className="border-b border-white/5 hover:bg-white/[0.02]">
-                <td className="py-2.5 pr-2 text-center text-xs text-gray-500 tabular-nums">{i + 1}</td>
+                <td className="py-2.5 pr-2 text-center text-xs text-gray-500 tabular-nums">{ranks[i]}</td>
                 <td className="py-2.5 pr-3">
                   {row.profileUrl ? (
                     <Link href={row.profileUrl} className="text-sm font-medium text-white hover:text-brand transition-colors">
@@ -118,7 +139,7 @@ export default function TonyLeaderboardClient({
                   ) : (
                     <span className="text-sm font-medium text-gray-300">{row.name}</span>
                   )}
-                  <span className="text-[10px] text-gray-500 ml-1.5 hidden sm:inline">
+                  <span className="text-[10px] text-gray-500 ml-1.5">
                     {row.showCount} show{row.showCount !== 1 ? 's' : ''}
                   </span>
                 </td>
@@ -161,7 +182,7 @@ export default function TonyLeaderboardClient({
 
       {/* Source note */}
       <p className="text-xs text-gray-600 mt-6">
-        Data sourced from IBDB. Covers {coverage}. Includes acting and creative categories tracked by the Tony Awards.
+        Data sourced from IBDB for shows tracked by Broadway Scorecard. Coverage is most complete from 2006-present. Earlier seasons may have incomplete nomination counts.
       </p>
     </div>
   );
