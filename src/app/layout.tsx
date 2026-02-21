@@ -258,9 +258,11 @@ export default function RootLayout({
                 Aggregating <span className="text-gray-400 font-medium">{totalReviews.toLocaleString()}</span> critic reviews and counting...
               </p>
             </div>
-            <p className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500">
-              All ratings and reviews belong to their respective sources.
-            </p>
+            <div className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500 space-y-1">
+              <p>All ratings and reviews belong to their respective sources.</p>
+              <p>&copy; 2026 Broadway Scorecard LLC. All rights reserved.</p>
+              <p>By using this site, you agree to our <Link href="/terms" className="text-gray-400 hover:text-white transition-colors underline underline-offset-2">Terms of Service</Link>.</p>
+            </div>
           </div>
         </footer>
         <ScrollToTop />
