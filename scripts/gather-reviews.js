@@ -1638,6 +1638,72 @@ function validateBWWRoundupGeography(reviews, html, showId) {
 }
 
 /**
+ * Validate BWW roundup publish year against show's opening date.
+ * Catches wrong-year roundups where BWW's fuzzy routing serves an older production's
+ * roundup (e.g., The Other Place 2013 roundup served for a 2026 show).
+ *
+ * Extracts datePublished from JSON-LD or URL year and rejects if too old.
+ * @returns {Array} reviews (empty if roundup is wrong year, unchanged otherwise)
+ */
+function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) {
+  if (reviews.length === 0) return reviews;
+
+  const showDate = new Date(showOpeningDate);
+  if (isNaN(showDate.getTime())) return reviews; // can't validate without valid date
+
+  // 1. Extract datePublished from JSON-LD (most reliable)
+  let roundupDate = null;
+  const scriptMatches = html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g);
+  for (const m of scriptMatches) {
+    try {
+      const json = JSON.parse(m[1].replace(/[\x00-\x1F\x7F]/g, ' '));
+      if (json.datePublished) {
+        roundupDate = new Date(json.datePublished);
+        break;
+      }
+      if (json.dateCreated && !roundupDate) {
+        roundupDate = new Date(json.dateCreated);
+      }
+    } catch (e) { /* skip invalid JSON */ }
+  }
+
+  // 2. Fallback: extract year from URL (e.g., "Review-Roundup-SHOW-Opens-on-Broadway-20241224")
+  if (!roundupDate) {
+    const url = bwwUrl || '';
+    const years = [...url.matchAll(/(\d{4})/g)].map(m => parseInt(m[1])).filter(y => y >= 2000 && y <= 2030);
+    if (years.length > 0) {
+      // Use the last year in the URL (usually the date suffix)
+      roundupDate = new Date(years[years.length - 1], 0, 1);
+    }
+  }
+
+  if (!roundupDate || isNaN(roundupDate.getTime())) {
+    console.log(`    ℹ No date metadata found in BWW roundup — skipping year validation`);
+    return reviews;
+  }
+
+  // Reject if roundup was published more than 18 months before the show's opening
+  // (generous window to allow pre-opening reviews from the same production)
+  const monthsDiff = (showDate.getFullYear() - roundupDate.getFullYear()) * 12 +
+                     (showDate.getMonth() - roundupDate.getMonth());
+
+  if (monthsDiff > 18) {
+    console.log(`    ⚠ REJECTING BWW roundup: published ${roundupDate.toISOString().slice(0, 10)} but show opens ${showOpeningDate} (${monthsDiff} months gap)`);
+    console.log(`    ⚠ This is likely a roundup for an older production of the same title`);
+    return [];
+  }
+
+  // Also reject if roundup was published more than 6 months AFTER opening
+  // (unlikely to be a legitimate roundup — might be a revival or re-run)
+  if (monthsDiff < -6) {
+    console.log(`    ⚠ REJECTING BWW roundup: published ${roundupDate.toISOString().slice(0, 10)} but show opened ${showOpeningDate} (roundup is ${-monthsDiff} months after opening)`);
+    return [];
+  }
+
+  return reviews;
+}
+
+/**
  * Archive aggregator page for future reference
  */
 function archiveAggregatorPage(aggregator, showId, url, html) {
@@ -2052,6 +2118,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
       // Validate geographic accuracy — filter non-NYC outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId);
+      // Validate publish year — reject roundups from older productions of the same title
+      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
       foundReviews.push(...bwwReviews);
       // Archive the page
       archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
