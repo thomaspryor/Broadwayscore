@@ -76,6 +76,10 @@ on:
         description: 'Only process reviews from these domains (comma-separated, e.g. theatermania.com,huffpost.com)'
         required: false
         default: ''
+      exclude_domains:
+        description: 'Exclude reviews from these domains (inverse of domain_filter, comma-separated)'
+        required: false
+        default: ''
       reason_filter:
         description: 'Filter by incompleteReason (comma-separated: paywall,scraper_garbage,not_attempted,url_dead,bot_blocked,etc.)'
         required: false
@@ -208,6 +212,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -377,6 +382,7 @@ jobs:
           AGGRESSIVE="${{ inputs.aggressive }}"
           STEALTH="${{ inputs.stealth_proxy }}"
           DOMAIN_FILTER="${{ inputs.domain_filter }}"
+          EXCLUDE_DOMAINS="${{ inputs.exclude_domains }}"
           REASON_FILTER="${{ inputs.reason_filter }}"
 
           gh workflow run "Collect Review Texts" \
@@ -391,6 +397,7 @@ jobs:
             -f archive_first=${{ inputs.archive_first }} \
             -f content_tier="$TIER_FILTER" \
             -f domain_filter="$DOMAIN_FILTER" \
+            -f exclude_domains="$EXCLUDE_DOMAINS" \
             -f reason_filter="$REASON_FILTER" \
             -f chain=true \
             -f remaining_batches="$NEXT_BATCHES" \
@@ -530,6 +537,7 @@ jobs:
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
