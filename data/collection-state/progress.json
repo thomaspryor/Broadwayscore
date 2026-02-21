@@ -1,17 +1,17 @@
 {
   "processed": [
-    "aladdin-2014/wsj--terry-teachout.json",
-    "bug-2026/wsj--charles-isherwood.json"
+    "hamilton-2015/nytimes--ben-brantley.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "stranger-things-2024/nytimes--houman-barekat.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "1776-2022/nytimes--jesse-green.json"
   ],
   "failed": [
-    "death-becomes-her-2024/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--charles-isherwood.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json"
+    "cold-war-choir-practice-2026/nytimes--laura-collins-hughes.json",
+    "giant-2026/nytimes--houman-barekat.json",
+    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+    "the-winters-tale-2026/nytimes--unknown.json",
+    "wicked-2003/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,109 +22,29 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
-      "data/review-texts/hamilton-2015/wsj--terry-teachout.json",
-      "data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
-      "data/review-texts/maybe-happy-ending-2024/wsj--charles-isherwood.json",
-      "data/review-texts/mj-2022/wsj--charles-isherwood.json"
+      "data/review-texts/wicked-2003/nytimes--charles-isherwood.json"
     ],
     "archive": [
-      "aladdin-2014/wsj--terry-teachout.json",
-      "bug-2026/wsj--charles-isherwood.json"
+      "hamilton-2015/nytimes--ben-brantley.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "stranger-things-2024/nytimes--houman-barekat.json",
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "1776-2022/nytimes--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-21T13:16:28.247Z",
-  "lastProcessed": "moulin-rouge-2019/wsj--terry-teachout.json",
+  "startTime": "2026-02-21T13:38:08.065Z",
+  "lastProcessed": "1776-2022/nytimes--jesse-green.json",
   "log": [
     {
-      "t": "2026-02-21T13:20:15.423Z",
+      "t": "2026-02-21T13:41:17.049Z",
       "event": "bb-session",
-      "session": "0851f61f",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+      "session": "2d8c3cc5",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-"
     },
     {
-      "t": "2026-02-21T13:20:17.408Z",
+      "t": "2026-02-21T13:41:18.955Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:21:46.562Z",
-      "event": "bb-session",
-      "session": "d55570cf",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-21T13:21:48.628Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:24:21.178Z",
-      "event": "bb-session",
-      "session": "111c38b0",
-      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
-    },
-    {
-      "t": "2026-02-21T13:24:23.227Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:27:33.810Z",
-      "event": "bb-session",
-      "session": "a9e31bef",
-      "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-14389074"
-    },
-    {
-      "t": "2026-02-21T13:27:36.118Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:29:07.557Z",
-      "event": "bb-session",
-      "session": "e5fe4df7",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two"
-    },
-    {
-      "t": "2026-02-21T13:29:09.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:30:56.254Z",
-      "event": "bb-session",
-      "session": "f22fd85f",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
-    },
-    {
-      "t": "2026-02-21T13:30:58.502Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:32:28.652Z",
-      "event": "bb-session",
-      "session": "37c82358",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-02-21T13:32:30.747Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-21T13:35:38.206Z",
-      "event": "bb-session",
-      "session": "7985e9cd",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-21T13:35:40.228Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     }
   ]
 }
