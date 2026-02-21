@@ -323,7 +323,17 @@
     "hairspray-2002/nytimes--unknown.json",
     "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/nytimes--sylviane-gold.json",
-    "illinoise-2024/nytimes--jesse-green.json"
+    "illinoise-2024/nytimes--jesse-green.json",
+    "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+    "la-bete-2010/nytimes--charles-isherwood.json",
+    "les-liaisons-dangereuses-2016/nytimes--matt-wolf.json",
+    "les-miserables-1987/nytimes--charles-isherwood.json",
+    "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+    "next-to-normal-2009/nytimes--ben-brantley.json",
+    "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
+    "once-upon-a-one-more-time-2023/nytimes--maya-phillips.json",
+    "pal-joey-2008/nytimes--jesse-green.json",
+    "pictures-from-home-2023/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -390,7 +400,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/bye-bye-birdie-2009/nytimes--ben-brantley.json",
-      "bye-bye-birdie-2009/nytimes--ben-brantley.json"
+      "bye-bye-birdie-2009/nytimes--ben-brantley.json",
+      "data/review-texts/once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -461,7 +472,7 @@
     ]
   },
   "startTime": "2026-02-20T22:18:49.464Z",
-  "lastProcessed": "illinoise-2024/nytimes--jesse-green.json",
+  "lastProcessed": "pictures-from-home-2023/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-21T00:13:43.534Z",
@@ -471,6 +482,17 @@
     },
     {
       "t": "2026-02-21T00:13:45.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-21T00:16:49.367Z",
+      "event": "bb-session",
+      "session": "86fa9d05",
+      "url": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
+    },
+    {
+      "t": "2026-02-21T00:16:51.574Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
