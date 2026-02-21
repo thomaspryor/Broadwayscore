@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryShowCount, getRushShowCount } from '@/lib/data-lottery';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default function CheapBroadwayTicketsGuide() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lotteryShowCount = getLotteryShowCount();
   const rushShowCount = getRushShowCount();
 

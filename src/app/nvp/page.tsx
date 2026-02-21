@@ -3,7 +3,7 @@
 import { useMemo, useCallback, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
@@ -102,7 +102,7 @@ function NVPPageInner() {
     });
   }, []);
 
-  const allShows = useMemo(() => getAllShows(), []);
+  const allShows = useMemo(() => getBroadwayShows(), []);
 
   // Filter to NVP shows
   const nvpShows = useMemo(() => {
