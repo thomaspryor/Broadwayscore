@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -164,7 +164,7 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
 }
 
 export default function LotteriesPage() {
-  const allShows = getAllShows();
+  const allShows = getBroadwayShows();
   const lastUpdated = getLotteryRushLastUpdated();
 
   // Get shows with lottery data, sorted by lottery price (cheapest first)
