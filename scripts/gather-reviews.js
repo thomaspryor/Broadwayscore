@@ -1551,6 +1551,93 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
 }
 
 /**
+ * Validate BWW roundup reviews for geographic accuracy.
+ * Filters out non-NYC outlets (UK, regional) and rejects entire roundup
+ * if a majority of reviews are from the wrong production/city.
+ *
+ * Two failure modes this catches:
+ * 1. Wrong city: BWW served a London/Chicago/regional roundup for a same-named show
+ * 2. Wrong year: BWW served an older production's roundup (different cast/director)
+ */
+function validateBWWRoundupGeography(reviews, html, showId) {
+  if (reviews.length === 0) return reviews;
+
+  // Load outlet registry for geographic data
+  let outletRegistry = {};
+  try {
+    const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+    outletRegistry = reg.outlets || {};
+  } catch (e) { /* proceed without registry */ }
+
+  // Known non-NYC outlet IDs (UK publications that cover theater)
+  const NON_NYC_OUTLET_IDS = new Set([
+    // UK national
+    'evening-standard', 'thestage', 'stage-uk', 'whatsonstage',
+    'the-times', 'telegraph', 'uk-daily-telegraph', 'the-independent',
+    'independent', 'financial-times', 'the-observer-uk', 'the-spectator',
+    'daily-mail', 'metro-uk', 'time-out-london', 'guardian', 'artsdesk',
+    // BWW-specific UK outlet IDs (BWW uses different slugs than our canonical IDs)
+    'the-guardian-uk', 'the-stage-uk', 'all-that-dazzles-uk',
+    // Chicago-specific
+    'chicagotribune', 'chicago-tribune', 'chicago-reader', 'chicago-sun-times',
+    'third-coast-review', 'daily-herald',
+    // Philadelphia-specific
+    'philadelphia-inquirer', 'philadelphia-edge',
+    // Other regional
+    'la-times', 'sfgate', 'boston-globe', 'boston-herald', 'artsfuse',
+  ]);
+
+  // Also flag outlets with .co.uk domains, region!=nyc in registry, or "uk" in ID
+  function isNonNYCOutlet(outletId) {
+    if (NON_NYC_OUTLET_IDS.has(outletId)) return true;
+    // Catch any outlet with "-uk" suffix (e.g., "the-guardian-uk", "all-that-dazzles-uk")
+    if (outletId.endsWith('-uk')) return true;
+    const entry = outletRegistry[outletId];
+    if (!entry) return false;
+    if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
+    if (entry.domain && entry.domain.endsWith('.co.uk')) return true;
+    return false;
+  }
+
+  // Check each review's outlet
+  let nonNYCCount = 0;
+  const flagged = [];
+  for (const rev of reviews) {
+    if (isNonNYCOutlet(rev.outletId)) {
+      nonNYCCount++;
+      flagged.push(rev.outletId);
+    }
+  }
+
+  // Also check HTML body for strong wrong-production signals
+  const htmlLower = (html || '').toLowerCase();
+  const wrongProductionSignals = [];
+  if (/\bwest end\b/.test(htmlLower) && !/\bbroadway\b/.test(htmlLower)) wrongProductionSignals.push('West End (no Broadway mention)');
+  if (/\blondon production\b/.test(htmlLower)) wrongProductionSignals.push('London production');
+  if (/\bnational tour\b/i.test(htmlLower)) wrongProductionSignals.push('National tour');
+
+  const nonNYCRatio = nonNYCCount / reviews.length;
+
+  // If half or more are non-NYC, reject the ENTIRE roundup (wrong production)
+  if (nonNYCRatio >= 0.5) {
+    console.log(`    ⚠ REJECTING entire BWW roundup: ${nonNYCCount}/${reviews.length} reviews from non-NYC outlets (${flagged.join(', ')})`);
+    if (wrongProductionSignals.length > 0) {
+      console.log(`    ⚠ HTML signals: ${wrongProductionSignals.join(', ')}`);
+    }
+    return [];
+  }
+
+  // If a few non-NYC outlets mixed in, filter them out individually
+  if (nonNYCCount > 0) {
+    const filtered = reviews.filter(rev => !isNonNYCOutlet(rev.outletId));
+    console.log(`    ⚠ Filtered ${nonNYCCount} non-NYC outlets from BWW roundup: ${flagged.join(', ')}`);
+    return filtered;
+  }
+
+  return reviews;
+}
+
+/**
  * Archive aggregator page for future reference
  */
 function archiveAggregatorPage(aggregator, showId, url, html) {
@@ -1948,7 +2035,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
   console.log('\n  === BroadwayWorld Review Roundups ===');
-  const bwwResult = await searchBWWRoundup(show, year);
+  if (isOffBroadway) {
+    console.log('    [SKIP] BWW roundups disabled for off-Broadway (wrong-production risk: roundup URL guessing matches wrong city/year)');
+  }
+  const bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
   if (bwwResult) {
     // Check if the roundup article is about a tour/regional/non-Broadway production.
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
@@ -1959,7 +2049,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
-      const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+      let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+      // Validate geographic accuracy — filter non-NYC outlets, reject if majority are wrong
+      bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId);
       foundReviews.push(...bwwReviews);
       // Archive the page
       archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
