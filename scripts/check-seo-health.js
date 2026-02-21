@@ -464,8 +464,8 @@ function detectAnomalies(currentMetrics, history) {
 
   // Seasonality guard: if 50+ weeks, compare to same-week-last-year
   let seasonallyExpected = false;
-  if (history.length >= 50) {
-    const lastYear = history[history.length - 52] || history[history.length - 50];
+  if (history.length >= 52) {
+    const lastYear = history[history.length - 52];
     if (lastYear) {
       const lastYearClicksDiff = Math.abs(currentMetrics.clicks - lastYear.clicks) / Math.max(lastYear.clicks, 1);
       if (lastYearClicksDiff < 0.3) {
@@ -689,7 +689,9 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('SEO health check failed:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('SEO health check failed:', err);
+    process.exit(1);
+  });
+}
