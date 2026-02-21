@@ -81,7 +81,7 @@ export default function OffBroadwayPage() {
     };
   });
 
-  const scoredCount = serializedShows.filter(s => s.criticScore?.score).length;
+  const scoredCount = serializedShows.filter(s => s.criticScore?.score && (s.criticScore?.reviewCount ?? 0) >= 3).length;
 
   // Compute data freshness from latest review publish date
   const latestReviewDate = shows.reduce((latest, s) => {
