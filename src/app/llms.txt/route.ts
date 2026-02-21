@@ -2,12 +2,12 @@
 // This file helps AI systems understand our site structure
 // See: https://llmstxt.org/
 
-import { getAllShows, getAllBrowseSlugs } from '@/lib/data-core';
+import { getBroadwayShows, getAllBrowseSlugs } from '@/lib/data-core';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export async function GET() {
-  const shows = getAllShows();
+  const shows = getBroadwayShows();
   const browseSlugs = getAllBrowseSlugs();
 
   // Count shows by status
