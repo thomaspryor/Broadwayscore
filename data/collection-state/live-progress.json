@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-02-21T04:07:21.220Z",
+  "updatedAt": "2026-02-21T04:23:42.659Z",
   "processed": 0,
-  "failed": 10,
+  "failed": 20,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 2,
-    "amp": 0,
+    "amp": 4,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
+    "archiveToday": 10,
     "archive": 0
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-02-21T04:00:31.900Z",
-      "event": "bb-session",
-      "session": "d7a746eb",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
     {
       "t": "2026-02-21T04:00:33.906Z",
       "event": "bb-cookie-inject",
@@ -108,6 +102,28 @@
       "t": "2026-02-21T04:06:54.117Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:15:00.825Z",
+      "event": "bb-session",
+      "session": "b557996e",
+      "url": "https://variety.com/2024/legit/reviews/gypsy-broadway-review-audra-mcdonald-1236"
+    },
+    {
+      "t": "2026-02-21T04:15:03.033Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-21T04:19:30.038Z",
+      "event": "bb-session",
+      "session": "7c6559b2",
+      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-t"
+    },
+    {
+      "t": "2026-02-21T04:19:32.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

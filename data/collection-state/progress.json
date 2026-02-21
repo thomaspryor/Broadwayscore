@@ -10,7 +10,17 @@
     "all-my-sons-2008/washpost--peter-marks.json",
     "all-my-sons-2019/washpost--peter-marks.json",
     "american-buffalo-2022/washpost--peter-marks.json",
-    "american-psycho-2016/washpost--peter-marks.json"
+    "american-psycho-2016/washpost--peter-marks.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "back-to-the-future-2023/variety--charles-isherwood.json",
+    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
+    "flying-over-sunset-2021/variety--marilyn-stasio.json",
+    "gypsy-2024/variety--aramide-tinubu.json",
+    "heartbreak-house-2006/variety--charles-isherwood.json",
+    "irving-berlins-white-christmas-2009/variety--david-rooney.json",
+    "left-on-tenth-2024/variety--aramide-tinubu.json",
+    "lend-me-a-tenor-2010/variety--marilyn-stasio.json",
+    "life-of-pi-2023/variety--aramide-tinubu.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -18,7 +28,12 @@
       "cat-on-a-hot-tin-roof-2008/vulture--scott-brown.json",
       "come-from-away-2017/vulture--jesse-green.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/heartbreak-house-2006/variety--charles-isherwood.json",
+      "heartbreak-house-2006/variety--charles-isherwood.json",
+      "data/review-texts/lend-me-a-tenor-2010/variety--marilyn-stasio.json",
+      "lend-me-a-tenor-2010/variety--marilyn-stasio.json"
+    ],
     "browserbase": [],
     "directCookies": [
       "grey-house-2023/newyorker--dan-stahl.json"
@@ -34,12 +49,13 @@
       "data/review-texts/a-view-from-the-bridge-2015/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2008/washpost--peter-marks.json",
       "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
-      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json"
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/gypsy-2024/variety--aramide-tinubu.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-21T04:00:15.406Z",
-  "lastProcessed": "american-psycho-2016/washpost--peter-marks.json",
+  "lastProcessed": "life-of-pi-2023/variety--aramide-tinubu.json",
   "log": [
     {
       "t": "2026-02-21T04:00:31.900Z",
@@ -134,6 +150,28 @@
       "t": "2026-02-21T04:06:54.117Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-21T04:15:00.825Z",
+      "event": "bb-session",
+      "session": "b557996e",
+      "url": "https://variety.com/2024/legit/reviews/gypsy-broadway-review-audra-mcdonald-1236"
+    },
+    {
+      "t": "2026-02-21T04:15:03.033Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-21T04:19:30.038Z",
+      "event": "bb-session",
+      "session": "7c6559b2",
+      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-t"
+    },
+    {
+      "t": "2026-02-21T04:19:32.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
