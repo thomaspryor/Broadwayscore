@@ -319,7 +319,7 @@ export function generateShowFAQSchema(show: ComputedShow) {
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
       answer: `${show.title} has a CriticScore of ${score}/100 based on ${reviewCount} professional reviews. ${
-        score >= 85 ? 'This is considered a "Critical Gold" show.' :
+        score >= 83 ? 'This is considered a "Critical Gold" show.' :
         score >= 75 ? 'This is a "Recommended" show.' :
         score >= 65 ? 'This is rated "Worth Seeing".' :
         score >= 55 ? 'This show is rated "Skippable".' :

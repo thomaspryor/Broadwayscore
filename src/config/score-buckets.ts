@@ -27,7 +27,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     id: 'must-see',
     label: 'Critical Gold',
     shortLabel: 'Critical Gold',
-    minScore: 85,
+    minScore: 83,
     maxScore: 100,
     color: 'text-amber-400',      // Gold
     bgColor: 'bg-amber-400/20',
@@ -38,7 +38,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     label: 'Recommended',
     shortLabel: 'Recommended',
     minScore: 75,
-    maxScore: 84,
+    maxScore: 82,
     color: 'text-emerald-400',    // Green
     bgColor: 'bg-emerald-400/20',
     description: 'Strong choice—most people will have a great time.',
@@ -163,7 +163,7 @@ export function hasEnoughReviews(reviewCount: number, category?: string): boolea
 // ===========================================
 
 export const CRITIC_LABEL_THRESHOLDS = {
-  Rave: 85,
+  Rave: 83,
   Positive: 70,
   Mixed: 50,
   Negative: 0,

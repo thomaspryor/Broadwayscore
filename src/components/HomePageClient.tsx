@@ -299,12 +299,12 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
         {/* Score overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && score >= 85 && (
+            {score !== undefined && score !== null && score >= 83 && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
               score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-              score >= 85 ? 'score-must-see' :
+              score >= 83 ? 'score-must-see' :
               score >= 75 ? 'score-great' :
               score >= 65 ? 'score-good' :
               score >= 55 ? 'score-tepid' :
@@ -739,7 +739,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           label="SORT:"
           options={[
             { value: 'recent' as SortParam, label: 'NEWEST' },
-            { value: 'score_desc' as SortParam, label: 'HIGHEST' },
+            { value: 'score_desc' as SortParam, label: 'CRITICS' },
             { value: 'audience_buzz' as SortParam, label: 'AUDIENCE' },
             { value: 'alpha' as SortParam, label: 'A-Z' },
           ]}
