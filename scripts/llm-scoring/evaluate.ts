@@ -104,7 +104,7 @@ function loadEvaluationCandidates(): EvaluationExample[] {
   const humanScoreMap = new Map<string, ReviewEntry>();
   for (const r of humanReviews) {
     // Key by showId + outlet (normalized)
-    const key = `${r.showId}::${r.outlet.toLowerCase().replace(/\s+/g, '')}`;
+    const key = `${r.showId}::${(r.outlet || '').toLowerCase().replace(/\s+/g, '')}`;
     humanScoreMap.set(key, r);
   }
 
@@ -139,7 +139,7 @@ function loadEvaluationCandidates(): EvaluationExample[] {
         }
 
         // Find matching human score
-        const key = `${content.showId}::${content.outlet.toLowerCase().replace(/\s+/g, '')}`;
+        const key = `${content.showId}::${(content.outlet || '').toLowerCase().replace(/\s+/g, '')}`;
         const humanReview = humanScoreMap.get(key);
 
         if (!humanReview || !humanReview.assignedScore) {

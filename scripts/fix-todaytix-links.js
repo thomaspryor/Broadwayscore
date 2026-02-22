@@ -8,8 +8,8 @@
  * 3. For broken links on closed shows: removes the stale link
  * 4. Detects wrong-show redirects by comparing <title> content
  *
- * TodayTix API: api.todaytix.com/api/v2/shows?query=NAME&location=1 (NYC)
- * URL pattern: todaytix.com/nyc/shows/{id}-{slug}
+ * TodayTix API: api.todaytix.com/api/v2/shows?query=NAME&location=1 (NYC) or location=2 (London)
+ * URL pattern: todaytix.com/nyc/shows/{id}-{slug} or todaytix.com/london/shows/{id}-{slug}
  *
  * Usage: node scripts/fix-todaytix-links.js [--dry-run]
  */
@@ -20,7 +20,15 @@ const https = require('https');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const TODAYTIX_NYC_LOCATION = 1;
+
+// Market-aware TodayTix configuration
+function getTodayTixConfig(show) {
+  const isWestEnd = show.category === 'west-end';
+  return {
+    location: isWestEnd ? 2 : 1,
+    city: isWestEnd ? 'london' : 'nyc',
+  };
+}
 
 function httpRequest(url, method = 'GET', options = {}) {
   return new Promise((resolve, reject) => {
@@ -71,8 +79,8 @@ function normalizeShowName(name) {
     .trim();
 }
 
-function buildTodayTixUrl(id, slug) {
-  return `https://www.todaytix.com/nyc/shows/${id}-${slug}`;
+function buildTodayTixUrl(id, slug, city = 'nyc') {
+  return `https://www.todaytix.com/${city}/shows/${id}-${slug}`;
 }
 
 /**
@@ -105,9 +113,9 @@ async function getPageTitle(url) {
 /**
  * Search TodayTix API for a show by name. Returns { id, slug, displayName } or null.
  */
-async function searchTodayTixApi(showTitle) {
+async function searchTodayTixApi(showTitle, location = 1) {
   const query = encodeURIComponent(showTitle);
-  const apiUrl = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${TODAYTIX_NYC_LOCATION}`;
+  const apiUrl = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${location}`;
 
   try {
     const result = await httpRequest(apiUrl, 'GET');
@@ -237,11 +245,12 @@ async function main() {
     }
 
     // For open/preview shows, search the TodayTix API for the correct URL
-    console.log('  Searching TodayTix API...');
-    const apiResult = await searchTodayTixApi(show.title);
+    const ttConfig = getTodayTixConfig(show);
+    console.log(`  Searching TodayTix API (${ttConfig.city})...`);
+    const apiResult = await searchTodayTixApi(show.title, ttConfig.location);
 
     if (apiResult) {
-      const newUrl = buildTodayTixUrl(apiResult.id, apiResult.slug);
+      const newUrl = buildTodayTixUrl(apiResult.id, apiResult.slug, ttConfig.city);
 
       // Verify the new URL actually works
       const verifyStatus = await checkUrl(newUrl);

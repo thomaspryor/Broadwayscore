@@ -503,9 +503,10 @@ function normalizeTitle(title) {
 }
 
 // Fetch a page of shows from TodayTix REST API (no auth required)
-function fetchTodayTixApiPage(offset = 0, limit = 100) {
+// location=1 for NYC, location=2 for London
+function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
   return new Promise((resolve, reject) => {
-    const url = `https://api.todaytix.com/api/v2/shows?location=1&limit=${limit}&offset=${offset}`;
+    const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
 
     https.get(url, (response) => {
       if (response.statusCode !== 200) {
@@ -527,29 +528,34 @@ function fetchTodayTixApiPage(offset = 0, limit = 100) {
   });
 }
 
-// Fetch all active NYC shows from TodayTix API and build a lookup map
+// Fetch all active shows from TodayTix API (NYC + London) and build a lookup map
 // Returns { normalizedTitle: { id, displayName, square, poster, hero, ... } }
 async function fetchAllTodayTixShows() {
   console.log('\nFetching active shows from TodayTix API...');
   const allShows = [];
-  let offset = 0;
-  const limit = 100;
 
-  while (true) {
-    const response = await fetchTodayTixApiPage(offset, limit);
-    if (!response.data || response.data.length === 0) break;
+  // Fetch both NYC (location=1) and London (location=2)
+  for (const loc of [1, 2]) {
+    const market = loc === 1 ? 'NYC' : 'London';
+    let offset = 0;
+    const limit = 100;
 
-    allShows.push(...response.data);
-    const total = response.pagination?.total || '?';
-    console.log(`   Fetched ${allShows.length}/${total} shows...`);
+    while (true) {
+      const response = await fetchTodayTixApiPage(offset, limit, loc);
+      if (!response.data || response.data.length === 0) break;
 
-    if (allShows.length >= (response.pagination?.total || 0)) break;
+      allShows.push(...response.data);
+      const total = response.pagination?.total || '?';
+      console.log(`   Fetched ${allShows.length} shows (${market}: ${offset + response.data.length}/${total})...`);
 
-    offset += limit;
-    await sleep(500);
+      if (offset + response.data.length >= (response.pagination?.total || 0)) break;
+
+      offset += limit;
+      await sleep(500);
+    }
   }
 
-  console.log(`   Found ${allShows.length} active shows from API\n`);
+  console.log(`   Found ${allShows.length} active shows from API (NYC + London)\n`);
 
   // Extract URL from API image field (each field is an object: { file: { url: "//..." }, title })
   // and fix protocol-relative URLs (API returns //images.ctfassets.net/...)

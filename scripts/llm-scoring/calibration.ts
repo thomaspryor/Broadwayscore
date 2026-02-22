@@ -73,7 +73,7 @@ function loadLLMScoredReviews(): ScoredReviewFile[] {
  * Normalize strings for matching
  */
 function normalize(s: string): string {
-  return s
+  return (s || '')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '')
     .trim();

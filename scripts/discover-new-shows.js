@@ -5,7 +5,7 @@
  * Discovers new Broadway shows using TodayTix API (primary) with
  * Broadway.org scraping as fallback.
  *
- * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway]
+ * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway] [--include-west-end]
  */
 
 const fs = require('fs');
@@ -25,6 +25,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json')
 
 const dryRun = process.argv.includes('--dry-run');
 const includeOffBroadway = process.argv.includes('--include-off-broadway');
+const includeWestEnd = process.argv.includes('--include-west-end');
 
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
@@ -134,6 +135,88 @@ async function fetchShowsFromTodayTix() {
   return showsList;
 }
 
+// TodayTix London API - location=2 for London West End
+function fetchTodayTixLondonPage(offset = 0, limit = 100) {
+  return new Promise((resolve, reject) => {
+    const url = `https://api.todaytix.com/api/v2/shows?location=2&limit=${limit}&offset=${offset}`;
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`TodayTix London API HTTP ${response.statusCode}`));
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch { reject(new Error('Failed to parse TodayTix London API response')); }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+async function fetchShowsFromTodayTixLondon() {
+  console.log('Fetching West End shows from TodayTix London API...');
+  const allShows = [];
+  let offset = 0;
+  const limit = 100;
+
+  while (true) {
+    const response = await fetchTodayTixLondonPage(offset, limit);
+    if (!response.data || response.data.length === 0) break;
+    allShows.push(...response.data);
+    if (allShows.length >= (response.pagination?.total || 0)) break;
+    offset += limit;
+  }
+
+  // Filter to West End shows (subcategory "West End")
+  const westEndShows = allShows.filter(s =>
+    s.subcategories?.some(sc =>
+      sc.name === 'West End' || sc.name === 'Broadway' // TodayTix sometimes uses "Broadway" for WE musicals
+    )
+  );
+
+  // Filter out non-theater content
+  const nonTheaterPatterns = [
+    'comedy club', 'comedy night', 'stand-up', 'standup',
+    'magic show', 'bubble show',
+    'orchestra', 'symphony', 'philharmonic', 'chamber music',
+    'selected shorts', 'book club', 'in conversation with',
+    'dance company', 'ballet', 'circus',
+    'in concert', 'concert performance',
+    'dining experience', 'candlelight', 'by candlelight',
+    'discovering dinosaurs', 'prehistoric planet',
+    'classic penguins', // comedy fringe acts
+  ];
+  // Solo performer names (no show title) — likely concerts not theater
+  const soloPerformerPattern = /^[A-Z][a-z]+ [A-Z][a-z]+$/; // "FirstName LastName" only
+
+  const seen = new Set();
+  const showsList = [];
+  for (const show of westEndShows) {
+    const title = (show.displayName || show.name || '').trim();
+    if (!title || title.length < 3 || seen.has(title)) continue;
+
+    const titleLower = title.toLowerCase();
+    if (nonTheaterPatterns.some(p => titleLower.includes(p))) continue;
+    // Skip likely solo concerts (just a person's name)
+    if (soloPerformerPattern.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
+
+    seen.add(title);
+    showsList.push({
+      title,
+      venue: show.venue?.name || 'TBA',
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: show.startDate || null,
+      closingDate: show.endDate === 'null' ? null : show.endDate || null,
+      category: 'west-end',
+    });
+  }
+
+  console.log(`TodayTix London API: ${allShows.length} total London shows, ${westEndShows.length} West End-tagged, ${showsList.length} unique`);
+  return showsList;
+}
+
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   return data;
@@ -237,7 +320,7 @@ async function fetchShowsFromBroadwayOrg() {
 
 async function discoverShows() {
   console.log('='.repeat(60));
-  console.log('BROADWAY SHOW DISCOVERY');
+  console.log(includeWestEnd ? 'BROADWAY + WEST END SHOW DISCOVERY' : 'BROADWAY SHOW DISCOVERY');
   console.log('='.repeat(60));
   console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
   console.log('');
@@ -273,6 +356,18 @@ async function discoverShows() {
     }
   }
   console.log('');
+
+  // West End discovery via TodayTix London API
+  if (includeWestEnd) {
+    try {
+      const westEndShows = await fetchShowsFromTodayTixLondon();
+      console.log(`Found ${westEndShows.length} West End shows via TodayTix London API`);
+      discoveredShows.push(...westEndShows);
+    } catch (e) {
+      console.log(`⚠️  TodayTix London API failed (${e.message}), skipping West End discovery`);
+    }
+    console.log('');
+  }
 
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
@@ -312,21 +407,30 @@ async function discoverShows() {
     const idYear = openingDate ? openingDate.split('-')[0] : new Date().getFullYear();
     const slug = slugify(show.title);
 
+    // West End shows get a "-west-end-YEAR" suffix to distinguish from Broadway productions
+    const showId = show.category === 'west-end'
+      ? `${slug}-west-end-${idYear}`
+      : `${slug}-${idYear}`;
+
     newShows.push({
       ...show,
       slug: slug,
-      id: `${slug}-${idYear}`,
+      id: showId,
       openingDate,
       closingDate,
     });
   }
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
-  // Skip off-Broadway shows — IBDB only covers Broadway
-  const broadwayNewShows = newShows.filter(s => s.category !== 'off-broadway');
+  // Skip off-Broadway and West End shows — IBDB only covers Broadway
+  const broadwayNewShows = newShows.filter(s => s.category !== 'off-broadway' && s.category !== 'west-end');
   const offBroadwayNewShows = newShows.filter(s => s.category === 'off-broadway');
+  const westEndNewShows = newShows.filter(s => s.category === 'west-end');
   if (offBroadwayNewShows.length > 0) {
     console.log(`⏭️  Skipping IBDB enrichment for ${offBroadwayNewShows.length} off-Broadway shows (IBDB is Broadway-only)`);
+  }
+  if (westEndNewShows.length > 0) {
+    console.log(`⏭️  Skipping IBDB enrichment for ${westEndNewShows.length} West End shows (IBDB is Broadway-only)`);
   }
   if (broadwayNewShows.length > 0) {
     console.log('');
@@ -516,9 +620,11 @@ async function discoverShows() {
         creativeTeam: show.creativeTeam || [],
       };
 
-      // Set category for off-broadway shows
+      // Set category for non-Broadway shows
       if (show.category === 'off-broadway') {
         showEntry.category = 'off-broadway';
+      } else if (show.category === 'west-end') {
+        showEntry.category = 'west-end';
       }
 
       data.shows.push(showEntry);
@@ -553,6 +659,9 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `new_shows_count=${newShows.length}\n`);
     fs.appendFileSync(outputFile, `new_shows=${newShows.map(s => s.title).join(', ')}\n`);
     fs.appendFileSync(outputFile, `new_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    // WE-specific output for downstream triggers
+    const weNewShows = newShows.filter(s => s.category === 'west-end');
+    fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
   return { newShows, count: newShows.length };
