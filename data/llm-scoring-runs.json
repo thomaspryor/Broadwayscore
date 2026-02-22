@@ -614701,53 +614701,53 @@
     ]
   },
   {
-    "startedAt": "2026-02-22T19:19:08.159Z",
-    "completedAt": "2026-02-22T21:07:52.130Z",
+    "startedAt": "2026-02-22T19:19:18.179Z",
+    "completedAt": "2026-02-22T21:11:29.576Z",
     "totalReviews": 29650,
-    "processed": 76,
+    "processed": 81,
     "skipped": 28638,
     "errors": 0,
     "tokensUsed": {
-      "input": 756777,
-      "output": 21565,
-      "total": 1778530
+      "input": 794511,
+      "output": 22540,
+      "total": 1818248
     },
     "errorDetails": [],
     "calibration": {
       "count": 16838,
-      "mae": 0.85,
-      "rmse": 3.65,
-      "meanBias": -0.19,
-      "stdDev": 3.64,
+      "mae": 0.86,
+      "rmse": 3.7,
+      "meanBias": -0.2,
+      "stdDev": 3.69,
       "bucketAccuracy": 93.2,
       "byConfidence": {
         "high": {
-          "count": 8672,
+          "count": 8677,
           "mae": 0.74
         },
         "medium": {
-          "count": 7847,
+          "count": 7842,
           "mae": 0.9
         },
         "low": {
           "count": 319,
-          "mae": 3.03
+          "mae": 3.43
         }
       },
       "byTier": {
         "tier1": {
           "count": 2098,
           "mae": 0.48,
-          "meanBias": 0.07
+          "meanBias": 0.06
         },
         "tier2": {
           "count": 2043,
-          "mae": 3.15,
-          "meanBias": -1.74
+          "mae": 3.17,
+          "meanBias": -1.76
         },
         "tier3": {
           "count": 12697,
-          "mae": 0.55,
+          "mae": 0.56,
           "meanBias": 0.01
         }
       },
@@ -614758,7 +614758,7 @@
         },
         "The New York Times": {
           "count": 626,
-          "meanBias": 0.16293929712460065
+          "meanBias": 0.17891373801916932
         },
         "Theater Life": {
           "count": 411,
@@ -614766,11 +614766,11 @@
         },
         "TheaterMania": {
           "count": 465,
-          "meanBias": 0.07741935483870968
+          "meanBias": 0.15483870967741936
         },
         "The Wall Street Journal": {
           "count": 394,
-          "meanBias": -0.04568527918781726
+          "meanBias": -0.04060913705583756
         },
         "Associated Press": {
           "count": 280,
@@ -614802,19 +614802,19 @@
         },
         "The Daily Beast": {
           "count": 235,
-          "meanBias": -0.07234042553191489
+          "meanBias": -0.08936170212765958
         },
         "Deadline": {
           "count": 312,
-          "meanBias": 0.21794871794871795
+          "meanBias": 0.21153846153846154
         },
         "Entertainment Weekly": {
           "count": 463,
-          "meanBias": -6.779697624190065
+          "meanBias": -6.76889848812095
         },
         "Front Row Center": {
           "count": 166,
-          "meanBias": -0.024096385542168676
+          "meanBias": 0
         },
         "The Guardian": {
           "count": 208,
@@ -614822,7 +614822,7 @@
         },
         "Lighting & Sound America": {
           "count": 207,
-          "meanBias": 0.01932367149758454
+          "meanBias": 0.00966183574879227
         },
         "The New York Sun": {
           "count": 24,
@@ -614830,27 +614830,27 @@
         },
         "The New Yorker": {
           "count": 83,
-          "meanBias": -0.4578313253012048
+          "meanBias": -0.5542168674698795
         },
         "New York Stage Review": {
           "count": 488,
-          "meanBias": -0.4364754098360656
+          "meanBias": -0.5307377049180327
         },
         "New York Theater": {
           "count": 223,
-          "meanBias": -0.07623318385650224
+          "meanBias": -0.04932735426008968
         },
         "New York Theatre Guide": {
           "count": 217,
-          "meanBias": 0.06912442396313365
+          "meanBias": 0.05069124423963134
         },
         "Talkin' Broadway": {
           "count": 307,
-          "meanBias": -0.05211726384364821
+          "meanBias": -0.05863192182410423
         },
         "Theater Scene": {
           "count": 287,
-          "meanBias": -0.03484320557491289
+          "meanBias": 0.027874564459930314
         },
         "TheWrap": {
           "count": 116,
@@ -614858,11 +614858,11 @@
         },
         "Time Out New York": {
           "count": 348,
-          "meanBias": 0.2672413793103448
+          "meanBias": 0.1724137931034483
         },
         "Variety": {
           "count": 681,
-          "meanBias": 0.01762114537444934
+          "meanBias": 0.004405286343612335
         },
         "The Village Voice": {
           "count": 9,
@@ -614870,7 +614870,7 @@
         },
         "Vulture": {
           "count": 458,
-          "meanBias": 0.15938864628820962
+          "meanBias": 0.21615720524017468
         },
         "The Washington Post": {
           "count": 260,
@@ -614902,11 +614902,11 @@
         },
         "New York Daily News": {
           "count": 385,
-          "meanBias": 0.3168831168831169
+          "meanBias": 0.3116883116883117
         },
         "The Wrap": {
           "count": 238,
-          "meanBias": 0.02100840336134454
+          "meanBias": 0.1092436974789916
         },
         "Backstage": {
           "count": 129,
@@ -614922,7 +614922,7 @@
         },
         "USA Today": {
           "count": 289,
-          "meanBias": -0.8373702422145328
+          "meanBias": -0.8235294117647058
         },
         "AM New York": {
           "count": 54,
@@ -614930,7 +614930,7 @@
         },
         "BroadwayWorld": {
           "count": 153,
-          "meanBias": -0.12418300653594772
+          "meanBias": -0.09803921568627451
         },
         "NBC New York": {
           "count": 138,
@@ -614942,11 +614942,11 @@
         },
         "Time Out": {
           "count": 103,
-          "meanBias": 0.24271844660194175
+          "meanBias": 0.30097087378640774
         },
         "AMNY (Matt Windman)": {
           "count": 15,
-          "meanBias": 0
+          "meanBias": -0.06666666666666667
         },
         "Did They Like It": {
           "count": 42,
@@ -614974,7 +614974,7 @@
         },
         "Theatrely": {
           "count": 147,
-          "meanBias": 0.3197278911564626
+          "meanBias": 0.32653061224489793
         },
         "Washington Post": {
           "count": 77,
@@ -614994,7 +614994,7 @@
         },
         "New York": {
           "count": 15,
-          "meanBias": 1.2666666666666666
+          "meanBias": 0
         },
         "nytheatre.com": {
           "count": 20,
@@ -615006,7 +615006,7 @@
         },
         "On Off Broadway": {
           "count": 17,
-          "meanBias": -0.058823529411764705
+          "meanBias": 0
         },
         "Village Voice": {
           "count": 109,
@@ -615018,11 +615018,11 @@
         },
         "Broadway & Me": {
           "count": 23,
-          "meanBias": -0.043478260869565216
+          "meanBias": 0
         },
         "CurtainUp": {
           "count": 128,
-          "meanBias": -0.1640625
+          "meanBias": -0.2109375
         },
         "Exeunt Magazine": {
           "count": 82,
@@ -615054,7 +615054,7 @@
         },
         "The Stage": {
           "count": 106,
-          "meanBias": 0.1792452830188679
+          "meanBias": -0.02830188679245283
         },
         "Theater Pizzazz": {
           "count": 139,
@@ -615070,7 +615070,7 @@
         },
         "Wolf Entertainment Guide": {
           "count": 51,
-          "meanBias": 0
+          "meanBias": -0.0392156862745098
         },
         "Woman Around Town": {
           "count": 27,
@@ -615082,7 +615082,7 @@
         },
         "Huffington Post": {
           "count": 60,
-          "meanBias": 0.16666666666666666
+          "meanBias": 0.13333333333333333
         },
         "Guardian": {
           "count": 33,
@@ -615098,7 +615098,7 @@
         },
         "HuffPost": {
           "count": 62,
-          "meanBias": 0
+          "meanBias": 0.016129032258064516
         },
         "Los Angeles Times": {
           "count": 53,
@@ -615158,7 +615158,7 @@
         },
         "theatre-arts-daily": {
           "count": 3,
-          "meanBias": 0.3333333333333333
+          "meanBias": 0
         },
         "theatre-reviews-by-john-clum": {
           "count": 7,
@@ -615170,7 +615170,7 @@
         },
         "This Week in New York": {
           "count": 37,
-          "meanBias": -0.08108108108108109
+          "meanBias": 0
         },
         "WNBC": {
           "count": 7,
@@ -615190,7 +615190,7 @@
         },
         "Bloomberg": {
           "count": 56,
-          "meanBias": -1.1428571428571428
+          "meanBias": -1.6071428571428572
         },
         "Bob's Theater Blog": {
           "count": 27,
@@ -615214,7 +615214,7 @@
         },
         "The Independent": {
           "count": 28,
-          "meanBias": 0.42857142857142855
+          "meanBias": 0.39285714285714285
         },
         "Bergen Record": {
           "count": 76,
@@ -615230,11 +615230,11 @@
         },
         "The Telegraph": {
           "count": 54,
-          "meanBias": 0.1111111111111111
+          "meanBias": 0
         },
         "amNY": {
           "count": 100,
-          "meanBias": 0.7
+          "meanBias": 0.71
         },
         "Theater News Online": {
           "count": 39,
@@ -615298,11 +615298,11 @@
         },
         "chicago-splash": {
           "count": 2,
-          "meanBias": 0
+          "meanBias": -13
         },
         "chicago-stage-standard": {
           "count": 2,
-          "meanBias": 1.5
+          "meanBias": 0
         },
         "Milwaukee Journal Sentinel": {
           "count": 2,
@@ -615330,7 +615330,7 @@
         },
         "Time": {
           "count": 14,
-          "meanBias": 0.21428571428571427
+          "meanBias": 0.14285714285714285
         },
         "UInterview": {
           "count": 5,
@@ -615338,7 +615338,7 @@
         },
         "Front Mezz Junkies": {
           "count": 92,
-          "meanBias": 0.05434782608695652
+          "meanBias": 0
         },
         "adriandimanlig": {
           "count": 7,
@@ -615370,7 +615370,7 @@
         },
         "Everything Theatre (UK)": {
           "count": 2,
-          "meanBias": 3
+          "meanBias": 0
         },
         "London Theatre": {
           "count": 28,
@@ -615382,7 +615382,7 @@
         },
         "Time Out London": {
           "count": 22,
-          "meanBias": 1.3636363636363635
+          "meanBias": 0.8181818181818182
         },
         "WhatsOnStage": {
           "count": 29,
@@ -615486,7 +615486,7 @@
         },
         "Gotham Playgoer": {
           "count": 35,
-          "meanBias": -0.42857142857142855
+          "meanBias": -0.45714285714285713
         },
         "melindasmalarky": {
           "count": 13,
@@ -615518,7 +615518,7 @@
         },
         "pittsburgh-post-gazette": {
           "count": 2,
-          "meanBias": -10.5
+          "meanBias": 0
         },
         "Roy Berko": {
           "count": 2,
@@ -615534,7 +615534,7 @@
         },
         "The Interested Bystander": {
           "count": 19,
-          "meanBias": 0.7894736842105263
+          "meanBias": 0
         },
         "Slant": {
           "count": 3,
@@ -615618,7 +615618,7 @@
         },
         "Theatre Bee (UK)": {
           "count": 3,
-          "meanBias": 0
+          "meanBias": 1.3333333333333333
         },
         "Cabaret Scenes": {
           "count": 18,
@@ -615970,7 +615970,7 @@
         },
         "Theatre Weekly (UK)": {
           "count": 10,
-          "meanBias": -0.4
+          "meanBias": -0.2
         },
         "royberkinfo": {
           "count": 2,
@@ -616725,8 +616725,8 @@
         "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
         "ourDistribution": {
           "up": 12,
-          "flat": 2,
-          "down": 12,
+          "flat": 3,
+          "down": 11,
           "total": 32
         },
         "dtliDistribution": {
@@ -617078,8 +617078,8 @@
         "showId": "amazing-grace-2015",
         "ourDistribution": {
           "up": 27,
-          "flat": 27,
-          "down": 24,
+          "flat": 26,
+          "down": 25,
           "total": 79
         },
         "dtliDistribution": {
@@ -617089,7 +617089,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 70% (ours: 30%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 68% (ours: 32%, theirs: 100%)"
       },
       {
         "showId": "amelie-a-new-musical-2017",
@@ -617195,8 +617195,8 @@
         "showId": "an-ark-2026",
         "ourDistribution": {
           "up": 2,
-          "flat": 2,
-          "down": 3,
+          "flat": 1,
+          "down": 4,
           "total": 8
         },
         "hasDisagreement": false
@@ -617743,8 +617743,8 @@
       {
         "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
         "ourDistribution": {
-          "up": 20,
-          "flat": 12,
+          "up": 21,
+          "flat": 11,
           "down": 3,
           "total": 36
         },
@@ -617755,7 +617755,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "bernhardthamlet-2018",
@@ -618558,8 +618558,8 @@
       {
         "showId": "carousel-2018",
         "ourDistribution": {
-          "up": 44,
-          "flat": 13,
+          "up": 43,
+          "flat": 14,
           "down": 8,
           "total": 66
         },
@@ -618570,7 +618570,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 33% (ours: 67%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 32% (ours: 65%, theirs: 33%)"
       },
       {
         "showId": "casa-valentina-2014",
@@ -618705,7 +618705,7 @@
         "showId": "charlie-and-the-chocolate-factory-2017",
         "ourDistribution": {
           "up": 14,
-          "flat": 3,
+          "flat": 2,
           "down": 30,
           "total": 60
         },
@@ -619202,9 +619202,9 @@
       {
         "showId": "data-2026",
         "ourDistribution": {
-          "up": 10,
+          "up": 9,
           "flat": 3,
-          "down": 4,
+          "down": 5,
           "total": 17
         },
         "hasDisagreement": false
@@ -620512,8 +620512,8 @@
       {
         "showId": "good-people-2011",
         "ourDistribution": {
-          "up": 18,
-          "flat": 3,
+          "up": 17,
+          "flat": 4,
           "down": 0,
           "total": 21
         },
@@ -620946,8 +620946,8 @@
       {
         "showId": "hate-radio-2026",
         "ourDistribution": {
-          "up": 0,
-          "flat": 1,
+          "up": 1,
+          "flat": 0,
           "down": 1,
           "total": 2
         },
@@ -622449,8 +622449,8 @@
         "showId": "lombardi-2010",
         "ourDistribution": {
           "up": 14,
-          "flat": 10,
-          "down": 12,
+          "flat": 11,
+          "down": 11,
           "total": 36
         },
         "dtliDistribution": {
@@ -622460,7 +622460,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "long-days-journey-into-night-2016",
@@ -622848,8 +622848,8 @@
       {
         "showId": "masquerade-2025",
         "ourDistribution": {
-          "up": 6,
-          "flat": 1,
+          "up": 5,
+          "flat": 2,
           "down": 2,
           "total": 9
         },
@@ -623224,8 +623224,8 @@
       {
         "showId": "moulin-rouge-the-musical-west-end-2021",
         "ourDistribution": {
-          "up": 44,
-          "flat": 14,
+          "up": 45,
+          "flat": 13,
           "down": 10,
           "total": 68
         },
@@ -623545,8 +623545,8 @@
       {
         "showId": "oh-mary-2024",
         "ourDistribution": {
-          "up": 42,
-          "flat": 2,
+          "up": 41,
+          "flat": 3,
           "down": 0,
           "total": 44
         },
@@ -623567,8 +623567,8 @@
       {
         "showId": "oh-mary-west-end-2025",
         "ourDistribution": {
-          "up": 11,
-          "flat": 0,
+          "up": 10,
+          "flat": 1,
           "down": 5,
           "total": 16
         },
@@ -623577,8 +623577,8 @@
       {
         "showId": "ohio-state-murders-2022",
         "ourDistribution": {
-          "up": 33,
-          "flat": 8,
+          "up": 32,
+          "flat": 9,
           "down": 2,
           "total": 43
         },
@@ -623773,8 +623773,8 @@
         "showId": "once-upon-a-one-more-time-2023",
         "ourDistribution": {
           "up": 19,
-          "flat": 17,
-          "down": 13,
+          "flat": 16,
+          "down": 14,
           "total": 49
         },
         "dtliDistribution": {
@@ -623790,7 +623790,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "one-man-two-guvnors-2012",
@@ -624603,8 +624603,8 @@
         "showId": "race-2009",
         "ourDistribution": {
           "up": 11,
-          "flat": 11,
-          "down": 6,
+          "flat": 10,
+          "down": 7,
           "total": 28
         },
         "dtliDistribution": {
@@ -624614,7 +624614,7 @@
           "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 45% (ours: 21%, theirs: 67%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 42% (ours: 25%, theirs: 67%)"
       },
       {
         "showId": "radio-golf-2007",
@@ -624755,8 +624755,8 @@
         "showId": "redwood-2025",
         "ourDistribution": {
           "up": 11,
-          "flat": 15,
-          "down": 11,
+          "flat": 16,
+          "down": 10,
           "total": 37
         },
         "dtliDistribution": {
@@ -624772,7 +624772,7 @@
           "total": 17
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 41% (ours: 41%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 43% (ours: 43%, theirs: 0%)"
       },
       {
         "showId": "relatively-speaking-2011",
@@ -626527,8 +626527,8 @@
       {
         "showId": "the-dinosaurs-2026",
         "ourDistribution": {
-          "up": 1,
-          "flat": 5,
+          "up": 0,
+          "flat": 6,
           "down": 2,
           "total": 8
         },
@@ -626539,7 +626539,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Flat thumbs differ by 63% (ours: 63%, theirs: 0%)"
+        "disagreementDetails": "BWW: Flat thumbs differ by 75% (ours: 75%, theirs: 0%)"
       },
       {
         "showId": "the-disappear-2026",
@@ -626572,8 +626572,8 @@
         "showId": "the-elephant-man-2014",
         "ourDistribution": {
           "up": 17,
-          "flat": 4,
-          "down": 2,
+          "flat": 6,
+          "down": 0,
           "total": 23
         },
         "dtliDistribution": {
@@ -626933,8 +626933,8 @@
       {
         "showId": "the-importance-of-being-earnest-2011",
         "ourDistribution": {
-          "up": 16,
-          "flat": 2,
+          "up": 17,
+          "flat": 1,
           "down": 0,
           "total": 18
         },
@@ -627772,7 +627772,7 @@
       {
         "showId": "the-prom-2018",
         "ourDistribution": {
-          "up": 42,
+          "up": 41,
           "flat": 2,
           "down": 7,
           "total": 62
@@ -627784,7 +627784,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 32% (ours: 68%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 34% (ours: 66%, theirs: 100%)"
       },
       {
         "showId": "the-real-thing-2014",
@@ -627844,8 +627844,8 @@
         "showId": "the-road-to-mecca-2012",
         "ourDistribution": {
           "up": 7,
-          "flat": 4,
-          "down": 6,
+          "flat": 3,
+          "down": 7,
           "total": 17
         },
         "dtliDistribution": {
@@ -628022,7 +628022,7 @@
         "showId": "the-snow-geese-2013",
         "ourDistribution": {
           "up": 2,
-          "flat": 0,
+          "flat": 1,
           "down": 12,
           "total": 21
         },
