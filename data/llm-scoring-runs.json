@@ -1,35 +1,5 @@
 [
   {
-    "startedAt": "2026-02-01T19:56:52.766Z",
-    "completedAt": "2026-02-01T20:15:49.345Z",
-    "totalReviews": 4428,
-    "processed": 225,
-    "skipped": 4200,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 591217,
-      "output": 69183,
-      "total": 660400
-    },
-    "errorDetails": [
-      {
-        "showId": "liberation-2025",
-        "outletId": "unknown",
-        "error": "Failed to parse response JSON"
-      },
-      {
-        "showId": "liberation-2025",
-        "outletId": "unknown",
-        "error": "Failed to parse response JSON"
-      },
-      {
-        "showId": "suffs-2024",
-        "outletId": "the-times",
-        "error": "Failed to parse response JSON"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-02-01T20:57:16.496Z",
     "completedAt": "2026-02-01T21:02:39.672Z",
     "totalReviews": 2299,
@@ -545035,5 +545005,19 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-02-22T01:33:44.110Z",
+    "completedAt": "2026-02-22T01:44:43.347Z",
+    "totalReviews": 24485,
+    "processed": 0,
+    "skipped": 24277,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 93453,
+      "output": 1757,
+      "total": 213517
+    },
+    "errorDetails": []
   }
 ]
