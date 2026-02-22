@@ -1,7 +1,7 @@
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
   mustSee: {
-    label: 'Must-See',
+    label: 'Critical Gold',
     tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
     range: '85-100',
     color: '#DAA520',
@@ -91,8 +91,8 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     );
   }
 
-  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway)
-  const minReviews = category === 'off-broadway' ? 3 : 5;
+  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End)
+  const minReviews = (category === 'off-broadway' || category === 'west-end') ? 3 : 5;
   if (reviewCount !== undefined && reviewCount < minReviews) {
     return (
       <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
@@ -115,7 +115,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
 
   if (roundedScore >= 85) {
     colorClass = 'score-must-see';
-    label = 'Must-See';
+    label = 'Critical Gold';
   } else if (roundedScore >= 75) {
     colorClass = 'score-great';
     label = 'Recommended';

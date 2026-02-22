@@ -254,9 +254,8 @@ export function generateItemListSchema(items: {
 
       // Event status
       if (item.status) {
-        event.eventStatus = item.status === 'open' || item.status === 'previews' || item.status === 'upcoming'
-          ? 'https://schema.org/EventScheduled'
-          : 'https://schema.org/EventCancelled';
+        // Closed shows completed their run — they weren't cancelled
+        event.eventStatus = 'https://schema.org/EventScheduled';
         event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
       }
 
@@ -320,7 +319,7 @@ export function generateShowFAQSchema(show: ComputedShow) {
     faqs.push({
       question: `What is the critic score for ${show.title}?`,
       answer: `${show.title} has a critic score of ${score}/100 based on ${reviewCount} professional reviews. ${
-        score >= 85 ? 'This is considered a "Must-See" show.' :
+        score >= 85 ? 'This is considered a "Critical Gold" show.' :
         score >= 75 ? 'This is a "Recommended" show.' :
         score >= 65 ? 'This is rated "Worth Seeing".' :
         score >= 55 ? 'This show is rated "Skippable".' :
