@@ -58,7 +58,7 @@ export default function ComparePage() {
             Broadway Show Comparisons
           </h1>
           <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
-            Can&apos;t decide between two shows? Compare critic scores, runtime, ticket prices,
+            Can&apos;t decide between two shows? Compare CriticScore ratings, runtime, ticket prices,
             and lottery availability side by side to find the perfect show for you.
           </p>
         </div>
