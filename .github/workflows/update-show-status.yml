@@ -28,6 +28,7 @@ jobs:
       new_slugs: ${{ steps.discover.outputs.new_slugs }}
       opened_count: ${{ steps.status-update.outputs.opened_count }}
       opened_slugs: ${{ steps.status-update.outputs.opened_slugs }}
+      we_new_count: ${{ steps.discover-we.outputs.we_new_count }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,14 +59,25 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/update-show-status.js
 
-      # Step 2: Discover new shows (unless skipped)
-      - name: Discover new shows
+      # Step 2: Discover new Broadway shows (unless skipped)
+      - name: Discover new Broadway shows
         id: discover
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/discover-new-shows.js
+
+      # Step 2b: Discover new West End shows
+      - name: Discover new West End shows
+        id: discover-we
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: |
+          node scripts/discover-west-end-shows.js
+          # Count new WE shows by comparing shows.json before/after
+          WE_NEW=$(git diff data/shows.json | grep '+.*"category": "west-end"' | wc -l | tr -d ' ')
+          echo "we_new_count=$WE_NEW" >> $GITHUB_OUTPUT
+          echo "Discovered $WE_NEW new West End shows"
 
       # Step 3: Validate data before committing
       - name: Validate data
@@ -397,6 +409,29 @@ jobs:
               } catch (e) {
                 console.log(`Cast backfill trigger failed for ${slug}:`, e.message);
               }
+            }
+
+      - name: Trigger WE outlet-based SERP collection for new WE shows
+        if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger outlet-based SERP collection for new West End shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'collect-outlet-reviews.yml',
+                ref: 'main',
+                inputs: {
+                  market: 'west-end',
+                  max_tier: '2',
+                  max_searches: '200'
+                }
+              });
+              console.log('Triggered WE outlet-based SERP collection');
+            } catch (e) {
+              console.log('WE outlet SERP trigger failed:', e.message);
             }
 
       - name: Trigger social media post for opened shows
