@@ -81,7 +81,8 @@
     "maybe-happy-ending-2024/nytimes--unknown.json",
     "the-monsters-2026/nytimes--brittani-samuel.json",
     "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
-    "the-producers-west-end-2025/evening-standard--nick-curtis.json"
+    "the-producers-west-end-2025/evening-standard--nick-curtis.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1081,7 +1082,16 @@
     "hells-kitchen-2024/nytimes--unknown.json",
     "hells-kitchen-2024/vulture--helen-shaw.json",
     "hells-kitchen-2024/vulture--unknown.json",
-    "masquerade-2025/nyt-theater--jonathan-mandell.json"
+    "masquerade-2025/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1211,7 +1221,8 @@
       "bye-bye-birdie-2009/nytimes--ben-brantley.json",
       "maybe-happy-ending-2024/theatermania--adam-feldman.json",
       "gypsy-2024/variety--aramide-tinubu.json",
-      "illinoise-2024/hollywood-reporter--angie-han.json"
+      "illinoise-2024/hollywood-reporter--angie-han.json",
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1628,7 +1639,7 @@
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "masquerade-2025/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "1776-2022/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -1746,6 +1757,17 @@
       "t": "2026-02-22T02:59:26.013Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T16:55:59.290Z",
+      "event": "bb-session",
+      "session": "d8e7b4ac",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-02-22T16:56:01.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

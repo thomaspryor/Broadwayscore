@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-22T16:40:52.738Z",
-  "processed": 82,
-  "failed": 998,
+  "updatedAt": "2026-02-22T16:56:35.034Z",
+  "processed": 83,
+  "failed": 1007,
   "successRate": "7.6%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 95,
     "browserbase": 1,
-    "directCookies": 4,
+    "directCookies": 5,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 332,
     "archive": 50
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-02-22T01:21:33.173Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T01:31:14.528Z",
-      "event": "bb-session",
-      "session": "e6f5b4ac",
-      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
-    },
     {
       "t": "2026-02-22T01:44:34.206Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "t": "2026-02-22T02:59:26.013Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T16:55:59.290Z",
+      "event": "bb-session",
+      "session": "d8e7b4ac",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-02-22T16:56:01.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
