@@ -53,18 +53,16 @@ const DUAL_MARKET_OUTLETS = new Set([
 ]);
 // Also allow all Tier 1/2 outlets — they legitimately review West End shows
 // The cross-market guard targets Tier 3 / untiered regional US outlets (Fayetteville Flyer, etc.)
+// Uses outlet-registry.json tiers (not scoring.ts — registry IDs match review-text file IDs)
 const TIER_1_2_OUTLET_IDS = new Set();
-try {
-  // Read scoring.ts tier config to get known Tier 1/2 outlet IDs
-  const scoringPath = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
-  const scoringText = fs.readFileSync(scoringPath, 'utf8');
-  // Extract outlet IDs from OUTLET_TIERS that are tier 1 or 2
-  const tierRegex = /'([A-Z0-9_-]+)':\s*\{\s*tier:\s*([12])/g;
-  let match;
-  while ((match = tierRegex.exec(scoringText)) !== null) {
-    TIER_1_2_OUTLET_IDS.add(match[1].toLowerCase());
+for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+  if (info.tier === 1 || info.tier === 2) {
+    TIER_1_2_OUTLET_IDS.add(id);
+    if (info.aliases) {
+      for (const alias of info.aliases) TIER_1_2_OUTLET_IDS.add(alias.toLowerCase());
+    }
   }
-} catch (e) { /* scoring.ts not found — dual-market set is the fallback */ }
+}
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
