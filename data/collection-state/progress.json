@@ -1,50 +1,44 @@
 {
   "processed": [
-    "seagull-true-story-2026/nyt-theater--jonathan-mandell.json",
-    "seagull-true-story-2026/vulture--unknown.json",
-    "seagull-true-story-2026/the-queer-review-james-kleinmann--james-kleinmann.json",
-    "seagull-true-story-2026/theatermania--christian-lewis.json",
-    "seagull-true-story-2026/thewrap--robert-hofler.json",
-    "seagull-true-story-2026/nysr--frank-scheck.json",
-    "seagull-true-story-2026/queerty--matthew-wexler.json"
+    "hamlet-2026/nytg--amelia-merrill.json",
+    "hamlet-2026/vulture--sara-holdren.json",
+    "hamlet-2026/theatermania--zachary-stewart.json",
+    "hamlet-2026/timeout--raven-snook.json",
+    "hamlet-2026/cititour--brian-scott-lipton.json",
+    "hamlet-2026/bnn-breaking-hadeel-hashem--hadeel-hashem.json",
+    "hamlet-2026/dc-theater-arts--deb-miller.json",
+    "hamlet-2026/nysr--david-finkle.json",
+    "hamlet-2026/telegraph--diane-snyder.json"
   ],
   "failed": [
-    "seagull-true-story-2026/nytimes--jesse-green.json",
-    "seagull-true-story-2026/observer--david-cote.json",
-    "seagull-true-story-2026/cititour--brian-scott-lipton.json",
-    "seagull-true-story-2026/josh-at-the-movies-josh-batchelder--josh-batchelder.json",
-    "seagull-true-story-2026/talkinbroadway--james-wilson.json"
+    "hamlet-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "seagull-true-story-2026/nyt-theater--jonathan-mandell.json",
-      "seagull-true-story-2026/the-queer-review-james-kleinmann--james-kleinmann.json",
-      "seagull-true-story-2026/theatermania--christian-lewis.json",
-      "seagull-true-story-2026/nysr--frank-scheck.json",
-      "seagull-true-story-2026/queerty--matthew-wexler.json"
+      "hamlet-2026/nytg--amelia-merrill.json",
+      "hamlet-2026/theatermania--zachary-stewart.json",
+      "hamlet-2026/bnn-breaking-hadeel-hashem--hadeel-hashem.json",
+      "hamlet-2026/dc-theater-arts--deb-miller.json",
+      "hamlet-2026/nysr--david-finkle.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/seagull-true-story-2026/thewrap--robert-hofler.json",
-      "seagull-true-story-2026/thewrap--robert-hofler.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hamlet-2026/cititour--brian-scott-lipton.json",
+      "hamlet-2026/telegraph--diane-snyder.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hamlet-2026/here--unknown.json"
+    ],
     "archive": [
-      "seagull-true-story-2026/vulture--unknown.json"
+      "hamlet-2026/vulture--sara-holdren.json",
+      "hamlet-2026/timeout--raven-snook.json"
     ]
   },
-  "startTime": "2026-02-22T23:27:08.002Z",
-  "lastProcessed": "seagull-true-story-2026/talkinbroadway--james-wilson.json",
-  "log": [
-    {
-      "t": "2026-02-22T23:28:05.916Z",
-      "event": "bb-session",
-      "session": "441876d1",
-      "url": "https://www.thewrap.com/the-seagull-woodstock-ny-off-broadway-review-parker-pose"
-    }
-  ]
+  "startTime": "2026-02-22T23:27:19.245Z",
+  "lastProcessed": "hamlet-2026/telegraph--diane-snyder.json",
+  "log": []
 }
