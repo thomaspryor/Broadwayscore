@@ -32,6 +32,25 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
+// Load outlet registry for cross-market guard
+const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+const outletRegionMap = {};  // outletId -> region (e.g., 'london')
+for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+  if (info.region) outletRegionMap[id] = info.region;
+  // Also map aliases to the same region
+  if (info.aliases && info.region) {
+    for (const alias of info.aliases) {
+      outletRegionMap[alias] = info.region;
+    }
+  }
+}
+// Dual-market outlets that legitimately cover both Broadway and West End
+const DUAL_MARKET_OUTLETS = new Set([
+  'guardian', 'financialtimes', 'variety', 'stage-uk',
+  // Include common aliases
+  'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
+]);
+
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
 
@@ -1036,7 +1055,15 @@ function getBestScore(data) {
   // Ratings like "4/5 stars", "B+", "★★★★☆" come from the aggregator or scraper
   // and are more reliable than regex extraction from fullText, which can match
   // garbage sidebar content or unrelated embedded articles.
-  if (data.originalScore) {
+  //
+  // EXCEPTION: For West End shows, ShowScore originalScores are downgraded to P1 level
+  // because ShowScore WE ratings haven't been validated and are known to inflate
+  // (e.g., reporting 5/5 when actual review was 4/5). LLM scores take priority.
+  const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+  const isWestEnd = data._showCategory === 'west-end';
+  const downgradeShowScore = isShowScoreSource && isWestEnd;
+
+  if (data.originalScore && !downgradeShowScore) {
     // Skip low-confidence originalScores — these are often misreads from page templates
     // (e.g., "1/5" from a star icon in a sidebar, "D" from a page element)
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon') {
@@ -1205,6 +1232,16 @@ function getBestScore(data) {
     }
   }
 
+  // P4b: Downgraded ShowScore originalScore fallback (WE shows only)
+  // ShowScore star ratings for WE are used as fallback when no LLM/explicit score exists
+  if (downgradeShowScore && data.originalScore) {
+    const parsed = parseOriginalScore(data.originalScore, data.outletId);
+    if (parsed !== null) {
+      stats.showScoreDowngradedFallback = (stats.showScoreDowngradedFallback || 0) + 1;
+      return { score: parsed, source: 'originalScore-showscore-downgraded' };
+    }
+  }
+
   // P5: Bucket mapping
   if (data.bucket && BUCKET_TO_SCORE[data.bucket]) {
     return { score: BUCKET_TO_SCORE[data.bucket], source: 'bucket' };
@@ -1256,6 +1293,7 @@ const showDateMap = {};
 const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
+const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
@@ -1263,6 +1301,7 @@ for (const s of showsData.shows) {
   if (s.closingDate && s.status === 'closed') showClosingDateMap[s.id] = new Date(s.closingDate);
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
+  showCategoryMap[s.id] = s.category || 'broadway';
   showCreativeTeamIndex[s.id] = new Set();
   if (s.creativeTeam) {
     for (const m of s.creativeTeam) {
@@ -1547,6 +1586,21 @@ showDirs.forEach(showId => {
       if (data.fabricatedEntry === true) {
         stats.skippedFabricated = (stats.skippedFabricated || 0) + 1;
         return;
+      }
+
+      // Cross-market guard: skip reviews where outlet market doesn't match show market
+      // e.g., US-only outlets (Fayetteville Flyer) should not score West End shows
+      const showCategory = showCategoryMap[showId] || 'broadway';
+      const rawOutlet = (data.outletId || data.outlet || '').toLowerCase();
+      const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
+      if (showCategory === 'west-end' && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
+        const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
+        if (outletRegion !== 'london') {
+          stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+          if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
+          return;
+        }
       }
 
       // Skip pre-opening reviews (published before show opened — wrong production)
@@ -1969,6 +2023,9 @@ showDirs.forEach(showId => {
         });
       }
 
+      // Inject show category for market-aware scoring decisions
+      data._showCategory = showCategoryMap[showId] || 'broadway';
+
       // Get best score - returns null if no valid score
       const scoreResult = getBestScore(data);
 
@@ -2311,6 +2368,8 @@ const output = {
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       skippedFabricated: stats.skippedFabricated || 0,
+      skippedCrossMarket: stats.skippedCrossMarket || 0,
+      showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
     }
@@ -2421,6 +2480,15 @@ console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (fabricated entry): ${stats.skippedFabricated || 0}`);
+console.log(`  Skipped (cross-market outlet): ${stats.skippedCrossMarket || 0}`);
+if (stats.showScoreDowngradedFallback > 0) {
+  console.log(`  ShowScore downgraded to fallback (WE): ${stats.showScoreDowngradedFallback}`);
+}
+if (stats.crossMarketDetails && stats.crossMarketDetails.length > 0) {
+  console.log(`  Cross-market details (first 10):`);
+  stats.crossMarketDetails.slice(0, 10).forEach(d => console.log(`    ${d.showId} | ${d.outlet} | ${d.file}`));
+  if (stats.crossMarketDetails.length > 10) console.log(`    ... and ${stats.crossMarketDetails.length - 10} more`);
+}
 console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
