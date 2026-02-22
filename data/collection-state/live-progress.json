@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-02-22T21:43:08.274Z",
-  "processed": 39,
-  "failed": 141,
-  "successRate": "21.7%",
+  "updatedAt": "2026-02-22T21:43:41.961Z",
+  "processed": 61,
+  "failed": 379,
+  "successRate": "13.9%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 13,
+    "playwright": 29,
+    "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 20
+    "archiveToday": 3,
+    "archive": 32
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-22T21:16:11.725Z",
+      "event": "bb-session",
+      "session": "161b8df3",
+      "url": "http://www.amny.com/entertainment/stage/broadway/am-frank1108,0,7779612.story"
+    },
+    {
+      "t": "2026-02-22T21:16:13.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-02-22T21:20:11.707Z",
+      "event": "bb-session",
+      "session": "3f52cf99",
+      "url": "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-iv"
+    },
+    {
+      "t": "2026-02-22T21:20:13.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-02-22T21:29:33.116Z",
+      "event": "bb-session",
+      "session": "9662671d",
+      "url": "https://www.amny.com/entertainment/"
+    },
+    {
+      "t": "2026-02-22T21:29:35.249Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    }
+  ]
 }
