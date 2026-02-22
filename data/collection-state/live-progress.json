@@ -1,130 +1,41 @@
 {
-  "updatedAt": "2026-02-22T18:57:24.064Z",
-  "processed": 158,
-  "failed": 1539,
-  "successRate": "9.3%",
+  "updatedAt": "2026-02-22T21:27:57.217Z",
+  "processed": 56,
+  "failed": 304,
+  "successRate": "15.6%",
   "tierBreakdown": {
-    "playwright": 67,
-    "amp": 98,
-    "browserbase": 1,
-    "directCookies": 11,
-    "scrapingbee": 28,
+    "playwright": 27,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 348,
-    "archive": 71
+    "archiveToday": 2,
+    "archive": 29
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-22T01:21:33.173Z",
+      "t": "2026-02-22T21:16:11.725Z",
+      "event": "bb-session",
+      "session": "161b8df3",
+      "url": "http://www.amny.com/entertainment/stage/broadway/am-frank1108,0,7779612.story"
+    },
+    {
+      "t": "2026-02-22T21:16:13.897Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "amny.com"
     },
     {
-      "t": "2026-02-22T01:31:14.528Z",
+      "t": "2026-02-22T21:20:11.707Z",
       "event": "bb-session",
-      "session": "e6f5b4ac",
-      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+      "session": "3f52cf99",
+      "url": "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-iv"
     },
     {
-      "t": "2026-02-22T01:44:34.206Z",
-      "event": "bb-session",
-      "session": "3dbb2104",
-      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
-    },
-    {
-      "t": "2026-02-22T01:44:36.792Z",
+      "t": "2026-02-22T21:20:13.883Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-22T01:45:26.001Z",
-      "event": "bb-session",
-      "session": "915d27d7",
-      "url": "http://www.nytimes.com/2005/10/03/theater/reviews/03perf.html?_r=0"
-    },
-    {
-      "t": "2026-02-22T01:45:28.373Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T01:49:56.501Z",
-      "event": "bb-session",
-      "session": "d18400eb",
-      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
-    },
-    {
-      "t": "2026-02-22T02:02:36.907Z",
-      "event": "bb-session",
-      "session": "b1508eef",
-      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
-    },
-    {
-      "t": "2026-02-22T02:13:44.300Z",
-      "event": "bb-session",
-      "session": "833fedab",
-      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
-    },
-    {
-      "t": "2026-02-22T02:13:46.416Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-22T02:42:56.893Z",
-      "event": "bb-session",
-      "session": "eded4a89",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-02-22T02:42:59.296Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-22T02:46:07.662Z",
-      "event": "bb-session",
-      "session": "d678768a",
-      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html"
-    },
-    {
-      "t": "2026-02-22T02:46:10.082Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:56:49.289Z",
-      "event": "bb-session",
-      "session": "52139296",
-      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
-    },
-    {
-      "t": "2026-02-22T02:56:51.685Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:58:05.030Z",
-      "event": "bb-session",
-      "session": "5eb1b604",
-      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
-    },
-    {
-      "t": "2026-02-22T02:58:07.146Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:59:23.613Z",
-      "event": "bb-session",
-      "session": "66f65eaa",
-      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
-    },
-    {
-      "t": "2026-02-22T02:59:26.013Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "amny.com"
     }
   ]
 }
