@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
-import { getBroadwayDuration } from '@/lib/date-utils';
+import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -158,7 +158,12 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           {show.status === 'previews' || show.status === 'upcoming' ? (
             <>Opens {formatOpeningDate(show.openingDate)}</>
           ) : show.status === 'closed' ? (
-            <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
+            <span className="text-orange-400">{(() => {
+              const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', 'Off-Broadway');
+              if (runLen) return `Closed after ${runLen}`;
+              if (show.closingDate) return `Closed ${formatOpeningDate(show.closingDate)}`;
+              return 'Closed';
+            })()}</span>
           ) : (
             <>
               {getBroadwayDuration(show.openingDate, 'Off-Broadway')}
