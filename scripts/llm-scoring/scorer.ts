@@ -158,7 +158,7 @@ export class ReviewScorer {
     this.client = new Anthropic({ apiKey });
     this.options = {
       model: options.model || 'claude-sonnet-4-20250514',
-      maxRetries: options.maxRetries ?? 3,
+      maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false
     };
   }
@@ -219,21 +219,18 @@ export class ReviewScorer {
       } catch (error: any) {
         lastError = error.message || String(error);
 
-        // Handle rate limiting with exponential backoff
-        if (error.status === 429) {
-          const waitTime = Math.pow(2, attempt) * 1000;
-          if (this.options.verbose) {
-            console.log(`  Rate limited. Waiting ${waitTime / 1000}s...`);
-          }
-          await new Promise(r => setTimeout(r, waitTime));
-        } else if (error.status >= 500) {
-          // Server error - retry with backoff
-          const waitTime = Math.pow(2, attempt) * 500;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else {
-          // Other error - don't retry
-          break;
+        // Retry all errors with backoff (rate limits, spending limits, server errors, network errors)
+        const isRateLimit = error.status === 429;
+        const isServerError = error.status >= 500;
+        const waitTime = isRateLimit
+          ? Math.pow(2, attempt) * 1000          // 429: 2s, 4s, 8s, 16s, 32s
+          : isServerError
+            ? Math.pow(2, attempt) * 500          // 5xx: 1s, 2s, 4s, 8s, 16s
+            : Math.pow(2, attempt) * 15000;       // spending limit/other: 30s, 60s, 120s, 240s, 480s
+        if (this.options.verbose) {
+          console.log(`  Error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
+        await new Promise(r => setTimeout(r, waitTime));
       }
     }
 
@@ -388,18 +385,18 @@ export class ReviewScorer {
       } catch (error: any) {
         lastError = error.message || String(error);
 
-        if (error.status === 429) {
-          const waitTime = Math.pow(2, attempt) * 1000;
-          if (this.options.verbose) {
-            console.log(`  Rate limited. Waiting ${waitTime / 1000}s...`);
-          }
-          await new Promise(r => setTimeout(r, waitTime));
-        } else if (error.status >= 500) {
-          const waitTime = Math.pow(2, attempt) * 500;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else {
-          break;
+        // Retry all errors with backoff (rate limits, spending limits, server errors, network errors)
+        const isRateLimit = error.status === 429;
+        const isServerError = error.status >= 500;
+        const waitTime = isRateLimit
+          ? Math.pow(2, attempt) * 1000
+          : isServerError
+            ? Math.pow(2, attempt) * 500
+            : Math.pow(2, attempt) * 15000;
+        if (this.options.verbose) {
+          console.log(`  Claude error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
+        await new Promise(r => setTimeout(r, waitTime));
       }
     }
 
