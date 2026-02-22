@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-02-22T17:18:04.657Z",
-  "processed": 90,
-  "failed": 1162,
-  "successRate": "7.2%",
+  "updatedAt": "2026-02-22T17:20:42.399Z",
+  "processed": 92,
+  "failed": 1170,
+  "successRate": "7.3%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 95,
     "browserbase": 1,
-    "directCookies": 6,
+    "directCookies": 7,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 333,
-    "archive": 56
+    "archive": 57
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-02-22T01:49:56.501Z",
-      "event": "bb-session",
-      "session": "d18400eb",
-      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
-    },
-    {
-      "t": "2026-02-22T02:02:36.907Z",
-      "event": "bb-session",
-      "session": "b1508eef",
-      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
-    },
     {
       "t": "2026-02-22T02:13:44.300Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-02-22T17:02:50.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:20:18.236Z",
+      "event": "bb-session",
+      "session": "2cfda85c",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/cost-of-living-10-17-22"
+    },
+    {
+      "t": "2026-02-22T17:20:20.615Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
