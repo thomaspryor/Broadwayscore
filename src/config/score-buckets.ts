@@ -25,8 +25,8 @@ export interface ScoreBucketConfig {
 export const SCORE_BUCKETS: ScoreBucketConfig[] = [
   {
     id: 'must-see',
-    label: 'Must-See',
-    shortLabel: 'Must-See',
+    label: 'Critical Gold',
+    shortLabel: 'Critical Gold',
     minScore: 85,
     maxScore: 100,
     color: 'text-amber-400',      // Gold

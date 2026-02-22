@@ -1801,6 +1801,175 @@ function validateCastFiles(shows) {
 }
 
 // ===========================================
+// TONY NOMINATIONS VALIDATION
+// ===========================================
+
+function validateTonyData(shows) {
+  info('Checking Tony nominations data...');
+
+  const TONY_FILE = path.join(DATA_DIR, 'tony-nominations.json');
+  const AWARDS_FILE = path.join(DATA_DIR, 'awards.json');
+
+  // 1. tony-nominations.json exists and parses
+  if (!fs.existsSync(TONY_FILE)) {
+    warn('tony-nominations.json not found — skipping Tony validation');
+    return;
+  }
+  if (!fs.existsSync(AWARDS_FILE)) {
+    warn('awards.json not found — skipping Tony validation');
+    return;
+  }
+
+  let tonyData, awardsData;
+  try {
+    tonyData = JSON.parse(fs.readFileSync(TONY_FILE, 'utf8'));
+  } catch (e) {
+    error(`tony-nominations.json: invalid JSON — ${e.message}`);
+    return;
+  }
+  try {
+    awardsData = JSON.parse(fs.readFileSync(AWARDS_FILE, 'utf8'));
+  } catch (e) {
+    error(`awards.json: invalid JSON — ${e.message}`);
+    return;
+  }
+
+  const noms = tonyData.nominations || [];
+  ok(`tony-nominations.json: ${noms.length} nominations parsed`);
+
+  // 2. Coverage threshold
+  const expectedShows = Object.keys(awardsData.shows).filter(id => {
+    const show = awardsData.shows[id];
+    return show.tony && show.tony.nominations > 0;
+  });
+  const actualShows = new Set(noms.filter(n => n.name !== '(show-level)').map(n => n.showId));
+  const coverageRatio = actualShows.size / expectedShows.length;
+
+  if (coverageRatio < 0.90) {
+    error(`Tony coverage: ${actualShows.size}/${expectedShows.length} shows (${(coverageRatio * 100).toFixed(1)}%) — below 90% threshold`);
+  } else {
+    ok(`Tony coverage: ${actualShows.size}/${expectedShows.length} shows (${(coverageRatio * 100).toFixed(1)}%)`);
+  }
+
+  // 3. Zero-data gap check for shows with expected >= 3 noms
+  const nomsByShow = new Map();
+  for (const n of noms) {
+    if (n.name === '(show-level)') continue;
+    nomsByShow.set(n.showId, (nomsByShow.get(n.showId) || 0) + 1);
+  }
+
+  const bigGaps = [];
+  for (const id of expectedShows) {
+    const expected = awardsData.shows[id].tony.nominations;
+    const actual = nomsByShow.get(id) || 0;
+    if (expected >= 3 && actual === 0) {
+      bigGaps.push({ id, expected });
+    }
+  }
+
+  if (bigGaps.length > 10) {
+    error(`Tony: ${bigGaps.length} shows with expected >= 3 noms but 0 person-level data: ${bigGaps.slice(0, 5).map(g => g.id).join(', ')}...`);
+  } else if (bigGaps.length > 0) {
+    warn(`Tony: ${bigGaps.length} shows with expected >= 3 noms but 0 person-level data: ${bigGaps.map(g => g.id).join(', ')}`);
+  } else {
+    ok('Tony: no large gaps (all shows with 3+ expected noms have person-level data)');
+  }
+
+  // 4. Duplicate detection
+  const seen = new Set();
+  let dupeCount = 0;
+  for (const n of noms) {
+    const key = `${n.showId}|${n.category}|${n.ibdbPersonId}`;
+    if (seen.has(key)) dupeCount++;
+    seen.add(key);
+  }
+
+  if (dupeCount > 0) {
+    error(`Tony: ${dupeCount} duplicate entries (same showId|category|ibdbPersonId)`);
+  } else {
+    ok('Tony: no duplicate entries');
+  }
+
+  // 5. Category whitelist
+  const KNOWN_CATEGORIES = new Set([
+    'Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play',
+    'Best Book of a Musical', 'Best Original Score',
+    'Best Actor in a Musical', 'Best Actress in a Musical',
+    'Best Actor in a Play', 'Best Actress in a Play',
+    'Best Featured Actor in a Musical', 'Best Featured Actress in a Musical',
+    'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
+    'Best Direction of a Musical', 'Best Direction of a Play',
+    'Best Choreography', 'Best Orchestrations',
+    'Best Scenic Design of a Musical', 'Best Scenic Design of a Play', 'Best Scenic Design',
+    'Best Costume Design of a Musical', 'Best Costume Design of a Play', 'Best Costume Design',
+    'Best Lighting Design of a Musical', 'Best Lighting Design of a Play', 'Best Lighting Design',
+    'Best Sound Design of a Musical', 'Best Sound Design of a Play', 'Best Sound Design',
+  ]);
+
+  const unknownCats = new Set();
+  for (const n of noms) {
+    if (!KNOWN_CATEGORIES.has(n.category)) unknownCats.add(n.category);
+  }
+  if (unknownCats.size > 0) {
+    warn(`Tony: ${unknownCats.size} unknown categories: ${[...unknownCats].join(', ')}`);
+  } else {
+    ok('Tony: all categories match whitelist');
+  }
+
+  // 6. Regression detection against baseline
+  if (baseline && baseline.tonyNominations) {
+    const minNoms = Math.floor(baseline.tonyNominations * 0.90);
+    if (noms.length < minNoms) {
+      error(`Tony regression: ${noms.length} nominations (baseline: ${baseline.tonyNominations}, min allowed: ${minNoms} = -10%)`);
+    } else {
+      ok(`Tony regression check: ${noms.length} nominations (baseline: ${baseline.tonyNominations}, min: ${minNoms})`);
+    }
+  } else {
+    info('No Tony baseline yet — will set on next successful validation');
+  }
+
+  // 7. Season-year sanity check
+  const showsById = new Map(shows.map(s => [s.id, s]));
+  let yearMismatches = 0;
+  for (const n of noms) {
+    if (!n.season || n.name === '(show-level)') continue;
+    const show = showsById.get(n.showId);
+    if (!show || !show.openingDate) continue;
+    const openingYear = parseInt(show.openingDate.substring(0, 4));
+    const seasonYear = parseInt(n.season.substring(0, 4));
+    if (Math.abs(seasonYear - openingYear) > 2) {
+      yearMismatches++;
+    }
+  }
+  if (yearMismatches > 0) {
+    warn(`Tony: ${yearMismatches} nominations where season year differs from opening year by >2 years`);
+  } else {
+    ok('Tony: season-year sanity check passed');
+  }
+
+  // Write coverage gaps audit file
+  try {
+    const gapsFile = path.join(DATA_DIR, 'audit', 'tony-coverage-gaps.json');
+    const allGaps = [];
+    for (const id of expectedShows) {
+      const expected = awardsData.shows[id].tony.nominations;
+      const actual = nomsByShow.get(id) || 0;
+      if (actual < expected) {
+        allGaps.push({ showId: id, expected, actual, reason: actual === 0 ? 'no-data' : 'partial' });
+      }
+    }
+    const auditDir = path.dirname(gapsFile);
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    fs.writeFileSync(gapsFile, JSON.stringify(allGaps, null, 2) + '\n');
+    ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+  } catch (e) {
+    warn(`Failed to write Tony coverage gaps: ${e.message}`);
+  }
+
+  return { totalNominations: noms.length, totalWins: noms.filter(n => n.won).length };
+}
+
+// ===========================================
 // AGGREGATOR ARCHIVES VALIDATION
 // ===========================================
 
@@ -1994,6 +2163,8 @@ function runValidation() {
   console.log('');
   validateCastFiles(shows);
   console.log('');
+  const tonyResult = validateTonyData(shows);
+  console.log('');
   validateActorImages();
   console.log('');
   validateAggregatorArchives(shows);
@@ -2016,6 +2187,8 @@ function runValidation() {
     totalShows: shows.length,
     openShows: openShows.length,
     totalReviews: reviewCount,
+    tonyNominations: tonyResult?.totalNominations || null,
+    tonyWins: tonyResult?.totalWins || null,
     updatedAt: new Date().toISOString().split('T')[0],
   };
   try {
