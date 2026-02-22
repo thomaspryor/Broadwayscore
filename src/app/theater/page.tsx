@@ -15,7 +15,7 @@ function getWikimediaThumbUrl(originalUrl: string, width: number): string {
 
 export const metadata: Metadata = {
   title: 'Broadway Theaters - All NYC Theater Venues',
-  description: 'Browse all Broadway theaters in New York City. See what shows are currently playing at each venue with critic scores and reviews.',
+  description: 'Browse all Broadway theaters in New York City. See what shows are currently playing at each venue with CriticScore ratings and reviews.',
   alternates: {
     canonical: `${BASE_URL}/theater`,
   },

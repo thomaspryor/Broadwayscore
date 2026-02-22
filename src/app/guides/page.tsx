@@ -7,7 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Broadway Guides - Expert-Curated Show Recommendations',
-  description: 'Expert guides to Broadway shows: best musicals, plays, family-friendly picks, discount tickets, and more. Updated monthly with critic scores and editorial insights.',
+  description: 'Expert guides to Broadway shows: best musicals, plays, family-friendly picks, discount tickets, and more. Updated monthly with CriticScore ratings and editorial insights.',
   alternates: { canonical: `${BASE_URL}/guides` },
   openGraph: {
     title: 'Broadway Guides - Expert-Curated Show Recommendations',

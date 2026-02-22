@@ -492,7 +492,7 @@ async function generateHomeOG(posters: string[]) {
                 lineHeight: 1.4,
               }}
             >
-              Aggregated critic scores for every Broadway show
+              CriticScore ratings for every Broadway show
             </div>
 
             <div
