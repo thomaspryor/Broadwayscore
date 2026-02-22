@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-02-22T22:14:14.156Z",
-  "processed": 138,
-  "failed": 460,
-  "successRate": "23.1%",
+  "updatedAt": "2026-02-22T22:15:37.425Z",
+  "processed": 156,
+  "failed": 214,
+  "successRate": "42.2%",
   "tierBreakdown": {
-    "playwright": 78,
-    "amp": 0,
+    "playwright": 110,
+    "amp": 13,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "directCookies": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 60
+    "archive": 41
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-22T21:50:29.543Z",
+      "event": "bb-session",
+      "session": "8f5fe376",
+      "url": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_97186.html"
+    },
+    {
+      "t": "2026-02-22T21:50:31.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-22T21:55:49.654Z",
+      "event": "bb-session",
+      "session": "4da926b5",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
+    },
+    {
+      "t": "2026-02-22T21:55:51.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-22T21:57:53.581Z",
+      "event": "bb-session",
+      "session": "5bb4976f",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.h"
+    },
+    {
+      "t": "2026-02-22T21:57:55.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    }
+  ]
 }
