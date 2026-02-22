@@ -53,7 +53,7 @@ function escapeHtml(str) {
 
 function getScoreColor(score) {
   if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
-  if (score >= 85) return { bg: '#FFD700', text: '#1a1a1a', label: 'Must-See' };
+  if (score >= 85) return { bg: '#FFD700', text: '#1a1a1a', label: 'Critical Gold' };
   if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
   if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
   if (score >= 55) return { bg: '#f59e0b', text: '#1a1a1a', label: 'Skippable' };
