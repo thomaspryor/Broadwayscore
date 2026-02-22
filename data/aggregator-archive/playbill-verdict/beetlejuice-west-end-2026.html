@@ -2,140 +2,64 @@
 				
 
 
-
-
 <html
-	lang="en"
-	x-data
-	x-bind:class="{
+		lang="en"
+		x-data
+		x-bind:class="{
 		'is-expanded': $store.site.isMenuOpen,
 		'is-scrolled': $store.site.isScrolled,
-	}"
+		}"
+		class="overflow-y-auto"
 >
 	<head>
-                <script>
-            window.entryId = 21876406;
+				<style>
+						@layer theme, base, vendor, legacy, components, utilities;
+
+			.bsp-column-fixed {
+				position: absolute;
+				top: 20px;
+			}
+			.deco-site-footer__nav-items a { color: white; }
+		</style>
+		<style>
+			@import "https://playbill.com/assets/css/main.css?id=07791b6c0302dc1d518d4e33bf7004cb" layer(legacy);
+			@import "https://playbill.com/assets/css/styles.css?id=cccb8592afa67ac90ea7801cbf1f68ae" layer(legacy);
+		</style>
+		                <script>
+            window.entryId = 8177285;
         </script>
 
-        				    <!--esi:include src="/esi/newBaseAssetLoads" time="17" age="235683"-->
-<link rel="icon" href="https://playbill.com/assets/images/favicon.jpeg?id=5fe1d70b15ee1de3c27e846bcbd4997c">
 
-<style>
-        @layer theme, base, vendor, legacy, components, utilities;
-        @import url("https://playbill.com/assets/css/primary.css?id=0c8dd788d6ef88b14271ededc053886c") layer(legacy);
-    @import url("https://playbill.com/assets/css/styles.css?id=cccb8592afa67ac90ea7801cbf1f68ae") layer(legacy);
-    @import url("/assets/swiperjs/swiper-bundle.min.css") layer(vendor);
-    @import url("https://playbill.com/assets/css/fontawesome.css?id=703c4c1a394fc386bdb4756e905eb8f6") layer(vendor);
-</style>
+        <link rel="icon" href="https://playbill.com/assets/images/favicon.jpeg?id=5fe1d70b15ee1de3c27e846bcbd4997c">
 
-<!-- Roboto Regular & Bold -->
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-v47-latin-regular.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
+		<link rel="stylesheet" href="https://kit.fontawesome.com/a7cb38bf85.css" crossorigin="anonymous">
+		<script src="/assets/scripts/main.min.d77d068f800b7d4d0e28dd0efad7f0ca.gz.js"></script>
 
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-v47-latin-700.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
-
-<!-- Roboto Serif Regular & Bold -->
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-serif-v16-latin-regular.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
-
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-serif-v16-latin-700.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
-
-<!-- Roboto Condensed Regular & Bold -->
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-condensed-v30-latin-regular.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
-
-<link
-        rel="preload"
-        href="/assets/fonts/roboto/roboto-condensed-v30-latin-700.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous">
-
-<script src="/assets/scripts/main.min.d77d068f800b7d4d0e28dd0efad7f0ca.gz.js"></script>
-
-<script>
-(function() {
-  // --- CONFIGURATION ---
-  // Add the filenames of the stylesheets you want to remove.
-  const stylesheetsToRemove = [
-    'styles.css',
-    'swiper-bundle.min.css'
-  ];
-
-  // --- LOGIC ---
-  const removeElement = (element) => {
-    try {
-      const href = element.getAttribute('href');
-      if (!href) return;
-
-      // Extract the filename from the full URL.
-      // e.g., "https://domain.com/path/styles.css?id=123" becomes "styles.css"
-      const url = new URL(href, document.baseURI);
-      const filename = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
-
-      // Check if the filename is in our blocklist and remove it.
-      if (stylesheetsToRemove.includes(filename)) {
-        element.remove();
-      }
-    } catch (e) {
-      // Silently ignore errors from invalid href attributes.
-    }
-  };
-
-  // 1. Initial Scan: Remove any matching stylesheets already on the page.
-  document.querySelectorAll('link[rel="stylesheet"]').forEach(removeElement);
-
-  // 2. MutationObserver: Watch for new stylesheets being added to the page.
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        // We only care about <link> elements.
-        if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'LINK' && node.rel === 'stylesheet') {
-          removeElement(node);
-        }
-      }
-    }
-  });
-
-  // Start observing the entire document for additions.
-  observer.observe(document.documentElement, {
-    childList: true, // Watch for the addition/removal of child nodes.
-    subtree: true    // Watch the entire DOM tree.
-  });
-})();
-</script>
-<!--/esi:include-->
-
+		<script src="https://playbill.com/assets/js/flickity.js?id=4a6c61e7ef21a0b33ef07f43571a98c9"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+				
         <script type="text/javascript">
-            window.entryId = 21876406;
+            window.entryId = 8177285;
         </script>
 
-        				    <!--esi:include src="/esi/baseHeadCode?&isMobile=" time="17" age="200773"-->
+			<script>
+		articleCat = ["Playbill Universe","Broadway News"];
+	</script>
+	
+
+    
+
+    
+<script type="application/ld+json">
+{"@context":"https:\/\/schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/playbill.com\/article\/read-reviews-for-beetlejuice-on-broadway"},"url":"https:\/\/playbill.com\/article\/read-reviews-for-beetlejuice-on-broadway","headline":"Read Reviews for Beetlejuice on Broadway","alternativeHeadline":"The new musical, based on the Tim Burton favorite, opened April 25.","image":"","datePublished":"2019-04-25T20:56:36-04:00","dateModified":"2022-01-05T02:16:58-05:00","author":[{"@type":"Person","name":"Ryan McPhee"}],"publisher":{"@type":"Organization","name":"Playbill","url":"https:\/\/playbill.com","logo":{"@type":"ImageObject","url":"https:\/\/assets.playbill.com\/site\/P.Circle.1024x1024.svg"}},"articleSection":"Playbill Universe","keywords":"Beetlejuice (Broadway, Winter Garden Theatre, 2019)","isAccessibleForFree":true,"copyrightHolder":"Playbill Online Inc."}
+</script>
+	<style>
+		@import url("/assets/css/article.css?v=1.4") layer(legacy);
+	</style>
+
+                    <!--esi:include src="/esi/legacyBaseHeadCode?&isMobile=" time="15" age="448847"-->
 
         <script async src="https://scripts.webcontentassessor.com/scripts/03e3a887451cfb9ae4e4b0aedb8e6558aacdcbb24e2c3ce8a1228d88fce78a07"></script>
         <!--- Add Ad Targeting for Sites --->
@@ -235,6 +159,161 @@
 </script>
 <script async src="//static.chartbeat.com/js/chartbeat_mab.js"></script>
 
+<style>
+    @media only screen and (max-width: 1264px) and (min-width: 768px) {
+        .bsp-site-logo-centering {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-left: 8rem !important;
+            margin-right: 8rem !important;
+        }
+    }
+
+
+</style>
+
+<!--- Search Bar Override for PRIDE --->
+<style>
+    .bsp-site-search {background-color: #FFF;}
+
+</style>
+<!--- End Override --->
+
+<script type="text/javascript"> var _sf_startpt=(new Date()).getTime(); </script>
+<style>
+
+    .bsp-site-search {width: 0px;}
+
+    // hide full size banner
+       body.full-size-header  { padding-top: 70px; }
+    .full-size-header .bsp-site-header-wrapper { max-height: 70px; overflow:hidden;}
+    .full-size-header .bsp-site-header {margin-top:0}
+    .full-size-header .bsp-site-logo-centering { position: relative}
+    .full-size-header .bsp-site-logo { max-width: 205px; left: 0}
+    .bsp-header-extra-links-wrapper {
+        position: relative;
+    }
+    // ends-hide full size banner
+
+       .bsp-article .eyebrow {
+           padding-left: 0;
+       }
+
+    section.jobs-section ul li {
+        list-style: disc inside;
+    }
+
+    div[itemprop="location"] [itemprop="name"]{
+        display: none;
+    }
+
+    /* remove zip code fields on prod list page - SL/RB 30/11/16 */
+    /*
+    .production-results .bsp-column-aside .results-filter [data-bsp-form-message="#zip"] + .bsp-form-input-text,
+    .production-results .bsp-column-aside .results-filter [data-bsp-form-message="#zip"] ~ .bsp-search-results-submit,
+    label[for="distance-from-zip-code"] { display: none}
+    */
+    /* end remove zip code fields on prod list page - SL/RB 30/11/16 */
+
+    /* centre carousel arrows - SL/RB 30/11/16 */
+    .bsp-gallery-module-component .gallery-module .slick-prev,
+    .bsp-gallery-module-component .gallery-module .slick-next{
+        top: 50%!important;
+        transform: translateY(-50%);
+        margin-top:0 !important;
+    }
+    /* end centre carousel arrows - SL/RB 30/11/16 */
+    /* fix endcard on full screen mobile gallery epxerience - RB 14/12/2016 */
+    @media only screen and (max-width: 767px) {
+
+        .gallery-mobile-fullscreen:not(.landscape-fullscreen) .gallery-module .slick-slide .bsp-carousel-gallery-endcard .bsp-component-content .bsp-column-third {
+            padding: 5px 0;
+        }
+
+        .gallery-mobile-fullscreen .gallery-module .slick-slide .bsp-carousel-gallery-interstitial,
+        .gallery-mobile-fullscreen:not(.landscape-fullscreen) .gallery-module .slick-slide .bsp-carousel-gallery-endcard {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 100%;
+        }
+        .gallery-mobile-fullscreen:not(.landscape-fullscreen) .gallery-module .slick-slide .bsp-carousel-gallery-endcard {
+            padding: 0 40px;
+            box-sizing: border-box;
+            margin: 0;
+        }
+    }
+    .results-filter .results-filter-form .zip-input-container .bsp-form-input { border: 0 !important; }
+    .bsp-table-component.production-list-result {font-size: 16px}
+    .bsp-table-component.production-list-result tr td.col-3, .bsp-table-component.production-list-result tr td.col-4, .bsp-table-component.production-list-result tr td.col-5 {
+        max-width : none !important;
+        word-wrap: normal !important;
+    }
+    /* end fix endcard on full screen mobile gallery epxerience - RB 14/12/2016 */
+    /* carousel arrows on mobile - DF 17/11/2016 --
+    @media only screen and (max-wi
+    dth: 767px) {
+        .gallery-module.gallery-module-nav .bsp-carousel-stage .slick-next:before,
+        .gallery-module.gallery-module-yellow .slick-next:before,
+        .bsp-carousel-gallery .bsp-carousel-stage .slick-next:before,
+        .gallery-module.gallery-module-nav .bsp-carousel-stage .slick-prev:before,
+        .gallery-module.gallery-module-yellow .slick-prev:before,
+        .bsp-carousel-gallery .bsp-carousel-stage .slick-prev:before{
+            font-size: 30px;
+            opacity: 1 !important;
+            color: #FDE300 !important;
+            text-shadow: 0 0 30px #000;
+        }
+
+        .gallery-module .slick-next, .gallery-module .slick-prev {
+        display: none !important;
+    }
+    }
+    .teaser-gallery-title{
+    border-top: none;
+    }
+    .listing-event .bsp-search-results-sort .bsp-component-group .bsp-form-select select [selected="selected"],
+    .listing-event .bsp-search-results-sort .bsp-component-group .bsp-form-select select:active,
+    .listing-event .bsp-search-results-sort .bsp-component-group .bsp-form-select select:checked {
+       text-transform: capitalize;
+    }
+     -- end carousel arrows on mobile - DF 17/11/2016 */
+
+
+    .bsp-extra-menu>li a{padding-left:1rem; padding-right: 1rem}
+
+</style>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("[name='inputJobStartDate']").val('');
+        $("[name='inputJobEndDate']").val('');
+
+        $("h3.bsp-component-title:contains(Productions of this Shows)").text("Productions of this Show");
+    });
+</script>
+
+
+<style type="text/css">
+    /* 1/20 - hotfix for gallery captions, should be fixed in bsp-article-pb.less and then this removed -th */
+    .bsp-carousel-slide .bsp-img-with-meta figcaption {
+        display:block;
+    }
+
+    /* change bottom drawer colors on mobile-tablet */
+    .bsp-trigger-fixed-column a {
+        background-color: #FDE300;
+        color: #000;
+    }
+
+    .bsp-column-scrolling {
+        padding-top: 1.5rem !important;
+    }
+</style>
+
+
+    
 <!-- Begin Comscore Tag -->
 <script>
 	var _comscore = _comscore || [];
@@ -251,6 +330,7 @@
 </noscript>
 <!-- End Comscore Tag -->
 
+    
 <!-- Facebook Pixel Code -->
 <script>
     !function(f,b,e,v,n,t,s)
@@ -442,46 +522,101 @@
     
 <!-- Popupsmart Embed Code -->
 <script src="https://cdn.popupsmart.com/bundle.js" data-id="983230" async defer></script>
-
-    
-<script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=dec18f9e"></script>
 <!--/esi:include-->
 
 				
-				
-				    <!--esi:include src="/esi/navHeadContent?isArticle=0&isMobile=" time="11" age="248078"-->    
+
+
+            <script>
+  googletag.cmd.push(function () {
+
+    // Leaderboard 1
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_1",
+      [[728, 90]],
+      "div-gpt-ad-leaderboard-1"
+    )
+    .defineSizeMapping(window.gptSizeMappings.leaderboard)
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+    // Leaderboard 2
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_2",
+      [[300, 600], [300, 250]],
+      "div-gpt-ad-leaderboard-2"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+    // Leaderboard 3
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_3",
+      [[300, 600], [300, 250]],
+      "div-gpt-ad-leaderboard-3"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+    // Leaderboard 4
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_4",
+      [[728, 90]],
+      "div-gpt-ad-leaderboard-4"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+  });
+</script>
+
+
+
+
+		<script type="text/javascript">
+			smallBannerBool = false;
+		</script>
+
+		    <!--esi:include src="/esi/navHeadContent?isArticle=1&isMobile=" time="17" age="376935"-->    
         
                         <!--/esi:include-->
 
-				    <title>The Verdict | Playbill</title>
+		    <!--esi:include src="/deco/esi/baseAssetLoads" time="15" age="363555"-->
 
-		<title>The Verdict | Playbill</title>
-<script>dataLayer = [];
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N2QMGG6');
-</script><meta name="generator" content="SEOmatic">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<meta name="robots" content="all">
-<meta content="playbill" property="fb:profile_id">
-<meta content="en_US" property="og:locale">
-<meta content="Playbill" property="og:site_name">
-<meta content="website" property="og:type">
-<meta content="https://playbill.com/category/the-verdict" property="og:url">
-<meta content="The Verdict" property="og:title">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@playbill">
-<meta name="twitter:creator" content="@playbill">
-<meta name="twitter:title" content="The Verdict">
-<link href="https://playbill.com/category/the-verdict" rel="canonical">
-<link href="https://playbill.com" rel="home">
-<link type="text/plain" href="https://playbill.com/humans.txt" rel="author">
-<style>				:root { --admin-bar-z-index: 10 }
-			</style>
+<style>
+        @layer theme, base, vendor, legacy, components, utilities;
+</style>
 
-                    <!--esi:include src="/esi/baseHeadGamEnableCode" time="19" age="225624"-->
+<script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
+<script type="module" src="/assets/deco/dist/main-DeNPT7zH.js" crossorigin onload="e=new CustomEvent(&#039;vite-script-loaded&#039;, {detail:{path: &#039;html/resources/deco/js/main.js&#039;}});document.dispatchEvent(e);"></script>
+<link href="/assets/deco/dist/vendor-CcXNC_Gu.js" rel="modulepreload" crossorigin>
+<link href="/assets/deco/dist/main-CQprTGL5.css" rel="stylesheet">
+<link href="/assets/deco/dist/vendor-styles-DdIscxXd.css" rel="stylesheet">
+
+<link rel="preload" href="/assets/fonts/roboto/roboto-v47-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-v47-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-serif-v16-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-serif-v16-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+<!--/esi:include-->
+
+                    <!--esi:include src="/esi/legacyBaseHeadGamEnableCode" time="14" age="189496"-->
 
 <script>
   googletag.cmd.push(function () {
@@ -499,20 +634,173 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   });
 </script>
 <!--/esi:include-->
-	</head>
-
-		<body id="new-body" class="group/site  pb-legacy"
+	<title>Read Reviews for Beetlejuice on Broadway | Playbill</title>
+<script>dataLayer = [];
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N2QMGG6');
+</script><meta name="generator" content="SEOmatic">
+<meta name="description" content="The new musical, based on the Tim Burton favorite, opened April 25.">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="robots" content="all">
+<meta content="playbill" property="fb:profile_id">
+<meta content="en_US" property="og:locale">
+<meta content="Playbill" property="og:site_name">
+<meta content="website" property="og:type">
+<meta content="https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway" property="og:url">
+<meta content="Read Reviews for Beetlejuice on Broadway" property="og:title">
+<meta content="The new musical, based on the Tim Burton favorite, opened April 25." property="og:description">
+<meta content="https://assets.playbill.com/editorial/_facebookOpenGraph/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" property="og:image">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@playbill">
+<meta name="twitter:creator" content="@playbill">
+<meta name="twitter:title" content="Read Reviews for Beetlejuice on Broadway">
+<meta name="twitter:description" content="The new musical, based on the Tim Burton favorite, opened April 25.">
+<meta name="twitter:image" content="https://assets.playbill.com/editorial/_twitterShareSize/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg">
+<link href="https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway" rel="canonical">
+<link href="https://playbill.com" rel="home">
+<link type="text/plain" href="https://playbill.com/humans.txt" rel="author">
+<style>				:root { --admin-bar-z-index: 10 }
+			</style></head>
+	<body
+		class="ua-desktop bsp-site-header-slidingnav  antialiased h-full group/site overflow-clip pb-legacy"
+		style=""
 		data-dl-action="initialize_dataLayer"
-						data-dl-data="{&quot;page_category&quot;:&quot;Category Listings Defaults&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2025-04-11&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:21876406,&quot;crosslinker&quot;:null}"
+						data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Read Reviews for Beetlejuice on Broadway&quot;,&quot;author&quot;:&quot;Ryan McPhee&quot;,&quot;author_list&quot;:[&quot;Ryan McPhee&quot;],&quot;publish_date&quot;:&quot;2019-04-25&quot;,&quot;primary_article_category&quot;:&quot;Playbill Universe&quot;,&quot;article_category&quot;:[&quot;Playbill Universe&quot;,&quot;Playbill Universe&quot;,&quot;Playbill Universe&quot;,&quot;Playbill Universe&quot;,&quot;The Verdict&quot;,&quot;Broadway News&quot;],&quot;craft_id&quot;:8177285,&quot;crosslinker&quot;:null}"
 			><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N2QMGG6"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-
-				    <!--esi:include src="/esi/baseBodyCode?&isMobile=" time="17" age="363034"-->
+            <!--esi:include src="/esi/legacyBaseBodyCode?&isMobile=" time="18" age="280620"-->
 
         <!--- Change Homepage Headers --->
 <script type='text/javascript'>
     var pageAddress = location.pathname;
+
+    if (pageAddress == "/") {
+        var titleItems = document.getElementsByClassName("bsp-component-title");
+
+        if (titleItems.length > 0) {
+            titleItems[1].style.backgroundColor = "#FDE300";
+            titleItems[3].style.backgroundColor = "#FDE300";
+            titleItems[1].style.textAlign = "center";
+            titleItems[3].style.textAlign = "center";
+        }
+    } else if (pageAddress == "/news" || pageAddress == "/features" || pageAddress == "/film-tv") {
+        var titleItems = document.getElementsByClassName("bsp-component-title");
+        if (titleItems.length > 0) {
+            titleItems[0].style.backgroundColor = "#FDE300";
+            titleItems[0].style.textAlign = "center";
+        }
+    }
+</script>
+
+<!--- BEGIN remove ticket link to modal legacy --->
+<script type="text/javascript">
+    var ticketElement = document.getElementsByClassName("bsp-component bsp-list-promo-component spotlight-badges");
+    if (ticketElement.length > 0) {
+        ticketElement[0].parentNode.removeChild(ticketElement[0]);
+    }
+</script>
+
+<!--- END remove ticket link to modal legacy --->
+
+<!--Infinite Scroll-->
+<script type="text/javascript">
+
+    $( document ).ready(function() {
+
+        // start- hide carousel if no slides
+        if($('.bsp-gallery-module-component').length) {
+            $('.bsp-gallery-module-component').each(function(){
+                if(! $(this).find('.bsp-carousel-slide').length) {
+                    $(this).hide();
+                }
+            });
+        }
+        // end- hide carousel if no slides
+
+
+        setTimeout(function(){
+            $('li.bsp-infinite-load-current').next('li').find('.bsp-list-promo-link a').off('click').on('click',function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var link = $(this).attr('href');
+                window.location.href = link;
+
+            })
+        },500);
+
+        $('.disable-scrolling').removeClass('disable-scrolling');
+
+        $('[itemprop="description"]').each(function(){
+            var $el = $(this);
+            var content = $el.text();
+            if($.trim(content) == "null") {
+                $el.hide();
+            }
+        });
+
+        function updateFnShare (shareEl) {
+            var bspShareOptions = shareEl.data('bspShareOptions');
+            var json = $.parseJSON(bspShareOptions);
+
+            var fbShare = shareEl.find('[data-service="facebook"]');
+            var fbUrl = fbShare.attr('href');
+            var fbRedirect = encodeURIComponent(json.url);
+
+            var fbNewUrl = fbUrl.replace('&redirect_uri=','&redirect_uri='+fbRedirect);
+            fbShare.attr("href",fbNewUrl);
+        }
+        if($('[data-bsp-share-options]').length) {
+            setTimeout(function(){
+                var shareEl = $('[data-bsp-share-options]');
+                updateFnShare(shareEl);
+            },300);
+        }
+        var articleInfinite = $('[data-bsp-infinite-content]');
+        if(articleInfinite.length) {
+            articleInfinite.on('bsp-infinite-content:content-loaded',function(){
+
+                setTimeout(function(){
+                    var shareEl = articleInfinite.find('[data-bsp-share-options]').last();
+                    updateFnShare(shareEl);
+                },300);
+
+            });
+        }
+
+        setTimeout(function(){
+            var waypoint = new Waypoint({
+                element : articleInfinite,
+                handler :  function(){}
+            });
+
+            Waypoint.destroyAll();
+
+        },100);
+
+        setTimeout(function(){
+            $('#bsp-search-results-wrapper .bsp-form-input-text input[data-bsp-autocomplete]').off('focus');
+
+        },400);
+
+    });
+
+
+    function forceresize() {
+        setTimeout(function(){
+            forceresize();
+            $('.bsp-carousel-stage').slick('setPosition');
+        },200);
+    }
+    if($('[data-bsp-carousel-gallery] .bsp-carousel-stage').length){
+
+        setTimeout(function(){
+            forceresize();
+        },400);
+    }
 </script>
 
 <!-- Quantcast Tag -->
@@ -539,6 +827,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </noscript>
 <!-- End Quantcast tag -->
+
+<!--- Lucky Orange --->
+<script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=dec18f9e"></script>
 
 <!-- Chartbeat 2 -->
 
@@ -603,7 +894,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        _cbq.push(['_entryId', String(window.entryId)]);
     }
 
-
     /** CONFIGURATION END **/
     function loadChartbeat() {
         var e = document.createElement('script');
@@ -629,6 +919,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })();
 </script>
 
+<!--- BEGIN LINK REWRITE FOR SWIPE FUNCTION --->
+<script type="text/javascript">
+    $(function () {
+        $('a').each(function () {
+            $(this).attr('rel', 'external');
+        });
+    });
+</script>
+<!--- END LINK REWRITE FOR SWIPE FUNCTION --->
         <!-- Sticky Footer Ad Slot -->
 <div id="sticky-footer" class="sticky-footer" aria-hidden="true">
   <div class="sticky-footer__inner" role="region" aria-label="Advertisement">
@@ -699,19 +998,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 <!--/esi:include-->
 
-												
-		
-		<main
-			class="group/nav"
-			x-data
-			x-bind:class="{
-				'is-expanded': $store.site.isMenuOpen,
-				'is-scrolled': $store.site.isScrolled,
-			}"
-		>
-						<h1 style="display:none;"></h1>
+										
+				<h1 style="display:none;"></h1>
 
-						    <!--esi:include src="/deco/esi/navigation?isArticle=0&isMobile=" time="12" age="363964"-->
+		<div
+				x-data
+				class="group/nav"
+				:class="{
+                'is-expanded': $store.site.isMenuOpen,
+                'is-scrolled': $store.site.isScrolled,
+            }"
+		>
+		    <!--esi:include src="/deco/esi/navigation?isArticle=1&isMobile=" time="14" age="367275"-->
                                 
         
 <script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
@@ -1469,368 +1767,852 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!--/esi:include-->
 
-			<div class="pb-site-wrapper">
+		<div class="bsp-site-wrapper ">
+			<div class="bsp-component-group">
+				<div class="modal-ads" data-modal-ads-id="">
+					<div class="ad modal-ad-top">
+						<ins data-revive-zoneid="16" data-revive-id="51a58fb9f94c4f7b79c7e3f4b6efae61"></ins>
+						<!--- <script async src=""></script> --->
+					</div>
+					<div class="ad modal-ad-right">
+						<ins data-revive-zoneid="12" data-revive-id="51a58fb9f94c4f7b79c7e3f4b6efae61"></ins>
+						<!--- <script async src=""></script> --->
+					</div>
+				</div>
+				<script>
+						document.ontouchmove = function (event) {
+							var isTouchMoveAllowed = true,
+									target = event.target;
 
-								    <div class="pb-builder-wrapper">
-        <div class="pb-builder-container">
-            <div class="pb-layout-full">
-                
+							while (target !== null) {
+								if (target.classList && target.classList.contains('disable-scrolling')) {
+									isTouchMoveAllowed = false;
+									break;
+								}
+								target = target.parentNode;
+							}
+							if (! isTouchMoveAllowed) {
+								event.preventDefault();
+							}
+						};
+						var startY = 0;
+						document.addEventListener('touchstart', function(e) {
+							startY = e.touches[0].screenY;
+						});
+
+						document.addEventListener('touchmove', function(e) {
+							var amountMovedY = e.touches[0].screenY - startY;
+							if (amountMovedY > 0) {
+								e.preventDefault();
+							}
+							// Disable move action when movement amount is negative (user tries to positive to top!)
+						});
+
+					</script>
+			</div>
+
+			<div class="bsp-site cft-site" style="" data-pb-banner>
+	<div>
+		<div class="bsp-container cft-container">
+			        <div class="w-screen-force">
+    
+</div><div class="bsp-row">
+    <div class="bsp-column-fixed-wrap min-h-0" data-bsp-toggle-item>
+        <div class="bsp-column-fixed toggle-item">
+            
+
+
+<div class="bsp-component" data-pb-module-wrapper>    <div class="" data-pb-block-type="heading">
+                <div class="bsp-component pb-heading-small p-0">
+                <div class="bsp-component-title">Featured Shows</div>
             </div>
-            <div class="pb-layout-full">
-                <div class="pb-category-listing-wrapper">
-                    <div class="category-title">
-                        The Verdict
-                    </div>
-                    <div class="category-subtitle">
-                        Read theatre reviews of the latest stage productions on Broadway, Off-Broadway and London.
-                    </div>
-                </div>
-            </div>
-                            <div class="pb-layout-two-col weight-left">
-                    <div class="left-items">
-                        <div class="pb-module-news-list-container">
-                            <ul class="news-list" id="newsList">
-                                <div id="component-bjaoug" class="sprig-component" data-hx-target="this" data-hx-include="this" data-hx-trigger="refresh" data-hx-get="https://playbill.com/index.php?p=actions/sprig-core/components/render" data-hx-vals="{&quot;sprig:config&quot;:&quot;d32b7455de3058442a60ae99e40d902b1570e766154b4369352b9bf7e518ec91{\u0022siteId\u0022:1,\u0022template\u0022:\u0022_articlesNew\\\/category-feed\u0022,\u0022variables\u0022:{\u0022categoryId\u0022:922521,\u0022startAfter\u0022:0,\u0022numArticles\u0022:20,\u0022isMobile\u0022:false}}&quot;}">
+        
+        
+</div>
 
     
 
+<div class="bsp-component bsp-list-promo-component " style="margin-top: 1.5rem;" data-pb-block-type="newArticleRailList">
+    <div class="bsp-component-content">
+        <div class="bsp-list-promo">
+            <ul class="bsp-list-promo-list">
+                                                                            
 
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Are Reviews Saying About Pal Joey Reimagining Chez Joey?&quot;,&quot;author&quot;:&quot;Meg Masseron&quot;,&quot;author_list&quot;:[&quot;Meg Masseron&quot;],&quot;publish_date&quot;:&quot;2026-02-18&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Regional News&quot;],&quot;craft_id&quot;:22226125,&quot;crosslinker&quot;:null,&quot;element_index&quot;:0}">
-    <a href="https://playbill.com/article/what-are-reviews-saying-about-pal-joey-reimagining-chez-joey" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/Myles-Frost-and-the-Company-of-CHEZ-JOEY-at-Arena-Stage.-Photo-by-Matthew-Murphy-3.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Are Reviews Saying About <em>Pal Joey</em> Reimagining <em>Chez Joey?</em></h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 18
-                            </div>
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/production/the-book-of-mormon-eugene-oneill-theatre-vault-0000013715" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Productions&quot;,&quot;show_name&quot;:&quot;The Book of Mormon&quot;,&quot;venue_type&quot;:&quot;Broadway&quot;,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2022-01-03&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:238364,&quot;crosslinker&quot;:null,&quot;element_index&quot;:0}">
+											The Book of Mormon
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/production/hamilton-broadway-richard-rodgers-theatre-2015" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Productions&quot;,&quot;show_name&quot;:&quot;Hamilton&quot;,&quot;venue_type&quot;:&quot;Broadway&quot;,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2022-01-03&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:6095,&quot;crosslinker&quot;:null,&quot;element_index&quot;:1}">
+											Hamilton
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/production/just-in-time-broadway-circle-in-the-square-theatre-2025" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Productions&quot;,&quot;show_name&quot;:&quot;Just in Time&quot;,&quot;venue_type&quot;:&quot;Broadway&quot;,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2024-10-09&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:21096790,&quot;crosslinker&quot;:null,&quot;element_index&quot;:2}">
+											Just in Time
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/production/maybe-happy-ending-broadway-belasco-theatre-2024" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Productions&quot;,&quot;show_name&quot;:&quot;Maybe Happy Ending&quot;,&quot;venue_type&quot;:&quot;Broadway&quot;,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2024-05-14&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:20290902,&quot;crosslinker&quot;:null,&quot;element_index&quot;:3}">
+											Maybe Happy Ending
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/production/oh-mary-broadway-lyceum-theatre-2024" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Productions&quot;,&quot;show_name&quot;:&quot;Oh, Mary!&quot;,&quot;venue_type&quot;:&quot;Broadway&quot;,&quot;article_title&quot;:null,&quot;author&quot;:null,&quot;author_list&quot;:null,&quot;publish_date&quot;:&quot;2024-04-24&quot;,&quot;primary_article_category&quot;:null,&quot;article_category&quot;:null,&quot;craft_id&quot;:20048431,&quot;crosslinker&quot;:null,&quot;element_index&quot;:4}">
+											Oh, Mary!
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                        </ul>
         </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;The Reviews Are in for The Dinosaurs at Playwrights Horizons&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-02-17&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;],&quot;craft_id&quot;:22224361,&quot;crosslinker&quot;:null,&quot;element_index&quot;:1}">
-    <a href="https://playbill.com/article/the-reviews-are-in-for-the-dinosaurs-at-playwrights-horizons" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/260204_TheDinosaurs-136-W.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">The Reviews Are in for <em>The Dinosaurs</em> at Playwrights Horizons</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 17
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Were Critics Thrilled by Sean Hayes in The Unknown Off-Broadway?&quot;,&quot;author&quot;:&quot;Meg Masseron&quot;,&quot;author_list&quot;:[&quot;Meg Masseron&quot;],&quot;publish_date&quot;:&quot;2026-02-13&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22221336,&quot;crosslinker&quot;:null,&quot;element_index&quot;:2}">
-    <a href="https://playbill.com/article/were-critics-thrilled-by-sean-hayes-in-the-unknown" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/The-Unknown_Emilio-Madrid_9642.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Were Critics Thrilled by Sean Hayes in <em>The Unknown</em> Off-Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 13
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Did Reviews Flip for Viral Dance Show 11 to Midnight Off-Broadway?&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-02-12&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22219610,&quot;crosslinker&quot;:null,&quot;element_index&quot;:3}">
-    <a href="https://playbill.com/article/did-reviews-flip-for-viral-dance-show-11-to-midnight-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/11-to-Midnight-Production-Photos_RebeccaJMichelson-246.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Did Reviews Flip for Viral Dance Show <em>11 to Midnight</em> Off-Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 12
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Are the Reviews For The Other Place Off-Broadway, Starring House of the Dragon&#039;s Emma D\u2019Arcy?&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2026-02-12&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22219563,&quot;crosslinker&quot;:null,&quot;element_index&quot;:4}">
-    <a href="https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/82bc36fa-41a1-45d6-b81c-e44feac1beda.jpeg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Are the Reviews For<em> The Other Place</em> Off-Broadway, Starring <em>House of the</em> <em>Dragon</em>'s Emma D’Arcy?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 12
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Read the Reviews for Ngozi Anyanwu&#039;s The Monsters Off-Broadway&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-02-12&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22219537,&quot;crosslinker&quot;:null,&quot;element_index&quot;:5}">
-    <a href="https://playbill.com/article/read-the-reviews-for-ngozi-anyanwus-the-monsters-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/20241020_SUNSETBOULEVARD_OPENING_PhotobyMichaelahReynolds_EDIT-043.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Read the Reviews for Ngozi Anyanwu's <em>The Monsters</em> Off-Broadway</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 12
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Read the Reviews for High Spirits at New York City Center Encores!&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;,&quot;Andrew Gans&quot;],&quot;publish_date&quot;:&quot;2026-02-05&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22211938,&quot;crosslinker&quot;:null,&quot;element_index&quot;:6}">
-    <a href="https://playbill.com/article/read-the-reviews-for-high-spirits-at-new-york-city-center-encores" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/High-Spirits-NYCC-Press-Event-8381.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Read the Reviews for <em>High Spirits</em> at New York City Center Encores!</h3>
-            <div class="news-list__meta">
-                                    The Verdict | February 05
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Are the Reviews for Blackout Songs Off-Broadway?&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2026-01-28&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22201615,&quot;crosslinker&quot;:null,&quot;element_index&quot;:7}">
-    <a href="https://playbill.com/article/what-are-the-reviews-for-blackout-songs-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/BOS_02_Owen_Teague_Abbey_LeecEmilio-Madrid.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Are the Reviews for <em>Blackout Songs</em> Off-Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 28
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Are The Reviews For Elevator Repair Service&#039;s Ulysses?&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2026-01-26&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22198319,&quot;crosslinker&quot;:null,&quot;element_index&quot;:8}">
-    <a href="https://playbill.com/article/what-are-the-reviews-for-elevator-repair-services-ulysses" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/Ulysses_15.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Are The Reviews For Elevator Repair Service's <em>Ulysses?</em></h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 26
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Reviews Weigh In on Matthew Libby&#039;s A.I. Thriller Data Off-Broadway&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-01-26&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22197512,&quot;crosslinker&quot;:null,&quot;element_index&quot;:9}">
-    <a href="https://playbill.com/article/reviews-weigh-in-on-matthew-libbys-a-i-thriller-data-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/Data-NYC-01-09-26_197_2026-01-23-161242_gksi.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Reviews Weigh In on Matthew Libby's A.I. Thriller <em>Data</em> Off-Broadway</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 26
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Are The Reviews for The Disappear, With Hamish Linklater, Miriam Silverman, Dylan Baker?&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2026-01-16&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22187408,&quot;crosslinker&quot;:null,&quot;element_index&quot;:10}">
-    <a href="https://playbill.com/article/what-are-the-reviews-for-the-disappear-with-hamish-linklater-miriam-silverman-dylan-baker" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/THE-DISAPPEAR_3001.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Are The Reviews for <em>The Disappear, </em>With Hamish Linklater, Miriam Silverman, Dylan Baker?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 16
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Read the Reviews for Going Bacharach: The Songs of an Icon Off-Broadway&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2026-01-13&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22182724,&quot;crosslinker&quot;:null,&quot;element_index&quot;:11}">
-    <a href="https://playbill.com/article/read-the-reviews-for-going-bacharach-the-songs-of-an-icon-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/GOING-BACHARACH-Prod-Shot-14.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Read the Reviews for <em>Going Bacharach: The Songs of an Icon</em> Off-Broadway</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 13
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Did Reviews Fall for Tracy Letts&#039; Bug on Broadway?&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-01-08&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Broadway News&quot;],&quot;craft_id&quot;:22178952,&quot;crosslinker&quot;:null,&quot;element_index&quot;:12}">
-    <a href="https://playbill.com/article/did-reviews-fall-for-tracy-letts-bug-on-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/0362-Carrie-Coon-as-Agnes-White-Namir-Smallwood-as-Peter-Evans-in-Bug-written-by-Tracy-Letts-directed-by-David-Cromer.-(c)Matthew-Murphy.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Did Reviews Fall for Tracy Letts' <em>Bug</em> on Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 08
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;5 Reasons to See The Book of Mormon on Broadway&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-01-06&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Broadway News&quot;,&quot;Special Features&quot;],&quot;craft_id&quot;:22174609,&quot;crosslinker&quot;:null,&quot;element_index&quot;:13}">
-    <a href="https://playbill.com/article/5-reasons-to-see-the-book-of-mormon-on-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/2bee591d46d1c61d5f0a04d839e01562-book-of-mormon-broadway-dave-thomas-brown-getting-into-character-2019-01-hr.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">5 Reasons to See <em>The Book of Mormon</em> on Broadway</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 06
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Reviews: What Did Critics Think of I Puritani at the Metropolitan Opera?&quot;,&quot;author&quot;:&quot;Natan Zamansky&quot;,&quot;author_list&quot;:[&quot;Natan Zamansky&quot;],&quot;publish_date&quot;:&quot;2026-01-01&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Classic Arts News&quot;,&quot;Opera&quot;],&quot;craft_id&quot;:22170608,&quot;crosslinker&quot;:null,&quot;element_index&quot;:14}">
-    <a href="https://playbill.com/article/reviews-what-did-critics-think-of-i-puritani-at-the-metropolitan-opera" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/PUR_1746a.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Reviews: What Did Critics Think of <em>I Puritani</em> at the Metropolitan Opera?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | January 01
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Do the Critics Think of Picnic at Hanging Rock Off-Broadway?&quot;,&quot;author&quot;:&quot;Meg Masseron&quot;,&quot;author_list&quot;:[&quot;Meg Masseron&quot;,&quot;Andrew Gans&quot;],&quot;publish_date&quot;:&quot;2025-12-22&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22163420,&quot;crosslinker&quot;:null,&quot;element_index&quot;:15}">
-    <a href="https://playbill.com/article/what-do-the-critics-think-of-picnic-at-hanging-rock-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/PICNIC_AT_HANGING_ROCK_0042_PJZEDIT_v001.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Do the Critics Think of <em>Picnic at Hanging Rock </em>Off-Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | December 22
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Do London Reviews Think of Oh, Mary! in the West End?&quot;,&quot;author&quot;:&quot;Meg Masseron&quot;,&quot;author_list&quot;:[&quot;Meg Masseron&quot;,&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2025-12-19&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;London News&quot;],&quot;craft_id&quot;:22161875,&quot;crosslinker&quot;:null,&quot;element_index&quot;:16}">
-    <a href="https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/OH-MARY-Mason-Alexander-Park-Mary-Todd-Lincoln.-Photo-by-Manuel-Harlan.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Do London Reviews Think of <em>Oh, Mary! </em>in the West End?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | December 19
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Did Critics Think of Amahl and the Night Visitors Off-Broadway?&quot;,&quot;author&quot;:&quot;Natan Zamansky&quot;,&quot;author_list&quot;:[&quot;Natan Zamansky&quot;],&quot;publish_date&quot;:&quot;2025-12-19&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Classic Arts News&quot;,&quot;Opera&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22161987,&quot;crosslinker&quot;:null,&quot;element_index&quot;:17}">
-    <a href="https://playbill.com/article/what-did-critics-think-of-amahl-and-the-night-visitors-off-broadway" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/251216_AmahlATNV-495-F.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Did Critics Think of <em>Amahl and the Night Visitors</em> Off-Broadway?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | December 19
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Were Reviewers Charmed by Tartuffe Starring Matthew Broderick?&quot;,&quot;author&quot;:&quot;Diep Tran&quot;,&quot;author_list&quot;:[&quot;Diep Tran&quot;],&quot;publish_date&quot;:&quot;2025-12-16&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Production Photos&quot;,&quot;Photos&quot;],&quot;craft_id&quot;:22159164,&quot;crosslinker&quot;:null,&quot;element_index&quot;:18}">
-    <a href="https://playbill.com/article/were-reviewers-charmed-by-tartuffe-starring-matthew-broderick" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/Amber-Gray-and-Matthew-Broderick-in-New-York-Theatre-Workshops-TARTUFFE-photo-by-Marc-J.-Franklin-2-scaled.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">Were Reviewers Charmed by <em>Tartuffe </em>Starring Matthew Broderick?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | December 16
-                            </div>
-        </div>
-    </a>
-</li>    
-
-
-<li class="news-list__item fade-in"  data-dl-action="content_interaction" data-dl-on="click" data-dl-target="a" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;What Do the Critics Think of Anna Christie at St. Ann&#039;s Warehouse?&quot;,&quot;author&quot;:&quot;Meg Masseron&quot;,&quot;author_list&quot;:[&quot;Meg Masseron&quot;,&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2025-12-14&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;],&quot;craft_id&quot;:22156904,&quot;crosslinker&quot;:null,&quot;element_index&quot;:19}">
-    <a href="https://playbill.com/article/what-do-the-critics-think-of-anna-christie-at-st-anns-warehouse" class="news-list__link">
-        <span class="news-list__bullet">
-                        <img src="//assets.playbill.com/editorial/_articleLeadImage/251209_AnnaChristie-1284-F.jpg" alt="">
-                  </span>
-        <div class="news-list__body">
-            <h3 class="news-list__title">What Do the Critics Think of <em>Anna Christie</em> at St. Ann's Warehouse?</h3>
-            <div class="news-list__meta">
-                                    The Verdict | December 14
-                            </div>
-        </div>
-    </a>
-</li>
-<div sprig s-val:startAfter="20" s-val:numArticles="20" hx-indicator="#sprigLoader" s-trigger="revealed" s-swap="outerHTML" s-target="this" data-hx-get="https://playbill.com/index.php?p=actions/sprig-core/components/render" data-hx-vals="{&quot;startAfter&quot;:&quot;20&quot;,&quot;numArticles&quot;:&quot;20&quot;}" data-hx-trigger="revealed" data-hx-swap="outerHTML" data-hx-target="this" data-sprig-parsed>
+    </div>
+    </div>
 
 </div>
+
+
+
+            <div data-pb-ad-refresh data-pb-block-type="codeSnippet">    <!-- Tag ID: 2026 Leaderboard 2 -->
+<div style="width:100%; display:flex; justify-content:center;">
+  <div id="div-gpt-ad-leaderboard-2" style="min-height:250px;"></div>
 </div>
-                                <div id="sprigLoader" class="spinner" s-indicator>
-                                    <svg class="loader-icon" viewBox="0 0 50 50">
-                                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5" />
-                                    </svg>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="right-items">
-                        
+<script>
+  googletag.cmd.push(function () { googletag.display("div-gpt-ad-leaderboard-2"); });
+</script>
+</div>
+
+
+
+
+
+<div class="bsp-component" data-pb-module-wrapper>    <div class="" data-pb-block-type="heading">
+                <div class="bsp-component pb-heading-small p-0">
+                <div class="bsp-component-title">Related Articles</div>
+            </div>
+        
+        
+</div>
+
     
-<!-- Tag ID: playbill_leaderboard_2_mw -->
-<div align="center" data-freestar-ad="__336x280" id="playbill_leaderboard_2_mw">
-  <script data-cfasync="false" type="text/javascript">
-    freestar.queue.push(function() {
-      freestar.newAdSlots({
-          placementName: 'playbill_leaderboard_2_mw',
-          slotId: 'playbill_leaderboard_2_mw'
-          })
-    });
-  </script>
+    
+<div class="bsp-component bsp-list-promo-component " style="margin-top: 1.5rem;" data-pb-block-type="newArticleRailList">
+    <div class="bsp-component-content">
+        <div class="bsp-list-promo">
+            <ul class="bsp-list-promo-list">
+                                                                            
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/article/look-back-at-beetlejuices-journey-on-broadway" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Look Back at Beetlejuice\u2019s Journey on Broadway&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2025-10-09&quot;,&quot;primary_article_category&quot;:&quot;Special Features&quot;,&quot;article_category&quot;:[&quot;Special Features&quot;],&quot;craft_id&quot;:22086562,&quot;crosslinker&quot;:null,&quot;element_index&quot;:0}">
+											Look Back at <em>Beetlejuice</em>’s Journey on Broadway
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/article/andy-karl-will-star-in-beetlejuice-musical-in-singapore" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Andy Karl Will Star in Beetlejuice Musical in Singapore&quot;,&quot;author&quot;:&quot;Andrew Gans&quot;,&quot;author_list&quot;:[&quot;Andrew Gans&quot;],&quot;publish_date&quot;:&quot;2025-06-16&quot;,&quot;primary_article_category&quot;:&quot;International News&quot;,&quot;article_category&quot;:[&quot;International News&quot;,&quot;Playbill Universe&quot;],&quot;craft_id&quot;:21959842,&quot;crosslinker&quot;:null,&quot;element_index&quot;:1}">
+											Andy Karl Will Star in <em>Beetlejuice </em>Musical in Singapore
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/article/charl-brown-adam-grupper-mauricio-martinez-join-cast-of-off-broadways-joy-a-new-true-musical" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Charl Brown, Adam Grupper, Mauricio Mart\u00ednez Join Cast of Off-Broadway&#039;s Joy: A New True Musical&quot;,&quot;author&quot;:&quot;Andrew Gans&quot;,&quot;author_list&quot;:[&quot;Andrew Gans&quot;],&quot;publish_date&quot;:&quot;2025-03-19&quot;,&quot;primary_article_category&quot;:&quot;Off-Broadway News&quot;,&quot;article_category&quot;:[&quot;Off-Broadway News&quot;,&quot;Playbill Universe&quot;],&quot;craft_id&quot;:21843003,&quot;crosslinker&quot;:null,&quot;element_index&quot;:2}">
+											Charl Brown, Adam Grupper, Mauricio Martínez Join Cast of Off-Broadway's <em>Joy: A New True Musical</em>
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/article/playbill-pick-review-the-weird-sisters-at-the-edinburgh-festival-fringe" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Playbill Pick Review: The Weird Sisters at the Edinburgh Festival Fringe&quot;,&quot;author&quot;:&quot;Margaret Hall&quot;,&quot;author_list&quot;:[&quot;Margaret Hall&quot;],&quot;publish_date&quot;:&quot;2024-08-20&quot;,&quot;primary_article_category&quot;:&quot;Playbill Goes Fringe&quot;,&quot;article_category&quot;:[&quot;Playbill Goes Fringe&quot;,&quot;International News&quot;],&quot;craft_id&quot;:20787045,&quot;crosslinker&quot;:null,&quot;element_index&quot;:3}">
+											Playbill Pick Review: <em>The </em><em>Weird Sisters </em>at the Edinburgh Festival Fringe
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                        
+
+
+
+	<li>
+		<div class="bsp-list-promo-section-text">
+			<div class="bsp-list-promo-title">
+				<a href="https://playbill.com/article/its-showtime-for-beetlejuice-jr-now-available-for-licensing" data-cms-ai="0"  data-dl-action="content_interaction" data-dl-on="click" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;It&#039;s Showtime for Beetlejuice JR., Now Available for Licensing&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2024-08-15&quot;,&quot;primary_article_category&quot;:&quot;Education News&quot;,&quot;article_category&quot;:[&quot;Education News&quot;,&quot;Industry News&quot;],&quot;craft_id&quot;:20786587,&quot;crosslinker&quot;:null,&quot;element_index&quot;:4}">
+											It's Showtime for <em>Beetlejuice JR.</em>, Now Available for Licensing
+									</a>
+			</div>
+		</div>
+	</li>
+                                                                                                            </ul>
+        </div>
+    </div>
+    </div>
+
 </div>
 
-                    </div>
-                </div>
 
+
+            <div data-pb-ad-refresh data-pb-block-type="codeSnippet">    <!-- Tag ID: 2026 Leaderboard 3 -->
+<div style="width:100%; display:flex; justify-content:center;">
+  <div id="div-gpt-ad-leaderboard-3" style="min-height:250px;"></div>
+</div>
+<script>
+  googletag.cmd.push(function () { googletag.display("div-gpt-ad-leaderboard-3"); });
+</script>
+</div>
+
+
+
+        </div>
+    </div>
+    <div class="bsp-column-scrolling">
+        <div>
             
         </div>
     </div>
+</div>
+		</div>
+		<div class="bsp-container cft-container">
+			<div class="bsp-row">
+				<div class="bsp-column-scrolling">
+					<div class="bsp-article-wrapper cft-article-wrapper">
+						<div class="bsp-article cft-article ">
 
-				
+							<div class="cft-article-top-content">
+																																		<a class="eyebrow eyebrow-custom" title="Playbill Universe" style="color:#030303;" href="https://playbill.com/category/playbill-universe">Playbill Universe</a>
+								
+								<span class="heading-one bsp-article-title pb-article-title">Read Reviews for <i>Beetlejuice </i>on Broadway</span>
+
+																<span class="heading-three bsp-article-subtitle">The new musical, based on the Tim Burton favorite, opened April 25.</span>
+								
+								<div class="bsp-meta-data cft-meta-data">
+									<div class="article-authors-date">
+																				<div class="bsp-meta-author">By
+											Ryan McPhee
+										</div>
+										
+																				
+										<div class="bsp-meta-date">April 25, 2019</div>
+										<meta content="April 25, 2019">
+																			</div>
+
+									<div class="cft-social-plus-tickets">
+
+										 <span class="bsp-share-links-wrapper cft-share-links-wrapper">
+	<span class="bsp-share-links-title"></span>
+	<ul class="bsp-share-links cft-share-links" data-bsp-share data-bsp-share-options='
+			            			            {&quot;title&quot;:&quot;Read Reviews for Beetlejuice on Broadway&quot;,&quot;url&quot;:&quot;https:\/\/playbill.com\/article\/read-reviews-for-beetlejuice-on-broadway&quot;,&quot;image&quot;:&quot;https:\/\/bsp-static.playbill.com\/d0\/ec\/2be3030d4cd7930c20c51b109863\/Lin-Manuel-Miranda.1438116575.jpg&quot;,&quot;description&quot;:&quot;&quot;,&quot;redirectUrl&quot;:&quot;&quot;,&quot;iconClass&quot;:&quot;icon&quot;,&quot;serviceProps&quot;:{&quot;facebook&quot;:{&quot;appId&quot;:&quot;760188134086076&quot;}}}
+			        '>
+		<li class="bsp-facebook-share"></li>
+        		    <li class="bsp-print-share"></li>
+		    <li class="bsp-email-share"></li>
+        	</ul>
+</span>
+
+																																						
+								</div>
+							</div>
+
+														    <div class="bsp-article-lead">
+        <figure class="bsp-img-with-meta" style="padding-bottom: 0;">
+            <div class="bsp-component bsp-video-player-component">
+	<div class="bsp-component-content">
+		<div class="bsp-video-player">
+			<div class="bsp-video-player-iframe-wrapper">
+										<script>
+							let outOfServiceDiv = document.querySelector('.bsp-article-lead');
+							if (outOfServiceDiv) {
+								outOfServiceDiv.innerHTML = `
+									<div id="jwp-out-of-service" style="padding: 4em 2em; border: 4px solid black; display: flex; align-content: center; justify-content: center; text-align: center; font-size: 1em;">
+										<div style="flex: 1;">
+											This video is currently unavailable. We are revamping the videos on our website. Please check back later.
+										</div>
+									</div>
+								`;
+							}
+						</script>
+							</div>
+					</div>
+	</div>
+</div>
+        </figure>
+    </div>
+						</div>
+
+						<div class="bsp-article-content">
+															<p>The musical adaptation of <i>Beetlejuice </i>celebrated its official opening (the last of the 2018–2019 Broadway season) at the Winter Garden Theatre April 25. The show, directed by Alex Timbers, haunts New York following a Washington, D.C. world premiere.</p>
+<p>Inspired by the Tim Burton dark comedy, the new take on the fast-talking ghost with the most (and those he terrorizes) features a book by Scott Brown and Anthony King and an original score by Eddie Perfect. Tony nominee Alex Brightman stars as the title bio-exorcist, with Sophia Anne Caruso sharing center stage as the death-obsessed Lydia Deetz.</p>
+
+                <div class="bsp-article-enhancement align-right">
+                    <figure class="bsp-img-with-meta">
+                        <img src="//assets.playbill.com/editorial/_defaultEnhancement/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" 
+                    alt="//assets.playbill.com/editorial/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg"
+                    data-image="6700824"
+                />
+                        <figcaption>
+                            <span class="bsp-img-caption">
+                                Rob McClure, Kerry Butler, Sophia Anne Caruso, and Alex Brightman
+                                <span class="bsp-img-credit">Matthew Murphy</span>
+                            </span>
+                        </figcaption>
+                    </figure>
+                </div>
+            
+<p>
+The two are joined by Tony nominees <a class="person-link" href="http://www.playbill.com/person/rob-mcclure-vault-0000109271" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Rob McClure </a>and <a class="person-link" href="http://www.playbill.com/person/kerry-butler-vault-0000010244" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Kerry Butler</a> as Adam and Barbara Maitland, <a class="person-link" href="http://www.playbill.com/person/leslie-kritzer-vault-0000089583" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Leslie Kritzer</a> and <a href="http://www.playbill.com/person/adam-dannheisser-vault-0000032064" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Adam Dannheisser</a> as Delia and Charles Deetz, Danny Rutigliano and <a class="person-link" href="http://www.playbill.com/person/jill-abramovitz-vault-0000087916" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Jill Abramovitz </a>as Maxie and Maxine Dean, <a class="person-link" href="http://www.playbill.com/person/kelvin-moon-loh-vault-0000125473" rel="external" style="box-sizing: border-box; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700; font-family: &quot;Roboto Condensed&quot;; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">Kelvin Moon Loh</a> as Otho, and Dana Steingold as a new addition to the story—a Girl Scout.</p>
+<p><b>Read reviews for the Broadway premiere below.</b></p>
+<p><a href="https://www.amny.com/entertainment/beetlejuice-review-1.30234785" target="_blank">amNY (Matt Windman)</a></p>
+<p><a href="https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/" target="_blank">Broadway News (Charles Isherwood)</a></p>
+<p><a href="https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit?source=email&amp;via=desktop" target="_blank">The Daily Beast (Tim Teeman)</a></p>
+<p><a href="https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/" target="_blank">Deadline (Greg Evans) </a></p>
+<p><a href="https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/" target="_blank">Entertainment Weekly (Nick Romano)</a></p>
+<p><a href="https://www.theguardian.com/stage/2019/apr/25/beetlejuice-broadway-tim-burton-adaptation-haunts" target="_blank">The Guardian (Alexis Soloski)</a></p>
+<p><a href="https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616" target="_blank">The Hollywood Reporter (David Rooney)</a></p>
+<p><a href="https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947" target="_blank">Newsday (Barbara Schuler)</a></p>
+<p><a href="https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html" target="_blank">New York Daily News (Chris Jones)</a></p>
+<p><a href="https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html" target="_blank">New York Magazine/Vulture (Sara Holdren)</a></p>
+<p><a href="https://nypost.com/2019/04/25/beetlejuice-review-musical-is-a-coke-snorting-f-bombing-disaster/" target="_blank">New York Post (Johnny Oleksinski)</a></p>
+<p><b>New York Stage Review (<a href="http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/" target="_blank">Jesse Oxfeld</a> and <a href="http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/" target="_blank">David Finkle</a>)</b></p>
+<p><a href="https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html" target="_blank">The New York Times (Ben Brantley)</a></p>
+<p><a href="https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway" target="_blank">New York Theatre Guide (Mark Shenton)</a></p>
+<p><a href="https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-" target="_blank">NY1 (Roma Torre)</a></p>
+<p><a href="https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/" target="_blank">Observer (Red Reed)</a></p>
+<p><a href="https://www.thestage.co.uk/reviews/2019/beetlejuice-musical-tim-burton-review-winter-garden-new-york/" target="_blank">The Stage (Nicole Serratore)</a></p>
+<p><a href="https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical" target="_blank">Time Out New York (Adam Feldman)</a></p>
+<p><a href="https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/" target="_blank">Variety (Frank Rizzo)</a></p>
+<p><a href="https://www.washingtonpost.com/entertainment/theater_dance/beetlejuice-cleans-up-its-act-for-broadway-its-not-a-raging-success-but-itll-do/2019/04/25/cec14fa8-676b-11e9-8985-4cf30147bdca_story.html" target="_blank">The Washington Post (Peter Marks)</a></p>
+<p><a href="https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/" target="_blank">The Wrap (Robert Hofler)</a></p>
+<p><b>Playbill will continue to update this list as more reviews come in.</b></p>
+<p>Rounding out the company are Tessa Alves, Gilbert L. Bailey II, Will Blum, Johnny Brantley III, Ryan Breslin, Natalie Charle Ellis, Brooke Engen, Abe Goldfarb, Eric Anthony Johnson, Elliott Mattox, Mateo Melendez, Sean Montgomery, Ramone Owens, Presley Ryan, and Kim Sava.</p>
+<p><i>Beetlejuice</i> features sets by <a class="person-link" href="http://www.playbill.com/person/david-korins-vault-0000021253" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">David Korins</a>, costumes by <a class="person-link" href="http://www.playbill.com/person/william-ivey-long-vault-0000030209" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">William Ivey Long</a>, lighting design by <a class="person-link" href="http://www.playbill.com/person/kenneth-posner-vault-0000022360" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">Kenneth Posner</a>, and sound design by <a class="person-link" href="http://www.playbill.com/person/peter-hylenski-vault-0000023019" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">Peter Hylenski</a>. Casting is by Telsey + Co’s Rachel Hoffman, CSA.</p>
+<p>Warner Bros. Theatre Ventures produces with Langley Park Productions, <a class="person-link" href="http://www.playbill.com/person/jeffrey-richards-vault-0000011693" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">Jeffrey Richards</a>, Steve Traxler, IMG Original Content, Rebecca Gold, Ben Lowy, <a class="person-link" href="http://www.playbill.com/person/james-l-nederlander-vault-0000001472" rel="external" style="box-sizing: border-box; background-color: transparent; color: rgb(0, 0, 0); text-decoration: underline; font-weight: 700;">James L. Nederlander</a>, Warner/Chappell Music, and ZenDog Productions.<br/></p>
+															
+        <div class="bsp-article-enhancement">
+        													
+			<script>
+		function dismissFrozenMobileAd() {
+			$('.mobile-leaderboard-1').slideUp(500, "linear");
+			galleryFullScreen = true;
+		}
+		function exitFullScreen() { galleryFullScreen = false ; }
+	</script>
+		
+	
+	<div class="main-carousel article-carousel embedded-gallery-module bsp-carousel-stage carousel-dark pb-contrast-layout" data-counter="show" data-total-count="14" data-ad-frequency="7" data-flickity-options="&#x7B;&quot;fullscreen&quot;&#x3A;false,&quot;cellSelector&quot;&#x3A;&quot;.carousel-cell&quot;,&quot;lazyLoad&quot;&#x3A;1,&quot;pageDots&quot;&#x3A;false,&quot;adaptiveHeight&quot;&#x3A;true,&quot;contain&quot;&#x3A;true&#x7D;" data-gallery-url="https://playbill.com/gallery/production-photos-beetlejuice-on-broadway" data-dl-data="&#x7B;&quot;gallery_name&quot;&#x3A;&quot;A&#x20;Look&#x20;at&#x20;Beetlejuice&#x20;on&#x20;Broadway&quot;,&quot;gallery_type&quot;&#x3A;&quot;Embedded&quot;,&quot;advertising&quot;&#x3A;&quot;yes&quot;&#x7D;">
+		<div class="article-gallery-header teaser-gallery-title">
+			<button data-close class="hidden bsp-carousel-gallery-header-mobile-close">close gallery</button>
+			<div class="hidden teaser-gallery-counter">
+				<span class="currentCount">0</span>
+				of
+				<span class="totalCount"></span>
+			</div>
+			<h3 itemprop="headline" class="bsp-component-title">A Look at Beetlejuice on Broadway</h3>
+		</div>
+						<div class="carousel-cell cover-slide bsp-carousel-slide" data-slide-count="0">
+			<figure class="bsp-img-with-teaser">
+				<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/13a17d7838c6ef3730fb429764ec6037-17020-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Alex Brightman_HR" class="carousel-image">
+
+				<figcaption class="bsp-img-teaser">
+					<div class="bsp-img-teaser-content">
+						<h3 data-pb-truncate class="title">A Look at Beetlejuice on Broadway</h3>
+						<p data-pb-truncate class="leading-tight"></p>
+						<span class="counter">14 PHOTOS</span>
+					</div>
+				</figcaption>
+			</figure>
+		</div>
+								<div class="carousel-cell" data-slide-count="1">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/03e5b75c89eafc72e539ed8031252345-beetlejuice-broadway-production-photo-2018-01-hr.jpg" alt="Beetlejuice_D.C._Production_Photo_2018_Alex Brightman_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="2">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/7af8f275aa5dc8c35d98ece7578c7a75-dsam1paw.jpeg" alt="Beetlejuice_D.C._Production_Photo_2018_Alex Brightman_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="3">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/b0688bdac59a731dde598993edaed027-20102-caruso-brightman-kritzer-butler-loh-dannheisser-mcclure-in-beetlejuice-photo-by-evan-zimmerman-murphymade-2019-2.jpg" alt="Beetlejuice_Broadway_Strand Photo Shoot_2019_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Sophia Anne Caruso, Alex Brightman, Leslie Kritzer, Kerry Butler, Kevin Moon Loh, Adam Dannheisser, and Rob McClure</div>
+																			<div class="mt-1 text-xl">Evan Zimmerman/MurphyMade at the Strand</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="4">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/166dc4d266183a80ccdf6c9f615cad10-20798-leslie-kritzer-adam-dannheisser-in-beetlejuice-photo-by-evan-zimmerman-murphymade-2019.jpg" alt="Beetlejuice_Broadway_Strand Photo Shoot_2019_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Leslie Kritzer and Adam Dannheisser</div>
+																			<div class="mt-1 text-xl">Evan Zimmerman/MurphyMade at the Strand</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="5">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/0d408076c9b6dd0444cd998034fdc7bd-beetlejuice-brightman-and-caruso-couch-captioned.jpg" alt="Beetlejuice_Broadway_First_look_2019_Alex_Brightman_Sophia_Anne_Caruso_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman and Sophia Anne Caruso</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="6">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/561f7c7e807dcdb711ebc6e8f9b6e210-0637-brightman-mcclure-butler-caruso-kritzer-dannheisser-in-beetlejuice-photo-by-matthew-murphy-2018.jpg" alt="Beetlejuice_Broadway_First_look_2019_Alex_Brightman_Rob_McClure_Kerry_Butler_Sophia_Anne_Caruso_Leslie_Kritzer_Adam_Dannheisser_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman, Rob McClure, Kerry Butler, Sophia Anne Caruso, Leslie Kritzer, and Adam Dannheisser</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="7">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/13a17d7838c6ef3730fb429764ec6037-17020-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Alex Brightman_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+												<div class="carousel-cell play-ikzf7U" data-ad-interstitial="active" style="height: 100%">
+						<div class="bsp-carousel-gallery-interstitial bsp-gallery-fullscreen-interstitial">
+							<div class="code"></div>
+							<div class="codeMobile"></div>
+							<div class="description">
+								<span class="image-caption">
+									<a href="#" class="next-slide">Next Slide</a>
+								</span>
+								<span class="image-credit">&nbsp;</span>
+							</div>
+						</div>
+					</div>
+
+											
+								<div class="carousel-cell" data-slide-count="8">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Rob McClure, Kerry Butler, Sophia Anne Caruso, and Alex Brightman_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Rob McClure, Kerry Butler, Sophia Anne Caruso, and Alex Brightman</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="9">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/e221e62f057e332f327d86164de749fa-2531-leslie-kritzer-adam-dannheisser-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Leslie Kritzer and Adam Dannheisser_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Leslie Kritzer and Adam Dannheisser</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="10">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/7155879489451f51afcafb80b82692ba-2467-sophia-anne-caruso-rob-mcclure-kerry-butler-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Sophia Anne Caruso, Rob McClure, and Kerry Butler_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Sophia Anne Caruso, Rob McClure, and Kerry Butler</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="11">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/1c2f317affa02a86862ac3c1eaa73ffc-15856-alex-brightman-and-sophia-anne-caruso-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Alex Brightman and Sophia Anne Caruso_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman and Sophia Anne Caruso</div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="12">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/038b41cc80604614d1b7c01299518c5e-0637-brightman-mcclure-butler-caruso-kritzer-dannheisser-in-beetlejuice-photo-by-matthew-murphy-2018.jpg" alt="Beetlejuice_Broadway_Production Photos_2019_Cast_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Cast of <i>Beetlejuice</i></div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="13">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/dd893b3c12f34548b20ce5655059403c-21565-leslie-kritzer-and-company-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production_Photos_2019_Leslie_Kritzer_cast_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Leslie Kritzer and cast of <i>Beetlejuice</i></div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+								<div class="carousel-cell" data-slide-count="14">
+									<figure class="carousel-figure--image">
+						<div class="overflow-hidden">
+							<img data-flickity-lazyload="//assets.playbill.com/editorial/_embeddedGallerySize/3d407ff8ed9e1d05211ad30cf24e9bde-21811-alex-brightman-and-jill-abramovitz-in-beetlejuice-photo-by-matthew-murphy-2019.jpg" alt="Beetlejuice_Broadway_Production_Photos_2019_Alex Brightman_HR" class="carousel-image">
+						</div>
+																		<figcaption>
+															<div class="bg-black p-4 w-full text-left">
+									<div class="text-2xl md:text-3xl">Alex Brightman in <i>Beetlejuice</i></div>
+																			<div class="mt-1 text-xl">Matthew Murphy</div>
+																	</div>
+													</figcaption>
+					</figure>
+							</div>
+			
+				<div class="carousel-cell" data-slide-count="0">
+
+			<div class="bsp-carousel-gallery-endcard">
+				<div class="bsp-component">
+					<div class="bsp-component-title">You may also like</div>
+					<div class="bsp-component-content">
+						<div class="bsp-list-promo">
+							<ul class="bsp-list-promo-list bsp-row">
+																	<li class="bsp-column-third image-align-top">
+										<div class="bsp-list-promo-section-image">
+											<div class="bsp-list-promo-image">
+																									<a href="https://playbill.com/gallery/photo-archive-celebrating-more-than-60-years-of-angela-lansbury-on-the-stage-com-5757" title="Celebrating More Than 60 Years of Angela Lansbury on the Stage">
+														<img data-bsp-lazyimage="" src="//assets.playbill.com/editorial/_verticalListLarge/6f966c1c3abe39d906ec36f9cb329e0e-mame-angelalansbury-hr.jpg" alt="" class="bsp-onDomInsert-inserted-13 bsp-lazyimage-item" style="opacity: 1;">
+													</a>
+																							</div>
+										</div>
+										<div class="bsp-list-promo-section-text">
+											<div class="bsp-list-promo-title">
+												<a href="https://playbill.com/gallery/photo-archive-celebrating-more-than-60-years-of-angela-lansbury-on-the-stage-com-5757" title="Celebrating More Than 60 Years of Angela Lansbury on the Stage">
+													Celebrating More Than 60 Years of Angela Lansbury on the Stage
+												</a>
+											</div>
+										</div>
+									</li>
+																	<li class="bsp-column-third image-align-top">
+										<div class="bsp-list-promo-section-image">
+											<div class="bsp-list-promo-image">
+																									<a href="https://playbill.com/gallery/hairspray-production-photos-com-1990" title="Look Back at Hairspray on Broadway">
+														<img data-bsp-lazyimage="" src="//assets.playbill.com/editorial/_verticalListLarge/ff981611516e1f88395d559567bd1b0e-118-9-hairspray.jpg" alt="" class="bsp-onDomInsert-inserted-13 bsp-lazyimage-item" style="opacity: 1;">
+													</a>
+																							</div>
+										</div>
+										<div class="bsp-list-promo-section-text">
+											<div class="bsp-list-promo-title">
+												<a href="https://playbill.com/gallery/hairspray-production-photos-com-1990" title="Look Back at Hairspray on Broadway">
+													Look Back at Hairspray on Broadway
+												</a>
+											</div>
+										</div>
+									</li>
+																	<li class="bsp-column-third image-align-top">
+										<div class="bsp-list-promo-section-image">
+											<div class="bsp-list-promo-image">
+																									<a href="https://playbill.com/gallery/celebrate-kerry-butler-on-stage-com-351337" title="From Belle to Beetlejuice: Celebrating the Stage Work of Kerry Butler">
+														<img data-bsp-lazyimage="" src="//assets.playbill.com/editorial/_verticalListLarge/a0826bdcceed83bf393e5fac57586feb-x2-15.jpg" alt="" class="bsp-onDomInsert-inserted-13 bsp-lazyimage-item" style="opacity: 1;">
+													</a>
+																							</div>
+										</div>
+										<div class="bsp-list-promo-section-text">
+											<div class="bsp-list-promo-title">
+												<a href="https://playbill.com/gallery/celebrate-kerry-butler-on-stage-com-351337" title="From Belle to Beetlejuice: Celebrating the Stage Work of Kerry Butler">
+													From Belle to Beetlejuice: Celebrating the Stage Work of Kerry Butler
+												</a>
+											</div>
+										</div>
+									</li>
+															</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 
-							    <!--esi:include src="/deco/esi/footer?isMobile=" time="34" age="363606"-->
+		</div>
+
+	</div>
+    </div>
+													</div>
+
+						
+						<div style="clear: both;">&nbsp;</div>
+												<div class="bsp-tags cft-tags">
+							<div class="bsp-tag-list-title">RELATED:</div>
+							<ul class="bsp-tag-list">
+																<li>
+									<a class="bsp-tag cft-tag" href="https://playbill.com/searchpage/search?q=Beetlejuice" title="Beetlejuice" data-dl-action="editorial_related_click" data-dl-on="click" data-dl-data="{&quot;click_text&quot;:&quot;Beetlejuice&quot;}">
+										Beetlejuice
+									</a>
+								</li>
+															</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bsp-container cft-container">
+		        <div class="bsp-row">
+    <div class="bsp-column-fixed-wrap min-h-0" data-bsp-toggle-item>
+        <div class="bsp-column-fixed toggle-item">
+            
+        </div>
+    </div>
+    <div class="bsp-column-scrolling">
+        <div>
+            
+
+
+            <div data-pb-ad-refresh data-pb-block-type="codeSnippet">    <script>
+  (function () {
+    // Prevent double insertion if this runs more than once
+    if (document.getElementById("div-gpt-ad-leaderboard-4")) return;
+
+    // Create a centered wrapper (matches your existing LB markup)
+    const lbWrap = document.createElement("div");
+    lbWrap.style.width = "100%";
+    lbWrap.style.display = "flex";
+    lbWrap.style.justifyContent = "center";
+    lbWrap.style.marginBottom = "2rem";
+
+    // Create the GPT slot container for LB4
+    const lbDiv = document.createElement("div");
+    lbDiv.setAttribute("id", "div-gpt-ad-leaderboard-4");
+
+    lbWrap.appendChild(lbDiv);
+
+    const paraElements = document.querySelectorAll(".bsp-article-content > p");
+    if (paraElements.length < 4) return;
+
+    // Desktop logic to avoid early enhancements; keep it for all devices
+    const enhanceElements = document.querySelectorAll(".bsp-article-content > .bsp-article-enhancement");
+
+    // If there are no enhancements, insert after paragraph 2 (index 1)
+    if (enhanceElements.length === 0) {
+      paraElements[1].insertAdjacentElement("afterend", lbWrap);
+    } else {
+      const firstEnhance = enhanceElements[0];
+
+      // Compare positions to decide if enhancement comes before/after paragraph 3
+      const firstEnhancePos = firstEnhance.getBoundingClientRect();
+      const thirdParaPos = paraElements[2].getBoundingClientRect();
+
+      // If enhancement is below paragraph 3, insert after paragraph 2
+      if (firstEnhancePos.top >= thirdParaPos.top) {
+        paraElements[1].insertAdjacentElement("afterend", lbWrap);
+      } else {
+        // Otherwise, insert after the enhancement (first safe paragraph after it)
+        let inserted = false;
+        for (let i = 2; i < paraElements.length - 2; i++) {
+          if (paraElements[i].getBoundingClientRect().top > firstEnhancePos.bottom) {
+            paraElements[i].insertAdjacentElement("beforebegin", lbWrap);
+            inserted = true;
+            break;
+          }
+        }
+
+        // Fallback if no safe spot found
+        if (!inserted) {
+          paraElements[1].insertAdjacentElement("afterend", lbWrap);
+        }
+      }
+    }
+
+    // Display after the div exists in the DOM
+    window.googletag = window.googletag || { cmd: [] };
+    googletag.cmd.push(function () {
+      googletag.display("div-gpt-ad-leaderboard-4");
+    });
+  })();
+</script>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+		        <div class="bsp-row">
+    <div class="bsp-column-fixed-wrap min-h-0" data-bsp-toggle-item>
+        <div class="bsp-column-fixed toggle-item">
+            
+        </div>
+    </div>
+    <div class="bsp-column-scrolling">
+        <div>
+            
+
+
+            <div data-pb-ad-refresh data-pb-block-type="codeSnippet">    <!-- GPT AdSlot 2 for Ad unit 'NEWS_LOWER_970x90' ### Size: [[728,90],[970,90],[970,250],[300,250]] -->
+<!-- Adslot's refresh function: googletag.pubads().refresh([gptadslots[1]]) -->
+<div style="margin: 15px auto 8px auto;">
+    <div id='div-gpt-ad-14052319-LOWERNEWS'>
+        <script>
+			if (typeof googletag !== 'undefined') {
+	            googletag.cmd.push(function() { googletag.display('div-gpt-ad-14052319-LOWERNEWS'); });
+            }
+        </script>
+    </div>
+</div>
+<!-- End AdSlot 2 -->
+</div>
+
+
+
+
+
+<div class="bsp-component" data-pb-module-wrapper>    
+                
+
+<div class="bsp-component bsp-list-promo-component image-small-width">
+                <div class="" data-pb-block-type="heading">
+                <div class="bsp-component-title">Recommended Reading:</div>
+        
+        
+</div>
+
+        <div class="bsp-component-content" data-pb-block-type="articleList">
+        <div class="bsp-list-promo">
+            <ul class="bsp-list-promo-list">
+                            </ul>
+        </div>
+    </div>
+    </div>
+
+
+</div>
+
+        </div>
+    </div>
+</div>
+	</div>
+</div>
+</div>
+
+			    <!--esi:include src="/deco/esi/footer" time="23" age="358142"-->
 
 
 <script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
@@ -2094,12 +2876,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
 </footer>
 <!--/esi:include-->
-					</main>
+		</div>
 
-				
+		
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-28913695-1"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-				
-				<div id="page-mask" onclick="closeSearch()"></div>
+    ga('create', 'UA-28913695-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+		</div><div class="is-mobile-only"></div>
+		<div class="is-tablet-only"></div>
+		<div class="is-desktop-only"></div>
+
+		
+		
+		<div id="page-mask" onclick="closeSearch()">
+
+		</div>
+
 		<script>
 			window.FALLBACK_IMAGES = {
 				artist: "//assets.playbill.com/site/pb.Listing.Placeholder.ARTIST.V4.jpg",
@@ -2108,14 +2908,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			};
 			window.ALGOLIA_INDEX_NAME = 'playbillcraft-beta' || 'playbillcraft-beta';
 		</script>
-
-				<script src="https://playbill.com/assets/js/search.js?id=4d611397a3382276ebb753a6453a59ff"></script>
+		<script src="https://playbill.com/assets/js/search.js?id=4d611397a3382276ebb753a6453a59ff"></script>
 		<script src="https://playbill.com/assets/js/scroll.js?id=7b5e9c402fcd49ca2717505ecc285501"></script>
 		<script src="https://playbill.com/assets/js/burger.js?id=90321a6df039902dd600b712b76293a6"></script>
 		<script src="https://playbill.com/assets/js/app.js?id=4c73be040733dc70d7f0f2adc11e4505"></script>
 
-				    <!--esi:include src="/esi/navJsContent?isArticle=0&isMobile=" time="23" age="226133"-->                                <!--/esi:include-->
-
-	<script type="application/ld+json">{"@context":"http://schema.org","@graph":[{"@type":"WebPage","author":{"@id":"#identity"},"copyrightHolder":{"@id":"#identity"},"copyrightYear":"2020","creator":{"@id":"#creator"},"dateCreated":"2020-01-23T10:00:47-05:00","dateModified":"2022-01-06T03:50:15-05:00","datePublished":"2020-01-23T10:00:47-05:00","headline":"The Verdict","inLanguage":"en-us","mainEntityOfPage":"https://playbill.com/category/the-verdict","name":"The Verdict","publisher":{"@id":"#creator"},"url":"https://playbill.com/category/the-verdict"},{"@id":"#identity","@type":"Organization"},{"@id":"#creator","@type":"Organization"},{"@type":"BreadcrumbList","description":"Breadcrumbs list","itemListElement":[{"@type":"ListItem","item":"https://playbill.com","name":"Playbill Home (Deco)","position":1},{"@type":"ListItem","item":"https://playbill.com/category/the-verdict","name":"The Verdict","position":2}],"name":"Breadcrumbs"}]}</script><script src="https://playbill.com/cpresources/382656b4/htmx.min.js?v=1770767205"></script><!-- esi:stats replaced="8" --><!-- esi:stats origin="240" transform="34" type="desktop" --><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4d394ee03f804ec1b0350511fc3549b5","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+		    <!--esi:include src="/esi/navJsContent?isArticle=1&isMobile=" time="30" age="367046"-->                                <!--/esi:include-->
+			<script type="application/ld+json">{"@context":"http://schema.org","@graph":[{"@type":"WebPage","author":{"@id":"#identity"},"copyrightHolder":{"@id":"#identity"},"copyrightYear":"2019","creator":{"@id":"#creator"},"dateCreated":"2020-02-24T19:57:29-05:00","dateModified":"2022-01-05T02:16:58-05:00","datePublished":"2019-04-25T20:56:36-04:00","description":"The new musical, based on the Tim Burton favorite, opened April 25.","headline":"Read Reviews for Beetlejuice on Broadway","image":{"@type":"ImageObject","url":"https://assets.playbill.com/editorial/73a68890a4f51d967a5a12ba10ef0381-16817-rob-mcclure-kerry-butler-sophia-anne-caruso-alex-brightman-in-beetlejuice-photo-by-matthew-murphy-2019.jpg"},"inLanguage":"en-us","mainEntityOfPage":"https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway","name":"Read Reviews for Beetlejuice on Broadway","publisher":{"@id":"#creator"},"url":"https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway"},{"@id":"#identity","@type":"Organization"},{"@id":"#creator","@type":"Organization"},{"@type":"BreadcrumbList","description":"Breadcrumbs list","itemListElement":[{"@type":"ListItem","item":"https://playbill.com","name":"Playbill Home (Deco)","position":1},{"@type":"ListItem","item":"https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway","name":"Read Reviews for Beetlejuice on Broadway","position":2}],"name":"Breadcrumbs"}]}</script><!-- esi:stats replaced="8" --><!-- esi:stats origin="2794" transform="30" type="desktop" --><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4d394ee03f804ec1b0350511fc3549b5","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
