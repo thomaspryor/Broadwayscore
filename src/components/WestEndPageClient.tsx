@@ -33,6 +33,7 @@ interface WestEndPageClientProps {
   shows: WestEndShow[];
   totalShows: number;
   totalReviews: number;
+  scoredShows: number;
 }
 
 // URL parameter values
@@ -339,7 +340,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -516,7 +517,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
