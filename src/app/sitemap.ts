@@ -14,6 +14,7 @@ import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
+import { getAllPredictionSeasons, getTonySeasonWindow } from '@/lib/data-tony-predictions';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -117,13 +118,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    // Tony Awards predictions (only when feature flag is on, otherwise 404)
-    ...(featureFlags.tonyPredictions ? [{
-      url: `${BASE_URL}/tony-awards/predictions`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.85,
-    }] : []),
+    // Tony Awards predictions overview + per-season pages
+    ...(featureFlags.tonyPredictions ? [
+      {
+        url: `${BASE_URL}/tony-awards/predictions`,
+        lastModified: latestDate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.85,
+      },
+      ...getAllPredictionSeasons().map(s => {
+        const isCurrent = s.label === getTonySeasonWindow().label;
+        return {
+          url: `${BASE_URL}/tony-awards/predictions/${s.label}`,
+          lastModified: isCurrent ? latestDate : showsDate,
+          changeFrequency: isCurrent ? 'weekly' as const : 'monthly' as const,
+          priority: isCurrent ? 0.85 : 0.7,
+        };
+      }),
+    ] : []),
     // Tony Awards leaderboard (only when feature flag is on, otherwise 404)
     ...(featureFlags.tonyPeople ? [{
       url: `${BASE_URL}/tony-awards/people`,
