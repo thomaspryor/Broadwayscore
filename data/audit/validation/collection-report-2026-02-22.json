@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-22T16:55:53.767Z",
+  "runDate": "2026-02-22T17:03:25.976Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,20 +11,20 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 82,
-    "failed": 1031,
+    "processed": 84,
+    "failed": 1079,
     "skipped": 0,
-    "successRate": "7.4%"
+    "successRate": "7.2%"
   },
   "tierBreakdown": {
     "playwright": 20,
     "amp": 95,
     "browserbase": 1,
-    "directCookies": 4,
+    "directCookies": 5,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 332,
-    "archive": 50
+    "archive": 51
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -42,7 +42,7 @@
     "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 33,
-    "scrapingBeeCreditsUsed": 32,
+    "scrapingBeeCreditsUsed": 33,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 33,
@@ -131,7 +131,9 @@
     "maybe-happy-ending-2024/nytimes--unknown.json",
     "the-monsters-2026/nytimes--brittani-samuel.json",
     "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
-    "the-producers-west-end-2025/evening-standard--nick-curtis.json"
+    "the-producers-west-end-2025/evening-standard--nick-curtis.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1132,6 +1134,54 @@
     "hells-kitchen-2024/vulture--helen-shaw.json",
     "hells-kitchen-2024/vulture--unknown.json",
     "masquerade-2025/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/newyorker--hilton-als.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/newyorker--naomi-fry.json",
+    "six-2021/newyorker--naomi-fry.json",
+    "the-lion-king-1997/newyorker--john-lahr.json",
+    "the-outsiders-2024/newyorker--naomi-fry.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "1776-2022/newyorker--helen-shaw.json",
+    "1776-2022/newyorker--naomi-fry.json",
+    "1984-2017/newyorker--hilton-als.json",
+    "a-christmas-carol-2019/newyorker--jesse-green.json",
+    "a-christmas-carol-2022/newyorker--naomi-fry.json",
+    "a-free-man-of-color-2010/newyorker--hilton-als.json",
+    "a-view-from-the-bridge-2015/newyorker--hilton-als.json",
+    "act-one-2014/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--hilton-als.json",
+    "all-my-sons-2008/newyorker--john-lahr.json",
+    "all-my-sons-2019/newyorker--hilton-als.json",
+    "all-the-way-2014/newyorker--hilton-als.json",
+    "almost-famous-2022/newyorker--naomi-fry.json",
+    "american-psycho-2016/newyorker--hilton-als.json",
+    "anastasia-2017/newyorker--hilton-als.json",
+    "angels-in-america-2018/newyorker--hilton-als.json",
+    "anything-goes-2011/newyorker--john-lahr.json",
+    "august-osage-county-2007/newyorker--hilton-als.json",
+    "beetlejuice-2019/newyorker--hilton-als.json",
+    "bernhardthamlet-2018/newyorker--hilton-als.json",
+    "betrayal-2013/newyorker--john-lahr.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "cabaret-2014/newyorker--hilton-als.json",
+    "clybourne-park-2012/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--naomi-fry.json",
+    "come-from-away-2017/newyorker--hilton-als.json",
+    "company-2006/newyorker--john-lahr.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "curtains-2007/newyorker--john-lahr.json",
+    "death-of-a-salesman-2012/newyorker--hilton-als.json",
+    "death-of-a-salesman-2022/newyorker--naomi-fry.json",
+    "disgraced-2014/newyorker--hilton-als.json",
+    "eclipsed-2016/newyorker--hilton-als.json",
+    "faith-healer-2006/newyorker--john-lahr.json",
+    "farinelli-and-the-king-2017/newyorker--hilton-als.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "fela-2009/newyorker--hilton-als.json",
+    "fences-2010/newyorker--hilton-als.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
     "giant-2026/bloomberg--philip-boroff.json",
     "deuce-2007/bloomberg-news--philip-boroff.json",
     "fela-2009/bloomberg-news--john-simon.json",
@@ -1293,7 +1343,8 @@
       "bye-bye-birdie-2009/nytimes--ben-brantley.json",
       "maybe-happy-ending-2024/theatermania--adam-feldman.json",
       "gypsy-2024/variety--aramide-tinubu.json",
-      "illinoise-2024/hollywood-reporter--angie-han.json"
+      "illinoise-2024/hollywood-reporter--angie-han.json",
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1706,7 +1757,8 @@
       "maybe-happy-ending-2024/nytimes--unknown.json",
       "beetlejuice-west-end-2026/dailymail--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--jay-irwin.json",
-      "moulin-rouge-the-musical-west-end-2021/broadwayworld--michael-quintos.json"
+      "moulin-rouge-the-musical-west-end-2021/broadwayworld--michael-quintos.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ]
   },
   "failuresByOutlet": {},
