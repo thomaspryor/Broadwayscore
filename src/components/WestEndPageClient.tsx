@@ -423,13 +423,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
   // Featured rows
   const topMusicals = useMemo(() => {
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -454,8 +454,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
-        // Show all open + previews shows (TBD for <3 reviews), scored closed shows
-        if (show.status === 'open' || show.status === 'previews') return true;
+        // Only show shows with enough reviews for a score, plus previews/upcoming in "all" view
+        if (show.status === 'previews' || show.status === 'upcoming') {
+          // Previews/upcoming only visible when explicitly filtering for them or "all"
+          return statusFilter === 'previews' || statusFilter === 'all';
+        }
+        // Open and closed shows: require minimum reviews for a score
         return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_WE;
       }
     });
@@ -512,7 +516,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The Guardian, Telegraph, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
