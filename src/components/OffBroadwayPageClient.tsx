@@ -159,10 +159,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             <>Opens {formatOpeningDate(show.openingDate)}</>
           ) : show.status === 'closed' ? (
             <span className="text-orange-400">{(() => {
-              const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', 'Off-Broadway');
-              if (runLen) return `Closed after ${runLen}`;
-              if (show.closingDate) return `Closed ${formatOpeningDate(show.closingDate)}`;
-              return 'Closed';
+              if (!show.closingDate) return 'Closed';
+              const when = formatOpeningDate(show.closingDate);
+              const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
+              return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
             })()}</span>
           ) : (
             <>
