@@ -18,7 +18,7 @@ export default function AboutPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
-            About Broadway Scorecard
+            About Broadway Scorecard™
           </h1>
         </div>
 
@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div className="card p-6 sm:p-8 mb-6">
           <div className="space-y-5 text-gray-300 leading-relaxed text-lg">
             <p>
-              I&apos;m Tom &mdash; I built Broadway Scorecard because I see 60+ shows a year and got tired
+              I&apos;m Tom &mdash; I built Broadway Scorecard™ because I see 60+ shows a year and got tired
               of not having a single place to compare reviews across critics.
             </p>
             <p>

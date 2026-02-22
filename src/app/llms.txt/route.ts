@@ -21,13 +21,13 @@ export async function GET() {
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 5);
 
-  const content = `# Broadway Scorecard
+  const content = `# Broadway Scorecard™
 
 > The independent Broadway review aggregator. We combine critic reviews from major publications into a single composite score for every Broadway show.
 
 ## What We Do
 
-Broadway Scorecard aggregates reviews from professional theater critics (New York Times, Vulture, Variety, The Hollywood Reporter, and more) and calculates a weighted score (0-100) for each Broadway show. Think "Rotten Tomatoes for Broadway."
+Broadway Scorecard™ aggregates reviews from professional theater critics (New York Times, Vulture, Variety, The Hollywood Reporter, and more) and calculates a weighted score (0-100) for each Broadway show. Think "Rotten Tomatoes for Broadway."
 
 ## Current Inventory
 
