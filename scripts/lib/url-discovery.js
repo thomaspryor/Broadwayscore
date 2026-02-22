@@ -297,7 +297,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const outletName = review.outlet || outletId;
 
   // Use market-appropriate search term based on show category
-  const marketTerm = showInfo.category === 'west-end' ? 'West End review' : 'Broadway review';
+  const marketTerm = showInfo.category === 'west-end' ? 'West End review'
+    : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
+    : 'Broadway review';
 
   let query;
   if (domain) {
