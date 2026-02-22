@@ -1,0 +1,90 @@
+{
+  "runDate": "2026-02-22T01:36:34.791Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "oliver-west-end-2024",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 5,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "55.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 4
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 9,
+    "tier4Success": 8,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
+    "oliver-west-end-2024/the-stage--sam-marlowe.json",
+    "oliver-west-end-2024/the-stage-uk--sam-marlowe.json",
+    "oliver-west-end-2024/the-times-uk--neil-fisher.json",
+    "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+  ],
+  "failed": [
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "oliver-west-end-2024/evening-standard--nick-curtis.json",
+    "oliver-west-end-2024/london-theatre--marianka-swain.json",
+    "oliver-west-end-2024/the-telegraph-uk--dominic-cavendish.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "oliver-west-end-2024/the-times-uk--neil-fisher.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
+      "oliver-west-end-2024/the-stage--sam-marlowe.json",
+      "oliver-west-end-2024/the-stage-uk--sam-marlowe.json",
+      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "oliver-west-end-2024/the-stage--sam-marlowe.json",
+      "oldUrl": "https://www.thestage.co.uk/reviews/oliver-review-chichester-festival-theatre-matthew-bourne-with-simon-lipkin-shanay-holmes-aaron-sidwell-billy-jenkins",
+      "newUrl": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh"
+    }
+  ]
+}
