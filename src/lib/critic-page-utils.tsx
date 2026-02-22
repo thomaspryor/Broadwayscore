@@ -13,7 +13,7 @@ export function ordinalSuffix(n: number): string {
 
 export function getScoreClass(score: number): string {
   const r = Math.round(score);
-  if (r >= 85) return 'score-must-see';
+  if (r >= 83) return 'score-must-see';
   if (r >= 75) return 'score-great';
   if (r >= 65) return 'score-good';
   if (r >= 55) return 'score-tepid';
@@ -22,7 +22,7 @@ export function getScoreClass(score: number): string {
 
 export function getScoreTextColor(score: number): string {
   const r = Math.round(score);
-  if (r >= 85) return '#FFD700';
+  if (r >= 83) return '#FFD700';
   if (r >= 75) return '#22c55e';
   if (r >= 65) return '#14b8a6';
   if (r >= 55) return '#d97706';

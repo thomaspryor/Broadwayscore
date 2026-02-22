@@ -168,7 +168,7 @@ function LimitedRunBadge() {
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
-  if (roundedScore >= 85) return { label: 'Critical Gold', colorClass: 'text-score-must-see' };
+  if (roundedScore >= 83) return { label: 'Critical Gold', colorClass: 'text-score-must-see' };
   if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-great' };
   if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-good' };
   if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-score-tepid' };
@@ -343,7 +343,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
                 let scoreColorClass = 'bg-surface-overlay text-gray-400 border border-white/10';
                 if (!showTBD && roundedScore !== null) {
-                  if (roundedScore >= 85) scoreColorClass = 'score-must-see';
+                  if (roundedScore >= 83) scoreColorClass = 'score-must-see';
                   else if (roundedScore >= 75) scoreColorClass = 'score-great';
                   else if (roundedScore >= 65) scoreColorClass = 'score-good';
                   else if (roundedScore >= 55) scoreColorClass = 'score-tepid';

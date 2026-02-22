@@ -15,7 +15,7 @@ const SCORE_COLORS = {
 
 function getScoreColor(score: number | null, reviewCount: number) {
   if (reviewCount < 5 || score === null) return SCORE_COLORS.tbd;
-  if (score >= 85) return SCORE_COLORS.mustSee;
+  if (score >= 83) return SCORE_COLORS.mustSee;
   if (score >= 75) return SCORE_COLORS.great;
   if (score >= 65) return SCORE_COLORS.good;
   if (score >= 55) return SCORE_COLORS.tepid;
@@ -23,7 +23,7 @@ function getScoreColor(score: number | null, reviewCount: number) {
 }
 
 function getScoreLabel(score: number): string {
-  if (score >= 85) return 'Critical Gold';
+  if (score >= 83) return 'Critical Gold';
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
@@ -203,7 +203,7 @@ async function generateShowOG(
                   fontWeight: 800,
                   background: scoreColor.bg,
                   color: scoreColor.text,
-                  boxShadow: displayScore && displayScore >= 85
+                  boxShadow: displayScore && displayScore >= 83
                     ? '0 0 40px rgba(212, 175, 55, 0.4)'
                     : '0 4px 24px rgba(0, 0, 0, 0.3)',
                 }}

@@ -42,7 +42,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
 
   if (roundedScore === null) {
     scoreColorClass = 'bg-gray-600';
-  } else if (roundedScore >= 85) {
+  } else if (roundedScore >= 83) {
     scoreColorClass = 'score-must-see';
     scoreTextClass = 'text-gray-900';
     scoreLabel = 'Critical Gold';

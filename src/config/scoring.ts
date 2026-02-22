@@ -2,8 +2,8 @@
 // Based on user's Google Sheet methodology
 // Change this file to update scoring rules site-wide
 
-export const METHODOLOGY_VERSION = "2.1.1";
-export const METHODOLOGY_DATE = "2026-02-06";
+export const METHODOLOGY_VERSION = "2.2.0";
+export const METHODOLOGY_DATE = "2026-02-22";
 
 // ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)
@@ -262,7 +262,7 @@ export const CONFIDENCE_RULES = {
 // CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
 export const CRITIC_LABEL_THRESHOLDS = {
-  'Critical Gold': 85,
+  'Critical Gold': 83,
   'Recommended': 75,
   'Worth Seeing': 65,
   'Skippable': 55,
@@ -270,7 +270,7 @@ export const CRITIC_LABEL_THRESHOLDS = {
 };
 
 export function getCriticLabel(score: number): string {
-  if (score >= 85) return 'Critical Gold';
+  if (score >= 83) return 'Critical Gold';
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';

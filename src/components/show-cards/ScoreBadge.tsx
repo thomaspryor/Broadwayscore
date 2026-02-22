@@ -3,14 +3,14 @@ export const SCORE_TIERS = {
   mustSee: {
     label: 'Critical Gold',
     tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
-    range: '85-100',
+    range: '83-100',
     color: '#DAA520',
     glow: true,
   },
   recommended: {
     label: 'Recommended',
     tooltip: 'Strong choice—most people will have a great time.',
-    range: '75-84',
+    range: '75-82',
     color: '#22c55e',
     glow: false,
   },
@@ -42,7 +42,7 @@ export type ScoreTier = typeof SCORE_TIERS.mustSee;
 export function getScoreTier(score: number | null | undefined): ScoreTier | null {
   if (score === null || score === undefined) return null;
   const rounded = Math.round(score);
-  if (rounded >= 85) return SCORE_TIERS.mustSee;
+  if (rounded >= 83) return SCORE_TIERS.mustSee;
   if (rounded >= 75) return SCORE_TIERS.recommended;
   if (rounded >= 65) return SCORE_TIERS.worthSeeing;
   if (rounded >= 55) return SCORE_TIERS.skippable;
@@ -113,7 +113,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   let colorClass: string;
   let label: string;
 
-  if (roundedScore >= 85) {
+  if (roundedScore >= 83) {
     colorClass = 'score-must-see';
     label = 'Critical Gold';
   } else if (roundedScore >= 75) {
@@ -136,7 +136,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     </div>
   );
 
-  if (showCrown && roundedScore >= 85) {
+  if (showCrown && roundedScore >= 83) {
     return (
       <div className="relative overflow-visible">
         <MustSeeCrown size={size} />

@@ -64,7 +64,7 @@ function formatDate(dateStr: string | null | undefined): string {
 }
 
 function getScoreClasses(score: number): string {
-  if (score >= 85) return 'score-must-see';
+  if (score >= 83) return 'score-must-see';
   if (score >= 75) return 'score-great';
   if (score >= 65) return 'score-good';
   if (score >= 55) return 'score-tepid';
@@ -147,7 +147,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 
 const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   let scoreLabel: string;
-  if (review.reviewScore >= 85) scoreLabel = 'Critical Gold';
+  if (review.reviewScore >= 83) scoreLabel = 'Critical Gold';
   else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
   else if (review.reviewScore >= 55) scoreLabel = 'Skippable';

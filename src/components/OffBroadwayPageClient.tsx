@@ -11,7 +11,7 @@ import { getBroadwayDuration } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
-export interface WestEndShow {
+export interface OffBroadwayShow {
   id: string;
   slug: string;
   title: string;
@@ -29,8 +29,8 @@ export interface WestEndShow {
   creativeTeam?: Array<{ name: string; role: string }>;
 }
 
-interface WestEndPageClientProps {
-  shows: WestEndShow[];
+interface OffBroadwayPageClientProps {
+  shows: OffBroadwayShow[];
   totalShows: number;
   totalReviews: number;
 }
@@ -50,8 +50,8 @@ const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
-// Min reviews for West End shows
-const MIN_REVIEWS_WE = 3;
+// Min reviews for Off-Broadway shows
+const MIN_REVIEWS_OB = 3;
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -84,14 +84,14 @@ function ChevronRightIcon() {
   );
 }
 
-const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: WestEndShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
+const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: OffBroadwayShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   const isRevival = show.isRevival === true;
 
   // Get the appropriate score based on mode
   let score: number | null | undefined;
   let label: string | undefined;
   let tier: ScoreTier | null = null;
-  let audienceGrade: WestEndShow['audienceGrade'] = null;
+  let audienceGrade: OffBroadwayShow['audienceGrade'] = null;
 
   // Always compute critic score/tier for the chip in audience mode
   const criticScore = show.criticScore?.score;
@@ -129,7 +129,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
             show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
           ]}
-          alt={`${show.title} West End ${show.type}`}
+          alt={`${show.title} Off-Broadway ${show.type}`}
           priority={index < 2}
           loading={index < 2 ? "eager" : "lazy"}
           width={112}
@@ -161,7 +161,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
           ) : (
             <>
-              {getBroadwayDuration(show.openingDate, 'in the West End')}
+              {getBroadwayDuration(show.openingDate, 'Off-Broadway')}
               {show.closingDate && (
                 <span className="text-amber-400"> · Closes {formatOpeningDate(show.closingDate)}</span>
               )}
@@ -218,7 +218,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           ) : null
         ) : (
           <>
-            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < MIN_REVIEWS_WE) ? (
+            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < MIN_REVIEWS_OB) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
                 Not Yet Rated
               </span>
@@ -237,7 +237,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
               showCrown
-              category="west-end"
+              category="off-broadway"
             />
             {audienceGrade && (
               <div className="mt-1">
@@ -252,7 +252,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
 });
 
 // Compact card for featured rows
-const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { show: WestEndShow; priority?: boolean }) {
+const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { show: OffBroadwayShow; priority?: boolean }) {
   const score = show.criticScore?.score;
 
   return (
@@ -269,7 +269,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
               show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
               show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
             ]}
-            alt={`${show.title} West End ${show.type}`}
+            alt={`${show.title} Off-Broadway ${show.type}`}
             priority={priority}
             loading={priority ? "eager" : "lazy"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -305,9 +305,9 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
   );
 });
 
-function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
+function ShowCardList({ shows, hideStatus, scoreMode }: { shows: OffBroadwayShow[]; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   return (
-    <div className="space-y-3" role="list" aria-label="West End shows">
+    <div className="space-y-3" role="list" aria-label="Off-Broadway shows">
       {shows.map((show, index) => (
         <ShowCard key={show.id} show={show} index={index} hideStatus={hideStatus} scoreMode={scoreMode} />
       ))}
@@ -316,7 +316,7 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; 
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) {
+function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[] }) {
   if (shows.length <= 3) return null;
 
   return (
@@ -334,7 +334,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -379,7 +379,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       if (next.q) urlParams.set('q', next.q);
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
+      window.history.replaceState({}, '', paramString ? `/off-broadway?${paramString}` : '/off-broadway');
 
       return next;
     });
@@ -393,7 +393,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
     });
-    window.history.replaceState({}, '', '/west-end');
+    window.history.replaceState({}, '', '/off-broadway');
   }, []);
 
   // Fuse.js for fuzzy search
@@ -409,7 +409,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
     getFn: (obj, path) => {
       const key = Array.isArray(path) ? path[0] : path;
       if (key === 'creativeTeamSearch') {
-        return (obj as WestEndShow).creativeTeam?.map(m => m.name).join(', ') || '';
+        return (obj as OffBroadwayShow).creativeTeam?.map(m => m.name).join(', ') || '';
       }
       return Fuse.config.getFn(obj, path);
     },
@@ -451,7 +451,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       } else {
         // Show all open + previews shows (TBD for <3 reviews), scored closed shows
         if (show.status === 'open' || show.status === 'previews') return true;
-        return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_WE;
+        return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_OB;
       }
     });
 
@@ -501,13 +501,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          West End<span className="text-gradient">Scorecard</span>
+          Off-Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The Guardian, Telegraph, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The New York Times, Vulture, Variety, Time Out, and more.
         </p>
       </div>
 
@@ -527,12 +527,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
 
       {/* Search */}
       <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
-        <label htmlFor="we-show-search" className="sr-only">Search West End shows</label>
+        <label htmlFor="ob-show-search" className="sr-only">Search Off-Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
         </div>
         <input
-          id="we-show-search"
+          id="ob-show-search"
           type="search"
           placeholder="Search shows, venues, directors..."
           value={searchQuery}
@@ -603,7 +603,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       </div>
 
       {/* Show List */}
-      <h2 className="sr-only">West End Shows</h2>
+      <h2 className="sr-only">Off-Broadway Shows</h2>
       <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
       {filteredAndSortedShows.length === 0 && (
@@ -697,13 +697,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
 }
 
 // Main export with Suspense boundary for useSearchParams
-export default function WestEndPageClient(props: WestEndPageClientProps) {
+export default function OffBroadwayPageClient(props: OffBroadwayPageClientProps) {
   return (
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            West End<span className="text-gradient">Scorecard</span>
+            Off-Broadway<span className="text-gradient">Scorecard</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
@@ -720,7 +720,7 @@ export default function WestEndPageClient(props: WestEndPageClientProps) {
         </div>
       </div>
     }>
-      <WestEndPageInner {...props} />
+      <OffBroadwayPageInner {...props} />
     </Suspense>
   );
 }
