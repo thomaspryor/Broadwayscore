@@ -50,7 +50,7 @@ export default function GoldListsIndex() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            Broadway Gold Lists
+            Broadway Gold Lists™
           </h1>
           <p className="text-gray-300 leading-relaxed">
             The best of Broadway, ranked. Four curated lists highlighting the top shows
@@ -119,7 +119,7 @@ export default function GoldListsIndex() {
         {/* Footer */}
         <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
           <p>
-            Gold Lists are curated each season with minimum quality thresholds.
+            Gold Lists™ are curated each season with minimum quality thresholds.
             Shows must meet review count and score minimums to qualify — not every season has 10 shows per list.
           </p>
         </footer>
