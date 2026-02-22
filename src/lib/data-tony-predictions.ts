@@ -286,8 +286,9 @@ export interface AccuracyStats {
 
 /**
  * Dynamically compute accuracy stats across all historical prediction seasons.
- * For each season+category, ranks eligible shows by compositeScore and checks
- * whether the actual Tony winner was #1, top 2, etc.
+ * For each season+category, ranks actual Tony NOMINEES by compositeScore and checks
+ * whether the winner was the best-reviewed nominee (#1), top 2, etc.
+ * This answers the meaningful question: "Among the nominees, does the best-reviewed one win?"
  */
 export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
   const awardsShows = getAwardsShows();
@@ -297,11 +298,26 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
 
   // Build winners map: awardsSeason|category → showId
   const winnersMap = new Map<string, string>();
+  // Build nominees map: awardsSeason|category → showId[]
+  const nomineesMap = new Map<string, string[]>();
   for (const [showId, data] of Object.entries(awardsShows)) {
-    if (!data.tony?.season || !data.tony.wins) continue;
-    for (const w of data.tony.wins) {
-      if (TOP_CATEGORIES.includes(w as typeof TOP_CATEGORIES[number])) {
-        winnersMap.set(`${data.tony.season}|${w}`, showId);
+    if (!data.tony?.season) continue;
+    const season = data.tony.season;
+    const wins = data.tony.wins || [];
+    const noms = data.tony.nominatedFor || [];
+
+    for (const cat of TOP_CATEGORIES) {
+      const catStr = cat as string;
+      const key = `${season}|${catStr}`;
+      if (wins.includes(catStr)) {
+        winnersMap.set(key, showId);
+        // Winners are also nominees
+        if (!nomineesMap.has(key)) nomineesMap.set(key, []);
+        if (!nomineesMap.get(key)!.includes(showId)) nomineesMap.get(key)!.push(showId);
+      }
+      if (noms.includes(catStr)) {
+        if (!nomineesMap.has(key)) nomineesMap.set(key, []);
+        if (!nomineesMap.get(key)!.includes(showId)) nomineesMap.get(key)!.push(showId);
       }
     }
   }
@@ -322,10 +338,10 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
 
   for (const season of seasons) {
     const awardsSeason = toAwardsSeason(season.label);
-    const eligible = getEligibleShowsForPastSeason(allShows, season);
 
     for (const cat of TOP_CATEGORIES) {
-      const winnerShowId = winnersMap.get(`${awardsSeason}|${cat}`);
+      const key = `${awardsSeason}|${cat}`;
+      const winnerShowId = winnersMap.get(key);
       if (!winnerShowId) continue; // no winner for this category-season
 
       const winnerShow = showMap.get(winnerShowId);
@@ -334,28 +350,30 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
         continue;
       }
 
-      // Rank eligible shows for this category by score
-      const isRevival = cat.includes('Revival');
-      const isMusical = cat.includes('Musical');
-      const categoryShows = eligible
-        .filter(s => {
-          if (isMusical && s.type !== 'musical') return false;
-          if (!isMusical && s.type !== 'play') return false;
-          if (isRevival && !s.isRevival) return false;
-          if (!isRevival && s.isRevival) return false;
-          return s.compositeScore != null;
-        })
+      // Rank actual nominees for this category by compositeScore.
+      // Tony categories typically have 4-5 nominees (occasionally 6).
+      // Awards.json has inflated counts in some categories (shows nominated for
+      // subcategories like directing within a revival, not the main award).
+      // Skip category-seasons with >6 nominees as unreliable data.
+      const nomineeIds = nomineesMap.get(key) || [];
+      if (nomineeIds.length > 6) {
+        skipped++;
+        continue;
+      }
+      const nomineeShows = nomineeIds
+        .map(id => showMap.get(id))
+        .filter((s): s is ComputedShow => s != null && s.compositeScore != null)
         .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
 
-      if (categoryShows.length < 2) {
+      if (nomineeShows.length < 2) {
         skipped++;
         continue;
       }
 
-      const winnerRank = categoryShows.findIndex(s => s.id === winnerShowId) + 1;
+      const winnerRank = nomineeShows.findIndex(s => s.id === winnerShowId) + 1;
       if (winnerRank === 0) {
         skipped++;
-        continue; // winner not found in eligible set
+        continue; // winner not found among nominees (data issue)
       }
 
       totalCatSeasons++;
@@ -363,8 +381,8 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
       catResults[cat].total++;
       totalWinnerRank += winnerRank;
 
-      // Field size bucket
-      const fieldSize = categoryShows.length;
+      // Field size bucket (nominee count)
+      const fieldSize = nomineeShows.length;
       let bucket: string;
       if (fieldSize <= 2) bucket = '2';
       else if (fieldSize <= 4) bucket = '3-4';
@@ -406,10 +424,9 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
   const revWins = revCats.reduce((s, c) => s + catResults[c].rank1, 0);
 
   const fieldSizeData = [
-    { label: '3\u20134 eligible', bucket: '3-4', note: 'Small field' },
-    { label: '5\u20136 eligible', bucket: '5-6', note: '' },
-    { label: '2 eligible', bucket: '2', note: 'Coin flip' },
-    { label: '7+ eligible', bucket: '7+', note: 'Standard field' },
+    { label: '2 nominees', bucket: '2', note: 'Coin flip' },
+    { label: '3\u20134 nominees', bucket: '3-4', note: 'Small field' },
+    { label: '5\u20136 nominees', bucket: '5-6', note: 'Most common' },
   ].map(({ label, bucket, note }) => ({
     label,
     pct: fieldResults[bucket]?.total > 0 ? Math.round((fieldResults[bucket].rank1 / fieldResults[bucket].total) * 100) : 0,

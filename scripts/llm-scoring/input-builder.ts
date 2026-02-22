@@ -34,6 +34,9 @@ export interface ReviewInputData {
   bwwThumb?: string | null;
   dtliThumb?: string | null;
 
+  // BWW editorial score (1-10, assigned by BWW staff)
+  bwwScore?: number | null;
+
   // Original rating (if present)
   originalScore?: string | null;
   originalRating?: string | null;
@@ -175,7 +178,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
 
   // 4. Aggregator context (ONLY for non-complete texts)
   const includesAggregatorContext = textQualityStatus !== 'complete' &&
-    !!(review.bwwThumb || review.dtliThumb || review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt);
+    !!(review.bwwThumb || review.dtliThumb || review.bwwScore != null || review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt);
 
   if (includesAggregatorContext) {
     contextParts.push(`\n## Aggregator Context (for reference only)`);
@@ -185,10 +188,15 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     const bwwThumb = normalizeThumb(review.bwwThumb);
     const dtliThumb = normalizeThumb(review.dtliThumb);
 
-    if (bwwThumb || dtliThumb) {
+    if (bwwThumb || dtliThumb || review.bwwScore != null) {
       const thumbsInfo: string[] = [];
       if (dtliThumb) thumbsInfo.push(`Did They Like It: ${dtliThumb}`);
-      if (bwwThumb) thumbsInfo.push(`BroadwayWorld: ${bwwThumb}`);
+      if (bwwThumb || review.bwwScore != null) {
+        const bwwParts: string[] = [];
+        if (bwwThumb) bwwParts.push(bwwThumb);
+        if (review.bwwScore != null) bwwParts.push(`${review.bwwScore}/10`);
+        thumbsInfo.push(`BroadwayWorld: ${bwwParts.join(', ')}`);
+      }
       contextParts.push(`Aggregator verdicts: ${thumbsInfo.join(', ')}`);
     }
 
