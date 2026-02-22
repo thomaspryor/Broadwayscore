@@ -1606,7 +1606,9 @@ showDirs.forEach(showId => {
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Allows 14-day grace period for preview coverage
       // Reviews with allowEarlyDate: true bypass this (e.g., off-Broadway → Broadway transfers)
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+      // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
+      // so date mismatches are expected and wrongProduction flags are almost always false positives
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'off-broadway') {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
