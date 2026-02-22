@@ -1287,7 +1287,9 @@ const multiProdYearGuard = {};
       const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
         : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
       if (!showYear) continue;
-      const siblings = prods.filter(p => p.id !== show.id).map(p => ({
+      // Only compare to siblings in the SAME market (category)
+      // A West End review should never be reassigned to a Broadway production (or vice versa)
+      const siblings = prods.filter(p => p.id !== show.id && p.category === show.category).map(p => ({
         id: p.id,
         year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null
       })).filter(p => p.year);
@@ -1324,9 +1326,11 @@ const multiProdDirectorGuard = {};
       const thisDirectors = (thisShow.creativeTeam || [])
         .filter(ct => /director/i.test(ct.role))
         .map(ct => ct.name.toLowerCase());
-      // Collect directors from NEWER productions only
+      // Collect directors from NEWER productions in the SAME market only
       const newerDirs = new Map();
       for (let j = i + 1; j < prods.length; j++) {
+        // Don't cross-compare different markets (Broadway vs West End vs Off-Broadway)
+        if (prods[j].category !== thisShow.category) continue;
         for (const ct of (prods[j].creativeTeam || [])) {
           if (/director/i.test(ct.role)) {
             const name = ct.name.toLowerCase();
