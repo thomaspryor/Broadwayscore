@@ -11,13 +11,13 @@ import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Off-Broadway Scorecard - NYC Off-Broadway Show Ratings & Reviews',
-  description: 'Critic scores for Off-Broadway shows in New York City, aggregated from The New York Times, Vulture, Variety, Time Out, and more.',
+  description: 'CriticScore ratings for Off-Broadway shows in New York City, aggregated from The New York Times, Vulture, Variety, Time Out, and more.',
   alternates: {
     canonical: `${BASE_URL}/off-broadway`,
   },
   openGraph: {
     title: 'Off-Broadway Scorecard - NYC Show Ratings',
-    description: 'Aggregated critic scores for Off-Broadway shows from The New York Times, Vulture, Variety, and more.',
+    description: 'Aggregated CriticScore ratings for Off-Broadway shows from The New York Times, Vulture, Variety, and more.',
     url: `${BASE_URL}/off-broadway`,
     type: 'article',
   },
@@ -119,7 +119,7 @@ export default function OffBroadwayPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">Off-Broadway Scorecard</h1>
           <p className="text-gray-300 leading-relaxed">
-            Critic scores for Off-Broadway shows in NYC, aggregated from The New York Times, Vulture, Variety, Time Out, and more.
+            CriticScore ratings for Off-Broadway shows in NYC, aggregated from The New York Times, Vulture, Variety, Time Out, and more.
           </p>
           <p className="text-gray-500 text-sm mt-3">
             {shows.length} shows ({scoredCount} scored) | Last updated: {dataFreshness}

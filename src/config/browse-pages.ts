@@ -14,6 +14,7 @@ export interface BrowsePageConfig {
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
+  source?: 'broadway' | 'west-end' | 'off-broadway'; // Data source (default: broadway)
 }
 
 // Helper to parse runtime string to minutes
@@ -81,7 +82,7 @@ function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
       title: `${season} Broadway Season`,
       h1: `${season} Broadway Season`,
       metaTitle: `${season} Broadway Season \u2014 All Shows Ranked by Critics`,
-      metaDescription: `Every show from the ${season} Broadway season ranked by critic score. ${firstYear}\u2013${secondYear} musicals, plays, and revivals compared side by side.`,
+      metaDescription: `Every show from the ${season} Broadway season ranked by CriticScore. ${firstYear}\u2013${secondYear} musicals, plays, and revivals compared side by side.`,
       intro: `Every show that opened on Broadway during the ${season} season (July ${firstYear} through June ${secondYear}), ranked by aggregated critic scores from dozens of outlets. This includes musicals, plays, and revivals \u2014 whether still running or closed.`,
       filter: (show) => getShowSeason(show) === season,
       sort: 'score',
@@ -359,7 +360,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'The Best Broadway Show Right Now',
     h1: 'The Best Broadway Show Right Now',
     metaTitle: 'The #1 Best Broadway Show Right Now (2026)',
-    metaDescription: 'What\'s the single best show on Broadway today? Based on our aggregated critic scores, here\'s our top pick for the best show to see right now.',
+    metaDescription: 'What\'s the single best show on Broadway today? Based on our aggregated CriticScore ratings, here\'s our top pick for the best show to see right now.',
     intro: 'If you could only see one Broadway show, which should it be? Based on our comprehensive analysis of critic reviews, we\'ve identified the single best show currently playing on Broadway. This isn\'t just about popularity or longevity - it\'s about quality as measured by the people who see the most theater: professional critics. Whether you\'re a first-timer or a seasoned theatergoer, this is the show that delivers the best experience right now.',
     filter: (show) => {
       return show.status === 'open' && (show.criticScore?.score ?? 0) > 0;
@@ -555,6 +556,20 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'score',
     relatedPages: ['short-broadway-shows', 'best-broadway-musicals', 'best-broadway-dramas'],
+  },
+
+  // West End browse pages
+  'west-end-shows': {
+    slug: 'west-end-shows',
+    title: 'West End Shows',
+    h1: 'West End Shows — London Theatre Ratings',
+    metaTitle: 'West End Shows — London Theatre Critic Scores',
+    metaDescription: 'Complete ranked list of West End shows by critic score. Aggregated ratings from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    intro: 'Every currently running and recently closed West End show in London, ranked by aggregated critic scores. We collect reviews from the UK\'s top theatre critics — including The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage — and combine them into a single score. Whether you\'re a London local or planning a theatre trip, find out which West End shows are getting the best reviews right now.',
+    filter: (show) => show.category === 'west-end',
+    sort: 'score',
+    source: 'west-end',
+    relatedPages: ['best-broadway-musicals', 'best-broadway-dramas'],
   },
 
   // Season browse pages (generated programmatically)

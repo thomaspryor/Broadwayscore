@@ -46,7 +46,7 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     threshold: 73,
     maxPerSeason: 10,
     maxAllTime: 25,
-    metricLabel: 'Critic Score',
+    metricLabel: 'CriticScore',
     metricSuffix: '',
     minDataRequirement: '5+ scored reviews',
   },
