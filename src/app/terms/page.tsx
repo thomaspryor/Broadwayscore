@@ -174,7 +174,8 @@ export default function TermsOfServicePage() {
 
           <h3 className="text-lg font-medium text-white mt-6 mb-2">Trademarks</h3>
           <p>
-            Broadway Scorecard, the Broadway Scorecard name, and associated logos are trademarks of Broadway Scorecard LLC.
+            Broadway Scorecard™, Critical Gold™, Broadway Scorecard Gold List™,
+            and associated logos are trademarks of Broadway Scorecard LLC.
             No trademark license is granted by these Terms.
           </p>
         </section>
