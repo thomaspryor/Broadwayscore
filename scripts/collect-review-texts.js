@@ -3045,14 +3045,16 @@ async function discoverCorrectUrl(review) {
 
       const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
       const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
-      const titleHasReview = title.includes('review');
+      const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end'];
+      const titleHasReview = reviewTerms.some(t => title.includes(t));
+      const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
 
       // Require: (title mentions show) OR (URL contains show slug)
-      // AND at least one signal it's a review (title says "review" or URL contains "review")
+      // AND at least one signal it's a review (title/URL contains review-related term)
       // Exception: TimeOut embeds reviews in listing pages (no "review" in URL/title)
       if (!titleHasShow && !urlHasShow) continue;
       const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
-      if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
+      if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
 
       // Looks like a match
       console.log(`    ✓ Found (via ${provider}): ${url}`);
