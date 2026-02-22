@@ -77,7 +77,7 @@ function validate(showId: string) {
   reviews.forEach(r => {
     const score = r.assignedScore!;
     let expectedBucket: string;
-    if (score >= 85) expectedBucket = 'Rave';
+    if (score >= 83) expectedBucket = 'Rave';
     else if (score >= 70) expectedBucket = 'Positive';
     else if (score >= 50) expectedBucket = 'Mixed';
     else expectedBucket = 'Pan';
@@ -94,8 +94,8 @@ function validate(showId: string) {
   console.log(`Weighted Average: ${weightedAvg.toFixed(1)}`);
   console.log('');
   console.log('Breakdown:');
-  console.log(`  Rave (85+):     ${buckets.Rave}`);
-  console.log(`  Positive (70-84): ${buckets.Positive}`);
+  console.log(`  Rave (83+):     ${buckets.Rave}`);
+  console.log(`  Positive (70-82): ${buckets.Positive}`);
   console.log(`  Mixed (50-69):  ${buckets.Mixed}`);
   console.log(`  Pan (<50):      ${buckets.Pan}`);
   console.log('');

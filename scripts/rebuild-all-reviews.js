@@ -1276,7 +1276,7 @@ function getBestScore(data) {
 }
 
 function scoreToBucket(score) {
-  if (score >= 85) return 'Rave';
+  if (score >= 83) return 'Rave';
   if (score >= 70) return 'Positive';
   if (score >= 55) return 'Mixed';
   if (score >= 35) return 'Negative';

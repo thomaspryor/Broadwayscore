@@ -15,8 +15,8 @@ import { FewShotExample } from './types';
 
 // V5 Bucket Ranges (simplified, bucket-first approach)
 export const BUCKET_RANGES = {
-  Rave: { min: 85, max: 100, thumb: 'Up' as const },
-  Positive: { min: 70, max: 84, thumb: 'Up' as const },
+  Rave: { min: 83, max: 100, thumb: 'Up' as const },
+  Positive: { min: 70, max: 82, thumb: 'Up' as const },
   Mixed: { min: 55, max: 69, thumb: 'Flat' as const },
   Negative: { min: 35, max: 54, thumb: 'Down' as const },
   Pan: { min: 0, max: 34, thumb: 'Down' as const }
@@ -318,13 +318,13 @@ After choosing the bucket, assign a specific score within its range:
 
 | Bucket | Score Range |
 |--------|-------------|
-| Rave | 85-100 |
-| Positive | 70-84 |
+| Rave | 83-100 |
+| Positive | 70-82 |
 | Mixed | 55-69 |
 | Negative | 35-54 |
 | Pan | 0-34 |
 
-Use the full range. A barely-positive review should be 70-72. A very strong positive should be 82-84.
+Use the full range. A barely-positive review should be 70-72. A very strong positive should be 80-82.
 
 ## Score Distribution
 Do NOT default to the midpoint of a bucket. For Positive reviews:

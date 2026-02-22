@@ -61,7 +61,7 @@ reviews.forEach((r, idx) => {
     if (newScore && Math.abs(r.assignedScore - newScore) > 15) {
       console.log(`  [STAR] ${r.showId} | ${r.outlet}: ${rating} | ${r.assignedScore} → ${newScore}`);
       r.assignedScore = newScore;
-      r.bucket = newScore >= 85 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
+      r.bucket = newScore >= 83 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
       fixes.conversions++;
     }
     return;
@@ -74,7 +74,7 @@ reviews.forEach((r, idx) => {
     if (newScore && Math.abs(r.assignedScore - newScore) > 15) {
       console.log(`  [LETTER] ${r.showId} | ${r.outlet}: ${rating} | ${r.assignedScore} → ${newScore}`);
       r.assignedScore = newScore;
-      r.bucket = newScore >= 85 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
+      r.bucket = newScore >= 83 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
       fixes.conversions++;
     }
     return;

@@ -514,7 +514,7 @@ export const THUMB_MAP: Record<string, number> = {
 // ===========================================
 
 export function scoreToBucket(score: number): 'Rave' | 'Positive' | 'Mixed' | 'Pan' {
-  if (score >= 85) return 'Rave';
+  if (score >= 83) return 'Rave';
   if (score >= 70) return 'Positive';
   if (score >= 50) return 'Mixed';
   return 'Pan';

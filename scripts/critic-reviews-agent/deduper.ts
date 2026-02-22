@@ -384,7 +384,7 @@ export function validateReviews(
 
     // Bucket/thumb consistency
     const expectedBucket =
-      review.assignedScore >= 85 ? 'Rave' :
+      review.assignedScore >= 83 ? 'Rave' :
         review.assignedScore >= 70 ? 'Positive' :
           review.assignedScore >= 50 ? 'Mixed' : 'Pan';
 
