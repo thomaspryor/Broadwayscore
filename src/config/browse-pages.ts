@@ -14,6 +14,7 @@ export interface BrowsePageConfig {
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
+  source?: 'broadway' | 'west-end' | 'off-broadway'; // Data source (default: broadway)
 }
 
 // Helper to parse runtime string to minutes
@@ -555,6 +556,20 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'score',
     relatedPages: ['short-broadway-shows', 'best-broadway-musicals', 'best-broadway-dramas'],
+  },
+
+  // West End browse pages
+  'west-end-shows': {
+    slug: 'west-end-shows',
+    title: 'West End Shows',
+    h1: 'West End Shows — London Theatre Ratings',
+    metaTitle: 'West End Shows — London Theatre Critic Scores',
+    metaDescription: 'Complete ranked list of West End shows by critic score. Aggregated ratings from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    intro: 'Every currently running and recently closed West End show in London, ranked by aggregated critic scores. We collect reviews from the UK\'s top theatre critics — including The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage — and combine them into a single score. Whether you\'re a London local or planning a theatre trip, find out which West End shows are getting the best reviews right now.',
+    filter: (show) => show.category === 'west-end',
+    sort: 'score',
+    source: 'west-end',
+    relatedPages: ['best-broadway-musicals', 'best-broadway-dramas'],
   },
 
   // Season browse pages (generated programmatically)
