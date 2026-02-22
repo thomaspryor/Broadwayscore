@@ -83,7 +83,8 @@
     "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
     "the-producers-west-end-2025/evening-standard--nick-curtis.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1131,7 +1132,16 @@
     "fat-ham-2023/newyorker--vinson-cunningham.json",
     "fela-2009/newyorker--hilton-als.json",
     "fences-2010/newyorker--hilton-als.json",
-    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json"
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
+    "god-of-carnage-2009/newyorker--hilton-als.json",
+    "grand-horizons-2020/newyorker--hilton-als.json",
+    "gypsy-2008/newyorker--hilton-als.json",
+    "gypsy-2008/newyorker--john-lahr.json",
+    "hand-to-god-2015/newyorker--hilton-als.json",
+    "hangmen-2022/newyorker--vinson-cunningham.json",
+    "harmony-2023/newyorker--naomi-fry.json",
+    "hillary-and-clinton-2019/newyorker--hilton-als.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1262,7 +1272,8 @@
       "maybe-happy-ending-2024/theatermania--adam-feldman.json",
       "gypsy-2024/variety--aramide-tinubu.json",
       "illinoise-2024/hollywood-reporter--angie-han.json",
-      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "grey-house-2023/newyorker--dan-stahl.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1680,7 +1691,7 @@
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
+  "lastProcessed": "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -1807,6 +1818,17 @@
     },
     {
       "t": "2026-02-22T16:56:01.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:00:35.503Z",
+      "event": "bb-session",
+      "session": "95d449c7",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-02-22T17:00:37.904Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
