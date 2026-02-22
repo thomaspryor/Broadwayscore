@@ -70,8 +70,13 @@ function loadShowTitles(): Map<string, string> {
  * Words too common/short to use as show title matches
  */
 const SKIP_TITLES = new Set([
+  // Short/ambiguous titles
   'six', 'cats', 'rent', 'hair', 'fame', 'nine', 'once', 'annie', 'grease',
   'chicago', 'oliver', 'company', 'pippin',
+  // Common English words that are also show titles — cause massive false positives
+  'well', 'good', 'home', 'high', 'spring', 'summer', 'november',
+  'broadway', 'giant', 'molly',
+  'the audience', 'the performers',
 ]);
 
 /**
