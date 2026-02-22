@@ -441,3 +441,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Alerts:** Discord for warnings, Discord + email for errors (>20% traffic drop or >10% deindexing)
 - **Manual trigger:** `gh workflow run "Check SEO Health"`
 - **Note:** Audit data pushes do NOT trigger Vercel deploys (seo-* paths not in deploy trigger list). Commit uses `[skip ci]`.
+
+## `vercel-demo.yml`
+- **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
+- **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
+- **Key difference from production:** Overrides `NEXT_PUBLIC_FEATURES` env var to include all 13 flags. Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
+- **Concurrency group:** `vercel-demo-deploy` (separate from production and preview)
+- **Requires:** VERCEL_TOKEN, REVIEW_TEXTS_TOKEN (for checkout-core-data)
+- **Manual trigger:** `gh workflow run "Deploy Demo Site"`
+- **Note:** If a new feature flag is added to `feature-flags.ts`, also add it to the `NEXT_PUBLIC_FEATURES` line in this workflow.
