@@ -254,9 +254,8 @@ export function generateItemListSchema(items: {
 
       // Event status
       if (item.status) {
-        event.eventStatus = item.status === 'open' || item.status === 'previews' || item.status === 'upcoming'
-          ? 'https://schema.org/EventScheduled'
-          : 'https://schema.org/EventCancelled';
+        // Closed shows completed their run — they weren't cancelled
+        event.eventStatus = 'https://schema.org/EventScheduled';
         event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
       }
 
