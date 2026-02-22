@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-22T04:39:37.003Z",
+  "runDate": "2026-02-22T04:53:18.200Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 200,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 144,
-    "failed": 711,
+    "processed": 153,
+    "failed": 729,
     "skipped": 0,
-    "successRate": "16.8%"
+    "successRate": "17.3%"
   },
   "tierBreakdown": {
-    "playwright": 64,
-    "amp": 27,
+    "playwright": 70,
+    "amp": 28,
     "browserbase": 0,
     "directCookies": 3,
-    "scrapingbee": 32,
+    "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 101,
-    "archive": 82
+    "archiveToday": 102,
+    "archive": 85
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 10,
-    "totalFailed": 82,
-    "scrapingBeeCreditsUsed": 85,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 85,
-    "urlDiscoverySuccess": 10,
+    "tier4Attempts": 7,
+    "tier4Success": 6,
+    "totalFailed": 78,
+    "scrapingBeeCreditsUsed": 92,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 82,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -191,9 +191,18 @@
     "moulin-rouge-the-musical-west-end-2021/patch--nancy-sasso-janis.json",
     "moulin-rouge-the-musical-west-end-2021/scene--christine-howey.json",
     "moulin-rouge-the-musical-west-end-2021/the-globe-and-mail--martin-morrow.json",
-    "hamilton-2015/nytimes--ben-brantley.json",
-    "macbeth-2008/nytimes--ben-brantley.json",
-    "macbeth-2008/nytimes--jesse-green.json"
+    "jesus-christ-superstar-2012/the-times--dominic-maxwell.json",
+    "job-2024/lighting-and-sound-america--david-barbour.json",
+    "kiss-me-kate-2019/lighting-and-sound-america--david-barbour.json",
+    "latin-history-for-morons-2017/wolf-entertainment-guide--william-wolf.json",
+    "legally-blonde-2007/londontheatre--sophi-thomas.json",
+    "les-liaisons-dangereuses-2016/lighting-and-sound-america--david-barbour.json",
+    "les-liaisons-dangereuses-2016/telegraph--william-wolf.json",
+    "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json",
+    "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "cymbeline-2007/nytimes--charles-isherwood.json",
+    "merrily-we-roll-along-2023/nytimes--calum-marsh.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -825,7 +834,28 @@
     "indecent-2017/wolf-entertainment-guide--william-wolf.json",
     "ink-2019/lighting-and-sound-america--david-barbour.json",
     "into-the-woods-2022/lighting-and-sound-america--david-barbour.json",
-    "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "into-the-woods-2022/talkinbroadway--matthew-murray.json",
+    "it-shoulda-been-you-2015/as-her-world-turns--erica-meyer.json",
+    "jajas-african-hair-braiding-2023/lighting-and-sound-america--david-barbour.json",
+    "jersey-boys-2005/ap--michael-kuchwara.json",
+    "jersey-boys-2005/broadwaycom--william-stevenson.json",
+    "jitney-2017/lighting-and-sound-america--david-barbour.json",
+    "jitney-2017/wolf-entertainment-guide--william-wolf.json",
+    "job-2024/ap--mark-kennedy.json",
+    "john-lithgow-stories-by-heart-2018/lighting-and-sound-america--david-barbour.json",
+    "john-proctor-is-the-villain-2025/lighting-and-sound-america--david-barbour.json",
+    "junk-2017/lighting-and-sound-america--david-barbour.json",
+    "king-kong-2018/lighting-and-sound-america--david-barbour.json",
+    "king-lear-2019/lighting-and-sound-america--david-barbour.json",
+    "king-lear-2019/wolf-entertainment-guide--william-wolf.json",
+    "kpop-2022/lighting-and-sound-america--david-barbour.json",
+    "leap-of-faith-2012/and-showrunner-on-law-and-order--side-man.json",
+    "left-on-tenth-2024/different-descriptors-jump-to-mind--peter-gallagher.json",
+    "left-on-tenth-2024/lighting-and-sound-america--david-barbour.json",
+    "lennon-2005/oc-register--paul-hodgins.json",
+    "leopoldstadt-2022/lighting-and-sound-america--david-barbour.json",
+    "lestat-2006/oc-register--paul-hodgins.json",
+    "life-of-pi-2023/lighting-and-sound-america--david-barbour.json",
     "giant-2026/nytimes--houman-barekat.json",
     "schmigadoon-2026/nytimes--margaret-lyons.json",
     "titanique-2026/nytimes--elisabeth-vincentelli.json",
@@ -846,7 +876,6 @@
     "cats-1982/nytimes--jesse-green.json",
     "colin-quinn-long-story-short-2010/nytimes--jason-zinoman.json",
     "company-2006/nytimes--jesse-green.json",
-    "cymbeline-2007/nytimes--charles-isherwood.json",
     "cyrano-de-bergerac-2007/nytimes--ben-brantley.json",
     "cyrano-de-bergerac-2012/nytimes--ben-brantley.json",
     "deuce-2007/nytimes--charles-isherwood.json",
@@ -866,7 +895,6 @@
     "illinoise-2024/nytimes--jesse-green.json",
     "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
     "les-liaisons-dangereuses-2016/nytimes--matt-wolf.json",
-    "merrily-we-roll-along-2023/nytimes--calum-marsh.json",
     "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
     "next-to-normal-2009/nytimes--ben-brantley.json",
     "oklahoma-2019/nytimes--benedict-nightingale.json",
@@ -897,7 +925,6 @@
     "the-royal-family-2009/nytimes--ben-brantley.json",
     "the-royal-family-2009/nytimes--jesse-green.json",
     "the-seagull-2008/nytimes--jesse-green.json",
-    "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
     "the-threepenny-opera-2006/nytimes--charles-isherwood.json",
     "the-visit-2015/nytimes--ben-brantley.json",
     "the-visit-2015/nytimes--unknown.json",
@@ -973,7 +1000,13 @@
       "moulin-rouge-the-musical-west-end-2021/fanbolt--emma-loggins.json",
       "moulin-rouge-the-musical-west-end-2021/patch--debra-graff.json",
       "moulin-rouge-the-musical-west-end-2021/patch--nancy-sasso-janis.json",
-      "moulin-rouge-the-musical-west-end-2021/scene--christine-howey.json"
+      "moulin-rouge-the-musical-west-end-2021/scene--christine-howey.json",
+      "job-2024/lighting-and-sound-america--david-barbour.json",
+      "kiss-me-kate-2019/lighting-and-sound-america--david-barbour.json",
+      "latin-history-for-morons-2017/wolf-entertainment-guide--william-wolf.json",
+      "left-on-tenth-2024/lighting-and-sound-america--david-barbour.json",
+      "les-liaisons-dangereuses-2016/lighting-and-sound-america--david-barbour.json",
+      "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json"
     ],
     "amp": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
@@ -1002,7 +1035,8 @@
       "leap-of-faith-2012/variety--steven-suskin.json",
       "data/review-texts/mr-saturday-night-2022/vulture--helen-shaw.json",
       "data/review-texts/maybe-happy-ending-2024/nydailynews--unknown.json",
-      "maybe-happy-ending-2024/nydailynews--unknown.json"
+      "maybe-happy-ending-2024/nydailynews--unknown.json",
+      "data/review-texts/leap-of-faith-2012/and-showrunner-on-law-and-order--side-man.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -1042,7 +1076,8 @@
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
       "moulin-rouge-the-musical-west-end-2021/edmonton-journal--liane-faulder.json",
-      "moulin-rouge-the-musical-west-end-2021/the-globe-and-mail--martin-morrow.json"
+      "moulin-rouge-the-musical-west-end-2021/the-globe-and-mail--martin-morrow.json",
+      "merrily-we-roll-along-2023/nytimes--calum-marsh.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1146,7 +1181,8 @@
       "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/the-times--clive-davis.json",
       "data/review-texts/the-monsters-2026/nytimes--brittani-samuel.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--krista-garver.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
+      "data/review-texts/jajas-african-hair-braiding-2023/lighting-and-sound-america--david-barbour.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -1228,62 +1264,50 @@
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--stefani-chudnow.json",
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--tyler-hinton.json",
-      "hamilton-2015/nytimes--ben-brantley.json",
-      "macbeth-2008/nytimes--ben-brantley.json",
-      "macbeth-2008/nytimes--jesse-green.json"
+      "jesus-christ-superstar-2012/the-times--dominic-maxwell.json",
+      "legally-blonde-2007/londontheatre--sophi-thomas.json",
+      "les-liaisons-dangereuses-2016/telegraph--william-wolf.json",
+      "buena-vista-social-club-2025/nytimes--jesse-green.json",
+      "cymbeline-2007/nytimes--charles-isherwood.json",
+      "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json"
     ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
       "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-      "newUrl": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html"
-    },
-    {
-      "reviewId": "hamilton-2015/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2015/02/18/theater/review-in-hamilton-lin-manuel-miranda-forges-democracy-through-rap.html",
-      "newUrl": "https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html"
+      "oldUrl": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html"
     },
     {
       "reviewId": "schmigadoon-2026/nytimes--margaret-lyons.json",
-      "oldUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-      "newUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html"
+      "oldUrl": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
+      "newUrl": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html"
     },
     {
       "reviewId": "cymbeline-2007/nytimes--charles-isherwood.json",
-      "oldUrl": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html",
-      "newUrl": "https://www.nytimes.com/2007/05/04/theater/reviews/04cymb.html"
-    },
-    {
-      "reviewId": "macbeth-2008/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2008/02/15/theater/reviews/15macb.html",
-      "newUrl": "https://www.nytimes.com/2008/06/23/theater/reviews/23macb.html"
-    },
-    {
-      "reviewId": "macbeth-2008/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2008/02/15/theater/reviews/15macb.html",
-      "newUrl": "https://www.nytimes.com/2008/06/23/theater/reviews/23macb.html"
+      "oldUrl": "https://www.nytimes.com/2007/05/04/theater/reviews/04cymb.html",
+      "newUrl": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html"
     },
     {
       "reviewId": "merrily-we-roll-along-2023/nytimes--calum-marsh.json",
-      "oldUrl": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html",
-      "newUrl": "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html"
+      "oldUrl": "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html",
+      "newUrl": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html"
     },
     {
       "reviewId": "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
-      "oldUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html",
-      "newUrl": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html"
+      "oldUrl": "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html",
+      "newUrl": "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html"
     },
     {
       "reviewId": "the-encounter-2016/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html",
-      "newUrl": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html"
+      "oldUrl": "https://www.nytimes.com/2016/09/30/theater/the-encounter-review.html",
+      "newUrl": "https://www.nytimes.com/2016/02/27/theater/review-you-see-the-encounter-with-your-ears.html"
     },
     {
       "reviewId": "the-sign-in-sidney-brusteins-window-2023/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2023/02/27/theater/the-sign-in-sidney-brusteins-window-bam-review.html",
-      "newUrl": "https://www.nytimes.com/2023/05/05/theater/the-sign-in-sidney-brusteins-window-review.html"
+      "oldUrl": "https://www.nytimes.com/2023/05/05/theater/the-sign-in-sidney-brusteins-window-review.html",
+      "newUrl": "https://www.nytimes.com/2023/02/27/theater/the-sign-in-sidney-brusteins-window-bam-review.html"
     }
   ]
 }
