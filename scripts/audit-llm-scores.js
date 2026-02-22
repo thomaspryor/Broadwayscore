@@ -49,15 +49,15 @@ const OUTPUT_FILE = path.join(AUDIT_DIR, 'llm-score-audit-REPORT-ONLY.json');
 
 // --- Bucket definitions ---
 const BUCKET_RANGES = {
-  'Rave':     { min: 85, max: 100 },
-  'Positive': { min: 70, max: 84 },
+  'Rave':     { min: 83, max: 100 },
+  'Positive': { min: 70, max: 82 },
   'Mixed':    { min: 55, max: 69 },
   'Negative': { min: 35, max: 54 },
   'Pan':      { min: 0,  max: 34 }
 };
 
 function bucketForScore(score) {
-  if (score >= 85) return 'Rave';
+  if (score >= 83) return 'Rave';
   if (score >= 70) return 'Positive';
   if (score >= 55) return 'Mixed';
   if (score >= 35) return 'Negative';
@@ -399,8 +399,8 @@ function runPass1Checks(data, filePath, liveScore) {
 const AUDIT_SYSTEM_PROMPT = `You are a Broadway theater critic score calibrator. Read the review text and independently assess the critic's overall sentiment toward the show on a 0-100 scale.
 
 Scoring guide:
-- 85-100 (Rave): Enthusiastic praise, strong recommendation, "don't miss this"
-- 70-84 (Positive): Generally favorable, some reservations but overall positive
+- 83-100 (Rave): Enthusiastic praise, strong recommendation, "don't miss this"
+- 70-82 (Positive): Generally favorable, some reservations but overall positive
 - 55-69 (Mixed): Balanced pros and cons, lukewarm, "has its moments"
 - 35-54 (Negative): More criticism than praise, disappointed tone
 - 0-34 (Pan): Harsh criticism, "avoid this", fundamental problems

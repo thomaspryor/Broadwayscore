@@ -42,7 +42,7 @@ fixes.forEach(fix => {
     console.log(`\nFixing: ${review.outlet}`);
     console.log(`  ${review.assignedScore} → ${fix.newScore} (${fix.reason})`);
     review.assignedScore = fix.newScore;
-    review.bucket = fix.newScore >= 85 ? 'Rave' : 'Positive';
+    review.bucket = fix.newScore >= 83 ? 'Rave' : 'Positive';
     fixCount++;
   }
 });

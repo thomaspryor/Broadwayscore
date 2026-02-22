@@ -64,8 +64,8 @@ Extract:
 
 | Score | Bucket | Thumb |
 |-------|--------|-------|
-| 85+ | Rave | Up |
-| 70-84 | Positive | Up |
+| 83+ | Rave | Up |
+| 70-82 | Positive | Up |
 | 50-69 | Mixed | Flat |
 | <50 | Pan | Down |
 

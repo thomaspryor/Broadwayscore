@@ -30,8 +30,8 @@ const DRY_RUN = process.argv.includes('--dry-run');
 
 // Bucket score ranges (from scripts/llm-scoring/config.ts)
 const BUCKET_RANGES = {
-  Rave: { min: 85, max: 100 },
-  Positive: { min: 70, max: 84 },
+  Rave: { min: 83, max: 100 },
+  Positive: { min: 70, max: 82 },
   Mixed: { min: 55, max: 69 },
   Negative: { min: 35, max: 54 },
   Pan: { min: 0, max: 34 }
@@ -59,8 +59,8 @@ Read the review text carefully and determine the correct sentiment bucket and sc
 
 | Bucket | Score Range | Description |
 |--------|-------------|-------------|
-| Rave | 85-100 | Enthusiastic, must-see recommendation |
-| Positive | 70-84 | Recommends seeing it |
+| Rave | 83-100 | Enthusiastic, must-see recommendation |
+| Positive | 70-82 | Recommends seeing it |
 | Mixed | 55-69 | Neither recommends nor discourages |
 | Negative | 35-54 | Does not recommend |
 | Pan | 0-34 | Strongly negative |

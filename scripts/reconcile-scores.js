@@ -130,7 +130,7 @@ KEY_SHOWS.forEach(showId => {
     if (newScore !== r.assignedScore && reason) {
       console.log(`${r.outlet}: ${r.assignedScore} → ${newScore} (${reason})`);
       r.assignedScore = newScore;
-      r.bucket = newScore >= 85 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
+      r.bucket = newScore >= 83 ? 'Rave' : newScore >= 70 ? 'Positive' : newScore >= 50 ? 'Mixed' : newScore >= 35 ? 'Negative' : 'Pan';
       fixes++;
     } else {
       console.log(`${r.outlet}: ${r.assignedScore} (no change)`);

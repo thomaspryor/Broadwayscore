@@ -100,8 +100,8 @@ The agent converts various rating formats to a 0-100 scale:
 ### Score → Bucket/Thumb Derivation
 | Score Range | Bucket | Thumb |
 |-------------|--------|-------|
-| 85-100 | Rave | Up |
-| 70-84 | Positive | Up |
+| 83-100 | Rave | Up |
+| 70-82 | Positive | Up |
 | 50-69 | Mixed | Flat |
 | 0-49 | Pan | Down |
 

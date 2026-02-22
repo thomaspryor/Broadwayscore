@@ -49,7 +49,7 @@ const SCORING_PROMPT = `You are an expert theater critic review analyzer. Your t
 ## SCORE CALIBRATION GUIDE
 
 Scores must align with these star rating equivalents:
-- 85-100 (★★★★★ - 5/5): Rave review. Unqualified praise, superlatives like "masterpiece," "triumph," "unmissable"
+- 83-100 (★★★★★ - 5/5): Rave review. Unqualified praise, superlatives like "masterpiece," "triumph," "unmissable"
 - 72-88 (★★★★☆ - 4/5): Strong positive. Enthusiastic recommendation with minor quibbles
 - 55-72 (★★★☆☆ - 3/5): Mixed-positive. Generally favorable but significant reservations
 - 35-55 (★★☆☆☆ - 2/5): Mixed-negative to negative. More criticisms than praise

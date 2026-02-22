@@ -138,9 +138,9 @@ if (changes.length > 0) {
 }
 
 // Bucket migration summary
-const buckets = { Rave: [85, 100], Positive: [70, 84], Mixed: [55, 69], Negative: [35, 54], Pan: [0, 34] };
+const buckets = { Rave: [83, 100], Positive: [70, 82], Mixed: [55, 69], Negative: [35, 54], Pan: [0, 34] };
 function toBucket(score) {
-  if (score >= 85) return 'Rave';
+  if (score >= 83) return 'Rave';
   if (score >= 70) return 'Positive';
   if (score >= 55) return 'Mixed';
   if (score >= 35) return 'Negative';

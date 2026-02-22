@@ -44,7 +44,7 @@ const THUMB_CONVERSIONS = {
 };
 
 const SENTIMENT_CONVERSIONS = {
-  'Rave': { min: 85, max: 100, target: 92 },
+  'Rave': { min: 83, max: 100, target: 92 },
   'Positive': { min: 70, max: 88, target: 78 },
   'Mixed': { min: 45, max: 65, target: 55 },
   'Negative': { min: 20, max: 49, target: 35 },

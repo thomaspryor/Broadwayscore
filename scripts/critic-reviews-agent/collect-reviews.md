@@ -49,8 +49,8 @@ Search: "[Show Name]" Broadway review [Outlet Name] stars rating 2025
 | Recommended | +2 bonus |
 
 ### Bucket Assignment
-- 85-100: Rave (thumb: Up)
-- 70-84: Positive (thumb: Up)
+- 83-100: Rave (thumb: Up)
+- 70-82: Positive (thumb: Up)
 - 50-69: Mixed (thumb: Flat)
 - 0-49: Pan (thumb: Down)
 
