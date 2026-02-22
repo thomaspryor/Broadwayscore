@@ -4,17 +4,50 @@
   "failed": 1142,
   "successRate": "7.3%",
   "tierBreakdown": {
-    "playwright": 20,
-    "amp": 95,
+    "playwright": 38,
+    "amp": 96,
     "browserbase": 1,
-    "directCookies": 6,
-    "scrapingbee": 24,
+    "directCookies": 5,
+    "scrapingbee": 26,
     "brightdata": 0,
     "archiveToday": 333,
     "archive": 56
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-02-22T01:21:33.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T01:31:14.528Z",
+      "event": "bb-session",
+      "session": "e6f5b4ac",
+      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-22T01:44:34.206Z",
+      "event": "bb-session",
+      "session": "3dbb2104",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-22T01:44:36.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-22T01:45:26.001Z",
+      "event": "bb-session",
+      "session": "915d27d7",
+      "url": "http://www.nytimes.com/2005/10/03/theater/reviews/03perf.html?_r=0"
+    },
+    {
+      "t": "2026-02-22T01:45:28.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-02-22T01:49:56.501Z",
       "event": "bb-session",
@@ -92,39 +125,6 @@
       "t": "2026-02-22T02:59:26.013Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T16:55:59.290Z",
-      "event": "bb-session",
-      "session": "d8e7b4ac",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-02-22T16:56:01.518Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-22T17:00:35.503Z",
-      "event": "bb-session",
-      "session": "95d449c7",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
-    },
-    {
-      "t": "2026-02-22T17:00:37.904Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-22T17:02:48.034Z",
-      "event": "bb-session",
-      "session": "1b22f614",
-      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
-    },
-    {
-      "t": "2026-02-22T17:02:50.180Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
     }
   ]
 }
