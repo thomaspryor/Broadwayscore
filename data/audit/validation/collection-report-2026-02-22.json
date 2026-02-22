@@ -20,8 +20,8 @@
     "playwright": 79,
     "amp": 13,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 8,
+    "directCookies": 34,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 5,
     "archive": 41
@@ -401,17 +401,43 @@
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [
-      "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
-      "the-importance-of-being-earnest-2011/bloomberg-news--jeremy-gerard.json",
-      "death-of-a-salesman-1999/bloomberg--jeremy-gerard.json",
-      "follies-1971/bloombergcom--jeremy-gerard.json",
-      "follies-2001/bloomberg--jeremy-gerard.json",
-      "leap-of-faith-2012/bloomberg--jeremy-gerard.json",
-      "sweeney-todd-1989/bloomberg--mark-leydorf.json",
-      "time-stands-still-2010/bloomberg--john-simon.json"
+    "directCookies": [
+      "home-1970/usatoday--elysa-gardner.json",
+      "jekyll-and-hyde-1997/usatoday--elysa-gardner.json",
+      "kiss-of-the-spider-woman-1993/usatoday--brian-truit.json",
+      "mean-girls-2018/usatoday--elysa-gardner.json",
+      "of-mice-and-men-1974/usatoday--elysa-gardner.json",
+      "old-times-1971/usatoday--elysa-gardner.json",
+      "on-the-twentieth-century-1978/usatoday--elysa-gardner.json",
+      "pippin-1972/usatoday--elysa-gardner.json",
+      "skylight-1996/usatoday--elysa-gardner.json",
+      "sunset-boulevard-1994/usatoday--patrick-ryan.json",
+      "sweeney-todd-1989/usatoday--patrick-ryan.json",
+      "the-color-purple-2015/usatoday--elysa-gardner.json",
+      "the-crucible-1972/usatoday--elysa-gardner.json",
+      "the-crucible-1991/usatoday--elysa-gardner.json",
+      "the-crucible-2002/usatoday--elysa-gardner.json",
+      "the-crucible-2016/usatoday--elysa-gardner.json",
+      "the-elephant-man-1979/usatoday--elysa-gardner.json",
+      "the-elephant-man-2002/usatoday--elysa-gardner.json",
+      "the-glass-menagerie-2005/usatoday--elysa-gardner.json",
+      "the-heidi-chronicles-1989/usatoday--elysa-gardner.json",
+      "the-heidi-chronicles-2015/usatoday--elysa-gardner.json",
+      "the-heiress-1976/usatoday--elysa-gardner.json",
+      "the-heiress-1995/usatoday--elysa-gardner.json",
+      "the-king-and-i-1977/usatoday--elysa-gardner.json",
+      "the-king-and-i-1985/usatoday--elysa-gardner.json",
+      "the-king-and-i-1996/usatoday--elysa-gardner.json",
+      "the-picture-of-dorian-gray-2025/usatoday--patrick-ryan.json",
+      "the-real-thing-1984/usatoday--elysa-gardner.json",
+      "the-real-thing-2000/usatoday--elysa-gardner.json",
+      "the-visit-1973/usatoday--elysa-gardner.json",
+      "the-winslow-boy-2013/usatoday--elysa-gardner.json",
+      "waiting-for-godot-2025/usatoday--patrick-ryan.json",
+      "whos-afraid-of-virginia-woolf-2012/usatoday--elysa-gardner.json",
+      "wolf-hall-parts-one-and-two-2015/usatoday--elysa-gardner.json"
     ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/bloodlove-2026/hollywood-reporter--frank-scheck.json",
@@ -463,5 +489,21 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hells-kitchen-2024/usatoday--david-oliver.json",
+      "oldUrl": "https://www.usatoday.com/story/life/entertainment/music/coachella/2024/04/20/blurs-damon-albarn-says-coachella-weekend-2-2024-set-is-likely-their-last/73402876007/",
+      "newUrl": "https://www.usatoday.com/story/entertainment/music/2024/04/30/tony-awards-nominations-2024/73498777007/"
+    },
+    {
+      "reviewId": "illinoise-2024/usatoday--david-rooney.json",
+      "oldUrl": "https://www.usatoday.com/story/news/local/2024/04/27/lower-atlantic-region-gas-prices-rose-from-last-week-see-how-much-here/73444902007/",
+      "newUrl": "https://www.usatoday.com/story/entertainment/music/2024/05/12/best-new-broadway-shows-2024-ranked/73587655007/"
+    },
+    {
+      "reviewId": "mean-girls-2018/usatoday--elysa-gardner.json",
+      "oldUrl": "https://www.usatoday.com/story/news/2018/04/09/juvenile-accused-making-threat-targeting-centennial-and-independence-high-schools/498525002/",
+      "newUrl": "https://www.usatoday.com/story/entertainment/2021/12/24/mean-girls-musical-tour-coming-oklahoma-city-dec-28-jan-2/6499451001/"
+    }
+  ]
 }
