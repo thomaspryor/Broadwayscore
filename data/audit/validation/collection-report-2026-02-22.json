@@ -1,77 +1,109 @@
 {
-  "runDate": "2026-02-22T23:29:37.031Z",
+  "runDate": "2026-02-22T23:33:28.967Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "titus-andronicus-2026",
+    "showFilter": "the-devil-wears-prada-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 1,
+    "processed": 10,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "75.0%"
+    "successRate": "52.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 2
+    "archiveToday": 3,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 11,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 10,
+    "tier4Success": 7,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "titus-andronicus-2026/newsday--barbara-schuler.json",
-    "titus-andronicus-2026/timeout--adam-feldman.json",
-    "titus-andronicus-2026/dailybeast--tim-teeman.json"
+    "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
+    "the-devil-wears-prada-west-end-2024/time-out-london--andrzej-lukowski.json",
+    "the-devil-wears-prada-west-end-2024/timeout--unknown.json",
+    "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
+    "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
+    "the-devil-wears-prada-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json",
+    "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
   ],
   "failed": [
-    "titus-andronicus-2026/thewrap--robert-hofler.json"
+    "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+    "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+    "the-devil-wears-prada-west-end-2024/stage-uk--tim-bano.json",
+    "the-devil-wears-prada-west-end-2024/the-arts-desk--matt-wolf.json",
+    "the-devil-wears-prada-west-end-2024/the-independent-uk--alice-saville.json",
+    "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/the-times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/whatsonstage--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
+      "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
+      "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
+      "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "titus-andronicus-2026/dailybeast--tim-teeman.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/the-independent-uk--alice-saville.json"
+    ],
     "archive": [
-      "titus-andronicus-2026/newsday--barbara-schuler.json",
-      "titus-andronicus-2026/timeout--adam-feldman.json"
+      "the-devil-wears-prada-west-end-2024/time-out-london--andrzej-lukowski.json",
+      "the-devil-wears-prada-west-end-2024/timeout--unknown.json",
+      "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
+      "the-devil-wears-prada-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
+      "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+      "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json",
+      "oldUrl": "https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/devil-wears-prada-musical-review-5nwrcllfx?gaa_at=eafs&gaa_n=AWEtsqfXLmdSxnZKs8rhDCAFXWm84htdd8qAFLHW4ooU0xmVmKEnaOCuzgMj&gaa_ts=699b95a0&gaa_sig=6VLm7D86Lx3ryKBsgM8k8wPG3lIEY3Gzx7nrTSoEyDYAHs1iqA9JUhAhEqsjN5alXQI_hMPNFzEft_ZGDR_obw%3D%3D"
+    }
+  ]
 }
