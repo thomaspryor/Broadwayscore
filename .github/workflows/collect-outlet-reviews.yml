@@ -1,0 +1,85 @@
+name: Collect Outlet Reviews (SERP)
+
+on:
+  workflow_dispatch:
+    inputs:
+      market:
+        description: 'Market to collect for'
+        required: true
+        default: 'west-end'
+        type: choice
+        options:
+          - west-end
+          - broadway
+      max_tier:
+        description: 'Maximum outlet tier to search'
+        required: false
+        default: '2'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+      show_filter:
+        description: 'Single show ID to collect (blank = all shows)'
+        required: false
+        default: ''
+        type: string
+      max_searches:
+        description: 'Maximum SERP searches (cost control)'
+        required: false
+        default: '200'
+        type: string
+      dry_run:
+        description: 'Dry run (no files written)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: collect-outlet-reviews-${{ github.event.inputs.market }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run outlet-based SERP collector
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+        run: |
+          ARGS="--market ${{ github.event.inputs.market }} --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
+          if [ -n "${{ github.event.inputs.show_filter }}" ]; then
+            ARGS="$ARGS --show ${{ github.event.inputs.show_filter }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
+          node scripts/collect-outlet-reviews.js $ARGS
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Collect ${{ github.event.inputs.market }} outlet reviews via SERP [T1-${{ github.event.inputs.max_tier }}]"

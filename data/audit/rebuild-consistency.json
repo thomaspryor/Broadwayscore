@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T03:15:41.849Z",
+  "generatedAt": "2026-02-22T04:21:15.865Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -8,6 +8,14 @@
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "originalRating \"D\" (=35) vs score 82 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "back-to-the-future-west-end-2021",
+      "outlet": "londontheatre",
+      "critic": "Marianka Swain",
+      "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -60,6 +68,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "matilda-the-musical-west-end-2021",
+      "outlet": "londontheatre",
+      "critic": "Peter Brown",
+      "detail": "originalRating \"5/5\" (=100) vs score 78 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "newsies-the-musical-2012",
       "outlet": "ew",
       "critic": "Thom Geier",
@@ -96,6 +112,22 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 84 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "showstopper-the-improvised-musical-west-end-2023",
+      "outlet": "standard",
+      "critic": "Fiona Mountford",
+      "detail": "originalRating \"4/5\" (=80) vs score 50 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "telegraph",
+      "critic": "Charles Spencer",
+      "detail": "originalRating \"60/100\" (=60) vs score 38 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -324,38 +356,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "hamilton-west-end-2021",
-      "detail": "9/10 reviews (90%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "detail": "10/13 reviews (77%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "oh-mary-west-end-2025",
-      "detail": "8/12 reviews (67%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "operation-mincemeat-west-end-2024",
       "detail": "9/14 reviews (64%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "paranormal-activity-west-end-2025",
-      "detail": "8/13 reviews (62%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "detail": "9/15 reviews (60%) scored exactly 100"
     },
     {
       "type": "score-clustering",
