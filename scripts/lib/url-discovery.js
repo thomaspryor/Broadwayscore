@@ -126,6 +126,7 @@ function getShowInfo(showId) {
       return {
         title: showEntry.title,
         year: (showEntry.openingDate || '').substring(0, 4),
+        category: showEntry.category || 'broadway',
       };
     }
   } catch (e) { /* fall through */ }
@@ -295,11 +296,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const criticClause = criticName ? ` ${criticName}` : '';
   const outletName = review.outlet || outletId;
 
+  // Use market-appropriate search term based on show category
+  const marketTerm = showInfo.category === 'west-end' ? 'West End review' : 'Broadway review';
+
   let query;
   if (domain) {
-    query = `site:${domain} "${showInfo.title}" Broadway review${yearClause}${criticClause}`;
+    query = `site:${domain} "${showInfo.title}" ${marketTerm}${yearClause}${criticClause}`;
   } else {
-    query = `"${showInfo.title}" Broadway review${yearClause} "${outletName}"${criticClause}`;
+    query = `"${showInfo.title}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
   }
 
   log(`  [URL Discovery] Searching: ${query}`);
@@ -323,7 +327,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // Fallback: broader search without site: restriction, using outlet + critic name
     // This catches articles Google didn't index under the domain (URL changes, redirects)
     if (criticName && domain) {
-      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" Broadway review${yearClause}`;
+      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
       results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log);
       provider = 'scrapingbee-fallback';
