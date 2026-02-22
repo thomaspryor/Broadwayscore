@@ -88,6 +88,40 @@ jobs:
             echo "::warning::All push attempts failed"
           fi
 
+      - name: Create IBDB scraper reminder issue
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          YEAR="${{ inputs.year }}"
+          if [ -z "$YEAR" ]; then
+            YEAR="$(date +%Y)"
+          fi
+          gh issue create \
+            --title "Run Tony nominations IBDB scraper for ${YEAR}" \
+            --body "$(cat <<'ISSUE_EOF'
+          ## Tony Awards data updated
+
+          The Wikipedia Tony Awards scraper has committed new data to \`awards.json\`.
+          The IBDB person-level nominations scraper needs to run locally to pick up new shows.
+
+          ### Steps
+
+          1. Pull latest: \`git pull\`
+          2. Run the scraper for missing shows only:
+             \`\`\`
+             node scripts/scrape-tony-nominees.js --missing
+             \`\`\`
+          3. Verify: \`node scripts/verify-tony-data.js\`
+          4. Commit and push the updated \`data/tony-nominations.json\`
+
+          **Why local?** IBDB is behind Cloudflare and requires a headed Playwright browser.
+          The \`--missing\` flag only processes shows where \`awards.json\` expects nominations
+          but \`tony-nominations.json\` has 0 person-level entries.
+          ISSUE_EOF
+          )" \
+            --label "data"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Summary
         run: |
           echo "## Tony Awards Update" >> $GITHUB_STEP_SUMMARY
