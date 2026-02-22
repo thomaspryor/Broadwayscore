@@ -424,10 +424,9 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
   const revWins = revCats.reduce((s, c) => s + catResults[c].rank1, 0);
 
   const fieldSizeData = [
-    { label: '3\u20134 nominees', bucket: '3-4', note: 'Small field' },
-    { label: '5\u20136 nominees', bucket: '5-6', note: '' },
     { label: '2 nominees', bucket: '2', note: 'Coin flip' },
-    { label: '7+ nominees', bucket: '7+', note: 'Standard field' },
+    { label: '3\u20134 nominees', bucket: '3-4', note: 'Small field' },
+    { label: '5\u20136 nominees', bucket: '5-6', note: 'Most common' },
   ].map(({ label, bucket, note }) => ({
     label,
     pct: fieldResults[bucket]?.total > 0 ? Math.round((fieldResults[bucket].rank1 / fieldResults[bucket].total) * 100) : 0,
