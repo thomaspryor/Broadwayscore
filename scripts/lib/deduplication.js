@@ -210,13 +210,13 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
  * Returns true if both have year info and opening years differ by >2 years.
  */
 function isMultiProduction(newShow, existing) {
-  // If the existing show is still running, a new listing for the same title
-  // in the same market is the same production, not a revival.
-  // This handles long-running WE shows (e.g., Phantom since 1986) where
-  // TodayTix reports a recent booking start date, not the original opening.
-  if (existing.status === 'open' || existing.status === 'previews') {
-    return false;
-  }
+  // Try year from ID suffix first, then from openingDate
+  const getYear = (show) => {
+    const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
+    if (idMatch) return parseInt(idMatch[1]);
+    if (show.openingDate) return new Date(show.openingDate).getFullYear();
+    return null;
+  };
 
   // If both have different IBDB URLs, they are definitively separate productions
   const newIbdb = newShow.ibdbUrl || '';
@@ -225,15 +225,20 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
-  // Try year from ID suffix first, then from openingDate
-  const getYear = (show) => {
-    const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
-    if (idMatch) return parseInt(idMatch[1]);
-    if (show.openingDate) return new Date(show.openingDate).getFullYear();
-    return null;
-  };
   const newYear = getYear(newShow);
   const existingYear = getYear(existing);
+
+  // If the existing show is still running, a new listing for the same title
+  // in the same market is usually the same production, not a revival.
+  // Exception: if both have year info and differ by >2 years, they are
+  // historical entries (e.g., Death of a Salesman 1975 vs 2026).
+  if (existing.status === 'open' || existing.status === 'previews') {
+    if (newYear && existingYear && Math.abs(newYear - existingYear) > 2) {
+      return true; // Historical entry vs current production
+    }
+    return false; // Same/close year + open show = same production
+  }
+
   if (newYear && existingYear) {
     return Math.abs(newYear - existingYear) > 2;
   }
