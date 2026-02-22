@@ -1,0 +1,98 @@
+{
+  "runDate": "2026-02-22T01:39:14.688Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "im-sorry-prime-minister-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 9,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "81.8%"
+  },
+  "tierBreakdown": {
+    "playwright": 6,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 6,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 11,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "im-sorry-prime-minister-west-end-2026/the-guardian-uk--brian-logan.json",
+    "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json",
+    "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+    "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
+    "im-sorry-prime-minister-west-end-2026/evening-standard--nick-curtis.json",
+    "im-sorry-prime-minister-west-end-2026/the-arts-desk--helen-hawkins.json",
+    "im-sorry-prime-minister-west-end-2026/the-independent-uk--alice-saville.json",
+    "im-sorry-prime-minister-west-end-2026/the-stage-uk--dave-fargnoli.json",
+    "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json"
+  ],
+  "failed": [
+    "im-sorry-prime-minister-west-end-2026/london-theatre--matt-wolf.json",
+    "im-sorry-prime-minister-west-end-2026/the-telegraph-uk--dominic-cavendish.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "im-sorry-prime-minister-west-end-2026/the-guardian-uk--brian-logan.json",
+      "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json",
+      "im-sorry-prime-minister-west-end-2026/all-that-dazzles-uk--harry-bower.json",
+      "im-sorry-prime-minister-west-end-2026/the-independent-uk--alice-saville.json",
+      "im-sorry-prime-minister-west-end-2026/the-stage-uk--dave-fargnoli.json",
+      "im-sorry-prime-minister-west-end-2026/west-end-best-friend--chris-abbott.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "im-sorry-prime-minister-west-end-2026/broadwayworld--gary-naylor.json",
+      "im-sorry-prime-minister-west-end-2026/evening-standard--nick-curtis.json",
+      "im-sorry-prime-minister-west-end-2026/the-arts-desk--helen-hawkins.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The Telegraph (UK)": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
