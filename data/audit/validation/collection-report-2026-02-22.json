@@ -818,7 +818,15 @@
       "uncle-vanya-2000/nydailynews--chris-jones.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Observer": {
+      "count": 3,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": [
     {
       "reviewId": "aint-too-proud-2019/nydailynews--chris-jones.json",
