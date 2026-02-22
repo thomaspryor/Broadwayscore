@@ -9,7 +9,7 @@ const ogImageUrl = `${BASE_URL}/og/home.png`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
-  description: 'Learn how Broadway Scorecard calculates CriticScore ratings and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
+  description: 'Learn how Broadway Scorecard calculates CriticScore ratings and AudienceGrade from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
   alternates: {
     canonical: `${BASE_URL}/methodology`,
   },
@@ -110,10 +110,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What is the Audience Scorecard?',
+      name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
+        text: 'The AudienceGrade aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
       },
     },
     {
@@ -300,14 +300,14 @@ export default function MethodologyPage() {
 
         {/* Audience Buzz */}
         <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Audience Scorecard</h2>
+          <h2 className="text-xl font-bold text-white mb-4">AudienceGrade™</h2>
           <p className="text-gray-300 mb-4">
-            The Audience Scorecard captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single letter grade.
+            The AudienceGrade captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single letter grade.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Grade Scale</h3>
           <p className="text-gray-300 text-sm mb-4">
-            Shows receive a letter grade based on their aggregated audience score:
+            Shows receive a letter grade based on their aggregated AudienceGrade rating:
           </p>
           <div className="space-y-2">
             {[
@@ -470,7 +470,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span><strong className="text-white">Audience Scorecard:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
+              <span><strong className="text-white">AudienceGrade:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
             </li>
           </ul>
         </section>

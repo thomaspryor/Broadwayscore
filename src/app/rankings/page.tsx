@@ -451,7 +451,7 @@ export default function RankingsPage() {
             )}
             <RankingCard
               href="/audience-buzz"
-              title="Audience Scorecard"
+              title="AudienceGrade"
               description="What real theatergoers think"
               icon={<span className="text-lg">❤️</span>}
               color="text-red-400"

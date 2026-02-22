@@ -252,7 +252,7 @@ function NVPPageInner() {
       {/* Score Column Header */}
       <div className="flex justify-end items-center pr-4 sm:pr-5 mb-2">
         <span className="text-xs sm:text-sm font-semibold text-gray-400 tracking-wide">
-          {scoreMode === 'audience' ? 'Audience Grade' : "Critics\u2019 Score"}
+          {scoreMode === 'audience' ? 'AudienceGrade' : "Critics\u2019 Score"}
         </span>
       </div>
 

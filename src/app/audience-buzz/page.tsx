@@ -10,14 +10,14 @@ import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
-  title: 'Audience Scorecard - What Real Theatergoers Think',
-  description: 'Audience scores for Broadway shows from Show Score, Mezzanine, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
+  title: 'Broadway Audience Scorecard - What Real Theatergoers Think',
+  description: 'AudienceGrade ratings for Broadway shows from Show Score, Mezzanine, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
   alternates: {
     canonical: `${BASE_URL}/audience-buzz`,
   },
   openGraph: {
-    title: 'Audience Scorecard - Real Broadway Audience Ratings',
-    description: 'What do audiences really think? Combined scores from Show Score, Mezzanine, and Reddit for every Broadway show.',
+    title: 'Broadway Audience Scorecard - Real Broadway Audience Ratings',
+    description: 'What do audiences really think? Combined AudienceGrade ratings from Show Score, Mezzanine, and Reddit for every Broadway show.',
     url: `${BASE_URL}/audience-buzz`,
     type: 'article',
   },
@@ -30,15 +30,15 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is Broadway Audience Scorecard?',
+      name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Scorecard is our aggregated audience score combining ratings from Show Score, Mezzanine, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
+        text: 'AudienceGrade is our aggregated audience letter grade combining ratings from Show Score, Mezzanine, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How is the Audience Scorecard score calculated?',
+      name: 'How is the AudienceGrade calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'We combine three sources — Show Score, Mezzanine, and Reddit — weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.',
@@ -46,7 +46,7 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What do the Audience Scorecard grades mean?',
+      name: 'What do the AudienceGrade ratings mean?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Shows receive a letter grade from A+ (93-100, audiences love it) through F (below 48, audiences dislike it). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception.',
@@ -131,7 +131,7 @@ export default function AudienceBuzzPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Audience Scorecard</h1>
           <p className="text-gray-400 mt-2">
-            What real theatergoers think. Combined audience scores from Show Score, Mezzanine, and Reddit.
+            What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, and Reddit.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             {showsWithBuzz.length} shows · {totalReviews.toLocaleString()}+ audience reviews · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -140,9 +140,9 @@ export default function AudienceBuzzPage() {
 
         {/* How It Works */}
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
-          <h2 className="font-bold text-white mb-2">How Audience Scorecard Works</h2>
+          <h2 className="font-bold text-white mb-2">How AudienceGrade Works</h2>
           <p className="text-sm text-gray-400 mb-3">
-            We combine three audience sources into a single letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
+            We combine three audience sources into a single AudienceGrade letter grade. Each source is weighted proportionally by its number of reviews — more reviews means more influence. No single source can exceed 80% of the total weight.
           </p>
           <div className="grid sm:grid-cols-3 gap-4 text-sm text-gray-400">
             <div>
