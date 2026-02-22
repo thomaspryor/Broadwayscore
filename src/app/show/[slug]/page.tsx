@@ -57,7 +57,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const siteName = isWestEndMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
   const marketLabel = isWestEndMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const description = score
-    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
+    ? `${show.title} has a CriticScore of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
     : `Reviews and scores for ${show.title} ${marketLabel}. ${synopsisSnippet}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
@@ -71,7 +71,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   return {
     title: roundedScore
-      ? `${show.title} Reviews — ${siteName} | Critic Score: ${roundedScore} | ${reviewCount} Reviews`
+      ? `${show.title} Reviews — ${siteName} | CriticScore: ${roundedScore} | ${reviewCount} Reviews`
       : `${show.title} Reviews — ${siteName}`,
     description,
     alternates: {
@@ -91,7 +91,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${show.title} - Critic Score ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
+      title: `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
       description,
       images: [{
         url: ogImageUrl,
@@ -733,7 +733,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             {/* Key metrics first for AI extractability */}
             {score && show.criticScore && show.criticScore.reviewCount >= (show.category === 'off-broadway' ? 3 : 5) && (
               <div>
-                <dt className="text-gray-500">Critic Score</dt>
+                <dt className="text-gray-500">CriticScore</dt>
                 <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>
               </div>
             )}

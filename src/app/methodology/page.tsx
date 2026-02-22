@@ -9,7 +9,7 @@ const ogImageUrl = `${BASE_URL}/og/home.png`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
-  description: 'Learn how Broadway Scorecard calculates critic scores and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
+  description: 'Learn how Broadway Scorecard calculates CriticScore ratings and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
   alternates: {
     canonical: `${BASE_URL}/methodology`,
   },
@@ -81,7 +81,7 @@ const faqSchema = {
       name: 'How are Broadway show scores calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Broadway Scorecard aggregates professional critic reviews and calculates a weighted average score. Reviews from major outlets like The New York Times (Tier 1) have full weight, while smaller publications have slightly reduced weights.',
+        text: 'Broadway Scorecard aggregates professional critic reviews and calculates a weighted average score. Reviews from major outlets like The New York Times (Tier 1) carry more weight, reflecting their reach and theatrical expertise.',
       },
     },
     {
@@ -113,7 +113,7 @@ const faqSchema = {
       name: 'What is the Audience Scorecard?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted proportionally by review count volume, with no single source exceeding 80% weight. Reddit sentiment is LLM-classified from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out, and shows need 50+ classified comments to qualify.',
+        text: 'The Audience Scorecard aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
       },
     },
     {
@@ -164,7 +164,7 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Score Interpretation</h2>
           <p className="text-gray-300 mb-4">
-            Critic Scores are labeled based on these thresholds:
+            CriticScore ratings are labeled based on these thresholds:
           </p>
           <div className="space-y-4 sm:space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -214,9 +214,9 @@ export default function MethodologyPage() {
 
         {/* Critic Score */}
         <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Critic Score Calculation</h2>
+          <h2 className="text-xl font-bold text-white mb-4">CriticScore™ Calculation</h2>
           <p className="text-gray-300 mb-4">
-            Critic scores are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment.
+            Critic scores are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment. Higher-tier outlets carry more weight, reflecting their reach and theatrical expertise.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Outlet Tiers</h3>
@@ -224,7 +224,6 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-accent-gold/20 text-accent-gold text-xs font-medium">Tier 1</span>
-                <span className="text-gray-400 text-sm">Weight: 1.0×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 The New York Times, Washington Post, Variety, Hollywood Reporter, Vulture, The New Yorker, The Guardian, Time Out, Broadway News, LA Times, Wall Street Journal, AP
@@ -234,7 +233,6 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
-                <span className="text-gray-400 text-sm">Weight: 0.75×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 Regional papers, entertainment trades, and theater-specific publications (30+ outlets)
@@ -244,7 +242,6 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
-                <span className="text-gray-400 text-sm">Weight: 0.45×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 Smaller outlets, blogs, and niche theater sites
@@ -257,12 +254,16 @@ export default function MethodologyPage() {
             When an outlet officially designates a review with a special label, we apply a small bonus to the review&apos;s base score. We only recognize designations that are verified from the outlet&apos;s actual page markup:
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-gray-400">NYT Critics&apos; Pick</div>
-              <div className="text-brand">+3 points (min score: 70)</div>
-              <div className="text-gray-400">Time Out Critics&apos; Choice</div>
-              <div className="text-brand">+2 points</div>
-            </div>
+            <ul className="text-gray-300 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span>NYT Critics&apos; Pick</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span>Time Out Critics&apos; Choice</span>
+              </li>
+            </ul>
           </div>
         </section>
 
@@ -291,9 +292,9 @@ export default function MethodologyPage() {
             Letter grades from outlets like Entertainment Weekly are converted using a standard academic mapping (A+ at the top, F at the bottom), calibrated to align with our 0&ndash;100 scale.
           </p>
 
-          <h3 className="text-base font-semibold text-white mt-6 mb-3">LLM Sentiment Analysis</h3>
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Sentiment Analysis</h3>
           <p className="text-gray-300 text-sm">
-            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use multiple leading LLMs to analyze the full review text and classify its sentiment on a seven-point scale from Rave to Pan. The models are calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
+            Most Broadway critics don&apos;t give star ratings or letter grades. When a review has no explicit rating, we use proprietary sentiment analysis to classify the full review text on a seven-point scale from Rave to Pan. The system is calibrated against hundreds of critic-scored reviews for accuracy and consistency. Each classification maps to a score on the 0&ndash;100 scale.
           </p>
         </section>
 
@@ -366,31 +367,15 @@ export default function MethodologyPage() {
                 <span className="text-white font-medium">Reddit (r/Broadway)</span>
               </div>
               <p className="text-gray-300 text-sm">
-                LLM-classified sentiment from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out. Shows need 50+ classified comments to qualify.
+                Sentiment analysis from r/Broadway discussions. Only comments from people who actually attended the show are counted &mdash; boycotts, source material opinions, and secondhand takes are filtered out.
               </p>
             </div>
           </div>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Weighting Methodology</h3>
-          <p className="text-gray-300 text-sm mb-3">
-            Sources are weighted dynamically based on sample size to ensure reliability:
+          <p className="text-gray-300 text-sm">
+            Sources are weighted dynamically based on sample size to ensure reliability. No single source can dominate the final score, and larger sample sizes carry proportionally more weight.
           </p>
-          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <ul className="text-gray-300 space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-brand">•</span>
-                <span><strong className="text-white">All sources</strong> (Show Score, Mezzanine, Reddit) are weighted proportionally by review count volume</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-brand">•</span>
-                <span>No single source can exceed <strong className="text-white">80% weight</strong>, preventing any one platform from dominating</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-brand">•</span>
-                <span>Sources with more reviews receive proportionally more weight, ensuring larger sample sizes have greater influence</span>
-              </li>
-            </ul>
-          </div>
         </section>
 
         {/* Box Office Data */}
@@ -507,7 +492,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span>All scoring rules are defined in our open-source codebase</span>
+              <span>All scoring rules are consistently applied across every show in our database</span>
             </li>
           </ul>
         </section>

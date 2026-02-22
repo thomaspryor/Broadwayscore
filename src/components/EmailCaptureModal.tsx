@@ -62,7 +62,7 @@ const TRIGGER_COPY: Record<GateTrigger, { heading: string; subheading: string }>
   },
   return_visitor: {
     heading: 'Never miss a new Broadway show',
-    subheading: 'We\u2019ll email you the Critic Score when new shows open, plus what\u2019s closing soon.',
+    subheading: 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
   },
 };
 
