@@ -121,12 +121,6 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="flex items-center gap-3">
-                <Link href="/about" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                  About
-                </Link>
-                <Link href="/reviews" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                  Reviews
-                </Link>
                 {featureFlags.westEnd && (
                   <Link href="/west-end" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     West End
@@ -137,9 +131,6 @@ export default function RootLayout({
                     Off-Broadway
                   </Link>
                 )}
-                <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                  ☕ Support
-                </a>
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
