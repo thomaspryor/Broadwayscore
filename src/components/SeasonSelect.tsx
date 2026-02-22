@@ -3,21 +3,24 @@
 import { useRouter } from 'next/navigation';
 
 export function SeasonSelect({
+  basePath,
   listType,
   seasons,
   currentSeason,
 }: {
-  listType: string;
+  basePath?: string;
+  listType?: string;
   seasons: string[];
   currentSeason: string;
 }) {
   const router = useRouter();
+  const base = basePath || `/lists/${listType}`;
 
   return (
     <select
       value={currentSeason}
       onChange={(e) => {
-        if (e.target.value) router.push(`/lists/${listType}/${e.target.value}`);
+        if (e.target.value) router.push(`${base}/${e.target.value}`);
       }}
       aria-label="Select season"
       className={`bg-surface-overlay border border-white/10 text-sm rounded-lg px-3 py-1.5 font-medium appearance-none cursor-pointer hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-white/20 ${currentSeason ? 'text-white' : 'text-gray-400'}`}

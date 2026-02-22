@@ -13,6 +13,8 @@ interface TonyPredictionsTableProps {
   upcoming: SerializedTonyShow[];
   /** Global index offset so only the first few images across all sections are eager-loaded */
   startIndex?: number;
+  /** Tony outcomes for historical seasons: slug → 'winner' | 'nominated' */
+  outcomes?: Record<string, 'winner' | 'nominated'>;
 }
 
 function formatDate(dateStr: string): string {
@@ -43,7 +45,7 @@ function TierLabel({ score, reviewCount, status }: { score: number | null; revie
   );
 }
 
-export default function TonyPredictionsTable({ title, description, shows, upcoming, startIndex = 0 }: TonyPredictionsTableProps) {
+export default function TonyPredictionsTable({ title, description, shows, upcoming, startIndex = 0, outcomes }: TonyPredictionsTableProps) {
   // Sort scored shows by score desc, upcoming by opening date
   const scored = [...shows].sort((a, b) => (b.compositeScore ?? -1) - (a.compositeScore ?? -1));
   const upcomingSorted = [...upcoming].sort((a, b) =>
@@ -102,9 +104,22 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
-                  {show.title}
-                </h3>
+                <div className="flex items-center gap-2 min-w-0">
+                  <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
+                    {show.title}
+                  </h3>
+                  {outcomes?.[show.slug] === 'winner' && (
+                    <span className="flex-shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
+                      Winner
+                    </span>
+                  )}
+                  {outcomes?.[show.slug] === 'nominated' && (
+                    <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
+                      Nominated
+                    </span>
+                  )}
+                </div>
                 <div className="flex flex-wrap items-center gap-1 mt-1">
                   <StatusBadge status={getEffectiveStatus(show)} />
                 </div>

@@ -156,6 +156,344 @@ export function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
   });
 }
 
+// --- Multi-Season Support ---
+
+const TOP_CATEGORIES = ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'] as const;
+
+type AwardsShowEntry = {
+  tony?: {
+    season?: string;
+    wins?: string[];
+    nominatedFor?: string[];
+    nominations?: number;
+  };
+};
+
+function getAwardsShows(): Record<string, AwardsShowEntry> {
+  return (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry>;
+}
+
+export function getTonySeasonWindowFor(ceremonyYear: number): TonySeasonWindow {
+  return {
+    start: `${ceremonyYear - 1}-04-28`,
+    end: `${ceremonyYear}-04-27`,
+    label: `${ceremonyYear - 1}-${ceremonyYear}`,
+    ceremonyYear,
+  };
+}
+
+/** Convert our label format to awards.json format: "2024-2025" → "2024-25" */
+export function toAwardsSeason(label: string): string {
+  const parts = label.split('-');
+  return `${parts[0]}-${parts[1].slice(2)}`;
+}
+
+/** Convert awards.json format to our label: "2024-25" → "2024-2025" */
+export function fromAwardsSeason(s: string): string {
+  const [start, endShort] = s.split('-');
+  const century = endShort === '00' ? parseInt(start.slice(0, 2)) + 1 : start.slice(0, 2);
+  return `${start}-${century}${endShort}`;
+}
+
+const FIRST_PREDICTION_SEASON = 2014; // ceremony year — gives us 2013-2014 as first season
+
+/** Returns all seasons we generate prediction pages for, most recent first. */
+export function getAllPredictionSeasons(): TonySeasonWindow[] {
+  const current = getTonySeasonWindow();
+  const seasons: TonySeasonWindow[] = [];
+  for (let cy = FIRST_PREDICTION_SEASON; cy <= current.ceremonyYear; cy++) {
+    seasons.push(getTonySeasonWindowFor(cy));
+  }
+  return seasons.reverse();
+}
+
+/**
+ * For past seasons, derive eligible shows from awards.json nominees + opening date window.
+ * This handles COVID seasons where the standard date window doesn't capture all nominees.
+ */
+export function getEligibleShowsForPastSeason(allShows: ComputedShow[], season: TonySeasonWindow): ComputedShow[] {
+  const awardsShows = getAwardsShows();
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const awardsSeason = toAwardsSeason(season.label);
+  const eligible = new Map<string, ComputedShow>();
+
+  // 1. Add all shows that have Tony data for this season in awards.json
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season === awardsSeason) {
+      const show = showMap.get(showId);
+      if (show) eligible.set(show.id, show);
+    }
+  }
+
+  // 2. Also add shows from the standard date window (captures non-nominated eligible shows)
+  const dateEligible = getEligibleShows(allShows, season);
+  for (const show of dateEligible) {
+    eligible.set(show.id, show);
+  }
+
+  return Array.from(eligible.values());
+}
+
+/**
+ * Get Tony outcomes for a past season: slug → 'winner' | 'nominated'.
+ * Only covers the 4 main categories. Returns empty map for current/future seasons.
+ */
+export function getSeasonOutcomes(allShows: ComputedShow[], season: TonySeasonWindow): Record<string, 'winner' | 'nominated'> {
+  const current = getTonySeasonWindow();
+  if (season.ceremonyYear >= current.ceremonyYear) return {};
+
+  const awardsShows = getAwardsShows();
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const awardsSeason = toAwardsSeason(season.label);
+  const outcomes: Record<string, 'winner' | 'nominated'> = {};
+
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    const show = showMap.get(showId);
+    if (!show) continue;
+
+    const wins = data.tony?.wins || [];
+    const noms = data.tony?.nominatedFor || [];
+
+    const wonTopCategory = wins.some(w => TOP_CATEGORIES.includes(w as typeof TOP_CATEGORIES[number]));
+    const nominatedTopCategory = noms.some(n => TOP_CATEGORIES.includes(n as typeof TOP_CATEGORIES[number]));
+
+    if (wonTopCategory) {
+      outcomes[show.slug] = 'winner';
+    } else if (nominatedTopCategory) {
+      outcomes[show.slug] = 'nominated';
+    }
+  }
+
+  return outcomes;
+}
+
+// --- Accuracy Stats ---
+
+export interface AccuracyStats {
+  rank1WinPct: number;
+  top2WinPct: number;
+  avgWinnerRank: number;
+  byCategory: Array<{ category: string; pct: number }>;
+  newWorksAccuracy: number;
+  revivalsAccuracy: number;
+  fieldSizeData: Array<{ label: string; pct: number; note: string }>;
+  upsets: Array<{ winner: string; season: string; category: string; rank: number }>;
+  seasonCount: number;
+  categorySeasonCount: number;
+  skippedCount: number;
+}
+
+/**
+ * Dynamically compute accuracy stats across all historical prediction seasons.
+ * For each season+category, ranks eligible shows by compositeScore and checks
+ * whether the actual Tony winner was #1, top 2, etc.
+ */
+export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
+  const awardsShows = getAwardsShows();
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const current = getTonySeasonWindow();
+  const seasons = getAllPredictionSeasons().filter(s => s.ceremonyYear < current.ceremonyYear);
+
+  // Build winners map: awardsSeason|category → showId
+  const winnersMap = new Map<string, string>();
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (!data.tony?.season || !data.tony.wins) continue;
+    for (const w of data.tony.wins) {
+      if (TOP_CATEGORIES.includes(w as typeof TOP_CATEGORIES[number])) {
+        winnersMap.set(`${data.tony.season}|${w}`, showId);
+      }
+    }
+  }
+
+  let totalCatSeasons = 0;
+  let skipped = 0;
+  let rank1Wins = 0;
+  let top2Wins = 0;
+  let totalWinnerRank = 0;
+  const seasonSet = new Set<string>();
+  const catResults: Record<string, { total: number; rank1: number }> = {};
+  const fieldResults: Record<string, { total: number; rank1: number }> = {};
+  const upsets: AccuracyStats['upsets'] = [];
+
+  for (const cat of TOP_CATEGORIES) {
+    catResults[cat] = { total: 0, rank1: 0 };
+  }
+
+  for (const season of seasons) {
+    const awardsSeason = toAwardsSeason(season.label);
+    const eligible = getEligibleShowsForPastSeason(allShows, season);
+
+    for (const cat of TOP_CATEGORIES) {
+      const winnerShowId = winnersMap.get(`${awardsSeason}|${cat}`);
+      if (!winnerShowId) continue; // no winner for this category-season
+
+      const winnerShow = showMap.get(winnerShowId);
+      if (!winnerShow || winnerShow.compositeScore == null) {
+        skipped++;
+        continue;
+      }
+
+      // Rank eligible shows for this category by score
+      const isRevival = cat.includes('Revival');
+      const isMusical = cat.includes('Musical');
+      const categoryShows = eligible
+        .filter(s => {
+          if (isMusical && s.type !== 'musical') return false;
+          if (!isMusical && s.type !== 'play') return false;
+          if (isRevival && !s.isRevival) return false;
+          if (!isRevival && s.isRevival) return false;
+          return s.compositeScore != null;
+        })
+        .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
+
+      if (categoryShows.length < 2) {
+        skipped++;
+        continue;
+      }
+
+      const winnerRank = categoryShows.findIndex(s => s.id === winnerShowId) + 1;
+      if (winnerRank === 0) {
+        skipped++;
+        continue; // winner not found in eligible set
+      }
+
+      totalCatSeasons++;
+      seasonSet.add(season.label);
+      catResults[cat].total++;
+      totalWinnerRank += winnerRank;
+
+      // Field size bucket
+      const fieldSize = categoryShows.length;
+      let bucket: string;
+      if (fieldSize <= 2) bucket = '2';
+      else if (fieldSize <= 4) bucket = '3-4';
+      else if (fieldSize <= 6) bucket = '5-6';
+      else bucket = '7+';
+      if (!fieldResults[bucket]) fieldResults[bucket] = { total: 0, rank1: 0 };
+      fieldResults[bucket].total++;
+
+      if (winnerRank === 1) {
+        rank1Wins++;
+        catResults[cat].rank1++;
+        fieldResults[bucket].rank1++;
+      }
+      if (winnerRank <= 2) {
+        top2Wins++;
+      }
+      if (winnerRank > 2) {
+        upsets.push({
+          winner: winnerShow.title,
+          season: season.label,
+          category: cat.replace('Best ', '').replace('Revival of a ', 'Revival '),
+          rank: winnerRank,
+        });
+      }
+    }
+  }
+
+  const byCategory = TOP_CATEGORIES.map(cat => ({
+    category: cat.replace('Best ', '').replace('Revival of a ', 'Revival '),
+    pct: catResults[cat].total > 0 ? Math.round((catResults[cat].rank1 / catResults[cat].total) * 100) : 0,
+  }));
+
+  // New works vs revivals
+  const newCats = TOP_CATEGORIES.filter(c => !c.includes('Revival'));
+  const revCats = TOP_CATEGORIES.filter(c => c.includes('Revival'));
+  const newTotal = newCats.reduce((s, c) => s + catResults[c].total, 0);
+  const newWins = newCats.reduce((s, c) => s + catResults[c].rank1, 0);
+  const revTotal = revCats.reduce((s, c) => s + catResults[c].total, 0);
+  const revWins = revCats.reduce((s, c) => s + catResults[c].rank1, 0);
+
+  const fieldSizeData = [
+    { label: '3\u20134 nominees', bucket: '3-4', note: 'Standard Tony field' },
+    { label: '5\u20136 nominees', bucket: '5-6', note: '' },
+    { label: '2 nominees', bucket: '2', note: 'Coin flip' },
+    { label: '7+ nominees', bucket: '7+', note: 'Chaos' },
+  ].map(({ label, bucket, note }) => ({
+    label,
+    pct: fieldResults[bucket]?.total > 0 ? Math.round((fieldResults[bucket].rank1 / fieldResults[bucket].total) * 100) : 0,
+    note,
+  }));
+
+  return {
+    rank1WinPct: totalCatSeasons > 0 ? Math.round((rank1Wins / totalCatSeasons) * 100) : 0,
+    top2WinPct: totalCatSeasons > 0 ? Math.round((top2Wins / totalCatSeasons) * 100) : 0,
+    avgWinnerRank: totalCatSeasons > 0 ? parseFloat((totalWinnerRank / totalCatSeasons).toFixed(2)) : 0,
+    byCategory,
+    newWorksAccuracy: newTotal > 0 ? Math.round((newWins / newTotal) * 100) : 0,
+    revivalsAccuracy: revTotal > 0 ? Math.round((revWins / revTotal) * 100) : 0,
+    fieldSizeData,
+    upsets: upsets.sort((a, b) => b.season.localeCompare(a.season)),
+    seasonCount: seasonSet.size,
+    categorySeasonCount: totalCatSeasons,
+    skippedCount: skipped,
+  };
+}
+
+// --- Season Summary (for overview page) ---
+
+export interface TonySeasonSummary {
+  season: TonySeasonWindow;
+  eligibleCount: number;
+  scoredCount: number;
+  isCurrent: boolean;
+  hasTonyResults: boolean;
+  categoryHighlights: Array<{
+    category: string;
+    topShowTitle: string | null;
+    topShowScore: number | null;
+    winnerTitle: string | null;
+  }>;
+}
+
+export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWindow): TonySeasonSummary {
+  const current = getTonySeasonWindow();
+  const isCurrent = season.label === current.label;
+  const isPast = season.ceremonyYear < current.ceremonyYear;
+  const eligible = isPast ? getEligibleShowsForPastSeason(allShows, season) : getEligibleShows(allShows, season);
+  const categories = groupIntoCategories(eligible);
+
+  const awardsShows = getAwardsShows();
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const awardsSeason = toAwardsSeason(season.label);
+
+  // Find winners per category for this season
+  const winnersByCategory = new Map<string, string>();
+  if (isPast) {
+    for (const [showId, data] of Object.entries(awardsShows)) {
+      if (data.tony?.season !== awardsSeason) continue;
+      const wins = data.tony?.wins || [];
+      for (const w of wins) {
+        if (TOP_CATEGORIES.includes(w as typeof TOP_CATEGORIES[number])) {
+          const show = showMap.get(showId);
+          if (show) winnersByCategory.set(w, show.title);
+        }
+      }
+    }
+  }
+
+  const categoryHighlights = categories.map(cat => {
+    const catName = cat.title;
+    const topShow = cat.shows[0] || null;
+    return {
+      category: catName.replace('Best ', '').replace('Revival of a ', 'Revival '),
+      topShowTitle: topShow?.title || null,
+      topShowScore: topShow?.compositeScore || null,
+      winnerTitle: winnersByCategory.get(catName) || null,
+    };
+  });
+
+  return {
+    season,
+    eligibleCount: eligible.length,
+    scoredCount: categories.reduce((sum, cat) => sum + cat.shows.length, 0),
+    isCurrent,
+    hasTonyResults: winnersByCategory.size > 0,
+    categoryHighlights,
+  };
+}
+
 // --- Historical Winners ---
 
 export interface HistoricalWinner {
