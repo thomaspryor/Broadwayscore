@@ -293,6 +293,7 @@ export class EnsembleReviewScorer {
       showScoreExcerpt: reviewFile.showScoreExcerpt,
       nycTheatreExcerpt: (reviewFile as any).nycTheatreExcerpt,
       bwwThumb: reviewFile.bwwThumb,
+      bwwScore: (reviewFile as any).bwwScore ?? null,
       dtliThumb: (reviewFile as any).dtliThumb,
       originalScore: reviewFile.originalScore !== null ? String(reviewFile.originalScore) : null,
       originalRating: (reviewFile as any).originalRating
