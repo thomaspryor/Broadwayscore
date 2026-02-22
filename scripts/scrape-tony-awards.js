@@ -18,6 +18,21 @@ const path = require('path');
 const { JSDOM } = require('jsdom');
 const { matchTitleToShow } = require('./lib/show-matching');
 
+/**
+ * Get ordinal suffix for a number (1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st, etc.)
+ */
+function getOrdinalSuffix(num) {
+  let suffix = 'th';
+  const lastTwo = num % 100;
+  if (lastTwo < 11 || lastTwo > 13) {
+    const lastDigit = num % 10;
+    if (lastDigit === 1) suffix = 'st';
+    else if (lastDigit === 2) suffix = 'nd';
+    else if (lastDigit === 3) suffix = 'rd';
+  }
+  return suffix;
+}
+
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
 // Year range is dynamic - no manual updates needed each year
@@ -43,15 +58,7 @@ for (let year = START_YEAR; year <= CURRENT_YEAR; year++) {
     ceremonyNum = year - 1947; // 2022=75th, 2023=76th, 2024=77th, etc.
   }
 
-  // Ordinal suffix: 1st, 2nd, 3rd, otherwise th
-  let suffix = 'th';
-  const lastTwo = ceremonyNum % 100;
-  if (lastTwo < 11 || lastTwo > 13) {
-    const lastDigit = ceremonyNum % 10;
-    if (lastDigit === 1) suffix = 'st';
-    else if (lastDigit === 2) suffix = 'nd';
-    else if (lastDigit === 3) suffix = 'rd';
-  }
+  const suffix = getOrdinalSuffix(ceremonyNum);
 
   TONY_CEREMONIES.push({
     year,
@@ -206,6 +213,11 @@ const TITLE_ALIASES = {
   // Shows that should match with articles handled
   "an enemy of the people": "an enemy of the people",
   "a strange loop": "a strange loop",
+
+  // Subtitled shows where Wikipedia uses full title
+  "stranger things the first shadow": "stranger things",
+  "the picture of dorian gray": "picture of dorian gray",
+  "good night and good luck": "good night and good luck",
 };
 
 /**
@@ -507,7 +519,7 @@ async function main() {
         if (!showNominations.has(show.id)) {
           showNominations.set(show.id, {
             season: ceremony.season,
-            ceremony: `${ceremony.ceremony}th`,
+            ceremony: `${ceremony.ceremony}${getOrdinalSuffix(ceremony.ceremony)}`,
             nominations: [],
             wins: []
           });
@@ -586,6 +598,9 @@ async function main() {
   // Only for recent seasons where we can be sure they were eligible
   if (!targetYear || targetYear >= 2020) {
     for (const show of shows) {
+      // Skip non-Broadway shows (West End, Off-Broadway)
+      if (show.category && show.category !== 'broadway') continue;
+
       const openYear = new Date(show.openingDate).getFullYear();
       // Check if show was eligible for a Tony season we scraped
       const eligibleYear = ceremonies.find(c =>
@@ -601,7 +616,7 @@ async function main() {
           awardsData.shows[show.id] = awardsData.shows[show.id] || {};
           awardsData.shows[show.id].tony = {
             season: eligibleYear.season,
-            ceremony: `${eligibleYear.ceremony}th`,
+            ceremony: `${eligibleYear.ceremony}${getOrdinalSuffix(eligibleYear.ceremony)}`,
             nominations: 0,
             nominatedFor: [],
             wins: [],

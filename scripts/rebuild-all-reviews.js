@@ -1075,7 +1075,7 @@ function getBestScore(data) {
   // EXCEPTION: For West End shows, ShowScore originalScores are downgraded to P1 level
   // because ShowScore WE ratings haven't been validated and are known to inflate
   // (e.g., reporting 5/5 when actual review was 4/5). LLM scores take priority.
-  const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+  const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
   const isWestEnd = data._showCategory === 'west-end';
   const downgradeShowScore = isShowScoreSource && isWestEnd;
 
