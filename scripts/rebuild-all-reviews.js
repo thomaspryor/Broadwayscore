@@ -1620,6 +1620,19 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Reverse cross-market guard: London-only Tier 3 outlets should not score Broadway/off-Broadway
+      if ((showCategory === 'broadway' || showCategory === 'off-broadway')
+          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)
+          && !TIER_1_2_OUTLET_IDS.has(canonicalOutlet) && !TIER_1_2_OUTLET_IDS.has(rawOutlet)) {
+        const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
+        if (outletRegion === 'london') {
+          stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+          if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway' });
+          return;
+        }
+      }
+
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Allows 14-day grace period for preview coverage
       // Reviews with allowEarlyDate: true bypass this (e.g., off-Broadway → Broadway transfers)
