@@ -2121,8 +2121,9 @@ function validateCrossMarketContamination() {
   // Load outlet registry for region info
   const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
   let outletRegionMap = {};
+  let reg;
   try {
-    const reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
     for (const [id, info] of Object.entries(reg.outlets)) {
       if (info.region) {
         outletRegionMap[id] = info.region;
@@ -2137,18 +2138,15 @@ function validateCrossMarketContamination() {
   const dualMarket = new Set(['guardian', 'financialtimes', 'variety', 'stage-uk',
     'financial-times', 'financial-times-uk', 'ft', 'the-guardian-uk']);
   // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
-  // Use outlet-registry tiers (IDs match review-text file IDs)
   const tier12Outlets = new Set();
-  try {
-    for (const [id, info] of Object.entries(reg.outlets)) {
-      if (info.tier === 1 || info.tier === 2) {
-        tier12Outlets.add(id);
-        if (info.aliases) {
-          for (const alias of info.aliases) tier12Outlets.add(alias.toLowerCase());
-        }
+  for (const [id, info] of Object.entries(reg.outlets)) {
+    if (info.tier === 1 || info.tier === 2) {
+      tier12Outlets.add(id);
+      if (info.aliases) {
+        for (const alias of info.aliases) tier12Outlets.add(alias.toLowerCase());
       }
     }
-  } catch (e) {}
+  }
 
   let issues = 0;
   const weReviews = reviews.filter(r => showCategoryMap[r.showId] === 'west-end');
@@ -2167,10 +2165,30 @@ function validateCrossMarketContamination() {
   if (issues > 5) {
     warn(`... and ${issues - 5} more cross-market reviews`);
   }
-  if (issues === 0) {
+
+  // Reverse direction: London-only Tier 3 outlets on Broadway/off-Broadway shows
+  let reverseIssues = 0;
+  const nonWeReviews = reviews.filter(r => showCategoryMap[r.showId] !== 'west-end');
+  for (const r of nonWeReviews) {
+    const oid = (r.outletId || r.outlet || '').toLowerCase();
+    if (dualMarket.has(oid) || tier12Outlets.has(oid)) continue;
+    const region = outletRegionMap[oid];
+    if (region === 'london') {
+      reverseIssues++;
+      if (reverseIssues <= 5) {
+        warn(`Cross-market: Broadway show "${r.showId}" has review from London-only outlet "${r.outlet || oid}"`);
+      }
+    }
+  }
+  if (reverseIssues > 5) {
+    warn(`... and ${reverseIssues - 5} more London→Broadway cross-market reviews`);
+  }
+
+  const totalIssues = issues + reverseIssues;
+  if (totalIssues === 0) {
     ok('No cross-market contamination detected in reviews.json');
   } else {
-    warn(`${issues} cross-market reviews found (US outlets reviewing WE shows)`);
+    warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway)`);
   }
 }
 

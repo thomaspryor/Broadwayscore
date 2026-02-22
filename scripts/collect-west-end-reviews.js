@@ -47,6 +47,16 @@ const DUAL_MARKET_OUTLET_IDS = new Set([
   'guardian', 'financialtimes', 'variety', 'stage-uk',
   'financial-times', 'ft', 'the-guardian-uk',
 ]);
+// Allow Tier 1/2 outlets — they legitimately review WE shows (cross-market guard targets Tier 3 only)
+const TIER_1_2_OUTLET_IDS = new Set();
+for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
+  if (info.tier === 1 || info.tier === 2) {
+    TIER_1_2_OUTLET_IDS.add(id);
+    if (info.aliases) {
+      for (const alias of info.aliases) TIER_1_2_OUTLET_IDS.add(alias.toLowerCase());
+    }
+  }
+}
 
 // Parse args
 const args = process.argv.slice(2);
@@ -136,12 +146,12 @@ function main() {
       }
     }
 
-    // Region guard: reject non-London outlets (unless dual-market)
+    // Region guard: reject non-London outlets (unless dual-market or Tier 1/2)
     const normalizedOutletId = (outletId || '').toLowerCase();
-    if (!DUAL_MARKET_OUTLET_IDS.has(normalizedOutletId)) {
+    if (!DUAL_MARKET_OUTLET_IDS.has(normalizedOutletId) && !TIER_1_2_OUTLET_IDS.has(normalizedOutletId)) {
       const region = outletRegionMap[normalizedOutletId];
-      if (region && region !== 'london') {
-        console.warn(`Skipping non-London outlet for WE show: ${showId} ${outletId} (region: ${region})`);
+      if (region !== 'london') {
+        console.warn(`Skipping non-London outlet for WE show: ${showId} ${outletId} (region: ${region || 'none'})`);
         skipped++;
         continue;
       }
