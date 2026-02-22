@@ -92,10 +92,13 @@ For changes touching 3+ workflows, CI/CD, data pipelines, or cross-repo operatio
 - **After:** Rebuild if needed. Verify data in private repo.
 - **Collection:** Always `-f chain=true -f remaining_batches=10` (default=0=no chaining).
 
-### 12. Always Recommend Next Steps
+### 12. Expansion Playbook (MANDATORY for new markets/categories)
+Aggregators first, web search second. See `memory/expansion-playbook.md` for the full process. Never skip aggregator scraping — it captures 70-90% of reviews. Web search is the cherry on top, not the foundation.
+
+### 13. Always Recommend Next Steps
 When wrapping up a task, recommend the best next task or follow-up. Don't just say "done" — tell the user what you'd prioritize next and why.
 
-### 13. Fix Systematically, Not One-Off
+### 14. Fix Systematically, Not One-Off
 When fixing an issue, also fix it **at the pipeline/automation level** so it never recurs. This project runs continuous automated processes for new shows, historical backfills, and geographic expansion. One-off fixes are wasted work — the same issue will reappear next run. Every fix should ask: "How do I prevent this class of problem permanently?" Update scripts, add validation gates, improve error handling in workflows.
 
 ---
