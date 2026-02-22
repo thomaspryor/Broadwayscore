@@ -444,7 +444,9 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const config = BROWSE_PAGES[slug];
   if (!config) return undefined;
 
-  const allShows = getBroadwayShows();
+  const allShows = config.source === 'west-end' ? getWestEndShows()
+    : config.source === 'off-broadway' ? getOffBroadwayShows()
+    : getBroadwayShows();
   let filteredShows = allShows.filter(config.filter);
 
   if (config.sort === 'score') {
