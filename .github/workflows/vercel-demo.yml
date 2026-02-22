@@ -1,0 +1,89 @@
+name: Deploy Demo Site
+
+on:
+  schedule:
+    - cron: '0 6,14,22 * * *'  # Every 8 hours: 6 AM, 2 PM, 10 PM UTC
+  workflow_dispatch:
+
+jobs:
+  deploy-demo:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-demo-deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Build (all features enabled)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          NEXT_PUBLIC_FEATURES: "discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople"
+        run: vercel build --token=$VERCEL_TOKEN
+
+      - name: Deploy
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Deploy without --prod (safe: cannot touch production)
+          URL=$(vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Deployed to: $URL"
+
+      - name: Alias to demo domain
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          DEMO_DOMAIN="demo.broadwayscorecard.com"
+          echo "Aliasing $DEPLOY_URL → $DEMO_DOMAIN"
+          vercel alias set "$DEPLOY_URL" "$DEMO_DOMAIN" --token=$VERCEL_TOKEN
+
+      - name: Smoke test demo site
+        run: |
+          echo "Waiting 15s for alias to propagate..."
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://demo.broadwayscorecard.com/)
+          echo "Homepage returned HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Demo smoke test failed — homepage returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "Demo site is live at https://demo.broadwayscorecard.com"
+
+      - name: Write deploy summary
+        if: always()
+        run: |
+          echo "## Demo Site Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.url }}" ]; then
+            echo "**Demo URL:** https://demo.broadwayscorecard.com" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Built at:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**All feature flags enabled** — identical to production except all features are visible." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deploy failed — no demo URL generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
