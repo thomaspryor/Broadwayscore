@@ -149,7 +149,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Audience Grade</h2>
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">AudienceGrade</h2>
 
       {/* Main Grade Badge */}
       <div className={`rounded-xl p-4 border mb-4 ${colors.bgClass} ${colors.borderClass}`}>

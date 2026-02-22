@@ -54,7 +54,7 @@ export function generateWebSiteSchema() {
     name: 'Broadway Scorecard',
     url: BASE_URL,
     inLanguage: 'en',
-    description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
+    description: 'Comprehensive Broadway show ratings combining critic reviews, AudienceGrade ratings, and community buzz.',
     potentialAction: {
       '@type': 'SearchAction',
       target: {

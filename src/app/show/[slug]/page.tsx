@@ -621,7 +621,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Audience Buzz</h2>
+            <h2 className="text-lg font-bold text-white mb-3">AudienceGrade</h2>
             <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
           </section>
         ) : show.status === 'closed' && (() => {
