@@ -21,7 +21,7 @@
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 3
@@ -89,6 +89,20 @@
       "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "amNY": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  ]
 }
