@@ -25,8 +25,8 @@ export interface ScoreBucketConfig {
 export const SCORE_BUCKETS: ScoreBucketConfig[] = [
   {
     id: 'must-see',
-    label: 'Must-See',
-    shortLabel: 'Must-See',
+    label: 'Critical Gold',
+    shortLabel: 'Critical Gold',
     minScore: 85,
     maxScore: 100,
     color: 'text-amber-400',      // Gold
@@ -95,6 +95,9 @@ export const MIN_REVIEWS_FOR_SCORE = 5;
 /** Minimum reviews for off-Broadway (fewer reviews available in the ecosystem) */
 export const MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY = 3;
 
+/** Minimum reviews for West End (fewer UK outlets than Broadway) */
+export const MIN_REVIEWS_FOR_SCORE_WEST_END = 3;
+
 /** Minimum tier 1 reviews for high confidence */
 export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 
@@ -149,7 +152,9 @@ export function getScoreBgColor(score: number | null): string {
  * Check if a score meets the minimum threshold for display
  */
 export function hasEnoughReviews(reviewCount: number, category?: string): boolean {
-  const min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY : MIN_REVIEWS_FOR_SCORE;
+  const min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
+    : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
+    : MIN_REVIEWS_FOR_SCORE;
   return reviewCount >= min;
 }
 
