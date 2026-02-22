@@ -178,11 +178,29 @@ async function fetchShowsFromTodayTixLondon() {
     offset += limit;
   }
 
-  // Filter to West End shows (subcategory "West End"), reusing shared non-theater filter
+  // Filter to West End shows
+  // TodayTix tags shows as "West End" OR "Off West End" — many legitimate WE productions
+  // (Starlight Express, Into the Woods, Witness for the Prosecution) only have "Off West End".
+  // For "Off West End" shows, require either:
+  //   1. Top-level category is Plays or Musicals, OR
+  //   2. Category is "Immersive Experiences" but has theater subcategories (Drama, Classic, Comedy)
+  //      — catches Witness for the Prosecution which TodayTix miscategorizes as immersive
+  const WE_THEATER_CATEGORIES = new Set(['Plays', 'Musicals']);
+  const WE_THEATER_SUBCATEGORIES = new Set(['Drama', 'Classic', 'Comedy']);
   const westEndShows = allShows.filter(s => {
-    if (!s.subcategories?.some(sc =>
-      sc.name === 'West End' || sc.name === 'Broadway' // TodayTix sometimes uses "Broadway" for WE musicals
-    )) return false;
+    const subcatNames = (s.subcategories || []).map(sc => sc.name);
+    const isWestEnd = subcatNames.includes('West End') || subcatNames.includes('Broadway');
+    const isOffWestEnd = subcatNames.includes('Off West End') && !isWestEnd;
+
+    if (!isWestEnd && !isOffWestEnd) return false;
+
+    // Off West End shows need category-level filtering to exclude noise
+    if (isOffWestEnd) {
+      const isTheaterCategory = WE_THEATER_CATEGORIES.has(s.category?.name);
+      const hasTheaterSubcats = subcatNames.some(sc => WE_THEATER_SUBCATEGORIES.has(sc));
+      if (!isTheaterCategory && !hasTheaterSubcats) return false;
+    }
+
     return !isNonTheaterContent(s);
   });
 
