@@ -47,7 +47,7 @@ export class GeminiScorer {
     this.client = new GoogleGenerativeAI(apiKey);
     this.options = {
       model: options.model || 'gemini-2.0-flash',
-      maxRetries: options.maxRetries ?? 3,
+      maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false,
       temperature: options.temperature ?? 0.3
     };
@@ -126,21 +126,18 @@ export class GeminiScorer {
       } catch (error: any) {
         lastError = error.message || String(error);
 
-        // Handle rate limiting
-        if (error.status === 429 || error.message?.includes('429')) {
-          const waitTime = Math.pow(2, attempt) * 1000;
-          if (this.options.verbose) {
-            console.log(`  Gemini rate limited. Waiting ${waitTime / 1000}s...`);
-          }
-          await new Promise(r => setTimeout(r, waitTime));
-        } else if (error.status >= 500) {
-          // Server error - retry with backoff
-          const waitTime = Math.pow(2, attempt) * 500;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else {
-          // Other error - don't retry
-          break;
+        // Retry all errors with backoff (rate limits, spending limits, server errors, network errors)
+        const isRateLimit = error.status === 429 || error.message?.includes('429');
+        const isServerError = error.status >= 500;
+        const waitTime = isRateLimit
+          ? Math.pow(2, attempt) * 1000
+          : isServerError
+            ? Math.pow(2, attempt) * 500
+            : Math.pow(2, attempt) * 15000;
+        if (this.options.verbose) {
+          console.log(`  Gemini error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
+        await new Promise(r => setTimeout(r, waitTime));
       }
     }
 
