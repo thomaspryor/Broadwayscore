@@ -392,9 +392,21 @@ async function searchDTLI(show) {
 
   // PRIORITY: Suffix order depends on category
   const isOffBroadway = show.category === 'off-broadway';
+  const isWestEnd = show.category === 'west-end';
   const allVariations = [];
 
-  if (isOffBroadway) {
+  if (isWestEnd) {
+    // West End: try -west-end and -london suffixes
+    for (const base of baseVariations) {
+      allVariations.push(base + '-west-end');
+    }
+    for (const base of baseVariations) {
+      allVariations.push(base + '-london');
+    }
+    for (const base of baseVariations) {
+      allVariations.push(base);
+    }
+  } else if (isOffBroadway) {
     // Off-Broadway: try -off-broadway suffix first, then no suffix, then base
     for (const base of baseVariations) {
       allVariations.push(base + '-off-broadway');
@@ -498,18 +510,39 @@ async function searchShowScore(show) {
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
   const isOffBroadway = show.category === 'off-broadway';
+  const isWestEnd = show.category === 'west-end';
 
   // For musicals, Show Score often appends "-the-musical-broadway"
   const isMusical = show.type === 'musical';
 
   // Show Score URL base depends on category
-  const showScoreBase = isOffBroadway
-    ? 'https://www.show-score.com/off-broadway-shows'
-    : 'https://www.show-score.com/broadway-shows';
+  const showScoreBase = isWestEnd
+    ? 'https://www.show-score.com/london-shows'
+    : isOffBroadway
+      ? 'https://www.show-score.com/off-broadway-shows'
+      : 'https://www.show-score.com/broadway-shows';
 
   // Build slug variations based on category
   let variations;
-  if (isOffBroadway) {
+  if (isWestEnd) {
+    // West End: try -west-end and -london suffixes
+    const weSlug = show.slug.replace(/-west-end$/, '');
+    variations = [
+      `${titleSlug}-west-end`,
+      `${titleSlug}-london`,
+      `${titleNoColonSlug}-west-end`,
+      `${titleNoColonSlug}-london`,
+      `${weSlug}-west-end`,
+      `${weSlug}-london`,
+      ...(isMusical ? [
+        `${titleSlug}-the-musical-west-end`,
+        `${titleSlug}-the-musical-london`,
+      ] : []),
+      titleSlug,
+      titleNoColonSlug,
+      weSlug,
+    ];
+  } else if (isOffBroadway) {
     // Off-Broadway: no -broadway suffix needed
     variations = [
       show.slug,
