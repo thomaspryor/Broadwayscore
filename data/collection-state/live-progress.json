@@ -1,130 +1,74 @@
 {
-  "updatedAt": "2026-02-22T19:26:08.819Z",
-  "processed": 92,
-  "failed": 1228,
-  "successRate": "7.0%",
+  "updatedAt": "2026-02-22T21:25:07.879Z",
+  "processed": 270,
+  "failed": 110,
+  "successRate": "71.1%",
   "tierBreakdown": {
-    "playwright": 29,
-    "amp": 100,
-    "browserbase": 1,
-    "directCookies": 4,
-    "scrapingbee": 27,
+    "playwright": 208,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 379,
-    "archive": 50
+    "archiveToday": 4,
+    "archive": 61
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-22T01:21:33.173Z",
+      "t": "2026-02-22T20:19:19.350Z",
+      "event": "bb-session",
+      "session": "81227079",
+      "url": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_97186.html"
+    },
+    {
+      "t": "2026-02-22T20:19:21.264Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "theatermania.com"
     },
     {
-      "t": "2026-02-22T01:31:14.528Z",
+      "t": "2026-02-22T20:26:05.242Z",
       "event": "bb-session",
-      "session": "e6f5b4ac",
-      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+      "session": "dbe90649",
+      "url": "https://www.theatermania.com/news/act-one_68285/"
     },
     {
-      "t": "2026-02-22T01:44:34.206Z",
-      "event": "bb-session",
-      "session": "3dbb2104",
-      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
-    },
-    {
-      "t": "2026-02-22T01:44:36.792Z",
+      "t": "2026-02-22T20:26:07.269Z",
       "event": "bb-cookie-inject",
-      "domain": "vulture.com"
+      "domain": "theatermania.com"
     },
     {
-      "t": "2026-02-22T01:45:26.001Z",
+      "t": "2026-02-22T20:27:58.651Z",
       "event": "bb-session",
-      "session": "915d27d7",
-      "url": "http://www.nytimes.com/2005/10/03/theater/reviews/03perf.html?_r=0"
+      "session": "9d0d799d",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.h"
     },
     {
-      "t": "2026-02-22T01:45:28.373Z",
+      "t": "2026-02-22T20:28:00.694Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "theatermania.com"
     },
     {
-      "t": "2026-02-22T01:49:56.501Z",
+      "t": "2026-02-22T21:10:07.267Z",
       "event": "bb-session",
-      "session": "d18400eb",
-      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+      "session": "1f8b4a7d",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
     },
     {
-      "t": "2026-02-22T02:02:36.907Z",
-      "event": "bb-session",
-      "session": "b1508eef",
-      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
-    },
-    {
-      "t": "2026-02-22T02:13:44.300Z",
-      "event": "bb-session",
-      "session": "833fedab",
-      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
-    },
-    {
-      "t": "2026-02-22T02:13:46.416Z",
+      "t": "2026-02-22T21:10:09.238Z",
       "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
+      "domain": "theatermania.com"
     },
     {
-      "t": "2026-02-22T02:42:56.893Z",
+      "t": "2026-02-22T21:13:54.011Z",
       "event": "bb-session",
-      "session": "eded4a89",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+      "session": "5d776ff1",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
     },
     {
-      "t": "2026-02-22T02:42:59.296Z",
+      "t": "2026-02-22T21:13:55.949Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-02-22T02:46:07.662Z",
-      "event": "bb-session",
-      "session": "d678768a",
-      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html"
-    },
-    {
-      "t": "2026-02-22T02:46:10.082Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:56:49.289Z",
-      "event": "bb-session",
-      "session": "52139296",
-      "url": "https://www.nytimes.com/glogin?URI=http://www.nytimes.com/2013/11/04/theater/rev"
-    },
-    {
-      "t": "2026-02-22T02:56:51.685Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:58:05.030Z",
-      "event": "bb-session",
-      "session": "5eb1b604",
-      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
-    },
-    {
-      "t": "2026-02-22T02:58:07.146Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-22T02:59:23.613Z",
-      "event": "bb-session",
-      "session": "66f65eaa",
-      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
-    },
-    {
-      "t": "2026-02-22T02:59:26.013Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "theatermania.com"
     }
   ]
 }
