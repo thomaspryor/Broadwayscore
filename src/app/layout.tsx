@@ -117,6 +117,7 @@ export default function RootLayout({
                 <Link href="/" className="flex items-center group">
                   <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
                   <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
+                  <span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
                 </Link>
               </div>
               <div className="flex items-center gap-3">
@@ -215,7 +216,7 @@ export default function RootLayout({
 
             {/* Community Links */}
             <div className="mb-8 pb-8 border-b border-white/5 text-center">
-              <p className="text-sm font-semibold text-white mb-3">Help improve Broadway Scorecard</p>
+              <p className="text-sm font-semibold text-white mb-3">Help improve Broadway Scorecard™</p>
               <div className="flex items-center justify-center gap-3">
                 <Link
                   href="/submit-review"
@@ -242,6 +243,7 @@ export default function RootLayout({
               <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
                 <span className="text-lg font-bold text-gradient">Scorecard</span>
+                <span className="text-[8px] text-gray-500 font-normal align-super">™</span>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
@@ -262,7 +264,7 @@ export default function RootLayout({
             </div>
             <div className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500 space-y-1">
               <p>All ratings and reviews belong to their respective sources.</p>
-              <p>&copy; 2026 Broadway Scorecard LLC. All rights reserved.</p>
+              <p>&copy; 2026 Broadway Scorecard™ LLC. All rights reserved.</p>
               <p>By using this site, you agree to our <Link href="/terms" className="text-gray-400 hover:text-white transition-colors underline underline-offset-2">Terms of Service</Link>.</p>
             </div>
           </div>

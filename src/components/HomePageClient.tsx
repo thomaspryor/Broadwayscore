@@ -639,7 +639,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       {/* Hero - Large heading on desktop only */}
       <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Broadway<span className="text-gradient">Scorecard</span>
+          Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
           Every show. Every review. One score.
@@ -889,7 +889,7 @@ export default function HomePageClient(props: HomePageClientProps) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            Broadway<span className="text-gradient">Scorecard</span>
+            Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
