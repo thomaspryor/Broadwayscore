@@ -259,6 +259,13 @@ export default function BrowseListClient({
       result = result.filter(s => s.type === typeFilter);
     }
 
+    // Helper: effective score for sorting (TBD shows sort to bottom)
+    const getEffectiveScore = (s: BrowseShow) => {
+      const minReviews = (s.category === 'off-broadway' || s.category === 'west-end') ? 3 : 5;
+      if ((s.criticScore?.reviewCount ?? 0) < minReviews) return -1;
+      return s.criticScore?.score ?? -1;
+    };
+
     // Sort
     result.sort((a, b) => {
       switch (sort) {
@@ -266,7 +273,7 @@ export default function BrowseListClient({
           if (scoreMode === 'audience') {
             return (b.audienceCombinedScore ?? -1) - (a.audienceCombinedScore ?? -1);
           }
-          return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+          return getEffectiveScore(b) - getEffectiveScore(a);
         case 'alpha':
           return a.title.localeCompare(b.title);
         case 'newest':
@@ -278,7 +285,7 @@ export default function BrowseListClient({
           }
           if (a.closingDate) return -1;
           if (b.closingDate) return 1;
-          return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+          return getEffectiveScore(b) - getEffectiveScore(a);
         case 'performances':
           return (b.performances ?? 0) - (a.performances ?? 0);
         default:
