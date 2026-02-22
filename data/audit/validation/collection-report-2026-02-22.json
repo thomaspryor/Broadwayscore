@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-22T02:18:15.800Z",
+  "runDate": "2026-02-22T02:36:36.370Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 250,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 72,
-    "failed": 362,
+    "processed": 117,
+    "failed": 443,
     "skipped": 0,
-    "successRate": "16.6%"
+    "successRate": "20.9%"
   },
   "tierBreakdown": {
-    "playwright": 12,
-    "amp": 25,
+    "playwright": 45,
+    "amp": 27,
     "browserbase": 0,
     "directCookies": 3,
-    "scrapingbee": 19,
+    "scrapingbee": 29,
     "brightdata": 0,
-    "archiveToday": 139,
-    "archive": 45
+    "archiveToday": 98,
+    "archive": 49
   },
   "statistics": {
-    "tier1Attempts": 89,
-    "tier1Success": 27,
-    "ampAttempts": 43,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 106,
+    "tier1Success": 84,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 10,
     "tier1_5Success": 0,
-    "tier2Attempts": 52,
-    "tier2Success": 2,
-    "tier3Attempts": 50,
+    "tier2Attempts": 29,
+    "tier2Success": 21,
+    "tier3Attempts": 14,
     "tier3Success": 0,
-    "tier3_6Attempts": 50,
-    "tier3_6Success": 50,
-    "tier4Attempts": 31,
-    "tier4Success": 4,
-    "totalFailed": 91,
-    "scrapingBeeCreditsUsed": 64,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 14,
-    "urlDiscoverySuccess": 2,
+    "tier3_6Attempts": 9,
+    "tier3_6Success": 9,
+    "tier4Attempts": 20,
+    "tier4Success": 7,
+    "totalFailed": 186,
+    "scrapingBeeCreditsUsed": 520,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 5,
+    "urlDiscoveryAttempts": 250,
+    "urlDiscoverySuccess": 116,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -119,9 +119,54 @@
     "high-noon-west-end-2025/guardian--arifa-akbar.json",
     "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
     "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/timeout--andrzej-lukowski.json",
-    "the-price-2017/dailybeast--chris-jones.json",
-    "the-whos-tommy-2024/theater-scene--joseph-pisano.json"
+    "maybe-happy-ending-2024/ew--unknown.json",
+    "maybe-happy-ending-2024/new-york-sun--unknown.json",
+    "maybe-happy-ending-2024/nydailynews--unknown.json",
+    "maybe-happy-ending-2024/thewrap--unknown.json",
+    "maybe-happy-ending-2024/timeout--unknown.json",
+    "mj-the-musical-west-end-2024/guardian--arifa-akbar.json",
+    "moulin-rouge-the-musical-west-end-2021/guardian--kate-wyver.json",
+    "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+    "shadowlands-west-end-2026/guardian--arifa-akbar.json",
+    "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
+    "the-producers-west-end-2025/guardian--arifa-akbar.json",
+    "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
+    "hells-kitchen-2024/cititour--unknown.json",
+    "all-my-sons-west-end-2025/telegraph--dominic-cavendish.json",
+    "all-my-sons-west-end-2025/the-times--clive-davis.json",
+    "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "back-to-the-future-west-end-2021/the-stage--tim-bano.json",
+    "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+    "hamilton-west-end-2021/evening-standard--henry-hitchings.json",
+    "hamilton-west-end-2021/telegraph--dominic-cavendish.json",
+    "hamilton-west-end-2021/the-stage--tim-bano.json",
+    "hamilton-west-end-2021/the-times--ann-treneman.json",
+    "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+    "les-miserables-west-end-2021/telegraph--dominic-cavendish.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+    "mamma-mia-west-end-2021/telegraph--marianka-swain.json",
+    "marie-and-rosetta-west-end-2026/the-stage--unknown.json",
+    "maybe-happy-ending-2024/nysr--unknown.json",
+    "mj-the-musical-west-end-2024/telegraph--claire-allfree.json",
+    "mj-the-musical-west-end-2024/the-times--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/the-stage--tim-bano.json",
+    "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+    "paddington-the-musical-west-end-2025/the-times--clive-davis.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+    "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+    "paranormal-activity-west-end-2025/the-times--rachel-halliburton.json",
+    "ragtime-2025/america-magazine--weinert-kendt.json",
+    "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-book-of-mormon-west-end-2024/telegraph--marianka-swain.json",
+    "the-devil-wears-prada-west-end-2024/telegraph--dominic-cavendish.json",
+    "the-producers-west-end-2025/the-times--unknown.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/evening-standard--nick-curtis.json",
+    "woman-in-mind-west-end-2025/telegraph--dominic-cavendish.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/theatermania--zachary-stewart.json",
+    "the-hills-of-california-2024/broadwaynews--unknown.json",
+    "gypsy-2008/nysr--melissa-rose-bernardo.json",
+    "gypsy-2008/nysr--steven-suskin.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -395,97 +440,178 @@
     "hells-kitchen-2024/new-york-sun--unknown.json",
     "im-sorry-prime-minister-west-end-2026/guardian--brian-logan.json",
     "les-miserables-west-end-2021/guardian--miriam-gillinson.json",
-    "oh-mary-west-end-2025/stage-uk--holly-omahony.json",
-    "tammy-faye-2024/variety--peter-marks.json",
-    "aint-too-proud-2019/timeout--adam-feldman.json",
-    "follies-2011/philadelphia-inquirer--howard-shapiro.json",
-    "fool-for-love-2015/inquirer--unknown.json",
-    "oslo-2017/nbcny--dave-quinn.json",
-    "oslo-2017/pop-dust--thomas-burns-scully.json",
-    "oslo-2017/washpost--peter-marks.json",
-    "paradise-square-2022/washpost--peter-marks.json",
-    "passing-strange-2008/washpost--peter-marks.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "peter-and-the-starcatcher-2012/philadelphia-inquirer--howard-shapiro.json",
-    "picnic-2013/washpost--peter-marks.json",
-    "pippin-2013/ap--mark-kennedy.json",
-    "pippin-2013/washpost--peter-marks.json",
-    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/washpost--peter-marks.json",
-    "pretty-woman-the-musical-2018/the-stage-uk--mark-shenton.json",
-    "pretty-woman-the-musical-2018/washpost--peter-marks.json",
-    "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
-    "prince-of-broadway-2017/dailybeast--tim-teeman.json",
-    "prince-of-broadway-2017/dctheatrescene--jonathan-mandell.json",
-    "prince-of-broadway-2017/thestage--mark-shenton.json",
-    "priscilla-queen-of-the-desert-2011/philadelphia-inquirer--howard-shapiro.json",
-    "purpose-2025/theater-scene--victor-gluck.json",
-    "race-2009/ap--.json",
-    "race-2009/washpost--peter-marks.json",
-    "reasons-to-be-pretty-2009/ap--jennifer-farrar.json",
-    "richard-iii-2013/nbcny--robert-kahn.json",
-    "richard-iii-2013/washpost--peter-marks.json",
-    "rocky-2014/nbcny--robert-kahn.json",
-    "romeo-juliet-2024/theater-scene--victor-gluck.json",
-    "saint-joan-2018/washpost--peter-marks.json",
-    "seminar-2011/washpost--peter-marks.json",
-    "shucked-2023/theater-scene--joseph-pisano.json",
-    "shucked-2023/washpost--peter-marks.json",
-    "side-show-2014/washpost--peter-marks.json",
-    "significant-other-2017/nbcny--robert-kahn.json",
-    "significant-other-2017/washpost--peter-marks.json",
-    "sister-act-2011/philadelphia-inquirer--howard-shapiro.json",
-    "sister-act-2011/washpost--peter-marks.json",
-    "six-degrees-of-separation-2017/pop-dust--thomas-burns-scully.json",
-    "smash-2025/theater-scene--victor-gluck.json",
-    "some-like-it-hot-2022/washpost--peter-marks.json",
-    "something-rotten-2015/dctheatrescene--jonathan-mandell.json",
-    "sunset-boulevard-2017/washpost--peter-marks.json",
-    "swept-away-2024/theater-scene--victor-gluck.json",
-    "swept-away-2024/washpost--.json",
-    "sylvia-2015/washpost--peter-marks.json",
-    "tammy-faye-2024/theater-scene--victor-gluck.json",
-    "tammy-faye-2024/washpost--peter-marks.json",
-    "tarzan-2006/washpost--peter-marks.json",
-    "that-championship-season-2011/washpost--peter-marks.json",
-    "the-addams-family-2010/washpost--peter-marks.json",
-    "the-anarchist-2012/ap--mark-kennedy.json",
-    "the-assembled-parties-2013/ap--mark-kennedy.json",
-    "the-bands-visit-2017/washpost--peter-marks.json",
-    "the-big-knife-2013/ap--mark-kennedy.json",
-    "the-columnist-2012/philadelphia-inquirer--howard-shapiro.json",
-    "the-cottage-2023/theater-scene--victor-gluck.json",
-    "the-country-girl-2008/nbcny--dave-quinn.json",
-    "the-country-house-2014/nbcny--david-quinn.json",
-    "the-country-house-2014/washpost--peter-marks.json",
-    "the-crucible-2016/washpost--peter-marks.json",
-    "the-glass-menagerie-2017/ap--unknown.json",
-    "the-heidi-chronicles-2015/nbcny--robert-kahn.json",
-    "the-history-boys-2006/washpost--peter-marks.json",
-    "the-house-of-blue-leaves-2011/washpost--peter-marks.json",
-    "the-king-and-i-2015/washpost--peter-marks.json",
-    "the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
-    "the-little-dog-laughed-2006/washpost--peter-marks.json",
-    "the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
-    "the-little-mermaid-2008/washpost--peter-marks.json",
-    "the-little-prince-2022/dailybeast--tim-teeman.json",
-    "the-lyons-2012/ap--mark-kennedy.json",
-    "the-other-place-2013/washpost--peter-marks.json",
-    "the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
-    "the-performers-2012/ap--mark-kennedy.json",
-    "the-play-that-goes-wrong-2017/washpost--peter-marks.json",
-    "the-price-2017/washpost--peter-marks.json",
-    "the-prom-2018/the-stage-uk--mark-shenton.json",
-    "the-real-thing-2014/washpost--peter-marks.json",
-    "the-realistic-joneses-2014/washpost--peter-marks.json",
-    "the-sound-inside-2019/washpost--peter-marks.json",
-    "the-testament-of-mary-2013/washpost--unknown.json",
-    "the-thanksgiving-play-2023/theater-scene--victor-gluck.json",
-    "three-tall-women-2018/washpost--peter-marks.json",
-    "time-and-the-conways-2017/washpost--peter-marks.json",
-    "torch-song-2018/washpost--peter-marks.json",
-    "travesties-2018/pop-dust--thomas-burns-scully.json",
-    "travesties-2018/theater-scene--victor-gluck.json",
-    "tuck-everlasting-2016/the-stage-uk--mark-shenton.json"
+    "maybe-happy-ending-2024/deadline--unknown.json",
+    "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
+    "paddington-the-musical-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "the-great-gatsby-2024/cititour--scott-lipton.json",
+    "two-strangers-bway-2025/cititour--unknown.json",
+    "all-my-sons-west-end-2025/the-stage--tim-bano.json",
+    "and-juliet-2022/lighting-and-sound-america--david-barbour.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/the-times--unknown.json",
+    "back-to-the-future-west-end-2021/the-times--clive-davis.json",
+    "bigfoot-2026/broadwayworld--michael-dale.json",
+    "black-is-the-color-of-my-voice-west-end-2026/the-times--unknown.json",
+    "hadestown-2019/lighting-and-sound-america--david-barbour.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--dominic-cavendish.json",
+    "hells-kitchen-2024/ap--unknown.json",
+    "hells-kitchen-2024/nysr--unknown.json",
+    "hells-kitchen-2024/showbiz411--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/evening-standard--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/telegraph--dominic-cavendish.json",
+    "im-sorry-prime-minister-west-end-2026/the-stage--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/the-times--unknown.json",
+    "jackals-2026/thestage--tim-bano.json",
+    "les-miserables-west-end-2021/evening-standard--nick-curtis.json",
+    "les-miserables-west-end-2021/the-stage--tim-bano.json",
+    "marie-and-rosetta-west-end-2026/the-times--unknown.json",
+    "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+    "matilda-the-musical-west-end-2021/the-times--libby-purves.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "maybe-happy-ending-2024/dailybeast--unknown.json",
+    "maybe-happy-ending-2024/usatoday--unknown.json",
+    "mj-the-musical-west-end-2024/financial-times--ludovic-hunter-tilney.json",
+    "moulin-rouge-2019/lighting-and-sound-america--david-barbour.json",
+    "moulin-rouge-the-musical-west-end-2021/evening-standard--nick-curtis.json",
+    "moulin-rouge-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
+    "moulin-rouge-the-musical-west-end-2021/the-times--clive-davis.json",
+    "oh-mary-2024/lighting-and-sound-america--david-barbour.json",
+    "oh-mary-west-end-2025/FT--sarah-hemming.json",
+    "oliver-west-end-2024/telegraph--dominic-cavendish.json",
+    "oliver-west-end-2024/the-times--neil-fisher.json",
+    "paddington-the-musical-west-end-2025/evening-standard--nick-curtis.json",
+    "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
+    "paddington-the-musical-west-end-2025/the-stage--sam-marlowe.json",
+    "paranormal-activity-west-end-2025/financial-times--unknown.json",
+    "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
+    "six-the-musical-west-end-2021/whatsonstage--daisy-bowie-sell.json",
+    "stranger-things-2024/dramatically--high-school.json",
+    "stranger-things-2024/lighting-and-sound-america--david-barbour.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
+    "the-devil-wears-prada-west-end-2024/the-stage--tim-bano.json",
+    "the-devil-wears-prada-west-end-2024/the-times--clive-davis.json",
+    "the-great-gatsby-2024/lighting-and-sound-america--david-barbour.json",
+    "the-lion-king-1997/broadwayworld--courtney-castellino.json",
+    "the-producers-west-end-2025/evening-standard--unknown.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/the-times--clive-davis.json",
+    "two-strangers-bway-2025/culturesauce--unknown.json",
+    "two-strangers-bway-2025/frontmezzjunkies--unknown.json",
+    "wicked-2003/broadwayworld--jay-irwin.json",
+    "wicked-west-end-2021/telegraph--marianka-swain.json",
+    "woman-in-mind-west-end-2025/whatsonstage--sarah-crompton.json",
+    "a-bronx-tale-the-musical-2016/hollywood-reporter--unknown.json",
+    "pal-joey-2008/nytimes--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/nytimes--unknown.json",
+    "the-merchant-of-venice-2010/vulture--scott-brown.json",
+    "13-2008/new-jersey-newsroom--michael-sommers.json",
+    "13-2008/newsday--linda-winer.json",
+    "13-2008/wsj--terry-teachout.json",
+    "a-bronx-tale-2007/nydailynews--unknown.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
+    "all-in-comedy-about-love-2024/ew--unknown.json",
+    "an-enemy-of-the-people-2012/ew--adam-markovitz.json",
+    "beetlejuice-2025/deadline--stephanie-bunbury.json",
+    "cats-1982/la-daily-news--dany-margolies.json",
+    "death-of-a-salesman-2012/ew--thom-geier.json",
+    "elf-2024/new-york-sun--unknown.json",
+    "elf-2024/nypost--elisabeth-vincentelli.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/guardian--unknown.json",
+    "i-need-that-2023/ew--unknown.json",
+    "jersey-boys-2005/newark-star-ledger--michael-sommers.json",
+    "jersey-boys-2005/nypost--clive-barnes.json",
+    "job-2024/new-jersey-newsroom--michael-sommers.json",
+    "job-2024/newsday--linda-winer.json",
+    "just-for-us-2023/nypost--unknown.json",
+    "mary-poppins-2006/newsday--linda-winer.json",
+    "mary-poppins-2006/nypost--clive-barnes.json",
+    "mcneal-2024/this-week-in-new-york--mark-rifkin.json",
+    "othello-2025/broadwaynews--unknown.json",
+    "pal-joey-2008/thewrap--unknown.json",
+    "plaza-suite-2022/and-olivia-hernandez-read-the-reviews-here--bryan-eng.json",
+    "tammy-faye-2024/new-york-sun--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--unknown.json",
+    "the-children-2017/this-week-in-new-york--william-wolf.json",
+    "the-hills-of-california-2024/nypost--unknown.json",
+    "the-last-five-years-2025/reviews--unknown.json",
+    "the-roommate-2024/this-week-in-new-york--mark-rifkin.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+    "well-2006/new-jersey-newsroom--michael-sommers.json",
+    "well-2006/wsj--terry-teachout.json",
+    "wit-2012/new-jersey-newsroom--michael-sommers.json",
+    "yellow-face-2024/this-week-in-new-york--mark-rifkin.json",
+    "all-in-comedy-about-love-2024/cititour--unknown.json",
+    "just-for-us-2023/theatrely--unknown.json",
+    "pirates-the-penzance-musical-2025/theatrely--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/cititour--unknown.json",
+    "13-2008/ap--mark-kennedy.json",
+    "1776-2022/lighting-and-sound-america--david-barbour.json",
+    "a-bronx-tale-2007/amny--unknown.json",
+    "a-bronx-tale-2007/the-record-bergen--robert-feldberg.json",
+    "a-bronx-tale-the-musical-2016/amny--unknown.json",
+    "a-christmas-carol-2022/lighting-and-sound-america--david-barbour.json",
+    "a-dolls-house-2023/lighting-and-sound-america--david-barbour.json",
+    "a-dolls-house-2023/talkinbroadway--matthew-murray.json",
+    "a-soldiers-play-2020/lighting-and-sound-america--david-barbour.json",
+    "a-strange-loop-2022/lighting-and-sound-america--david-barbour.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/lighting-and-sound-america--david-barbour.json",
+    "all-in-comedy-about-love-2024/frontmezzjunkies--unknown.json",
+    "allegiance-2015/lighting-and-sound-america--david-barbour.json",
+    "allegiance-2015/wolf-entertainment-guide--william-wolf.json",
+    "almost-famous-2022/lighting-and-sound-america--david-barbour.json",
+    "an-enemy-of-the-people-2024/lighting-and-sound-america--david-barbour.json",
+    "angels-in-america-2018/lighting-and-sound-america--david-barbour.json",
+    "angels-in-america-2018/wolf-entertainment-guide--william-wolf.json",
+    "appropriate-2023/lighting-and-sound-america--david-barbour.json",
+    "appropriate-2023/talkinbroadway--matthew-murray.json",
+    "art-2025/lighting-and-sound-america--david-barbour.json",
+    "back-to-the-future-2023/lighting-and-sound-america--david-barbour.json",
+    "bad-cinderella-2023/lighting-and-sound-america--david-barbour.json",
+    "bandstand-2017/lighting-and-sound-america--david-barbour.json",
+    "bernhardthamlet-2018/lighting-and-sound-america--david-barbour.json",
+    "between-riverside-and-crazy-2022/lighting-and-sound-america--david-barbour.json",
+    "billy-elliot-the-musical-2008/amny--matt-windman.json",
+    "billy-elliot-the-musical-2008/ap--michael-kuchwara.json",
+    "burn-the-floor-2009/ap--michael-kuchwara.json",
+    "burn-this-2019/lighting-and-sound-america--david-barbour.json",
+    "burn-this-2019/wolf-entertainment-guide--william-wolf.json",
+    "cabaret-2024/lighting-and-sound-america--david-barbour.json",
+    "call-me-izzy-2025/washpost--unknown.json",
+    "camelot-2023/lighting-and-sound-america--david-barbour.json",
+    "carousel-2018/lighting-and-sound-america--david-barbour.json",
+    "carousel-2018/wolf-entertainment-guide--william-wolf.json",
+    "casa-valentina-2014/huffpost--unknown.json",
+    "chita-rivera-the-dancers-life-2005/boston-globe--unknown.json",
+    "choir-boy-2019/lighting-and-sound-america--david-barbour.json",
+    "choir-boy-2019/wolf-entertainment-guide--william-wolf.json",
+    "come-from-away-2017/lighting-and-sound-america--david-barbour.json",
+    "come-from-away-2017/wolf-entertainment-guide--william-wolf.json",
+    "cost-of-living-2022/lighting-and-sound-america--david-barbour.json",
+    "dames-at-sea-2015/lighting-and-sound-america--david-barbour.json",
+    "dear-evan-hansen-2016/carey-purcell--carey-purcell.json",
+    "dear-evan-hansen-2016/lighting-and-sound-america--david-barbour.json",
+    "death-of-a-salesman-2012/talkinbroadway--howard-miller.json",
+    "death-of-a-salesman-2022/talkinbroadway--howard-miller.json",
+    "deuce-2007/bloomberg--philip-boroff.json",
+    "elf-2024/northjerseycom--robert-feldberg.json",
+    "escape-to-margaritaville-2018/lighting-and-sound-america--david-barbour.json",
+    "eureka-day-2024/lighting-and-sound-america--david-barbour.json",
+    "exit-the-king-2009/ap--michael-kuchwara.json",
+    "falsettos-2016/dailybeast--william-wolf.json",
+    "falsettos-2016/lighting-and-sound-america--david-barbour.json",
+    "fat-ham-2023/lighting-and-sound-america--david-barbour.json",
+    "fela-2012/bloomberg--john-simon.json",
+    "fiddler-on-the-roof-2015/as-her-world-turns--erica-meyer.json",
+    "fiddler-on-the-roof-2015/lighting-and-sound-america--david-barbour.json",
+    "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
+    "fiddler-on-the-roof-2015/wolf-entertainment-guide--william-wolf.json",
+    "flying-over-sunset-2021/lighting-and-sound-america--david-barbour.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/lighting-and-sound-america--david-barbour.json",
+    "fully-committed-2016/lighting-and-sound-america--david-barbour.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/the-stage--unknown.json",
+    "good-night-oscar-2023/lighting-and-sound-america--david-barbour.json",
+    "grease-2007/philadelphia-inquirer--toby-zinman.json",
+    "grey-house-2023/lighting-and-sound-america--david-barbour.json",
+    "gypsy-2024/lighting-and-sound-america--david-barbour.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -500,7 +626,40 @@
       "hells-kitchen-2024/chelsea-community-news--unknown.json",
       "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
       "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
-      "the-whos-tommy-2024/theater-scene--joseph-pisano.json"
+      "maybe-happy-ending-2024/deadline--unknown.json",
+      "maybe-happy-ending-2024/ew--unknown.json",
+      "maybe-happy-ending-2024/new-york-sun--unknown.json",
+      "mj-the-musical-west-end-2024/guardian--arifa-akbar.json",
+      "moulin-rouge-the-musical-west-end-2021/guardian--kate-wyver.json",
+      "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "all-my-sons-west-end-2025/the-times--clive-davis.json",
+      "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "back-to-the-future-west-end-2021/the-stage--tim-bano.json",
+      "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "hamilton-west-end-2021/evening-standard--henry-hitchings.json",
+      "hamilton-west-end-2021/the-times--ann-treneman.json",
+      "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+      "les-miserables-west-end-2021/telegraph--dominic-cavendish.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "mamma-mia-west-end-2021/telegraph--marianka-swain.json",
+      "marie-and-rosetta-west-end-2026/the-stage--unknown.json",
+      "maybe-happy-ending-2024/nysr--unknown.json",
+      "mj-the-musical-west-end-2024/the-times--clive-davis.json",
+      "moulin-rouge-the-musical-west-end-2021/the-stage--tim-bano.json",
+      "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+      "paddington-the-musical-west-end-2025/the-times--clive-davis.json",
+      "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+      "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+      "paranormal-activity-west-end-2025/the-times--rachel-halliburton.json",
+      "ragtime-2025/america-magazine--weinert-kendt.json",
+      "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-book-of-mormon-west-end-2024/telegraph--marianka-swain.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/evening-standard--nick-curtis.json",
+      "the-25th-annual-putnam-county-spelling-bee-2005/theatermania--zachary-stewart.json",
+      "the-hills-of-california-2024/broadwaynews--unknown.json",
+      "gypsy-2008/nysr--melissa-rose-bernardo.json",
+      "gypsy-2008/nysr--steven-suskin.json"
     ],
     "amp": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
@@ -527,7 +686,9 @@
       "data/review-texts/king-charles-iii-2015/variety--david-benedict.json",
       "data/review-texts/leap-of-faith-2012/variety--steven-suskin.json",
       "leap-of-faith-2012/variety--steven-suskin.json",
-      "data/review-texts/mr-saturday-night-2022/vulture--helen-shaw.json"
+      "data/review-texts/mr-saturday-night-2022/vulture--helen-shaw.json",
+      "data/review-texts/maybe-happy-ending-2024/nydailynews--unknown.json",
+      "maybe-happy-ending-2024/nydailynews--unknown.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -554,7 +715,17 @@
       "radio-golf-2007/nytimes--charles-isherwood.json",
       "data-2026/nytimes--ben-brantley.json",
       "high-noon-west-end-2025/guardian--arifa-akbar.json",
-      "the-price-2017/dailybeast--chris-jones.json"
+      "shadowlands-west-end-2026/guardian--arifa-akbar.json",
+      "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
+      "the-producers-west-end-2025/guardian--arifa-akbar.json",
+      "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
+      "hells-kitchen-2024/cititour--unknown.json",
+      "all-my-sons-west-end-2025/telegraph--dominic-cavendish.json",
+      "hamilton-west-end-2021/telegraph--dominic-cavendish.json",
+      "mj-the-musical-west-end-2024/telegraph--claire-allfree.json",
+      "the-producers-west-end-2025/the-times--unknown.json",
+      "woman-in-mind-west-end-2025/telegraph--dominic-cavendish.json",
+      "falsettos-2016/dailybeast--william-wolf.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -647,56 +818,15 @@
       "data/review-texts/primo-2005/nytimes--ben-brantley.json",
       "data/review-texts/priscilla-queen-of-the-desert-2011/vulture--jesse-green.json",
       "data/review-texts/race-2009/vulture--jesse-green.json",
-      "data/review-texts/oh-mary-west-end-2025/stage-uk--holly-omahony.json",
-      "data/review-texts/oslo-2017/washpost--peter-marks.json",
-      "data/review-texts/paradise-square-2022/washpost--peter-marks.json",
-      "data/review-texts/passing-strange-2008/washpost--peter-marks.json",
-      "data/review-texts/patriots-2024/nysr--frank-scheck.json",
-      "data/review-texts/peter-and-the-starcatcher-2012/philadelphia-inquirer--howard-shapiro.json",
-      "data/review-texts/picnic-2013/washpost--peter-marks.json",
-      "data/review-texts/pippin-2013/washpost--peter-marks.json",
-      "data/review-texts/pretty-woman-the-musical-2018/washpost--peter-marks.json",
-      "data/review-texts/prince-of-broadway-2017/dailybeast--tim-teeman.json",
-      "data/review-texts/race-2009/ap--.json",
-      "data/review-texts/race-2009/washpost--peter-marks.json",
-      "data/review-texts/richard-iii-2013/washpost--peter-marks.json",
-      "data/review-texts/saint-joan-2018/washpost--peter-marks.json",
-      "data/review-texts/seminar-2011/washpost--peter-marks.json",
-      "data/review-texts/shucked-2023/washpost--peter-marks.json",
-      "data/review-texts/side-show-2014/washpost--peter-marks.json",
-      "data/review-texts/significant-other-2017/washpost--peter-marks.json",
-      "data/review-texts/sister-act-2011/washpost--peter-marks.json",
-      "data/review-texts/some-like-it-hot-2022/washpost--peter-marks.json",
-      "data/review-texts/sunset-boulevard-2017/washpost--peter-marks.json",
-      "data/review-texts/sylvia-2015/washpost--peter-marks.json",
-      "data/review-texts/tammy-faye-2024/washpost--peter-marks.json",
-      "data/review-texts/tarzan-2006/washpost--peter-marks.json",
-      "data/review-texts/the-addams-family-2010/washpost--peter-marks.json",
-      "data/review-texts/the-anarchist-2012/ap--mark-kennedy.json",
-      "data/review-texts/the-bands-visit-2017/washpost--peter-marks.json",
-      "data/review-texts/the-columnist-2012/philadelphia-inquirer--howard-shapiro.json",
-      "data/review-texts/the-country-house-2014/washpost--peter-marks.json",
-      "data/review-texts/the-crucible-2016/washpost--peter-marks.json",
-      "data/review-texts/the-glass-menagerie-2017/ap--unknown.json",
-      "data/review-texts/the-history-boys-2006/washpost--peter-marks.json",
-      "data/review-texts/the-house-of-blue-leaves-2011/washpost--peter-marks.json",
-      "data/review-texts/the-king-and-i-2015/washpost--peter-marks.json",
-      "data/review-texts/the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
-      "data/review-texts/the-little-dog-laughed-2006/washpost--peter-marks.json",
-      "data/review-texts/the-little-mermaid-2008/washpost--peter-marks.json",
-      "data/review-texts/the-little-prince-2022/dailybeast--tim-teeman.json",
-      "data/review-texts/the-lyons-2012/ap--mark-kennedy.json",
-      "data/review-texts/the-other-place-2013/washpost--peter-marks.json",
-      "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
-      "data/review-texts/the-play-that-goes-wrong-2017/washpost--peter-marks.json",
-      "data/review-texts/the-price-2017/washpost--peter-marks.json",
-      "data/review-texts/the-real-thing-2014/washpost--peter-marks.json",
-      "data/review-texts/the-realistic-joneses-2014/washpost--peter-marks.json",
-      "data/review-texts/the-sound-inside-2019/washpost--peter-marks.json",
-      "data/review-texts/the-testament-of-mary-2013/washpost--unknown.json",
-      "data/review-texts/three-tall-women-2018/washpost--peter-marks.json",
-      "data/review-texts/time-and-the-conways-2017/washpost--peter-marks.json",
-      "data/review-texts/torch-song-2018/washpost--peter-marks.json"
+      "data/review-texts/shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "data/review-texts/all-my-sons-west-end-2025/the-stage--tim-bano.json",
+      "data/review-texts/bigfoot-2026/broadwayworld--michael-dale.json",
+      "data/review-texts/les-miserables-west-end-2021/the-stage--tim-bano.json",
+      "data/review-texts/maybe-happy-ending-2024/dailybeast--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/the-stage--sam-marlowe.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/the-stage--tim-bano.json",
+      "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/the-times--clive-davis.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -743,49 +873,594 @@
       "hells-kitchen-2024/nypost--unknown.json",
       "hells-kitchen-2024/thewrap--unknown.json",
       "hells-kitchen-2024/timeout--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/timeout--andrzej-lukowski.json"
+      "maybe-happy-ending-2024/thewrap--unknown.json",
+      "maybe-happy-ending-2024/timeout--unknown.json",
+      "hamilton-west-end-2021/the-stage--tim-bano.json",
+      "the-devil-wears-prada-west-end-2024/telegraph--dominic-cavendish.json",
+      "plaza-suite-2022/and-olivia-hernandez-read-the-reviews-here--bryan-eng.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Philadelphia Inquirer": {
-      "count": 1,
-      "domain": "philly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "pop-dust": {
-      "count": 4,
-      "domain": "popdust.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 5,
-      "domain": "thenewstribune.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Philadelphia Inquirer": {
-      "count": 2,
-      "domain": "philly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "tammy-faye-2024/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-katie-brayben-1236187943/",
-      "newUrl": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/"
+      "reviewId": "data-2026/nytimes--ben-brantley.json",
+      "oldUrl": null,
+      "newUrl": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
     },
     {
-      "reviewId": "aint-too-proud-2019/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/aint-too-proud-the-life-and-times-of-the-temptations",
-      "newUrl": "https://www.timeout.com/newyork/theater/aint-too-proudthe-life-and-times-of-the-temptations"
+      "reviewId": "hells-kitchen-2024/nyt-theater--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nytg--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/hells-kitchen-broadway-review-alicia-keys"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nytimes--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/variety--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://variety.com/2024/legit/reviews/hells-kitchen-review-alicia-keys-musical-broadway-1235977362/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/vulture--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.vulture.com/article/theater-review-alicia-keys-hells-kitchen-broadway.html"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nytg--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nytimes--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/variety--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2025/nov/22/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-wyndhams-theatre-london"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "oldUrl": null,
+      "newUrl": "https://www.show-score.com/uk/london/west-end-shows/all-my-sons-west-end"
+    },
+    {
+      "reviewId": "hamilton-west-end-2021/guardian--michael-billington.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2017/dec/21/hamilton-review-musical-london-victoria-palace-lin-manuel-miranda"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/chelsea-community-news--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/ew--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://ew.com/hells-kitchen-review-broadway-alicia-keys-8635661?srsltid=AfmBOoox5PqZhJTEQoq7d9rYZaF7PuS_qROA8M31ufCmpkZ3nvMNbR-o"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/new-york-sun--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/Hell-s-Kitchen"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nydailynews--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.nydailynews.com/2024/04/20/broadway-review-hells-kitchen/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nypost--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://nypost.com/2024/04/21/entertainment/hells-kitchen-review-alicia-keys-musical-fires-up-on-broadway/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/thewrap--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/timeout--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.timeout.com/newyork/theater/hells-kitchen-musical-broadway-review-alicia-keys"
+    },
+    {
+      "reviewId": "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2026/jan/10/high-noon-review-billy-crudup-brings-classic-hollywood-western-back-with-a-bang"
+    },
+    {
+      "reviewId": "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "oldUrl": null,
+      "newUrl": "https://www.show-score.com/uk/london/west-end-shows/high-noon-west-end"
+    },
+    {
+      "reviewId": "les-miserables-west-end-2021/guardian--miriam-gillinson.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2025/oct/07/les-miserables-musical-critics-reviews-cameron-mackintosh-sondheim-theatre-london"
+    },
+    {
+      "reviewId": "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/deadline--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/ew--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079?srsltid=AfmBOorixc30ACMxkf0oacoz7FEZjiyKcpXR-DjPmJTMQravUZCkxaPM"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/new-york-sun--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://broadwayscorecard.com/show/maybe-happy-ending"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nydailynews--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/thewrap--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/timeout--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots"
+    },
+    {
+      "reviewId": "mj-the-musical-west-end-2024/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2024/mar/31/the-week-in-theatre-opening-night-ivo-van-hove-rufus-wainwright-sheridan-smith-gielgud-theatre-west-end-review-mj-the-musical-prince-edward-theatre-broadway-west-end-christopher-wheeldon-lynn-nottage"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/guardian--kate-wyver.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review"
+    },
+    {
+      "reviewId": "my-neighbour-totoro-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2022/oct/19/my-neighbour-totoro-review-barbican-london"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2025/dec/01/paddington-the-musical-review-savoy-theatre"
+    },
+    {
+      "reviewId": "shadowlands-west-end-2026/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2019/may/03/shadowlands-review-hugh-bonneville-cs-lewis"
+    },
+    {
+      "reviewId": "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "oldUrl": null,
+      "newUrl": "https://www.facebook.com/LondonTheatreDirect/posts/-shadowlands-review-hugh-bonneville-is-exquisite-in-quietly-devastating-play-lin/1371270625028353/"
+    },
+    {
+      "reviewId": "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2024/dec/06/the-devil-wears-prada-review-vanessa-williams"
+    },
+    {
+      "reviewId": "the-producers-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2024/dec/11/the-producers-review-menier-chocolate-factory-patrick-marber-mel-brooks"
+    },
+    {
+      "reviewId": "woman-in-mind-west-end-2025/guardian--arifa-akbar.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2026/jan/06/woman-in-mind-review-revival-that-stands-test-of-time-for-its-originality"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/cititour--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://cititour.com/NYC_News/Review-Alicia-Keys-Hells-Kitchen-Is-On-Fire/8261"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/breaking-bads-bryan-cranstonwest-end/"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thestage.co.uk/reviews/all-my-sons-review-wyndhams-theatre-london-bryan-cranston-ivo-van-hove-arthur-miller"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h?gaa_at=eafs&gaa_n=AWEtsqfFnBFpz4gC0YZASK60aMD7uDMt0EMDinjujNrDWcrH4r_-jugH6yFd&gaa_ts=699a6327&gaa_sig=cSv7xT4pBprtsRUKW6lbVIzEY8qOvNZNDunNWhGLW3Dy0SN_q2PxLQjZVv-QwuC1z2Nr2jOqJlmrj7FVHmBmXA%3D%3D"
+    },
+    {
+      "reviewId": "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/all-my-sons-west-end-review-bryan-cranston-in-an-explosive-production_1703544/"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.timeout.com/london/theatre/back-to-the-future-the-musical-review"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/back-to-the-future-the-musical-review-classic-stalls-like-an-old-delorean-njg5tp88x?gaa_at=eafs&gaa_n=AWEtsqcYL-jV5nbtXUP6p3BsBv7NR95oDXhA5Troo6mKt348ZTTjinsg9Cy3&gaa_ts=699a6374&gaa_sig=eHo6FnYibDX5RFRgscNhcKNfOnABz0iYRgP6v-O6s-FRiGSvSjlTYriAHHYei5tXmVAu-TCirkZBcz_FW6gP0Q%3D%3D"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/"
+    },
+    {
+      "reviewId": "bigfoot-2026/broadwayworld--michael-dale.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/BigfootA-New-Musical"
+    },
+    {
+      "reviewId": "hamilton-west-end-2021/evening-standard--henry-hitchings.json",
+      "oldUrl": null,
+      "newUrl": "https://www.londontheatre.co.uk/reviews/review-hamilton-is-here-to-stay-at-the-victoria-palace-theatre"
+    },
+    {
+      "reviewId": "hamilton-west-end-2021/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/films/0/hamilton-musical-disney-plus-review-cast-lin-manuel-miranda/"
+    },
+    {
+      "reviewId": "hamilton-west-end-2021/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering"
+    },
+    {
+      "reviewId": "hamilton-west-end-2021/the-times--ann-treneman.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/article/theatre-review-hamilton-7sf653t7v?gaa_at=eafs&gaa_n=AWEtsqd4lg_YUvSd8nkjWqmOrGMbezv4pOZwFPujNQXHoGYpaT6Xuk79n-a7&gaa_ts=699a6496&gaa_sig=KQNui-KImdxdN3fI5NNl7JTA4J6xjsChDFd8EtVIdguxiM-W-0D-LU7MMR6Yg0_ujE1mjIPwC9Eck5sR2uwNgQ%3D%3D"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/ap--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://apnews.com/article/hells-kitchen-alicia-keys-theater-review-6a9637aa992636c7771b7382263b1f62"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nysr--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/Hell-s-Kitchen"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/showbiz411--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/Hell-s-Kitchen"
+    },
+    {
+      "reviewId": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/high-noon-west-end-review-billy-crudup-and-denise-gough-in-a-suitably-wild-western_1708194/"
+    },
+    {
+      "reviewId": "les-miserables-west-end-2021/evening-standard--nick-curtis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html"
+    },
+    {
+      "reviewId": "les-miserables-west-end-2021/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.show-score.com/uk/london/west-end-shows/les-miserables-london"
+    },
+    {
+      "reviewId": "les-miserables-west-end-2021/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-london--still-spectacular"
+    },
+    {
+      "reviewId": "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/review-les-miserables-sondheim-theatre_50720/"
+    },
+    {
+      "reviewId": "mamma-mia-west-end-2021/telegraph--marianka-swain.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetelegraphandargus.co.uk/news/15322904.review-mamma-mia-this-super-trouper-show-had-us-on-our-feet/"
+    },
+    {
+      "reviewId": "marie-and-rosetta-west-end-2026/the-stage--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.londontheatredirect.com/news/everything-you-need-to-know-about-marie-rosetta-story-cast-reviews-london-performances?srsltid=AfmBOop0ytsLYCOPoXOE680PZiFgLJ2f7KZbwoRrnQrUJ-L280f0ygrO"
+    },
+    {
+      "reviewId": "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+      "oldUrl": null,
+      "newUrl": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/dailybeast--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nysr--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/usatoday--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/"
+    },
+    {
+      "reviewId": "mj-the-musical-west-end-2024/financial-times--ludovic-hunter-tilney.json",
+      "oldUrl": null,
+      "newUrl": "https://www.ft.com/content/8039a7c3-1383-46b7-912a-090681c3afb8"
+    },
+    {
+      "reviewId": "mj-the-musical-west-end-2024/telegraph--claire-allfree.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/mj-the-musical-prince-edward-theatre-review-wheeldon/"
+    },
+    {
+      "reviewId": "mj-the-musical-west-end-2024/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theguardian.com/stage/2025/mar/09/mj-the-musical-review-propaganda-in-celebration-of-michael-jackson"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/evening-standard--nick-curtis.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.facebook.com/whatsonstage/posts/read-our-review-of-moulin-rouge-the-musical-on-tourfind-the-details-below-/1086135490213486/"
+    },
+    {
+      "reviewId": "oh-mary-west-end-2025/FT--sarah-hemming.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end"
+    },
+    {
+      "reviewId": "oliver-west-end-2024/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.westendtheatre.com/245880/news/reviews/oliver-reviews-round-up/"
+    },
+    {
+      "reviewId": "oliver-west-end-2024/the-times--neil-fisher.json",
+      "oldUrl": null,
+      "newUrl": "https://www.westendtheatre.com/245880/news/reviews/oliver-reviews-round-up/"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/evening-standard--nick-curtis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.westendtheatre.com/325889/news/reviews/reviews-of-paddington-the-musical-at-the-west-ends-savoy-theatre-in-london/"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-PADDINGTON-THE-MUSICAL-on-the-West-End-20251130"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/the-stage--sam-marlowe.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-london-michael-bond-tom-fletcher-jessica-swale"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/paddington-musical-savoy-theatre-london-djsvp08h3?gaa_at=eafs&gaa_n=AWEtsqdeEhB33l2z6fvQSbmSEw9sYcfZeEuVLgeR5C-dYAH7NNJlxH2xidAO&gaa_ts=699a6800&gaa_sig=Xnoafxf-4Jp4Hvq4a-n-CpEnmU1_OQX2bal7SvjR6XICCWdeKFx28lgjkF6yRRZvJ5gzKVRihJtp9TzT8Y2H9g%3D%3D"
+    },
+    {
+      "reviewId": "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/paddington-the-musical-west-end-review-a-paw-fect-stage-adaptation_1704856/"
+    },
+    {
+      "reviewId": "paranormal-activity-west-end-2025/financial-times--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.westendtheatre.com/328156/news/reviews/paranormal-activity-west-end-reviews-round-up-ambassadors-theatre-london/"
+    },
+    {
+      "reviewId": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+      "oldUrl": null,
+      "newUrl": "https://lovelondonloveculture.com/2025/12/22/review-round-up-paranormal-activity-ambassadors-theatre/"
+    },
+    {
+      "reviewId": "paranormal-activity-west-end-2025/the-times--rachel-halliburton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqeiTaBhbmzqG60jl9f1r3tkLNeJHO7vjRee52qgPh3fMaebyz871-lM&gaa_ts=699a682a&gaa_sig=AnWBjHqfkKJAHNVhKG_1zw3AxZ_tNUo8B1LUWTKCp4q66O9r8MeMURLXMkgBHTJhN7pHEpO83XK1wHly1llLrw%3D%3D"
+    },
+    {
+      "reviewId": "ragtime-2025/america-magazine--weinert-kendt.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016"
+    },
+    {
+      "reviewId": "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/shadowlands-with-hugh-bonneville-and-maggie-siff-in-the-west-end-review_1712184/"
+    },
+    {
+      "reviewId": "stranger-things-2024/dramatically--high-school.json",
+      "oldUrl": null,
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/stranger-things-the-first-shadow-broadway-review"
+    },
+    {
+      "reviewId": "the-book-of-mormon-west-end-2024/telegraph--marianka-swain.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-book-of-mormon-prince-of-wales-theatre-review/"
+    },
+    {
+      "reviewId": "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
+      "oldUrl": null,
+      "newUrl": "https://musicaltheatrereview.com/the-book-of-mormon-big-winner-whatsonstage-awards/"
+    },
+    {
+      "reviewId": "the-devil-wears-prada-west-end-2024/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-devil-wears-prada-dominion-theatre-review/"
+    },
+    {
+      "reviewId": "the-devil-wears-prada-west-end-2024/the-stage--tim-bano.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo"
+    },
+    {
+      "reviewId": "the-devil-wears-prada-west-end-2024/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/devil-wears-prada-musical-review-5nwrcllfx?gaa_at=eafs&gaa_n=AWEtsqeYZ4KpwnmRhTgFoieK4SG8d7s0TWue27fafiHUUXDXLeY-jJFHoygO&gaa_ts=699a696a&gaa_sig=wwT1uJ3v4IQJ-rSXP4ncrNWJEDQ5-HrKV9fV4RuhnTLbVzOnWhNGjtgxMDlzpyDTE84Cjas8z0-i4c89Fn0E0g%3D%3D"
+    },
+    {
+      "reviewId": "the-lion-king-1997/broadwayworld--courtney-castellino.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/The-Lion-King"
+    },
+    {
+      "reviewId": "the-producers-west-end-2025/evening-standard--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.westendtheatre.com/267088/news/reviews/the-producers-reviews-at-the-menier-chocolate-factory-in-london/"
+    },
+    {
+      "reviewId": "the-producers-west-end-2025/the-times--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-producers-review-a-five-star-show-for-our-turbulent-times-lmkt79vkw?gaa_at=eafs&gaa_n=AWEtsqcYxdmTEa2S6_g3kW9E_uNHf2S8wHfmMlf0Tf1Y1Cfk6wJMnXZ342BZ&gaa_ts=699a69c1&gaa_sig=8XbrPU7e5Wmvg2hgZCD2S0d7cxp2gl072PLUT4oJmqz8IxBIjGE72i9Xd_yx3dp5cgkUR620fvtMRT2lZcPxAg%3D%3D"
+    },
+    {
+      "reviewId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/evening-standard--nick-curtis.json",
+      "oldUrl": null,
+      "newUrl": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html"
+    },
+    {
+      "reviewId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/the-times--clive-davis.json",
+      "oldUrl": null,
+      "newUrl": "https://theatre.reviews/reviews-roundup/unlikely-pilgrimage-of-harold-fry-reviews/"
+    },
+    {
+      "reviewId": "wicked-2003/broadwayworld--jay-irwin.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/Wicked"
+    },
+    {
+      "reviewId": "wicked-west-end-2021/telegraph--marianka-swain.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/wicked-apollo-victoria-theatre-review-old-school-bombast/"
+    },
+    {
+      "reviewId": "woman-in-mind-west-end-2025/telegraph--dominic-cavendish.json",
+      "oldUrl": null,
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/woman-in-mind-duke-of-yorks-theatre-review/"
+    },
+    {
+      "reviewId": "woman-in-mind-west-end-2025/whatsonstage--sarah-crompton.json",
+      "oldUrl": null,
+      "newUrl": "https://www.whatsonstage.com/news/woman-in-mind-west-end-review-sheridan-smith-gives-a-strong-turn-in-an-outdated-tragicomedy_1707895/"
+    },
+    {
+      "reviewId": "elf-2024/new-york-sun--unknown.json",
+      "oldUrl": "",
+      "newUrl": "https://www.newyorkcitytheatre.com/news/reviews/495284"
+    },
+    {
+      "reviewId": "jersey-boys-2005/newark-star-ledger--michael-sommers.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/reviews/Jersey-Boys"
+    },
+    {
+      "reviewId": "othello-2025/broadwaynews--unknown.json",
+      "oldUrl": "",
+      "newUrl": "https://www.broadwaynews.com/the-broadway-review-a-well-acted-othello-flounders-in-a-murky-pool-of-direction/"
+    },
+    {
+      "reviewId": "plaza-suite-2022/and-olivia-hernandez-read-the-reviews-here--bryan-eng.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-PLAZA-SUITE-Starring-Sarah-Jessica-Parker-and-Matthew-Broderick-Opens-On-Broadway-20220328"
+    },
+    {
+      "reviewId": "tammy-faye-2024/new-york-sun--unknown.json",
+      "oldUrl": "",
+      "newUrl": "https://www.newyorkcitytheatre.com/news/reviews/494736"
+    },
+    {
+      "reviewId": "the-25th-annual-putnam-county-spelling-bee-2005/theatermania--zachary-stewart.json",
+      "oldUrl": null,
+      "newUrl": "https://www.theatermania.com/news/review-the-25th-annual-putnam-county-spelling-bee-back-and-better-than-e-v-e-r_1812342/"
+    },
+    {
+      "reviewId": "the-hills-of-california-2024/broadwaynews--unknown.json",
+      "oldUrl": "",
+      "newUrl": "https://www.broadwaynews.com/the-broadway-review-the-hills-of-california-is-an-excellent-if-overburdened-new-play/"
+    },
+    {
+      "reviewId": "the-last-five-years-2025/reviews--unknown.json",
+      "oldUrl": "",
+      "newUrl": "https://newyorktheater.me/2025/04/06/the-last-five-years-broadway-review-nick-jonas-and-adrienne-warren-mismatched/"
+    },
+    {
+      "reviewId": "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://lovelondonloveculture.com/2025/12/04/review-round-up-the-spy-who-came-in-from-the-cold-sohplace/"
+    },
+    {
+      "reviewId": "casa-valentina-2014/huffpost--unknown.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/the-verdict-critics-review-harvey-fiersteins-new-broadway-play-casa-valentina-com-217574"
+    },
+    {
+      "reviewId": "cost-of-living-2022/lighting-and-sound-america--david-barbour.json",
+      "oldUrl": null,
+      "newUrl": "https://deadline.com/2022/10/cost-of-living-broadway-review-martyna-majok-1235134205/"
+    },
+    {
+      "reviewId": "dames-at-sea-2015/lighting-and-sound-america--david-barbour.json",
+      "oldUrl": null,
+      "newUrl": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-2QP0QZ"
+    },
+    {
+      "reviewId": "falsettos-2016/dailybeast--william-wolf.json",
+      "oldUrl": null,
+      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-FALSETTOS-Opens-on-Broadway--Updating-Live-20161027"
+    },
+    {
+      "reviewId": "gypsy-2008/nysr--melissa-rose-bernardo.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/read-the-reviews-gypsy-on-broadway-starring-audra-mcdonald"
+    },
+    {
+      "reviewId": "gypsy-2008/nysr--steven-suskin.json",
+      "oldUrl": null,
+      "newUrl": "https://playbill.com/article/read-the-reviews-gypsy-on-broadway-starring-audra-mcdonald"
     }
   ]
 }
