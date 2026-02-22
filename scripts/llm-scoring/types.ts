@@ -23,6 +23,8 @@ export interface ReviewTextFile {
   sourceUrl?: string;
   /** BWW Review Roundup thumb (if available) */
   bwwThumb?: string;
+  /** BWW editorial score (1-10) from /reviews/ pages */
+  bwwScore?: number;
   /** DTLI thumb (if available) */
   dtliThumb?: string;
   /** Original rating string (e.g., "4/5", "B+") */
