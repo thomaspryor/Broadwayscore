@@ -60,14 +60,15 @@ function makeResult(bucket, score) {
 // ========================================
 
 describe('scoreToBucket', () => {
-  test('returns Rave for 85-100', () => {
+  test('returns Rave for 83-100', () => {
     assert.strictEqual(scoreToBucket(100), 'Rave');
+    assert.strictEqual(scoreToBucket(83), 'Rave');
     assert.strictEqual(scoreToBucket(85), 'Rave');
     assert.strictEqual(scoreToBucket(92), 'Rave');
   });
 
-  test('returns Positive for 70-84', () => {
-    assert.strictEqual(scoreToBucket(84), 'Positive');
+  test('returns Positive for 70-82', () => {
+    assert.strictEqual(scoreToBucket(82), 'Positive');
     assert.strictEqual(scoreToBucket(70), 'Positive');
     assert.strictEqual(scoreToBucket(77), 'Positive');
   });
@@ -157,7 +158,7 @@ describe('ensembleScore - 3 models', () => {
       );
 
       assert.strictEqual(result.bucket, 'Rave');
-      assert.ok(result.score >= 85, `score ${result.score} should be >= 85`);
+      assert.ok(result.score >= 83, `score ${result.score} should be >= 83`);
       assert.ok(result.score <= 100, `score ${result.score} should be <= 100`);
       assert.strictEqual(result.confidence, 'high');
       assert.strictEqual(result.source, 'ensemble-unanimous');

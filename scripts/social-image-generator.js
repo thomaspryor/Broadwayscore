@@ -39,7 +39,7 @@ const SCORE_COLORS = {
 
 function getScoreStyle(score, reviewCount) {
   if (!score || reviewCount < 5) return SCORE_COLORS.tbd;
-  if (score >= 85) return SCORE_COLORS.mustSee;
+  if (score >= 83) return SCORE_COLORS.mustSee;
   if (score >= 75) return SCORE_COLORS.great;
   if (score >= 65) return SCORE_COLORS.good;
   if (score >= 55) return SCORE_COLORS.tepid;
@@ -48,7 +48,7 @@ function getScoreStyle(score, reviewCount) {
 
 function getScoreLabel(score) {
   if (!score) return 'Awaiting Reviews';
-  if (score >= 85) return 'Critical Gold';
+  if (score >= 83) return 'Critical Gold';
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
@@ -115,7 +115,7 @@ function generateShowHTML(data) {
     ? `<img src="${imageData}" style="width:280px;height:420px;border-radius:16px;object-fit:cover;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);">`
     : `<div style="width:280px;height:420px;background:#1a1a1a;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:100px;border:1px solid rgba(255,255,255,0.1);">&#127917;</div>`;
 
-  const scoreBadgeShadow = displayScore && displayScore >= 85
+  const scoreBadgeShadow = displayScore && displayScore >= 83
     ? 'box-shadow:0 0 40px rgba(212,175,55,0.4);'
     : 'box-shadow:0 4px 24px rgba(0,0,0,0.3);';
 
