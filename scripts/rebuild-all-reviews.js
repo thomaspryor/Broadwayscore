@@ -1504,18 +1504,31 @@ showDirs.forEach(showId => {
       if (data.duplicateTextOf) {
         const refPath = path.join(showDir, data.duplicateTextOf);
         let refAlsoDupe = false;
+        let staleFlag = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Verify fingerprints still match — flag may be stale after text re-fetch
+          if (!refAlsoDupe && data.fullText && refData.fullText) {
+            const thisFp = computeContentFingerprint(data.fullText);
+            const refFp = computeContentFingerprint(refData.fullText);
+            if (thisFp && refFp && thisFp !== refFp) {
+              staleFlag = true;
+            }
+          }
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
-        if (!refAlsoDupe) {
+        if (staleFlag) {
+          // Texts no longer match — flag is stale, let this file through
+          stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
+        } else if (!refAlsoDupe) {
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
+        } else {
+          // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+          stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
         }
-        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
-        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
@@ -2418,6 +2431,9 @@ console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent ||
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
 if (stats.circularDuplicateRecovered > 0) {
   console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
+}
+if (stats.staleDuplicateTextCleared > 0) {
+  console.log(`  Recovered (stale duplicateTextOf — text changed): ${stats.staleDuplicateTextCleared}`);
 }
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
