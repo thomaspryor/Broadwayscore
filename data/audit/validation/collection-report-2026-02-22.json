@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-22T08:03:20.769Z",
+  "runDate": "2026-02-22T08:09:21.743Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 113,
-    "failed": 608,
+    "failed": 610,
     "skipped": 0,
-    "successRate": "15.7%"
+    "successRate": "15.6%"
   },
   "tierBreakdown": {
     "playwright": 46,
@@ -27,25 +27,25 @@
     "archive": 53
   },
   "statistics": {
-    "tier1Attempts": 77,
-    "tier1Success": 27,
-    "ampAttempts": 39,
-    "ampSuccess": 4,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "ampAttempts": 2,
+    "ampSuccess": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 41,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 41,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 41,
-    "tier3_6Success": 41,
-    "tier4Attempts": 29,
-    "tier4Success": 3,
-    "totalFailed": 73,
-    "scrapingBeeCreditsUsed": 20,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 2,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 10,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
@@ -772,7 +772,9 @@
     "torch-song-2018/washpost--peter-marks.json",
     "travesties-2018/pop-dust--thomas-burns-scully.json",
     "travesties-2018/theater-scene--victor-gluck.json",
-    "tuck-everlasting-2016/the-stage-uk--mark-shenton.json"
+    "tuck-everlasting-2016/the-stage-uk--mark-shenton.json",
+    "tammy-faye-2024/variety--peter-marks.json",
+    "aint-too-proud-2019/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1194,29 +1196,7 @@
       "the-book-of-mormon-west-end-2024/washpost--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Associated Press": {
-      "count": 4,
-      "domain": "thenewstribune.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Philadelphia Inquirer": {
-      "count": 1,
-      "domain": "philly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "pop-dust": {
-      "count": 3,
-      "domain": "popdust.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
       "reviewId": "tammy-faye-2024/variety--peter-marks.json",
