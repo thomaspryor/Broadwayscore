@@ -551264,19 +551264,81 @@
       "output": 7860,
       "total": 538910
     },
+    "errorDetails": [
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-22T03:15:33.632Z",
+    "completedAt": "2026-02-22T03:31:27.671Z",
+    "totalReviews": 25040,
+    "processed": 9,
+    "skipped": 24738,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 164525,
+      "output": 4291,
+      "total": 371043
+    },
     "errorDetails": []
   },
   {
-    "startedAt": "2026-02-22T02:31:17.307Z",
-    "completedAt": "2026-02-22T03:14:03.310Z",
+    "startedAt": "2026-02-22T02:33:08.708Z",
+    "completedAt": "2026-02-22T03:21:07.726Z",
     "totalReviews": 25028,
-    "processed": 25,
-    "skipped": 24554,
+    "processed": 21,
+    "skipped": 24585,
     "errors": 0,
     "tokensUsed": {
-      "input": 283089,
-      "output": 8707,
-      "total": 650962
+      "input": 267583,
+      "output": 7505,
+      "total": 621332
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-22T02:29:49.399Z",
+    "completedAt": "2026-02-22T03:22:29.678Z",
+    "totalReviews": 25028,
+    "processed": 27,
+    "skipped": 24548,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 307294,
+      "output": 9237,
+      "total": 715988
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-22T03:24:21.557Z",
+    "completedAt": "2026-02-22T03:34:04.697Z",
+    "totalReviews": 25041,
+    "processed": 2,
+    "skipped": 24953,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 37715,
+      "output": 901,
+      "total": 85756
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-22T03:31:48.168Z",
+    "completedAt": "2026-02-22T03:34:53.297Z",
+    "totalReviews": 25041,
+    "processed": 3,
+    "skipped": 24959,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 31214,
+      "output": 993,
+      "total": 68864
     },
     "errorDetails": []
   },
