@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-02-22T22:22:31.477Z",
-  "processed": 98,
-  "failed": 322,
+  "updatedAt": "2026-02-22T22:29:54.826Z",
+  "processed": 100,
+  "failed": 330,
   "successRate": "23.3%",
   "tierBreakdown": {
     "playwright": 13,
@@ -10,9 +10,54 @@
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 79
+    "archiveToday": 11,
+    "archive": 81
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-02-22T22:25:44.976Z",
+      "event": "bb-session",
+      "session": "807d3172",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-02-22T22:25:46.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:26:51.142Z",
+      "event": "bb-session",
+      "session": "177608cc",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-22T22:26:53.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:28:34.862Z",
+      "event": "bb-session",
+      "session": "b473bb57",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending"
+    },
+    {
+      "t": "2026-02-22T22:28:36.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:29:23.468Z",
+      "event": "bb-session",
+      "session": "8f403669",
+      "url": "https://www.usatoday.com/story/life/theater/2009/03/10/33-variations-review/2870"
+    },
+    {
+      "t": "2026-02-22T22:29:25.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }

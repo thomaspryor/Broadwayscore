@@ -97,7 +97,9 @@
     "king-charles-iii-2015/amny--matt-windman.json",
     "master-class-1995/amny--matt-windman.json",
     "on-the-twentieth-century-1978/amny--matt-windman.json",
-    "ragtime-1998/amny--matt-windman.json"
+    "ragtime-1998/amny--matt-windman.json",
+    "the-book-of-mormon-west-end-2024/usatoday--elysa-gardner.json",
+    "700-sundays-2004/usatoday--elysa-gardner.json"
   ],
   "failed": [
     "back-to-the-future-west-end-2021/nypost--johnny-oleksinski.json",
@@ -421,7 +423,15 @@
     "private-lives-1992/amny--matt-windman.json",
     "private-lives-2002/amny--matt-windman.json",
     "rocky-2014/amny--matt-windman.json",
-    "romeo-and-juliet-1977/amny--matt-windman.json"
+    "romeo-and-juliet-1977/amny--matt-windman.json",
+    "an-ark-2026/usatoday--elysa-gardner.json",
+    "back-to-the-future-west-end-2021/usatoday--patrick-ryan.json",
+    "cyrano-de-bergerac-west-end-2026/usatoday--elysa-gardner.json",
+    "hells-kitchen-2024/usatoday--david-oliver.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "maybe-happy-ending-2024/usatoday--unknown.json",
+    "august-osage-county-2007/newsday--.json",
+    "33-variations-2009/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -475,7 +485,10 @@
       "data/review-texts/bloodlove-2026/newsday--linda-winer.json",
       "data/review-texts/elf-2024/amny--matt-windman.json",
       "data/review-texts/hello-dolly-2017/amny--matt-windman.json",
-      "data/review-texts/miss-saigon-2017/amny--matt-windman.json"
+      "data/review-texts/miss-saigon-2017/amny--matt-windman.json",
+      "data/review-texts/an-ark-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json",
+      "data/review-texts/33-variations-2009/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/nypost--johnny-oleksinski.json",
@@ -556,10 +569,57 @@
       "king-charles-iii-2015/amny--matt-windman.json",
       "master-class-1995/amny--matt-windman.json",
       "on-the-twentieth-century-1978/amny--matt-windman.json",
-      "ragtime-1998/amny--matt-windman.json"
+      "ragtime-1998/amny--matt-windman.json",
+      "the-book-of-mormon-west-end-2024/usatoday--elysa-gardner.json",
+      "700-sundays-2004/usatoday--elysa-gardner.json"
     ]
   },
   "startTime": "2026-02-22T20:19:33.381Z",
-  "lastProcessed": "romeo-and-juliet-1977/amny--matt-windman.json",
-  "log": []
+  "lastProcessed": "700-sundays-2004/usatoday--elysa-gardner.json",
+  "log": [
+    {
+      "t": "2026-02-22T22:25:44.976Z",
+      "event": "bb-session",
+      "session": "807d3172",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-02-22T22:25:46.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:26:51.142Z",
+      "event": "bb-session",
+      "session": "177608cc",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-22T22:26:53.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:28:34.862Z",
+      "event": "bb-session",
+      "session": "b473bb57",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending"
+    },
+    {
+      "t": "2026-02-22T22:28:36.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T22:29:23.468Z",
+      "event": "bb-session",
+      "session": "8f403669",
+      "url": "https://www.usatoday.com/story/life/theater/2009/03/10/33-variations-review/2870"
+    },
+    {
+      "t": "2026-02-22T22:29:25.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
