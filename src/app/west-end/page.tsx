@@ -56,8 +56,9 @@ export default function WestEndPage() {
     { name: 'West End', url: `${BASE_URL}/west-end` },
   ]);
 
+  // SEO schema excludes previews/upcoming (they have no scores)
   const itemListSchema = generateItemListSchema(
-    shows.map(show => ({
+    shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming').map(show => ({
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
