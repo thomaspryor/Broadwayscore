@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-22T13:27:03.693Z",
+  "runDate": "2026-02-22T13:34:33.864Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 134,
-    "failed": 987,
+    "processed": 139,
+    "failed": 1038,
     "skipped": 0,
-    "successRate": "12.0%"
+    "successRate": "11.8%"
   },
   "tierBreakdown": {
-    "playwright": 42,
-    "amp": 76,
+    "playwright": 44,
+    "amp": 78,
     "browserbase": 1,
     "directCookies": 6,
     "scrapingbee": 27,
     "brightdata": 0,
-    "archiveToday": 268,
-    "archive": 74
+    "archiveToday": 269,
+    "archive": 76
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "ampAttempts": 1,
     "ampSuccess": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
@@ -183,7 +183,12 @@
     "the-outsiders-2024/culturesauce--thom-geier.json",
     "the-unknown-2026/oneminutecritic--matthew-wexler.json",
     "you-got-older-2026/buy-tickets--unknown.json",
-    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "come-from-away-2017/vulture--jesse-green.json",
+    "everyday-rapture-2010/hollywood-reporter--.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "god-of-carnage-2009/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1172,7 +1177,58 @@
     "a-bronx-tale-the-musical-2016/vulture--jesse-green.json",
     "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
     "a-life-in-the-theatre-2010/nytheatrecom--martin-denton.json",
-    "ink-2019/deadline--pete-hammond.json"
+    "a-little-night-music-2009/nytheatre--martin-denton.json",
+    "a-little-night-music-2009/nytheatrecom--martin-denton.json",
+    "a-raisin-in-the-sun-2014/vulture--jesse-green.json",
+    "a-soldiers-play-2020/vulture--helen-shaw.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "aint-no-mo-2022/nytimes--jesse-green.json",
+    "american-idiot-2010/nytheatre--martin-denton.json",
+    "american-idiot-2010/nytheatrecom--martin-denton.json",
+    "baby-its-you-2011/variety--david-rooney.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/nytheatre--martin-denton.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/nytheatrecom--martin-denton.json",
+    "bernhardthamlet-2018/nytimes--ben-brantley.json",
+    "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "billy-elliot-the-musical-2008/nytheatre--martin-denton.json",
+    "billy-elliot-the-musical-2008/nytheatrecom--martin-denton.json",
+    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
+    "bloody-bloody-andrew-jackson-2010/nytheatrecom--martin-denton.json",
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "brief-encounter-2010/nytheatrecom--martin-denton.json",
+    "bright-star-2016/vulture--jesse-green.json",
+    "bye-bye-birdie-2009/variety--david-rooney.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "camelot-2023/vulture--unknown.json",
+    "casa-valentina-2014/vulture--jesse-green.json",
+    "cat-on-a-hot-tin-roof-2008/variety--david-rooney.json",
+    "chinglish-2011/variety--marilyn-stasio.json",
+    "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/nytheatrecom--martin-denton.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "driving-miss-daisy-2010/nytheatrecom--martin-denton.json",
+    "driving-miss-daisy-2010/variety--charles-isherwood.json",
+    "elf-2012/variety--marilyn-stasio.json",
+    "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+    "eureka-day-2024/vulture--jesse-green.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "fela-2012/variety--marilyn-stasio.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--helen-shaw.json",
+    "fully-committed-2016/act-three-the-reviews--doug-marino.json",
+    "gettin-the-band-back-together-2018/vulture--sara-holdren.json",
+    "ghost-the-musical-2012/variety--marilyn-stasio.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "contact-2000/renew-here--unknown.json",
+    "ink-2019/deadline--pete-hammond.json",
+    "call-me-izzy-2025/theatrely--unknown.json",
+    "anna-christie-1977/oneminutecritic--matthew-wexler.json",
+    "rent-1996/chicagotribune--unknown.json",
+    "tartuffe-2003/front-row-center-tulis-mccall--unknown.json",
+    "tartuffe-2003/the-recs-randall-david-cook--randall-david-cook.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1217,7 +1273,9 @@
       "the-dinosaurs-2026/oneminutecritic--matthew-wexler.json",
       "the-disappear-2026/oneminutecritic--matthew-wexler.json",
       "the-outsiders-2024/culturesauce--thom-geier.json",
-      "the-unknown-2026/oneminutecritic--matthew-wexler.json"
+      "the-unknown-2026/oneminutecritic--matthew-wexler.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "come-from-away-2017/vulture--jesse-green.json"
     ],
     "amp": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
@@ -1295,7 +1353,9 @@
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--unknown.json",
       "oh-mary-west-end-2025/hollywood-reporter--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/variety--unknown.json",
-      "romeo-and-juliet-west-end-2026/variety--unknown.json"
+      "romeo-and-juliet-west-end-2026/variety--unknown.json",
+      "data/review-texts/god-of-carnage-2009/hollywood-reporter--frank-scheck.json",
+      "god-of-carnage-2009/hollywood-reporter--frank-scheck.json"
     ],
     "browserbase": [
       "data/review-texts/9-to-5-2009/nytimes--ben-brantley.json"
@@ -1606,7 +1666,8 @@
       "data/review-texts/all-my-sons-west-end-2025/talkinbroadway--unknown.json",
       "data/review-texts/book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
       "data/review-texts/the-other-place-2026/nytimes--unknown.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/madison-magazine--aaron-r-conklin.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/madison-magazine--aaron-r-conklin.json",
+      "data/review-texts/contact-2000/renew-here--unknown.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -1682,7 +1743,9 @@
       "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
       "you-got-older-2026/buy-tickets--unknown.json",
-      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+      "everyday-rapture-2010/hollywood-reporter--.json",
+      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json"
     ]
   },
   "failuresByOutlet": {},
