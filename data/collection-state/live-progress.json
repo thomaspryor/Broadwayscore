@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-22T01:33:08.890Z",
+  "updatedAt": "2026-02-22T01:44:36.838Z",
   "processed": 69,
-  "failed": 271,
-  "successRate": "20.3%",
+  "failed": 281,
+  "successRate": "19.7%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 25,
@@ -10,10 +10,10 @@
     "directCookies": 3,
     "scrapingbee": 18,
     "brightdata": 0,
-    "archiveToday": 89,
+    "archiveToday": 90,
     "archive": 44
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -31,6 +31,17 @@
       "event": "bb-session",
       "session": "e6f5b4ac",
       "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-22T01:39:37.403Z",
+      "event": "bb-session",
+      "session": "2e04c2df",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre"
+    },
+    {
+      "t": "2026-02-22T01:39:39.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
