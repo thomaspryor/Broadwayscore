@@ -35,6 +35,8 @@ export interface ReviewTextFile {
   showScoreExcerpt?: string;
   /** Score status marker */
   scoreStatus?: string;
+  /** True if this review covers 2 shows in depth (not a roundup) */
+  isCombinedReview?: boolean;
 }
 
 /**

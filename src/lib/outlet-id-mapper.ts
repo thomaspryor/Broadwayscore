@@ -162,6 +162,7 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
 
   // West End outlet aliases (Feb 2026 audit — these were all defaulting to Tier 3)
   // Tier 1 UK nationals
+  'thestage': 'STAGE-UK',
   'evening-standard': 'STANDARD',
   'standard': 'STANDARD',
   'the-times-uk': 'TIMES-UK',
