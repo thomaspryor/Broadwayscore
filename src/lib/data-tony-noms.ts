@@ -290,12 +290,15 @@ export function getTonyNominationsLastUpdated(): string {
 }
 
 /**
- * Get total counts from metadata
+ * Get total counts — person-level only (matches what the leaderboard displays).
+ * _meta totals include show-level entries (Best Musical/Play/Revival) which
+ * are not shown in the person leaderboard.
  */
 export function getTonyNominationsMeta() {
+  const personNoms = data.nominations.filter(n => n.ibdbPersonId);
   return {
-    totalNominations: data._meta.totalNominations,
-    totalWins: data._meta.totalWins,
+    totalNominations: personNoms.length,
+    totalWins: personNoms.filter(n => n.won).length,
     showCount: data._meta.actualShowCount,
     coverage: data._meta.coverage,
   };

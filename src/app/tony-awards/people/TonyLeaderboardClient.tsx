@@ -118,7 +118,7 @@ export default function TonyLeaderboardClient({
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full" aria-label="Tony Awards leaderboard ranked by wins">
           <thead>
             <tr className="text-left text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide border-b border-white/10">
               <th className="pb-2 pr-2 w-8 text-center">#</th>
@@ -143,6 +143,17 @@ export default function TonyLeaderboardClient({
                   <span className="text-[10px] text-gray-500 ml-1.5">
                     {row.showCount} show{row.showCount !== 1 ? 's' : ''}
                   </span>
+                  {/* Mobile-only: show categories under name since column is hidden */}
+                  <div className="sm:hidden flex flex-wrap gap-1 mt-0.5">
+                    {row.categories.slice(0, 2).map(cat => (
+                      <span key={cat} className="text-[9px] text-gray-600">
+                        {abbreviateCategory(cat)}
+                      </span>
+                    ))}
+                    {row.categories.length > 2 && (
+                      <span className="text-[9px] text-gray-600">+{row.categories.length - 2}</span>
+                    )}
+                  </div>
                 </td>
                 <td className="py-2.5 pr-3 text-center">
                   {row.wins > 0 ? (
