@@ -131,6 +131,8 @@ const OUTLET_DOMAINS = {
   'mirror': 'mirror.co.uk',
   'the-sun': 'thesun.co.uk',
   'west-end-best-friend': 'westendbestfriend.co.uk',
+  'bloomberg': 'bloomberg.com',
+  'bloomberg-news': 'bloomberg.com',
 };
 
 // Known domain redirects (old domain → new domain)
@@ -353,10 +355,16 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     return '__SERP_UNAVAILABLE__';
   }
 
+  // Extract old URL's domain for fallback matching
+  let oldDomain = '';
+  try {
+    oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
+  } catch (e) {}
+
   if (!results.length) {
     // Fallback: broader search without site: restriction, using outlet + critic name
     // This catches articles Google didn't index under the domain (URL changes, redirects)
-    if (criticName && domain) {
+    if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
       results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log);
@@ -380,11 +388,6 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   log(`    Using ${provider} (${results.length} results)`);
 
   // Filter and match results
-  let oldDomain = '';
-  try {
-    oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
-  } catch (e) {}
-
   const targetDomain = domain || oldDomain;
   const showTitleLower = showInfo.title.toLowerCase();
   const shortTitle = (review.showId || '')
