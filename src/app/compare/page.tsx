@@ -9,7 +9,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Broadway Show Comparisons - Which Show Should You See?',
-  description: 'Compare Broadway shows side by side. Hamilton vs Wicked, Lion King vs Aladdin, and more. See critic scores, runtime, ticket prices to help you decide.',
+  description: 'Compare Broadway shows side by side. Hamilton vs Wicked, Lion King vs Aladdin, and more. See CriticScore ratings, runtime, ticket prices to help you decide.',
   alternates: { canonical: `${BASE_URL}/compare` },
   openGraph: {
     title: 'Broadway Show Comparisons - Which Show Should You See?',

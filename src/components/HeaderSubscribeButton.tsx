@@ -104,7 +104,7 @@ export default function HeaderSubscribeButton() {
                   </svg>
                 </div>
                 <p className="text-white font-semibold">You&apos;re in!</p>
-                <p className="text-sm text-gray-400 mt-1">We&apos;ll email you whenever a new show opens on Broadway with its Critic Score.</p>
+                <p className="text-sm text-gray-400 mt-1">We&apos;ll email you whenever a new show opens on Broadway with its CriticScore.</p>
               </div>
             ) : (
               <>

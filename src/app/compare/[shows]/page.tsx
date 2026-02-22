@@ -24,7 +24,7 @@ export function generateMetadata({ params }: { params: { shows: string } }): Met
   if (!showA || !showB) return { title: 'Comparison Not Found' };
 
   const title = `${showA.title} vs ${showB.title}: Which Broadway Show Is Better?`;
-  const description = `Compare ${showA.title} and ${showB.title} on Broadway. See critic scores, runtime, ticket prices, and which show is right for you.`;
+  const description = `Compare ${showA.title} and ${showB.title} on Broadway. See CriticScore ratings, runtime, ticket prices, and which show is right for you.`;
 
   return {
     title,
@@ -116,7 +116,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${showA.title} vs ${showB.title}: Broadway Show Comparison`,
-    description: `Compare ${showA.title} and ${showB.title} side by side. Critic scores, runtime, ticket prices, and recommendations.`,
+    description: `Compare ${showA.title} and ${showB.title} side by side. CriticScore ratings, runtime, ticket prices, and recommendations.`,
     image: `${BASE_URL}/og/home.png`,
     datePublished: new Date().toISOString().split('T')[0],
     dateModified: new Date().toISOString().split('T')[0],
@@ -243,7 +243,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           </div>
 
           <ComparisonRow
-            label="Critic Score"
+            label="CriticScore"
             valueA={scoreA !== null ? Math.round(scoreA) : 'TBD'}
             valueB={scoreB !== null ? Math.round(scoreB) : 'TBD'}
             winnerA={scoreWinnerA}
@@ -322,7 +322,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           <div className="text-gray-300 text-sm space-y-3">
             {scoreA !== null && scoreB !== null && Math.abs(scoreA - scoreB) > 5 && (
               <p>
-                <strong className="text-white">Based on critic scores:</strong>{' '}
+                <strong className="text-white">Based on CriticScore:</strong>{' '}
                 {scoreA > scoreB ? showA.title : showB.title} has a higher critic rating
                 ({Math.round(scoreA > scoreB ? scoreA : scoreB)} vs {Math.round(scoreA > scoreB ? scoreB : scoreA)}).
               </p>
