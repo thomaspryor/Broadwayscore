@@ -13,6 +13,7 @@ import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getSeasonsForList } from '@/lib/data-gold-list-badges';
+import { featureFlags } from '@/config/feature-flags';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -116,20 +117,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    // Tony Awards predictions
-    {
+    // Tony Awards predictions (only when feature flag is on, otherwise 404)
+    ...(featureFlags.tonyPredictions ? [{
       url: `${BASE_URL}/tony-awards/predictions`,
       lastModified: latestDate,
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
-    },
-    // Tony Awards leaderboard
-    {
+    }] : []),
+    // Tony Awards leaderboard (only when feature flag is on, otherwise 404)
+    ...(featureFlags.tonyPeople ? [{
       url: `${BASE_URL}/tony-awards/people`,
       lastModified: latestDate,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
-    },
+    }] : []),
     // West End page
     {
       url: `${BASE_URL}/west-end`,

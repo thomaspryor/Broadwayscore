@@ -4,6 +4,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getScoreTier } from '@/components/show-cards/ScoreBadge';
 import { featureFlags } from '@/config/feature-flags';
+import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getTonyLeaderboard, getTonyNominationsMeta } from '@/lib/data-tony-noms';
 import {
   getTonySeasonWindow,
@@ -99,7 +100,7 @@ export default function TonyAwardsHubPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           All Shows
@@ -122,7 +123,7 @@ export default function TonyAwardsHubPage() {
             <Link href="/tony-awards/predictions" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -132,14 +133,12 @@ export default function TonyAwardsHubPage() {
               {categoryTeasers.length > 0 && (
                 <div className="space-y-1.5">
                   {categoryTeasers.slice(0, 4).map(t => (
-                    <div key={t.label} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">{t.label}</span>
-                      <span className="text-white font-medium truncate ml-2">
-                        {t.showTitle}
-                        {t.score !== null && (
-                          <span className="text-brand ml-1.5">({t.score})</span>
-                        )}
-                      </span>
+                    <div key={t.label} className="flex items-center justify-between text-sm gap-2">
+                      <span className="text-gray-500 flex-shrink-0">{t.label}</span>
+                      <span className="text-white font-medium truncate">{t.showTitle}</span>
+                      {t.score !== null && (
+                        <span className="text-brand flex-shrink-0">({t.score})</span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -162,7 +161,7 @@ export default function TonyAwardsHubPage() {
             <Link href="/tony-awards/people" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">All-Time Leaderboard</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -188,33 +187,41 @@ export default function TonyAwardsHubPage() {
         </div>
 
         {/* Browse Tony Shows */}
-        <section className="mb-10">
-          <h2 className="text-xl font-bold text-white mb-4">Browse Tony Shows</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Link href="/browse/tony-winners-on-broadway" className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-white">Tony Winners on Broadway</h3>
-                  <p className="text-xs text-gray-400 mt-1">Award-winning productions currently playing</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+        {(() => {
+          const nomineeBrowseSlug = `tony-nominated-${season.ceremonyYear}`;
+          const hasNomineeBrowse = !!getBrowsePageConfig(nomineeBrowseSlug);
+          return (
+            <section className="mb-10">
+              <h2 className="text-xl font-bold text-white mb-4">Browse Tony Shows</h2>
+              <div className={`grid ${hasNomineeBrowse ? 'sm:grid-cols-2' : ''} gap-4`}>
+                <Link href="/browse/tony-winners-on-broadway" className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-semibold text-white">Tony Winners on Broadway</h3>
+                      <p className="text-xs text-gray-400 mt-1">Award-winning productions currently playing</p>
+                    </div>
+                    <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </Link>
+                {hasNomineeBrowse && (
+                  <Link href={`/browse/${nomineeBrowseSlug}`} className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-semibold text-white">{season.ceremonyYear} Tony Nominees</h3>
+                        <p className="text-xs text-gray-400 mt-1">This year&apos;s celebrated shows still playing</p>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </Link>
+                )}
               </div>
-            </Link>
-            <Link href={`/browse/tony-nominated-${season.ceremonyYear}`} className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-white">{season.ceremonyYear} Tony Nominees</h3>
-                  <p className="text-xs text-gray-400 mt-1">This year&apos;s celebrated shows still playing</p>
-                </div>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </Link>
-          </div>
-        </section>
+            </section>
+          );
+        })()}
 
         {/* Historical Winners */}
         {historicalWinners.length > 0 && (
@@ -272,7 +279,7 @@ export default function TonyAwardsHubPage() {
             We analyzed 12 Tony seasons (2014&ndash;2025) across all four main categories to test how well aggregated critic scores predict winners.
           </p>
 
-          {/* Hero stats */}
+          {/* Hero stats — hardcoded from 12-season analysis (2014-2025). Update after each Tony ceremony. */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             {[
               { stat: '69%', label: '#1 score wins' },
@@ -352,7 +359,7 @@ export default function TonyAwardsHubPage() {
           <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
             <p className="text-xs text-gray-500 mb-3">
-              In 39 category-seasons, only 2 winners ranked below #2 by critic score.
+              Across all four categories over 12 seasons, only 2 winners ranked below #2 by critic score.
             </p>
             <div className="space-y-2">
               <div className="flex items-center justify-between py-1.5 border-b border-white/5">
