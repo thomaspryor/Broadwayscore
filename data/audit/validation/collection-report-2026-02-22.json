@@ -1,0 +1,78 @@
+{
+  "runDate": "2026-02-22T01:36:42.574Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "showstopper-the-improvised-musical-west-end-2023",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 4,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "80.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 4
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "showstopper-the-improvised-musical-west-end-2023/evening-standard--fiona-mountford.json",
+    "showstopper-the-improvised-musical-west-end-2023/everythingtheatre--zoe-pfaller.json",
+    "showstopper-the-improvised-musical-west-end-2023/london-theatre--sophie-thomas.json",
+    "showstopper-the-improvised-musical-west-end-2023/the-telegraph-uk--dominic-cavendish.json"
+  ],
+  "failed": [
+    "showstopper-the-improvised-musical-west-end-2023/the-stage-uk--paul-vale.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "showstopper-the-improvised-musical-west-end-2023/evening-standard--fiona-mountford.json",
+      "showstopper-the-improvised-musical-west-end-2023/everythingtheatre--zoe-pfaller.json",
+      "showstopper-the-improvised-musical-west-end-2023/london-theatre--sophie-thomas.json",
+      "showstopper-the-improvised-musical-west-end-2023/the-telegraph-uk--dominic-cavendish.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
