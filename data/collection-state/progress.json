@@ -150,7 +150,8 @@
     "les-liaisons-dangereuses-2016/telegraph--william-wolf.json",
     "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json",
     "buena-vista-social-club-2025/nytimes--jesse-green.json",
-    "cymbeline-2007/nytimes--charles-isherwood.json"
+    "cymbeline-2007/nytimes--charles-isherwood.json",
+    "merrily-we-roll-along-2023/nytimes--calum-marsh.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -841,7 +842,16 @@
     "heisenberg-2016/nytimes--charles-isherwood.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/nytimes--sylviane-gold.json",
     "illinoise-2024/nytimes--jesse-green.json",
-    "jekyll-and-hyde-2013/nytimes--charles-isherwood.json"
+    "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+    "les-liaisons-dangereuses-2016/nytimes--matt-wolf.json",
+    "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+    "next-to-normal-2009/nytimes--ben-brantley.json",
+    "oklahoma-2019/nytimes--benedict-nightingale.json",
+    "once-upon-a-mattress-2024/nytimes--elisabeth-vincentelli.json",
+    "once-upon-a-one-more-time-2023/nytimes--maya-phillips.json",
+    "pal-joey-2008/nytimes--jesse-green.json",
+    "pictures-from-home-2023/nytimes--jesse-green.json",
+    "purpose/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -985,7 +995,8 @@
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--steve-murray.json",
       "moulin-rouge-the-musical-west-end-2021/broadwayworld--taylor-clemons.json",
       "moulin-rouge-the-musical-west-end-2021/edmonton-journal--liane-faulder.json",
-      "moulin-rouge-the-musical-west-end-2021/the-globe-and-mail--martin-morrow.json"
+      "moulin-rouge-the-musical-west-end-2021/the-globe-and-mail--martin-morrow.json",
+      "merrily-we-roll-along-2023/nytimes--calum-marsh.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1180,7 +1191,7 @@
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+  "lastProcessed": "purpose/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -1276,6 +1287,17 @@
       "t": "2026-02-22T02:10:57.493Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-22T04:50:01.921Z",
+      "event": "bb-session",
+      "session": "0f9d41a7",
+      "url": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html"
+    },
+    {
+      "t": "2026-02-22T04:50:03.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-22T04:49:04.041Z",
-  "processed": 151,
-  "failed": 689,
-  "successRate": "18.0%",
+  "updatedAt": "2026-02-22T04:51:00.650Z",
+  "processed": 152,
+  "failed": 698,
+  "successRate": "17.9%",
   "tierBreakdown": {
     "playwright": 70,
     "amp": 28,
     "browserbase": 0,
     "directCookies": 3,
-    "scrapingbee": 32,
+    "scrapingbee": 33,
     "brightdata": 0,
     "archiveToday": 102,
     "archive": 84
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -109,6 +109,17 @@
       "t": "2026-02-22T02:10:57.493Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-22T04:50:01.921Z",
+      "event": "bb-session",
+      "session": "0f9d41a7",
+      "url": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html"
+    },
+    {
+      "t": "2026-02-22T04:50:03.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
