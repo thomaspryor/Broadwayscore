@@ -6,9 +6,9 @@
  * Google SERP searches — no reliance on aggregator sites.
  *
  * Two strategies:
- *   1. Site-specific: `site:{domain} "{showTitle}" Broadway review {year}`
- *      for each Tier 1 + Tier 2 outlet (~32 searches)
- *   2. Google News: `"{showTitle}" Broadway review` filtered to recent
+ *   1. Site-specific: `site:{domain} "{showTitle}" [Broadway|West End] review {year}`
+ *      for each Tier 1 + Tier 2 outlet (market-specific outlet lists)
+ *   2. Google News: `"{showTitle}" [Broadway|West End] review` filtered to recent
  *      results (~2-3 searches, catches unlisted outlets)
  *
  * Writes review-text stubs to data/review-texts/{showId}/ for the rebuild
@@ -53,18 +53,29 @@ const { OUTLET_DOMAINS } = (() => {
   return { OUTLET_DOMAINS: {} };
 })();
 
-// Tier 1 outlet IDs (from scoring.ts)
-const TIER1_OUTLETS = [
+// Tier 1 outlet IDs (from scoring.ts) — Broadway
+const TIER1_OUTLETS_BW = [
   'nytimes', 'washpost', 'latimes', 'wsj', 'ap', 'variety',
   'hollywood-reporter', 'vulture', 'guardian', 'timeout', 'broadway-news', 'newyorker',
 ];
 
-// Tier 2 outlet IDs
-const TIER2_OUTLETS = [
+// Tier 2 outlet IDs — Broadway
+const TIER2_OUTLETS_BW = [
   'chicagotribune', 'usatoday', 'nydailynews', 'nypost', 'thewrap',
   'ew', 'indiewire', 'deadline', 'slantmagazine', 'dailybeast',
   'observer', 'newyorktheatreguide', 'nystagereview', 'theatermania',
   'theatrely', 'newsday', 'rollingstone', 'financial-times-uk',
+];
+
+// Tier 1 outlet IDs — West End (keys match OUTLET_DOMAINS in url-discovery.js)
+const TIER1_OUTLETS_WE = [
+  'times-uk', 'the-telegraph-uk', 'evening-standard', 'guardian', 'dailymail',
+];
+
+// Tier 2 outlet IDs — West End
+const TIER2_OUTLETS_WE = [
+  'the-stage-uk', 'whatsonstage', 'timeout-london', 'the-independent-uk',
+  'financial-times-uk', 'london-theatre', 'variety',
 ];
 
 // Aggregator domains to exclude from News results
@@ -214,7 +225,12 @@ async function main() {
   const showTitle = show.title;
   const year = (show.openingDate || '').substring(0, 4);
 
+  const isWestEnd = show.category === 'west-end';
+  const marketLabel = isWestEnd ? 'West End' : 'Broadway';
+  const reviewKeyword = isWestEnd ? 'West End review' : 'Broadway review';
+
   console.log(`Show: ${showTitle} (${showId})`);
+  console.log(`Market: ${marketLabel}`);
   console.log(`Year: ${year}`);
   console.log(`Tiers: ${TIERS.join(', ')}\n`);
 
@@ -233,6 +249,8 @@ async function main() {
   let skippedDupe = 0;
 
   // === Strategy 1: Site-specific SERP for each outlet ===
+  const TIER1_OUTLETS = isWestEnd ? TIER1_OUTLETS_WE : TIER1_OUTLETS_BW;
+  const TIER2_OUTLETS = isWestEnd ? TIER2_OUTLETS_WE : TIER2_OUTLETS_BW;
   const outletIds = [];
   if (TIERS.includes(1)) outletIds.push(...TIER1_OUTLETS);
   if (TIERS.includes(2)) outletIds.push(...TIER2_OUTLETS);
@@ -247,7 +265,7 @@ async function main() {
     if (!domain || searchedDomains.has(domain)) continue;
     searchedDomains.add(domain);
 
-    const query = `site:${domain} "${showTitle}" Broadway review${year ? ` ${year}` : ''}`;
+    const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}`;
 
     try {
       const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3);
@@ -312,7 +330,7 @@ async function main() {
   // === Strategy 2: Google News SERP ===
   console.log(`\nStrategy 2: Google News search...`);
 
-  const newsQuery = `"${showTitle}" Broadway review`;
+  const newsQuery = `"${showTitle}" ${reviewKeyword}`;
   try {
     // Use tbs=qdr:d for past 24 hours
     const newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
