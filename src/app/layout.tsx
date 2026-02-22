@@ -115,19 +115,19 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-6">
                 <Link href="/" className="flex items-center group">
-                  <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
-                  <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
-                  <span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
+                  <span className="text-[8px] sm:text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
                 </Link>
               </div>
               <div className="flex items-center gap-3">
                 {featureFlags.westEnd && (
-                  <Link href="/west-end" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  <Link href="/west-end" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     West End
                   </Link>
                 )}
                 {featureFlags.offBroadway && (
-                  <Link href="/off-broadway" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  <Link href="/off-broadway" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     Off-Broadway
                   </Link>
                 )}
