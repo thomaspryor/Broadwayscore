@@ -319,6 +319,8 @@ const CONFIG = {
     'culture-sauce': 'culturesauce.com',
     'dc-metro-theater-arts': 'dcmetrotheaterarts.com',
     'nj-arts': 'njarts.net',
+    'bloomberg': 'bloomberg.com',
+    'bloomberg-news': 'bloomberg.com',
   },
 };
 
@@ -2972,10 +2974,16 @@ async function discoverCorrectUrl(review) {
       return '__SERP_UNAVAILABLE__';
     }
 
+    // Extract the old URL's domain for comparison (needed for fallback condition)
+    let oldDomain = '';
+    try {
+      oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
+    } catch (e) {}
+
     if (!results.length) {
       // Fallback: broader search without site: restriction, using outlet + critic name
       // This catches articles Google didn't index under the domain (URL changes, redirects)
-      if (criticName && domain) {
+      if (criticName && (domain || oldDomain)) {
         stats.urlDiscoveryAttempts++; // counts against per-run cap
         const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" ${reviewKeyword}${yearClause}`;
         console.log(`    Fallback search (no site:): ${fallbackQuery}`);
@@ -2996,12 +3004,6 @@ async function discoverCorrectUrl(review) {
         return null;
       }
     }
-
-    // Extract the old URL's domain for comparison
-    let oldDomain = '';
-    try {
-      oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
-    } catch (e) {}
 
     // Find best matching result
     const targetDomain = domain || oldDomain;
@@ -4804,8 +4806,8 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Skip fabricated entries (URLs hallucinated by LLM without web search)
-        if (data.fabricatedEntry === true) continue;
+        // Skip fabricated entries unless a reason_filter is active (enables targeted recovery)
+        if (data.fabricatedEntry === true && CONFIG.incompleteReasonFilter.length === 0) continue;
 
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
         const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;
@@ -4911,6 +4913,7 @@ function findReviewsToProcess() {
           showNotMentioned: data.showNotMentioned || false,
           isOpenShow: openShowIds.has(showId),
           incompleteReason: data.incompleteReason || null,
+          fabricatedEntry: data.fabricatedEntry || false,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -5208,9 +5211,11 @@ async function processReview(review) {
     }
   }
 
-  // Reason-aware URL discovery: no_url and wrong_content need SERP search before fetch
-  if ((review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content') && review.filePath) {
-    console.log(`  [${review.incompleteReason}] Attempting URL discovery before fetch...`);
+  // Reason-aware URL discovery: no_url, wrong_content, and fabricated entries need SERP search before fetch
+  const needsSerpDiscovery = review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content' || review.fabricatedEntry;
+  if (needsSerpDiscovery && review.filePath) {
+    const reason = review.fabricatedEntry ? 'fabricated' : review.incompleteReason;
+    console.log(`  [${reason}] Attempting URL discovery before fetch...`);
     const discoveredUrl = await discoverCorrectUrl(review);
 
     if (discoveredUrl === '__SERP_UNAVAILABLE__') {
@@ -5219,7 +5224,7 @@ async function processReview(review) {
     }
 
     if (discoveredUrl) {
-      console.log(`  [${review.incompleteReason}] Discovered: ${review.url || '(none)'} → ${discoveredUrl}`);
+      console.log(`  [${reason}] Discovered: ${review.url || '(none)'} → ${discoveredUrl}`);
       // Update URL on file, but keep wrong-content flags until fetch succeeds
       // (race condition: if we clear flags now but fetch fails, rebuild would include wrong text)
       try {
@@ -5228,14 +5233,20 @@ async function processReview(review) {
         fileData.url = discoveredUrl;
         fileData.urlDiscoveredAt = new Date().toISOString();
         fileData.urlDiscoveryMethod = 'google-serp-reason-recovery';
+        // Clear fabricated flags on successful URL discovery
+        if (fileData.fabricatedEntry) {
+          delete fileData.fabricatedEntry;
+          delete fileData.fabricatedReason;
+        }
         fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
       } catch (e) {}
       review.url = discoveredUrl;
       review._urlDiscovered = true;
+      review.fabricatedEntry = false; // prevent re-triggering SERP on retry
     } else {
-      console.log(`  [${review.incompleteReason}] No URL found via SERP, skipping`);
+      console.log(`  [${reason}] No URL found via SERP, skipping`);
       stats.totalFailed++;
-      return { success: false, error: `${review.incompleteReason}_no_url_discovered` };
+      return { success: false, error: `${reason}_no_url_discovered` };
     }
   }
 

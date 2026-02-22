@@ -188,8 +188,12 @@ export default function TonyAwardsHubPage() {
 
         {/* Browse Tony Shows */}
         {(() => {
-          const nomineeBrowseSlug = `tony-nominated-${season.ceremonyYear}`;
+          // Try current ceremony year, then fall back to previous year
+          const currentSlug = `tony-nominated-${season.ceremonyYear}`;
+          const prevSlug = `tony-nominated-${season.ceremonyYear - 1}`;
+          const nomineeBrowseSlug = getBrowsePageConfig(currentSlug) ? currentSlug : prevSlug;
           const hasNomineeBrowse = !!getBrowsePageConfig(nomineeBrowseSlug);
+          const nomineeYear = getBrowsePageConfig(currentSlug) ? season.ceremonyYear : season.ceremonyYear - 1;
           return (
             <section className="mb-10">
               <h2 className="text-xl font-bold text-white mb-4">Browse Tony Shows</h2>
@@ -209,8 +213,8 @@ export default function TonyAwardsHubPage() {
                   <Link href={`/browse/${nomineeBrowseSlug}`} className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-sm font-semibold text-white">{season.ceremonyYear} Tony Nominees</h3>
-                        <p className="text-xs text-gray-400 mt-1">This year&apos;s celebrated shows still playing</p>
+                        <h3 className="text-sm font-semibold text-white">{nomineeYear} Tony Nominees</h3>
+                        <p className="text-xs text-gray-400 mt-1">{nomineeYear === season.ceremonyYear ? 'This year\'s' : 'Last year\'s'} celebrated shows still playing</p>
                       </div>
                       <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -313,7 +317,7 @@ export default function TonyAwardsHubPage() {
                     />
                   </div>
                   <span className="text-sm font-semibold text-white w-10 text-right">{pct}%</span>
-                  {note && <span className="text-xs text-gray-500 hidden sm:inline w-24">{note}</span>}
+                  <span className="text-xs text-gray-500 hidden sm:inline w-24">{note}</span>
                 </div>
               ))}
             </div>
