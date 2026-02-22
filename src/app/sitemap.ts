@@ -109,12 +109,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...browsePages,
     // Best-of lists - high priority discovery pages
     ...bestOfPages,
-    // Tony Awards predictions
+    // Tony Awards hub
     {
       url: `${BASE_URL}/tony-awards`,
       lastModified: latestDate,
       changeFrequency: 'weekly',
       priority: 0.9,
+    },
+    // Tony Awards predictions
+    {
+      url: `${BASE_URL}/tony-awards/predictions`,
+      lastModified: latestDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
     },
     // Tony Awards leaderboard
     {
