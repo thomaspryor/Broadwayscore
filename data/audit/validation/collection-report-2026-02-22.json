@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-22T17:27:17.819Z",
+  "runDate": "2026-02-22T17:35:03.475Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 200,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 92,
-    "failed": 1211,
+    "processed": 100,
+    "failed": 1252,
     "skipped": 0,
-    "successRate": "7.1%"
+    "successRate": "7.4%"
   },
   "tierBreakdown": {
     "playwright": 20,
     "amp": 95,
     "browserbase": 1,
-    "directCookies": 7,
+    "directCookies": 9,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 333,
-    "archive": 57
+    "archiveToday": 335,
+    "archive": 63
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 5,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 31,
-    "scrapingBeeCreditsUsed": 31,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 31,
-    "urlDiscoverySuccess": 0,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 18,
+    "tier4Success": 12,
+    "totalFailed": 118,
+    "scrapingBeeCreditsUsed": 127,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.2,
+    "urlDiscoveryAttempts": 128,
+    "urlDiscoverySuccess": 16,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -141,7 +141,15 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
     "come-from-away-2017/newyorker--hilton-als.json",
-    "cost-of-living-2022/newyorker--vinson-cunningham.json"
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "indecent-2017/newyorker--hilton-als.json",
+    "is-this-a-room-2021/newyorker--naomi-fry.json",
+    "kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--hilton-als.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "seminar-2011/newyorker--john-lahr.json",
+    "sunset-boulevard-2017/newyorker--hilton-als.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1324,37 +1332,78 @@
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
     "god-of-carnage-2009/newyorker--hilton-als.json",
     "grand-horizons-2020/newyorker--hilton-als.json",
-    "giant-2026/bloomberg--philip-boroff.json",
-    "romeo-and-juliet-west-end-2026/bloomberg--unknown.json",
-    "deuce-2007/bloomberg-news--philip-boroff.json",
-    "fela-2009/bloomberg-news--john-simon.json",
-    "fela-2012/bloomberg-news--john-simon.json",
-    "motown-the-musical-2016/bloomberg-news--unknown.json",
-    "priscilla-queen-of-the-desert-2011/bloomberg-news--jeremy-gerard.json",
-    "promises-promises-2010/bloomberg-news--john-simon.json",
-    "race-2009/bloomberg-news--john-simon.json",
-    "that-championship-season-2011/bloomberg-news--jeremy-gerard.json",
-    "the-addams-family-2010/bloomberg-news--john-simon.json",
-    "the-glass-menagerie-2013/bloomberg-news--unknown.json",
-    "the-glass-menagerie-2017/bloomberg-news--unknown.json",
-    "the-testament-of-mary-2013/bloomberg-news--unknown.json",
-    "time-stands-still-2010/bloomberg-news--john-simon.json",
-    "wonderland-2011/bloomberg-news--phillip-boroff.json",
-    "after-midnight-2013/bloomberg--jeremy-gerard.json",
-    "an-enemy-of-the-people-2024/bloomberg--jeremy-gerard.json",
-    "fun-home-2015/bloomberg--jeremy-gerard.json",
-    "ghost-the-musical-2012/bloomberg--jeremy-gerard.json",
-    "la-cage-aux-folles-2010/bloomberg--jeremy-gerard.json",
-    "nice-work-if-you-can-get-it-2012/bloomberg--jeremy-gerard.json",
-    "rodgers-hammersteins-cinderella-2013/bloomberg--jeremy-gerard.json",
-    "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
-    "sweeney-todd-2005/bloomberg--mark-leydorf.json",
-    "sweeney-todd-2005/bloomberg-mark-leydorf--mark-leydorf.json",
-    "the-addams-family-2010/bloomberg--john-simon.json",
-    "the-anarchist-2012/bloomberg--jeremy-gerard.json",
-    "the-snow-geese-2013/bloomberg--jeremy-gerard.json",
-    "the-trip-to-bountiful-2013/bloomberg--jeremy-gerard.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+    "gypsy-2008/newyorker--hilton-als.json",
+    "gypsy-2008/newyorker--john-lahr.json",
+    "hand-to-god-2015/newyorker--hilton-als.json",
+    "hangmen-2022/newyorker--vinson-cunningham.json",
+    "harmony-2023/newyorker--naomi-fry.json",
+    "hillary-and-clinton-2019/newyorker--hilton-als.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "in-the-heights-2008/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "into-the-woods-2022/newyorker--naomi-fry.json",
+    "junk-2017/newyorker--hilton-als.json",
+    "just-for-us-2023/newyorker--naomi-fry.json",
+    "king-charles-iii-2015/newyorker--hilton-als.json",
+    "king-kong-2018/newyorker--hilton-als.json",
+    "kinky-boots-2013/newyorker--hilton-als.json",
+    "kiss-me-kate-2019/newyorker--hilton-als.json",
+    "la-bete-2010/newyorker--hilton-als.json",
+    "left-on-tenth-2024/newyorker--naomi-fry.json",
+    "leopoldstadt-2022/newyorker--vinson-cunningham.json",
+    "les-liaisons-dangereuses-2016/newyorker--hilton-als.json",
+    "linda-vista-2019/newyorker--hilton-als.json",
+    "long-days-journey-into-night-2016/newyorker--hilton-als.json",
+    "machinal-2014/newyorker--hilton-als.json",
+    "mcneal-2024/newyorker--naomi-fry.json",
+    "mean-girls-2018/newyorker--hilton-als.json",
+    "meteor-shower-2017/newyorker--hilton-als.json",
+    "motown-the-musical-2013/newyorker--hilton-als.json",
+    "of-mice-and-men-2014/newyorker--hilton-als.json",
+    "oh-hello-on-broadway-2016/newyorker--hilton-als.json",
+    "ohio-state-murders-2022/newyorker--naomi-fry.json",
+    "ohio-state-murders-2022/newyorker--vinson-cunningham.json",
+    "oklahoma-2019/newyorker--hilton-als.json",
+    "old-times-2015/newyorker--hilton-als.json",
+    "on-the-town-2014/newyorker--hilton-als.json",
+    "passing-strange-2008/newyorker--hilton-als.json",
+    "present-laughter-2017/newyorker--hilton-als.json",
+    "red-2010/newyorker--hilton-als.json",
+    "red-2010/newyorker--john-lahr.json",
+    "side-show-2014/newyorker--hilton-als.json",
+    "something-rotten-2015/newyorker--hilton-als.json",
+    "south-pacific-2008/newyorker--hilton-als.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "suffs-2024/newyorker--naomi-fry.json",
+    "tammy-faye-2024/newyorker--naomi-fry.json",
+    "the-assembled-parties-2013/newyorker--hilton-als.json",
+    "the-cherry-orchard-2016/newyorker--hilton-als.json",
+    "the-collaboration-2022/newyorker--naomi-fry.json",
+    "the-country-house-2014/newyorker--hilton-als.json",
+    "the-elephant-man-2014/newyorker--hilton-als.json",
+    "the-glass-menagerie-2013/newyorker--hilton-als.json",
+    "the-glass-menagerie-2017/newyorker--hilton-als.json",
+    "the-inheritance-2019/newyorker--hilton-als.json",
+    "the-king-and-i-2015/newyorker--hilton-als.json",
+    "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
+    "the-lifespan-of-a-fact-2018/newyorker--hilton-als.json",
+    "the-new-one-2018/newyorker--hilton-als.json",
+    "the-norman-conquests-2009/newyorker--john-lahr.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "the-present-2017/newyorker--hilton-als.json",
+    "the-realistic-joneses-2014/newyorker--hilton-als.json",
+    "the-seagull-2008/newyorker--hilton-als.json",
+    "the-visit-2015/newyorker--hilton-als.json",
+    "the-waverly-gallery-2018/newyorker--hilton-als.json",
+    "the-wiz-2024/newyorker--naomi-fry.json",
+    "thoughts-of-a-colored-man-2021/newyorker--vinson-cunningham.json",
+    "time-and-the-conways-2017/newyorker--hilton-als.json",
+    "time-stands-still-2010/newyorker--hilton-als.json",
+    "time-stands-still-2010/newyorker--uncredited.json",
+    "to-kill-a-mockingbird-2018/newyorker--hilton-als.json",
+    "waiting-for-godot-2013/newyorker--john-lahr.json",
+    "wolf-hall-parts-one-and-two-2015/newyorker--hilton-als.json",
+    "yellow-face-2024/newyorker--naomi-fry.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1486,7 +1535,9 @@
       "illinoise-2024/hollywood-reporter--angie-han.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "grey-house-2023/newyorker--dan-stahl.json",
-      "cost-of-living-2022/newyorker--vinson-cunningham.json"
+      "cost-of-living-2022/newyorker--vinson-cunningham.json",
+      "seminar-2011/newyorker--john-lahr.json",
+      "sunset-boulevard-2017/newyorker--hilton-als.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1848,7 +1899,9 @@
       "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json",
-      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json"
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
+      "data/review-texts/time-stands-still-2010/newyorker--uncredited.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -1907,9 +1960,96 @@
       "pictures-from-home-2023/newyorker--helen-shaw.json",
       "hadestown-2019/newyorker--hilton-als.json",
       "six-2021/newyorker--naomi-fry.json",
-      "come-from-away-2017/newyorker--hilton-als.json"
+      "come-from-away-2017/newyorker--hilton-als.json",
+      "indecent-2017/newyorker--hilton-als.json",
+      "is-this-a-room-2021/newyorker--naomi-fry.json",
+      "kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--hilton-als.json",
+      "next-to-normal-2009/newyorker--john-lahr.json",
+      "prima-facie-2023/newyorker--naomi-fry.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hadestown-2019/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2019/05/06/hadestown-brings-the-myths-back-to-broadway",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/hadestown-3"
+    },
+    {
+      "reviewId": "six-2021/newyorker--naomi-fry.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2021/11/01/six-brings-pop-feminism-to-broadway",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "reviewId": "wicked-2003/newyorker--john-lahr.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2003/11/17/popular-4",
+      "newUrl": "https://www.newyorker.com/podcast/critics-at-large/after-wicked-what-do-we-want-from-the-musical"
+    },
+    {
+      "reviewId": "come-from-away-2017/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2017/04/03/come-from-away-celebrates-kindness",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/come-from-away-2"
+    },
+    {
+      "reviewId": "cost-of-living-2022/newyorker--vinson-cunningham.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2022/11/07/cost-of-living-review-manhattan-theatre-club",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/cost-of-living-10-17-22"
+    },
+    {
+      "reviewId": "fat-ham-2023/newyorker--naomi-fry.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2023/05/15/fat-ham-theatre-review",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/fat-ham-04-24-23"
+    },
+    {
+      "reviewId": "fat-ham-2023/newyorker--vinson-cunningham.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2023/05/22/fat-ham-theatre-review",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/fat-ham-04-24-23"
+    },
+    {
+      "reviewId": "indecent-2017/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2017/05/08/indecent-at-the-cort-theatre",
+      "newUrl": "https://www.newyorker.com/books/page-turner/with-her-eerily-timely-indecent-paula-vogel-unsettles-american-theatre-again"
+    },
+    {
+      "reviewId": "is-this-a-room-2021/newyorker--naomi-fry.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2021/11/08/is-this-a-room-brings-reality-winner-to-broadway",
+      "newUrl": "https://www.newyorker.com/magazine/2021/10/25/is-this-a-room-and-chicken-biscuits-bring-the-unexpected-to-broadway"
+    },
+    {
+      "reviewId": "kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2022/12/05/kimberly-akimbo-review-broadway",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/kimberly-akimbo-11-21-22"
+    },
+    {
+      "reviewId": "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2016/11/28/natasha-pierre-and-the-great-comet-of-1812",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/natasha-pierre-the-great-comet-of-1812-7"
+    },
+    {
+      "reviewId": "next-to-normal-2009/newyorker--john-lahr.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2009/04/27/rock-of-ages",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/next-to-normal"
+    },
+    {
+      "reviewId": "prima-facie-2023/newyorker--naomi-fry.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2023/05/08/prima-facie-theatre-review",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/prima-facie-05-15-23"
+    },
+    {
+      "reviewId": "seminar-2011/newyorker--john-lahr.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2011/12/12/classroom-drama",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/seminar-2"
+    },
+    {
+      "reviewId": "sunset-boulevard-2017/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2017/03/06/sunset-boulevard-revived",
+      "newUrl": "https://www.newyorker.com/goings-on-about-town/theatre/sunset-boulevard-2"
+    },
+    {
+      "reviewId": "the-parisian-woman-2017/newyorker--hilton-als.json",
+      "oldUrl": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed",
+      "newUrl": "https://www.newyorker.com/culture/culture-desk/uma-thurman-debuts-on-broadway-in-beau-willimons-the-parisian-woman"
+    }
+  ]
 }
