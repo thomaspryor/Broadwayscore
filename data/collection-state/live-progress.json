@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-02-22T17:02:10.416Z",
+  "updatedAt": "2026-02-22T17:02:48.010Z",
   "processed": 84,
-  "failed": 1056,
-  "successRate": "7.4%",
+  "failed": 1066,
+  "successRate": "7.3%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 95,
     "browserbase": 1,
-    "directCookies": 6,
+    "directCookies": 5,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 332,
@@ -15,6 +15,17 @@
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-02-22T01:44:34.206Z",
+      "event": "bb-session",
+      "session": "3dbb2104",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-22T01:44:36.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
     {
       "t": "2026-02-22T01:45:26.001Z",
       "event": "bb-session",
@@ -112,17 +123,6 @@
     },
     {
       "t": "2026-02-22T16:56:01.518Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-22T17:00:35.503Z",
-      "event": "bb-session",
-      "session": "95d449c7",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
-    },
-    {
-      "t": "2026-02-22T17:00:37.904Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
