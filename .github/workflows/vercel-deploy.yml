@@ -119,6 +119,13 @@ jobs:
             echo "::error::Production smoke test failed — show page returned HTTP $STATUS2"
             exit 1
           fi
+          # Check Tony Awards hub
+          STATUS3=$(curl -s -o /dev/null -w "%{http_code}" https://broadwayscorecard.com/tony-awards)
+          echo "Tony Awards hub returned HTTP $STATUS3"
+          if [ "$STATUS3" != "200" ]; then
+            echo "::error::Production smoke test failed — Tony Awards hub returned HTTP $STATUS3"
+            exit 1
+          fi
           echo "Smoke test passed — production is live"
 
       - name: Notify search engines of updated sitemap
