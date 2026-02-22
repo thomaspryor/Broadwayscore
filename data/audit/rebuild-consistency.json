@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T05:25:29.087Z",
+  "generatedAt": "2026-02-22T06:28:32.392Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -13,9 +13,17 @@
       "type": "rating-score-mismatch",
       "severity": "high",
       "showId": "back-to-the-future-west-end-2021",
-      "outlet": "londontheatre",
+      "outlet": "london-theatre",
       "critic": "Marianka Swain",
       "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "burn-the-floor-2009",
+      "outlet": "broadwayworld",
+      "critic": "Michael Dale",
+      "detail": "originalRating \"4/5\" (=80) vs score 44 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -69,7 +77,7 @@
       "type": "rating-score-mismatch",
       "severity": "high",
       "showId": "matilda-the-musical-west-end-2021",
-      "outlet": "londontheatre",
+      "outlet": "london-theatre",
       "critic": "Peter Brown",
       "detail": "originalRating \"5/5\" (=100) vs score 78 (source: llmScore-lowconf)"
     },
@@ -108,6 +116,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "ew",
+      "critic": "Lisa Schwarzbaum",
+      "detail": "originalRating \"D\" (=35) vs score 95 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "seminar-2011",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -128,6 +144,14 @@
       "outlet": "telegraph",
       "critic": "Charles Spencer",
       "detail": "originalRating \"60/100\" (=60) vs score 38 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-elephant-man-2014",
+      "outlet": "ew",
+      "critic": "Jason Clark",
+      "detail": "originalRating \"D\" (=35) vs score 75 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -189,6 +213,14 @@
       "type": "rating-score-mismatch",
       "severity": "high",
       "showId": "war-horse-2011",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "originalRating \"D\" (=35) vs score 82 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "war-horse-2011",
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 88 (source: llmScore-review)"
@@ -224,6 +256,14 @@
       "outlet": "culturesauce",
       "critic": "Thom Geier",
       "detail": "humanReviewScore 64 (mixed) overrides explicit \"93\" (=93, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "burn-the-floor-2009",
+      "outlet": "broadwayworld",
+      "critic": "Michael Dale",
+      "detail": "humanReviewScore 44 (mixed) overrides explicit \"4/5\" (=80, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -284,6 +324,14 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "ew",
+      "critic": "Melissa Rose Bernardo",
+      "detail": "humanReviewScore 25 (negative) overrides explicit \"58\" (=58, mixed)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "lucky-guy-2013",
       "outlet": "ew",
       "critic": "Lisa Schwarzbaum",
@@ -340,6 +388,22 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "ew",
+      "critic": "Lisa Schwarzbaum",
+      "detail": "humanReviewScore 95 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "the-elephant-man-2014",
+      "outlet": "ew",
+      "critic": "Jason Clark",
+      "detail": "humanReviewScore 75 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "the-trip-to-bountiful-2013",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
@@ -352,6 +416,14 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "humanReviewScore 90 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "war-horse-2011",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
     },
     {
       "type": "score-clustering",
