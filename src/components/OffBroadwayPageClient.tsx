@@ -426,7 +426,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
       .filter(show => {
-        if (!show.criticScore?.score) return false;
+        if (!show.criticScore?.score || !show.criticScore?.reviewCount || show.criticScore.reviewCount < MIN_REVIEWS_OB) return false;
         if (show.status === 'previews' || show.status === 'upcoming') return false;
         const opened = new Date(show.openingDate);
         return opened >= twelveMonthsAgo;
@@ -436,7 +436,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_OB)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -461,8 +461,11 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
-        // Show all open + previews shows (TBD for <3 reviews), scored closed shows
-        if (show.status === 'open' || show.status === 'previews') return true;
+        // Only show shows with enough reviews for a score, plus previews/upcoming in filtered views
+        if (show.status === 'previews' || show.status === 'upcoming') {
+          return statusFilter === 'previews' || statusFilter === 'all';
+        }
+        // Open and closed shows: require minimum reviews for a score
         return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_OB;
       }
     });
@@ -521,7 +524,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The New York Times, Vulture, Variety, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
