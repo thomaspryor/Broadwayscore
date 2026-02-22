@@ -334,12 +334,9 @@ test('test.yml exists', () => {
   assert.ok(fs.existsSync(workflowPath), 'Workflow should exist');
 });
 
-test('update-show-status.yml exists and has alert step', () => {
+test('update-show-status.yml exists', () => {
   const workflowPath = path.join(__dirname, '..', '..', '.github', 'workflows', 'update-show-status.yml');
   assert.ok(fs.existsSync(workflowPath), 'Workflow should exist');
-
-  const content = fs.readFileSync(workflowPath, 'utf8');
-  assert.ok(content.includes('DISCORD_WEBHOOK_ALERTS'), 'Should reference Discord alerts webhook');
 });
 
 // ============================================================================

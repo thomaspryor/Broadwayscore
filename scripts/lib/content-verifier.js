@@ -188,7 +188,7 @@ async function callWithFallback(prompt) {
 // ============================================================
 
 /**
- * Verify scraped content matches expected Broadway review
+ * Verify scraped content matches expected review for the correct market
  *
  * @param {Object} params
  * @param {string} params.scrapedText - The scraped full text
@@ -196,11 +196,12 @@ async function callWithFallback(prompt) {
  * @param {string} params.showTitle - Show title for context
  * @param {string} params.outletName - Outlet name
  * @param {string} params.criticName - Critic name
- * @param {string} [params.openingDate] - Broadway opening date (YYYY-MM-DD) for temporal context
- * @param {string} [params.venue] - Broadway venue name
+ * @param {string} [params.openingDate] - Opening date (YYYY-MM-DD) for temporal context
+ * @param {string} [params.venue] - Venue name
+ * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-broadway'
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -214,16 +215,63 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     };
   }
 
-  const dateContext = openingDate ? `\n- Broadway opening date: ${openingDate}` : '';
-  const venueContext = venue ? `\n- Broadway venue: ${venue}` : '';
+  // Market-aware prompt construction
+  const effectiveMarket = market || 'broadway';
+  const marketConfig = {
+    'broadway': {
+      label: 'Broadway',
+      description: 'shows performed in Broadway theaters in New York City',
+      dateLabel: 'Broadway opening date',
+      venueLabel: 'Broadway venue',
+      wrongProdExamples: [
+        'National tour, touring production, touring company, "on tour"',
+        'Regional theater (Ahmanson, Kennedy Center, Old Globe, Goodman, etc.)',
+        'Off-Broadway or Off-Off-Broadway venue',
+        'West End / London production',
+        'Pre-Broadway tryout or out-of-town engagement'
+      ]
+    },
+    'west-end': {
+      label: 'West End',
+      description: 'shows performed in West End theaters in London',
+      dateLabel: 'West End opening date',
+      venueLabel: 'West End venue',
+      wrongProdExamples: [
+        'UK touring production, "on tour"',
+        'Regional UK theater (not a West End venue)',
+        'Broadway / New York production',
+        'Edinburgh Fringe or other festival',
+        'Pre-West End tryout or transfer preview'
+      ]
+    },
+    'off-broadway': {
+      label: 'Off-Broadway',
+      description: 'shows performed in Off-Broadway theaters in New York City',
+      dateLabel: 'Off-Broadway opening date',
+      venueLabel: 'Off-Broadway venue',
+      wrongProdExamples: [
+        'Broadway production (different from Off-Broadway run)',
+        'National tour, touring production',
+        'Regional theater production',
+        'West End / London production'
+      ]
+    }
+  };
+  const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
+
+  const dateContext = openingDate ? `\n- ${mc.dateLabel}: ${openingDate}` : '';
+  const venueContext = venue ? `\n- ${mc.venueLabel}: ${venue}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
-  const prompt = `You are a content verification assistant for a Broadway review aggregator. We only include reviews of Broadway productions (shows performed in Broadway theaters in New York City).
+  const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
-I scraped what should be a Broadway theater review. Verify if the content is valid.
+  const prompt = `You are a content verification assistant for a theater review aggregator. We are verifying reviews of **${mc.label}** productions (${mc.description}).
+
+I scraped what should be a ${mc.label} theater review. Verify if the content is valid.
 
 **Expected Review:**
 - Show: "${showTitle}"
+- Market: ${mc.label}
 - Outlet: ${outletName}
 - Critic: ${criticName || 'Unknown'}${dateContext}${venueContext}${excerptContext}
 
@@ -248,21 +296,17 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 
 1. **Wrong article**: Is this about a completely different show, or not a theater review at all (news article, obituary, listicle, etc.)?
 
-2. **Wrong production** (IMPORTANT): Is this reviewing a NON-Broadway production of "${showTitle}"? Red flags:
-   - National tour, touring production, touring company, "on tour"
-   - Regional theater (Ahmanson, Kennedy Center, Old Globe, Goodman, etc.)
-   - Off-Broadway or Off-Off-Broadway venue
-   - West End / London production
-   - Pre-Broadway tryout or out-of-town engagement
-   A review of the BROADWAY production that merely *mentions* a tour or previous run is NOT a wrong production — it must be *reviewing* a non-Broadway staging.
+2. **Wrong production** (IMPORTANT): Is this reviewing a NON-${mc.label} production of "${showTitle}"? Red flags:
+${wrongProdList}
+   A review of the ${mc.label} production that merely *mentions* other productions is NOT a wrong production — it must be *reviewing* a non-${mc.label} staging.
 
-3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live Broadway performance)?
+3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live ${mc.label} performance)?
 
 4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
 
 5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
 
-Set isValid=true only if the content is a review of the BROADWAY production and is not truncated/junk.`;
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.`;
 
   const result = await callWithFallback(prompt);
 

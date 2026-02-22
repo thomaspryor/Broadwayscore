@@ -1287,7 +1287,9 @@ const multiProdYearGuard = {};
       const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
         : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
       if (!showYear) continue;
-      const siblings = prods.filter(p => p.id !== show.id).map(p => ({
+      // Only compare to siblings in the SAME market (category)
+      // A West End review should never be reassigned to a Broadway production (or vice versa)
+      const siblings = prods.filter(p => p.id !== show.id && p.category === show.category).map(p => ({
         id: p.id,
         year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null
       })).filter(p => p.year);
@@ -1324,9 +1326,11 @@ const multiProdDirectorGuard = {};
       const thisDirectors = (thisShow.creativeTeam || [])
         .filter(ct => /director/i.test(ct.role))
         .map(ct => ct.name.toLowerCase());
-      // Collect directors from NEWER productions only
+      // Collect directors from NEWER productions in the SAME market only
       const newerDirs = new Map();
       for (let j = i + 1; j < prods.length; j++) {
+        // Don't cross-compare different markets (Broadway vs West End vs Off-Broadway)
+        if (prods[j].category !== thisShow.category) continue;
         for (const ct of (prods[j].creativeTeam || [])) {
           if (/director/i.test(ct.role)) {
             const name = ct.name.toLowerCase();
@@ -1500,18 +1504,31 @@ showDirs.forEach(showId => {
       if (data.duplicateTextOf) {
         const refPath = path.join(showDir, data.duplicateTextOf);
         let refAlsoDupe = false;
+        let staleFlag = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Verify fingerprints still match — flag may be stale after text re-fetch
+          if (!refAlsoDupe && data.fullText && refData.fullText) {
+            const thisFp = computeContentFingerprint(data.fullText);
+            const refFp = computeContentFingerprint(refData.fullText);
+            if (thisFp && refFp && thisFp !== refFp) {
+              staleFlag = true;
+            }
+          }
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
-        if (!refAlsoDupe) {
+        if (staleFlag) {
+          // Texts no longer match — flag is stale, let this file through
+          stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
+        } else if (!refAlsoDupe) {
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
+        } else {
+          // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
+          stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
         }
-        // Circular or stale — let this file through, fingerprint dedup will handle actual duplicates
-        stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
@@ -2414,6 +2431,9 @@ console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent ||
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
 if (stats.circularDuplicateRecovered > 0) {
   console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
+}
+if (stats.staleDuplicateTextCleared > 0) {
+  console.log(`  Recovered (stale duplicateTextOf — text changed): ${stats.staleDuplicateTextCleared}`);
 }
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
