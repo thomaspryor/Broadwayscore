@@ -18,6 +18,7 @@
  * P3.  llmScore.score (low confidence, needs review, or excerpt-only - when no thumb or mixed signals)
  * P4.  assignedScore (if already set and valid, with known source)
  * P5.  bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
+ * P5.5 bwwScore fallback (BWW editorial 1-10 × 10, more granular than thumbs)
  * P6.  dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
  * P7.  SKIP - do not include in reviews.json
  */
@@ -84,6 +85,7 @@ function flagForHumanReview(data, reason, detail) {
     llmConfidence: data.llmScore?.confidence || null,
     dtliThumb: data.dtliThumb || null,
     bwwThumb: data.bwwThumb || null,
+    bwwScore: data.bwwScore ?? null,
     flaggedAt: new Date().toISOString()
   });
 }
@@ -980,6 +982,7 @@ const stats = {
     assignedScore: 0,
     originalScore: 0,
     bucket: 0,
+    'bwwScore-fallback': 0,
     thumb: 0
   },
   explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
@@ -1150,6 +1153,13 @@ function getBestScore(data) {
         flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
           `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
       }
+      // Track bwwScore-LLM divergence as stat counter (not human-review flag — too noisy)
+      if (data.bwwScore != null) {
+        const bwwNorm = data.bwwScore * 10;
+        if (Math.abs(bwwNorm - data.llmScore.score) > 30) {
+          stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
+        }
+      }
       return { score: data.llmScore.score, source: 'llmScore' };
     }
   }
@@ -1184,10 +1194,25 @@ function getBestScore(data) {
     const bwwIsMeh = bwwThumbNorm === 'Flat';
     const llmDir = bucketDirection(llmBucket);
 
+    // Convert bwwScore (1-10) to thumb-equivalent direction
+    const bwwScoreDir = data.bwwScore != null
+      ? (data.bwwScore >= 7 ? 'positive' : data.bwwScore <= 3 ? 'negative' : 'neutral')
+      : null;
+
+    // Track when bwwThumb and bwwScore disagree directionally (data quality signal)
+    if (bwwThumbNorm && bwwScoreDir && bwwScoreDir !== 'neutral') {
+      const thumbDir = thumbDirection(bwwThumbNorm);
+      if (thumbDir !== 'neutral' && thumbDir !== bwwScoreDir) {
+        stats.bwwInternalConflicts = (stats.bwwInternalConflicts || 0) + 1;
+      }
+    }
+
     // Check how many non-Meh thumbs agree with LLM direction
     const thumbDirs = [];
     if (dtliThumbNorm && !dtliIsMeh) thumbDirs.push(thumbDirection(dtliThumbNorm));
     if (bwwThumbNorm && !bwwIsMeh) thumbDirs.push(thumbDirection(bwwThumbNorm));
+    // bwwScore as additional directional signal (only when bwwThumb absent to avoid double-counting)
+    if (bwwScoreDir && bwwScoreDir !== 'neutral' && !bwwThumbNorm) thumbDirs.push(bwwScoreDir);
     const agreeing = thumbDirs.filter(d => d === llmDir).length;
     const disagreeing = thumbDirs.filter(d => d !== llmDir && d !== 'neutral').length;
 
@@ -1258,6 +1283,11 @@ function getBestScore(data) {
   // P5: Bucket mapping
   if (data.bucket && BUCKET_TO_SCORE[data.bucket]) {
     return { score: BUCKET_TO_SCORE[data.bucket], source: 'bucket' };
+  }
+
+  // P5.5: bwwScore fallback (more granular than thumb mapping)
+  if (data.bwwScore != null && data.bwwScore >= 1 && data.bwwScore <= 10) {
+    return { score: data.bwwScore * 10, source: 'bwwScore-fallback' };
   }
 
   // P6: Thumb mappings (dtli first, then bww)
@@ -2581,6 +2611,12 @@ if (explicitCount > 0) {
 if (stats.thumbValidatedLlm > 0) {
   console.log(`\nThumb-validated LLM scores (confidence upgraded): ${stats.thumbValidatedLlm}`);
   console.log(`  (Aggregator thumbs agreed with LLM direction, boosting confidence)`);
+}
+if (stats.bwwScoreLlmConflicts > 0) {
+  console.log(`  BWW score-LLM conflicts (>30pt divergence): ${stats.bwwScoreLlmConflicts}`);
+}
+if (stats.bwwInternalConflicts > 0) {
+  console.log(`  BWW thumb/score internal conflicts: ${stats.bwwInternalConflicts}`);
 }
 
 console.log('\nScore sources:');
