@@ -105,7 +105,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 85+ indicate "Must-See" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
+        text: 'Scores of 85+ indicate "Critical Gold" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
     {
@@ -170,7 +170,7 @@ export default function MethodologyPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-must-see flex items-center justify-center font-bold text-sm flex-shrink-0">85+</div>
               <div>
-                <span className="text-white font-medium">Must-See</span>
+                <span className="text-white font-medium">Critical Gold</span>
                 <span className="text-gray-500 block sm:inline sm:ml-2">— Drop-everything great. If you&apos;re seeing one show, make it this.</span>
               </div>
             </div>
