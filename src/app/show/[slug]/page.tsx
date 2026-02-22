@@ -629,7 +629,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           const isPreDigital = showYear !== null && showYear < 2015;
           return isPreDigital ? (
             <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">AudienceGrade</h2>
               <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
             </section>
           ) : null;

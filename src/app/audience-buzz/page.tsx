@@ -109,7 +109,7 @@ export default function AudienceBuzzPage() {
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Audience Scorecard', url: `${BASE_URL}/audience-buzz` },
+    { name: 'AudienceGrade', url: `${BASE_URL}/audience-buzz` },
   ]);
 
   return (
@@ -162,9 +162,9 @@ export default function AudienceBuzzPage() {
 
         {/* Main Table */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-4">All Shows by Audience Score</h2>
+          <h2 className="text-xl font-bold text-white mb-4">All Shows by AudienceGrade</h2>
           <p className="text-gray-400 text-sm mb-4">
-            Click column headers to sort. Shows ranked by combined audience score.
+            Click column headers to sort. Shows ranked by combined AudienceGrade rating.
           </p>
           <AudienceBuzzTable data={showsWithBuzz} />
         </section>

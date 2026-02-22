@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     default: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
     template: '%s | Broadway Scorecard',
   },
-  description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
-  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'audience scores'],
+  description: 'Comprehensive Broadway show ratings combining critic reviews, AudienceGrade ratings, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
+  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'AudienceGrade'],
   authors: [{ name: 'Broadway Scorecard' }],
   openGraph: {
     type: 'website',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     url: BASE_URL,
     siteName: 'Broadway Scorecard',
     title: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
-    description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
+    description: 'Comprehensive Broadway show ratings combining critic reviews, AudienceGrade ratings, and community buzz.',
     images: [{
       url: homeOgImageUrl,
       width: 1200,
@@ -199,7 +199,7 @@ export default function RootLayout({
                   {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
                   {featureFlags.westEnd && <li><Link href="/west-end" className="hover:text-white transition-colors">West End</Link></li>}
                   {featureFlags.offBroadway && <li><Link href="/off-broadway" className="hover:text-white transition-colors">Off-Broadway</Link></li>}
-                  <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
+                  <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
                   <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
