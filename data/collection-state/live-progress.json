@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-22T03:16:28.459Z",
-  "processed": 258,
-  "failed": 422,
-  "successRate": "37.9%",
+  "updatedAt": "2026-02-22T03:23:08.387Z",
+  "processed": 71,
+  "failed": 449,
+  "successRate": "13.7%",
   "tierBreakdown": {
-    "playwright": 87,
-    "amp": 27,
+    "playwright": 12,
+    "amp": 26,
     "browserbase": 0,
-    "directCookies": 4,
-    "scrapingbee": 33,
+    "directCookies": 3,
+    "scrapingbee": 18,
     "brightdata": 0,
-    "archiveToday": 100,
-    "archive": 145
+    "archiveToday": 140,
+    "archive": 45
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-22T01:21:31.197Z",
-      "event": "bb-session",
-      "session": "ef59a3d3",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
-    },
-    {
-      "t": "2026-02-22T01:21:33.173Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-22T01:31:14.528Z",
       "event": "bb-session",
@@ -33,26 +22,109 @@
       "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
     },
     {
-      "t": "2026-02-22T01:37:58.099Z",
+      "t": "2026-02-22T01:39:37.403Z",
       "event": "bb-session",
-      "session": "5cb77fc3",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+      "session": "2e04c2df",
+      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre"
     },
     {
-      "t": "2026-02-22T01:38:00.035Z",
+      "t": "2026-02-22T01:39:39.411Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-02-22T01:39:33.037Z",
+      "t": "2026-02-22T01:51:17.576Z",
       "event": "bb-session",
-      "session": "0939d294",
-      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+      "session": "b8fe846b",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-26-daisy26_ST_N.htm"
     },
     {
-      "t": "2026-02-22T01:39:35.047Z",
+      "t": "2026-02-22T01:51:20.057Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T01:52:29.227Z",
+      "event": "bb-session",
+      "session": "95703ef4",
+      "url": "https://www.amny.com/entertainment/"
+    },
+    {
+      "t": "2026-02-22T01:52:31.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-02-22T01:53:56.288Z",
+      "event": "bb-session",
+      "session": "052d5f42",
+      "url": "https://www.usatoday.com/story/news/local/2023/04/27/transfer-trauma-blamed-afte"
+    },
+    {
+      "t": "2026-02-22T01:53:58.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T01:57:09.068Z",
+      "event": "bb-session",
+      "session": "3c27cc78",
+      "url": "http://www.usatoday.com/life/theater/reviews/story/2011-11-09/broadway-godspell/"
+    },
+    {
+      "t": "2026-02-22T01:57:11.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T02:23:58.191Z",
+      "event": "bb-session",
+      "session": "2ac2efcb",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-04-25/leap-of-faith-bro"
+    },
+    {
+      "t": "2026-02-22T02:24:00.101Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T02:36:07.667Z",
+      "event": "bb-session",
+      "session": "243c8abc",
+      "url": "https://www.usatoday.com/life/theater/reviews/2010-10-22-lombardi22_ST_N.htm?csp"
+    },
+    {
+      "t": "2026-02-22T02:36:09.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T02:54:46.067Z",
+      "event": "bb-session",
+      "session": "70170199",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-04-23/nice-work-if-you-"
+    },
+    {
+      "t": "2026-02-22T02:54:48.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T02:56:03.977Z",
+      "event": "bb-session",
+      "session": "a5a8c8fe",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2022/12/09/ohio-state-murde"
+    },
+    {
+      "t": "2026-02-22T02:56:05.906Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-22T03:01:23.049Z",
+      "event": "bb-session",
+      "session": "9e6520c7",
+      "url": "https://www.youtube.com/watch?v=oHm1Kirjk7Y"
     }
   ]
 }
