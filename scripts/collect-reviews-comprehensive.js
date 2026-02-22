@@ -212,8 +212,10 @@ async function scrapeBWW(page, showSlug, showTitle, year) {
 // OUTLET-BASED SEARCH
 // ============================================================================
 
-async function searchOutlet(page, showTitle, year, outlet) {
-  const searchQuery = `"${showTitle}" Broadway review ${year} site:${outlet.domain}`;
+async function searchOutlet(page, showTitle, year, outlet, { category = '' } = {}) {
+  const reviewKw = category === 'west-end' ? 'West End review'
+    : category === 'off-broadway' ? 'Off-Broadway review' : 'Broadway review';
+  const searchQuery = `"${showTitle}" ${reviewKw} ${year} site:${outlet.domain}`;
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
 
   try {
@@ -244,13 +246,13 @@ async function searchOutlet(page, showTitle, year, outlet) {
   }
 }
 
-async function searchAllOutlets(page, showTitle, year, outlets) {
+async function searchAllOutlets(page, showTitle, year, outlets, { category = '' } = {}) {
   console.log(`\n  Searching ${outlets.length} outlets...`);
   const results = [];
 
   for (const outlet of outlets) {
     process.stdout.write(`    ${outlet.name}... `);
-    const result = await searchOutlet(page, showTitle, year, outlet);
+    const result = await searchOutlet(page, showTitle, year, outlet, { category });
 
     if (result.found) {
       console.log('✓');
@@ -383,7 +385,7 @@ async function collectReviewsForShow(showSlug) {
 
     // APPROACH 2: Search all outlets
     console.log('\n[APPROACH 2] Searching master outlet list...');
-    const outletResults = await searchAllOutlets(page, show.title, year, allOutlets);
+    const outletResults = await searchAllOutlets(page, show.title, year, allOutlets, { category: show.category });
 
     // Merge results
     console.log('\n[MERGING] Combining results...');

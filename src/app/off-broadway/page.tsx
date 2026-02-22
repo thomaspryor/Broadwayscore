@@ -30,13 +30,16 @@ export default function OffBroadwayPage() {
 
   const shows = getOffBroadwayShows();
 
+  // Filter out previews/upcoming — they have no scores and push useful content down
+  const displayShows = shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming');
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Off-Broadway', url: `${BASE_URL}/off-broadway` },
   ]);
 
   const itemListSchema = generateItemListSchema(
-    shows.map(show => ({
+    displayShows.map(show => ({
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
@@ -52,9 +55,6 @@ export default function OffBroadwayPage() {
   );
 
   const schemas = [breadcrumbSchema, itemListSchema];
-
-  // Filter out previews/upcoming — they have no scores and push useful content down
-  const displayShows = shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming');
   const nowPlayingCount = displayShows.filter(s => s.status === 'open').length;
 
   // Compute display flags
@@ -126,7 +126,7 @@ export default function OffBroadwayPage() {
             CriticScore ratings for Off-Broadway shows in NYC, aggregated from The New York Times, Vulture, Variety, Time Out, and more.
           </p>
           <p className="text-gray-500 text-sm mt-3">
-            {shows.length} shows tracked ({nowPlayingCount} now playing, {scoredCount} scored) | Last updated: {dataFreshness}
+            {displayShows.length} shows ({nowPlayingCount} now playing, {scoredCount} scored) | Last updated: {dataFreshness}
           </p>
         </div>
 

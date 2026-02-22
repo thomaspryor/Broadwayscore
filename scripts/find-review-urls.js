@@ -79,6 +79,23 @@ function findReviewsNeedingUrls() {
   return reviews;
 }
 
+// Load show categories for market-aware queries
+const _showCategories = (() => {
+  try {
+    const d = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    const map = {};
+    for (const s of d.shows || []) map[s.id] = s.category || '';
+    return map;
+  } catch { return {}; }
+})();
+
+function getReviewKeyword(showId) {
+  const cat = _showCategories[showId] || '';
+  return cat === 'west-end' ? 'West End review'
+    : cat === 'off-broadway' ? 'Off-Broadway review'
+    : 'Broadway review';
+}
+
 // Generate search query for a review
 function generateSearchQuery(review) {
   const showName = review.show
@@ -88,9 +105,10 @@ function generateSearchQuery(review) {
 
   const outlet = review.outlet || 'review';
   const critic = review.criticName || '';
+  const keyword = getReviewKeyword(review.show);
 
   // Build search query
-  let query = `"${showName}" Broadway review ${outlet}`;
+  let query = `"${showName}" ${keyword} ${outlet}`;
   if (critic && critic !== 'unknown') {
     query += ` ${critic}`;
   }

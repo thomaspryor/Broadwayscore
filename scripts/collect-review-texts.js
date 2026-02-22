@@ -2905,6 +2905,7 @@ async function discoverCorrectUrl(review) {
   // Falls back to slug-derived title if lookup fails
   let showTitle;
   let showYear = '';
+  let showCategory = '';
   try {
     if (!_showsJsonCache) {
       _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
@@ -2913,6 +2914,7 @@ async function discoverCorrectUrl(review) {
     if (showEntry) {
       showTitle = showEntry.title;
       showYear = (showEntry.openingDate || '').substring(0, 4);
+      showCategory = showEntry.category || '';
     }
   } catch (e) { /* fall through to slug-based */ }
 
@@ -2926,6 +2928,11 @@ async function discoverCorrectUrl(review) {
   }
 
   if (!showTitle) return null;
+
+  // Market-aware review keyword for SERP queries
+  const reviewKeyword = showCategory === 'west-end' ? 'West End review'
+    : showCategory === 'off-broadway' ? 'Off-Broadway review'
+    : 'Broadway review';
 
   // Get domain for the outlet
   const outletId = (review.outletId || '').toLowerCase();
@@ -2942,9 +2949,9 @@ async function discoverCorrectUrl(review) {
 
   let query;
   if (domain) {
-    query = `site:${domain} "${showTitle}" Broadway review${yearClause}${criticClause}`;
+    query = `site:${domain} "${showTitle}" ${reviewKeyword}${yearClause}${criticClause}`;
   } else {
-    query = `"${showTitle}" Broadway review${yearClause} "${outletName}"${criticClause}`;
+    query = `"${showTitle}" ${reviewKeyword}${yearClause} "${outletName}"${criticClause}`;
   }
 
   console.log(`  [URL Discovery] Searching: ${query}`);
@@ -2970,7 +2977,7 @@ async function discoverCorrectUrl(review) {
       // This catches articles Google didn't index under the domain (URL changes, redirects)
       if (criticName && domain) {
         stats.urlDiscoveryAttempts++; // counts against per-run cap
-        const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" Broadway review${yearClause}`;
+        const fallbackQuery = `"${showTitle}" "${outletName}" "${criticName}" ${reviewKeyword}${yearClause}`;
         console.log(`    Fallback search (no site:): ${fallbackQuery}`);
         results = await _serpViaScrapingBee(fallbackQuery);
         provider = 'scrapingbee-fallback';

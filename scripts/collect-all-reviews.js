@@ -36,13 +36,15 @@ async function sleep(ms) {
 /**
  * Use Claude API with web search to find a review
  */
-async function searchForReview(showTitle, year, outlet) {
+async function searchForReview(showTitle, year, outlet, { category = '' } = {}) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY environment variable required');
   }
 
-  const prompt = `Search for: "${showTitle}" Broadway review ${year} site:${outlet.domain}
+  const reviewKw = category === 'west-end' ? 'West End review'
+    : category === 'off-broadway' ? 'Off-Broadway review' : 'Broadway review';
+  const prompt = `Search for: "${showTitle}" ${reviewKw} ${year} site:${outlet.domain}
 
 If you find a review, extract:
 1. URL of the review
@@ -101,7 +103,7 @@ Respond in JSON format:
 /**
  * Collect reviews for a single show
  */
-async function collectReviewsForShow(showTitle, year, showId) {
+async function collectReviewsForShow(showTitle, year, showId, { category = '' } = {}) {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`Collecting reviews for: ${showTitle} (${year})`);
   console.log('='.repeat(60));
@@ -113,7 +115,7 @@ async function collectReviewsForShow(showTitle, year, showId) {
     process.stdout.write(`  Checking ${outlet.name}... `);
 
     try {
-      const result = await searchForReview(showTitle, year, outlet);
+      const result = await searchForReview(showTitle, year, outlet, { category });
 
       if (result.found) {
         console.log(`✓ Found (${result.originalRating || 'no rating'})`);
@@ -230,7 +232,7 @@ async function main() {
     for (const show of shows) {
       if (show.status === 'open') {
         const year = new Date(show.openingDate).getFullYear();
-        const result = await collectReviewsForShow(show.title, year, show.id);
+        const result = await collectReviewsForShow(show.title, year, show.id, { category: show.category });
 
         const outputPath = path.join(outputDir, `${show.id}.json`);
         fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));

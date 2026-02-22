@@ -1623,9 +1623,9 @@ showDirs.forEach(showId => {
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Allows 14-day grace period for preview coverage
       // Reviews with allowEarlyDate: true bypass this (e.g., off-Broadway → Broadway transfers)
-      // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
+      // Off-Broadway and West End shows are exempt: they commonly transfer from fringe/regional theaters,
       // so date mismatches are expected and wrongProduction flags are almost always false positives
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'off-broadway') {
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'off-broadway' && showCategory !== 'west-end') {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
@@ -1688,7 +1688,8 @@ showDirs.forEach(showId => {
       // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+      // WE shows are exempt: many are long-running transfers with reviews from the original run
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'west-end') {
         const pubDate = new Date(data.publishDate);
         if (!isNaN(pubDate.getTime())) {
           const showDate = showDateMap[showId];
