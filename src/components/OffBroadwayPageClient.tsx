@@ -46,7 +46,7 @@ type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
 // Defaults
 const DEFAULT_STATUS: StatusParam = 'now_playing';
-const DEFAULT_SORT: SortParam = 'recent';
+const DEFAULT_SORT: SortParam = 'score_desc';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
@@ -421,9 +421,16 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
   }), [shows]);
 
   // Featured rows
-  const topMusicals = useMemo(() => {
+  const topRecentShows = useMemo(() => {
+    const twelveMonthsAgo = new Date();
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => {
+        if (!show.criticScore?.score) return false;
+        if (show.status === 'previews' || show.status === 'upcoming') return false;
+        const opened = new Date(show.openingDate);
+        return opened >= twelveMonthsAgo;
+      })
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -479,8 +486,10 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
             const bAud = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
             return bAud - aAud;
           }
-          const aScore = (a.status === 'previews') ? -1 : (a.criticScore?.score ?? -1);
-          const bScore = (b.status === 'previews') ? -1 : (b.criticScore?.score ?? -1);
+          const aHasEnough = a.criticScore?.reviewCount !== undefined && a.criticScore.reviewCount >= MIN_REVIEWS_OB;
+          const bHasEnough = b.criticScore?.reviewCount !== undefined && b.criticScore.reviewCount >= MIN_REVIEWS_OB;
+          const aScore = (a.status === 'previews' || !aHasEnough) ? -1 : (a.criticScore?.score ?? -1);
+          const bScore = (b.status === 'previews' || !bHasEnough) ? -1 : (b.criticScore?.score ?? -1);
           return bScore - aScore;
         }
         case 'audience_buzz': {
@@ -516,14 +525,14 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
         </p>
       </div>
 
-      {/* Top Musicals - Featured Shelf */}
-      {topMusicals.length > 0 && (
+      {/* Top Recent Shows - Featured Shelf */}
+      {topRecentShows.length > 3 && (
         <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Top Musicals</h2>
+            <h2 className="text-base font-bold text-white">Top Recent Shows</h2>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {topMusicals.map((show, index) => (
+            {topRecentShows.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 2} />
             ))}
           </div>
