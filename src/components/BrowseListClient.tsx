@@ -62,7 +62,7 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 const SORT_LABELS: Record<SortOption, string> = {
-  score: 'Highest',
+  score: 'Critics',
   alpha: 'A-Z',
   newest: 'Newest',
   closing: 'Closing',
