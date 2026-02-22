@@ -28,7 +28,7 @@ jobs:
       new_slugs: ${{ steps.discover.outputs.new_slugs }}
       opened_count: ${{ steps.status-update.outputs.opened_count }}
       opened_slugs: ${{ steps.status-update.outputs.opened_slugs }}
-      we_new_count: ${{ steps.discover-we.outputs.we_new_count }}
+      we_new_count: ${{ steps.discover.outputs.we_new_count }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,25 +59,14 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/update-show-status.js
 
-      # Step 2: Discover new Broadway shows (unless skipped)
-      - name: Discover new Broadway shows
+      # Step 2: Discover new Broadway + West End shows (unless skipped)
+      - name: Discover new shows
         id: discover
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/discover-new-shows.js
-
-      # Step 2b: Discover new West End shows
-      - name: Discover new West End shows
-        id: discover-we
-        if: ${{ inputs.skip_discovery != 'true' }}
-        run: |
-          node scripts/discover-west-end-shows.js
-          # Count new WE shows by comparing shows.json before/after
-          WE_NEW=$(git diff data/shows.json | grep '+.*"category": "west-end"' | wc -l | tr -d ' ')
-          echo "we_new_count=$WE_NEW" >> $GITHUB_OUTPUT
-          echo "Discovered $WE_NEW new West End shows"
+        run: node scripts/discover-new-shows.js --include-west-end
 
       # Step 3: Validate data before committing
       - name: Validate data
