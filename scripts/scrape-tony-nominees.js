@@ -570,7 +570,7 @@ function writeOutput(nominations, expectedShowCount, actualShowCount, awardsData
       source: 'IBDB',
       coverage: '1970-present',
       expectedShowCount,
-      actualShowCount,
+      actualShowCount: new Set(finalNominations.map(n => n.showId)).size,
       totalNominations: finalNominations.length,
       totalWins: finalNominations.filter(n => n.won).length,
     },
