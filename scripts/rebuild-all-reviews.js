@@ -45,11 +45,26 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
   }
 }
 // Dual-market outlets that legitimately cover both Broadway and West End
+// Includes explicit allowlist PLUS all Tier 1/2 outlets (major publications review international theatre)
 const DUAL_MARKET_OUTLETS = new Set([
   'guardian', 'financialtimes', 'variety', 'stage-uk',
   // Include common aliases
   'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
 ]);
+// Also allow all Tier 1/2 outlets — they legitimately review West End shows
+// The cross-market guard targets Tier 3 / untiered regional US outlets (Fayetteville Flyer, etc.)
+const TIER_1_2_OUTLET_IDS = new Set();
+try {
+  // Read scoring.ts tier config to get known Tier 1/2 outlet IDs
+  const scoringPath = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
+  const scoringText = fs.readFileSync(scoringPath, 'utf8');
+  // Extract outlet IDs from OUTLET_TIERS that are tier 1 or 2
+  const tierRegex = /'([A-Z0-9_-]+)':\s*\{\s*tier:\s*([12])/g;
+  let match;
+  while ((match = tierRegex.exec(scoringText)) !== null) {
+    TIER_1_2_OUTLET_IDS.add(match[1].toLowerCase());
+  }
+} catch (e) { /* scoring.ts not found — dual-market set is the fallback */ }
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -1593,7 +1608,11 @@ showDirs.forEach(showId => {
       const showCategory = showCategoryMap[showId] || 'broadway';
       const rawOutlet = (data.outletId || data.outlet || '').toLowerCase();
       const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
-      if (showCategory === 'west-end' && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
+      if (showCategory === 'west-end'
+          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)
+          && !TIER_1_2_OUTLET_IDS.has(canonicalOutlet) && !TIER_1_2_OUTLET_IDS.has(rawOutlet)) {
+        // Only block Tier 3 / untiered outlets without London region
+        // Tier 1/2 outlets (NYT, WashPost, AP, etc.) legitimately review WE shows
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
