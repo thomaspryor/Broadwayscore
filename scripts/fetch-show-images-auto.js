@@ -1466,7 +1466,17 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     const poster = apiData.poster || null;
     const hero = apiData.hero || apiData.headerImage || null;
 
-    if (thumbnail || poster) {
+    // Filter out "Coming Soon" placeholder images from TodayTix
+    const isComingSoon = (url) => url && /coming.?soon/i.test(url);
+    const filteredThumb = isComingSoon(thumbnail) ? null : thumbnail;
+    const filteredPoster = isComingSoon(poster) ? null : poster;
+    const filteredHero = isComingSoon(hero) ? null : hero;
+
+    if (filteredThumb !== thumbnail || filteredPoster !== poster || filteredHero !== hero) {
+      console.log(`   ⚠️  Filtered out "Coming Soon" placeholder image(s)`);
+    }
+
+    if (filteredThumb || filteredPoster) {
       // Add webp quality param to Contentful URLs that don't already have params
       const addWebp = (url) => {
         if (!url) return null;
@@ -1474,15 +1484,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
         return url + '?fm=webp&q=90';
       };
 
-      const thumbIsNative = isNativeSquareUrl(thumbnail);
-      console.log(`     - Square (thumbnail): ${thumbnail ? (thumbIsNative ? '✓ native square from API' : '⚠ poster crop from API') : 'not available'}`);
-      console.log(`     - Portrait (poster): ${poster ? 'from API' : 'not available'}`);
-      console.log(`     - Landscape (hero): ${hero ? 'from API' : 'not available'}`);
+      const thumbIsNative = isNativeSquareUrl(filteredThumb);
+      console.log(`     - Square (thumbnail): ${filteredThumb ? (thumbIsNative ? '✓ native square from API' : '⚠ poster crop from API') : 'not available'}`);
+      console.log(`     - Portrait (poster): ${filteredPoster ? 'from API' : 'not available'}`);
+      console.log(`     - Landscape (hero): ${filteredHero ? 'from API' : 'not available'}`);
 
       return {
-        hero: addWebp(hero),
-        thumbnail: addWebp(thumbnail),
-        poster: addWebp(poster),
+        hero: addWebp(filteredHero),
+        thumbnail: addWebp(filteredThumb),
+        poster: addWebp(filteredPoster),
       };
     }
 
