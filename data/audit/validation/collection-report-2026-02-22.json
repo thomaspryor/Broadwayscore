@@ -1,100 +1,81 @@
 {
-  "runDate": "2026-02-22T23:36:48.806Z",
+  "runDate": "2026-02-22T23:41:47.461Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "oliver-west-end-2024",
+    "showFilter": "hamlet-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 14,
+    "processed": 4,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "26.3%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 7,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 8,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 12,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "oliver-west-end-2024/artsdesk--helen-hawkins.json",
-    "oliver-west-end-2024/bww--allya-al-hassan.json",
-    "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
-    "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
-    "oliver-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+    "hamlet-2026/nytg--amelia-merrill.json",
+    "hamlet-2026/vulture--sara-holdren.json",
+    "hamlet-2026/theatermania--zachary-stewart.json",
+    "hamlet-2026/timeout--raven-snook.json"
   ],
   "failed": [
-    "oliver-west-end-2024/variety--unknown.json",
-    "oliver-west-end-2024/theatermania--david-gordon.json",
-    "oliver-west-end-2024/cityam--adam-bloodworth.json",
-    "oliver-west-end-2024/dailymail--unknown.json",
-    "oliver-west-end-2024/evening-standard--nick-curtis.json",
-    "oliver-west-end-2024/london-theatre--marianka-swain.json",
-    "oliver-west-end-2024/stageandcinema--unknown.json",
-    "oliver-west-end-2024/standard--henry-hitchings.json",
-    "oliver-west-end-2024/telegraph--unknown.json",
-    "oliver-west-end-2024/the-stage-uk--sam-marlowe.json",
-    "oliver-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
-    "oliver-west-end-2024/the-times-uk--neil-fisher.json",
-    "oliver-west-end-2024/uk-daily-telegraph--dominic-cavendish.json",
-    "oliver-west-end-2024/whatsonstage--unknown.json"
+    "hamlet-2026/here--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "oliver-west-end-2024/artsdesk--helen-hawkins.json",
-      "oliver-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+      "hamlet-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hamlet-2026/here--unknown.json"
+    ],
     "archive": [
-      "oliver-west-end-2024/bww--allya-al-hassan.json",
-      "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
-      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+      "hamlet-2026/nytg--amelia-merrill.json",
+      "hamlet-2026/vulture--sara-holdren.json",
+      "hamlet-2026/timeout--raven-snook.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "network-2018/evening-standard--henry-hitchings.json",
-      "oldUrl": "https://www.standard.co.uk/culture/theatre/bryan-cranston-network-national-theatre-a4011161.html#:~:text=Bryan%20Cranston%20says%20National%20Theatre,is%20supported%20by%20our%20readers.",
-      "newUrl": "https://www.standard.co.uk/culture/theatre/bryan-cranston-network-national-theatre-a4011161.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
