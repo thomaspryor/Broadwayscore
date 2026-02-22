@@ -24,7 +24,7 @@ export function getBroadwayDuration(openingDate: string | null, suffix = 'on Bro
 export function getRunLength(
   openingDate: string | null | undefined,
   closingDate: string | null | undefined,
-  format: 'precise' | 'compact' = 'compact',
+  format: 'precise' | 'compact' | 'short' = 'compact',
   suffix?: string
 ): string | null {
   if (!openingDate || !closingDate) return null;
@@ -36,7 +36,16 @@ export function getRunLength(
   const months = (close.getFullYear() - open.getFullYear()) * 12 + (close.getMonth() - open.getMonth());
   const suffixStr = suffix ? ` ${suffix}` : '';
 
-  if (months < 1) return `less than a month${suffixStr}`;
+  if (months < 1) return format === 'short' ? '<1mo' : `less than a month${suffixStr}`;
+
+  if (format === 'short') {
+    // Abbreviated: "2mos", "1yr", "3yrs"
+    if (months < 12) return `${months}mo${months === 1 ? '' : 's'}`;
+    const years = Math.floor(months / 12);
+    const remaining = months % 12;
+    if (remaining === 0) return `${years}yr${years === 1 ? '' : 's'}`;
+    return `${years}+yr${years === 1 ? '' : 's'}`;
+  }
 
   if (format === 'compact') {
     if (months < 12) return `${months} month${months === 1 ? '' : 's'}${suffixStr}`;
