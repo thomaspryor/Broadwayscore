@@ -499,8 +499,16 @@ async function main() {
     await browser.close();
   }
 
-  // Write final output
-  writeOutput(allNominations, showIds.length, processedShows.size, awardsData);
+  // Write final output (skip for --show mode — it's a debugging tool, not a data writer)
+  if (singleShowId) {
+    console.log(`\n🔍 Single-show mode — NOT writing to ${OUTPUT_FILE}`);
+    console.log(`   ${allNominations.length} nominations scraped for ${singleShowId}`);
+    if (allNominations.length > 0) {
+      console.log(`   Categories: ${[...new Set(allNominations.map(n => n.category))].join(', ')}`);
+    }
+  } else {
+    writeOutput(allNominations, showIds.length, processedShows.size, awardsData);
+  }
 }
 
 function saveCheckpoint(nominations, processedShows, failedShows) {
