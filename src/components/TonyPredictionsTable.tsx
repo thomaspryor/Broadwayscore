@@ -2,18 +2,9 @@ import Link from 'next/link';
 import { ScoreBadge, getScoreTier, StatusBadge } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
+import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
-export interface SerializedTonyShow {
-  slug: string;
-  title: string;
-  venue: string;
-  openingDate: string;
-  previewsStartDate?: string;
-  status: string;
-  compositeScore: number | null;
-  reviewCount: number;
-  thumbnailPath: string | null;
-}
+export type { SerializedTonyShow };
 
 interface TonyPredictionsTableProps {
   title: string;
