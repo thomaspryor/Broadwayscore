@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration } from '@/lib/date-utils';
 
 // Serialized show data passed from server component
@@ -99,7 +100,8 @@ const ShowCard = memo(function ShowCard({
     tier = getScoreTier(displayScore);
   } else {
     displayScore = show.criticScore?.score;
-    tier = getScoreTier(displayScore);
+    const reviewCount = show.criticScore?.reviewCount ?? 0;
+    tier = hasEnoughReviews(reviewCount, show.category) ? getScoreTier(displayScore) : null;
   }
 
   return (

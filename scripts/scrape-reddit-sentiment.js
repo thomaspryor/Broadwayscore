@@ -53,8 +53,12 @@ const shard = shardArg ? parseInt(shardArg.split('=')[1]) : null;
 const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : null;
 const shardMode = shard !== null && totalShards !== null;
 
-// Config
-const SUBREDDIT = 'broadway';
+// Config — subreddit per market
+const SUBREDDIT_BW = 'broadway';
+const SUBREDDIT_WE = 'WestEndTheatre';
+function getSubreddit(show) {
+  return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;
+}
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
 const TWO_YEARS_AGO = Date.now() / 1000 - (MAX_POST_AGE_DAYS * 86400); // Unix timestamp
 
@@ -209,21 +213,23 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '' } = {}) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
+  const isWestEnd = category === 'west-end';
+  const marketName = isWestEnd ? 'West End' : 'Broadway';
 
   // Audience-focused search strategies (ordered by relevance)
-  // For shows with movie adaptations, prioritize Broadway-specific terms
+  // For shows with movie adaptations, prioritize market-specific terms
   const searches = [
     `flair:Review "${cleanTitle}"`,           // Review-tagged posts (highest signal)
-    `"${cleanTitle}" "Broadway" saw`,         // Broadway-specific
+    `"${cleanTitle}" "${marketName}" saw`,    // Market-specific
     `"just saw ${cleanTitle}"`,               // "just saw Wicked"
     `"${cleanTitle}" saw`,                    // "I saw Wicked"
     `"${cleanTitle}" review`,                 // Reviews
     `"${cleanTitle}" thoughts`,               // Discussion
     `"${cleanTitle}" loved`,                  // Positive reactions
     `"${cleanTitle}" recommend`,              // Recommendations
-    `"${cleanTitle}" "on Broadway"`,          // Broadway-specific
+    `"${cleanTitle}" "on ${marketName}"`,     // Market-specific
     `"${cleanTitle}"`,                        // Basic search (for neutral posts)
   ];
 
@@ -306,11 +312,12 @@ async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
 
   // 1. Search for posts with audience-focused queries
-  console.log(`  Searching r/${SUBREDDIT} for audience reactions...`);
+  const subreddit = getSubreddit(show);
+  console.log(`  Searching r/${subreddit} for audience reactions...`);
 
   let searchResult;
   try {
-    searchResult = await searchAudiencePosts(SUBREDDIT, show.title);
+    searchResult = await searchAudiencePosts(subreddit, show.title, 10000, { category: show.category });
   } catch (e) {
     console.error(`  Search failed: ${e.message}`);
     return null;
@@ -342,7 +349,7 @@ async function processShow(show) {
 
   let comments;
   try {
-    comments = await collectCommentsFromPosts(SUBREDDIT, topPosts, 10000);  // Effectively unlimited - collect all from selected posts
+    comments = await collectCommentsFromPosts(subreddit, topPosts, 10000);  // Effectively unlimited - collect all from selected posts
   } catch (e) {
     console.error(`  Comment collection failed: ${e.message}`);
     return null;

@@ -36,6 +36,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge } from '@/components/show-cards';
+import { hasEnoughReviews } from '@/config/score-buckets';
 import TicketLink from '@/components/TicketLink';
 
 export function generateStaticParams() {
@@ -321,8 +322,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
                 const reviewCount = show.criticScore?.reviewCount || 0;
-                const minReviews = show.category === 'off-broadway' ? 3 : 5;
-                const showTBD = show.status === 'previews' || show.status === 'upcoming' || reviewCount < minReviews;
+                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category);
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score) : null;
 
@@ -731,7 +731,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             {/* Key metrics first for AI extractability */}
-            {score && show.criticScore && show.criticScore.reviewCount >= (show.category === 'off-broadway' ? 3 : 5) && (
+            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category) && (
               <div>
                 <dt className="text-gray-500">CriticScore</dt>
                 <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>

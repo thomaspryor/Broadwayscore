@@ -193,7 +193,7 @@ export default function RootLayout({
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">More</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  {featureFlags.tonyPredictions && <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Predictions</Link></li>}
+                  {featureFlags.tonyPredictions && <li><Link href="/tony-awards" className="hover:text-white transition-colors">Tony Awards</Link></li>}
                   {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
                   {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
                   {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}

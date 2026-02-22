@@ -36,6 +36,19 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
 
+      - name: Override feature flags for demo (all enabled)
+        run: |
+          # vercel pull downloads project env vars which override shell env.
+          # We must rewrite the pulled file to enable ALL features for demo.
+          ALL_FEATURES="discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople"
+          for f in .vercel/.env.*.local; do
+            [ -f "$f" ] || continue
+            grep -v '^NEXT_PUBLIC_FEATURES=' "$f" > "$f.tmp"
+            echo "NEXT_PUBLIC_FEATURES=$ALL_FEATURES" >> "$f.tmp"
+            mv "$f.tmp" "$f"
+          done
+          echo "Feature flags overridden to: $ALL_FEATURES"
+
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
