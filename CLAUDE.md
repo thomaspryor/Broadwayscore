@@ -45,6 +45,7 @@ Scripts processing >10 items in CI: save progress incrementally, `if: always()` 
 - CI: `.github/actions/checkout-review-texts/` and `push-review-texts/` composite actions.
 - Secret: `REVIEW_TEXTS_TOKEN` (PAT, `repo` scope). Guard: `test.yml` fails if review-text files leak.
 - New workflows reading/writing review-texts MUST include both composite actions.
+- **Local changes MUST be synced:** After ANY local modification to `data/review-texts/` files (scoring, flagging, extracting, etc.), run `bash scripts/sync-review-texts.sh` before ending the session. This handles commit, conflict resolution, and push to the private repo. **Never leave local review-text changes uncommitted.**
 
 ### 7b. Private Core Data Repo
 9 sensitive JSON files in private repo `thomaspryor/broadway-scorecard-data`:
