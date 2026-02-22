@@ -31,6 +31,23 @@ const path = require('path');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DEFAULT_INPUT = path.join(__dirname, '..', 'data', 'west-end-reviews-input.json');
 
+// Load outlet registry for region guard
+const outletRegistryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+const outletRegistry = fs.existsSync(outletRegistryPath)
+  ? JSON.parse(fs.readFileSync(outletRegistryPath, 'utf8'))
+  : { outlets: {} };
+const outletRegionMap = {};
+for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
+  if (info.region) outletRegionMap[id] = info.region;
+  if (info.aliases && info.region) {
+    for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = info.region;
+  }
+}
+const DUAL_MARKET_OUTLET_IDS = new Set([
+  'guardian', 'financialtimes', 'variety', 'stage-uk',
+  'financial-times', 'ft', 'the-guardian-uk',
+]);
+
 // Parse args
 const args = process.argv.slice(2);
 let inputFile = DEFAULT_INPUT;
@@ -115,6 +132,17 @@ function main() {
       if (daysBefore > 14) {
         console.warn(`Skipping pre-opening review: ${showId} ${outletId} published ${daysBefore} days before opening`);
         skippedPreOpening++;
+        continue;
+      }
+    }
+
+    // Region guard: reject non-London outlets (unless dual-market)
+    const normalizedOutletId = (outletId || '').toLowerCase();
+    if (!DUAL_MARKET_OUTLET_IDS.has(normalizedOutletId)) {
+      const region = outletRegionMap[normalizedOutletId];
+      if (region && region !== 'london') {
+        console.warn(`Skipping non-London outlet for WE show: ${showId} ${outletId} (region: ${region})`);
+        skipped++;
         continue;
       }
     }
