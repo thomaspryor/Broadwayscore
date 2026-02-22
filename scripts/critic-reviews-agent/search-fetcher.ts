@@ -342,6 +342,7 @@ export interface SearchFetchOptions {
   apiConfig: SearchAPIConfig;
   verbose?: boolean;
   maxResults?: number;
+  category?: string; // 'west-end' | 'off-broadway' | '' for Broadway
 }
 
 export interface SearchFetchResult {
@@ -358,7 +359,10 @@ export async function searchForReviews(
   showTitle: string,
   options: SearchFetchOptions
 ): Promise<SearchFetchResult> {
-  const { apiConfig, verbose = false, maxResults = 30 } = options;
+  const { apiConfig, verbose = false, maxResults = 30, category = '' } = options;
+  const marketKeyword = category === 'west-end' ? 'west end'
+    : category === 'off-broadway' ? 'off-broadway' : 'broadway';
+  const theaterWord = category === 'west-end' ? 'theatre' : 'theater';
 
   const reviews: ParsedReviewFromSearch[] = [];
   const rawResults: SearchResult[] = [];
@@ -366,9 +370,9 @@ export async function searchForReviews(
 
   // Build search queries
   const queries = [
-    `"${showTitle}" broadway review`,
-    `"${showTitle}" theater review critic`,
-    `"${showTitle}" broadway opening night review`,
+    `"${showTitle}" ${marketKeyword} review`,
+    `"${showTitle}" ${theaterWord} review critic`,
+    `"${showTitle}" ${marketKeyword} opening night review`,
   ];
 
   if (verbose) {
@@ -651,10 +655,13 @@ export async function searchPrioritized(
   // =============================================
   if (verbose) console.log(`\n[STEP 3] General web search for additional reviews...`);
 
+  const marketKw = options.category === 'west-end' ? 'west end'
+    : options.category === 'off-broadway' ? 'off-broadway' : 'broadway';
+  const theaterW = options.category === 'west-end' ? 'theatre' : 'theater';
   const webQueries = [
-    `"${showTitle}" broadway review 2026`,
-    `"${showTitle}" broadway critic review`,
-    `"${showTitle}" theater review opening night`,
+    `"${showTitle}" ${marketKw} review 2026`,
+    `"${showTitle}" ${marketKw} critic review`,
+    `"${showTitle}" ${theaterW} review opening night`,
   ];
 
   for (const query of webQueries) {

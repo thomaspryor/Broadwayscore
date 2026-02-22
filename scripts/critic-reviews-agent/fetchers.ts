@@ -755,19 +755,23 @@ export async function discoverAdditionalReviews(
   options: {
     verbose?: boolean;
     existingUrls?: string[];
+    category?: string;
   } = {}
 ): Promise<{
   discovered: DiscoveredReview[];
   searchQueries: string[];
 }> {
-  const { verbose = false, existingUrls = [] } = options;
+  const { verbose = false, existingUrls = [], category = '' } = options;
   const discovered: DiscoveredReview[] = [];
   const searchQueries: string[] = [];
 
-  // Build search queries
+  // Build market-aware search queries
+  const marketKw = category === 'west-end' ? 'west end'
+    : category === 'off-broadway' ? 'off-broadway' : 'broadway';
+  const theaterWord = category === 'west-end' ? 'theatre' : 'theater';
   const queries = [
-    `"${showTitle}" broadway review`,
-    `"${showTitle}" theater review 2025`,
+    `"${showTitle}" ${marketKw} review`,
+    `"${showTitle}" ${theaterWord} review 2025`,
     `"${showTitle}" musical review`,
   ];
 
