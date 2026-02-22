@@ -45,6 +45,7 @@ Scripts processing >10 items in CI: save progress incrementally, `if: always()` 
 - CI: `.github/actions/checkout-review-texts/` and `push-review-texts/` composite actions.
 - Secret: `REVIEW_TEXTS_TOKEN` (PAT, `repo` scope). Guard: `test.yml` fails if review-text files leak.
 - New workflows reading/writing review-texts MUST include both composite actions.
+- **Local changes MUST be synced:** After ANY local modification to `data/review-texts/` files (scoring, flagging, extracting, etc.), run `bash scripts/sync-review-texts.sh` before ending the session. This handles commit, conflict resolution, and push to the private repo. **Never leave local review-text changes uncommitted.**
 
 ### 7b. Private Core Data Repo
 9 sensitive JSON files in private repo `thomaspryor/broadway-scorecard-data`:
@@ -53,6 +54,7 @@ Scripts processing >10 items in CI: save progress incrementally, `if: always()` 
 - Same PAT (`REVIEW_TEXTS_TOKEN`). All 9 files gitignored. Staleness canary in `test.yml`.
 - Deploy: terminal workflows dispatch deploys directly (not path-triggered).
 - New workflows: MUST include `checkout-core-data`. Writers MUST also include `push-core-data`.
+- **Session data check:** Run `npm run data:check` at session start. If files missing/stale → `./scripts/setup-local-data.sh`. Never make data-dependent claims without verifying data is present.
 
 ### 8. Design System
 Use shared components from `src/components/show-cards/` — never create custom versions.
@@ -89,6 +91,15 @@ For changes touching 3+ workflows, CI/CD, data pipelines, or cross-repo operatio
 - **During:** Check within 15 min. Verify chaining.
 - **After:** Rebuild if needed. Verify data in private repo.
 - **Collection:** Always `-f chain=true -f remaining_batches=10` (default=0=no chaining).
+
+### 12. Expansion Playbook (MANDATORY for new markets/categories)
+Aggregators first, web search second. See `memory/expansion-playbook.md` for the full process. Never skip aggregator scraping — it captures 70-90% of reviews. Web search is the cherry on top, not the foundation.
+
+### 13. Always Recommend Next Steps
+When wrapping up a task, recommend the best next task or follow-up. Don't just say "done" — tell the user what you'd prioritize next and why.
+
+### 14. Fix Systematically, Not One-Off
+When fixing an issue, also fix it **at the pipeline/automation level** so it never recurs. This project runs continuous automated processes for new shows, historical backfills, and geographic expansion. One-off fixes are wasted work — the same issue will reappear next run. Every fix should ask: "How do I prevent this class of problem permanently?" Update scripts, add validation gates, improve error handling in workflows.
 
 ---
 
@@ -131,19 +142,8 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`.
 ---
 
 ## File Hygiene — Preventing Bloat (MANDATORY)
-CLAUDE.md and MEMORY.md are loaded into **every conversation**. Bloat wastes thousands of tokens per session. These files have been cleaned up 3 times already. Follow these rules to prevent a 4th:
-
-**CLAUDE.md** (currently ~130 lines, limit: **150 lines**) — project rules and reference only.
-- **Add** a rule here only if it applies to EVERY session regardless of task type.
-- **Don't add** backstory, incident post-mortems, migration details, or "why this rule exists" narratives. Put those in memory topic files.
-- **When adding a rule**, check if an existing section already covers it. Extend, don't duplicate.
-- **One-line rules preferred.** If a rule needs >5 lines of explanation, the explanation goes in a memory topic file with a one-line summary + pointer here.
-
-**MEMORY.md** (currently ~110 lines, limit: **180 lines**) — learned knowledge and state index only.
-- **Add** gotchas, API details, operational state, and lessons learned from incidents.
-- **Don't add** anything already covered in CLAUDE.md. Don't duplicate rules — reference them (`see CLAUDE.md §7a`).
-- **New subsystems or multi-paragraph topics** → create a `memory/{topic}.md` file and add a one-line pointer to the Subsystem Pointers section.
-- **Completed one-time tasks** → `memory/completed-migrations.md`, not MEMORY.md.
-- **Session handoff files** → delete after the receiving session picks them up.
-
-**Before editing either file**, check its current line count: `wc -l FILE`. If adding content would exceed the limit, compress or move existing content to topic files first.
+CLAUDE.md (**limit: 150 lines**) and MEMORY.md (**limit: 180 lines**) are loaded every session — bloat wastes tokens.
+- **CLAUDE.md**: Rules that apply to EVERY session. One-line preferred. No backstory/post-mortems — put in memory topic files.
+- **MEMORY.md**: Gotchas, API details, lessons learned. Don't duplicate CLAUDE.md. New topics → `memory/{topic}.md` + pointer.
+- **Before editing either file**: `wc -l FILE`. If over limit, compress or move to topic files first.
+- Completed one-time tasks → `memory/completed-migrations.md`. Session handoffs → delete after pickup.

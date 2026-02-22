@@ -156,6 +156,7 @@ async function processVerify(items) {
         criticName: r.criticName || '',
         openingDate: show?.openingDate || '',
         venue: show?.venue || '',
+        market: show?.category || 'broadway',
       });
 
       const provider = result.verifiedBy || 'unknown';
@@ -243,6 +244,7 @@ async function processRecover(items) {
         criticName: r.criticName || '',
         openingDate: show?.openingDate || '',
         venue: show?.venue || '',
+        market: show?.category || 'broadway',
       });
 
       const provider = result.verifiedBy || 'unknown';

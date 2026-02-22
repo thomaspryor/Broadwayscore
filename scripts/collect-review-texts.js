@@ -5332,7 +5332,8 @@ async function processReview(review) {
           outletName: review.outlet,
           criticName: review.critic,
           openingDate: showMeta?.openingDate || null,
-          venue: showMeta?.venue || null
+          venue: showMeta?.venue || null,
+          market: showMeta?.category || 'broadway'
         });
 
         const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';

@@ -114,7 +114,7 @@ const ShowCard = memo(function ShowCard({
           {show.images?.thumbnail ? (
             <img
               src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-              alt={`${show.title} ${isWestEnd ? 'West End' : 'Broadway'} ${show.type}`}
+              alt={`${show.title} ${isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type}`}
               className="w-full h-full object-cover"
               loading="lazy"
             />
