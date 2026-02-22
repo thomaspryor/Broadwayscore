@@ -3,228 +3,43 @@ import type { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getScoreTier } from '@/components/show-cards/ScoreBadge';
-import TonyPredictionsTable from '@/components/TonyPredictionsTable';
-import type { SerializedTonyShow } from '@/components/TonyPredictionsTable';
-import type { ComputedShow } from '@/lib/engine';
 import { featureFlags } from '@/config/feature-flags';
-
-// Import commercial.json directly to avoid pulling in grosses-history.json
-import commercialData from '../../../data/commercial.json';
-import awardsData from '../../../data/awards.json';
-
-// --- Tony Season Logic ---
-
-interface TonySeasonWindow {
-  start: string;
-  end: string;
-  label: string;
-  ceremonyYear: number;
-}
-
-function getTonySeasonWindow(): TonySeasonWindow {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth(); // 0-indexed
-
-  // Tony eligibility windows (season starts the day after previous ceremony's cutoff)
-  // 2024-25 cutoff: April 27, 2025 → 2025-26 season starts April 28, 2025
-  // Jan-Jun: current Tony season started previous April
-  // Jul-Dec: current Tony season started this April
-  if (month <= 5) {
-    return {
-      start: `${year - 1}-04-28`,
-      end: `${year}-04-27`,
-      label: `${year - 1}-${year}`,
-      ceremonyYear: year,
-    };
-  }
-  return {
-    start: `${year}-04-28`,
-    end: `${year + 1}-04-27`,
-    label: `${year}-${year + 1}`,
-    ceremonyYear: year + 1,
-  };
-}
-
-// --- Data Preparation ---
-
-interface TonyCategory {
-  key: string;
-  title: string;
-  description: string;
-  shows: SerializedTonyShow[];
-  upcoming: SerializedTonyShow[];
-}
-
-function serializeShow(show: ComputedShow): SerializedTonyShow {
-  return {
-    slug: show.slug,
-    title: show.title,
-    venue: show.venue || '',
-    openingDate: show.openingDate || '',
-    previewsStartDate: show.previewsStartDate || undefined,
-    status: show.status || '',
-    compositeScore: show.compositeScore,
-    reviewCount: show.criticScore?.reviewCount || 0,
-    thumbnailPath: show.images?.thumbnail || null,
-  };
-}
-
-// Tour stops explicitly ruled Tony-eligible by the Administration Committee
-const TONY_ELIGIBLE_TOUR_STOPS = new Set(['mamma-mia']);
-
-function getTourStopSlugs(): Set<string> {
-  const slugs = new Set<string>();
-  const shows = (commercialData as Record<string, unknown>).shows as Record<string, { designation?: string }> | undefined;
-  if (!shows) return slugs;
-  for (const [slug, data] of Object.entries(shows)) {
-    if (data.designation === 'Tour Stop' && !TONY_ELIGIBLE_TOUR_STOPS.has(slug)) slugs.add(slug);
-  }
-  return slugs;
-}
-
-function getEligibleShows(allShows: ComputedShow[], season: TonySeasonWindow): ComputedShow[] {
-  const tourStops = getTourStopSlugs();
-  return allShows.filter(show => {
-    if (!show.openingDate) return false;
-    if (show.openingDate < season.start || show.openingDate > season.end) return false;
-    if (tourStops.has(show.slug)) return false;
-    return true;
-  });
-}
-
-function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
-  const categories = [
-    {
-      key: 'best-musical',
-      title: 'Best Musical',
-      description: 'New musicals eligible for the top musical prize.',
-      filter: (s: ComputedShow) => s.type === 'musical' && !s.isRevival,
-    },
-    {
-      key: 'best-play',
-      title: 'Best Play',
-      description: 'New plays eligible for the top play prize.',
-      filter: (s: ComputedShow) => s.type === 'play' && !s.isRevival,
-    },
-    {
-      key: 'best-revival-musical',
-      title: 'Best Revival of a Musical',
-      description: 'Musical revivals competing for best revival honors.',
-      filter: (s: ComputedShow) => s.type === 'musical' && !!s.isRevival,
-    },
-    {
-      key: 'best-revival-play',
-      title: 'Best Revival of a Play',
-      description: 'Play revivals competing for best revival honors.',
-      filter: (s: ComputedShow) => s.type === 'play' && !!s.isRevival,
-    },
-  ];
-
-  return categories.map(cat => {
-    const matching = eligible.filter(cat.filter);
-
-    const scored = matching
-      .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
-      .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0))
-      .map(serializeShow);
-
-    const upcoming = matching
-      .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
-      .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
-      .map(serializeShow);
-
-    return {
-      key: cat.key,
-      title: cat.title,
-      description: cat.description,
-      shows: scored,
-      upcoming,
-    };
-  });
-}
-
-// --- Historical Winners ---
-
-interface HistoricalWinner {
-  slug: string;
-  title: string;
-  season: string;
-  category: string;
-  compositeScore: number | null;
-  reviewCount: number;
-}
-
-function getHistoricalWinners(allShows: ComputedShow[]): HistoricalWinner[] {
-  const showMap = new Map(allShows.map(s => [s.id, s]));
-  const winners: HistoricalWinner[] = [];
-  const awardsShows = (awardsData as Record<string, unknown>).shows as Record<string, {
-    tony?: { season?: string; wins?: string[] };
-  }>;
-
-  for (const [showId, data] of Object.entries(awardsShows)) {
-    const wins = data.tony?.wins || [];
-    const topCategory = wins.find(w =>
-      ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'].includes(w)
-    );
-    if (!topCategory) continue;
-
-    const show = showMap.get(showId);
-    if (!show) continue;
-
-    winners.push({
-      slug: show.slug,
-      title: show.title,
-      season: data.tony?.season || '',
-      category: topCategory,
-      compositeScore: show.compositeScore,
-      reviewCount: show.criticScore?.reviewCount || 0,
-    });
-  }
-
-  return winners
-    .sort((a, b) => b.season.localeCompare(a.season))
-    .slice(0, 20);
-}
+import { getTonyLeaderboard, getTonyNominationsMeta } from '@/lib/data-tony-noms';
+import {
+  getTonySeasonWindow,
+  getEligibleShows,
+  groupIntoCategories,
+  getHistoricalWinners,
+} from '@/lib/data-tony-predictions';
 
 // --- SEO ---
 
 const season = getTonySeasonWindow();
 
-export function generateMetadata(): Metadata {
-  return {
-    title: `Tony Awards Predictions ${season.ceremonyYear} - Data-Driven Broadway Rankings`,
-    description: `Which Broadway shows will win Tony Awards in ${season.ceremonyYear}? Data-driven predictions based on aggregated CriticScore ratings for all Tony-eligible shows in the ${season.label} season.`,
-    alternates: {
-      canonical: `${BASE_URL}/tony-awards`,
-    },
-    openGraph: {
-      title: `Tony Awards Predictions ${season.ceremonyYear}`,
-      description: `Data-driven Tony predictions for every eligible Broadway show in the ${season.label} season.`,
-      url: `${BASE_URL}/tony-awards`,
-      type: 'article',
-      images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: `Tony Awards Predictions ${season.ceremonyYear}` }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `Tony Awards Predictions ${season.ceremonyYear}`,
-      description: `Data-driven Tony predictions for every eligible Broadway show.`,
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: 'Tony Awards — Predictions, Leaderboard & Historical Data',
+  description: `Data-driven Tony Awards analysis: ${season.ceremonyYear} predictions ranked by critic scores, the all-time leaderboard of winners and nominees, and 12 seasons of accuracy data.`,
+  alternates: {
+    canonical: `${BASE_URL}/tony-awards`,
+  },
+  openGraph: {
+    title: 'Tony Awards — Broadway Scorecard',
+    description: 'Predictions, all-time leaderboard, and historical accuracy data for the Tony Awards.',
+    url: `${BASE_URL}/tony-awards`,
+    type: 'website',
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards — Broadway Scorecard' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tony Awards — Broadway Scorecard',
+    description: 'Predictions, leaderboard, and historical accuracy for the Tony Awards.',
+  },
+};
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
-    {
-      '@type': 'Question',
-      name: `What Broadway shows are likely to win Tony Awards in ${season.ceremonyYear}?`,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `Based on aggregated critic scores from hundreds of reviews, Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season. Historically, shows with critic scores above 80 have a strong track record at the Tony Awards.`,
-      },
-    },
     {
       '@type': 'Question',
       name: 'How accurate are critic scores at predicting Tony Awards?',
@@ -235,10 +50,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: `When are the ${season.ceremonyYear} Tony Awards?`,
+      name: 'What is Broadway Scorecard\'s Tony Awards section?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `The Tony Awards ceremony is traditionally held in June. The ${season.label} Tony season covers shows that opened between late April ${season.ceremonyYear - 1} and late April ${season.ceremonyYear}.`,
+        text: 'Broadway Scorecard\'s Tony Awards section includes data-driven predictions for every eligible show, an all-time leaderboard of winners and nominees ranked by career awards, and historical accuracy analysis showing how well critic scores predict Tony winners.',
       },
     },
   ],
@@ -246,7 +61,7 @@ const faqSchema = {
 
 // --- Page ---
 
-export default function TonyAwardsPage() {
+export default function TonyAwardsHubPage() {
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
   const categories = groupIntoCategories(eligible);
@@ -255,9 +70,23 @@ export default function TonyAwardsPage() {
   const totalScored = categories.reduce((sum, cat) => sum + cat.shows.length, 0);
   const totalUpcoming = categories.reduce((sum, cat) => sum + cat.upcoming.length, 0);
 
+  // Leaderboard teaser data
+  const leaderboard = getTonyLeaderboard();
+  const meta = getTonyNominationsMeta();
+  const top3 = leaderboard.slice(0, 3);
+
+  // Top show per category for predictions teaser
+  const categoryTeasers = categories
+    .filter(cat => cat.shows.length > 0)
+    .map(cat => ({
+      label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
+      showTitle: cat.shows[0].title,
+      score: cat.shows[0].compositeScore,
+    }));
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Tony Awards Predictions', url: `${BASE_URL}/tony-awards` },
+    { name: 'Tony Awards', url: `${BASE_URL}/tony-awards` },
   ]);
 
   return (
@@ -279,74 +108,120 @@ export default function TonyAwardsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">
-            Tony Awards Predictions: {season.label} Season
+            Tony Awards
           </h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            Data-driven predictions powered by aggregated critic scores. Every Tony-eligible show ranked by review consensus.
+            Data-driven Tony Awards analysis &mdash; predictions, accuracy stats, and the all-time leaderboard.
           </p>
-          <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
-            <span>{eligible.length} eligible shows</span>
-            <span className="text-gray-600">·</span>
-            <span>{totalScored} reviewed</span>
-            <span className="text-gray-600">·</span>
-            <span>{totalUpcoming} upcoming</span>
-          </div>
         </div>
 
-        {/* How This Works */}
-        <div className="mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
-          <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">How This Works</h2>
-          <p className="text-sm text-gray-400 leading-relaxed">
-            Shows are ranked by their aggregated CriticScore — a weighted average of reviews from dozens of outlets including
-            The New York Times, Vulture, Variety, and more. Historically, the Best Musical Tony winner has
-            been among the top-scored eligible shows in almost every recent season.
-            These aren&apos;t editorial picks — they&apos;re what the collective critical consensus says.
-          </p>
-          <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
-            Learn about our scoring methodology →
-          </Link>
-        </div>
-
-        {/* Leaderboard link */}
-        {featureFlags.tonyPeople && (
-          <Link href="/tony-awards/people" className="block mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Tony Awards Leaderboard</h2>
-                <p className="text-sm text-gray-400 mt-1">Browse all-time Tony winners and nominees ranked by wins and nominations.</p>
+        {/* Teaser Cards Grid */}
+        <div className="grid sm:grid-cols-2 gap-4 mb-10">
+          {/* Predictions Teaser */}
+          {featureFlags.tonyPredictions && eligible.length > 0 ? (
+            <Link href="/tony-awards/predictions" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </div>
-              <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              <p className="text-sm text-gray-400 mb-3">
+                {eligible.length} eligible shows &middot; {totalScored} reviewed {totalUpcoming > 0 && <>&middot; {totalUpcoming} upcoming</>}
+              </p>
+              {categoryTeasers.length > 0 && (
+                <div className="space-y-1.5">
+                  {categoryTeasers.slice(0, 4).map(t => (
+                    <div key={t.label} className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500">{t.label}</span>
+                      <span className="text-white font-medium truncate ml-2">
+                        {t.showTitle}
+                        {t.score !== null && (
+                          <span className="text-brand ml-1.5">({t.score})</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
+                See full predictions &rarr;
+              </p>
+            </Link>
+          ) : featureFlags.tonyPredictions ? (
+            <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
+              <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">{season.label} Tony Predictions</h2>
+              <p className="text-sm text-gray-400">
+                Predictions for the {season.ceremonyYear} season will appear when shows begin opening.
+              </p>
             </div>
-          </Link>
-        )}
+          ) : null}
 
-        {/* Category Sections */}
-        {categories.reduce<{ elements: React.ReactNode[]; runningIndex: number }>(
-          (acc, cat) => {
-            acc.elements.push(
-              <TonyPredictionsTable
-                key={cat.key}
-                title={cat.title}
-                description={cat.description}
-                shows={cat.shows}
-                upcoming={cat.upcoming}
-                startIndex={acc.runningIndex}
-              />
-            );
-            acc.runningIndex += cat.shows.length + cat.upcoming.length;
-            return acc;
-          },
-          { elements: [], runningIndex: 0 }
-        ).elements}
+          {/* Leaderboard Teaser */}
+          {featureFlags.tonyPeople && (
+            <Link href="/tony-awards/people" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">All-Time Leaderboard</h2>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400 mb-3">
+                {meta.totalNominations.toLocaleString()} nominations &middot; {meta.totalWins.toLocaleString()} wins tracked
+              </p>
+              {top3.length > 0 && (
+                <div className="space-y-1.5">
+                  {top3.map((p, i) => (
+                    <div key={p.ibdbPersonId} className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400">#{i + 1}</span>
+                      <span className="text-white font-medium flex-1 ml-2 truncate">{p.name}</span>
+                      <span className="text-brand font-semibold ml-2">{p.wins}W</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
+                View full leaderboard &rarr;
+              </p>
+            </Link>
+          )}
+        </div>
+
+        {/* Browse Tony Shows */}
+        <section className="mb-10">
+          <h2 className="text-xl font-bold text-white mb-4">Browse Tony Shows</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Link href="/browse/tony-winners-on-broadway" className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-white">Tony Winners on Broadway</h3>
+                  <p className="text-xs text-gray-400 mt-1">Award-winning productions currently playing</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+            <Link href={`/browse/tony-nominated-${season.ceremonyYear}`} className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-white">{season.ceremonyYear} Tony Nominees</h3>
+                  <p className="text-xs text-gray-400 mt-1">This year&apos;s celebrated shows still playing</p>
+                </div>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </div>
+        </section>
 
         {/* Historical Winners */}
         {historicalWinners.length > 0 && (
-          <section className="mb-10 mt-4">
+          <section className="mb-10">
             <h2 className="text-xl font-bold text-white mb-2">Recent Tony Winning Shows &amp; Their Scores</h2>
             <p className="text-sm text-gray-400 mb-4">
-              How recent Tony winners scored with critics — showing the relationship between reviews and awards.
+              How recent Tony winners scored with critics &mdash; showing the relationship between reviews and awards.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -377,7 +252,7 @@ export default function TonyAwardsPage() {
                               {winner.compositeScore}
                             </span>
                           ) : (
-                            <span className="text-sm text-gray-500">—</span>
+                            <span className="text-sm text-gray-500">&mdash;</span>
                           )}
                         </td>
                         <td className="py-2.5 text-right text-sm text-gray-500">{winner.reviewCount || '—'}</td>
@@ -391,7 +266,7 @@ export default function TonyAwardsPage() {
         )}
 
         {/* How Accurate Are Critic Scores? */}
-        <section className="mb-10 mt-4">
+        <section className="mb-10">
           <h2 className="text-xl font-bold text-white mb-2">How Accurate Are Critic Scores?</h2>
           <p className="text-sm text-gray-400 mb-5">
             We analyzed 12 Tony seasons (2014&ndash;2025) across all four main categories to test how well aggregated critic scores predict winners.
@@ -501,26 +376,20 @@ export default function TonyAwardsPage() {
           </div>
         </section>
 
-        {/* Data Source Note */}
+        {/* Footer links */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
-          <p>
-            Rankings are derived from aggregated critic reviews collected from {eligible.length > 0 ? 'dozens of' : ''} outlets.
-            Shows appear automatically as they open and get reviewed — no editorial intervention.
-            Tony eligibility based on opening dates within the {season.label} season.
-            Includes currently announced shows only. Category classifications (new vs. revival) are subject to official Tony Awards Administration Committee rulings.
-          </p>
-          <div className="flex flex-wrap gap-4 mt-3">
+          <div className="flex flex-wrap gap-4">
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
-              Scoring methodology →
+              Scoring methodology &rarr;
             </Link>
-            {featureFlags.boxOffice && (
-              <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors">
-                Box office data →
-              </Link>
-            )}
             {featureFlags.criticPages && (
               <Link href="/critics" className="text-brand hover:text-brand-hover transition-colors">
-                Critic profiles →
+                Critic profiles &rarr;
+              </Link>
+            )}
+            {featureFlags.boxOffice && (
+              <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors">
+                Box office data &rarr;
               </Link>
             )}
           </div>
