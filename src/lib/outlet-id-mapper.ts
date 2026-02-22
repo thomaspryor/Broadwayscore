@@ -150,7 +150,7 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'new-york-theatre': 'NYTG',
   'new-york-theatre-guide-gillian-russo': 'NYTG',
   'the-star-ledger': 'NJCOM',
-  'the-stage-uk': 'THESTAGE',
+  'the-stage-uk': 'STAGE-UK',
   'the-telegraph-uk': 'TELEGRAPH',
   'northjereycom': 'NORTHJERSEY',
   'shelby-star-patrick-ryan': 'USATODAY',
@@ -159,6 +159,31 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'the-record-bergen': 'BERGENRECORD',
   'fort-worth-star-telgram': 'FORTWORTHST',
   'new-york': 'VULT',                     // New York Magazine (nymag.com)
+
+  // West End outlet aliases (Feb 2026 audit — these were all defaulting to Tier 3)
+  // Tier 1 UK nationals
+  'evening-standard': 'STANDARD',
+  'standard': 'STANDARD',
+  'the-times-uk': 'TIMES-UK',
+  'the-times': 'TIMES-UK',
+  'times-uk': 'TIMES-UK',
+  'telegraph': 'TELEGRAPH',
+  // Tier 2 UK trade/specialist
+  'whatsonstage': 'WHATSONSTAGE',
+  'whats-on-stage': 'WHATSONSTAGE',
+  'timeout-london': 'TIMEOUT-LONDON',
+  'time-out-london': 'TIMEOUT-LONDON',
+  'london-theatre': 'LONDONTHEATRE',
+  'londontheatre': 'LONDONTHEATRE',
+  'london-theatre-direct': 'LONDONTHEATRE',
+  'the-independent-uk': 'INDEPENDENT',
+  'independent': 'INDEPENDENT',
+  'the-independent': 'INDEPENDENT',
+  'the-stage': 'STAGE-UK',
+  'stage-uk': 'STAGE-UK',
+  'i-paper': 'I-PAPER',
+  'the-i': 'I-PAPER',
+  'i-newspaper': 'I-PAPER',
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)
