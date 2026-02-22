@@ -83,7 +83,8 @@
     "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
     "the-producers-west-end-2025/evening-standard--nick-curtis.json",
     "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "grey-house-2023/newyorker--dan-stahl.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1272,7 +1273,8 @@
       "maybe-happy-ending-2024/theatermania--adam-feldman.json",
       "gypsy-2024/variety--aramide-tinubu.json",
       "illinoise-2024/hollywood-reporter--angie-han.json",
-      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "grey-house-2023/newyorker--dan-stahl.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1817,6 +1819,17 @@
     },
     {
       "t": "2026-02-22T16:56:01.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:00:35.503Z",
+      "event": "bb-session",
+      "session": "95d449c7",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-02-22T17:00:37.904Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
