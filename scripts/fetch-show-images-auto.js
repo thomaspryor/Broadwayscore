@@ -1467,7 +1467,14 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     const hero = apiData.hero || apiData.headerImage || null;
 
     // Filter out "Coming Soon" placeholder images from TodayTix
-    const isComingSoon = (url) => url && /coming.?soon/i.test(url);
+    // Detect by filename pattern OR known Contentful asset IDs (some use generic filenames)
+    const COMING_SOON_ASSET_IDS = new Set([
+      '74xXALpVG4Bdn59x8L9OYN', '42EOxYmUHQE0Xuza0dUlJm', '1Ya0iMOMWjrOvnZPMv9y8k',
+      '6W6O3eG33mXg3uJes4DBQ2', 'Y2lDO0gaKjUKp333ZG3zW', '3khjL5U7k9860pnRWY6wxe',
+      '3kXlmb7NIDQUq2fEi8FK8C', '2NXMbF8ZGgylEVESpiUIlf', '4dVF8DYwWDn4B5OFSi3x3c',
+    ]);
+    const getAssetId = (url) => { const m = url && url.match(/ctfassets\.net\/[^/]+\/([^/]+)/); return m ? m[1] : null; };
+    const isComingSoon = (url) => url && (/coming.?soon/i.test(url) || COMING_SOON_ASSET_IDS.has(getAssetId(url)));
     const filteredThumb = isComingSoon(thumbnail) ? null : thumbnail;
     const filteredPoster = isComingSoon(poster) ? null : poster;
     const filteredHero = isComingSoon(hero) ? null : hero;
