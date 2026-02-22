@@ -217,9 +217,9 @@ export default function TonyPredictionsOverviewPage() {
           {/* Upsets */}
           {stats.upsets.length > 0 && (
             <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">Notable Upsets</h3>
               <p className="text-xs text-gray-500 mb-3">
-                Across {stats.categorySeasonCount} category-seasons, only {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 by critic score.
+                Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among all eligible shows by critic score.
               </p>
               <div className="space-y-2">
                 {stats.upsets.map((upset, i) => (
