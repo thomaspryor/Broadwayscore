@@ -23,7 +23,7 @@ const { chromium } = require('playwright');
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'tony-nominations.json');
 const CHECKPOINT_FILE = path.join(__dirname, '..', 'data', 'tony-nominations-checkpoint.json');
-const DELAY_MS = 3500; // 3.5s between requests (slower to avoid rate limiting)
+const DELAY_MS = parseInt(process.env.SCRAPE_DELAY_MS || '1500'); // 1.5s default, configurable via env
 
 // Map IBDB's verbose category names to our short-form names
 const CATEGORY_MAP = {
@@ -570,7 +570,7 @@ function writeOutput(nominations, expectedShowCount, actualShowCount, awardsData
       source: 'IBDB',
       coverage: '1970-present',
       expectedShowCount,
-      actualShowCount,
+      actualShowCount: new Set(finalNominations.map(n => n.showId)).size,
       totalNominations: finalNominations.length,
       totalWins: finalNominations.filter(n => n.won).length,
     },

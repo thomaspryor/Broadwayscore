@@ -63,7 +63,7 @@ export default function GuidesIndexPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Broadway Guides</h1>
           <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
-            Expert-curated guides to help you find the perfect Broadway show. Each guide features critic scores, editorial insights, and ticket information updated monthly.
+            Expert-curated guides to help you find the perfect Broadway show. Each guide features CriticScore ratings, editorial insights, and ticket information updated monthly.
           </p>
         </div>
 

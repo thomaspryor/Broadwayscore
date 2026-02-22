@@ -203,7 +203,7 @@ export function generateMetadata(): Metadata {
       description: `Data-driven Tony predictions for every eligible Broadway show in the ${season.label} season.`,
       url: `${BASE_URL}/tony-awards`,
       type: 'article',
-      images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: 'Broadway Scorecard' }],
+      images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: `Tony Awards Predictions ${season.ceremonyYear}` }],
     },
     twitter: {
       card: 'summary_large_image',

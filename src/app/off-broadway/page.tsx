@@ -53,13 +53,17 @@ export default function OffBroadwayPage() {
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
+  // Filter out previews/upcoming — they have no scores and push useful content down
+  const displayShows = shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming');
+  const nowPlayingCount = displayShows.filter(s => s.status === 'open').length;
+
   // Compute display flags
-  const isMixedType = new Set(shows.map(s => s.type)).size > 1;
-  const statuses = new Set(shows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
+  const isMixedType = new Set(displayShows.map(s => s.type)).size > 1;
+  const statuses = new Set(displayShows.map(s => s.status === 'open' || s.status === 'previews' ? 'open' : 'closed'));
   const isMixedStatus = statuses.size > 1;
 
   // Serialize shows for client component
-  const serializedShows: BrowseShow[] = shows.map(show => {
+  const serializedShows: BrowseShow[] = displayShows.map(show => {
     const buzz = getAudienceBuzz(show.id);
     return {
       id: show.id,
@@ -84,7 +88,7 @@ export default function OffBroadwayPage() {
   const scoredCount = serializedShows.filter(s => s.criticScore?.score && (s.criticScore?.reviewCount ?? 0) >= 3).length;
 
   // Compute data freshness from latest review publish date
-  const latestReviewDate = shows.reduce((latest, s) => {
+  const latestReviewDate = displayShows.reduce((latest, s) => {
     for (const r of s.criticScore?.reviews || []) {
       if (r.publishDate && r.publishDate > latest) return r.publishDate;
     }
@@ -122,7 +126,7 @@ export default function OffBroadwayPage() {
             CriticScore ratings for Off-Broadway shows in NYC, aggregated from The New York Times, Vulture, Variety, Time Out, and more.
           </p>
           <p className="text-gray-500 text-sm mt-3">
-            {shows.length} shows ({scoredCount} scored) | Last updated: {dataFreshness}
+            {shows.length} shows tracked ({nowPlayingCount} now playing, {scoredCount} scored) | Last updated: {dataFreshness}
           </p>
         </div>
 

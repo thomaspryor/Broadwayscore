@@ -103,6 +103,34 @@ const OUTLET_DOMAINS = {
   'la-times': 'latimes.com',
   'huffpost': 'huffpost.com',
   'huffington-post': 'huffpost.com',
+  // UK outlets for West End SERP discovery
+  'telegraph': 'telegraph.co.uk',
+  'the-telegraph-uk': 'telegraph.co.uk',
+  'evening-standard': 'standard.co.uk',
+  'standard': 'standard.co.uk',
+  'the-times-uk': 'thetimes.co.uk',
+  'times-uk': 'thetimes.co.uk',
+  'dailymail': 'dailymail.co.uk',
+  'daily-mail': 'dailymail.co.uk',
+  'whatsonstage': 'whatsonstage.com',
+  'timeout-london': 'timeout.com',
+  'time-out-london': 'timeout.com',
+  'independent': 'independent.co.uk',
+  'the-independent-uk': 'independent.co.uk',
+  'london-theatre': 'londontheatre.co.uk',
+  'londontheatre': 'londontheatre.co.uk',
+  'inews': 'inews.co.uk',
+  'the-i-uk': 'inews.co.uk',
+  'stage-uk': 'thestage.co.uk',
+  'the-arts-desk': 'theartsdesk.com',
+  'artsdesk': 'theartsdesk.com',
+  'everythingtheatre': 'everythingtheatre.co.uk',
+  'everything-theatre': 'everythingtheatre.co.uk',
+  'thereviewshub': 'thereviewshub.com',
+  'metro-uk': 'metro.co.uk',
+  'mirror': 'mirror.co.uk',
+  'the-sun': 'thesun.co.uk',
+  'west-end-best-friend': 'westendbestfriend.co.uk',
 };
 
 // Known domain redirects (old domain → new domain)
@@ -126,6 +154,7 @@ function getShowInfo(showId) {
       return {
         title: showEntry.title,
         year: (showEntry.openingDate || '').substring(0, 4),
+        category: showEntry.category || 'broadway',
       };
     }
   } catch (e) { /* fall through */ }
@@ -295,11 +324,16 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const criticClause = criticName ? ` ${criticName}` : '';
   const outletName = review.outlet || outletId;
 
+  // Use market-appropriate search term based on show category
+  const marketTerm = showInfo.category === 'west-end' ? 'West End review'
+    : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
+    : 'Broadway review';
+
   let query;
   if (domain) {
-    query = `site:${domain} "${showInfo.title}" Broadway review${yearClause}${criticClause}`;
+    query = `site:${domain} "${showInfo.title}" ${marketTerm}${yearClause}${criticClause}`;
   } else {
-    query = `"${showInfo.title}" Broadway review${yearClause} "${outletName}"${criticClause}`;
+    query = `"${showInfo.title}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
   }
 
   log(`  [URL Discovery] Searching: ${query}`);
@@ -323,7 +357,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // Fallback: broader search without site: restriction, using outlet + critic name
     // This catches articles Google didn't index under the domain (URL changes, redirects)
     if (criticName && domain) {
-      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" Broadway review${yearClause}`;
+      const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
       results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log);
       provider = 'scrapingbee-fallback';

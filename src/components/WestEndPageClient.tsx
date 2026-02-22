@@ -599,7 +599,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           options={[
             { value: 'recent' as SortParam, label: 'NEWEST' },
             { value: 'score_desc' as SortParam, label: 'HIGHEST' },
-            { value: 'audience_buzz' as SortParam, label: 'BUZZ' },
+            { value: 'audience_buzz' as SortParam, label: 'AUDIENCE' },
             { value: 'alpha' as SortParam, label: 'A-Z' },
           ]}
           value={sort}

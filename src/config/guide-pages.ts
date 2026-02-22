@@ -115,7 +115,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     title: 'Best New Broadway Shows',
     h1Template: 'Best New Broadway Shows ({season} Season)',
     metaTitleTemplate: 'Best New Broadway Shows {season} | Latest Productions',
-    metaDescriptionTemplate: 'The {count} best new Broadway shows from the {season} season. Fresh productions ranked by critic scores.',
+    metaDescriptionTemplate: 'The {count} best new Broadway shows from the {season} season. Fresh productions ranked by CriticScore.',
     introFallback: 'The {season} Broadway season has brought {count} new productions to the Great White Way. These are the highest-rated new shows, from world premieres to acclaimed transfers.',
     filter: (show) => {
       if (show.status !== 'open') return false;
@@ -173,7 +173,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     h1Template: 'Highest Rated Broadway Shows of All Time',
     metaTitleTemplate: 'Highest Rated Broadway Shows | All-Time Best Scores',
     metaDescriptionTemplate: 'The {count} highest rated Broadway shows ever, ranked by aggregated CriticScore ratings. Legendary productions from 2005 to present.',
-    introFallback: 'Since 2005, these {count} shows have achieved the highest critic scores in Broadway Scorecard history. From groundbreaking musicals to acclaimed plays, these are the absolute best.',
+    introFallback: 'Since 2005, these {count} shows have achieved the highest CriticScore ratings in Broadway Scorecard history. From groundbreaking musicals to acclaimed plays, these are the absolute best.',
     filter: (show) => (show.criticScore?.score ?? 0) >= 70,
     sort: 'score',
     limit: 50,

@@ -152,7 +152,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             {showA.title} vs {showB.title}
           </h1>
           <p className="text-gray-400 text-base sm:text-lg">
-            Which Broadway show should you see? Compare critic scores, runtime, prices, and more.
+            Which Broadway show should you see? Compare CriticScore ratings, runtime, prices, and more.
           </p>
         </div>
 

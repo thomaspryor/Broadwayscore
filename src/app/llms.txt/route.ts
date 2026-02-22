@@ -67,7 +67,7 @@ ${browseSlugs.slice(0, 12).map(slug => {
 ### Data & Analytics
 - [Box Office Scorecard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
 - [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations
-- [Audience Scorecard](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, and Reddit ratings
+- [AudienceGrade](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, and Reddit ratings
 
 ### Discount Tickets
 - [Best Value Tickets](${BASE_URL}/best-value): All discount options (lottery, rush, SRO) sorted by cheapest price

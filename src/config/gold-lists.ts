@@ -61,9 +61,9 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     threshold: 78,
     maxPerSeason: 10,
     maxAllTime: 25,
-    metricLabel: 'Audience Score',
+    metricLabel: 'AudienceGrade',
     metricSuffix: '',
-    minDataRequirement: 'Combined audience score available',
+    minDataRequirement: 'AudienceGrade data available',
   },
   {
     type: 'box-office-gold',
