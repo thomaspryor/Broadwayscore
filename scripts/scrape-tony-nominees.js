@@ -6,11 +6,14 @@
  * Uses Playwright to handle Cloudflare protection on IBDB.
  *
  * Usage:
- *   node scripts/scrape-tony-nominees.js [--resume] [--test=N]
+ *   node scripts/scrape-tony-nominees.js [--resume] [--test=N] [--missing] [--show=ID] [--year=YYYY]
  *
  * Options:
- *   --resume  Resume from checkpoint (data/tony-nominations-checkpoint.json)
- *   --test=N  Only process first N shows (for testing)
+ *   --resume     Resume from checkpoint (data/tony-nominations-checkpoint.json)
+ *   --test=N     Only process first N shows (for testing)
+ *   --missing    Only process shows where awards.json expects noms but tony-nominations.json has 0
+ *   --show=ID    Process a single show by ID (ignores checkpoint)
+ *   --year=YYYY  Only process shows from a specific Tony season year
  */
 
 const fs = require('fs');
@@ -92,39 +95,77 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function scrapeShowAwards(page, ibdbUrl, showId, season) {
+/**
+ * Check if page is a Cloudflare challenge or IBDB error page.
+ * Returns error message if detected, null if page is valid IBDB content.
+ */
+async function detectPageError(page) {
+  const currentUrl = page.url();
+
+  // Cloudflare challenge redirect
+  if (currentUrl.includes('/cdn-cgi/') || currentUrl.includes('challenges.cloudflare.com')) {
+    return 'Cloudflare challenge detected';
+  }
+
+  // Check page content for Cloudflare markers
+  const hasCloudflare = await page.evaluate(() => {
+    const body = document.body?.innerHTML || '';
+    return body.includes('cf-browser-verification') ||
+           body.includes('challenge-platform') ||
+           body.includes('Checking your browser') ||
+           body.includes('cf-challenge');
+  }).catch(() => false);
+
+  if (hasCloudflare) {
+    return 'Cloudflare challenge page content detected';
+  }
+
+  // IBDB 404 / redirect to search
+  if (currentUrl.includes('/broadway-search') || currentUrl.includes('/search')) {
+    return 'IBDB redirected to search (show not found)';
+  }
+
+  return null;
+}
+
+async function scrapeShowAwardsInner(page, ibdbUrl, showId, season) {
   const nominations = [];
   const url = ibdbUrl + '#Awards';
 
-  try {
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
 
-    // Wait for the Awards tab content to load
-    // Click the Awards link to reveal the section — try up to 2 times
-    let hasTony = false;
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const awardsLink = page.locator('a[href="#Awards"]').first();
-      if (await awardsLink.isVisible({ timeout: 5000 }).catch(() => false)) {
-        await awardsLink.click();
-        await sleep(attempt === 0 ? 1500 : 3000);
-      }
+  // Check for Cloudflare or error pages
+  const pageError = await detectPageError(page);
+  if (pageError) {
+    throw new Error(pageError);
+  }
 
-      // Wait for Tony Award heading to appear
-      const tonyHeading = page.locator('h3:has-text("Tony Award")');
-      hasTony = await tonyHeading.isVisible({ timeout: 8000 }).catch(() => false);
-      if (hasTony) break;
-
-      // If first attempt failed, scroll to trigger lazy load
-      if (attempt === 0) {
-        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
-        await sleep(1000);
-      }
+  // Wait for the Awards tab content to load
+  // Click the Awards link to reveal the section — try up to 2 times
+  let hasTony = false;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const awardsLink = page.locator('a[href="#Awards"]').first();
+    if (await awardsLink.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await awardsLink.click();
+      await sleep(attempt === 0 ? 1500 : 3000);
     }
 
-    if (!hasTony) {
-      console.log(`  No Tony Award section found for ${showId}`);
-      return nominations;
+    // Wait for Tony Award heading to appear
+    const tonyHeading = page.locator('h3:has-text("Tony Award")');
+    hasTony = await tonyHeading.isVisible({ timeout: 8000 }).catch(() => false);
+    if (hasTony) break;
+
+    // If first attempt failed, scroll to trigger lazy load
+    if (attempt === 0) {
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+      await sleep(1000);
     }
+  }
+
+  if (!hasTony) {
+    // Not an error — this IBDB page genuinely has no Tony section
+    return { nominations, error: null, noTonySection: true };
+  }
 
     // Extract award entries from the page
     // Structure: Each award block has an h4 (category) and text with "YYYY Winner/Nominee"
@@ -227,11 +268,38 @@ async function scrapeShowAwards(page, ibdbUrl, showId, season) {
       });
     }
 
-  } catch (err) {
-    console.error(`  Error scraping ${showId}: ${err.message}`);
+  return { nominations, error: null, noTonySection: false };
+}
+
+/**
+ * Scrape Tony data for a show with 2-attempt retry.
+ * Returns { nominations: [], error: string|null, noTonySection: boolean }
+ */
+async function scrapeShowAwards(page, ibdbUrl, showId, season) {
+  const MAX_ATTEMPTS = 2;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const result = await scrapeShowAwardsInner(page, ibdbUrl, showId, season);
+      return result;
+    } catch (err) {
+      const isLastAttempt = attempt === MAX_ATTEMPTS;
+      const errorMsg = err.message || String(err);
+      console.error(`  ERROR ${showId}: ${errorMsg} (attempt ${attempt}/${MAX_ATTEMPTS})`);
+
+      if (!isLastAttempt) {
+        console.log(`  Retrying in 5s with extended timeout...`);
+        await sleep(5000);
+        // For retry, try with a fresh navigation
+        await page.goto('about:blank').catch(() => {});
+      } else {
+        return { nominations: [], error: errorMsg, noTonySection: false };
+      }
+    }
   }
 
-  return nominations;
+  // Should not reach here, but safety net
+  return { nominations: [], error: 'Unknown error', noTonySection: false };
 }
 
 async function main() {
@@ -239,6 +307,11 @@ async function main() {
   const resume = args.includes('--resume');
   const testMatch = args.find(a => a.startsWith('--test='));
   const testLimit = testMatch ? parseInt(testMatch.split('=')[1]) : 0;
+  const missingOnly = args.includes('--missing');
+  const showMatch = args.find(a => a.startsWith('--show='));
+  const singleShowId = showMatch ? showMatch.split('=')[1] : null;
+  const yearMatch = args.find(a => a.startsWith('--year='));
+  const yearFilter = yearMatch ? yearMatch.split('=')[1] : null;
 
   // Load awards data
   const awardsData = JSON.parse(fs.readFileSync(AWARDS_FILE, 'utf8'));
@@ -247,36 +320,94 @@ async function main() {
     return show.tony && (show.tony.nominations > 0 || (show.tony.wins && show.tony.wins.length > 0));
   });
 
-  console.log(`Found ${showIds.length} shows with Tony data`);
+  console.log(`Found ${showIds.length} shows with Tony data in awards.json`);
 
   // Load cast files to get IBDB URLs
   const castDir = path.join(__dirname, '..', 'data', 'cast');
   const showIbdbUrls = {};
+  let noUrlCount = 0;
   for (const id of showIds) {
     const castFile = path.join(castDir, id + '.json');
     if (fs.existsSync(castFile)) {
       const cast = JSON.parse(fs.readFileSync(castFile, 'utf8'));
       if (cast.ibdbUrl) {
         showIbdbUrls[id] = cast.ibdbUrl;
+      } else {
+        noUrlCount++;
       }
+    } else {
+      noUrlCount++;
     }
   }
 
-  console.log(`${Object.keys(showIbdbUrls).length} shows have IBDB URLs`);
+  console.log(`${Object.keys(showIbdbUrls).length} shows have IBDB URLs (${noUrlCount} missing)`);
 
   // Load checkpoint if resuming
   let allNominations = [];
   let processedShows = new Set();
+  let failedShows = new Map(); // showId → { reason, failedAt }
 
   if (resume && fs.existsSync(CHECKPOINT_FILE)) {
     const checkpoint = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, 'utf8'));
     allNominations = checkpoint.nominations || [];
     processedShows = new Set(checkpoint.processedShows || []);
-    console.log(`Resuming from checkpoint: ${processedShows.size} shows already processed, ${allNominations.length} nominations`);
+    // Load failed shows from checkpoint (new format)
+    if (checkpoint.failedShows) {
+      for (const entry of checkpoint.failedShows) {
+        if (typeof entry === 'string') {
+          failedShows.set(entry, { reason: 'unknown', failedAt: checkpoint.savedAt });
+        } else {
+          failedShows.set(entry.showId, { reason: entry.reason, failedAt: entry.failedAt });
+        }
+      }
+    }
+    console.log(`Resuming from checkpoint: ${processedShows.size} processed, ${failedShows.size} failed, ${allNominations.length} nominations`);
   }
 
-  // Filter to unprocessed shows
-  let toProcess = showIds.filter(id => !processedShows.has(id) && showIbdbUrls[id]);
+  // Determine which shows to process based on flags
+  let toProcess;
+
+  if (singleShowId) {
+    // --show=ID mode: process a single show regardless of checkpoint
+    if (!showIbdbUrls[singleShowId]) {
+      console.error(`Show ${singleShowId} has no IBDB URL. Cannot scrape.`);
+      process.exit(1);
+    }
+    toProcess = [singleShowId];
+    console.log(`Single-show mode: ${singleShowId}`);
+  } else if (missingOnly) {
+    // --missing mode: only shows where awards.json expects noms but tony-nominations.json has 0
+    const existingData = fs.existsSync(OUTPUT_FILE)
+      ? JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'))
+      : { nominations: [] };
+    const existingByShow = new Map();
+    for (const n of existingData.nominations) {
+      if (n.name !== '(show-level)') {
+        existingByShow.set(n.showId, (existingByShow.get(n.showId) || 0) + 1);
+      }
+    }
+    toProcess = showIds.filter(id => {
+      const expected = awardsData.shows[id]?.tony?.nominations || 0;
+      const actual = existingByShow.get(id) || 0;
+      return expected > 0 && actual === 0 && showIbdbUrls[id];
+    });
+    // Also load existing nominations so we can merge
+    allNominations = existingData.nominations || [];
+    console.log(`Missing-only mode: ${toProcess.length} shows with 0 person-level noms (expected > 0)`);
+  } else {
+    // Normal mode: filter by unprocessed + has URL
+    // Note: failedShows are NOT in processedShows, so they're automatically retried
+    toProcess = showIds.filter(id => !processedShows.has(id) && showIbdbUrls[id]);
+  }
+
+  // Apply year filter if specified
+  if (yearFilter) {
+    toProcess = toProcess.filter(id => {
+      const season = awardsData.shows[id]?.tony?.season || '';
+      return season.startsWith(yearFilter);
+    });
+    console.log(`Year filter (${yearFilter}): ${toProcess.length} shows`);
+  }
 
   if (testLimit > 0) {
     toProcess = toProcess.slice(0, testLimit);
@@ -287,7 +418,7 @@ async function main() {
 
   if (toProcess.length === 0) {
     console.log('Nothing to do!');
-    if (allNominations.length > 0) {
+    if (allNominations.length > 0 && !missingOnly) {
       writeOutput(allNominations, showIds.length, processedShows.size);
     }
     return;
@@ -307,38 +438,55 @@ async function main() {
       const showId = toProcess[i];
       const ibdbUrl = showIbdbUrls[showId];
       const season = awardsData.shows[showId]?.tony?.season || '';
+      const expected = awardsData.shows[showId]?.tony?.nominations || 0;
 
       console.log(`[${i + 1}/${toProcess.length}] ${showId}...`);
 
-      const noms = await scrapeShowAwards(page, ibdbUrl, showId, season);
+      const result = await scrapeShowAwards(page, ibdbUrl, showId, season);
 
-      if (noms.length > 0) {
-        console.log(`  → ${noms.length} nominations (${noms.filter(n => n.won).length} wins)`);
-        allNominations.push(...noms);
+      if (result.error) {
+        // Scrape failed with an error — add to failedShows, NOT processedShows
+        console.log(`  ✗ Failed: ${result.error}`);
+        failedShows.set(showId, { reason: result.error, failedAt: new Date().toISOString() });
+        consecutiveErrors++;
+      } else if (result.nominations.length > 0) {
+        // Success with data
+        console.log(`  → ${result.nominations.length} nominations (${result.nominations.filter(n => n.won).length} wins)`);
+        allNominations.push(...result.nominations);
+        processedShows.add(showId);
+        failedShows.delete(showId); // Clear any previous failure
+        consecutiveErrors = 0;
+      } else if (result.noTonySection) {
+        // IBDB page loaded but genuinely has no Tony section
+        if (expected > 0) {
+          console.log(`  ⚠ No Tony section on IBDB (expected ${expected} noms) — marking processed`);
+        }
+        processedShows.add(showId);
+        failedShows.delete(showId);
         consecutiveErrors = 0;
       } else {
-        // Check if this show was expected to have nominations
-        const expected = awardsData.shows[showId]?.tony?.nominations || 0;
+        // Page loaded, Tony section found, but 0 entries extracted — unexpected
         if (expected > 0) {
-          console.log(`  ⚠ Expected ${expected} nominations but found 0`);
+          console.log(`  ⚠ Tony section found but 0 entries (expected ${expected}) — marking failed`);
+          failedShows.set(showId, { reason: 'zero-entries-unexpected', failedAt: new Date().toISOString() });
           consecutiveErrors++;
         } else {
+          processedShows.add(showId);
           consecutiveErrors = 0;
         }
       }
 
-      processedShows.add(showId);
-
       // Checkpoint every 50 shows
       if ((i + 1) % 50 === 0 || i === toProcess.length - 1) {
-        saveCheckpoint(allNominations, processedShows);
-        console.log(`  📁 Checkpoint saved (${processedShows.size} shows, ${allNominations.length} nominations)`);
+        saveCheckpoint(allNominations, processedShows, failedShows);
+        console.log(`  📁 Checkpoint saved (${processedShows.size} processed, ${failedShows.size} failed, ${allNominations.length} noms)`);
       }
 
       // Stop if too many consecutive errors (likely rate-limited)
       if (consecutiveErrors >= 10) {
-        console.error('⛔ 10 consecutive errors — likely rate-limited. Stopping. Run with --resume to continue.');
-        saveCheckpoint(allNominations, processedShows);
+        console.error('⛔ 10 consecutive errors — likely rate-limited or Cloudflare blocked. Stopping.');
+        console.error('   Run with --resume to continue later.');
+        saveCheckpoint(allNominations, processedShows, failedShows);
         break;
       }
 
@@ -352,18 +500,24 @@ async function main() {
   }
 
   // Write final output
-  writeOutput(allNominations, showIds.length, processedShows.size);
+  writeOutput(allNominations, showIds.length, processedShows.size, awardsData);
 }
 
-function saveCheckpoint(nominations, processedShows) {
+function saveCheckpoint(nominations, processedShows, failedShows) {
+  const failedArray = Array.from(failedShows.entries()).map(([showId, info]) => ({
+    showId,
+    reason: info.reason,
+    failedAt: info.failedAt,
+  }));
   fs.writeFileSync(CHECKPOINT_FILE, JSON.stringify({
     nominations,
     processedShows: Array.from(processedShows),
+    failedShows: failedArray,
     savedAt: new Date().toISOString(),
   }, null, 2));
 }
 
-function writeOutput(nominations, expectedShowCount, actualShowCount) {
+function writeOutput(nominations, expectedShowCount, actualShowCount, awardsData) {
   // Remove _ibdbCategory debug field from final output
   const cleaned = nominations.map(({ _ibdbCategory, ...rest }) => rest);
 
@@ -381,6 +535,25 @@ function writeOutput(nominations, expectedShowCount, actualShowCount) {
   }
 
   const finalNominations = deduped;
+
+  // === REGRESSION GATE ===
+  // If previous data exists, abort if we'd lose >5% of nominations
+  if (fs.existsSync(OUTPUT_FILE)) {
+    try {
+      const previous = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
+      const previousCount = previous._meta?.totalNominations || previous.nominations?.length || 0;
+      if (previousCount > 0 && finalNominations.length < previousCount * 0.95) {
+        console.error(`\n⛔ REGRESSION GATE: Refusing to write output!`);
+        console.error(`   Previous: ${previousCount} nominations`);
+        console.error(`   New:      ${finalNominations.length} nominations`);
+        console.error(`   This is a ${Math.round((1 - finalNominations.length / previousCount) * 100)}% drop — likely a scraping failure.`);
+        console.error(`   To force, delete ${OUTPUT_FILE} first, then re-run.`);
+        process.exit(1);
+      }
+    } catch (e) {
+      // If we can't read previous file, proceed (don't block on parse error)
+    }
+  }
 
   const output = {
     _meta: {
@@ -407,6 +580,49 @@ function writeOutput(nominations, expectedShowCount, actualShowCount) {
     const uniqueUnmapped = [...new Set(unmapped.map(n => n.category))];
     console.log(`\n⚠ ${uniqueUnmapped.length} unmapped categories:`);
     uniqueUnmapped.forEach(c => console.log(`   - ${c}`));
+  }
+
+  // === POST-SCRAPE SUMMARY ===
+  if (awardsData) {
+    const gaps = [];
+    const covered = [];
+    const nomsByShow = new Map();
+    for (const n of finalNominations) {
+      nomsByShow.set(n.showId, (nomsByShow.get(n.showId) || 0) + 1);
+    }
+
+    for (const [id, show] of Object.entries(awardsData.shows)) {
+      if (!show.tony || show.tony.nominations <= 0) continue;
+      const actual = nomsByShow.get(id) || 0;
+      if (actual > 0) {
+        covered.push(id);
+      } else {
+        gaps.push({ showId: id, expected: show.tony.nominations, actual: 0 });
+      }
+    }
+
+    console.log(`\n=== POST-SCRAPE SUMMARY ===`);
+    console.log(`  Shows with data: ${covered.length}`);
+    console.log(`  Shows with gaps (expected > 0, actual = 0): ${gaps.length}`);
+
+    if (gaps.length > 10) {
+      console.log(`  ⚠ WARNING: ${gaps.length} shows have zero data — likely scraping issues`);
+    }
+
+    if (gaps.length > 0) {
+      console.log(`  Top gaps:`);
+      gaps.sort((a, b) => b.expected - a.expected).slice(0, 10).forEach(g => {
+        console.log(`    ${g.showId}: expected ${g.expected}`);
+      });
+    }
+
+    // Write audit file
+    const auditDir = path.join(__dirname, '..', 'data', 'audit');
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(auditDir, 'tony-coverage-gaps.json'),
+      JSON.stringify(gaps, null, 2)
+    );
   }
 }
 
