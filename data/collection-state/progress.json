@@ -91,7 +91,8 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
     "come-from-away-2017/newyorker--hilton-als.json",
-    "cost-of-living-2022/newyorker--vinson-cunningham.json"
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "indecent-2017/newyorker--hilton-als.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1273,7 +1274,16 @@
     "fences-2010/newyorker--hilton-als.json",
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/newyorker--naomi-fry.json",
     "god-of-carnage-2009/newyorker--hilton-als.json",
-    "grand-horizons-2020/newyorker--hilton-als.json"
+    "grand-horizons-2020/newyorker--hilton-als.json",
+    "gypsy-2008/newyorker--hilton-als.json",
+    "gypsy-2008/newyorker--john-lahr.json",
+    "hand-to-god-2015/newyorker--hilton-als.json",
+    "hangmen-2022/newyorker--vinson-cunningham.json",
+    "harmony-2023/newyorker--naomi-fry.json",
+    "hillary-and-clinton-2019/newyorker--hilton-als.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newyorker--hilton-als.json",
+    "in-the-heights-2008/newyorker--hilton-als.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1768,6 +1778,7 @@
       "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json",
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
       "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json"
     ],
     "archive": [
@@ -1827,11 +1838,12 @@
       "pictures-from-home-2023/newyorker--helen-shaw.json",
       "hadestown-2019/newyorker--hilton-als.json",
       "six-2021/newyorker--naomi-fry.json",
-      "come-from-away-2017/newyorker--hilton-als.json"
+      "come-from-away-2017/newyorker--hilton-als.json",
+      "indecent-2017/newyorker--hilton-als.json"
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "grand-horizons-2020/newyorker--hilton-als.json",
+  "lastProcessed": "into-the-woods-2022/newyorker--alexandra-schwartz.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -1991,6 +2003,17 @@
     },
     {
       "t": "2026-02-22T17:20:20.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:23:45.372Z",
+      "event": "bb-session",
+      "session": "67e77180",
+      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
+    },
+    {
+      "t": "2026-02-22T17:23:47.728Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
