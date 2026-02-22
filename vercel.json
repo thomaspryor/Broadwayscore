@@ -110,6 +110,50 @@
       ],
       "destination": "https://broadwayscorecard.com/:path+",
       "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "offbroadwayscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/off-broadway",
+      "permanent": true
+    },
+    {
+      "source": "/:path+",
+      "has": [
+        {
+          "type": "host",
+          "value": "offbroadwayscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/:path+",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.offbroadwayscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/off-broadway",
+      "permanent": true
+    },
+    {
+      "source": "/:path+",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.offbroadwayscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/:path+",
+      "permanent": true
     }
   ],
   "headers": [
