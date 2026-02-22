@@ -423,13 +423,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
   // Featured rows
   const topMusicals = useMemo(() => {
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -512,7 +512,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The Guardian, Telegraph, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
