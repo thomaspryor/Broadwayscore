@@ -461,8 +461,11 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
-        // Show all open + previews shows (TBD for <3 reviews), scored closed shows
-        if (show.status === 'open' || show.status === 'previews') return true;
+        // Only show shows with enough reviews for a score, plus previews/upcoming in filtered views
+        if (show.status === 'previews' || show.status === 'upcoming') {
+          return statusFilter === 'previews' || statusFilter === 'all';
+        }
+        // Open and closed shows: require minimum reviews for a score
         return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_OB;
       }
     });
