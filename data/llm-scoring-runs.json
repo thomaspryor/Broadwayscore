@@ -614701,33 +614701,33 @@
     ]
   },
   {
-    "startedAt": "2026-02-22T19:20:28.517Z",
-    "completedAt": "2026-02-22T21:14:28.809Z",
+    "startedAt": "2026-02-22T19:19:33.429Z",
+    "completedAt": "2026-02-22T22:17:07.139Z",
     "totalReviews": 29650,
-    "processed": 73,
+    "processed": 80,
     "skipped": 28638,
     "errors": 0,
     "tokensUsed": {
-      "input": 737597,
-      "output": 22225,
-      "total": 1714786
+      "input": 755165,
+      "output": 22138,
+      "total": 1892366
     },
     "errorDetails": [],
     "calibration": {
       "count": 16838,
-      "mae": 0.86,
-      "rmse": 3.68,
+      "mae": 0.87,
+      "rmse": 3.73,
       "meanBias": -0.19,
-      "stdDev": 3.68,
-      "bucketAccuracy": 93.3,
+      "stdDev": 3.72,
+      "bucketAccuracy": 93.2,
       "byConfidence": {
         "high": {
-          "count": 8674,
-          "mae": 0.74
+          "count": 8673,
+          "mae": 0.75
         },
         "medium": {
-          "count": 7845,
-          "mae": 0.89
+          "count": 7846,
+          "mae": 0.9
         },
         "low": {
           "count": 319,
@@ -614738,39 +614738,39 @@
         "tier1": {
           "count": 2098,
           "mae": 0.48,
-          "meanBias": 0.07
+          "meanBias": 0.06
         },
         "tier2": {
           "count": 2043,
           "mae": 3.16,
-          "meanBias": -1.74
+          "meanBias": -1.76
         },
         "tier3": {
           "count": 12697,
-          "mae": 0.55,
-          "meanBias": 0.01
+          "mae": 0.57,
+          "meanBias": 0.02
         }
       },
       "outletBias": {
         "Newsday": {
           "count": 379,
-          "meanBias": -0.12137203166226913
+          "meanBias": -0.12401055408970976
         },
         "The New York Times": {
           "count": 626,
-          "meanBias": 0.1501597444089457
+          "meanBias": 0.2795527156549521
         },
         "Theater Life": {
           "count": 411,
-          "meanBias": 0.19464720194647203
+          "meanBias": 0.24087591240875914
         },
         "TheaterMania": {
           "count": 465,
-          "meanBias": 0.06881720430107527
+          "meanBias": 0.07956989247311828
         },
         "The Wall Street Journal": {
           "count": 394,
-          "meanBias": -0.025380710659898477
+          "meanBias": -0.04060913705583756
         },
         "Associated Press": {
           "count": 280,
@@ -614798,7 +614798,7 @@
         },
         "Cititour": {
           "count": 238,
-          "meanBias": 0.5630252100840336
+          "meanBias": 0.5252100840336135
         },
         "The Daily Beast": {
           "count": 235,
@@ -614806,11 +614806,11 @@
         },
         "Deadline": {
           "count": 312,
-          "meanBias": 0.21794871794871795
+          "meanBias": 0.22115384615384615
         },
         "Entertainment Weekly": {
           "count": 463,
-          "meanBias": -6.721382289416846
+          "meanBias": -6.760259179265659
         },
         "Front Row Center": {
           "count": 166,
@@ -614822,47 +614822,47 @@
         },
         "Lighting & Sound America": {
           "count": 207,
-          "meanBias": 0.27053140096618356
+          "meanBias": -0.043478260869565216
         },
         "The New York Sun": {
           "count": 24,
-          "meanBias": -0.75
+          "meanBias": -0.9583333333333334
         },
         "The New Yorker": {
           "count": 83,
-          "meanBias": -0.4819277108433735
+          "meanBias": -0.10843373493975904
         },
         "New York Stage Review": {
           "count": 488,
-          "meanBias": -0.5225409836065574
+          "meanBias": -0.5307377049180327
         },
         "New York Theater": {
           "count": 223,
-          "meanBias": -0.07174887892376682
+          "meanBias": -0.06726457399103139
         },
         "New York Theatre Guide": {
           "count": 217,
-          "meanBias": 0.14285714285714285
+          "meanBias": 0.06912442396313365
         },
         "Talkin' Broadway": {
           "count": 307,
-          "meanBias": -0.05537459283387622
+          "meanBias": -0.05211726384364821
         },
         "Theater Scene": {
           "count": 287,
-          "meanBias": 0.024390243902439025
+          "meanBias": 0
         },
         "TheWrap": {
           "count": 116,
-          "meanBias": 0.034482758620689655
+          "meanBias": 0.02586206896551724
         },
         "Time Out New York": {
           "count": 348,
-          "meanBias": 0.1810344827586207
+          "meanBias": 0.1867816091954023
         },
         "Variety": {
           "count": 681,
-          "meanBias": 0.020558002936857563
+          "meanBias": 0.004405286343612335
         },
         "The Village Voice": {
           "count": 9,
@@ -614870,7 +614870,7 @@
         },
         "Vulture": {
           "count": 458,
-          "meanBias": 0.1572052401746725
+          "meanBias": 0.11353711790393013
         },
         "The Washington Post": {
           "count": 260,
@@ -614890,7 +614890,7 @@
         },
         "The Hollywood Reporter": {
           "count": 308,
-          "meanBias": -0.1461038961038961
+          "meanBias": -0.14935064935064934
         },
         "NJ.com (Christopher Kelly)": {
           "count": 16,
@@ -614902,15 +614902,15 @@
         },
         "New York Daily News": {
           "count": 385,
-          "meanBias": 0.33246753246753247
+          "meanBias": 0.3194805194805195
         },
         "The Wrap": {
           "count": 238,
-          "meanBias": 0.02100840336134454
+          "meanBias": -0.046218487394957986
         },
         "Backstage": {
           "count": 129,
-          "meanBias": -0.6589147286821705
+          "meanBias": -0.6356589147286822
         },
         "NY Daily News": {
           "count": 52,
@@ -614930,7 +614930,7 @@
         },
         "BroadwayWorld": {
           "count": 153,
-          "meanBias": -0.006535947712418301
+          "meanBias": -0.1503267973856209
         },
         "NBC New York": {
           "count": 138,
@@ -614950,7 +614950,7 @@
         },
         "Did They Like It": {
           "count": 42,
-          "meanBias": 0.023809523809523808
+          "meanBias": 0.047619047619047616
         },
         "New York Sun": {
           "count": 55,
@@ -615058,7 +615058,7 @@
         },
         "Theater Pizzazz": {
           "count": 139,
-          "meanBias": 0.03597122302158273
+          "meanBias": 0
         },
         "Times Square Chronicles": {
           "count": 47,
@@ -615070,7 +615070,7 @@
         },
         "Wolf Entertainment Guide": {
           "count": 51,
-          "meanBias": 0
+          "meanBias": 0.6862745098039216
         },
         "Woman Around Town": {
           "count": 27,
@@ -615082,7 +615082,7 @@
         },
         "Huffington Post": {
           "count": 60,
-          "meanBias": 0.16666666666666666
+          "meanBias": 0.4666666666666667
         },
         "Guardian": {
           "count": 33,
@@ -615174,7 +615174,7 @@
         },
         "WNBC": {
           "count": 7,
-          "meanBias": 0.5714285714285714
+          "meanBias": 0
         },
         "WNYC": {
           "count": 33,
@@ -615186,11 +615186,11 @@
         },
         "New York Magazine": {
           "count": 34,
-          "meanBias": 0.11764705882352941
+          "meanBias": 0.058823529411764705
         },
         "Bloomberg": {
           "count": 56,
-          "meanBias": -1.2142857142857142
+          "meanBias": -1.1071428571428572
         },
         "Bob's Theater Blog": {
           "count": 27,
@@ -615214,11 +615214,11 @@
         },
         "The Independent": {
           "count": 28,
-          "meanBias": 0.42857142857142855
+          "meanBias": 1
         },
         "Bergen Record": {
           "count": 76,
-          "meanBias": 0
+          "meanBias": 0.18421052631578946
         },
         "The Huffington Post": {
           "count": 23,
@@ -615262,7 +615262,7 @@
         },
         "Evening Standard": {
           "count": 14,
-          "meanBias": -0.21428571428571427
+          "meanBias": -0.35714285714285715
         },
         "lets-talk-off-broadway": {
           "count": 3,
@@ -615274,11 +615274,11 @@
         },
         "Pages on Stages": {
           "count": 85,
-          "meanBias": 0
+          "meanBias": 0.35294117647058826
         },
         "Access Atlanta": {
           "count": 2,
-          "meanBias": 0
+          "meanBias": -0.5
         },
         "Time Out NY": {
           "count": 31,
@@ -615338,7 +615338,7 @@
         },
         "Front Mezz Junkies": {
           "count": 92,
-          "meanBias": 0
+          "meanBias": 0.021739130434782608
         },
         "adriandimanlig": {
           "count": 7,
@@ -615374,11 +615374,11 @@
         },
         "London Theatre": {
           "count": 28,
-          "meanBias": -1.3571428571428572
+          "meanBias": -1.4285714285714286
         },
         "The Arts Desk": {
           "count": 23,
-          "meanBias": -0.6521739130434783
+          "meanBias": -0.08695652173913043
         },
         "Time Out London": {
           "count": 22,
@@ -615386,7 +615386,7 @@
         },
         "WhatsOnStage": {
           "count": 29,
-          "meanBias": -2.310344827586207
+          "meanBias": -2.4827586206896552
         },
         "NBC": {
           "count": 2,
@@ -615426,7 +615426,7 @@
         },
         "peconic-public-broadcasting": {
           "count": 18,
-          "meanBias": 0
+          "meanBias": -0.05555555555555555
         },
         "Show Showdown": {
           "count": 20,
@@ -615498,7 +615498,7 @@
         },
         "Stage Left": {
           "count": 33,
-          "meanBias": 0
+          "meanBias": 0.9090909090909091
         },
         "Theater News Online (David Cote)": {
           "count": 3,
@@ -615530,7 +615530,7 @@
         },
         "Theatre is Easy": {
           "count": 30,
-          "meanBias": 0
+          "meanBias": 0.03333333333333333
         },
         "The Interested Bystander": {
           "count": 19,
@@ -615606,7 +615606,7 @@
         },
         "Chelsea Community News": {
           "count": 9,
-          "meanBias": 0.2222222222222222
+          "meanBias": -0.1111111111111111
         },
         "SlashFilm": {
           "count": 6,
@@ -615618,7 +615618,7 @@
         },
         "Theatre Bee (UK)": {
           "count": 3,
-          "meanBias": 0.6666666666666666
+          "meanBias": 0
         },
         "Cabaret Scenes": {
           "count": 18,
@@ -615638,7 +615638,7 @@
         },
         "film-festival-traveler": {
           "count": 11,
-          "meanBias": 0.2727272727272727
+          "meanBias": 0
         },
         "pop-dust": {
           "count": 5,
@@ -615678,7 +615678,7 @@
         },
         "frequentbusinesstraveler": {
           "count": 7,
-          "meanBias": 0.14285714285714285
+          "meanBias": 0
         },
         "nyc-theatre-addict": {
           "count": 3,
@@ -615850,7 +615850,7 @@
         },
         "Exeunt NYC": {
           "count": 6,
-          "meanBias": 0
+          "meanBias": -1.1666666666666667
         },
         "Wallstreet Journal": {
           "count": 3,
@@ -615938,7 +615938,7 @@
         },
         "Limelight Magazine": {
           "count": 5,
-          "meanBias": -1.2
+          "meanBias": 0
         },
         "People": {
           "count": 3,
@@ -615970,7 +615970,7 @@
         },
         "Theatre Weekly (UK)": {
           "count": 10,
-          "meanBias": -1.2
+          "meanBias": -0.3
         },
         "royberkinfo": {
           "count": 2,
@@ -616130,7 +616130,7 @@
         },
         "Lost in Theatreland (UK)": {
           "count": 3,
-          "meanBias": -6.666666666666667
+          "meanBias": -10.666666666666666
         },
         "critics-at-large": {
           "count": 2,
@@ -616367,8 +616367,8 @@
         "showId": "a-christmas-carol-2019",
         "ourDistribution": {
           "up": 60,
-          "flat": 13,
-          "down": 8,
+          "flat": 12,
+          "down": 9,
           "total": 81
         },
         "hasDisagreement": false
@@ -616377,8 +616377,8 @@
         "showId": "a-christmas-carol-2022",
         "ourDistribution": {
           "up": 60,
-          "flat": 13,
-          "down": 8,
+          "flat": 12,
+          "down": 9,
           "total": 81
         },
         "hasDisagreement": false
@@ -616805,7 +616805,7 @@
         "showId": "after-miss-julie-2009",
         "ourDistribution": {
           "up": 4,
-          "flat": 1,
+          "flat": 0,
           "down": 6,
           "total": 11
         },
@@ -617912,8 +617912,8 @@
         "showId": "blackout-songs-2026",
         "ourDistribution": {
           "up": 5,
-          "flat": 4,
-          "down": 1,
+          "flat": 3,
+          "down": 2,
           "total": 10
         },
         "bwwDistribution": {
@@ -619202,9 +619202,9 @@
       {
         "showId": "data-2026",
         "ourDistribution": {
-          "up": 9,
+          "up": 10,
           "flat": 3,
-          "down": 5,
+          "down": 4,
           "total": 17
         },
         "hasDisagreement": false
@@ -619807,8 +619807,8 @@
       {
         "showId": "everyday-rapture-2010",
         "ourDistribution": {
-          "up": 20,
-          "flat": 2,
+          "up": 19,
+          "flat": 3,
           "down": 2,
           "total": 24
         },
@@ -620168,8 +620168,8 @@
       {
         "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
         "ourDistribution": {
-          "up": 37,
-          "flat": 9,
+          "up": 38,
+          "flat": 8,
           "down": 2,
           "total": 48
         },
@@ -621063,8 +621063,8 @@
       {
         "showId": "hells-kitchen-2024",
         "ourDistribution": {
-          "up": 61,
-          "flat": 8,
+          "up": 60,
+          "flat": 9,
           "down": 4,
           "total": 73
         },
@@ -621081,7 +621081,7 @@
           "total": 16
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Up thumbs differ by 27% (ours: 84%, theirs: 56%)"
+        "disagreementDetails": "BWW: Up thumbs differ by 26% (ours: 82%, theirs: 56%)"
       },
       {
         "showId": "hercules-west-end-2025",
@@ -621152,8 +621152,8 @@
         "showId": "high-noon-west-end-2025",
         "ourDistribution": {
           "up": 4,
-          "flat": 8,
-          "down": 4,
+          "flat": 9,
+          "down": 3,
           "total": 16
         },
         "bwwDistribution": {
@@ -621163,7 +621163,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Flat thumbs differ by 50% (ours: 50%, theirs: 0%)"
+        "disagreementDetails": "BWW: Flat thumbs differ by 56% (ours: 56%, theirs: 0%)"
       },
       {
         "showId": "hillary-and-clinton-2019",
@@ -621746,8 +621746,8 @@
       {
         "showId": "jesus-christ-superstar-1971",
         "ourDistribution": {
-          "up": 13,
-          "flat": 8,
+          "up": 14,
+          "flat": 7,
           "down": 5,
           "total": 27
         },
@@ -621758,13 +621758,13 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
       },
       {
         "showId": "jesus-christ-superstar-2012",
         "ourDistribution": {
-          "up": 13,
-          "flat": 8,
+          "up": 14,
+          "flat": 7,
           "down": 5,
           "total": 27
         },
@@ -621775,7 +621775,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
       },
       {
         "showId": "jitney-2017",
@@ -622251,8 +622251,8 @@
         "showId": "les-liaisons-dangereuses-2008",
         "ourDistribution": {
           "up": 30,
-          "flat": 17,
-          "down": 27,
+          "flat": 18,
+          "down": 26,
           "total": 74
         },
         "dtliDistribution": {
@@ -622267,8 +622267,8 @@
         "showId": "les-liaisons-dangereuses-2016",
         "ourDistribution": {
           "up": 30,
-          "flat": 17,
-          "down": 27,
+          "flat": 18,
+          "down": 26,
           "total": 74
         },
         "dtliDistribution": {
@@ -622556,9 +622556,9 @@
       {
         "showId": "lysistrata-jones-2011",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 6,
-          "down": 8,
+          "down": 7,
           "total": 17
         },
         "dtliDistribution": {
@@ -622573,9 +622573,9 @@
       {
         "showId": "m-butterfly-2017",
         "ourDistribution": {
-          "up": 19,
+          "up": 20,
           "flat": 21,
-          "down": 18,
+          "down": 17,
           "total": 58
         },
         "dtliDistribution": {
@@ -622585,7 +622585,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 49% (ours: 31%, theirs: 80%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 51% (ours: 29%, theirs: 80%)"
       },
       {
         "showId": "macbeth-2008",
@@ -623139,8 +623139,8 @@
         "showId": "mother-play-2024",
         "ourDistribution": {
           "up": 22,
-          "flat": 10,
-          "down": 1,
+          "flat": 9,
+          "down": 2,
           "total": 33
         },
         "dtliDistribution": {
@@ -623156,7 +623156,7 @@
           "total": 12
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
       },
       {
         "showId": "mothers-and-sons-2014",
@@ -623669,8 +623669,8 @@
       {
         "showId": "on-the-town-2014",
         "ourDistribution": {
-          "up": 32,
-          "flat": 2,
+          "up": 33,
+          "flat": 1,
           "down": 0,
           "total": 34
         },
@@ -624104,8 +624104,8 @@
       {
         "showId": "pen-pals-2025",
         "ourDistribution": {
-          "up": 1,
-          "flat": 3,
+          "up": 2,
+          "flat": 2,
           "down": 1,
           "total": 5
         },
@@ -624778,8 +624778,8 @@
         "showId": "relatively-speaking-2011",
         "ourDistribution": {
           "up": 1,
-          "flat": 10,
-          "down": 13,
+          "flat": 11,
+          "down": 12,
           "total": 24
         },
         "dtliDistribution": {
@@ -624789,7 +624789,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 54% (ours: 54%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 50% (ours: 50%, theirs: 0%)"
       },
       {
         "showId": "rent-1996",
@@ -625196,8 +625196,8 @@
       {
         "showId": "six-2021",
         "ourDistribution": {
-          "up": 25,
-          "flat": 9,
+          "up": 26,
+          "flat": 8,
           "down": 0,
           "total": 34
         },
@@ -625207,8 +625207,7 @@
           "down": 0,
           "total": 6
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
+        "hasDisagreement": false
       },
       {
         "showId": "six-degrees-of-separation-2017",
@@ -625444,8 +625443,8 @@
       {
         "showId": "spongebob-squarepants-2017",
         "ourDistribution": {
-          "up": 23,
-          "flat": 4,
+          "up": 22,
+          "flat": 5,
           "down": 0,
           "total": 27
         },
@@ -625956,8 +625955,8 @@
         "showId": "tammy-faye",
         "ourDistribution": {
           "up": 17,
-          "flat": 17,
-          "down": 35,
+          "flat": 16,
+          "down": 36,
           "total": 69
         },
         "dtliDistribution": {
@@ -625973,14 +625972,14 @@
           "total": 9
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Down thumbs differ by 38% (ours: 51%, theirs: 89%)"
+        "disagreementDetails": "BWW: Down thumbs differ by 37% (ours: 52%, theirs: 89%)"
       },
       {
         "showId": "tammy-faye-2024",
         "ourDistribution": {
           "up": 17,
-          "flat": 17,
-          "down": 35,
+          "flat": 16,
+          "down": 36,
           "total": 69
         },
         "dtliDistribution": {
@@ -625996,7 +625995,7 @@
           "total": 9
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Down thumbs differ by 38% (ours: 51%, theirs: 89%)"
+        "disagreementDetails": "BWW: Down thumbs differ by 37% (ours: 52%, theirs: 89%)"
       },
       {
         "showId": "tarzan-2006",
@@ -626517,8 +626516,8 @@
       {
         "showId": "the-devil-wears-prada-west-end-2024",
         "ourDistribution": {
-          "up": 4,
-          "flat": 4,
+          "up": 5,
+          "flat": 3,
           "down": 8,
           "total": 16
         },
@@ -626589,8 +626588,8 @@
         "showId": "the-encounter-2016",
         "ourDistribution": {
           "up": 30,
-          "flat": 15,
-          "down": 16,
+          "flat": 14,
+          "down": 17,
           "total": 61
         },
         "dtliDistribution": {
@@ -627548,8 +627547,8 @@
         "showId": "the-peewee-herman-show-2010",
         "ourDistribution": {
           "up": 14,
-          "flat": 6,
-          "down": 2,
+          "flat": 5,
+          "down": 3,
           "total": 22
         },
         "hasDisagreement": false
@@ -627870,8 +627869,8 @@
         "showId": "the-roommate",
         "ourDistribution": {
           "up": 24,
-          "flat": 15,
-          "down": 3,
+          "flat": 14,
+          "down": 4,
           "total": 42
         },
         "dtliDistribution": {
@@ -627887,14 +627886,14 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "the-roommate-2024",
         "ourDistribution": {
           "up": 24,
-          "flat": 15,
-          "down": 3,
+          "flat": 14,
+          "down": 4,
           "total": 42
         },
         "dtliDistribution": {
@@ -627910,7 +627909,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "the-rose-tattoo-2019",
@@ -628075,8 +628074,8 @@
         "showId": "the-terms-of-my-surrender-2017",
         "ourDistribution": {
           "up": 31,
-          "flat": 11,
-          "down": 12,
+          "flat": 10,
+          "down": 13,
           "total": 54
         },
         "dtliDistribution": {
@@ -628411,8 +628410,8 @@
       {
         "showId": "this-is-my-favorite-song-2024",
         "ourDistribution": {
-          "up": 1,
-          "flat": 3,
+          "up": 0,
+          "flat": 4,
           "down": 1,
           "total": 5
         },
@@ -628802,8 +628801,8 @@
       {
         "showId": "ulysses-2026",
         "ourDistribution": {
-          "up": 5,
-          "flat": 4,
+          "up": 6,
+          "flat": 3,
           "down": 1,
           "total": 10
         },
@@ -628962,8 +628961,8 @@
       {
         "showId": "waitress-2016",
         "ourDistribution": {
-          "up": 50,
-          "flat": 12,
+          "up": 49,
+          "flat": 13,
           "down": 7,
           "total": 71
         },
@@ -628974,13 +628973,13 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 69%, theirs: 100%)"
       },
       {
         "showId": "waitress-2021",
         "ourDistribution": {
-          "up": 50,
-          "flat": 12,
+          "up": 49,
+          "flat": 13,
           "down": 7,
           "total": 71
         },
@@ -628991,7 +628990,7 @@
           "total": 3
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 69%, theirs: 100%)"
       },
       {
         "showId": "walking-with-ghosts-2022",
@@ -629013,7 +629012,7 @@
       {
         "showId": "war-horse-2011",
         "ourDistribution": {
-          "up": 30,
+          "up": 29,
           "flat": 0,
           "down": 1,
           "total": 36
