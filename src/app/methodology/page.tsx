@@ -216,7 +216,7 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">CriticScore™ Calculation</h2>
           <p className="text-gray-300 mb-4">
-            Critic scores are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment. Higher-tier outlets carry more weight, reflecting their reach and theatrical expertise.
+            CriticScore ratings are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment. Higher-tier outlets carry more weight, reflecting their reach and theatrical expertise.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Outlet Tiers</h3>
