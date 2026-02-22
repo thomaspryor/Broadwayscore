@@ -61,7 +61,14 @@
     "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
     "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
     "hamilton-west-end-2021/guardian--michael-billington.json",
-    "hells-kitchen-2024/chelsea-community-news--unknown.json"
+    "hells-kitchen-2024/chelsea-community-news--unknown.json",
+    "hells-kitchen-2024/nydailynews--unknown.json",
+    "hells-kitchen-2024/nypost--unknown.json",
+    "hells-kitchen-2024/thewrap--unknown.json",
+    "hells-kitchen-2024/timeout--unknown.json",
+    "high-noon-west-end-2025/guardian--arifa-akbar.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -331,7 +338,10 @@
     "bigfoot-2026/thewrap--robert-hofler.json",
     "bloodlove-2026/newsday--linda-winer.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/guardian--michael-billington.json",
-    "hells-kitchen-2024/ew--unknown.json"
+    "hells-kitchen-2024/ew--unknown.json",
+    "hells-kitchen-2024/new-york-sun--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/guardian--brian-logan.json",
+    "les-miserables-west-end-2021/guardian--miriam-gillinson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -344,7 +354,9 @@
       "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
       "all-my-sons-west-end-2025/timeout-london--andrzej-lukowski.json",
       "hamilton-west-end-2021/guardian--michael-billington.json",
-      "hells-kitchen-2024/chelsea-community-news--unknown.json"
+      "hells-kitchen-2024/chelsea-community-news--unknown.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
     ],
     "amp": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
@@ -396,7 +408,8 @@
       "lennon-2005/nytimes--ben-brantley.json",
       "little-bear-ridge-road-2025/nytimes--unknown.json",
       "radio-golf-2007/nytimes--charles-isherwood.json",
-      "data-2026/nytimes--ben-brantley.json"
+      "data-2026/nytimes--ben-brantley.json",
+      "high-noon-west-end-2025/guardian--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -530,11 +543,15 @@
       "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--laura-collins-hughes.json",
       "girl-from-the-north-country-2022/nytimes--ben-brantley.json",
       "hand-to-god-2015/nytimes--charles-isherwood.json",
-      "oleanna-2009/nytimes--ben-brantley.json"
+      "oleanna-2009/nytimes--ben-brantley.json",
+      "hells-kitchen-2024/nydailynews--unknown.json",
+      "hells-kitchen-2024/nypost--unknown.json",
+      "hells-kitchen-2024/thewrap--unknown.json",
+      "hells-kitchen-2024/timeout--unknown.json"
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "hells-kitchen-2024/ew--unknown.json",
+  "lastProcessed": "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -546,6 +563,12 @@
       "t": "2026-02-22T01:21:33.173Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T01:31:14.528Z",
+      "event": "bb-session",
+      "session": "e6f5b4ac",
+      "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
     }
   ]
 }
