@@ -22,7 +22,7 @@ let updated = 0;
 for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   const oldScore = show.combinedScore;
   const showData = showMap[showId];
-  const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status } : undefined;
+  const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);
 
   if (score !== null) {
