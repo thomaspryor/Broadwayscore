@@ -30,6 +30,40 @@ const includeWestEnd = process.argv.includes('--include-west-end');
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
 
+// Non-theater content patterns — shared across all markets (Broadway, OB, West End)
+const NON_THEATER_PATTERNS = [
+  'comedy club', 'comedy night', 'stand-up', 'standup',
+  'magic', 'magick', 'bubble show',
+  'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
+  'quartet', 'quintet', 'ensemble',
+  'selected shorts', 'book club', 'in conversation with',
+  'nt live:', 'london\'s west end:',
+  'dance company', 'dance +', 'ballet',
+  'lottery', 'accessible lottery',
+  'meet the music', 'lyrics & lyricists',
+  'uptown showdown', 'amateur night',
+  'flamenco festival', 'circus',
+  'in concert', 'concert performance',
+  'company xiv', // burlesque/cabaret company
+  'rakugo', // Japanese storytelling
+  'museum of', 'exhibit', 'exhibition', // museums/exhibits, not shows
+  'immersive experience', // non-theatrical experiences
+];
+
+// Known non-show titles that TodayTix lists but aren't theatrical productions
+const EXCLUDED_TITLES = [
+  'the museum of broadway',
+];
+
+function isNonTheaterContent(show) {
+  const title = (show.displayName || show.name || '').toLowerCase();
+  if (EXCLUDED_TITLES.some(excluded => title.includes(excluded))) return true;
+  if (NON_THEATER_PATTERNS.some(pattern => title.includes(pattern))) return true;
+  const subcatNames = (show.subcategories || []).map(sc => sc.name);
+  if (subcatNames.includes('Classical')) return true; // Opera
+  return false;
+}
+
 // TodayTix API - public, no auth required, no Cloudflare
 function fetchTodayTixPage(offset = 0, limit = 100) {
   return new Promise((resolve, reject) => {
@@ -66,37 +100,12 @@ async function fetchShowsFromTodayTix() {
 
   // Filter by subcategories: Broadway always, Off-Broadway when flag is set
   const broadwayShows = allShows.filter(s =>
-    s.subcategories?.some(sc => sc.name === 'Broadway')
+    s.subcategories?.some(sc => sc.name === 'Broadway') && !isNonTheaterContent(s)
   );
   const offBroadwayShows = includeOffBroadway ? allShows.filter(s => {
     if (!s.subcategories?.some(sc => sc.name === 'Off Broadway')) return false;
     if (s.subcategories?.some(sc => sc.name === 'Broadway')) return false; // exclude shows tagged as both
-
-    // Filter out non-theater content (comedy clubs, magic shows, concerts, dance, opera, etc.)
-    const title = (s.displayName || s.name || '').toLowerCase();
-    const nonTheaterPatterns = [
-      'comedy club', 'comedy night', 'stand-up', 'standup',
-      'magic', 'magick', 'bubble show',
-      'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
-      'quartet', 'quintet', 'ensemble',
-      'selected shorts', 'book club', 'in conversation with',
-      'nt live:', 'london\'s west end:',
-      'dance company', 'dance +', 'ballet',
-      'lottery', 'accessible lottery',
-      'meet the music', 'lyrics & lyricists',
-      'uptown showdown', 'amateur night',
-      'flamenco festival', 'circus',
-      'in concert', 'concert performance',
-      'company xiv', // burlesque/cabaret company
-      'rakugo', // Japanese storytelling
-    ];
-    // Also filter out opera (Classical subcategory is the main signal)
-    const subcatNames = (s.subcategories || []).map(sc => sc.name);
-    if (subcatNames.includes('Classical')) return false; // Opera (La Traviata, Turandot, etc.)
-    for (const pattern of nonTheaterPatterns) {
-      if (title.includes(pattern)) return false;
-    }
-    return true;
+    return !isNonTheaterContent(s);
   }) : [];
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
@@ -169,21 +178,34 @@ async function fetchShowsFromTodayTixLondon() {
     offset += limit;
   }
 
-  // Filter to West End shows (subcategory "West End")
-  const westEndShows = allShows.filter(s =>
-    s.subcategories?.some(sc =>
-      sc.name === 'West End' || sc.name === 'Broadway' // TodayTix sometimes uses "Broadway" for WE musicals
-    )
-  );
+  // Filter to West End shows
+  // TodayTix tags shows as "West End" OR "Off West End" — many legitimate WE productions
+  // (Starlight Express, Into the Woods, Witness for the Prosecution) only have "Off West End".
+  // For "Off West End" shows, require either:
+  //   1. Top-level category is Plays or Musicals, OR
+  //   2. Category is "Immersive Experiences" but has theater subcategories (Drama, Classic, Comedy)
+  //      — catches Witness for the Prosecution which TodayTix miscategorizes as immersive
+  const WE_THEATER_CATEGORIES = new Set(['Plays', 'Musicals']);
+  const WE_THEATER_SUBCATEGORIES = new Set(['Drama', 'Classic', 'Comedy']);
+  const westEndShows = allShows.filter(s => {
+    const subcatNames = (s.subcategories || []).map(sc => sc.name);
+    const isWestEnd = subcatNames.includes('West End') || subcatNames.includes('Broadway');
+    const isOffWestEnd = subcatNames.includes('Off West End') && !isWestEnd;
 
-  // Filter out non-theater content
-  const nonTheaterPatterns = [
-    'comedy club', 'comedy night', 'stand-up', 'standup',
-    'magic show', 'bubble show',
-    'orchestra', 'symphony', 'philharmonic', 'chamber music',
-    'selected shorts', 'book club', 'in conversation with',
-    'dance company', 'ballet', 'circus',
-    'in concert', 'concert performance',
+    if (!isWestEnd && !isOffWestEnd) return false;
+
+    // Off West End shows need category-level filtering to exclude noise
+    if (isOffWestEnd) {
+      const isTheaterCategory = WE_THEATER_CATEGORIES.has(s.category?.name);
+      const hasTheaterSubcats = subcatNames.some(sc => WE_THEATER_SUBCATEGORIES.has(sc));
+      if (!isTheaterCategory && !hasTheaterSubcats) return false;
+    }
+
+    return !isNonTheaterContent(s);
+  });
+
+  // West End-specific additional filters
+  const WE_EXTRA_PATTERNS = [
     'dining experience', 'candlelight', 'by candlelight',
     'discovering dinosaurs', 'prehistoric planet',
     'classic penguins', // comedy fringe acts
@@ -198,7 +220,7 @@ async function fetchShowsFromTodayTixLondon() {
     if (!title || title.length < 3 || seen.has(title)) continue;
 
     const titleLower = title.toLowerCase();
-    if (nonTheaterPatterns.some(p => titleLower.includes(p))) continue;
+    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
     // Skip likely solo concerts (just a person's name)
     if (soloPerformerPattern.test(title) && !titleLower.includes('musical') && !titleLower.includes('play')) continue;
 
@@ -577,21 +599,21 @@ async function discoverShows() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // If opening date is in the future, mark as previews
-        status = openingDateObj > today ? 'previews' : 'open';
+        // If opening date is in the future, mark as upcoming (not yet in previews)
+        // Shows get promoted to 'previews' when preview performances actually begin
+        status = openingDateObj > today ? 'upcoming' : 'open';
       } else if (show.previewsStartDate) {
         // No opening date but have preview date - show is in previews
         openingDate = null;
         status = 'previews';
       } else {
-        // No opening date found - show is already running
-        // Use placeholder date (will need manual update)
-        openingDate = new Date().toISOString().split('T')[0];
-        status = 'open';
+        // No opening date or preview date — show is announced but not yet scheduled
+        openingDate = null;
+        status = 'announced';
       }
 
       // Build tags based on detection
-      const tags = status === 'previews' ? ['upcoming'] : [];
+      const tags = (status === 'previews' || status === 'upcoming' || status === 'announced') ? ['upcoming'] : [];
       if (detection.isRevival) {
         tags.push('revival');
       } else if (detection.confidence === 'low') {
