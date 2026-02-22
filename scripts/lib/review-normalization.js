@@ -215,7 +215,10 @@ const OUTLET_ALIASES = {
     'sfchronicle', 'san francisco chronicle', 'sf chronicle'
   ],
   'thestage': [
-    'thestage', 'the stage', 'stage', 'the-stage', 'the-stage-uk'
+    'thestage', 'the stage', 'stage', 'the-stage', 'the-stage-uk', 'stage-uk'
+  ],
+  'times-uk': [
+    'times-uk', 'the-times', 'the-times-uk', 'the times', 'the times uk'
   ],
   'whatsonstage': [
     'whatsonstage', "what's on stage", 'whats on stage', 'whatson', 'whats-on-stage'
