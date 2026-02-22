@@ -157,10 +157,10 @@ const ShowCard = memo(function ShowCard({
             {isMixedStatus && !isOpen && (
               <span className="text-orange-400">
                 {(() => {
-                  const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', durationSuffix);
-                  if (runLen) return `Closed after ${runLen}`;
-                  if (show.closingDate) return `Closed ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`;
-                  return 'Closed';
+                  if (!show.closingDate) return 'Closed';
+                  const when = new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                  const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
+                  return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
                 })()}
               </span>
             )}
