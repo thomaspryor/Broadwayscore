@@ -349,12 +349,12 @@ export function getAllTheaterSlugs(): string[] {
 const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: string; filter: (show: ComputedShow) => boolean }> = {
   'musicals': {
     title: 'Best Broadway Musicals',
-    description: 'The highest-rated musicals currently playing on Broadway, ranked by critic scores.',
+    description: 'The highest-rated musicals currently playing on Broadway, ranked by CriticScore.',
     filter: (show) => show.type === 'musical' && show.status === 'open',
   },
   'plays': {
     title: 'Best Broadway Plays',
-    description: 'The highest-rated plays currently on Broadway, ranked by critic scores.',
+    description: 'The highest-rated plays currently on Broadway, ranked by CriticScore.',
     filter: (show) => show.type === 'play' && show.status === 'open',
   },
   'new-shows': {

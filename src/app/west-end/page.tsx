@@ -9,13 +9,13 @@ import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'West End Scorecard - London Theatre Ratings & Reviews',
-  description: 'Critic scores for London West End shows. See which musicals and plays are getting the best reviews from UK theatre critics.',
+  description: 'CriticScore ratings for London West End shows. See which musicals and plays are getting the best reviews from UK theatre critics.',
   alternates: {
     canonical: `${BASE_URL}/west-end`,
   },
   openGraph: {
     title: 'West End Scorecard - London Theatre Ratings',
-    description: 'Aggregated critic scores for West End shows from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    description: 'Aggregated CriticScore ratings for West End shows from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     url: `${BASE_URL}/west-end`,
     type: 'article',
   },

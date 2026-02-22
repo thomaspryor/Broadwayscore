@@ -317,8 +317,8 @@ export function generateShowFAQSchema(show: ComputedShow) {
   // Q: What is the score?
   if (score && reviewCount >= 5) {
     faqs.push({
-      question: `What is the critic score for ${show.title}?`,
-      answer: `${show.title} has a critic score of ${score}/100 based on ${reviewCount} professional reviews. ${
+      question: `What is the CriticScore for ${show.title}?`,
+      answer: `${show.title} has a CriticScore of ${score}/100 based on ${reviewCount} professional reviews. ${
         score >= 85 ? 'This is considered a "Critical Gold" show.' :
         score >= 75 ? 'This is a "Recommended" show.' :
         score >= 65 ? 'This is rated "Worth Seeing".' :
@@ -443,7 +443,7 @@ export function generateBrowseFAQSchema(
   if (topShow?.criticScore) {
     faqs.push({
       question: `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
-      answer: `${topShow.title} is the highest-rated with a critic score of ${Math.round(topShow.criticScore.score)}/100 based on ${topShow.criticScore.reviewCount} professional reviews.`,
+      answer: `${topShow.title} is the highest-rated with a CriticScore of ${Math.round(topShow.criticScore.score)}/100 based on ${topShow.criticScore.reviewCount} professional reviews.`,
     });
   }
 
