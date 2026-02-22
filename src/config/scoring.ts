@@ -84,6 +84,7 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'TIMES-UK': { tier: 1, name: 'The Times (UK)', scoreFormat: 'stars', maxScale: 5 },
   'TELEGRAPH': { tier: 1, name: 'The Telegraph', scoreFormat: 'stars', maxScale: 5 },
   'STANDARD': { tier: 1, name: 'Evening Standard', scoreFormat: 'stars', maxScale: 5 },
+  'DAILYMAIL': { tier: 1, name: 'Daily Mail', scoreFormat: 'stars', maxScale: 5 },
   // Note: GUARDIAN already listed in US Tier 1 — covers both Broadway and West End
 
   // Tier 2 — UK trade/specialist
@@ -119,6 +120,19 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'NORTHJERSEY': { tier: 3, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
   'NBC': { tier: 3, name: 'NBC New York', scoreFormat: 'text_bucket' },
 };
+
+// ===========================================
+// DUAL-MARKET OUTLETS
+// ===========================================
+// These outlets legitimately cover both Broadway and West End.
+// They should NOT be filtered by the cross-market guard in rebuild.
+// Registry outlet IDs (lowercase).
+export const DUAL_MARKET_OUTLETS = new Set([
+  'guardian',         // The Guardian — UK paper with dedicated NYC theater coverage
+  'financialtimes',   // Financial Times — covers both markets
+  'variety',          // Variety — covers all English-language theater
+  'stage-uk',         // The Stage — UK trade paper, occasionally covers Broadway
+]);
 
 // ===========================================
 // DESIGNATION BUMPS (added to base score)
