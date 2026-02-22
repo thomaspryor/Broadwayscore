@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T22:38:02.160Z",
+  "generatedAt": "2026-02-22T02:15:41.409Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -164,6 +164,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "wicked-2003",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "wit-2012",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -312,6 +320,54 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "humanReviewScore 90 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "hamilton-west-end-2021",
+      "detail": "10/10 reviews (100%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "high-noon-west-end-2025",
+      "detail": "8/10 reviews (80%) scored exactly 60"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "detail": "10/13 reviews (77%) scored exactly 60"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "oh-mary-west-end-2025",
+      "detail": "9/14 reviews (64%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "operation-mincemeat-west-end-2024",
+      "detail": "9/14 reviews (64%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "paranormal-activity-west-end-2025",
+      "detail": "10/14 reviews (71%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "detail": "9/15 reviews (60%) scored exactly 100"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "the-producers-west-end-2025",
+      "detail": "8/13 reviews (62%) scored exactly 100"
     },
     {
       "type": "score-clustering",
