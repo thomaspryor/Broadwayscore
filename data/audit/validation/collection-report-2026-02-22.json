@@ -89,20 +89,12 @@
       "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
     ]
   },
-  "failuresByOutlet": {
-    "amNY": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "network-2018/evening-standard--henry-hitchings.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/bryan-cranston-network-national-theatre-a4011161.html#:~:text=Bryan%20Cranston%20says%20National%20Theatre,is%20supported%20by%20our%20readers.",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/bryan-cranston-network-national-theatre-a4011161.html"
     }
   ]
 }
