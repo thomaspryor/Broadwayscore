@@ -97,6 +97,7 @@ const PROJECT_ROOT = path.join(__dirname, '../..');
 interface ShowPriorityInfo {
   status: string;
   openingDate: string | null;
+  category: string;
 }
 
 /**
@@ -107,10 +108,11 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
   const map = new Map<string, ShowPriorityInfo>();
   try {
     const shows = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf-8'));
-    for (const show of shows) {
+    for (const show of (shows.shows || shows)) {
       map.set(show.id, {
         status: show.status || 'closed',
         openingDate: show.openingDate || null,
+        category: show.category || 'broadway',
       });
     }
   } catch {
@@ -832,10 +834,17 @@ async function main(): Promise<void> {
           const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
           // Route rejection to appropriate flags
+          // Off-Broadway shows are exempt from wrongProduction flagging:
+          // OB shows commonly transfer from regional theaters, so LLM often
+          // misidentifies the production as "wrong" when it's actually correct.
+          const showInfo = showPriority.get(reviewFile.showId || '');
+          const isOffBroadway = showInfo?.category === 'off-broadway';
           if (rejection === 'wrong_show') {
             fileData.wrongShow = true;
-          } else if (rejection === 'wrong_production') {
+          } else if (rejection === 'wrong_production' && !isOffBroadway) {
             fileData.wrongProduction = true;
+          } else if (rejection === 'wrong_production' && isOffBroadway) {
+            console.log(` (OB exempt — skipping wrongProduction flag)`);
           } else if (rejection === 'not_a_review') {
             fileData.contentTier = 'invalid';
           } else if (rejection === 'garbage_text') {

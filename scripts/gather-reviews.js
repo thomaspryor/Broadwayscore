@@ -1918,15 +1918,16 @@ function createReviewFile(showId, reviewData, options = {}) {
   review.contentTier = tier.contentTier;
   review.contentTierReason = tier.tierReason;
 
-  // Date-based production guard: warn if review was published >60 days before
-  // the show's earliest date (previews/opening). Likely from an off-Broadway,
-  // West End, or TV production rather than the Broadway run.
+  // Date-based production guard: warn if review was published >30 days before
+  // the show's earliest date (previews/opening). Likely from a prior production.
+  // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
+  // so date mismatches are expected and wrongProduction flags are almost always false positives.
   if (review.publishDate) {
     try {
       const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
       const showsJSON = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
       const show = showsJSON.shows.find(s => s.id === showId);
-      if (show) {
+      if (show && show.category !== 'off-broadway') {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
           const pubDate = new Date(review.publishDate);
