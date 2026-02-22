@@ -20,7 +20,7 @@
     "playwright": 61,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
@@ -31,11 +31,11 @@
     "tier1Success": 87,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 7,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
@@ -244,12 +244,20 @@
       "venus-in-fur-2011/financialtimes--brendan-lemon.json",
       "west-side-story-2020/financialtimes--financial-times.json"
     ],
-    "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "cost-of-living-2022/newyorker--vinson-cunningham.json",
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "seminar-2011/newyorker--john-lahr.json",
+      "sunset-boulevard-2017/newyorker--hilton-als.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
+      "data/review-texts/time-stands-still-2010/newyorker--uncredited.json"
+    ],
     "archive": [
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/financial-times-uk--sarah-hemming.json",
       "an-american-in-paris-2015/financial-times-uk--francis-carlin.json",
