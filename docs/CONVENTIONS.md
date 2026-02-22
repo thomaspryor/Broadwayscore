@@ -214,7 +214,7 @@ const outlet2 = getOutletById('VULT');              // → Vulture outlet
 ```typescript
 import { getScoreBucket, getScoreLabel } from '@/config/score-buckets';
 
-const bucket = getScoreBucket(87);   // → { id: 'must-see', label: 'Must See', ... }
+const bucket = getScoreBucket(87);   // → { id: 'must-see', label: 'Critical Gold', ... }
 const label = getScoreLabel(72);     // → "Good"
 ```
 

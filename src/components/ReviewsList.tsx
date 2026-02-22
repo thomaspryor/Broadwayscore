@@ -147,7 +147,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 
 const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   let scoreLabel: string;
-  if (review.reviewScore >= 85) scoreLabel = 'Must-See';
+  if (review.reviewScore >= 85) scoreLabel = 'Critical Gold';
   else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
   else if (review.reviewScore >= 55) scoreLabel = 'Skippable';

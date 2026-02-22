@@ -47,7 +47,7 @@ showsToCheck.forEach(showId => {
     : 0;
 
   let sentiment = 'Mixed';
-  if (avgScore >= 85) sentiment = 'Must-See';
+  if (avgScore >= 85) sentiment = 'Critical Gold';
   else if (avgScore >= 75) sentiment = 'Great';
   else if (avgScore >= 65) sentiment = 'Good';
   else if (avgScore >= 55) sentiment = 'Tepid';
