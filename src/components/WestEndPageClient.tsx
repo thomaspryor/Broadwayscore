@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
-import { getBroadwayDuration } from '@/lib/date-utils';
+import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 
 // Serialized show data passed from server component
@@ -158,7 +158,12 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           {show.status === 'previews' || show.status === 'upcoming' ? (
             <>Opens {formatOpeningDate(show.openingDate)}</>
           ) : show.status === 'closed' ? (
-            <span className="text-orange-400">Closed{show.closingDate ? ` ${formatOpeningDate(show.closingDate)}` : ''}</span>
+            <span className="text-orange-400">{(() => {
+              const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', 'in the West End');
+              if (runLen) return `Closed after ${runLen}`;
+              if (show.closingDate) return `Closed ${formatOpeningDate(show.closingDate)}`;
+              return 'Closed';
+            })()}</span>
           ) : (
             <>
               {getBroadwayDuration(show.openingDate, 'in the West End')}
@@ -418,13 +423,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
   // Featured rows
   const topMusicals = useMemo(() => {
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -507,7 +512,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The Guardian, Telegraph, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 

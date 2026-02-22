@@ -207,11 +207,12 @@ export function getShowLastUpdated(showId: string): string | null {
 }
 
 /**
- * Get upcoming shows (in previews) - sorted by soonest opening date first
+ * Get upcoming shows (in previews) - sorted by soonest opening date first.
+ * Requires opening date (excludes undated announced shows).
  */
 export function getUpcomingShows(): ComputedShow[] {
   return getBroadwayShows()
-    .filter(show => show.status === 'previews' || show.status === 'upcoming')
+    .filter(show => (show.status === 'previews' || show.status === 'upcoming') && show.openingDate)
     .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
 }
 
