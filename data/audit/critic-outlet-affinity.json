@@ -3,10 +3,10 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-02-22",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 25229,
-    "skippedFiles": 5271,
-    "totalCritics": 1194,
-    "registryCritics": 438,
+    "totalFilesScanned": 25326,
+    "skippedFiles": 5208,
+    "totalCritics": 1210,
+    "registryCritics": 441,
     "flaggedReviews": 44
   },
   "flaggedReviews": [
@@ -19,7 +19,7 @@
       "outletShare": 1,
       "primaryOutlet": "newsday",
       "primaryShare": 99,
-      "totalReviews": 336
+      "totalReviews": 342
     },
     {
       "critic": "Linda Winer",
@@ -30,7 +30,7 @@
       "outletShare": 1,
       "primaryOutlet": "newsday",
       "primaryShare": 99,
-      "totalReviews": 336
+      "totalReviews": 342
     },
     {
       "critic": "Terry Teachout",
@@ -426,7 +426,7 @@
       "outletShare": 4,
       "primaryOutlet": "evening-standard",
       "primaryShare": 96,
-      "totalReviews": 23
+      "totalReviews": 24
     },
     {
       "critic": "Sarah Crompton",
@@ -437,7 +437,7 @@
       "outletShare": 5,
       "primaryOutlet": "whatsonstage",
       "primaryShare": 95,
-      "totalReviews": 22
+      "totalReviews": 21
     },
     {
       "critic": "Carol Rocamora",
@@ -509,7 +509,7 @@
         "vulture",
         "new-york-times"
       ],
-      "totalReviews": 453
+      "totalReviews": 452
     },
     {
       "critic": "David Finkle",
@@ -534,6 +534,25 @@
         "associated-press-mark-kennedy"
       ],
       "totalReviews": 210
+    },
+    {
+      "critic": "Chris Jones",
+      "slug": "chris-jones",
+      "outlets": [
+        "chicagotribune",
+        "nydailynews",
+        "chicago-tribune",
+        "dailybeast",
+        "deadline",
+        "ew",
+        "hollywood-reporter",
+        "nbcnews",
+        "nytimes",
+        "thestage",
+        "thewrap",
+        "timeout"
+      ],
+      "totalReviews": 532
     },
     {
       "critic": "David Rooney",
@@ -598,7 +617,7 @@
         "washpost",
         "newyorker"
       ],
-      "totalReviews": 208
+      "totalReviews": 209
     },
     {
       "critic": "Charles Isherwood",
@@ -675,9 +694,11 @@
         "nysr",
         "telegraph",
         "showbiz411",
+        "stageandcinema",
         "northjerseycom",
         "financial-times-uk",
         "culturesauce",
+        "billboard",
         "dcmetro",
         "the-los-angeles-times-charles-mcnulty",
         "the-star-ledger",
@@ -685,7 +706,6 @@
         "new-york-theatre",
         "new-york-sun",
         "whatsonstage",
-        "billboard",
         "boston-herald",
         "abc-news",
         "nyt-theater",
@@ -702,7 +722,6 @@
         "buy-tickets",
         "time",
         "njcom",
-        "stageandcinema",
         "new-york",
         "the-globe-and-mail",
         "thestage",
@@ -780,7 +799,7 @@
         "bamorg",
         "exeunt-nyc"
       ],
-      "totalReviews": 896
+      "totalReviews": 900
     },
     {
       "critic": "Brian Scott Lipton",
@@ -1199,25 +1218,6 @@
       "totalReviews": 138
     },
     {
-      "critic": "Chris Jones",
-      "slug": "chris-jones",
-      "outlets": [
-        "chicagotribune",
-        "nydailynews",
-        "chicago-tribune",
-        "dailybeast",
-        "deadline",
-        "ew",
-        "hollywood-reporter",
-        "nbcnews",
-        "nytimes",
-        "thestage",
-        "thewrap",
-        "timeout"
-      ],
-      "totalReviews": 442
-    },
-    {
       "critic": "Frank Scheck",
       "slug": "frank-scheck",
       "outlets": [
@@ -1374,7 +1374,7 @@
         "amny",
         "london-theatre"
       ],
-      "totalReviews": 51
+      "totalReviews": 52
     },
     {
       "critic": "Alix Cohen",
@@ -1424,7 +1424,7 @@
         "whatsonstage",
         "theatrely"
       ],
-      "totalReviews": 133
+      "totalReviews": 134
     },
     {
       "critic": "Juan A. Ramirez",
@@ -1505,7 +1505,7 @@
         "the-times-clive-davis",
         "times-uk"
       ],
-      "totalReviews": 33
+      "totalReviews": 34
     },
     {
       "critic": "Matt Wolf",
@@ -1713,13 +1713,22 @@
       "totalReviews": 46
     },
     {
+      "critic": "Arifa Akbar",
+      "slug": "arifa-akbar",
+      "outlets": [
+        "the-guardian-uk",
+        "guardian"
+      ],
+      "totalReviews": 26
+    },
+    {
       "critic": "Dominic Cavendish",
       "slug": "dominic-cavendish",
       "outlets": [
         "the-telegraph-uk",
         "telegraph"
       ],
-      "totalReviews": 34
+      "totalReviews": 35
     },
     {
       "critic": "Tim Bano",
@@ -1729,7 +1738,7 @@
         "the-stage",
         "thestage"
       ],
-      "totalReviews": 13
+      "totalReviews": 14
     },
     {
       "critic": "Sam Marlowe",
@@ -1743,18 +1752,18 @@
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 20
+      "totalReviews": 21
     },
     {
       "critic": "Andrzej Lukowski",
       "slug": "andrzej-lukowski",
       "outlets": [
         "timeout-london",
-        "timeout",
         "time-out-london",
+        "timeout",
         "time"
       ],
-      "totalReviews": 33
+      "totalReviews": 41
     },
     {
       "critic": "Diane Snyder",
@@ -1923,15 +1932,6 @@
       "totalReviews": 17
     },
     {
-      "critic": "Arifa Akbar",
-      "slug": "arifa-akbar",
-      "outlets": [
-        "the-guardian-uk",
-        "guardian"
-      ],
-      "totalReviews": 18
-    },
-    {
       "critic": "Marianka Swain",
       "slug": "marianka-swain",
       "outlets": [
@@ -1943,7 +1943,7 @@
         "the-arts-desk",
         "broadwayworld"
       ],
-      "totalReviews": 17
+      "totalReviews": 19
     },
     {
       "critic": "Gary Naylor",
@@ -2114,9 +2114,10 @@
       "slug": "rachel-halliburton",
       "outlets": [
         "the-times-uk",
-        "the-arts-desk"
+        "the-arts-desk",
+        "the-times"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
     },
     {
       "critic": "Alice Saville",
@@ -2252,7 +2253,7 @@
         "the-arts-desk",
         "artsdesk"
       ],
-      "totalReviews": 7
+      "totalReviews": 8
     },
     {
       "critic": "Jeremy McCarter",
@@ -2282,11 +2283,29 @@
       "totalReviews": 3
     },
     {
+      "critic": "Aleks Sierz",
+      "slug": "aleks-sierz",
+      "outlets": [
+        "the-arts-desk",
+        "the-stage-uk"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Jessie Thompson",
       "slug": "jessie-thompson",
       "outlets": [
         "evening-standard",
         "the-independent"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Lyn Gardner",
+      "slug": "lyn-gardner",
+      "outlets": [
+        "the-guardian-uk",
+        "guardian"
       ],
       "totalReviews": 3
     },
@@ -2312,11 +2331,11 @@
       "critic": "Anya Ryan",
       "slug": "anya-ryan",
       "outlets": [
+        "london-theatre",
         "the-guardian-uk",
-        "timeout",
-        "london-theatre"
+        "timeout"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
     },
     {
       "critic": "Kate Wyver",
