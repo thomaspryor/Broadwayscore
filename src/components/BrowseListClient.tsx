@@ -6,7 +6,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { getBroadwayDuration } from '@/lib/date-utils';
+import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -156,7 +156,12 @@ const ShowCard = memo(function ShowCard({
             )}
             {isMixedStatus && !isOpen && (
               <span className="text-orange-400">
-                Closed{show.closingDate ? ` ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : ''}
+                {(() => {
+                  const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', durationSuffix);
+                  if (runLen) return `Closed after ${runLen}`;
+                  if (show.closingDate) return `Closed ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`;
+                  return 'Closed';
+                })()}
               </span>
             )}
           </div>
