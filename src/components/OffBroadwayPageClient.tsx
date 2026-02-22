@@ -426,7 +426,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
       .filter(show => {
-        if (!show.criticScore?.score) return false;
+        if (!show.criticScore?.score || !show.criticScore?.reviewCount || show.criticScore.reviewCount < MIN_REVIEWS_OB) return false;
         if (show.status === 'previews' || show.status === 'upcoming') return false;
         const opened = new Date(show.openingDate);
         return opened >= twelveMonthsAgo;
@@ -436,7 +436,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_OB)
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
