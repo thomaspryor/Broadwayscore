@@ -89,7 +89,9 @@
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "pictures-from-home-2023/newyorker--helen-shaw.json",
     "hadestown-2019/newyorker--hilton-als.json",
-    "six-2021/newyorker--naomi-fry.json"
+    "six-2021/newyorker--naomi-fry.json",
+    "come-from-away-2017/newyorker--hilton-als.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1253,7 +1255,15 @@
     "bernhardthamlet-2018/newyorker--hilton-als.json",
     "betrayal-2013/newyorker--john-lahr.json",
     "brief-encounter-2010/newyorker--uncredited.json",
-    "cabaret-2014/newyorker--hilton-als.json"
+    "cabaret-2014/newyorker--hilton-als.json",
+    "clybourne-park-2012/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--hilton-als.json",
+    "clydes-2021/newyorker--naomi-fry.json",
+    "company-2006/newyorker--john-lahr.json",
+    "curtains-2007/newyorker--john-lahr.json",
+    "death-of-a-salesman-2012/newyorker--hilton-als.json",
+    "death-of-a-salesman-2022/newyorker--naomi-fry.json",
+    "disgraced-2014/newyorker--hilton-als.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1385,7 +1395,8 @@
       "gypsy-2024/variety--aramide-tinubu.json",
       "illinoise-2024/hollywood-reporter--angie-han.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "grey-house-2023/newyorker--dan-stahl.json"
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "cost-of-living-2022/newyorker--vinson-cunningham.json"
     ],
     "scrapingbee": [
       "the-disappear-2026/nytimes--helen-shaw.json",
@@ -1805,11 +1816,12 @@
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "pictures-from-home-2023/newyorker--helen-shaw.json",
       "hadestown-2019/newyorker--hilton-als.json",
-      "six-2021/newyorker--naomi-fry.json"
+      "six-2021/newyorker--naomi-fry.json",
+      "come-from-away-2017/newyorker--hilton-als.json"
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "cabaret-2014/newyorker--hilton-als.json",
+  "lastProcessed": "disgraced-2014/newyorker--hilton-als.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -1958,6 +1970,17 @@
     },
     {
       "t": "2026-02-22T17:02:50.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:20:18.236Z",
+      "event": "bb-session",
+      "session": "2cfda85c",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/cost-of-living-10-17-22"
+    },
+    {
+      "t": "2026-02-22T17:20:20.615Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
