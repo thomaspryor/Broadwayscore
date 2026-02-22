@@ -512,7 +512,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The Guardian, Telegraph, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 

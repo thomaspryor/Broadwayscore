@@ -521,7 +521,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews from The New York Times, Vulture, Variety, Time Out, and more.
+          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
