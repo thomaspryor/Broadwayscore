@@ -37,7 +37,7 @@ export interface GoldListConfig {
 export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
   {
     type: 'critical-gold',
-    title: 'Critical Gold List',
+    title: 'Critical Gold List™',
     shortTitle: 'Critics',
     description: 'The highest-rated shows by professional critics',
     color: 'text-amber-400',
@@ -52,7 +52,7 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
   },
   {
     type: 'audience-gold',
-    title: 'Audience Gold List',
+    title: 'Audience Gold List™',
     shortTitle: 'Audiences',
     description: 'The shows audiences love most, based on combined audience platform scores',
     color: 'text-rose-400',
@@ -67,7 +67,7 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
   },
   {
     type: 'box-office-gold',
-    title: 'Box Office Gold List',
+    title: 'Box Office Gold List™',
     shortTitle: 'Box Office',
     description: 'The biggest earners on Broadway, ranked by gross per performance',
     color: 'text-emerald-400',
@@ -82,7 +82,7 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
   },
   {
     type: 'hot-ticket-gold',
-    title: 'Hot Ticket Gold List',
+    title: 'Hot Ticket Gold List™',
     shortTitle: 'Hot Tickets',
     description: 'The hardest tickets to get on Broadway, ranked by average capacity percentage',
     color: 'text-violet-400',

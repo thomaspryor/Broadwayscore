@@ -16,7 +16,7 @@ import {
   isCurrentSeason,
 } from '@/lib/data-gold-list-badges';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge } from '@/components/show-cards/ScoreBadge';
+import { ScoreBadge, getScoreTier } from '@/components/show-cards/ScoreBadge';
 import { FormatPill, StatusBadge, ProductionPill } from '@/components/show-cards/ShowPills';
 import { generateBreadcrumbSchema, generateItemListSchema, generateGoldListFAQSchema } from '@/lib/seo';
 import { SeasonSelect } from '@/components/SeasonSelect';
@@ -231,7 +231,13 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
 
                 {/* Score/Value */}
                 {isCriticList ? (
-                  <ScoreBadge score={entry.value} size="lg" status={entry.status || undefined} />
+                  <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                    {(() => { const tier = getScoreTier(entry.value); return tier ? (
+                      <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                        style={{ color: tier.color }}>{tier.label}</span>
+                    ) : null; })()}
+                    <ScoreBadge score={entry.value} size="lg" showCrown status={entry.status || undefined} />
+                  </div>
                 ) : isAudienceList ? (
                   <AudienceGradeBadge score={entry.value} />
                 ) : (
