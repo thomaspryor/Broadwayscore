@@ -59,7 +59,9 @@
     "the-rose-tattoo-2019/observer--rex-reed.json",
     "the-skin-of-our-teeth-1975/observer--david-cote.json",
     "the-skin-of-our-teeth-2022/observer--david-cote.json",
-    "the-sound-inside-2019/observer--david-cote.json"
+    "the-sound-inside-2019/observer--david-cote.json",
+    "the-other-place-2026/bloomberg--jeremy-gerard.json",
+    "1984-2017/bloomberg-news--jason-zinoman.json"
   ],
   "failed": [
     "back-to-the-future-west-end-2021/observer--david-cote.json",
@@ -361,7 +363,15 @@
     "the-prom-2018/observer--david-cote.json",
     "the-real-thing-2014/observer--rex-reed.json",
     "the-scottsboro-boys-2010/observer--jesse-oxfeld.json",
-    "the-testament-of-mary-2013/observer--rex-reed.json"
+    "the-testament-of-mary-2013/observer--rex-reed.json",
+    "bigfoot-2026/bloomberg--jeremy-gerard.json",
+    "bloodlove-2026/bloomberg--john-simon.json",
+    "the-book-of-mormon-west-end-2024/bloomberg--jeremy-gerard.json",
+    "a-life-in-the-theatre-2010/bloomberg-news--john-simon.json",
+    "after-midnight-2013/bloomberg-news--unknown.json",
+    "bad-cinderella-2023/bloomberg-news--chris-rovzar.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg-news--john-simon.json",
+    "collected-stories-2010/bloombeg-news--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -407,9 +417,13 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "1984-2017/bloomberg-news--jason-zinoman.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/collected-stories-2010/bloombeg-news--jeremy-gerard.json"
+    ],
     "archive": [
       "the-great-gatsby-2024/observer--david-cote.json",
       "anastasia-2017/observer--rex-reed.json",
@@ -433,10 +447,45 @@
       "gigi-1973/nypost--elisabeth-vincentelli.json",
       "gore-vidals-the-best-man-2000/nypost--elisabeth-vincentelli.json",
       "guys-and-dolls-1992/nypost--elisabeth-vincentelli.json",
-      "race-2009/observer--jesse-oxfeld.json"
+      "race-2009/observer--jesse-oxfeld.json",
+      "the-other-place-2026/bloomberg--jeremy-gerard.json"
     ]
   },
   "startTime": "2026-02-22T20:19:49.648Z",
-  "lastProcessed": "the-testament-of-mary-2013/observer--rex-reed.json",
-  "log": []
+  "lastProcessed": "collected-stories-2010/bloombeg-news--jeremy-gerard.json",
+  "log": [
+    {
+      "t": "2026-02-22T21:21:26.903Z",
+      "event": "bb-session",
+      "session": "02b14c1c",
+      "url": "https://bloomberg.com/magazine/businessweek/17_27#:~:text=By%20Bloomberg%20News,"
+    },
+    {
+      "t": "2026-02-22T21:21:28.868Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-22T21:23:28.044Z",
+      "event": "bb-session",
+      "session": "0dfe58d7",
+      "url": "https://www.bloomberg.com/news/articles/2023-03-24/bad-cinderella-review-andrew-"
+    },
+    {
+      "t": "2026-02-22T21:23:30.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-22T21:24:36.432Z",
+      "event": "bb-session",
+      "session": "31673f55",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-02-22T21:24:38.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    }
+  ]
 }
