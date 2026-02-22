@@ -2133,15 +2133,23 @@ function validateCrossMarketContamination() {
     }
   } catch { /* no registry = skip check */ return; }
 
-  // Dual-market outlets
+  // Dual-market outlets + Tier 1/2 outlets (major publications review international theatre)
   const dualMarket = new Set(['guardian', 'financialtimes', 'variety', 'stage-uk',
     'financial-times', 'financial-times-uk', 'ft', 'the-guardian-uk']);
+  // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
+  const tier12Outlets = new Set();
+  try {
+    const scoringText = fs.readFileSync(path.join(DATA_DIR, '..', 'src', 'config', 'scoring.ts'), 'utf8');
+    const tierRegex = /'([A-Z0-9_-]+)':\s*\{\s*tier:\s*([12])/g;
+    let m;
+    while ((m = tierRegex.exec(scoringText)) !== null) tier12Outlets.add(m[1].toLowerCase());
+  } catch (e) {}
 
   let issues = 0;
   const weReviews = reviews.filter(r => showCategoryMap[r.showId] === 'west-end');
   for (const r of weReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
-    if (dualMarket.has(oid)) continue;
+    if (dualMarket.has(oid) || tier12Outlets.has(oid)) continue;
     const region = outletRegionMap[oid];
     if (region !== 'london') {
       issues++;
