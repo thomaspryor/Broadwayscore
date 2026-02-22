@@ -116,6 +116,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    // Tony Awards leaderboard
+    {
+      url: `${BASE_URL}/tony-awards/people`,
+      lastModified: latestDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // West End page
     {
       url: `${BASE_URL}/west-end`,

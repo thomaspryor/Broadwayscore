@@ -84,7 +84,7 @@ jobs:
       - name: Final commit and push
         if: always()
         run: |
-          git add data/audit/
+          git add data/audit/ data/review-texts/
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0

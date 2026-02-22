@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'Tony Awards Leaderboard',
     description: 'Tony Award winners and nominees ranked by wins and nominations.',
     url: `${BASE_URL}/tony-awards/people`,
-    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Tony Awards Leaderboard' }],
   },
   twitter: { card: 'summary' },
 };
@@ -45,6 +45,22 @@ export default function TonyLeaderboardPage() {
     { name: 'Tony Awards', url: `${BASE_URL}/tony-awards` },
     { name: 'People', url: `${BASE_URL}/tony-awards/people` },
   ]);
+
+  // ItemList structured data for top winners (helps Google rich results)
+  const top10 = leaderboard.slice(0, 10);
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Tony Awards All-Time Winners Leaderboard',
+    description: 'Broadway performers, directors, and designers with the most Tony Award wins.',
+    numberOfItems: leaderboard.length,
+    itemListElement: top10.map((entry, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: entry.name,
+      description: `${entry.wins} Tony wins, ${entry.nominations} nominations across ${entry.shows.length} shows`,
+    })),
+  };
 
   // Build profile URLs for each person
   const rows: LeaderboardRow[] = leaderboard.map(entry => {
@@ -78,7 +94,7 @@ export default function TonyLeaderboardPage() {
     <div className="min-h-screen bg-surface">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
       />
       <TonyLeaderboardClient
         rows={rows}

@@ -4343,13 +4343,18 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     }
 
     // Auto-null fullText on high/medium confidence wrong production (tour, regional, off-Broadway, etc.)
-    if (contentVerification.wrongProduction && isHighConfidence && data.fullText) {
+    // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
+    // so LLM often misidentifies the production as "wrong" when it's actually correct.
+    const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
+    if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
       const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongProduction = true;
       data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
       console.log(`    ✗ LLM: Wrong production (${contentVerification.confidence}) — fullText nulled`);
+    } else if (contentVerification.wrongProduction && isHighConfidence && showCat === 'off-broadway') {
+      console.log(`    ⚠ LLM: Wrong production detected but OB exempt — keeping fullText`);
     }
 
     // Auto-null fullText on high/medium confidence film/TV content
