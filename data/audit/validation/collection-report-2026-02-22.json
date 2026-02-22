@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-22T16:17:56.205Z",
+  "runDate": "2026-02-22T16:55:53.767Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 250,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 82,
-    "failed": 988,
+    "failed": 1031,
     "skipped": 0,
-    "successRate": "7.7%"
+    "successRate": "7.4%"
   },
   "tierBreakdown": {
     "playwright": 20,
@@ -23,30 +23,30 @@
     "directCookies": 4,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 330,
+    "archiveToday": 332,
     "archive": 50
   },
   "statistics": {
-    "tier1Attempts": 240,
-    "tier1Success": 103,
-    "ampAttempts": 52,
-    "ampSuccess": 28,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 106,
-    "tier2Success": 20,
-    "tier3Attempts": 86,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 75,
-    "tier3_6Success": 75,
-    "tier4Attempts": 20,
-    "tier4Success": 7,
-    "totalFailed": 243,
-    "scrapingBeeCreditsUsed": 458,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 33,
+    "scrapingBeeCreditsUsed": 32,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 7,
+    "urlDiscoveryAttempts": 33,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -1121,7 +1121,50 @@
     "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
     "on-your-feet-2015/hollywood-reporter--david-rooney.json",
     "once-on-this-island-2017/nyt-theater--jonathan-mandell.json",
-    "once-on-this-island-2017/vulture--jesse-green.json"
+    "once-on-this-island-2017/vulture--jesse-green.json",
+    "an-ark-2026/nyt-theater--jonathan-mandell.json",
+    "an-ark-2026/vulture--sara-holdren.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "hells-kitchen-2024/nyt-theater--unknown.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/nytg--unknown.json",
+    "hells-kitchen-2024/nytimes--unknown.json",
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "hells-kitchen-2024/vulture--unknown.json",
+    "masquerade-2025/nyt-theater--jonathan-mandell.json",
+    "giant-2026/bloomberg--philip-boroff.json",
+    "deuce-2007/bloomberg-news--philip-boroff.json",
+    "fela-2009/bloomberg-news--john-simon.json",
+    "fela-2012/bloomberg-news--john-simon.json",
+    "motown-the-musical-2016/bloomberg-news--unknown.json",
+    "priscilla-queen-of-the-desert-2011/bloomberg-news--jeremy-gerard.json",
+    "promises-promises-2010/bloomberg-news--john-simon.json",
+    "race-2009/bloomberg-news--john-simon.json",
+    "that-championship-season-2011/bloomberg-news--jeremy-gerard.json",
+    "the-addams-family-2010/bloomberg-news--john-simon.json",
+    "the-glass-menagerie-2013/bloomberg-news--unknown.json",
+    "the-glass-menagerie-2017/bloomberg-news--unknown.json",
+    "the-peewee-herman-show-2010/bloomberg-news--john-simon.json",
+    "the-testament-of-mary-2013/bloomberg-news--unknown.json",
+    "time-stands-still-2010/bloomberg-news--john-simon.json",
+    "wonderland-2011/bloomberg-news--philip-boroff.json",
+    "wonderland-2011/bloomberg-news--phillip-boroff.json",
+    "after-midnight-2013/bloomberg--jeremy-gerard.json",
+    "an-enemy-of-the-people-2024/bloomberg--jeremy-gerard.json",
+    "evita-2012/bloomberg--jeremy-gerard.json",
+    "fun-home-2015/bloomberg--jeremy-gerard.json",
+    "ghost-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "la-cage-aux-folles-2010/bloomberg--jeremy-gerard.json",
+    "nice-work-if-you-can-get-it-2012/bloomberg--jeremy-gerard.json",
+    "rodgers-hammersteins-cinderella-2013/bloomberg--jeremy-gerard.json",
+    "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
+    "sweeney-todd-2005/bloomberg--mark-leydorf.json",
+    "sweeney-todd-2005/bloomberg-mark-leydorf--mark-leydorf.json",
+    "the-addams-family-2010/bloomberg--john-simon.json",
+    "the-anarchist-2012/bloomberg--jeremy-gerard.json",
+    "the-snow-geese-2013/bloomberg--jeremy-gerard.json",
+    "the-trip-to-bountiful-2013/bloomberg--jeremy-gerard.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1609,7 +1652,9 @@
       "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/vulture--jesse-green.json",
       "data/review-texts/newsies-the-musical-2012/vulture--jesse-green.json",
       "data/review-texts/on-the-twentieth-century-2015/nytg--tulis-mccall.json",
-      "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json"
+      "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json",
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json"
     ],
     "archive": [
       "oh-mary-2024/nytimes--erik-piepenburg.json",
@@ -1665,41 +1710,5 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "american-idiot-2010/variety--david-rooney.json",
-      "oldUrl": "https://variety.com/2010/music/reviews/mariah-carey-1117942305/",
-      "newUrl": "https://variety.com/2010/legit/reviews/american-idiot-1117942595/"
-    },
-    {
-      "reviewId": "evita-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/trayvon-martin-spike-lee-george-zimmerman-twitter-controversy-304775/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/evita-theater-review-ricky-martin-308779/"
-    },
-    {
-      "reviewId": "evita-2012/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2006/scene/people-news/assistant-looking-for-room-to-grow-1117972614/",
-      "newUrl": "https://variety.com/2025/legit/reviews/evita-review-rachel-zegler-musical-west-end-1236445000/"
-    },
-    {
-      "reviewId": "gutenberg-2023/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2023/film/news/frozen-4-confirmed-disney-bob-iger-1235792515/",
-      "newUrl": "https://variety.com/2023/legit/reviews/gutenberg-the-musical-review-broadway-josh-gad-andrew-rannells-1235754185/"
-    },
-    {
-      "reviewId": "looped-2010/hollywood-reporter--.json",
-      "oldUrl": "https://www.hollywoodreporter.com/hr/film-reviews/looped-theater-review-1004075079.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/looped-theater-review-29397/"
-    },
-    {
-      "reviewId": "meteor-shower-2017/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/style/selena-gomez-debuts-blond-do-at-2017-american-music-awards-1059982/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/meteor-shower-theater-1062117/"
-    },
-    {
-      "reviewId": "misery-2015/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/movies/movie-news/birds-prey-poster-reveals-differences-comics-1240367/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/bruce-willis-misery-theater-review-840382/"
-    }
-  ]
+  "urlDiscoveries": []
 }
