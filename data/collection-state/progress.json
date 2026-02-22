@@ -68,7 +68,11 @@
     "hells-kitchen-2024/timeout--unknown.json",
     "high-noon-west-end-2025/guardian--arifa-akbar.json",
     "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "data-2026/nytimes--tim-teeman.json",
+    "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -341,7 +345,13 @@
     "hells-kitchen-2024/ew--unknown.json",
     "hells-kitchen-2024/new-york-sun--unknown.json",
     "im-sorry-prime-minister-west-end-2026/guardian--brian-logan.json",
-    "les-miserables-west-end-2021/guardian--miriam-gillinson.json"
+    "les-miserables-west-end-2021/guardian--miriam-gillinson.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "mj-2022/variety--charles-isherwood.json",
+    "mj-2022/variety--peter-marks.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -356,7 +366,8 @@
       "hamilton-west-end-2021/guardian--michael-billington.json",
       "hells-kitchen-2024/chelsea-community-news--unknown.json",
       "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
+      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+      "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json"
     ],
     "amp": [
       "data/review-texts/a-bronx-tale-2007/hollywood-reporter--frank-scheck.json",
@@ -409,7 +420,9 @@
       "little-bear-ridge-road-2025/nytimes--unknown.json",
       "radio-golf-2007/nytimes--charles-isherwood.json",
       "data-2026/nytimes--ben-brantley.json",
-      "high-noon-west-end-2025/guardian--arifa-akbar.json"
+      "high-noon-west-end-2025/guardian--arifa-akbar.json",
+      "data-2026/nytimes--tim-teeman.json",
+      "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -547,11 +560,12 @@
       "hells-kitchen-2024/nydailynews--unknown.json",
       "hells-kitchen-2024/nypost--unknown.json",
       "hells-kitchen-2024/thewrap--unknown.json",
-      "hells-kitchen-2024/timeout--unknown.json"
+      "hells-kitchen-2024/timeout--unknown.json",
+      "aladdin-2014/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+  "lastProcessed": "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json",
   "log": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -569,6 +583,28 @@
       "event": "bb-session",
       "session": "e6f5b4ac",
       "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
+    },
+    {
+      "t": "2026-02-22T01:37:58.099Z",
+      "event": "bb-session",
+      "session": "5cb77fc3",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-02-22T01:38:00.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T01:39:33.037Z",
+      "event": "bb-session",
+      "session": "0939d294",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-02-22T01:39:35.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
