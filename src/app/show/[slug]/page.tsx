@@ -37,6 +37,7 @@ import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
 
 export function generateStaticParams() {
@@ -311,11 +312,22 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   formatDate(show.openingDate) ? <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span> : null
                 ) : show.closingDate ? (
                   <>
-                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
                     {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
+                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
+                    {show.status === 'closed' && (() => {
+                      const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
+                      return runLen ? <span> <span className="text-gray-500">·</span> Ran for {runLen}</span> : null;
+                    })()}
                   </>
                 ) : formatDate(show.openingDate) ? (
-                  <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
+                  <>
+                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
+                    {(() => {
+                      const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+                      const dur = getBroadwayDuration(show.openingDate, durationSuffix);
+                      return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
+                    })()}
+                  </>
                 ) : null}
               </p>
 
@@ -759,6 +771,25 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
               </div>
             )}
+            {show.status === 'closed' && (() => {
+              const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
+              return runLen ? (
+                <div>
+                  <dt className="text-gray-500">Run Length</dt>
+                  <dd className="text-white mt-0.5">{runLen}</dd>
+                </div>
+              ) : null;
+            })()}
+            {show.status === 'open' && (() => {
+              const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+              const dur = getBroadwayDuration(show.openingDate, durationSuffix);
+              return dur ? (
+                <div>
+                  <dt className="text-gray-500">Running</dt>
+                  <dd className="text-white mt-0.5">{dur}</dd>
+                </div>
+              ) : null;
+            })()}
             <div>
               <dt className="text-gray-500">Runtime</dt>
               <dd className="text-white mt-0.5">{show.runtime}</dd>
