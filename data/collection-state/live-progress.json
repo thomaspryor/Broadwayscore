@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-22T01:48:06.698Z",
-  "processed": 69,
-  "failed": 281,
-  "successRate": "19.7%",
+  "updatedAt": "2026-02-22T01:50:08.118Z",
+  "processed": 110,
+  "failed": 290,
+  "successRate": "27.5%",
   "tierBreakdown": {
-    "playwright": 11,
-    "amp": 27,
+    "playwright": 23,
+    "amp": 25,
     "browserbase": 0,
     "directCookies": 3,
-    "scrapingbee": 20,
+    "scrapingbee": 28,
     "brightdata": 0,
     "archiveToday": 90,
-    "archive": 44
+    "archive": 63
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-22T01:21:31.197Z",
@@ -33,15 +33,26 @@
       "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/"
     },
     {
-      "t": "2026-02-22T01:39:37.403Z",
+      "t": "2026-02-22T01:37:58.099Z",
       "event": "bb-session",
-      "session": "2e04c2df",
-      "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre"
+      "session": "5cb77fc3",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
     },
     {
-      "t": "2026-02-22T01:39:39.411Z",
+      "t": "2026-02-22T01:38:00.035Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-22T01:39:33.037Z",
+      "event": "bb-session",
+      "session": "0939d294",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-02-22T01:39:35.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
