@@ -659,6 +659,9 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `new_shows_count=${newShows.length}\n`);
     fs.appendFileSync(outputFile, `new_shows=${newShows.map(s => s.title).join(', ')}\n`);
     fs.appendFileSync(outputFile, `new_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    // WE-specific output for downstream triggers
+    const weNewShows = newShows.filter(s => s.category === 'west-end');
+    fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
   return { newShows, count: newShows.length };
