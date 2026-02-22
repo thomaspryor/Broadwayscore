@@ -555016,17 +555016,23 @@
     ]
   },
   {
-    "startedAt": "2026-02-22T01:49:52.584Z",
-    "completedAt": "2026-02-22T02:28:07.730Z",
+    "startedAt": "2026-02-22T01:49:21.519Z",
+    "completedAt": "2026-02-22T02:28:43.611Z",
     "totalReviews": 24772,
-    "processed": 28,
-    "skipped": 24384,
-    "errors": 0,
+    "processed": 25,
+    "skipped": 24385,
+    "errors": 1,
     "tokensUsed": {
-      "input": 236520,
-      "output": 8243,
-      "total": 550852
+      "input": 232039,
+      "output": 7927,
+      "total": 543428
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
