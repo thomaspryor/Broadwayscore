@@ -577,8 +577,9 @@ async function discoverShows() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // If opening date is in the future, mark as previews
-        status = openingDateObj > today ? 'previews' : 'open';
+        // If opening date is in the future, mark as upcoming (not yet in previews)
+        // Shows get promoted to 'previews' when preview performances actually begin
+        status = openingDateObj > today ? 'upcoming' : 'open';
       } else if (show.previewsStartDate) {
         // No opening date but have preview date - show is in previews
         openingDate = null;
