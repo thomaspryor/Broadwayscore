@@ -75,6 +75,13 @@ async function main() {
     shows = shows.filter(s => s.status === statusFilter);
   }
 
+  // Skip non-Broadway shows — IBDB only covers Broadway productions
+  const preskip = shows.length;
+  shows = shows.filter(s => !s.category || s.category === 'broadway');
+  if (shows.length < preskip) {
+    console.log(`Skipped ${preskip - shows.length} non-Broadway shows (IBDB is Broadway-only)`);
+  }
+
   // If missing-only mode, filter to shows with incomplete dates or empty creative team
   if (missingOnly && !mergeCredits && !verify && !showSlug) {
     shows = shows.filter(s =>
