@@ -210,6 +210,14 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
  * Returns true if both have year info and opening years differ by >2 years.
  */
 function isMultiProduction(newShow, existing) {
+  // If the existing show is still running, a new listing for the same title
+  // in the same market is the same production, not a revival.
+  // This handles long-running WE shows (e.g., Phantom since 1986) where
+  // TodayTix reports a recent booking start date, not the original opening.
+  if (existing.status === 'open' || existing.status === 'previews') {
+    return false;
+  }
+
   // If both have different IBDB URLs, they are definitively separate productions
   const newIbdb = newShow.ibdbUrl || '';
   const existingIbdb = existing.ibdbUrl || '';
@@ -282,9 +290,10 @@ function checkForDuplicate(newShow, existingShows) {
       };
     }
 
-    // Check 3: ID-based match (slug portion without year)
-    const newIdBase = newSlug.replace(/-\d{4}$/, '');
-    const existingIdBase = (existing.id || existing.slug).replace(/-\d{4}$/, '');
+    // Check 3: ID-based match (slug portion without year and market suffix)
+    const stripIdSuffix = (s) => s.replace(/-(?:west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
+    const newIdBase = stripIdSuffix(newSlug);
+    const existingIdBase = stripIdSuffix(existing.id || existing.slug);
     if (newIdBase === existingIdBase) {
       if (isMultiProduction(newShow, existing)) continue;
       return {
