@@ -9,7 +9,7 @@ const ogImageUrl = `${BASE_URL}/og/home.png`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
-  description: 'Learn how Broadway Scorecard calculates critic scores and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
+  description: 'Learn how Broadway Scorecard calculates CriticScore ratings and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
   alternates: {
     canonical: `${BASE_URL}/methodology`,
   },
@@ -164,7 +164,7 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Score Interpretation</h2>
           <p className="text-gray-300 mb-4">
-            Critic Scores are labeled based on these thresholds:
+            CriticScore ratings are labeled based on these thresholds:
           </p>
           <div className="space-y-4 sm:space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -214,7 +214,7 @@ export default function MethodologyPage() {
 
         {/* Critic Score */}
         <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Critic Score Calculation</h2>
+          <h2 className="text-xl font-bold text-white mb-4">CriticScore™ Calculation</h2>
           <p className="text-gray-300 mb-4">
             Critic scores are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment. Higher-tier outlets carry more weight, reflecting their reach and theatrical expertise.
           </p>

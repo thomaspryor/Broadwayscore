@@ -89,7 +89,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
               aria-valuenow={roundedScore}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label={`Critic Score: ${roundedScore} - ${scoreLabel}`}
+              aria-label={`CriticScore: ${roundedScore} - ${scoreLabel}`}
             >
               <span className={`text-sm font-bold ${scoreTextClass}`} aria-hidden="true">{roundedScore}</span>
             </div>
