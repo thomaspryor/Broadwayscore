@@ -835,16 +835,18 @@ async function main(): Promise<void> {
 
           // Route rejection to appropriate flags
           // Off-Broadway shows are exempt from wrongProduction flagging:
-          // OB shows commonly transfer from regional theaters, so LLM often
+          // OB and WE shows commonly transfer from regional/fringe theaters, so LLM often
           // misidentifies the production as "wrong" when it's actually correct.
+          // WE shows get flagged because the Broadway-centric prompt says "not the current Broadway run".
           const showInfo = showPriority.get(reviewFile.showId || '');
           const isOffBroadway = showInfo?.category === 'off-broadway';
+          const isWestEnd = showInfo?.category === 'west-end';
           if (rejection === 'wrong_show') {
             fileData.wrongShow = true;
-          } else if (rejection === 'wrong_production' && !isOffBroadway) {
+          } else if (rejection === 'wrong_production' && !isOffBroadway && !isWestEnd) {
             fileData.wrongProduction = true;
-          } else if (rejection === 'wrong_production' && isOffBroadway) {
-            console.log(` (OB exempt — skipping wrongProduction flag)`);
+          } else if (rejection === 'wrong_production' && (isOffBroadway || isWestEnd)) {
+            console.log(` (${isWestEnd ? 'WE' : 'OB'} exempt — skipping wrongProduction flag)`);
           } else if (rejection === 'not_a_review') {
             fileData.contentTier = 'invalid';
           } else if (rejection === 'garbage_text') {
