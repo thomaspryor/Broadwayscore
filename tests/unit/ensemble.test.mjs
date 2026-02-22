@@ -353,7 +353,7 @@ describe('ensembleScore - 2 models (fallback)', () => {
 
     assert.strictEqual(result.source, 'two-model-fallback');
     assert.strictEqual(result.score, 84); // average
-    assert.strictEqual(result.bucket, 'Positive'); // derived from score 84
+    assert.strictEqual(result.bucket, 'Rave'); // derived from score 84 (>= 83 = Rave)
     assert.strictEqual(result.needsReview, false); // only 1 bucket apart
   });
 

@@ -344,9 +344,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   // null = provider failure (down/exhausted), [] = searched but no results
   let results = await _serpViaScrapingBee(query, scrapingBeeKey, log);
   let provider = 'scrapingbee';
-  if (!results) {
-    results = await _serpViaBrightData(query, brightDataKey, log);
-    provider = 'brightdata';
+  if (!results || results.length === 0) {
+    const bdResults = await _serpViaBrightData(query, brightDataKey, log);
+    if (bdResults && bdResults.length > 0) {
+      results = bdResults;
+      provider = 'brightdata';
+    } else if (!results && !bdResults) {
+      results = null; // Both providers down
+    }
   }
 
   // Both providers down
@@ -420,11 +425,13 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
     const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
     const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
-    const titleHasReview = title.includes('review');
+    const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end'];
+    const titleHasReview = reviewTerms.some(t => title.includes(t));
+    const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
 
     if (!titleHasShow && !urlHasShow) continue;
     const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
-    if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
+    if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
 
     log(`    ✓ Found via ${provider}: ${url}`);
     return url;
