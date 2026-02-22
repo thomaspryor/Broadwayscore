@@ -1,107 +1,78 @@
 {
-  "runDate": "2026-02-22T23:47:16.656Z",
+  "runDate": "2026-02-22T23:53:09.786Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-devil-wears-prada-west-end-2024",
+    "showFilter": "mexodus-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 8,
+    "processed": 3,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "55.6%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 4
+    "archiveToday": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 9,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 3,
-    "tier3Attempts": 2,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 31,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 2,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
-    "the-devil-wears-prada-west-end-2024/timeout--unknown.json",
-    "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
-    "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
-    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
-    "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
-    "the-devil-wears-prada-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
-    "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
-    "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json",
-    "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
+    "mexodus-2026/nytg--austin-fimmano.json",
+    "mexodus-2026/nytimes--brittani-samuel.json",
+    "mexodus-2026/dailybeast--tim-teeman.json"
   ],
   "failed": [
-    "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
-    "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
-    "the-devil-wears-prada-west-end-2024/stage-uk--tim-bano.json",
-    "the-devil-wears-prada-west-end-2024/the-arts-desk--matt-wolf.json",
-    "the-devil-wears-prada-west-end-2024/the-independent-uk--alice-saville.json",
-    "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json",
-    "the-devil-wears-prada-west-end-2024/the-times-uk--unknown.json",
-    "the-devil-wears-prada-west-end-2024/whatsonstage--unknown.json"
+    "mexodus-2026/theatermania--zachary-stewart.json",
+    "mexodus-2026/theatrely--andrew-martini.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
-      "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
-      "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
-      "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+      "mexodus-2026/nytg--austin-fimmano.json"
     ],
+    "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
-      "the-devil-wears-prada-west-end-2024/the-telegraph-uk--dominic-cavendish.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
-      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "the-devil-wears-prada-west-end-2024/timeout--unknown.json",
-      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
-      "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
-      "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
+      "mexodus-2026/nytimes--brittani-samuel.json",
+      "mexodus-2026/dailybeast--tim-teeman.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json",
-      "oldUrl": "https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/devil-wears-prada-musical-review-5nwrcllfx?gaa_at=eafs&gaa_n=AWEtsqc1IEHDRp9mei7YmAF2nIW8_dti8muR2NBI-oG49-OZ4NbhREzd9VN0&gaa_ts=699b98d0&gaa_sig=NMNjbFayogQQjvSpKo3QE93GUcafmVIfzZeZyK-r4XM1CMTWkI2LvhbeAaGqjZXyDFu7n8UR_p34i2CsUMclPA%3D%3D"
-    }
-  ]
+  "urlDiscoveries": []
 }
