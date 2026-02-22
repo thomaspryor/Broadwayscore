@@ -90,7 +90,7 @@ export default function TonyLeaderboardClient({
           Tony Awards Leaderboard
         </h1>
         <p className="text-gray-400 text-sm mt-1">
-          Tony Award winners and nominees for tracked shows. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
+          Individual Tony Award winners and nominees in performing, directing, and design categories. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
         </p>
       </div>
 
@@ -183,7 +183,7 @@ export default function TonyLeaderboardClient({
 
       {/* Source note */}
       <p className="text-xs text-gray-600 mt-6">
-        Data sourced from IBDB for shows tracked by Broadway Scorecard. Coverage is most complete from 2006-present. Earlier seasons may have incomplete nomination counts.
+        Data sourced from IBDB for Broadway shows tracked since 1970. Producing credits (Best Musical, Best Play, Best Revival) are not yet tracked individually.
       </p>
     </div>
   );
