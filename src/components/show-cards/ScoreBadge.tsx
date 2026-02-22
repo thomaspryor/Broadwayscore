@@ -91,8 +91,8 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     );
   }
 
-  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway)
-  const minReviews = category === 'off-broadway' ? 3 : 5;
+  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End)
+  const minReviews = (category === 'off-broadway' || category === 'west-end') ? 3 : 5;
   if (reviewCount !== undefined && reviewCount < minReviews) {
     return (
       <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
