@@ -4,15 +4,15 @@
     "lastUpdated": "2026-02-22",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 16576,
-      "skippedNoScore": 545,
-      "skippedDuplicate": 125,
+      "totalReviews": 16574,
+      "skippedNoScore": 534,
+      "skippedDuplicate": 118,
       "skippedDuplicateUrl": 279,
-      "skippedCrossOutletDuplicateUrl": 52,
-      "skippedDuplicateText": 250,
+      "skippedCrossOutletDuplicateUrl": 51,
+      "skippedDuplicateText": 251,
       "skippedFingerprintDedup": 90,
-      "skippedUnknownCriticDedup": 263,
-      "skippedWrongProduction": 2712,
+      "skippedUnknownCriticDedup": 260,
+      "skippedWrongProduction": 2733,
       "skippedFabricated": 268,
       "recoveredFromGarbage": 90,
       "scoreSources": {
@@ -21,11 +21,11 @@
         "explicit-slash": 0,
         "explicit-letterGrade": 18,
         "human-review": 162,
-        "originalScore-priority0": 1978,
+        "originalScore-priority0": 1977,
         "llmScore": 11468,
         "llmScore-thumb-validated": 19,
         "llmScore-thumb-boosted": 223,
-        "llmScore-lowconf": 2648,
+        "llmScore-lowconf": 2647,
         "llmScore-review": 8,
         "assignedScore": 1,
         "originalScore": 0,
@@ -19114,10 +19114,14 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-all-my-sons-wyndham-s-theatre",
       "publishDate": "2025-11-21",
       "originalRating": "5/5",
-      "pullQuote": "Absolutely striking, it all comes together to create an All My Sons that feels distinct from any production that has come before it, and also has a sense of danger to it.",
+      "pullQuote": "Absolutely striking, it all comes together to create an All My Sons that feels distinct from any production that has come before it.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19134,7 +19138,11 @@
       "pullQuote": "In this All My Sons, we see a great writer, a visionary director and a superlative cast all chiming in harmony.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19148,10 +19156,14 @@
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
       "publishDate": "2025-11-23",
       "originalRating": "5/5",
-      "pullQuote": "All My Sons remains an impressive, timeless piece of work. And here Van Hove has brought together a cast and crew that demonstrate just why the play endures, delivering an exceptional production.",
+      "pullQuote": "Van Hove has brought together a cast and crew that demonstrate just why the play endures, delivering an exceptional production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19168,7 +19180,11 @@
       "pullQuote": "The show runs straight through for over two hours in a gruelling unravelling, as the characters probe and push until the horrid, unsettling truth finally rears its head.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19186,23 +19202,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Arifa Akbar",
-      "url": "https://www.theguardian.com/stage/2025/nov/22/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-wyndhams-theatre-london",
-      "publishDate": "2025-11-18",
-      "originalRating": "5/5",
-      "pullQuote": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19259,18 +19258,22 @@
       "showId": "all-my-sons-west-end-2025",
       "outletId": "timeout-london",
       "outlet": "Time Out London",
-      "assignedScore": 100,
+      "assignedScore": 80,
       "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
+      "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Andrzej Lukowski",
-      "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
-      "publishDate": "2025-11-22",
-      "originalRating": "5/5",
-      "pullQuote": "The whole thing plays out symphonically, building to an astonishing crescendo...When I’ve seen the play before, there’s been no special reaction. Here, the audience gasped.",
+      "url": "https://www.show-score.com/uk/london/west-end-shows/all-my-sons-west-end",
+      "publishDate": "2025-11-18",
+      "originalRating": "4/5",
+      "pullQuote": "There is so much alchemy here – it just dazzles and dazzles.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 6,
+      "modelAgreement": "2/3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -19284,10 +19287,14 @@
       "url": "https://www.whatsonstage.com/news/all-my-sons-west-end-review-bryan-cranston-in-an-explosive-production_1703544/",
       "publishDate": "2025-11-21",
       "originalRating": "4/5",
-      "pullQuote": "The sense of lives dashed is overwhelming. Van Hove risks a great melodramatic gesture at the close, but his production doesn’t need it. It has demanded that attention must be paid from the very start.",
+      "pullQuote": "The sense of lives dashed is overwhelming.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 11,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "all-out-2025",
@@ -34150,7 +34157,11 @@
       "pullQuote": "Picking up a blockbuster movie and dropping it on to a stage is far trickier than it sounds (if it were straightforward, everyone would do it), so to go searching for flaws in such an entertaining spectacle is churlish indeed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34184,7 +34195,11 @@
       "pullQuote": "Back to the Future is a Russian Doll of nostalgic comforts: through its time-travelling antics, it revels both in a rose-coloured American Fifties and in the vitality of the Eighties.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 15,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34215,10 +34230,14 @@
       "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
       "publishDate": "2021-09-14",
       "originalRating": "3/5",
-      "pullQuote": "...dashes of Secret Cinema and theme-park ride thrown into the mix. If this spectacle is the future of West End shows, sign me up. There’s just the small problem of everything else.",
+      "pullQuote": "If this spectacle is the future of West End shows, sign me up. There's just the small problem of everything else.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34235,7 +34254,11 @@
       "pullQuote": "It sounds impossible, doesn’t it? I don’t mean time travel – surely one day some bright spark will figure that out. No, I mean bringing Back to the Future, one of the biggest and best-loved Hollywood films of the Eighties, to the stage - in musical form.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34266,10 +34289,14 @@
       "url": "https://www.thetimes.co.uk/article/back-to-the-future-the-musical-review-classic-stalls-like-an-old-delorean-njg5tp88x",
       "publishDate": "2021-09-14",
       "originalRating": "2/5",
-      "pullQuote": "I suspect that if you’re a hardcore fan who knows every line of the film script you’re going to buy a ticket anyway. Others should beware...Yet even though the film’s co-creator, Bob Gale, is credited for the show’s book, John Rando’s West End production is middling at best.",
+      "pullQuote": "Others should beware...John Rando's West End production is middling at best.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 3 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34283,10 +34310,14 @@
       "url": "https://www.theatrebee.com/post/review-back-to-the-future-olivier-award-well-deserved",
       "publishDate": "2022-05-20",
       "originalRating": "5/5",
-      "pullQuote": "An absolutely electrifying show that induces child-like wonder at the state-of-the-art special effects. With endearing characters, charming music, and nostalgia-inducing jokes of bygone decades, Back to the Future's Olivier award for Best New Musical is extremely well-deserved.",
+      "pullQuote": "An absolutely electrifying show that induces child-like wonder at the state-of-the-art special effects.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "back-to-the-future-west-end-2021",
@@ -34303,7 +34334,11 @@
       "pullQuote": "It's undoubtedly an evening that sends you back to your own future with a smile on your face, a perfect night out for nostalgics and car-loving kids of all ages.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 1,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "bad-cinderella-2023",
@@ -54011,10 +54046,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cabaret-review-jessie-buckley-eddie-redmayne-b1974565.html",
       "publishDate": "2021-12-13",
       "originalRating": "5/5",
-      "pullQuote": "Redmayne is excellent. The best musical-theatre performance I have ever seen live is Buckley’s rendition of the title song. It’s a parable that still packs a punch.",
+      "pullQuote": "The best musical-theatre performance I have ever seen live is Buckley's rendition of the title song.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -54028,10 +54067,14 @@
       "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall",
       "publishDate": "2021-12-13",
       "originalRating": "5/5",
-      "pullQuote": "Every decision [Frecknall] makes here has clear, clever purpose. This Cabaret isn’t a radical reinterpretation, but its differences from previous productions plant themselves subtly at first, then ripple outward until they overwhelm.",
+      "pullQuote": "Every decision [Frecknall] makes here has clear, clever purpose.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -54048,7 +54091,11 @@
       "pullQuote": "This is it. This is the one. At the end of the year, Rebecca Frecknall’s production of Cabaret – starring Eddie Redmayne and Jessie Buckley – stands revealed as 2021’s kill-for-a-ticket theatrical triumph.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -54065,7 +54112,11 @@
       "pullQuote": "Every element of Frecknall’s production is a wow: the sumptuous pre-show entertainment...this production is, and will remain, an absolute knockout. With its combination of all-encompassing decadent beauty and thunderous moral force, there’s simply nothing else in town quite like it.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -54079,10 +54130,14 @@
       "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
       "publishDate": "2021-12-19",
       "originalRating": "4/5",
-      "pullQuote": "Cabaret looks terrific, sounds pretty good and retains its powerful “live and let live” message. But Eddie Redmayne is not that great in it.",
+      "pullQuote": "Cabaret looks terrific, sounds pretty good and retains its powerful \"live and let live\" message.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -54096,10 +54151,14 @@
       "url": "https://www.theatrebee.com/post/review-cabaret-at-the-kit-kat-club",
       "publishDate": "2022-06-02",
       "originalRating": "3/5",
-      "pullQuote": "Cabaret’s beauty comes from implications and insinuations, undertones and overtones, rather than what is stated explicitly. Beautiful, although it can go too far – sometimes you must force yourself to see how the emcee's facial expressions, gesticulations and lyrics are a narrative about an evolving society.",
+      "pullQuote": "Cabaret's beauty comes from implications and insinuations, undertones and overtones, rather than what is stated explicitly.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -69497,27 +69556,6 @@
     },
     {
       "showId": "cost-of-living-2022",
-      "outletId": "lighting-and-sound-america",
-      "outlet": "Lighting & Sound America",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Barbour",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Working elliptically and with remarkable economy of means, the playwright creates a portrait in miniature of a society that, all too often, leaves the poor, disabled, and psychologically lost to fend for themselves. At the same time, her dialogue crackles with wit and understated feeling.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt",
-      "scoreDelta": 1,
-      "modelAgreement": "All 4 models agree: Positive",
-      "needsReview": false,
-      "scoreConfidence": "high"
-    },
-    {
-      "showId": "cost-of-living-2022",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 81,
@@ -71445,7 +71483,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Barbour",
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-2QP0QZ",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Randy Skinner's tap-happy production delivers plenty of sly amusement thanks to a ferociously talented sextet of triple threats.",
@@ -79391,7 +79429,11 @@
       "pullQuote": "In a virtuoso press night performance she slayed doubters like a vampire hunter administering a stake to the heart.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -79405,10 +79447,14 @@
       "url": "https://www.theguardian.com/stage/2026/feb/17/dracula-review-cynthia-erivo-noel-coward-theatre-london",
       "publishDate": "2026-02-17",
       "originalRating": "2/5",
-      "pullQuote": "Erivo gives us a tantalising taste of her singing voice towards the end...It’s sad that the production plays so little to Erivo’s strengths, which might better have been reconceived as Dracula the Musical.",
+      "pullQuote": "It's sad that the production plays so little to Erivo's strengths, which might better have been reconceived as Dracula the Musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -79422,10 +79468,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dracula-cynthia-erivo-kip-williams-london-b2922095.html",
       "publishDate": "2026-02-19",
       "originalRating": "2/5",
-      "pullQuote": "Alas, this time it feels effortful rather than fluent – and Erivo seems too stressed to offer more than the odd glimpse of Dracula’s coolly gothic allure.",
+      "pullQuote": "Alas, this time it feels effortful rather than fluent – and Erivo seems too stressed to offer more than the odd glimpse of Dracula's coolly gothic allure.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -79439,10 +79489,14 @@
       "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-williams-cynthia-erivo",
       "publishDate": "2026-02-17",
       "originalRating": "2/5",
-      "pullQuote": "I wouldn’t go so far as to say it sucks, but it certainly doesn’t bite.",
+      "pullQuote": "I wouldn't go so far as to say it sucks, but it certainly doesn't bite.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 7,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -79456,10 +79510,14 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
       "publishDate": "2026-02-17",
       "originalRating": "4/5",
-      "pullQuote": "This radical adaptation of Bram Stoker’s 1897 vampire classic is a tour de force",
+      "pullQuote": "This radical adaptation of Bram Stoker's 1897 vampire classic is a tour de force",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -79473,10 +79531,14 @@
       "url": "https://www.thetimes.com/culture/theatre-dance/article/dracula-review-cynthia-erivo-sinks-her-teeth-into-23-characters-h7pl9cmk6",
       "publishDate": "2026-02-17",
       "originalRating": "4/5",
-      "pullQuote": "Watching Cynthia Erivo in this solo rendition of Bram Stoker’s novel is akin to seeing an ice skater going for gold in the Winter Olympics.",
+      "pullQuote": "Watching Cynthia Erivo in this solo rendition of Bram Stoker's novel is akin to seeing an ice skater going for gold in the Winter Olympics.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -112525,7 +112587,11 @@
       "pullQuote": "there’s no getting away from the fact that Hadestown is barely more than a concert performance of the album",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -113514,13 +113580,17 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Henry Hitchings",
-      "url": "https://www.londontheatre.co.uk/reviews/review-hamilton-is-here-to-stay-at-the-victoria-palace-theatre",
+      "url": "https://www.standard.co.uk/go/london/theatre/hamilton-review-believe-the-hype-linmanuel-mirandas-musical-is-a-knockout-a3725301.html",
       "publishDate": "2017-12-21",
       "originalRating": "5/5",
-      "pullQuote": "“”Hamilton’ is a knockout, and its cast is superb...The lyrics are densely packed, and their bristling intricacy justifies Miranda’s thesis that hip-hop is the authentic sound of the American Revolution...With its fresh take on the politics of opportunism ‘Hamilton’ feels sharply topical, but it’s also the best kind of history lesson.",
+      "pullQuote": "'Hamilton' is a knockout, and its cast is superb",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hamilton-west-end-2021",
@@ -113534,10 +113604,14 @@
       "url": "https://www.ft.com/content/9be5e262-e637-11e7-8b99-0191e45377ec",
       "publishDate": "2017-12-21",
       "originalRating": "5/5",
-      "pullQuote": "“Miranda’s exhilarating, game-changing musical...What’s brilliant about the show is its scintillating fusion of form and content. Miranda sticks closely to historical fact and musical tradition, but reframes and reclaims both...It gives the show phenomenal drive...",
+      "pullQuote": "Miranda's exhilarating, game-changing musical...a playful and dazzling work of art, expertly delivered here by a tremendous new cast.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hamilton-west-end-2021",
@@ -113568,10 +113642,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamilton-victoria-palace-theatre-london-review-a-magnificent-achievement-thomas-kail-the-book-of-a8122091.html",
       "publishDate": "2017-12-21",
       "originalRating": "5/5",
-      "pullQuote": "The saga of the American War of Independence and a look at the teething problems of a new nation are presented in the shape of a bona fide game-changer of a musical...A piece that is obviously a magnificent achievement. Miranda’s synthesis of the historical material is phenomenal, as is his supple control of the diverse musical idioms.",
+      "pullQuote": "A piece that is obviously a magnificent achievement.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hamilton-west-end-2021",
@@ -113602,10 +113680,14 @@
       "url": "https://www.thestage.co.uk/reviews/2017/hamilton-review-victoria-palace-lin-manuel-miranda-theatre-london/",
       "publishDate": "2017-12-21",
       "originalRating": "5/5",
-      "pullQuote": "\"That this has all emerged from the mind of one man, Lin-Manuel Miranda, is extraordinary...That’s surely what gives the production its feeling of unity.",
+      "pullQuote": "That this has all emerged from the mind of one man, Lin-Manuel Miranda, is extraordinary.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hamilton-west-end-2021",
@@ -113619,10 +113701,14 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/hamilton-west-end-review-believe-every-single-word-hype/",
       "publishDate": "2017-12-22",
       "originalRating": "5/5",
-      "pullQuote": "\"It really is as good as we’ve been told. Can you quibble that it’s a bit too cold, a bit too clever, and a bit too crammed with exposition? Perhaps, but it displays an artistic sophistication that makes most of its British counter-parts look like they’re mumbling into their shoes in comparison...",
+      "pullQuote": "It really is as good as we've been told.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 4,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hamilton-west-end-2021",
@@ -113650,10 +113736,10 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Andrzej Lukowski",
-      "url": "https://www.timeout.com/london/theatre/hamilton-review",
+      "url": "https://www.timeout.com/london/theatre/hamilton-tickets-and-review",
       "publishDate": "2017-12-21",
       "originalRating": "5/5",
-      "pullQuote": "\"‘Hamilton’ is stupendously good...Actually better than the hype suggests...A ferociously enjoyable show...Kail’s restaged Broadway production is confident but not flashy...The first half of the show has the most terrific sense of velocity I’ve ever experienced in a theatre production...The second half is bleaker...",
+      "pullQuote": "If anything – and I'm truly sorry to say this – Lin-Manuel Miranda's musical about Alexander Hamilton, the first secretary of the US Treasury, is actually better than the hype suggests.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -117659,10 +117745,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
       "publishDate": "2016-07-27",
       "originalRating": "5/5",
-      "pullQuote": "“A theatre production of immense wonder...Truly magical...This tale focuses on themes of friendship and family, developing both new and old characters in a meaningful and believable way...Part one was a jubilant ride...",
+      "pullQuote": "A theatre production of immense wonder...Truly magical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 11,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
@@ -117676,10 +117766,14 @@
       "url": "https://www.thestage.co.uk/reviews/2016/harry-potter-cursed-child-review-palace-theatre-london/",
       "publishDate": "2016-07-26",
       "originalRating": "5/5",
-      "pullQuote": "“This is a major work in its own right, with an entirely distinctive theatrical life and shape. It earns its place on the stage...By turns playful and gripping, disturbing and detailed, poignant and powerful, it is superb family entertainment...",
+      "pullQuote": "It has real integrity and, crucially, could prove to be one of the most influential and important theatre works of the century.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
@@ -117710,10 +117804,14 @@
       "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
       "publishDate": "2016-07-31",
       "originalRating": "5/5",
-      "pullQuote": "\"Delivers in spades for more fanatical 'Potter' followers, while the theatrical wizardry will make sure everyone else is happy to go along on the five-hour-plus ride. It’s worth mentioning, though, that some familiarity with, and affection for, the books will guarantee a bigger emotional return...",
+      "pullQuote": "Delivers in spades for more fanatical 'Potter' followers, while the theatrical wizardry will make sure everyone else is happy to go along on the five-hour-plus ride.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
@@ -117727,10 +117825,14 @@
       "url": "https://www.theatrebee.com/post/harry-potter-and-the-cursed-child",
       "publishDate": "2022-05-17",
       "originalRating": "5/5",
-      "pullQuote": "Flawless execution, if ever there was one. Wingardium Leviosa, and objects flying. Sparks from wands. Dementors gliding right over the audience’s heads. People suspended mid-air. It’s like watching real magic. Just stunning!",
+      "pullQuote": "Flawless execution, if ever there was one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 7,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
@@ -117764,7 +117866,11 @@
       "pullQuote": "“This may be the surest commercial proposition for years, but it is also a spectacle of epic sweep and magisterial grandeur. It is, quite simply, magic...The script is both sharp and masterfully structured...Thorne's writing is leavened not only with emotion, but also with great humour...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-parts-one-and-two",
@@ -123506,10 +123612,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
       "publishDate": "2025-06-25",
       "originalRating": "2/5",
-      "pullQuote": "Unfortunately, there’s none of the same imaginative energy in this stodgy new stage version.",
+      "pullQuote": "Unfortunately, there's none of the same imaginative energy in this stodgy new stage version.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 4,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "hercules-west-end-2025",
@@ -123523,10 +123633,14 @@
       "url": "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
       "publishDate": "2025-06-25",
       "originalRating": "3/5",
-      "pullQuote": "There’s not much more to it, but as far as it goes, it’s amiable fun.",
+      "pullQuote": "There's not much more to it, but as far as it goes, it's amiable fun.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 14,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "hercules-west-end-2025",
@@ -123540,10 +123654,14 @@
       "url": "https://www.thetimes.com/article/994bbfa4-4903-4fff-8632-1c2c08a56201",
       "publishDate": "2025-06-24",
       "originalRating": "3/5",
-      "pullQuote": "Still, it’s hard to work up much enthusiasm about Casey Nicholaw’s musclebound production.",
+      "pullQuote": "Still, it's hard to work up much enthusiasm about Casey Nicholaw's musclebound production.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "hercules-west-end-2025",
@@ -123557,10 +123675,14 @@
       "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
       "publishDate": "2025-06-26",
       "originalRating": "5/5",
-      "pullQuote": "It’s a show that embraces its mythological roots with a wink and a smile, delivering a thunderously entertaining evening. Hercules is a heroic hit, complete with tunics, thunderbolts, and toe-tapping tunes.",
+      "pullQuote": "Hercules is a heroic hit, complete with tunics, thunderbolts, and toe-tapping tunes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "here-lies-love-2023",
@@ -124792,10 +124914,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
       "publishDate": "2026-01-11",
       "originalRating": "3/5",
-      "pullQuote": "It’s entertaining and well executed but frankly bonkers...It’s just another bizarre facet of this beguilingly odd enterprise.",
+      "pullQuote": "It's entertaining and well executed but frankly bonkers",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "high-noon-west-end-2025",
@@ -124809,10 +124935,14 @@
       "url": "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
       "publishDate": "2026-01-10",
       "originalRating": "3/5",
-      "pullQuote": "Crudup brings gravitas and quiet dignity to the role...The production looks handsome with its slatted wooden set design and Sunday-best costuming by Tim Hately.",
+      "pullQuote": "Crudup brings gravitas and quiet dignity to the role",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "high-noon-west-end-2025",
@@ -124830,23 +124960,6 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "high-noon-west-end-2025",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Arifa Akbar",
-      "url": "https://www.theguardian.com/stage/2026/jan/10/high-noon-review-billy-crudup-brings-classic-hollywood-western-back-with-a-bang",
-      "publishDate": "2025-10-01",
-      "originalRating": "3/5",
-      "pullQuote": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "high-noon-west-end-2025",
@@ -124877,10 +124990,14 @@
       "url": "https://www.thetimes.com/culture/theatre-dance/article/high-noon-review-billy-crudup-b0w2hghzt",
       "publishDate": "2026-01-10",
       "originalRating": "3/5",
-      "pullQuote": "Crudup proves there’s more than one way to be a hero...In the end, though, Roth doesn’t quite persuade you that this is a story that needs to be remade.",
+      "pullQuote": "In the end, though, Roth doesn't quite persuade you that this is a story that needs to be remade.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 13,
+      "modelAgreement": "3/4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "high-noon-west-end-2025",
@@ -124909,12 +125026,16 @@
       "thumb": "Flat",
       "criticName": "Sarah Crompton",
       "url": "https://www.whatsonstage.com/news/high-noon-west-end-review-billy-crudup-and-denise-gough-in-a-suitably-wild-western_1708194/",
-      "publishDate": "2025-10-01",
+      "publishDate": "2026-01-09",
       "originalRating": "3/5",
       "pullQuote": "The rest is careful and elegantly enjoyable, but lacks that emotional punch.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "hillary-and-clinton-2019",
@@ -132566,10 +132687,14 @@
       "url": "https://www.broadwayworld.com/westend/article/Review-IM-SORRY-PRIME-MINISTER-starring-Griff-Rhys-Jones-Apollo-Theatre-20260213",
       "publishDate": "2026-02-13",
       "originalRating": "3/5",
-      "pullQuote": "Never mind. Comedies are to be cherished and this one delivers its laugh quotient even if, to draw a parallel from musicals, the book lets it down somewhat.",
+      "pullQuote": "Comedies are to be cherished and this one delivers its laugh quotient even if the book lets it down somewhat.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -132579,14 +132704,14 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Nick Curtis",
-      "url": "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
+      "criticName": null,
+      "url": null,
       "publishDate": "2026-02-13",
       "originalRating": "3/5",
-      "pullQuote": "If this swansong is slapdash and indulgent, he’s surely earned the right to it.",
+      "pullQuote": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "stub"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -132603,7 +132728,32 @@
       "pullQuote": "The give-and-take between the two gents is really it for plot in an evening concerned more with striking attitudes and delivering position papers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "outletId": "artsdesk",
+      "outlet": "The Arts Desk",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Helen Hawkins",
+      "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
+      "publishDate": "2026-02-14",
+      "originalRating": "3/5",
+      "pullQuote": "It's an affable evening that many boomers who are no longer working full-time will warm to.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete",
+      "scoreDelta": 13,
+      "modelAgreement": "2/3 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -132634,10 +132784,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/im-sorry-prime-minister-yes-review-apollo-theatre-b2919769.html",
       "publishDate": "2026-02-13",
       "originalRating": "2/5",
-      "pullQuote": "It’s undeniably poignant. But ultimately, its directionless satire of woke politics doesn’t just lose the plot – it forgets it was meant to be looking for one.",
+      "pullQuote": "Its directionless satire of woke politics doesn't just lose the plot – it forgets it was meant to be looking for one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -132654,7 +132808,11 @@
       "pullQuote": "Ultimately, this is an affectionate portrait and a fond farewell to the familiar characters in their last years.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "truncated",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -160599,7 +160757,11 @@
       "pullQuote": "All in all, Les Mis and the refurbished Sondheim feel fit for purpose for the next decade or three.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -160698,10 +160860,14 @@
       "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
       "publishDate": "2020-01-17",
       "originalRating": "3/5",
-      "pullQuote": "[Les Miserables] remains grossly melodramatic, overlong and overloud. Most of the lyrics and sung-through dialogues are painfully clunky, every emotion stamped in blaring capitals.",
+      "pullQuote": "[Les Miserables] remains grossly melodramatic, overlong and overloud.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 35,
+      "modelAgreement": "No bucket consensus - using median score",
+      "needsReview": true,
+      "scoreConfidence": "low"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -160729,13 +160895,17 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Sarah Crompton",
-      "url": "https://www.whatsonstage.com/news/review-les-miserables-sondheim-theatre_50720/",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/les-miserables-sondheim-west-end-2020_50720.html",
       "publishDate": "2020-01-17",
       "originalRating": "4/5",
-      "pullQuote": "It's all very efficient and sharp. At its heart is Jon Robyns as a big-voiced and tender-hearted Valjean, catching the character's tortured valour and bringing gentle passion to the quiet \"Bring Him Home\"...",
+      "pullQuote": "It's all very efficient and sharp.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 4,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "lestat-2006",
@@ -170808,10 +170978,14 @@
       "url": "https://www.standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london-a3705346.html",
       "publishDate": "2017-11-29",
       "originalRating": "5/5",
-      "pullQuote": "“The songs of ABBA take centre stage in this riotously fun musical about a young woman trying to find out who on earth her dad is...The star-studded 2008 film...only bolstered the success of the original source material, which offers a bonding evening for mothers and daughters everywhere.",
+      "pullQuote": "It's a riotously fun musical about a young woman trying to find out who on earth her dad is.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "mamma-mia-west-end-2021",
@@ -175290,10 +175464,35 @@
       "url": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl",
       "publishDate": "2011-11-24",
       "originalRating": "5/5",
-      "pullQuote": "Many of the original actors remain from last year's run at the RSC: the gangly Paul Kaye as Matilda's father is a Quentin Blake illustration made flesh and the show-stealing Bertie Carvel delights as the monstrous headmistress Miss Trunchbull, a childish bully trapped inside a great chunk of a woman. You'd be a nitwit to miss this hit show.",
+      "pullQuote": "You'd be a nitwit to miss this hit show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "truncated",
+      "scoreDelta": 4,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "outletId": "thestage",
+      "outlet": "The Stage",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Mark Shenton",
+      "url": "https://www.thestage.co.uk/reviews/2018/matilda-musical-review-curve-leicester/",
+      "publishDate": "2018-03-16",
+      "originalRating": "5/5",
+      "pullQuote": "Warchus' peerless production...is spectacularly staged.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
@@ -175328,23 +175527,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "outletId": "whatsonstage",
-      "outlet": "WhatsOnStage",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Andy Plaice",
-      "url": "https://www.whatsonstage.com/leicester-theatre/reviews/matilda-leicester-curve-tour_46046.html",
-      "publishDate": "2018-03-16",
-      "originalRating": "5/5",
-      "pullQuote": "\"Tim Minchin and Dennis Kelly's reimagining of Matilda is a mere seven or so years old but is firmly established as a classic British musical in its own right, and upon witnessing a thunderous reception for this knockout touring cast of grown-ups and children, it's easy to see why...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
@@ -183596,7 +183778,11 @@
       "pullQuote": "production is a superlatively directed and choreographed piece of absolute pizzaz.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "mj-the-musical-west-end-2024",
@@ -183634,6 +183820,27 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Anya Ryan",
+      "url": "https://www.theguardian.com/stage/2024/mar/27/mj-the-musical-review-prince-edward-theatre-london",
+      "publishDate": "2024-03-27",
+      "originalRating": "2/5",
+      "pullQuote": "But, can we really sit in a theatre and pretend his music can live on without scrutiny?",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete",
+      "scoreDelta": 5,
+      "modelAgreement": "All 3 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "outletId": "telegraph",
       "outlet": "The Telegraph",
       "assignedScore": 60,
@@ -183668,6 +183875,27 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "outletId": "the-times",
+      "outlet": "The Times (UK)",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Clive Davis",
+      "url": "https://www.thetimes.co.uk/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq",
+      "publishDate": "2024-03-27",
+      "originalRating": "3/5",
+      "pullQuote": "...throughout the evening Frost reproduces all the trademark moves",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 15,
+      "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "outletId": "theatre-weekly",
       "outlet": "Theatre Weekly",
       "assignedScore": 100,
@@ -183681,7 +183909,11 @@
       "pullQuote": "...from the cast, to the staging, perfection is achieved in every sense",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "mj-the-musical-west-end-2024",
@@ -186356,13 +186588,17 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Nick Curtis",
-      "url": "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london",
+      "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
       "publishDate": "2022-01-21",
       "originalRating": "3/5",
-      "pullQuote": "Alex Timbers’ production excels when it seduces the eye, not the mind or the heart: Derek McLane’s sets and Catherine Zuber’s costumes are essays in polychromatic fabulousness.",
+      "pullQuote": "Alex Timbers' production excels when it seduces the eye, not the mind or the heart.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 13,
+      "modelAgreement": "3/4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
@@ -186444,10 +186680,31 @@
       "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
       "publishDate": "2022-01-20",
       "originalRating": "2/5",
-      "pullQuote": "It’s a shell of a show, all noise and no signal, instantly crumbling into its own lack of substance.",
+      "pullQuote": "It's a shell of a show, all noise and no signal, instantly crumbling into its own lack of substance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 25,
+      "modelAgreement": "2/3 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "outletId": "telegraph",
+      "outlet": "The Telegraph",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Dominic Cavendish",
+      "url": "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london",
+      "publishDate": "2022-01-20",
+      "originalRating": "4/5",
+      "pullQuote": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "stub"
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
@@ -186478,10 +186735,14 @@
       "url": "https://www.thetimes.co.uk/article/moulin-rouge-the-musical-review-crackerjack-hits-coated-in-several-tons-of-rhinestones-zbrh30lh8",
       "publishDate": "2022-01-21",
       "originalRating": "3/5",
-      "pullQuote": "Calling this show a mash-up is an understatement: it’s more like pouring a few hundredweight of melodies into a cement mixer lorry and adding several tons of rhinestones.",
+      "pullQuote": "Calling this show a mash-up is an understatement: it's more like pouring a few hundredweight of melodies into a cement mixer lorry and adding several tons of rhinestones.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
@@ -186499,23 +186760,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "stub"
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "outletId": "whatsonstage",
-      "outlet": "WhatsOnStage",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Sarah Crompton",
-      "url": "https://www.facebook.com/whatsonstage/posts/read-our-review-of-moulin-rouge-the-musical-on-tourfind-the-details-below-/1086135490213486/",
-      "publishDate": "2022-01-20",
-      "originalRating": "4/5",
-      "pullQuote": "From the second you enter you know what to expect: a musical with a heart of gold that seeks to entertain and overwhelm in equal measure. It is so over the top, it's irresistible.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "movin-out-2002",
@@ -187845,23 +188089,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "stub"
-    },
-    {
-      "showId": "murder-she-didnt-write-west-end-2025",
-      "outletId": "everythingtheatre",
-      "outlet": "Everything Theatre",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Steve Caplin",
-      "url": "https://everything-theatre.co.uk/2025/03/review-murder-she-didnt-write-duchess-theatre/",
-      "publishDate": "2025-03-25",
-      "originalRating": "4/5",
-      "pullQuote": "An evening of improvised hilarity, presenting a completely different show each night.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -194492,27 +194719,6 @@
       "scoreConfidence": "medium"
     },
     {
-      "showId": "no-mans-land-2013",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 69,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2013/11/ian-mckellen-waiting-for-godot-no-mans-land.html",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's a good thing, because it would be impossible to put across plays as head-scratchingly abstract as Godot and No Man's Land without tapping into their pathos as well as their verbal slapstick.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete",
-      "scoreDelta": 14,
-      "modelAgreement": "Bucket disagreement: gemini=Mixed, kimi=Positive",
-      "needsReview": false,
-      "scoreConfidence": "low"
-    },
-    {
       "showId": "noises-off-2016",
       "outletId": "act-three-the-reviews",
       "outlet": "Act Three: The Reviews",
@@ -197862,10 +198068,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
       "publishDate": "2025-12-19",
       "originalRating": "4/5",
-      "pullQuote": "This show can’t see a top without going over it. Park’s performance is the polar opposite of subtle but it is exactingly precise and finely detailed.",
+      "pullQuote": "Park's performance is the polar opposite of subtle but it is exactingly precise and finely detailed.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -197924,7 +198134,11 @@
       "pullQuote": "This is a gloriously eccentric, rude, riotous marvel – laugh-out loud and daft as a brush.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -198069,10 +198283,14 @@
       "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
       "publishDate": "2025-12-18",
       "originalRating": "4/5",
-      "pullQuote": "Oh, Mary! offers something genuinely different: a comedy that is as unpredictable as it is audacious. You never quite know what might happen next, and that sense of danger is part of its charm",
+      "pullQuote": "Oh, Mary! offers something genuinely different: a comedy that is as unpredictable as it is audacious.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -200836,7 +201054,11 @@
       "pullQuote": "Cameron Mackintosh has mounted blockbuster stagings in the past. Here, with director/choreographer Matthew Bourne, he’s created a more intimate version that evokes the spirit of the 1960 premiere but also treats the story’s trickier aspects with finesse and delicacy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -200850,10 +201072,35 @@
       "url": "https://www.londontheatre.co.uk/reviews/oliver-review-gielgud-theatre",
       "publishDate": "2025-01-13",
       "originalRating": "5/5",
-      "pullQuote": "Stephen Metcalfe’s new orchestrations are superb and...the movement is a constant joy",
+      "pullQuote": "Stephen Metcalfe's new orchestrations are superb and...the movement is a constant joy",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "outletId": "thestage",
+      "outlet": "The Stage",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Sam Marlowe",
+      "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
+      "publishDate": "2025-01-15",
+      "originalRating": "4/5",
+      "pullQuote": "This staging shrewdly roots all the boisterous shenanigans in a rich sense of Victoriana.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -200874,20 +201121,24 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "outletId": "theatre-weekly",
-      "outlet": "Theatre Weekly",
-      "assignedScore": 100,
+      "outletId": "the-times",
+      "outlet": "The Times (UK)",
+      "assignedScore": 80,
       "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
+      "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Greg Stewart",
-      "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
-      "publishDate": "2025-01-15",
-      "originalRating": "5/5",
-      "pullQuote": "This production of Oliver! is undeniably polished and entertaining, and for theatre purists it’s refreshing to have a revival that stays true to the original and doesn’t feel the need to be a radical reimagining. Instead, it delivers a glorious, feel-good spectacle that captures the essence of classic musical theatre.",
+      "criticName": "Neil Fisher",
+      "url": "https://www.thetimes.com/article/cce59bdb-fb8e-4a06-92e4-b61bfe9ceadc",
+      "publishDate": "2025-01-14",
+      "originalRating": "4/5",
+      "pullQuote": "you can’t fault the verve with which Bourne drills the big numbers, nor the cast’s bonhomie.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -207825,7 +208076,11 @@
       "pullQuote": "The inspiring Operation Mincemeat will surely make us all want to fight to nurture more original musicals like this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 7,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -207839,10 +208094,14 @@
       "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
       "publishDate": "2023-05-10",
       "originalRating": "5/5",
-      "pullQuote": "'Operation Mincemeat' is the wittiest, most exciting, and most fun show in the West End right now. It’s impossible not to love this show, it’s incredibly clever and joyous to watch. If you can only see one show in London this year, it should be this one.",
+      "pullQuote": "If you can only see one show in London this year, it should be this one.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -207856,10 +208115,14 @@
       "url": "https://theartsdesk.com/theatre/operation-mincemeat-fortune-theatre-review-high-octane-musical-comedy-hits-big-time",
       "publishDate": "2023-05-11",
       "originalRating": "5/5",
-      "pullQuote": "All the cast have huge fun, without ever dropping the ball. It’s almost exhausting to keep up with them. Go and see the show at the intimate Fortune before it inevitably moves on to bigger spaces. It’s guaranteed to give your ability to grin and giggle a strenuous, much needed workout.",
+      "pullQuote": "Go and see the show at the intimate Fortune before it inevitably moves on to bigger spaces.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "2/3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -207873,10 +208136,14 @@
       "url": "https://www.theguardian.com/stage/2023/may/10/operation-mincemeat-review-fortune-theatre-london-west-end",
       "publishDate": "2023-05-10",
       "originalRating": "4/5",
-      "pullQuote": "This is a show that can movingly celebrate the unsung women of the secretarial pool while also allowing them to express their frustrations...There’s pathos, too, among the gag-packed songs, including those dignifying the dead man whose body was treated so cavalierly.",
+      "pullQuote": "This is a show that can movingly celebrate the unsung women of the secretarial pool while also allowing them to express their frustrations.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -207890,10 +208157,14 @@
       "url": "https://www.thestage.co.uk/reviews/operation-mincemeat-review-fortune-theatre-london-spitlip-david-cumming-felix-hagan-natasha-hodgson-zoe-roberts",
       "publishDate": "2023-05-10",
       "originalRating": "5/5",
-      "pullQuote": "It is that balance of comedy and heart that is this show’s great strength, and with a couple of new songs and a stronger book, it is better than ever. A brilliant spy thriller, a brilliant comedy, and a brilliant musical all rolled into one, it is exhilarating to see it hit the West End.",
+      "pullQuote": "A brilliant spy thriller, a brilliant comedy, and a brilliant musical all rolled into one, it is exhilarating to see it hit the West End.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -207907,10 +208178,14 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
       "publishDate": "2023-05-10",
       "originalRating": "4/5",
-      "pullQuote": "What the show has in winning spades ... is a Pythonesque delight in irreverence that doesn’t short-change the intellect, delineating the journeys each character goes on, the social transformation the war engendered, and the pathos attending the macabre plot.",
+      "pullQuote": "What the show has in winning spades ... is a Pythonesque delight in irreverence that doesn't short-change the intellect",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -211972,6 +212247,27 @@
       "showId": "paddington-the-musical-west-end-2025",
       "outletId": "standard",
       "outlet": "Evening Standard",
+      "assignedScore": 92,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Martin Robinson",
+      "url": "https://www.standard.co.uk/culture/theatre/paddington-the-musical-london-victoria-hamilton-barritt-savoy-theatre-b1258790.html",
+      "publishDate": "2025-12-01",
+      "originalRating": null,
+      "pullQuote": "this show is pure magic, the height of theatrical entertainment and it may even change your life",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "outletId": "standard",
+      "outlet": "Evening Standard",
       "assignedScore": 80,
       "scoreSource": "originalScore-priority0",
       "bucket": "Positive",
@@ -211997,10 +212293,14 @@
       "url": "https://www.londontheatre.co.uk/reviews/paddington-the-musical-review-savoy-theatre",
       "publishDate": "2025-11-30",
       "originalRating": "5/5",
-      "pullQuote": "Paddington is pure theatre magic...It invites a live audience in to become part of the story...I tip my hat to Paddington: the small bear is a big hit.",
+      "pullQuote": "Paddington is pure theatre magic...the small bear is a big hit.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
@@ -212031,10 +212331,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
       "publishDate": "2025-12-01",
       "originalRating": "5/5",
-      "pullQuote": "It’s almost palpably eager to please – and if you don’t welcome it right into your heart, you might want to check there’s not some marmalade gumming it shut.",
+      "pullQuote": "It's almost palpably eager to please – and if you don't welcome it right into your heart, you might want to check there's not some marmalade gumming it shut.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
@@ -213696,10 +214000,14 @@
       "url": "https://lostintheatreland.wordpress.com/2025/12/16/paranormal-activity-review-ambassadors-theatre/",
       "publishDate": "2025-12-16",
       "originalRating": "3/5",
-      "pullQuote": "\"The show feels as though you are watching a horror movie, and retains its likeness to the Paranormal Activity films... This is one for horror film buffs, and less so for theatre fans expecting a great play.\" _",
+      "pullQuote": "This is one for horror film buffs, and less so for theatre fans expecting a great play.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -213771,6 +214079,27 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
+      "outletId": "the-times",
+      "outlet": "The Times (UK)",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Rachel Halliburton",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqc0hUH9KoQ4XW_xHQI3YlaYk3ddGSuPLhoNCgtRG27k_ugyuAd5eEuvyyNh0wM%3D&gaa_ts=695300de&gaa_sig=Xw4QOETBlXABAvt0TZvRowDWPHNVHFtiHbv5jxLzZUBFlPyacS1-6lLOzdOP0aw_Mje-9gNBXOYTL54R2ye1IQ%3D%3D&gearefresh=",
+      "publishDate": "2025-12-16",
+      "originalRating": "4/5",
+      "pullQuote": "Fly Davis's meticulously observed two-storey set stands before us like an open doll's house, letting us see each room — though as any good director knows, it's what remains hidden that is most powerful.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
       "outletId": "theatre-weekly",
       "outlet": "Theatre Weekly",
       "assignedScore": 60,
@@ -213781,10 +214110,14 @@
       "url": "https://theatreweekly.com/review-paranormal-activity-at-ambassadors-theatre/",
       "publishDate": "2025-12-15",
       "originalRating": "3/5",
-      "pullQuote": "As part of the Paranormal Activity legacy, this production is an intriguing experiment. It honours the franchise’s themes while carving out a new narrative, and its technical achievements are undeniable.",
+      "pullQuote": "As part of the Paranormal Activity legacy, this production is an intriguing experiment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -213798,10 +214131,14 @@
       "url": "https://www.timeout.com/london/news/review-paranormal-activity-ambassadors-theatre-121525",
       "publishDate": "2025-12-15",
       "originalRating": "4/5",
-      "pullQuote": "It avoids manipulative jump scares in favour of unnerving moments of rug pulling... Paranormal Activity is about as good as stage horror gets.",
+      "pullQuote": "Paranormal Activity is about as good as stage horror gets.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -236836,10 +237173,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/shadowlands-review-hugh-bonneville-is-a-perfect-fit-for-c-s-lewis-b1271191.html",
       "publishDate": "2026-02-17",
       "originalRating": "3/5",
-      "pullQuote": "Rachel Kavanaugh’s handsome, old-school production...features comfortably assured performances from the two leads and the supporting cast.",
+      "pullQuote": "Rachel Kavanaugh's handsome, old-school production...features comfortably assured performances from the two leads and the supporting cast.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "shadowlands-west-end-2026",
@@ -236856,7 +237197,32 @@
       "pullQuote": "In Rachel Kavanaugh’s production...the focus rests on the fierce intensity and the emotional highs and lows of the couple’s newfound happiness.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Arifa Akbar",
+      "url": "https://www.theguardian.com/stage/2026/feb/13/shadowlands-review-aldwych-theatre-london-hugh-bonneville",
+      "publishDate": "2026-02-13",
+      "originalRating": "2/5",
+      "pullQuote": "It does not feel as eviscerating as it should.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated",
+      "scoreDelta": 5,
+      "modelAgreement": "All 3 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "shadowlands-west-end-2026",
@@ -236873,7 +237239,11 @@
       "pullQuote": "Neither this sanitised production nor his unstintingly mild-mannered performance can capture the darker realities of grief, sex and mortality.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 7,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "shadowlands-west-end-2026",
@@ -236887,10 +237257,35 @@
       "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hugh-bonneville-maggie-siff",
       "publishDate": "2026-02-13",
       "originalRating": "3/5",
-      "pullQuote": "Rose-tinted, it all lacks punch; but it’s a heart-warming watch.",
+      "pullQuote": "Rose-tinted, it all lacks punch; but it's a heart-warming watch.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 13,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outletId": "telegraph",
+      "outlet": "The Telegraph",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Dominic Cavendish",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hugh-bonneville-cs-lewis-shadowlands-west-end/",
+      "publishDate": "2026-02-14",
+      "originalRating": "4/5",
+      "pullQuote": "All that genteel restraint means that when Bonneville's placid, unassuming demeanour breaks into a howl of distress...the effect is one of emotional detonation.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "shadowlands-west-end-2026",
@@ -243069,10 +243464,14 @@
       "url": "https://www.londontheatre.co.uk/reviews/six-review-vaudeville-theatre",
       "publishDate": "2021-11-11",
       "originalRating": "5/5",
-      "pullQuote": "Four years on from its Edinburgh Fringe debut, the show still feels like a breath of fresh air. The production is also a true ensemble effort ... You’d need a heart of stone to resist.",
+      "pullQuote": "You'd need a heart of stone to resist.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243086,10 +243485,14 @@
       "url": "https://www.londontheatre.co.uk/reviews/six-the-musical-west-end",
       "publishDate": "2020-12-14",
       "originalRating": "4/5",
-      "pullQuote": "The songs are insanely catchy, and if subtlety gets gleefully ground beneath the show’s rhinestone-studded stiletto heel, that’s not what anyone came for anyhow. It isn’t profound, but this is a party – and it’s unstoppable.",
+      "pullQuote": "It isn't profound, but this is a party – and it's unstoppable.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243106,7 +243509,11 @@
       "pullQuote": "This is a unique, exciting, and fun show that can be consumed repeatedly.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243120,10 +243527,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/six-the-musical-lyric-theatre-review-b1772228.html",
       "publishDate": "2020-12-13",
       "originalRating": "3/5",
-      "pullQuote": "As dazzling as the iconic show may be, it fails to fulfil its aim of portraying Henry VIII’s wives as individual women with beating hearts.",
+      "pullQuote": "As dazzling as the iconic show may be, it fails to fulfil its aim of portraying Henry VIII's wives as individual women with beating hearts.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243137,10 +243548,14 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
       "publishDate": "2023-11-11",
       "originalRating": "5/5",
-      "pullQuote": "Moss and Jamie Armitage’s infectiously fun production is packed with witty touches that make history, and theatre, easily accessible...A heart-warming, air-punching finale has everyone up on their feet; no wonder ‘Six the musical’ tickets are still in high demand. I expect these queens to rule the West End for years to come.",
+      "pullQuote": "A heart-warming, air-punching finale has everyone up on their feet; no wonder 'Six the musical' tickets are still in high demand.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243171,10 +243586,14 @@
       "url": "https://www.theatrebee.com/post/review-six",
       "publishDate": "2022-05-19",
       "originalRating": "3/5",
-      "pullQuote": "A rather odd show. The costumes are garish, even comical. The singing is outstanding. But the stories told are not, lacking detail, substance and novelty, leading the songs to focus purely on the frivolous and facetious. Catchy music, funny jokes, but an ultimately forgettable performance.",
+      "pullQuote": "Catchy music, funny jokes, but an ultimately forgettable performance.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -243192,23 +243611,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "outletId": "timeout-london",
-      "outlet": "Time Out London",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Holly Williams",
-      "url": "https://www.timeout.com/london/theatre/six-the-musical-review",
-      "publishDate": "2019-01-17",
-      "originalRating": "3/5",
-      "pullQuote": "Think Euro-pop remixes of 'Greensleeves', Anne Boleyn spouting tweenage text-speak ('everybody chill/it's totes God's will'), and K-Howard warbling #MeToo tales of gropey employers.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "skeleton-crew-2022",
@@ -253015,10 +253417,14 @@
       "url": "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
       "publishDate": "2023-12-16",
       "originalRating": "4/5",
-      "pullQuote": "Without a doubt, this is one of the most major and quality productions of the year, and while many of the occurrences in the story may seem strange, its triumphant success won’t be the strangest thing.",
+      "pullQuote": "Without a doubt, this is one of the most major and quality productions of the year",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -253032,10 +253438,14 @@
       "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
       "publishDate": "2023-12-15",
       "originalRating": "5/5",
-      "pullQuote": "“Netflix makes its stage debut in spectacular fashion with this keenly anticipated – and, I can happily reveal, totally awe-inspiring – theatrical version of the streamer’s hit sci-fi series ‘Stranger Things.",
+      "pullQuote": "I can happily reveal, totally awe-inspiring – theatrical version of the streamer's hit sci-fi series 'Stranger Things.'",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -253049,10 +253459,14 @@
       "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
       "publishDate": "2023-12-18",
       "originalRating": "5/5",
-      "pullQuote": "‘Stranger Things: The First Shadow’ has, to say the least, many elements to it. For productions like these, it’s easy for the story to get lost among the special effects. Thankfully, this isn’t the case.",
+      "pullQuote": "Thankfully, this isn't the case.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -253066,10 +253480,14 @@
       "url": "https://www.starburstmagazine.com/reviews/stranger-things-the-first-shadow/",
       "publishDate": "2023-12-28",
       "originalRating": "5/5",
-      "pullQuote": "“This is an effects-heavy show; there are some utterly stunning set pieces from the very start as the production does everything it can to remind you that this is Stranger Things and you should expect the unexpected.",
+      "pullQuote": "The result is a thrilling, immersive experience that uses every trick unique to the stage to keep its audience gripped.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -253086,7 +253504,11 @@
       "pullQuote": "In this intensely cinematic and technically stunning show, a spirited ensemble breathes ambitious life into a villain origin story that feels at once epic and intimate – and with no shortage of wow factors.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -253117,10 +253539,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
       "publishDate": "2023-12-15",
       "originalRating": "4/5",
-      "pullQuote": "This isn’t a quiet, quaint, self-consciously theatrical little play. It’s a massive all-out event calculated to thrill fans of the award-winning Netflix series with explosions, thrills, and jumpscares galore",
+      "pullQuote": "It's a massive all-out event calculated to thrill fans of the award-winning Netflix series with explosions, thrills, and jumpscares galore",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -265059,6 +265485,27 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "outletId": "standard",
+      "outlet": "Evening Standard",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Allis Brennan",
+      "url": "https://www.standard.co.uk/go/london/theatre/the-book-of-mormon-musical-theatre-tickets-in-london-a3706421.html",
+      "publishDate": "2017-11-20",
+      "originalRating": "5/5",
+      "pullQuote": "If you believe in a perfect musical, this might just be it.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "outletId": "financialtimes",
       "outlet": "Financial Times",
       "assignedScore": 80,
@@ -265069,10 +265516,14 @@
       "url": "https://www.ft.com/content/e0a3d0e6-92d9-11e2-b3be-00144feabdc0",
       "publishDate": "2013-03-24",
       "originalRating": "80/100",
-      "pullQuote": "\"The show works at root as a feel good evening, but one that successfully disguises its true nature by eschewing genuine sentiment; that is what is really being parodied most consistently...Nicholaw’s production sells its bare-faced cheek with enormous technical and performance flair and a brash yet disarming puerile charm...",
+      "pullQuote": "The show works at root as a feel good evening, but one that successfully disguises its true nature by eschewing genuine sentiment.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -265086,10 +265537,14 @@
       "url": "https://www.theguardian.com/stage/2013/mar/24/book-of-mormon-review",
       "publishDate": "2013-03-24",
       "originalRating": "80/100",
-      "pullQuote": "“The most cryingly good night out...The first surprise is how punchingly good the music is. The opening number...Is one of the best intro numbers to a musical...The story they so winningly, foot-stompingly help to tell is by Parker and Stone...And it's about Mormons.",
+      "pullQuote": "The most cryingly good night out...A night of unalloyed joy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -265103,10 +265558,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-merely-flirts-with-blasphemy-but-there-is-something-very-winning-8543751.html",
       "publishDate": "2013-03-21",
       "originalRating": "80/100",
-      "pullQuote": "“Directed with terrific zap and zestful precision...the show thwacks together a caricature-tendentious view of modern Mormon masculinity with a calculatedly outrageous Lion King-skewed view of Africa. It begins with preternatural comic efficiency...There is also something very winning about its spirit. True, it does not take any really daring risks.",
+      "pullQuote": "Directed with terrific zap and zestful precision...the spirit of the piece is tremendously attractive.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -265189,23 +265648,6 @@
       "publishDate": "2013-03-21",
       "originalRating": "4/5",
       "pullQuote": "“How refreshing it is to see a show on a West End stage that resonates so widely across the cultural spectrum...Not every number hits the mark...But in the main this is a cornucopia of comedy musical treats...There is little here to genuinely shock, and laughs by the bucketload...",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
-      "outletId": "whatsonstage",
-      "outlet": "WhatsOnStage",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Michael Davies",
-      "url": "https://www.whatsonstage.com/news/the-boy-who-harnessed-the-wind-musical-at-the-rsc-and-in-the-west-end-review_1712861/",
-      "publishDate": "2026-02-20",
-      "originalRating": "4/5",
-      "pullQuote": "Harmonies sweep from gentle ballads to soaring choruses with ease, while Hughes’s lyrics are witty and effective without ever stooping to sentimentality. The narrative itself is surprisingly simple and, on the face of it, small. Chiwetel Ejiofor (also in the press night audience) made a film of it in 2019.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -268603,10 +269045,14 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-the-choir-of-man-arts-theatre-2023",
       "publishDate": "2023-07-20",
       "originalRating": "5/5",
-      "pullQuote": "“ ‘The Choir Of Man’ brings the pub to the theatre and, in doing so, opens up two at times opposing worlds to express similarities in a show that is surprisingly life-affirming and ultimately beautiful. “",
+      "pullQuote": "'The Choir Of Man' brings the pub to the theatre and, in doing so, opens up two at times opposing worlds to express similarities in a show that is surprisingly life-affirming and ultimately beautiful.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-choir-of-man-west-end-2024",
@@ -268620,10 +269066,14 @@
       "url": "https://everything-theatre.co.uk/2023/10/review-the-choir-of-man-arts-theatre/",
       "publishDate": "2023-10-14",
       "originalRating": "3/5",
-      "pullQuote": "The show is great fun and it is clear that people are enjoying themselves. At various points, audience members are picked to go up on stage to be serenaded by the cast...The show is very much a celebration of friendship and pubs, which so many of us missed during the pandemic.",
+      "pullQuote": "The show is great fun and it is clear that people are enjoying themselves.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-choir-of-man-west-end-2024",
@@ -268637,10 +269087,14 @@
       "url": "https://shystrangemanic.com/2022/10/the-choir-of-man-at-the-arts-theatre.html",
       "publishDate": "2022-10-14",
       "originalRating": "4/5",
-      "pullQuote": "The Choir of Man doesn’t have a storyline but it does have a message, and in a show that is based around a male choir set in a local pub isn’t that enough? What it lacks in plot The Choir of Man makes up for in high-energy fun and a feel-good factor so grab a pint and head down to The Jungle for a mighty sing-along!",
+      "pullQuote": "What it lacks in plot The Choir of Man makes up for in high-energy fun and a feel-good factor so grab a pint and head down to The Jungle for a mighty sing-along!",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-choir-of-man-west-end-2024",
@@ -268654,10 +269108,14 @@
       "url": "https://timtalkstheatre.co.uk/2023/07/10/%e2%ad%90%ef%b8%8f%e2%ad%90%ef%b8%8f%e2%ad%90%ef%b8%8f%e2%ad%90%ef%b8%8f-review-of-the-choir-of-man-in-londons-westend/",
       "publishDate": "2023-07-10",
       "originalRating": "4/5",
-      "pullQuote": "The Choir of man is such a feel good show and it features iconic songs from artists we all know and love including Queen, Luther Vandross, Sia, Paul Simon, Adele, Guns & Roses, Avicii and Katy Perry to name a few. All the cast performing had outstanding stage presence and vocals.",
+      "pullQuote": "The Choir of man is such a feel good show and it features iconic songs from artists we all know and love",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-choir-of-man-west-end-2024",
@@ -268674,7 +269132,11 @@
       "pullQuote": "We don’t see this beautiful production going anywhere any time soon but Besties, we couldn’t recommend this show more! This is the kind of production you could see over and over again and you’ll have a unique experience every single time.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 9,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-coast-of-utopia-2006",
@@ -273428,10 +273890,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
       "publishDate": "2024-12-06",
       "originalRating": "5/5",
-      "pullQuote": "The beloved film’s West End makeover is fun, full of knowing humour",
+      "pullQuote": "The beloved film's West End makeover is fun, full of knowing humour",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "2/3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -273533,7 +273999,32 @@
       "pullQuote": "...a blend of awe-inspiring spectacle, sharp wit, and occasionally uneven storytelling",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt",
+      "scoreDelta": 8,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outletId": "timeout-london",
+      "outlet": "Time Out London",
+      "assignedScore": 61,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Andrzej Lukowski",
+      "url": "https://www.timeout.com/london/theatre/the-devil-wears-prada-review",
+      "publishDate": "2024-12-06",
+      "originalRating": null,
+      "pullQuote": "this stage adaptation of the...film is a decent comedy but a lousy musical",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 17,
+      "modelAgreement": "3/4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -289251,27 +289742,6 @@
     },
     {
       "showId": "the-last-five-years-2025",
-      "outletId": "reviews",
-      "outlet": "Reviews",
-      "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": null,
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Musically, it's superb under the direction of Tom Murray, with lush, expanded orchestrations by Brown.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "stub",
-      "scoreDelta": 10,
-      "modelAgreement": "All 4 models agree: Positive",
-      "needsReview": false,
-      "scoreConfidence": "medium"
-    },
-    {
-      "showId": "the-last-five-years-2025",
       "outletId": "dailybeast",
       "outlet": "The Daily Beast",
       "assignedScore": 62,
@@ -291971,10 +292441,14 @@
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
       "publishDate": "1999-10-20",
       "originalRating": "80/100",
-      "pullQuote": "“A beautiful dazzle of invention and imagination...The Disney cartoon's air of sweet whimsy is quite banished. With intricate mobile masks, puppets, exotic costumes and even stilts, these jungle creatures capture a fresh dynamic theatricality...John's very soft-rock music and songs generally serve as no more than a pleasing and heartfelt background.",
+      "pullQuote": "It lights up the West End with the blaze of Taymor's fabulous imagination.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 7,
+      "modelAgreement": "2/3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-lion-king-west-end-2021",
@@ -291991,7 +292465,7 @@
       "pullQuote": "If there is one thing Disney knows what to do it is put on a big show. This journey into theatre spectacles started with the Disney classic, The Lion King which has existed in theatres worldwide since 1997 and has held strong in the West End since 1999.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-lion-king-west-end-2021",
@@ -292005,10 +292479,14 @@
       "url": "https://www.theguardian.com/stage/2011/jan/04/lion-king-michael-billington-review",
       "publishDate": "2011-01-04",
       "originalRating": "80/100",
-      "pullQuote": "“The kaleidoscopic visual brilliance of Julie Taymor's production...lies the ultimate source of the show's success...The show was, and is, a shrewd synthesis of global avant garde techniques; and, even if nothing matched the opening parade of antelopes, elephants and zebras down the Lyceum aisle, it provided a feast for the eyes...",
+      "pullQuote": "The kaleidoscopic visual brilliance of Julie Taymor's production...lies the ultimate source of the show's success",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-lion-king-west-end-2021",
@@ -292022,27 +292500,14 @@
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "publishDate": "2014-10-17",
       "originalRating": "5/5",
-      "pullQuote": "“15 years on, it still works brilliantly...It’s easy to overlook what a radical piece of theatre ‘The Lion King’ is, and always was....Taymor has created a world that is fiercely non-literal, often to moving and wondrous effect...There’s a tough-mindedness about her method of story-telling...But it works superbly.",
+      "pullQuote": "15 years on, it still works brilliantly",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "outletId": "timeout-london",
-      "outlet": "Time Out London",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ben Walters",
-      "url": "https://www.timeout.com/london/theatre/the-lion-king",
-      "publishDate": "2011-11-04",
-      "originalRating": "4/5",
-      "pullQuote": "The hyena-infested elephant's graveyard swaps menace for goofiness and the famous stampede scene, so delicately handled and moving in the film, is merely ticked off with a sigh of relief. The familiarity of the film is a root cause of the show's commercial success.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-little-dog-laughed-2006",
@@ -295585,7 +296050,11 @@
       "pullQuote": "“Those familiar with the Christie canon will find it easy to spot the murderer among this roll-call but this is not the only point of seeing the production. This is a beautifully preserved example of a country house murder mystery, a throwback to theatre going in the thirties.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -295603,23 +296072,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-mousetrap-west-end-2021",
-      "outletId": "timeout-london",
-      "outlet": "Time Out London",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Caroline McGinn",
-      "url": "https://www.timeout.com/london/theatre/the-mousetrap",
-      "publishDate": "2012-01-01",
-      "originalRating": "3/5",
-      "pullQuote": "The production recently celebrated its 60th birthday and although Wikipedia and Stephen Fry have both blown the murderer's cover, there is a remarkable conspiracy of silence over 'The Moustrap'. The real mystery of the world's longest-running theatre show is not whodunit but, in its currently mediocre state, whydoit at all?",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "the-music-man-2022",
@@ -303013,7 +303465,7 @@
       "pullQuote": "With the Broadway production of The Phantom of the Opera just passing the 6,000 performance milestone (a feat achieved before it only by A Chorus Line, Les Miserables, and Cats), it seemed like an apt time to revisit the Majestic Theatre and see how this landmark musical production is holding up after almost fourteen and a half years.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -303212,10 +303664,14 @@
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "publishDate": "2004-06-01",
       "originalRating": "4/5",
-      "pullQuote": "“This is a powerfully emotional account of the saving grace of love. Despite clumsy lyrics, the music is Webber at his best. He has a real feel for the Victorian theatricality of the tale, from the melodramatic overture, with its thrilling organ chords, to the seductive ‘Music of the Night’ and yearning ‘All I ask of You’...",
+      "pullQuote": "This is a powerfully emotional account of the saving grace of love.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
@@ -305686,10 +306142,14 @@
       "url": "https://www.standard.co.uk/go/london/theatre/the-play-that-goes-wrong-duchess-theatre-theatre-review-a3678186.html",
       "publishDate": "2014-09-15",
       "originalRating": "3/5",
-      "pullQuote": "\"We might have seen it all a number of times before, but doors that won’t open, missed cues and messed-up lines are somehow never not funny...It’s not sophisticated and it’s certainly over-extended; the show’s one-act Fringe origins aren’t hard to spot. Yet, along with the rest of the enthusiastic audience, I laughed continually.",
+      "pullQuote": "Yet, along with the rest of the enthusiastic audience, I laughed continually.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305706,7 +306166,11 @@
       "pullQuote": "\"With this amiably ridiculous show, Mischief Theatre joins a venerable tradition of deliberately dreadful drama...It’s not new then, but it is often very funny. Partly it’s just that slapstick, done well, can reduce even the gravest souls to tears and there are some perfectly timed pratfalls here...This is largely a joyous show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305720,10 +306184,14 @@
       "url": "https://www.theguardian.com/stage/2019/apr/28/all-my-sons-ghosts-the-play-that-goes-wrong-theatre-reviews",
       "publishDate": "2019-04-28",
       "originalRating": "3/5",
-      "pullQuote": "\"The formula is apparently inexhaustible: we like nothing better than gaffs, slips of the tongue, and collapsing scenery...Doors get jammed, a sofa collapses, actors get concussed routinely...Everything you could imagine going wrong – and much you couldn’t – does. The clock strikes 14. There is a dog lead with no dog attached.",
+      "pullQuote": "The formula is apparently inexhaustible: we like nothing better than gaffs, slips of the tongue, and collapsing scenery.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 15,
+      "modelAgreement": "3/4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305737,10 +306205,14 @@
       "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/",
       "publishDate": "2014-09-15",
       "originalRating": "4/5",
-      "pullQuote": "\"It’s hardly an original idea...but seldom has a theatrical evening been so utterly and entirely sustained by it...The finer plot points of this play need not detain us; they certainly don’t seem to have been retained by its players, who also inevitably struggle to remember their lines...",
+      "pullQuote": "I laughed a lot at this gloriously preposterous and utterly silly evening.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305757,7 +306229,11 @@
       "pullQuote": "Like an am-dram Agatha Christie-style whodunnit where nothing goes according to plan, this riotously funny show continues to delight",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305771,10 +306247,14 @@
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11106181/The-Play-That-Goes-Wrong-Duchess-Theatre-review-delightful.html",
       "publishDate": "2014-09-18",
       "originalRating": "4/5",
-      "pullQuote": "\"I found it hard to laugh spontaneously at the somewhat less-than-spontaneous disasters on offer here. Still, there appears to be such an appetite these days for plays about plays that are staged by hopeless theatrical groups...I have seldom, if ever, heard louder or more sustained laughter in a theatre.",
+      "pullQuote": "All in all, it's a great-looking, brilliantly performed piece.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -305788,27 +306268,14 @@
       "url": "https://www.thetimes.co.uk/article/the-play-that-goes-wrong-at-the-duchess-wc2-3pm9jhbhl5r",
       "publishDate": "2014-09-15",
       "originalRating": "2/5",
-      "pullQuote": "\"This theatrical spoof is all punchline and no set-up. The to-the-point title sets out a conceit of non-stop catastrophe that it stages with undeniable skill and devotion. Yet, without more concern for plausibility, it soon goes from amusing to wearying with surprising speed...",
+      "pullQuote": "Yet, for all the on-stage energy, for all the good wheezes in the script...it has a fatal lack of tension.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "outletId": "timeout-london",
-      "outlet": "Time Out London",
-      "assignedScore": 60,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": null,
-      "url": "https://www.timeout.com/london/theatre/the-play-that-goes-wrong-1",
-      "publishDate": "2021-01-01",
-      "originalRating": "3/5",
-      "pullQuote": "Amid all the chatter about the overbearing West End dominance of jukebox musicals and film spin-offs, it's cheering to see a dynamic young company land slap-bang in the middle of Theatreland.The show is a farcical play-within-a-play.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Negative",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -307400,27 +307867,14 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-the-producers-garrick-theatre",
       "publishDate": "2025-09-15",
       "originalRating": "5/5",
-      "pullQuote": "The bigger space and grander details in the set work in the show’s favour, while some of the more rustic elements seen at the Menier remain, creating the best of both worlds.",
+      "pullQuote": "Whatever it is that was missing has certainly been found this time around, as the West End transfer is an obvious five-star show.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "outletId": "broadwayworld",
-      "outlet": "BroadwayWorld",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Aliya Al-Hassan",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-PRODUCERS-Garrick-Theatre-20250915",
-      "publishDate": "2025-09-15",
-      "originalRating": "5/5",
-      "pullQuote": "If laughter is medicine, this show should be on prescription",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -307441,23 +307895,6 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "outletId": "londontheatre",
-      "outlet": "London Theatre",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Anya Ryan",
-      "url": "https://www.londontheatre.co.uk/reviews/the-producers-review-garrick-theatre",
-      "publishDate": "2025-09-16",
-      "originalRating": "5/5",
-      "pullQuote": "If you want non-stop giggles, gloriously provocative jokes and an easy escape from everyday misery, there’s no better place to be right now than the Garrick. This is an absolute hoot.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-producers-west-end-2025",
       "outletId": "artsdesk",
       "outlet": "The Arts Desk",
       "assignedScore": 80,
@@ -307468,27 +307905,14 @@
       "url": "https://theartsdesk.com/theatre/producers-garrick-theatre-review-ve-haf-vays-making-you-laugh",
       "publishDate": "2025-09-17",
       "originalRating": "4/5",
-      "pullQuote": "Everyone has enormous fun and so, in consequence, we do too… it’s all so warm, so winning that the satirical jibes… skip from stage to stalls with a lightness that’s impossible to resist.",
+      "pullQuote": "Everyone has enormous fun and so, in consequence, we do too… it's all so warm, so winning that the satirical jibes… skip from stage to stalls with a lightness that's impossible to resist.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Arifa Akbar",
-      "url": "https://www.theguardian.com/stage/2024/dec/11/the-producers-review-menier-chocolate-factory-patrick-marber-mel-brooks",
-      "publishDate": "2025-09-15",
-      "originalRating": "4/5",
-      "pullQuote": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -307505,7 +307929,11 @@
       "pullQuote": "Nyman and Antolin are a match made in comedy heaven",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -307519,10 +307947,35 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-producers-garrick-theatre-review/",
       "publishDate": "2025-09-16",
       "originalRating": "4/5",
-      "pullQuote": "A carnival of wisecracks and witty tunes, the show is all about a Broadway producer’s outrageous bid to engineer a dead-cert flop",
+      "pullQuote": "A carnival of wisecracks and witty tunes, the show is all about a Broadway producer's outrageous bid to engineer a dead-cert flop",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "outletId": "the-times",
+      "outlet": "The Times (UK)",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Dominic Maxwell",
+      "url": "https://www.thetimes.com/article/7a8f1650-84e0-427e-914e-726f7dde6855",
+      "publishDate": "2025-09-16",
+      "originalRating": "5/5",
+      "pullQuote": "This is one of those shows where the funny bits are so funny, so merrily rude or un-PC, it can make the less gag-stuffed moments seem wan by comparison.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 2,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -307537,23 +307990,6 @@
       "publishDate": "2025-09-15",
       "originalRating": "5/5",
       "pullQuote": "You must update your payment details via My Account or by clicking update payment details to keep your subscription.Update payment detailsYour subscription is due to terminateWe've tried to contact you several times as we haven't been able to take payment.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "outletId": "theatre-weekly",
-      "outlet": "Theatre Weekly",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Greg Stewart",
-      "url": "https://theatreweekly.com/review-the-producers-at-garrick-theatre/",
-      "publishDate": "2025-09-15",
-      "originalRating": "5/5",
-      "pullQuote": "A gloriously unhinged celebration of musical theatre at its most madcap, The Producers is back and it’s never been better. Outrageous, audacious and utterly unmissable, this West End revival is a triumph of impeccable casting, razor-sharp direction and a laugh-a-minute script.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -307590,7 +308026,11 @@
       "pullQuote": "'The Producers' really is an outstanding collective production where every performer shows up and delivers.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 6,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-prom-2018",
@@ -315164,10 +315604,14 @@
       "url": "https://www.standard.co.uk/culture/theatre/the-spy-who-came-in-from-the-cold-b1259719.html",
       "publishDate": "2025-11-26",
       "originalRating": "4/5",
-      "pullQuote": "Eldridge has, I think, simplified the narrative somewhat so it fairly cracks along, delivering a series of rollercoaster twists...This stage adaptation is a worthy addition to the canon.",
+      "pullQuote": "This stage adaptation is a worthy addition to the canon.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -315202,10 +315646,14 @@
       "url": "https://theartsdesk.com/theatre/spy-who-came-cold-sohoplace-review-tense-courtroom-drama",
       "publishDate": "2025-11-29",
       "originalRating": "3/5",
-      "pullQuote": "It’s a good show, but at a little over two hours there is space for a deeper investment in the Leamas–Liz relationship.",
+      "pullQuote": "It's a good show, but at a little over two hours there is space for a deeper investment in the Leamas–Liz relationship.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -315254,7 +315702,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": null,
-      "url": null,
+      "url": "https://lovelondonloveculture.com/2025/12/04/review-round-up-the-spy-who-came-in-from-the-cold-sohplace/",
       "publishDate": "2025-11-27",
       "originalRating": "3.5/5",
       "pullQuote": "It is to Le Carré's credit that this fundamentally nihilistic thesis makes for cracking reading – and, in the end, a suitably thrilling stage play.",
@@ -315295,10 +315743,14 @@
       "url": "https://www.timeout.com/london/theatre/the-spy-who-came-in-from-the-cold-review#:~:text=The%20Spy%20Who%20Came%20in,espionage%20novel%20is%20thoroughly%20gripping&text=The%20best%20of%20London%20for,you%27re%20feeling%20flush%29.",
       "publishDate": "2025-11-28",
       "originalRating": "4/5",
-      "pullQuote": "This slickly noirish adaptation of John le Carré’s classic espionage novel is thoroughly gripping",
+      "pullQuote": "This slickly noirish adaptation of John le Carré's classic espionage novel is thoroughly gripping",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -315312,10 +315764,14 @@
       "url": "https://www.whatsonstage.com/news/the-spy-who-came-in-from-the-cold-west-end-review_1704481/",
       "publishDate": "2025-11-27",
       "originalRating": "4/5",
-      "pullQuote": "It’s to the great credit of this sophisticated and gripping production that those words seem so thoroughly relevant today.",
+      "pullQuote": "It's to the great credit of this sophisticated and gripping production that those words seem so thoroughly relevant today.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-story-of-my-life-2009",
@@ -317475,6 +317931,23 @@
       "scoreConfidence": "medium"
     },
     {
+      "showId": "the-tragedy-of-coriolanus-2026",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Billy McEntee",
+      "url": "https://www.timeout.com/newyork/theater/the-tragedy-of-coriolanus-review-tfana",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "Coriolanus is not Shakespeare’s most compelling work, but this production’s standout actors, anchored by Belcher, could make you think otherwise.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "the-trip-to-bountiful-2013",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -318001,7 +318474,11 @@
       "pullQuote": "The Unlikely Pilgrimage of Harold Fry is now a heart-warming musical starring Mark Addy that deserves to become an unlikely West End hit.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
@@ -318032,27 +318509,14 @@
       "url": "https://www.timeout.com/london/theatre/the-unlikely-pilgrimage-of-harold-fry-review",
       "publishDate": "2026-02-11",
       "originalRating": "3/5",
-      "pullQuote": "He composes a hilariously terse letter of condolence and decides to walk down to the post box to send it, but finds that this doesn’t seem adequate and long story short he decides to walk from rural Devon to Berwick, which is up by the Scottish border.",
+      "pullQuote": "It's a bit cosy, but not entirely so – there's a wildness and darkness bubbling beneath the surface that means The Unlikely Pilgrimage packs a surprising punch.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
-      "outletId": "whatsonstage",
-      "outlet": "WhatsOnStage",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Alex Wood",
-      "url": "https://www.whatsonstage.com/news/the-unlikely-pilgrimage-of-harold-fry-in-the-west-end-review_1711758/",
-      "publishDate": "2026-02-11",
-      "originalRating": "4/5",
-      "pullQuote": "It is a show bubbling with grief, hope, love, and music. Joyce’s writing has always possessed a particular groundedness; even at its most moving, it never feels overly saccharine. Part of the reason it works so well is the man at the heart of it all is Mark Addy.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "complete",
+      "scoreDelta": 11,
+      "modelAgreement": "2/3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "the-velocity-of-autumn-2014",
@@ -326032,7 +326496,11 @@
       "pullQuote": "Quite possibly the most fun you will ever have in a theatre...Titanique is magnifique!",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 12,
+      "modelAgreement": "3/4 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326049,7 +326517,11 @@
       "pullQuote": "...arguably too many of Dion’s honking, identikit anthems even for a 100-minute show",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 11,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326100,7 +326572,11 @@
       "pullQuote": "It goes on and on but this madcap spoof of the blockbuster film has a sparkling cast",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326117,7 +326593,11 @@
       "pullQuote": "Camp and chaotic musical burlesque of the movie Titanic that hits all the right notes",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326134,7 +326614,11 @@
       "pullQuote": "An enjoyably bonkers pastiche to beat the winter blues",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 13,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326185,7 +326669,11 @@
       "pullQuote": "Drew and her Celine Dion character are really remarkable here...a fun way to start 2025",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -326199,10 +326687,14 @@
       "url": "https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/",
       "publishDate": "2025-01-09",
       "originalRating": "4/5",
-      "pullQuote": "It wasn’t totally a night to remember, but it’s not one to forget either.",
+      "pullQuote": "It wasn't totally a night to remember, but it's not one to forget either.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 13,
+      "modelAgreement": "3/4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "title-of-show-2008",
@@ -342698,10 +343190,14 @@
       "url": "https://www.standard.co.uk/go/london/wicked-musical-theatre-tickets-in-london-a3705331.html",
       "publishDate": "2017-11-29",
       "originalRating": "4/5",
-      "pullQuote": "“A solid West End favourite. We’re definitely not in Kansas anymore for this heartwarming prequel of ‘The Wizard of Oz’, showing us why the Wicked Witch of the West turned out to be such a meanie...It has some seriously heavyweight casting history...The show’s big banger is ‘Defying Gravity’...",
+      "pullQuote": "A must-see for anyone hoping to sample a modern musical classic.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 3 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "wicked-west-end-2024",
@@ -342718,7 +343214,11 @@
       "pullQuote": "“Although it has been a hit in New York, it seems all too typical of the modern Broadway musical: efficient, knowing and highly professional but more like a piece of industrial product than something that genuinely touches the heart or mind...’Wicked’ lapses into knowingness and moralism...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "wicked-west-end-2024",
@@ -342732,10 +343232,14 @@
       "url": "https://www.thestage.co.uk/reviews/2006/wicked-review-at-apollo-victoria-london/",
       "publishDate": "2006-09-28",
       "originalRating": "4/5",
-      "pullQuote": "Schwartz’s score, arguably his best so far, is an ebullient mix of grandiose anthems and lyrical ballads while Winnie Holzman’s book expertly blends fairytale whimsy with broad moral issues. Much of the appeal of the story is our recognition of so many memorable characters...A fine ensemble company fizzes with Broadway pizzazz.",
+      "pullQuote": "A fine ensemble company fizzes with Broadway pizzazz.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 0,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "wicked-west-end-2024",
@@ -342749,10 +343253,14 @@
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
       "publishDate": "2009-01-01",
       "originalRating": "3/5",
-      "pullQuote": "“Unexpectedly witty, enjoyable though far from flawless...At times the show undoubtedly slips into the preachy, but mercifully Holzman's script keeps the gags coming...Schwartz's lyrics are occasionally touched with wit, but what he really specialises in are big gloopy power ballads that allow the two female leads to...soar...",
+      "pullQuote": "At times it's a bit of a mess - but it proves far more enjoyable than I had dared to hope, and deserves a wider audience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "wicked-west-end-2024",
@@ -342766,10 +343274,14 @@
       "url": "https://timtalkstheatre.co.uk/2022/11/11/wicked-the-musical-at-apollo-victoria-theatre-london-my-review/",
       "publishDate": "2022-11-11",
       "originalRating": "5/5",
-      "pullQuote": "Lucie Jones as Elphaba is amazing, her vocals are incredible...overall I personally think that Lucie [g]ave an outstanding performance...I give this production 5 stars, why didn’t I see it sooner!",
+      "pullQuote": "I give this production 5 stars, why didn't I see it sooner!",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 10,
+      "modelAgreement": "2/3 models agree: Rave",
+      "needsReview": false,
+      "scoreConfidence": "medium"
     },
     {
       "showId": "wicked-west-end-2024",
@@ -342783,10 +343295,14 @@
       "url": "https://www.timeout.com/london/theatre/wicked-review",
       "publishDate": "2015-01-01",
       "originalRating": "4/5",
-      "pullQuote": "“This stylish and bombastic musical still delivers, sailing over its patchy score thanks to a gravity-defying performance from its current leading lady Tucker...She's closely followed by Beck...The Tim Burton-inspired ensemble oscillate between the hypnotic and grotesque...",
+      "pullQuote": "This stylish and bombastic musical still delivers, sailing over its patchy score thanks to a gravity-defying performance from its current leading lady Tucker.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 1,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "wishful-drinking-2009",
@@ -343708,18 +344224,64 @@
       "showId": "woman-in-mind-west-end-2025",
       "outletId": "guardian",
       "outlet": "The Guardian",
-      "assignedScore": 80,
+      "assignedScore": 60,
       "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Arifa Akbar",
       "url": "https://www.theguardian.com/stage/2026/jan/06/woman-in-mind-review-revival-that-stands-test-of-time-for-its-originality",
-      "publishDate": "2025-09-01",
-      "originalRating": "4/5",
-      "pullQuote": "Under the direction of Michael Longhurst, they have something of Oz about them, with a too garish colour scheme to their clothes (glaring pinks, purples and yellows) and a distantly anxious soundtrack (designed by Paul Arditti).",
+      "publishDate": "2026-01-06",
+      "originalRating": "3/5",
+      "pullQuote": "It is a play worth reviving too at a time when the real world looks so bleak.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Positive",
+      "needsReview": false,
+      "scoreConfidence": "high"
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "outletId": "the-independent",
+      "outlet": "The Independent",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Alice Saville",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/woman-in-mind-sheridan-smith-romesh-ranganathan-b2895867.html",
+      "publishDate": "2026-01-07",
+      "originalRating": "3/5",
+      "pullQuote": "Taken as an exploration of mental illness, this play's blunt, larky approach feels both dated and faintly tasteless.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 22,
+      "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score",
+      "needsReview": false,
+      "scoreConfidence": "medium"
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "outletId": "thestage",
+      "outlet": "The Stage",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Sam Marlowe",
+      "url": "https://www.thestage.co.uk/reviews/woman-in-mind-review-duke-of-yorks-theatre-london-sheridan-smith-alan-ayckbourn-michael-longhurst",
+      "publishDate": "2026-01-07",
+      "originalRating": "3/5",
+      "pullQuote": "In this evocation of a suburban housewife coming unglued, it's the writing, above all, that careens out of control.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt",
+      "scoreDelta": 5,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "woman-in-mind-west-end-2025",
@@ -343750,27 +344312,35 @@
       "url": "https://www.timeout.com/london/theatre/woman-in-mind-review",
       "publishDate": "2026-01-07",
       "originalRating": "3/5",
-      "pullQuote": "There is something melancholic and Chekhovian at its core, but it’s deep, deep beneath the surface, obscured by an all consuming conceptual glamour.",
+      "pullQuote": "There is something melancholic and Chekhovian at its core, but it's deep, deep beneath the surface, obscured by an all consuming conceptual glamour.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "woman-in-mind-west-end-2025",
       "outletId": "whatsonstage",
       "outlet": "WhatsOnStage",
-      "assignedScore": 80,
+      "assignedScore": 60,
       "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "bucket": "Mixed",
+      "thumb": "Flat",
       "criticName": "Sarah Crompton",
       "url": "https://www.whatsonstage.com/news/woman-in-mind-west-end-review-sheridan-smith-gives-a-strong-turn-in-an-outdated-tragicomedy_1707895/",
-      "publishDate": "2025-09-01",
-      "originalRating": "4/5",
-      "pullQuote": "It’s a lovely, naturalistic performance, but it exposes the artificiality of the play.",
+      "publishDate": "2026-01-07",
+      "originalRating": "3/5",
+      "pullQuote": "It's a lovely, naturalistic performance, but it exposes the artificiality of the play.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "excerpt",
+      "scoreDelta": 3,
+      "modelAgreement": "All 4 models agree: Mixed",
+      "needsReview": false,
+      "scoreConfidence": "high"
     },
     {
       "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",

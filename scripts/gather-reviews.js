@@ -1790,24 +1790,24 @@ function createReviewFile(showId, reviewData, options = {}) {
   }
 
   // CROSS-PRODUCTION URL CHECK: prevent same URL in sibling production directories
-  // Exception: roundup articles legitimately cover multiple shows
+  // Exceptions: roundup articles and combined reviews legitimately cover multiple shows
   if (reviewData.url) {
     const urlIndex = getGlobalUrlIndex();
     const existing = urlIndex.get(normalizeUrl(reviewData.url));
     if (existing && existing.showId !== showId) {
-      // Check if existing file is a roundup article — those span shows legitimately
-      let isRoundup = false;
+      // Check if existing file is a roundup or combined review — those span shows legitimately
+      let allowCrossShow = false;
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-        isRoundup = existingData.isRoundupArticle === true;
-      } catch (e) { /* file unreadable, treat as non-roundup */ }
+        allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true;
+      } catch (e) { /* file unreadable, treat as non-exception */ }
 
-      if (!isRoundup) {
+      if (!allowCrossShow) {
         console.log(`    ✗ Skipping ${filename}: URL already exists in ${existing.showId}/${existing.file}`);
         return false;
       }
-      // Roundup article — allow saving in this show's directory too
+      // Roundup/combined review — allow saving in this show's directory too
     }
   }
 
