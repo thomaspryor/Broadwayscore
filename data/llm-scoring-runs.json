@@ -551273,101 +551273,352 @@
     ]
   },
   {
-    "startedAt": "2026-02-22T03:15:33.632Z",
-    "completedAt": "2026-02-22T03:31:27.671Z",
-    "totalReviews": 25040,
-    "processed": 9,
-    "skipped": 24738,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 164525,
-      "output": 4291,
-      "total": 371043
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-22T02:33:08.708Z",
-    "completedAt": "2026-02-22T03:21:07.726Z",
+    "startedAt": "2026-02-22T02:27:22.191Z",
+    "completedAt": "2026-02-22T03:14:44.248Z",
     "totalReviews": 25028,
-    "processed": 21,
-    "skipped": 24585,
+    "processed": 34,
+    "skipped": 24487,
     "errors": 0,
     "tokensUsed": {
-      "input": 267583,
-      "output": 7505,
-      "total": 621332
+      "input": 333109,
+      "output": 10522,
+      "total": 762940
     },
     "errorDetails": []
   },
   {
-    "startedAt": "2026-02-22T02:29:49.399Z",
-    "completedAt": "2026-02-22T03:22:29.678Z",
+    "startedAt": "2026-02-22T02:39:38.065Z",
+    "completedAt": "2026-02-22T03:21:31.564Z",
     "totalReviews": 25028,
-    "processed": 27,
-    "skipped": 24548,
-    "errors": 0,
+    "processed": 328,
+    "skipped": 24582,
+    "errors": 64,
     "tokensUsed": {
-      "input": 307294,
-      "output": 9237,
-      "total": 715988
+      "input": 1606468,
+      "output": 145024,
+      "total": 1751492
     },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-22T03:24:21.557Z",
-    "completedAt": "2026-02-22T03:34:04.697Z",
-    "totalReviews": 25041,
-    "processed": 2,
-    "skipped": 24953,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 37715,
-      "output": 901,
-      "total": 85756
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-22T03:31:48.168Z",
-    "completedAt": "2026-02-22T03:34:53.297Z",
-    "totalReviews": 25041,
-    "processed": 3,
-    "skipped": 24959,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 31214,
-      "output": 993,
-      "total": 68864
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-22T03:15:52.323Z",
-    "completedAt": "2026-02-22T03:35:07.946Z",
-    "totalReviews": 25040,
-    "processed": 6,
-    "skipped": 24776,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 141265,
-      "output": 3274,
-      "total": 319349
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-02-22T03:16:51.279Z",
-    "completedAt": "2026-02-22T03:36:07.165Z",
-    "totalReviews": 25040,
-    "processed": 9,
-    "skipped": 24776,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 136369,
-      "output": 3512,
-      "total": 310507
-    },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "9-to-5-2009",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "assassins-2004",
+        "outletId": "ap",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "betrayal-2019",
+        "outletId": "front-row-center",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "hughie-2016",
+        "outletId": "front-row-center",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "magicbird-2012",
+        "outletId": "ew",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "paddington-the-musical-west-end-2025",
+        "outletId": "the-times",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "paranormal-activity-west-end-2025",
+        "outletId": "the-times",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "slave-play-2021",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "suffs-2024",
+        "outletId": "deadline",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-norman-conquests-2009",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-picture-of-dorian-gray-2025",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-rose-tattoo-2019",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-thanksgiving-play-2023",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "titanic-1997",
+        "outletId": "newsday",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "titanic-1997",
+        "outletId": "nytimes",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "titanique-2026",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "twelfth-night-2013",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "west-side-story-2009",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "yellow-face-2024",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "a-bronx-tale-the-musical-2016",
+        "outletId": "hollywood-reporter",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "allegiance-2015",
+        "outletId": "tackles-an-underexplored-dark-chapter-in-our-history",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "an-act-of-god-2016",
+        "outletId": "the-record-bergen",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "enron-2010",
+        "outletId": "chicagotribune",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "glengarry-glen-ross-2025",
+        "outletId": "purlie-victorious",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "guys-and-dolls-2009",
+        "outletId": "chicagotribune",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "outletId": "ap",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "jackals-2026",
+        "outletId": "thestage",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "linda-vista-2019",
+        "outletId": "newyorker",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "looped-2010",
+        "outletId": "bloomberg",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "looped-2010",
+        "outletId": "usatoday",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "matilda-the-musical-2013",
+        "outletId": "stagescenela",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "broadwayworld",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "broadwayworld",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "broadwayworld",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "broadwayworld",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "broadwayworld",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "columbus-underground",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "kutv",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "orlando-weekly",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "patch",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "red-carpet-crash",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "san-francisco-chronicle",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "scene",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "the-daily-cardinal",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "the-globe-and-mail",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "outletId": "the-only-critic",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "mrs-warrens-profession-2010",
+        "outletId": "ap",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "mrs-warrens-profession-2010",
+        "outletId": "theatermania",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "ohio-state-murders-2022",
+        "outletId": "newyorker",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "paddington-the-musical-west-end-2025",
+        "outletId": "broadwaynews",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "private-lives-2011",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "richard-iii-2013",
+        "outletId": "nbcny",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "rock-n-roll-2007",
+        "outletId": "nysr",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "rock-n-roll-2007",
+        "outletId": "nysr",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "superior-donuts-2009",
+        "outletId": "usatoday",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "sweeney-todd-2005",
+        "outletId": "sweeney-todd",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "sweeney-todd-2023",
+        "outletId": "sweeney-todd",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "tammy-faye-2024",
+        "outletId": "the-interested-bystander",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-american-plan-2009",
+        "outletId": "amny",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-glass-menagerie-2017",
+        "outletId": "wsj",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "the-inheritance-2019",
+        "outletId": "curtainup",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "twelfth-night-2013",
+        "outletId": "theatre-is-easy",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "whos-afraid-of-virginia-woolf-2012",
+        "outletId": "usatoday",
+        "error": "Failed to parse response JSON"
+      }
+    ]
   }
 ]
