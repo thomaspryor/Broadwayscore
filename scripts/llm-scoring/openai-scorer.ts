@@ -138,7 +138,7 @@ export class OpenAIReviewScorer {
     this.apiKey = apiKey;
     this.options = {
       model: options.model || 'gpt-4o-mini',
-      maxRetries: options.maxRetries ?? 3,
+      maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false
     };
   }
@@ -175,15 +175,19 @@ export class OpenAIReviewScorer {
 
         if (!response.ok) {
           const errorBody = await response.text();
-          if (response.status === 429) {
-            const waitTime = Math.pow(2, attempt) * 1000;
-            if (this.options.verbose) {
-              console.log(`  Rate limited. Waiting ${waitTime / 1000}s...`);
-            }
-            await new Promise(r => setTimeout(r, waitTime));
-            continue;
+          const isRateLimit = response.status === 429;
+          const isServerError = response.status >= 500;
+          const waitTime = isRateLimit
+            ? Math.pow(2, attempt) * 1000
+            : isServerError
+              ? Math.pow(2, attempt) * 500
+              : Math.pow(2, attempt) * 15000;
+          lastError = `OpenAI API error: ${response.status} - ${errorBody.substring(0, 200)}`;
+          if (this.options.verbose) {
+            console.log(`  OpenAI error (${response.status}): ${errorBody.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
           }
-          throw new Error(`OpenAI API error: ${response.status} - ${errorBody}`);
+          await new Promise(r => setTimeout(r, waitTime));
+          continue;
         }
 
         const data = await response.json() as {
@@ -220,16 +224,13 @@ export class OpenAIReviewScorer {
         };
       } catch (error: any) {
         lastError = error.message || String(error);
-
-        if (error.message?.includes('429')) {
-          const waitTime = Math.pow(2, attempt) * 1000;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else if (error.message?.includes('5')) {
-          const waitTime = Math.pow(2, attempt) * 500;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else {
-          break;
+        const waitTime = error.message?.includes('429')
+          ? Math.pow(2, attempt) * 1000
+          : Math.pow(2, attempt) * 15000;
+        if (this.options.verbose) {
+          console.log(`  OpenAI network error: ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
+        await new Promise(r => setTimeout(r, waitTime));
       }
     }
 
@@ -325,15 +326,19 @@ export class OpenAIReviewScorer {
 
         if (!response.ok) {
           const errorBody = await response.text();
-          if (response.status === 429) {
-            const waitTime = Math.pow(2, attempt) * 1000;
-            if (this.options.verbose) {
-              console.log(`  Rate limited. Waiting ${waitTime / 1000}s...`);
-            }
-            await new Promise(r => setTimeout(r, waitTime));
-            continue;
+          const isRateLimit = response.status === 429;
+          const isServerError = response.status >= 500;
+          const waitTime = isRateLimit
+            ? Math.pow(2, attempt) * 1000
+            : isServerError
+              ? Math.pow(2, attempt) * 500
+              : Math.pow(2, attempt) * 15000;
+          lastError = `OpenAI API error: ${response.status} - ${errorBody.substring(0, 200)}`;
+          if (this.options.verbose) {
+            console.log(`  OpenAI V5 error (${response.status}): ${errorBody.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
           }
-          throw new Error(`OpenAI API error: ${response.status} - ${errorBody}`);
+          await new Promise(r => setTimeout(r, waitTime));
+          continue;
         }
 
         const data = await response.json() as {
@@ -382,16 +387,13 @@ export class OpenAIReviewScorer {
         };
       } catch (error: any) {
         lastError = error.message || String(error);
-
-        if (error.message?.includes('429')) {
-          const waitTime = Math.pow(2, attempt) * 1000;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else if (error.message?.includes('5')) {
-          const waitTime = Math.pow(2, attempt) * 500;
-          await new Promise(r => setTimeout(r, waitTime));
-        } else {
-          break;
+        const waitTime = error.message?.includes('429')
+          ? Math.pow(2, attempt) * 1000
+          : Math.pow(2, attempt) * 15000;
+        if (this.options.verbose) {
+          console.log(`  OpenAI V5 network error: ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
+        await new Promise(r => setTimeout(r, waitTime));
       }
     }
 
