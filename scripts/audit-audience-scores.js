@@ -418,7 +418,7 @@ for (const [showId, entry] of Object.entries(buzzShows)) {
   if (entry.combinedScore == null) continue;
 
   const show = showById[showId];
-  const showInfo = show ? { closingDate: show.closingDate, status: show.status } : undefined;
+  const showInfo = show ? { closingDate: show.closingDate, status: show.status, category: show.category } : undefined;
 
   // Recompute the combined score using the shared weighting module
   const { score: recomputed } = calculateCombinedScore(entry.sources || {}, showInfo);
