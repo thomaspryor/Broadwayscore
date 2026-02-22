@@ -56,7 +56,8 @@
     "joe-turners-come-and-gone-2009/nytimes--ben-brantley.json",
     "little-bear-ridge-road-2025/nytimes--unknown.json",
     "oleanna-2009/nytimes--ben-brantley.json",
-    "radio-golf-2007/nytimes--charles-isherwood.json"
+    "radio-golf-2007/nytimes--charles-isherwood.json",
+    "data-2026/nytimes--ben-brantley.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -311,7 +312,16 @@
     "race-2009/vulture--jesse-green.json",
     "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
     "ring-of-fire-2006/nytimes--ben-brantley.json",
-    "romeo-juliet-2024/variety--charles-isherwood.json"
+    "romeo-juliet-2024/variety--charles-isherwood.json",
+    "hells-kitchen-2024/nyt-theater--unknown.json",
+    "hells-kitchen-2024/nytg--unknown.json",
+    "hells-kitchen-2024/nytimes--unknown.json",
+    "hells-kitchen-2024/variety--unknown.json",
+    "hells-kitchen-2024/vulture--unknown.json",
+    "maybe-happy-ending-2024/nytg--unknown.json",
+    "maybe-happy-ending-2024/nytimes--unknown.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "two-strangers-bway-2025/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -370,7 +380,8 @@
       "joe-turners-come-and-gone-2009/nytimes--ben-brantley.json",
       "lennon-2005/nytimes--ben-brantley.json",
       "little-bear-ridge-road-2025/nytimes--unknown.json",
-      "radio-golf-2007/nytimes--charles-isherwood.json"
+      "radio-golf-2007/nytimes--charles-isherwood.json",
+      "data-2026/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -508,6 +519,18 @@
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
-  "lastProcessed": "romeo-juliet-2024/variety--charles-isherwood.json",
-  "log": []
+  "lastProcessed": "two-strangers-bway-2025/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-22T01:21:31.197Z",
+      "event": "bb-session",
+      "session": "ef59a3d3",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-02-22T01:21:33.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
