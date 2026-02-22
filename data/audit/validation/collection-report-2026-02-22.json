@@ -17,7 +17,7 @@
     "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -45,8 +45,8 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
@@ -54,7 +54,9 @@
     "wicked-west-end-2021/timeout-london--honour-bayes.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "oliver-west-end-2024/the-times-uk--neil-fisher.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -64,5 +66,11 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "oliver-west-end-2024/the-stage--sam-marlowe.json",
+      "oldUrl": "https://www.thestage.co.uk/reviews/oliver-review-chichester-festival-theatre-matthew-bourne-with-simon-lipkin-shanay-holmes-aaron-sidwell-billy-jenkins",
+      "newUrl": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh"
+    }
+  ]
 }
