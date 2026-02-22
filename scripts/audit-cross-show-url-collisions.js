@@ -80,7 +80,7 @@ for (const showId of showDirs) {
     } catch { continue; }
 
     // Skip already-flagged files
-    if (data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.duplicateOf) {
+    if (data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf) {
       skippedFlagged++;
       continue;
     }

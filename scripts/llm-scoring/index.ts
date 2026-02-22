@@ -798,8 +798,8 @@ async function main(): Promise<void> {
       }
     }
 
-    // Multi-show detection: skip roundup articles
-    if (scorableText && reviewFile.showId) {
+    // Multi-show detection: skip roundup articles (but not combined reviews)
+    if (scorableText && reviewFile.showId && !reviewFile.isCombinedReview) {
       const multiShowResult = detectMultiShow(scorableText, reviewFile.showId);
 
       if (multiShowResult.recommendation === 'skip') {
