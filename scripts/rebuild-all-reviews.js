@@ -84,6 +84,7 @@ function flagForHumanReview(data, reason, detail) {
     llmConfidence: data.llmScore?.confidence || null,
     dtliThumb: data.dtliThumb || null,
     bwwThumb: data.bwwThumb || null,
+    bwwScore: data.bwwScore ?? null,
     flaggedAt: new Date().toISOString()
   });
 }
@@ -1150,6 +1151,15 @@ function getBestScore(data) {
         flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
           `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
       }
+      // Flag if bwwScore strongly disagrees with high-confidence LLM (>25pt divergence)
+      if (data.bwwScore != null) {
+        const bwwNorm = data.bwwScore * 10;
+        const diff = Math.abs(bwwNorm - data.llmScore.score);
+        if (diff > 25) {
+          flagForHumanReview(data, 'bwwScore-llm-conflict',
+            `LLM=${data.llmScore.score}, bwwScore=${data.bwwScore}/10 (=${bwwNorm})`);
+        }
+      }
       return { score: data.llmScore.score, source: 'llmScore' };
     }
   }
@@ -1184,10 +1194,17 @@ function getBestScore(data) {
     const bwwIsMeh = bwwThumbNorm === 'Flat';
     const llmDir = bucketDirection(llmBucket);
 
+    // Convert bwwScore (1-10) to thumb-equivalent direction
+    const bwwScoreDir = data.bwwScore != null
+      ? (data.bwwScore >= 7 ? 'positive' : data.bwwScore <= 3 ? 'negative' : 'neutral')
+      : null;
+
     // Check how many non-Meh thumbs agree with LLM direction
     const thumbDirs = [];
     if (dtliThumbNorm && !dtliIsMeh) thumbDirs.push(thumbDirection(dtliThumbNorm));
     if (bwwThumbNorm && !bwwIsMeh) thumbDirs.push(thumbDirection(bwwThumbNorm));
+    // bwwScore as additional directional signal (only when bwwThumb absent to avoid double-counting)
+    if (bwwScoreDir && bwwScoreDir !== 'neutral' && !bwwThumbNorm) thumbDirs.push(bwwScoreDir);
     const agreeing = thumbDirs.filter(d => d === llmDir).length;
     const disagreeing = thumbDirs.filter(d => d !== llmDir && d !== 'neutral').length;
 
