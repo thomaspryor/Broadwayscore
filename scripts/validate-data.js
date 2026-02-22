@@ -2137,12 +2137,17 @@ function validateCrossMarketContamination() {
   const dualMarket = new Set(['guardian', 'financialtimes', 'variety', 'stage-uk',
     'financial-times', 'financial-times-uk', 'ft', 'the-guardian-uk']);
   // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
+  // Use outlet-registry tiers (IDs match review-text file IDs)
   const tier12Outlets = new Set();
   try {
-    const scoringText = fs.readFileSync(path.join(DATA_DIR, '..', 'src', 'config', 'scoring.ts'), 'utf8');
-    const tierRegex = /'([A-Z0-9_-]+)':\s*\{\s*tier:\s*([12])/g;
-    let m;
-    while ((m = tierRegex.exec(scoringText)) !== null) tier12Outlets.add(m[1].toLowerCase());
+    for (const [id, info] of Object.entries(reg.outlets)) {
+      if (info.tier === 1 || info.tier === 2) {
+        tier12Outlets.add(id);
+        if (info.aliases) {
+          for (const alias of info.aliases) tier12Outlets.add(alias.toLowerCase());
+        }
+      }
+    }
   } catch (e) {}
 
   let issues = 0;
