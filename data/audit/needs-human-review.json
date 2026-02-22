@@ -1,10 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-22T16:55:02.620Z",
-    "totalFlagged": 28,
+    "generatedAt": "2026-02-22T17:29:37.395Z",
+    "totalFlagged": 41,
     "reasons": {
-      "possible-tour-fulltext": 27,
-      "originalScore-llm-conflict": 1
+      "possible-tour-fulltext": 38,
+      "both-thumbs-disagree-with-llm": 1,
+      "originalScore-llm-conflict": 2
     }
   },
   "reviews": [
@@ -19,7 +20,20 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:04.067Z"
+      "flaggedAt": "2026-02-22T17:28:39.830Z"
+    },
+    {
+      "showId": "11-to-midnight-2026",
+      "outletId": "theatermania",
+      "criticName": "Hayley Levitt",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bOrpheum\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:28:39.834Z"
     },
     {
       "showId": "700-sundays-2013",
@@ -32,7 +46,20 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:06.558Z"
+      "flaggedAt": "2026-02-22T17:28:40.268Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "revue",
+      "criticName": "Marin Heinritz",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-22T17:28:40.362Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -45,7 +72,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:13.147Z"
+      "flaggedAt": "2026-02-22T17:28:41.466Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -58,7 +85,20 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:22.612Z"
+      "flaggedAt": "2026-02-22T17:28:43.543Z"
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "outletId": "cleveland",
+      "criticName": "Joey Morona",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-22T17:28:46.535Z"
     },
     {
       "showId": "bright-star-2016",
@@ -71,7 +111,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:43.841Z"
+      "flaggedAt": "2026-02-22T17:28:48.087Z"
+    },
+    {
+      "showId": "bright-star-2016",
+      "outletId": "reflections-in-the-light",
+      "criticName": "Lauren Yarger",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:28:48.127Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -84,7 +137,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:44.323Z"
+      "flaggedAt": "2026-02-22T17:28:48.234Z"
     },
     {
       "showId": "come-fly-away-2010",
@@ -97,7 +150,20 @@
       "llmConfidence": "low",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:52:54.967Z"
+      "flaggedAt": "2026-02-22T17:28:51.076Z"
+    },
+    {
+      "showId": "floyd-collins-2025",
+      "outletId": "vulture",
+      "criticName": "Sara Holdren",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=43 (Down), both thumbs=Meh",
+      "llmScore": 43,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "flaggedAt": "2026-02-22T17:28:55.065Z"
     },
     {
       "showId": "follies-2011",
@@ -110,7 +176,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:03.581Z"
+      "flaggedAt": "2026-02-22T17:28:55.189Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -123,7 +189,33 @@
       "llmConfidence": "medium",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:04.274Z"
+      "flaggedAt": "2026-02-22T17:28:56.038Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "blogcritics",
+      "criticName": "Michelle Alexandria",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:28:56.536Z"
+    },
+    {
+      "showId": "gigi-2015",
+      "outletId": "dcmetro",
+      "criticName": "Gina Jun",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:28:56.545Z"
     },
     {
       "showId": "indecent-2017",
@@ -136,7 +228,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:09.366Z"
+      "flaggedAt": "2026-02-22T17:29:02.375Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -149,7 +241,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:10.447Z"
+      "flaggedAt": "2026-02-22T17:29:03.862Z"
     },
     {
       "showId": "kiss-me-kate-2019",
@@ -162,7 +254,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:11.497Z"
+      "flaggedAt": "2026-02-22T17:29:05.302Z"
     },
     {
       "showId": "lennon-2005",
@@ -175,7 +267,7 @@
       "llmConfidence": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:12.062Z"
+      "flaggedAt": "2026-02-22T17:29:06.085Z"
     },
     {
       "showId": "les-miserables-1987",
@@ -188,7 +280,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:12.303Z"
+      "flaggedAt": "2026-02-22T17:29:06.431Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -201,7 +293,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:12.342Z"
+      "flaggedAt": "2026-02-22T17:29:06.487Z"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -214,7 +306,33 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:12.370Z"
+      "flaggedAt": "2026-02-22T17:29:06.533Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "md-theatre-guide",
+      "criticName": "Herb Merrick",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bNorth American tour\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-22T17:29:06.734Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "oregon-artswatch",
+      "criticName": "Linda Ferguson",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring production\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-22T17:29:06.770Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -227,7 +345,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:26.367Z"
+      "flaggedAt": "2026-02-22T17:29:10.502Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -240,7 +358,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:26.445Z"
+      "flaggedAt": "2026-02-22T17:29:10.529Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -253,7 +371,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:28.209Z"
+      "flaggedAt": "2026-02-22T17:29:11.103Z"
     },
     {
       "showId": "noises-off-2016",
@@ -266,7 +384,33 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:33.887Z"
+      "flaggedAt": "2026-02-22T17:29:12.038Z"
+    },
+    {
+      "showId": "present-laughter-2010",
+      "outletId": "li-herald",
+      "criticName": "Elyse Trevers",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:29:16.096Z"
+    },
+    {
+      "showId": "pretty-woman-the-musical-2018",
+      "outletId": "clevelandcom",
+      "criticName": "Joey Morona",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bPlayhouse Square\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:29:16.217Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -279,7 +423,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:55.519Z"
+      "flaggedAt": "2026-02-22T17:29:16.632Z"
     },
     {
       "showId": "ragtime-2009",
@@ -292,7 +436,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:53:59.405Z"
+      "flaggedAt": "2026-02-22T17:29:17.477Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -305,7 +449,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:08.138Z"
+      "flaggedAt": "2026-02-22T17:29:19.420Z"
     },
     {
       "showId": "spamalot-2023",
@@ -318,7 +462,7 @@
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:19.302Z"
+      "flaggedAt": "2026-02-22T17:29:20.962Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -331,7 +475,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:24.894Z"
+      "flaggedAt": "2026-02-22T17:29:22.929Z"
+    },
+    {
+      "showId": "the-25th-annual-putnam-county-spelling-bee-2025",
+      "outletId": "nysr",
+      "criticName": "Roma Torre",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:29:23.309Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -344,7 +501,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:32.484Z"
+      "flaggedAt": "2026-02-22T17:29:26.214Z"
     },
     {
       "showId": "the-little-mermaid-2008",
@@ -357,7 +514,7 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:38.162Z"
+      "flaggedAt": "2026-02-22T17:29:28.598Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -370,7 +527,20 @@
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
-      "flaggedAt": "2026-02-22T16:54:48.658Z"
+      "flaggedAt": "2026-02-22T17:29:32.705Z"
+    },
+    {
+      "showId": "waitress-2021",
+      "outletId": "cititour",
+      "criticName": "Brian Scott Lipton",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5\" (=20, bucket=negative) vs LLM 81 (bucket=positive, conf=high)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "flaggedAt": "2026-02-22T17:29:35.576Z"
     }
   ]
 }
