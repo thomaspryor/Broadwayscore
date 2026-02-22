@@ -82,7 +82,7 @@ ${browseSlugs.slice(0, 12).map(slug => {
 
 ## Data We Provide For Each Show
 
-- **Critic Score**: Weighted composite score (0-100)
+- **CriticScore**: Weighted composite score (0-100)
 - **Review Count**: Number of aggregated reviews
 - **Individual Reviews**: Outlet, critic name, score, excerpt, link
 - **Show Details**: Synopsis, creative team, runtime

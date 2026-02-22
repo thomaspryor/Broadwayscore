@@ -194,7 +194,7 @@ const season = getTonySeasonWindow();
 export function generateMetadata(): Metadata {
   return {
     title: `Tony Awards Predictions ${season.ceremonyYear} - Data-Driven Broadway Rankings`,
-    description: `Which Broadway shows will win Tony Awards in ${season.ceremonyYear}? Data-driven predictions based on aggregated critic scores for all Tony-eligible shows in the ${season.label} season.`,
+    description: `Which Broadway shows will win Tony Awards in ${season.ceremonyYear}? Data-driven predictions based on aggregated CriticScore ratings for all Tony-eligible shows in the ${season.label} season.`,
     alternates: {
       canonical: `${BASE_URL}/tony-awards`,
     },
@@ -297,7 +297,7 @@ export default function TonyAwardsPage() {
         <div className="mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
           <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">How This Works</h2>
           <p className="text-sm text-gray-400 leading-relaxed">
-            Shows are ranked by their aggregated critic score — a weighted average of reviews from dozens of outlets including
+            Shows are ranked by their aggregated CriticScore — a weighted average of reviews from dozens of outlets including
             The New York Times, Vulture, Variety, and more. Historically, the Best Musical Tony winner has
             been among the top-scored eligible shows in almost every recent season.
             These aren&apos;t editorial picks — they&apos;re what the collective critical consensus says.
