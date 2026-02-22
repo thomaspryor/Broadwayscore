@@ -553126,16 +553126,50 @@
     ]
   },
   {
-    "startedAt": "2026-02-22T01:50:24.169Z",
-    "completedAt": "2026-02-22T02:27:59.106Z",
+    "startedAt": "2026-02-22T01:49:08.870Z",
+    "completedAt": "2026-02-22T02:31:10.273Z",
     "totalReviews": 24772,
-    "processed": 24,
-    "skipped": 24384,
+    "processed": 26,
+    "skipped": 24385,
     "errors": 0,
     "tokensUsed": {
-      "input": 223996,
-      "output": 7751,
-      "total": 520339
+      "input": 226881,
+      "output": 7860,
+      "total": 538910
+    },
+    "errorDetails": [
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "newsday",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-22T02:27:22.191Z",
+    "completedAt": "2026-02-22T03:14:44.248Z",
+    "totalReviews": 25028,
+    "processed": 34,
+    "skipped": 24487,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 333109,
+      "output": 10522,
+      "total": 762940
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-02-22T02:33:08.708Z",
+    "completedAt": "2026-02-22T03:21:07.726Z",
+    "totalReviews": 25028,
+    "processed": 21,
+    "skipped": 24585,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 267583,
+      "output": 7505,
+      "total": 621332
     },
     "errorDetails": []
   },

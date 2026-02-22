@@ -241,7 +241,7 @@ if (!TASK_FILTER || TASK_FILTER === '1C') {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
-      if (data.url && !data.isRoundupArticle) {
+      if (data.url && !data.isRoundupArticle && !data.isCombinedReview) {
         const normalizedUrl = normalizeUrl(data.url);
         if (!urlToFiles[normalizedUrl]) urlToFiles[normalizedUrl] = [];
         urlToFiles[normalizedUrl].push({
@@ -340,7 +340,7 @@ if (!TASK_FILTER || TASK_FILTER === '2D') {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
-      if (data.url && !data.isRoundupArticle) {
+      if (data.url && !data.isRoundupArticle && !data.isCombinedReview) {
         const normalizedUrl = normalizeUrl(data.url);
         if (!urlToFiles[normalizedUrl]) urlToFiles[normalizedUrl] = [];
         urlToFiles[normalizedUrl].push({

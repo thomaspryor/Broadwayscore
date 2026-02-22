@@ -1,31 +1,63 @@
 {
-  "timestamp": "2026-02-22T02:25:17.641Z",
-  "totalDrifted": 3,
+  "timestamp": "2026-02-22T03:15:41.838Z",
+  "totalDrifted": 7,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "brief-encounter-2010",
+      "showId": "high-noon-west-end-2025",
+      "outlet": "NBC News",
+      "critic": "Unknown",
+      "oldScore": 80,
+      "newScore": 50,
+      "delta": 30
+    },
+    {
+      "showId": "lombardi-2010",
+      "outlet": "The Wall Street Journal",
+      "critic": null,
+      "oldScore": 80,
+      "newScore": 50,
+      "delta": 30
+    },
+    {
+      "showId": "purpose-2025",
       "outlet": "TheaterMania",
-      "critic": "David Finkle",
+      "critic": "Zachary Stewart",
+      "oldScore": 80,
+      "newScore": 50,
+      "delta": 30
+    },
+    {
+      "showId": "fat-ham-2023",
+      "outlet": "TheaterMania",
+      "critic": "Adam Feldman",
       "oldScore": 80,
       "newScore": 55,
       "delta": 25
     },
     {
-      "showId": "all-my-sons-west-end-2025",
-      "outlet": "Time Out London",
-      "critic": "Andrzej Lukowski",
-      "oldScore": 80,
-      "newScore": 100,
-      "delta": 20
+      "showId": "pictures-from-home-2023",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 60,
+      "newScore": 38,
+      "delta": 22
     },
     {
-      "showId": "paddington-the-musical-west-end-2025",
-      "outlet": "WhatsOnStage",
-      "critic": "Sarah Crompton",
+      "showId": "leopoldstadt-2022",
+      "outlet": "The New York Times",
+      "critic": "Jesse Green",
       "oldScore": 80,
-      "newScore": 100,
-      "delta": 20
+      "newScore": 65,
+      "delta": 15
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "oldScore": 60,
+      "newScore": 45,
+      "delta": 15
     }
   ]
 }
