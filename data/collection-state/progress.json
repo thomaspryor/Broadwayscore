@@ -91,7 +91,10 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "six-2021/newyorker--naomi-fry.json",
     "come-from-away-2017/newyorker--hilton-als.json",
-    "cost-of-living-2022/newyorker--vinson-cunningham.json"
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "indecent-2017/newyorker--hilton-als.json",
+    "is-this-a-room-2021/newyorker--naomi-fry.json",
+    "kimberly-akimbo-2022/newyorker--vinson-cunningham.json"
   ],
   "failed": [
     "giant-2026/nytimes--houman-barekat.json",
@@ -1778,6 +1781,7 @@
       "data/review-texts/once-on-this-island-2017/vulture--jesse-green.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json",
+      "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json",
       "data/review-texts/in-the-heights-2008/newyorker--hilton-als.json"
     ],
     "archive": [
@@ -1837,7 +1841,10 @@
       "pictures-from-home-2023/newyorker--helen-shaw.json",
       "hadestown-2019/newyorker--hilton-als.json",
       "six-2021/newyorker--naomi-fry.json",
-      "come-from-away-2017/newyorker--hilton-als.json"
+      "come-from-away-2017/newyorker--hilton-als.json",
+      "indecent-2017/newyorker--hilton-als.json",
+      "is-this-a-room-2021/newyorker--naomi-fry.json",
+      "kimberly-akimbo-2022/newyorker--vinson-cunningham.json"
     ]
   },
   "startTime": "2026-02-21T19:49:18.836Z",
@@ -2001,6 +2008,17 @@
     },
     {
       "t": "2026-02-22T17:20:20.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-22T17:23:45.372Z",
+      "event": "bb-session",
+      "session": "67e77180",
+      "url": "https://www.newyorker.com/magazine/2008/03/31/crossing-over"
+    },
+    {
+      "t": "2026-02-22T17:23:47.728Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
