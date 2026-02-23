@@ -102,6 +102,29 @@ const MAJOR_CATEGORIES = [
   'Best Sound Design',
 ];
 
+// Wikipedia uses different naming conventions across ceremony pages.
+// Map variant names to our canonical short forms.
+const CATEGORY_ALIASES = {
+  'best performance by a leading actor in a musical': 'Best Actor in a Musical',
+  'best performance by a leading actress in a musical': 'Best Actress in a Musical',
+  'best performance by a leading actor in a play': 'Best Actor in a Play',
+  'best performance by a leading actress in a play': 'Best Actress in a Play',
+  'best performance by a featured actor in a musical': 'Best Featured Actor in a Musical',
+  'best performance by a featured actress in a musical': 'Best Featured Actress in a Musical',
+  'best performance by a featured actor in a play': 'Best Featured Actor in a Play',
+  'best performance by a featured actress in a play': 'Best Featured Actress in a Play',
+  'best scenic design in a musical': 'Best Scenic Design of a Musical',
+  'best scenic design in a play': 'Best Scenic Design of a Play',
+  'best costume design in a musical': 'Best Costume Design of a Musical',
+  'best costume design in a play': 'Best Costume Design of a Play',
+  'best lighting design in a musical': 'Best Lighting Design of a Musical',
+  'best lighting design in a play': 'Best Lighting Design of a Play',
+  'best sound design in a musical': 'Best Sound Design of a Musical',
+  'best sound design in a play': 'Best Sound Design of a Play',
+  'best direction of a musical': 'Best Direction of a Musical',
+  'best direction of a play': 'Best Direction of a Play',
+};
+
 // Categories that are ONLY for plays (musicals cannot win these)
 const PLAY_ONLY_CATEGORIES = [
   'Best Play',
@@ -127,9 +150,9 @@ const MUSICAL_ONLY_CATEGORIES = [
   'Best Featured Actress in a Musical',
   'Best Direction of a Musical',
   'Best Book of a Musical',
-  'Best Original Score',
+  // Note: Best Original Score NOT included — plays with original music can be nominated
+  // (e.g., Stereophonic 2024). Same for Best Choreography and Best Orchestrations.
   'Best Choreography',
-  'Best Orchestrations',
   'Best Scenic Design of a Musical',
   'Best Costume Design of a Musical',
   'Best Lighting Design of a Musical',
@@ -326,12 +349,22 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
         thCells.forEach((th, colIndex) => {
           const headerText = th.textContent?.trim() || '';
 
-          // Find matching category
+          // Find matching category — check aliases first (Wikipedia naming variants),
+          // then fall back to substring matching against canonical names
           let matchedCategory = null;
-          for (const cat of MAJOR_CATEGORIES) {
-            if (headerText.toLowerCase().includes(cat.toLowerCase())) {
-              matchedCategory = cat;
+          const headerLower = headerText.toLowerCase().trim();
+          for (const [alias, canonical] of Object.entries(CATEGORY_ALIASES)) {
+            if (headerLower.includes(alias)) {
+              matchedCategory = canonical;
               break;
+            }
+          }
+          if (!matchedCategory) {
+            for (const cat of MAJOR_CATEGORIES) {
+              if (headerLower.includes(cat.toLowerCase())) {
+                matchedCategory = cat;
+                break;
+              }
             }
           }
 
@@ -392,11 +425,17 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
 
               const isWinner = hasBoldInside || ancestorIsBold;
 
+              // Extract nominee name (text before the show name, typically "Person – Show")
+              const liText = li.textContent?.trim() || '';
+              const dashIdx = liText.indexOf('–');
+              const nominee = dashIdx > 0 ? liText.substring(0, dashIdx).trim() : '';
+
               nominations.push({
                 category: matchedCategory,
                 show: showName,
                 winner: isWinner,
-                year
+                year,
+                nominee
               });
             });
           } else {
@@ -434,10 +473,14 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
       }
     }
 
-    // Deduplicate
+    // Deduplicate — for performer categories (Actor/Actress), include nominee name
+    // in key so multiple performers from the same show are kept as separate nominations
     const seen = new Set();
     const unique = nominations.filter(n => {
-      const key = `${n.category}|${n.show}`;
+      const isPerformerCat = n.category.includes('Actor') || n.category.includes('Actress');
+      const key = isPerformerCat
+        ? `${n.category}|${n.show}|${n.nominee}`
+        : `${n.category}|${n.show}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -467,14 +510,15 @@ async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const yearArg = args.find(a => a.startsWith('--year='));
+  const outputArg = args.find(a => a.startsWith('--output='));
   const targetYear = yearArg ? parseInt(yearArg.split('=')[1]) : null;
 
   console.log('🏆 Tony Awards Data Scraper');
   console.log('===========================');
   if (dryRun) console.log('DRY RUN - no changes will be saved\n');
 
-  // Load existing awards data
-  const awardsPath = path.join(__dirname, '../data/awards.json');
+  // Load existing awards data (use --output to write to a different file)
+  const awardsPath = outputArg ? outputArg.split('=')[1] : path.join(__dirname, '../data/awards.json');
   let awardsData;
   try {
     awardsData = JSON.parse(fs.readFileSync(awardsPath, 'utf8'));
@@ -526,7 +570,10 @@ async function main() {
         }
 
         const data = showNominations.get(show.id);
-        if (!data.nominations.includes(nom.category)) {
+        // Performer categories can have multiple nominees from the same show
+        // (e.g., 2 actors nominated for Best Actor). Allow duplicates for these.
+        const isPerformerCat = nom.category.includes('Actor') || nom.category.includes('Actress');
+        if (isPerformerCat || !data.nominations.includes(nom.category)) {
           data.nominations.push(nom.category);
         }
         if (nom.winner && !data.wins.includes(nom.category)) {
