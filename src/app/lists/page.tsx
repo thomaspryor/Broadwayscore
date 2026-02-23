@@ -12,14 +12,14 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Broadway Gold Lists',
-  description: 'Curated rankings of the best Broadway shows by critics, audiences, box office, and demand. Updated each season.',
+  title: 'Gold Lists — Broadway & West End',
+  description: 'Curated rankings of the best Broadway and West End shows by critics, audiences, box office, and demand. Updated each season.',
   alternates: {
     canonical: `${BASE_URL}/lists`,
   },
   openGraph: {
-    title: 'Broadway Gold Lists',
-    description: 'Curated rankings of the best Broadway shows by critics, audiences, box office, and demand.',
+    title: 'Gold Lists — Broadway & West End',
+    description: 'Curated rankings of the best Broadway and West End shows by critics, audiences, box office, and demand.',
     url: `${BASE_URL}/lists`,
   },
 };
@@ -50,10 +50,10 @@ export default function GoldListsIndex() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            Broadway Gold Lists™
+            Gold Lists™
           </h1>
           <p className="text-gray-300 leading-relaxed">
-            The best of Broadway, ranked. Four curated lists highlighting the top shows
+            The best of Broadway and the West End, ranked. Curated lists highlighting the top shows
             each season — by critical acclaim, audience love, box office power, and ticket demand.
           </p>
         </div>

@@ -47,6 +47,11 @@ function isBroadway(show) {
   return isOfficialBroadwayTheater(show.venue);
 }
 
+function isWestEnd(show) {
+  if (!show) return false;
+  return show.id.includes('west-end');
+}
+
 // ============================================
 // Outlet tier mapping (from scoring.ts + outlet-id-mapper.ts)
 // ============================================
@@ -87,6 +92,7 @@ function getTierWeight(outletId) {
 // Thresholds (must match src/config/gold-lists.ts)
 const THRESHOLDS = {
   'critical-gold': { minScore: 73, minReviews: 5, maxPerSeason: 10, maxAllTime: 25 },
+  'critical-gold-west-end': { minScore: 73, minReviews: 5, maxPerSeason: 10, maxAllTime: 25 },
   'audience-gold': { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
   'box-office-gold': { minPerformances: 50, maxPerSeason: 10, maxAllTime: 25 },
   'hot-ticket-gold': { minCapacity: 85, minWeeks: 8, maxPerSeason: 10, maxAllTime: 25 },
@@ -266,10 +272,56 @@ function computeHotTicketGold(season, uncapped = false) {
   return results.map((e, i) => ({ ...e, rank: i + 1 }));
 }
 
+function computeCriticalGoldWestEnd(season, uncapped = false) {
+  const cfg = THRESHOLDS['critical-gold-west-end'];
+  const byShow = {};
+  Object.values(reviewsData.reviews).forEach(r => {
+    if (!r.showId || r.assignedScore == null) return;
+    if (!byShow[r.showId]) byShow[r.showId] = [];
+    byShow[r.showId].push(r);
+  });
+
+  const results = [];
+  for (const [showId, revs] of Object.entries(byShow)) {
+    const show = showById[showId];
+    if (!show || !isWestEnd(show) || getSeason(show.openingDate) !== season) continue;
+    if (revs.length < cfg.minReviews) continue;
+
+    let weightedSum = 0, weightSum = 0;
+    revs.forEach(r => {
+      if (r.assignedScore == null) return;
+      const w = getTierWeight(r.outletId);
+      weightedSum += r.assignedScore * w;
+      weightSum += w;
+    });
+    if (weightSum === 0) continue;
+
+    const score = weightedSum / weightSum;
+    if (score < cfg.minScore) continue;
+
+    const rounded = Math.round(score * 10) / 10;
+    results.push({
+      showId: show.id, title: show.title, slug: show.slug,
+      rank: 0, value: rounded, displayValue: rounded.toFixed(1),
+      season, venue: show.venue, type: show.type,
+      thumbnail: show.images?.thumbnail || null,
+      openingDate: show.openingDate || null,
+      closingDate: show.closingDate || null,
+      status: show.status || null,
+      isRevival: !!(show.tags && show.tags.includes('revival')),
+    });
+  }
+
+  results.sort((a, b) => b.value - a.value);
+  if (!uncapped) results.splice(cfg.maxPerSeason);
+  return results.map((e, i) => ({ ...e, rank: i + 1 }));
+}
+
 function computeAllTime(type) {
   const cfg = THRESHOLDS[type];
   const computeFns = {
     'critical-gold': computeCriticalGold,
+    'critical-gold-west-end': computeCriticalGoldWestEnd,
     'audience-gold': computeAudienceGold,
     'box-office-gold': computeBoxOfficeGold,
     'hot-ticket-gold': computeHotTicketGold,
@@ -293,7 +345,7 @@ function computeAllTime(type) {
 // ============================================
 
 const allSeasons = getAllSeasons();
-const listTypes = ['critical-gold', 'audience-gold', 'box-office-gold', 'hot-ticket-gold'];
+const listTypes = ['critical-gold', 'critical-gold-west-end', 'audience-gold', 'box-office-gold', 'hot-ticket-gold'];
 
 const lists = {};
 const memberships = {};
@@ -302,10 +354,14 @@ for (const type of listTypes) {
   lists[type] = {};
 
   for (const season of allSeasons) {
-    const entries = type === 'critical-gold' ? computeCriticalGold(season) :
-                    type === 'audience-gold' ? computeAudienceGold(season) :
-                    type === 'box-office-gold' ? computeBoxOfficeGold(season) :
-                    computeHotTicketGold(season);
+    const computeFnMap = {
+      'critical-gold': computeCriticalGold,
+      'critical-gold-west-end': computeCriticalGoldWestEnd,
+      'audience-gold': computeAudienceGold,
+      'box-office-gold': computeBoxOfficeGold,
+      'hot-ticket-gold': computeHotTicketGold,
+    };
+    const entries = computeFnMap[type](season);
 
     if (entries.length > 0) {
       lists[type][season] = entries;

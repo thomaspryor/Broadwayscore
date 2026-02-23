@@ -44,6 +44,7 @@ export function GoldListBadge({ type, size = 'sm' }: { type: GoldListType; size?
   const icon = (() => {
     switch (type) {
       case 'critical-gold':
+      case 'critical-gold-west-end':
         return <StarIcon className={svgSize} />;
       case 'audience-gold':
         return (
