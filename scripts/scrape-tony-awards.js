@@ -150,8 +150,8 @@ const MUSICAL_ONLY_CATEGORIES = [
   'Best Featured Actress in a Musical',
   'Best Direction of a Musical',
   'Best Book of a Musical',
-  // Note: Best Original Score NOT included — plays with original music can be nominated
-  // (e.g., Stereophonic 2024). Same for Best Choreography and Best Orchestrations.
+  // Note: Best Original Score and Best Orchestrations NOT included — plays with original
+  // music can be nominated (e.g., Stereophonic 2024).
   'Best Choreography',
   'Best Scenic Design of a Musical',
   'Best Costume Design of a Musical',
@@ -393,7 +393,9 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
           if (!td) return;
 
           // Parse nominees from the TD cell
-          // Structure: <ul><li><i><b>Winner</b></i> or <i>Nominee</i></li>...</ul>
+          // Structure: <ul><li><b>Winner</b> <ul><li>Nominee 2</li>...</ul></li></ul>
+          // Note: Wikipedia nests non-winners inside the winner's <li>, so we must use
+          // querySelectorAll('li') to get all descendants. Dedup handles duplicates.
           const listItems = td.querySelectorAll('li');
 
           if (listItems.length > 0) {
