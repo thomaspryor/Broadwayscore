@@ -21,7 +21,7 @@ on:
         required: false
         type: choice
         options:
-          - ''
+          - all
           - open
           - previews
           - closed
@@ -78,7 +78,7 @@ jobs:
           fi
 
           # Status filter
-          if [ -n "${{ inputs.status }}" ]; then
+          if [ -n "${{ inputs.status }}" ] && [ "${{ inputs.status }}" != "all" ]; then
             FLAGS="$FLAGS --status=${{ inputs.status }}"
           fi
 

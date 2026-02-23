@@ -76,12 +76,12 @@ jobs:
 
       - name: Validate data
         id: validate
-        if: ${{ inputs.dry_run != 'true' }}
+        if: inputs.dry_run != 'true'
         run: node scripts/validate-data.js
 
       - name: Check for changes
         id: git-check
-        if: ${{ inputs.dry_run != 'true' }} && steps.validate.outcome == 'success'
+        if: inputs.dry_run != 'true' && steps.validate.outcome == 'success'
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
           if [ -f data/historical-shows-pending.json ]; then
