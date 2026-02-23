@@ -301,13 +301,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Extract DTLI reviews from archives
-        continue-on-error: true
+        id: extract-dtli
         env:
           NODE_OPTIONS: '--max-old-space-size=7168'
         run: node scripts/extract-dtli-reviews.js
 
       - name: Extract Show Score reviews from archives
-        continue-on-error: true
+        id: extract-ss
         run: |
           if [ -f scripts/extract-show-score-reviews.js ]; then
             node --max-old-space-size=7168 scripts/extract-show-score-reviews.js
@@ -316,7 +316,7 @@ jobs:
           fi
 
       - name: Rebuild reviews.json
-        if: always()
+        if: always() && (steps.extract-dtli.outcome == 'success' || steps.extract-ss.outcome == 'success')
         env:
           ALLOW_DRIFT: 'true'
           NODE_OPTIONS: '--max-old-space-size=7168'

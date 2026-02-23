@@ -12,7 +12,7 @@ on:
         required: false
         type: choice
         options:
-          - ''
+          - all
           - open
           - previews
           - closed
@@ -63,7 +63,7 @@ jobs:
             FLAGS="$FLAGS --show=${{ inputs.show }}"
           fi
 
-          if [ -n "${{ inputs.status }}" ]; then
+          if [ -n "${{ inputs.status }}" ] && [ "${{ inputs.status }}" != "all" ]; then
             FLAGS="$FLAGS --status=${{ inputs.status }}"
           fi
 
