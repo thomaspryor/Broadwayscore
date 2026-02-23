@@ -12,6 +12,10 @@ type FilterMode = 'all' | 'acting' | 'creative';
 
 const INITIAL_COUNT = 50;
 
+function normalizeForSearch(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 function abbreviateCategory(cat: string): string {
   // "Best Actress in a Musical" → "Actress (Musical)"
   // "Best Scenic Design of a Play" → "Scenic Design (Play)"
@@ -37,27 +41,35 @@ export default function TonyLeaderboardClient({
 }) {
   const [filter, setFilter] = useState<FilterMode>('all');
   const [showCount, setShowCount] = useState(INITIAL_COUNT);
+  const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
-    if (filter === 'all') return rows;
+    let result: LeaderboardRow[];
     if (filter === 'acting') {
-      return rows
+      result = rows
         .filter(r => r.actingNominations > 0)
         .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations, showCount: r.actingShowCount, categories: r.categories.filter(c => isActingCategory(c)) }))
         .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
+    } else if (filter === 'creative') {
+      result = rows
+        .filter(r => r.nominations - r.actingNominations > 0)
+        .map(r => ({
+          ...r,
+          wins: r.wins - r.actingWins,
+          nominations: r.nominations - r.actingNominations,
+          showCount: r.creativeShowCount,
+          categories: r.categories.filter(c => !isActingCategory(c)),
+        }))
+        .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
+    } else {
+      result = rows;
     }
-    // creative = non-acting
-    return rows
-      .filter(r => r.nominations - r.actingNominations > 0)
-      .map(r => ({
-        ...r,
-        wins: r.wins - r.actingWins,
-        nominations: r.nominations - r.actingNominations,
-        showCount: r.creativeShowCount,
-        categories: r.categories.filter(c => !isActingCategory(c)),
-      }))
-      .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
-  }, [rows, filter]);
+    if (query.trim()) {
+      const q = normalizeForSearch(query.trim());
+      result = result.filter(r => normalizeForSearch(r.name).includes(q));
+    }
+    return result;
+  }, [rows, filter, query]);
 
   // Compute tied ranks: same wins+noms = same rank
   const ranks = useMemo(() => {
@@ -90,7 +102,7 @@ export default function TonyLeaderboardClient({
           Tony Awards Leaderboard
         </h1>
         <p className="text-gray-400 text-sm mt-1">
-          Individual Tony Award winners and nominees in performing, directing, and design categories. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
+          Individual Tony Award winners and nominees since {coverage.split('-')[0]} in performing, directing, and design categories. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
         </p>
       </div>
 
@@ -104,9 +116,21 @@ export default function TonyLeaderboardClient({
             { value: 'creative' as FilterMode, label: 'CREATIVE' },
           ]}
           value={filter}
-          onChange={(v: FilterMode) => { setFilter(v); setShowCount(INITIAL_COUNT); }}
+          onChange={(v: FilterMode) => { setFilter(v); setQuery(''); setShowCount(INITIAL_COUNT); }}
           ariaLabel="Filter by category type"
           size="compact"
+        />
+      </div>
+
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setShowCount(INITIAL_COUNT); }}
+          placeholder="Search by name..."
+          className="w-full sm:w-64 px-3 py-2 text-sm bg-surface-overlay border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand/50"
+          aria-label="Search leaderboard by name"
         />
       </div>
 
@@ -116,8 +140,13 @@ export default function TonyLeaderboardClient({
         </p>
       )}
 
+      {/* No results */}
+      {filtered.length === 0 && query.trim() && (
+        <p className="text-sm text-gray-500 py-8 text-center">No results for &ldquo;{query.trim()}&rdquo;</p>
+      )}
+
       {/* Table */}
-      <div className="overflow-x-auto">
+      {filtered.length > 0 && <><div className="overflow-x-auto">
         <table className="w-full" aria-label="Tony Awards leaderboard ranked by wins">
           <thead>
             <tr className="text-left text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide border-b border-white/10">
@@ -140,18 +169,18 @@ export default function TonyLeaderboardClient({
                   ) : (
                     <span className="text-sm font-medium text-gray-300">{row.name}</span>
                   )}
-                  <span className="text-[10px] text-gray-500 ml-1.5">
-                    {row.showCount} show{row.showCount !== 1 ? 's' : ''}
+                  <span className="text-xs text-gray-500 ml-1.5">
+                    ({row.showCount} show{row.showCount !== 1 ? 's' : ''})
                   </span>
                   {/* Mobile-only: show categories under name since column is hidden */}
                   <div className="sm:hidden flex flex-wrap gap-1 mt-0.5">
-                    {row.categories.slice(0, 2).map(cat => (
-                      <span key={cat} className="text-[9px] text-gray-600">
+                    {row.categories.slice(0, 3).map(cat => (
+                      <span key={cat} className="text-[10px] text-gray-600">
                         {abbreviateCategory(cat)}
                       </span>
                     ))}
-                    {row.categories.length > 2 && (
-                      <span className="text-[9px] text-gray-600">+{row.categories.length - 2}</span>
+                    {row.categories.length > 3 && (
+                      <span className="text-[10px] text-gray-600">+{row.categories.length - 3}</span>
                     )}
                   </div>
                 </td>
@@ -191,11 +220,27 @@ export default function TonyLeaderboardClient({
           Show {Math.min(remaining, 50)} more ({remaining} remaining)
         </button>
       )}
+      </>}
 
       {/* Source note */}
       <p className="text-xs text-gray-600 mt-6">
         Data sourced from IBDB for Broadway shows tracked since 1970. Producing credits (Best Musical, Best Play, Best Revival) are not yet tracked individually.
       </p>
+
+      {/* Footer links */}
+      <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="flex flex-wrap gap-4">
+          <Link href="/tony-awards" className="text-brand hover:text-brand-hover transition-colors">
+            Tony Awards hub &rarr;
+          </Link>
+          <Link href="/tony-awards/predictions" className="text-brand hover:text-brand-hover transition-colors">
+            Tony Predictions &rarr;
+          </Link>
+          <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
+            Scoring methodology &rarr;
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

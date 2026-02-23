@@ -301,6 +301,9 @@ export default function TonyPredictionsOverviewPage() {
             <Link href="/tony-awards" className="text-brand hover:text-brand-hover transition-colors">
               Tony Awards hub &rarr;
             </Link>
+            <Link href="/tony-awards/people" className="text-brand hover:text-brand-hover transition-colors">
+              All-time leaderboard &rarr;
+            </Link>
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
               Scoring methodology &rarr;
             </Link>
