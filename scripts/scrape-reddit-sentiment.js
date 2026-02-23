@@ -55,8 +55,9 @@ const shardMode = shard !== null && totalShards !== null;
 
 // Config — subreddit per market
 const SUBREDDIT_BW = 'broadway';
-const SUBREDDIT_WE = 'WestEndTheatre';
+const SUBREDDIT_WE = 'TheWestEnd';
 function getSubreddit(show) {
+  if (show.category === 'off-broadway') return null; // No relevant subreddit for OB
   return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;
 }
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
@@ -229,7 +230,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     `"${cleanTitle}" thoughts`,               // Discussion
     `"${cleanTitle}" loved`,                  // Positive reactions
     `"${cleanTitle}" recommend`,              // Recommendations
-    `"${cleanTitle}" "on ${marketName}"`,     // Market-specific
+    `"${cleanTitle}" "${isWestEnd ? 'in the West End' : 'on Broadway'}"`, // Market-specific phrasing
     `"${cleanTitle}"`,                        // Basic search (for neutral posts)
   ];
 
@@ -313,6 +314,10 @@ async function processShow(show) {
 
   // 1. Search for posts with audience-focused queries
   const subreddit = getSubreddit(show);
+  if (!subreddit) {
+    console.log(`  Skipping — no relevant subreddit for ${show.category || 'unknown'} category`);
+    return null;
+  }
   console.log(`  Searching r/${subreddit} for audience reactions...`);
 
   let searchResult;
@@ -446,7 +451,7 @@ function updateAudienceBuzz(showId, redditData) {
   // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
   const sd = showMapById[showId];
-  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status, category: sd.category } : undefined;
   const { score, weights } = calculateCombinedScore(sources, showInfo);
 
   if (score !== null) {
