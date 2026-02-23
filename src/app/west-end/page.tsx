@@ -75,11 +75,12 @@ export default function WestEndPage() {
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
-  const serializedShows = shows.map(serializeShow);
+  // Only show WE shows that have critic reviews (hide unscored/TBD shows)
+  const scoredShows = shows.filter(s => s.criticScore && s.criticScore.reviewCount >= 1);
+  const serializedShows = scoredShows.map(serializeShow);
 
-  // Count reviews across all WE shows
-  const totalReviews = shows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
-  const scoredShows = shows.filter(s => (s.criticScore?.reviewCount ?? 0) >= 3).length;
+  // Count reviews across scored WE shows only
+  const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
   return (
     <>
@@ -90,9 +91,9 @@ export default function WestEndPage() {
 
       <WestEndPageClient
         shows={serializedShows}
-        totalShows={shows.length}
+        totalShows={scoredShows.length}
         totalReviews={totalReviews}
-        scoredShows={scoredShows}
+        scoredShows={scoredShows.length}
       />
     </>
   );
