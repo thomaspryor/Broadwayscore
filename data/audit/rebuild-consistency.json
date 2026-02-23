@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-23T09:55:01.517Z",
+  "generatedAt": "2026-02-23T04:58:47.283Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -212,14 +212,6 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "waitress-2021",
-      "outlet": "cititour",
-      "critic": "Brian Scott Lipton",
-      "detail": "originalRating \"1/5\" (=20) vs score 81 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "war-horse-2011",
       "outlet": "ew",
       "critic": "Thom Geier",
@@ -247,7 +239,7 @@
       "showId": "wit-2012",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 75 (source: human-review)"
+      "detail": "originalRating \"1/5\" (=20) vs score 61 (source: llmScore-lowconf)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -420,26 +412,10 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
-      "showId": "waitress-2021",
-      "outlet": "cititour",
-      "critic": "Brian Scott Lipton",
-      "detail": "humanReviewScore 81 (positive) overrides explicit \"1/5\" (=20, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
       "showId": "war-horse-2011",
       "outlet": "ew",
       "critic": "Thom Geier",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "wit-2012",
-      "outlet": "timeout",
-      "critic": "David Cote",
-      "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
     },
     {
       "type": "score-clustering",
