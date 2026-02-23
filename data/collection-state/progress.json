@@ -12,7 +12,11 @@
     "of-mice-and-men-1974/usatoday--elysa-gardner.json",
     "old-times-1971/usatoday--elysa-gardner.json",
     "on-the-twentieth-century-1978/usatoday--elysa-gardner.json",
-    "pippin-1972/usatoday--elysa-gardner.json"
+    "pippin-1972/usatoday--elysa-gardner.json",
+    "an-ark-2026/hollywood-reporter--frank-scheck.json",
+    "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-the-musical-west-end-2024/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -123,12 +127,27 @@
     "promises-promises-2010/usatoday--elysa-gardner.json",
     "race-2009/usatoday--.json",
     "race-2009/usatoday--elysa-gardner.json",
-    "rain-2010/usatoday--elysa-gardner.json"
+    "rain-2010/usatoday--elysa-gardner.json",
+    "back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
+    "bigfoot-2026/hollywood-reporter--david-rooney.json",
+    "bloodlove-2026/hollywood-reporter--frank-scheck.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "im-sorry-prime-minister-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "imitation-of-life-2026/hollywood-reporter--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "amp": [],
+    "amp": [
+      "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/bigfoot-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/imitation-of-life-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-the-musical-west-end-2024/hollywood-reporter--lovia-gyarkye.json",
+      "mj-the-musical-west-end-2024/hollywood-reporter--lovia-gyarkye.json"
+    ],
     "browserbase": [],
     "directCookies": [
       "cabaret-1987/usatoday--elysa-gardner.json",
@@ -141,7 +160,8 @@
       "of-mice-and-men-1974/usatoday--elysa-gardner.json",
       "old-times-1971/usatoday--elysa-gardner.json",
       "on-the-twentieth-century-1978/usatoday--elysa-gardner.json",
-      "pippin-1972/usatoday--elysa-gardner.json"
+      "pippin-1972/usatoday--elysa-gardner.json",
+      "an-ark-2026/hollywood-reporter--frank-scheck.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -226,10 +246,11 @@
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
       "a-view-from-the-bridge-1983/usatoday--elysa-gardner.json",
-      "an-enemy-of-the-people-1971/usatoday--patrick-ryan.json"
+      "an-enemy-of-the-people-1971/usatoday--patrick-ryan.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "rain-2010/usatoday--elysa-gardner.json",
+  "lastProcessed": "mj-the-musical-west-end-2024/hollywood-reporter--lovia-gyarkye.json",
   "log": []
 }
