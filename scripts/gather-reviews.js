@@ -1749,7 +1749,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // JUNK OUTLET GUARD: Reject scraping artifacts (ad images, etc.)
   if (isJunkOutlet(normalizedOutletId)) {
     console.log(`    ✗ Skipping ${filename}: junk outlet "${reviewData.outlet || reviewData.outletId}"`);
-    return false;
+    return 'junkOutlet';
   }
 
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
@@ -1758,7 +1758,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   const allowOffBroadway = options.allowOffBroadway || false;
   if (isNotBroadway(outletText, { allowOffBroadway })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
-    return false;
+    return 'nonBroadway';
   }
 
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
@@ -1776,7 +1776,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       for (const issue of verification.issues) {
         console.log(`      - ${issue.message}`);
       }
-      return false;
+      return 'wrongProduction';
     }
   }
 
@@ -1804,7 +1804,7 @@ function createReviewFile(showId, reviewData, options = {}) {
 
       if (!allowCrossShow) {
         console.log(`    ✗ Skipping ${filename}: URL already exists in ${existing.showId}/${existing.file}`);
-        return false;
+        return 'crossShow';
       }
       // Roundup/combined review — allow saving in this show's directory too
     }
@@ -1872,7 +1872,7 @@ function createReviewFile(showId, reviewData, options = {}) {
         // Check URL match
         if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
           console.log(`    Skipping ${filename} (URL already exists in ${existingFile})`);
-          return false;
+          return 'duplicate';
         }
       } catch (e) {
         // Skip files that can't be parsed
@@ -2026,6 +2026,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     showScore: { found: false, extracted: 0, skipped: false },
     bww: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
+    rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 },
   };
 
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
@@ -2219,8 +2220,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   let created = 0;
   for (const review of foundReviews) {
     if (review.url && !review.needsUrl) {
-      if (createReviewFile(showId, review, { allowOffBroadway: isOffBroadway })) {
+      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway });
+      if (result === true) {
         created++;
+      } else if (typeof result === 'string' && health.rejections[result] !== undefined) {
+        health.rejections[result]++;
       }
     }
   }
@@ -2344,6 +2348,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     console.log(`  SERP: ${health.serp.hits}/${health.serp.calls} hits`);
   } else {
     console.log(`  SERP: skipped`);
+  }
+  const rej = health.rejections;
+  const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow;
+  if (totalRej > 0) {
+    console.log(`  Rejections: ${totalRej} (${rej.junkOutlet} junk, ${rej.nonBroadway} non-Broadway, ${rej.wrongProduction} wrongProd, ${rej.duplicate} dupes, ${rej.crossShow} crossShow)`);
   }
   console.log(`  Total found: ${foundReviews.length} → Created: ${created} files`);
 
@@ -2483,6 +2492,22 @@ async function main() {
     const totalSerpHits = healthResults.reduce((s, r) => s + r.health.serp.hits, 0);
     if (totalSerpCalls > 0) {
       console.log(`\n  SERP totals: ${totalSerpHits}/${totalSerpCalls} hits (${Math.round(100 * totalSerpHits / totalSerpCalls)}%)`);
+    }
+
+    // Total rejection stats
+    const totalRej = healthResults.reduce((s, r) => {
+      const rej = r.health.rejections || {};
+      return {
+        junkOutlet: s.junkOutlet + (rej.junkOutlet || 0),
+        nonBroadway: s.nonBroadway + (rej.nonBroadway || 0),
+        wrongProduction: s.wrongProduction + (rej.wrongProduction || 0),
+        duplicate: s.duplicate + (rej.duplicate || 0),
+        crossShow: s.crossShow + (rej.crossShow || 0),
+      };
+    }, { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0 });
+    const rejTotal = totalRej.junkOutlet + totalRej.nonBroadway + totalRej.wrongProduction + totalRej.duplicate + totalRej.crossShow;
+    if (rejTotal > 0) {
+      console.log(`\n  Rejections: ${rejTotal} total (${totalRej.junkOutlet} junk, ${totalRej.nonBroadway} non-Broadway, ${totalRej.wrongProduction} wrongProd, ${totalRej.duplicate} dupes, ${totalRej.crossShow} crossShow)`);
     }
 
     console.log('═'.repeat(60));
