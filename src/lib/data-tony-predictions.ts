@@ -5,10 +5,14 @@
 
 import { getBroadwayShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/engine';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
+
+/** Weight for blending critic and audience scores in Tony predictions. */
+export const TONY_BLEND_WEIGHT = 0.5;
 
 // --- Shared Types ---
 
@@ -22,6 +26,9 @@ export interface SerializedTonyShow {
   compositeScore: number | null;
   reviewCount: number;
   thumbnailPath: string | null;
+  audienceCombinedScore: number | null;
+  audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
+  blendedScore: number | null;
 }
 
 // --- Tony Season Logic ---
@@ -68,7 +75,33 @@ export interface TonyCategory {
   upcoming: SerializedTonyShow[];
 }
 
+/**
+ * Compute a blended critic+audience score for Tony predictions.
+ * Falls back to critic-only when no audience data available.
+ * Rejects audience scores outside 0-100 range as invalid.
+ */
+export function computeBlendedScoreForShow(
+  criticScore: number | null,
+  audienceScore: number | null | undefined,
+): number | null {
+  if (criticScore == null) return null;
+
+  // Guard: reject invalid audience scores
+  if (audienceScore != null && (audienceScore < 0 || audienceScore > 100)) {
+    return criticScore;
+  }
+
+  if (audienceScore == null) return criticScore;
+
+  return criticScore * TONY_BLEND_WEIGHT + audienceScore * (1 - TONY_BLEND_WEIGHT);
+}
+
 export function serializeShow(show: ComputedShow): SerializedTonyShow {
+  const buzz = getAudienceBuzz(show.id);
+  const audScore = buzz?.combinedScore ?? null;
+  const audGrade = audScore != null ? getAudienceGrade(audScore) : null;
+  const blended = computeBlendedScoreForShow(show.compositeScore, audScore);
+
   return {
     slug: show.slug,
     title: show.title,
@@ -79,6 +112,9 @@ export function serializeShow(show: ComputedShow): SerializedTonyShow {
     compositeScore: show.compositeScore,
     reviewCount: show.criticScore?.reviewCount || 0,
     thumbnailPath: show.images?.thumbnail || null,
+    audienceCombinedScore: audScore,
+    audienceGrade: audGrade,
+    blendedScore: blended,
   };
 }
 
@@ -138,8 +174,8 @@ export function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
 
     const scored = matching
       .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
-      .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0))
-      .map(serializeShow);
+      .map(serializeShow)
+      .sort((a, b) => (b.blendedScore ?? 0) - (a.blendedScore ?? 0));
 
     const upcoming = matching
       .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
