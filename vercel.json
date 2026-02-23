@@ -32,6 +32,11 @@
       "permanent": true
     },
     {
+      "source": "/west-end/best",
+      "destination": "/browse/west-end-shows",
+      "permanent": true
+    },
+    {
       "source": "/director/:path*",
       "destination": "/creative/:path*",
       "permanent": true
