@@ -358,7 +358,7 @@ jobs:
           echo "Unscored reviews remaining: $REMAINING"
 
       - name: Chain next batch
-        if: always() && github.event.inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10
+        if: always() && job.status != 'cancelled' && github.event.inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
