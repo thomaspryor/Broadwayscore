@@ -16,6 +16,7 @@ on:
           - newyorker.com
           - ft.com
           - telegraph.co.uk
+          - thetimes.co.uk
           - timeout.com
           - nypost.com
           - nydailynews.com
@@ -210,6 +211,7 @@ jobs:
           NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
           BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
           THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
+          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
           TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
           BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
           AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
@@ -406,7 +408,7 @@ jobs:
       - name: Build domain matrix
         id: matrix
         run: |
-          echo 'domains=["nytimes.com","vulture.com","washingtonpost.com","wsj.com","newyorker.com","ft.com","telegraph.co.uk"]' >> $GITHUB_OUTPUT
+          echo 'domains=["nytimes.com","vulture.com","washingtonpost.com","wsj.com","newyorker.com","ft.com","telegraph.co.uk","thetimes.co.uk"]' >> $GITHUB_OUTPUT
 
   collect-all:
     if: ${{ inputs.domain == 'all' }}
@@ -500,7 +502,7 @@ jobs:
 
       - name: Stagger start
         run: |
-          DOMAINS=("nytimes.com" "vulture.com" "washingtonpost.com" "wsj.com" "newyorker.com" "ft.com" "telegraph.co.uk")
+          DOMAINS=("nytimes.com" "vulture.com" "washingtonpost.com" "wsj.com" "newyorker.com" "ft.com" "telegraph.co.uk" "thetimes.co.uk")
           for i in "${!DOMAINS[@]}"; do
             if [ "${DOMAINS[$i]}" = "${{ matrix.domain }}" ]; then
               DELAY=$((i * 5))
@@ -560,6 +562,7 @@ jobs:
           NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
           BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
           THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
+          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
           TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
           BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
           AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
@@ -636,7 +639,7 @@ jobs:
       actions: write
 
     env:
-      HARD_PAYWALL_DOMAINS: 'nytimes.com,vulture.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk'
+      HARD_PAYWALL_DOMAINS: 'nytimes.com,vulture.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk'
 
     steps:
       - name: Checkout repository
