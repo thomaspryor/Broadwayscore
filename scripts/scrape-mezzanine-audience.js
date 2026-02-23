@@ -35,6 +35,9 @@ const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
 // Manual overrides: our show ID → Mezzanine show name (for titles that differ)
 const MEZZANINE_OVERRIDES = {
   'summer-2018': 'Summer: The Donna Summer Musical',
+  'cabaret-at-the-kit-kat-club-west-end-2021': 'Cabaret',
+  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'Harry Potter and the Cursed Child',
+  'six-the-musical-west-end-2021': 'Six',
 };
 
 // Paths
@@ -211,8 +214,10 @@ function matchProductions(productions, shows) {
       }
 
       // Strategy 1: Normalized exact match
+      // Exact title match is always high confidence — year mismatch is common for
+      // long-running shows (WE Phantom 1986 vs our 2021, Mousetrap 1952, etc.)
       if (confidence === 'none' && mName === normTitle) {
-        confidence = (openYear && mYear && Math.abs(mYear - openYear) <= 1) ? 'high' : 'medium';
+        confidence = 'high';
       }
 
       // Strategy 2: Prefix matching (handles subtitles like "Angels in America: Perestroika")
