@@ -320,22 +320,15 @@ export interface AccuracyStats {
   skippedCount: number;
 }
 
-/**
- * Dynamically compute accuracy stats across all historical prediction seasons.
- * For each season+category, ranks actual Tony NOMINEES by compositeScore and checks
- * whether the winner was the best-reviewed nominee (#1), top 2, etc.
- * This answers the meaningful question: "Among the nominees, does the best-reviewed one win?"
- */
-export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
-  const awardsShows = getAwardsShows();
-  const showMap = new Map(allShows.map(s => [s.id, s]));
-  const current = getTonySeasonWindow();
-  const seasons = getAllPredictionSeasons().filter(s => s.ceremonyYear < current.ceremonyYear);
+/** Scorer function: given a ComputedShow, returns a ranking score (higher = better) */
+type ShowScorer = (show: ComputedShow) => number | null;
 
-  // Build winners map: awardsSeason|category → showId
+/** Build winners + nominees maps from awards.json (shared by all accuracy computations) */
+function buildAwardsMaps() {
+  const awardsShows = getAwardsShows();
   const winnersMap = new Map<string, string>();
-  // Build nominees map: awardsSeason|category → showId[]
   const nomineesMap = new Map<string, string[]>();
+
   for (const [showId, data] of Object.entries(awardsShows)) {
     if (!data.tony?.season) continue;
     const season = data.tony.season;
@@ -347,7 +340,6 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
       const key = `${season}|${catStr}`;
       if (wins.includes(catStr)) {
         winnersMap.set(key, showId);
-        // Winners are also nominees
         if (!nomineesMap.has(key)) nomineesMap.set(key, []);
         if (!nomineesMap.get(key)!.includes(showId)) nomineesMap.get(key)!.push(showId);
       }
@@ -358,6 +350,17 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
     }
   }
 
+  return { winnersMap, nomineesMap };
+}
+
+/** Internal: compute accuracy using a given scorer to rank nominees */
+function computeAccuracyWithScorer(
+  showMap: Map<string, ComputedShow>,
+  seasons: TonySeasonWindow[],
+  winnersMap: Map<string, string>,
+  nomineesMap: Map<string, string[]>,
+  scorer: ShowScorer,
+): AccuracyStats {
   let totalCatSeasons = 0;
   let skipped = 0;
   let rank1Wins = 0;
@@ -378,19 +381,14 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
     for (const cat of TOP_CATEGORIES) {
       const key = `${awardsSeason}|${cat}`;
       const winnerShowId = winnersMap.get(key);
-      if (!winnerShowId) continue; // no winner for this category-season
+      if (!winnerShowId) continue;
 
       const winnerShow = showMap.get(winnerShowId);
-      if (!winnerShow || winnerShow.compositeScore == null) {
+      if (!winnerShow || scorer(winnerShow) == null) {
         skipped++;
         continue;
       }
 
-      // Rank actual nominees for this category by compositeScore.
-      // Tony categories typically have 4-5 nominees (occasionally 6).
-      // Awards.json has inflated counts in some categories (shows nominated for
-      // subcategories like directing within a revival, not the main award).
-      // Skip category-seasons with >6 nominees as unreliable data.
       const nomineeIds = nomineesMap.get(key) || [];
       if (nomineeIds.length > 6) {
         skipped++;
@@ -398,8 +396,8 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
       }
       const nomineeShows = nomineeIds
         .map(id => showMap.get(id))
-        .filter((s): s is ComputedShow => s != null && s.compositeScore != null)
-        .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
+        .filter((s): s is ComputedShow => s != null && scorer(s) != null)
+        .sort((a, b) => (scorer(b) ?? 0) - (scorer(a) ?? 0));
 
       if (nomineeShows.length < 2) {
         skipped++;
@@ -409,7 +407,7 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
       const winnerRank = nomineeShows.findIndex(s => s.id === winnerShowId) + 1;
       if (winnerRank === 0) {
         skipped++;
-        continue; // winner not found among nominees (data issue)
+        continue;
       }
 
       totalCatSeasons++;
@@ -417,7 +415,6 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
       catResults[cat].total++;
       totalWinnerRank += winnerRank;
 
-      // Field size bucket (nominee count)
       const fieldSize = nomineeShows.length;
       let bucket: string;
       if (fieldSize <= 2) bucket = '2';
@@ -451,7 +448,6 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
     pct: catResults[cat].total > 0 ? Math.round((catResults[cat].rank1 / catResults[cat].total) * 100) : 0,
   }));
 
-  // New works vs revivals
   const newCats = TOP_CATEGORIES.filter(c => !c.includes('Revival'));
   const revCats = TOP_CATEGORIES.filter(c => c.includes('Revival'));
   const newTotal = newCats.reduce((s, c) => s + catResults[c].total, 0);
@@ -481,6 +477,56 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
     seasonCount: seasonSet.size,
     categorySeasonCount: totalCatSeasons,
     skippedCount: skipped,
+  };
+}
+
+/**
+ * Dynamically compute accuracy stats across all historical prediction seasons.
+ * Ranks actual Tony NOMINEES by compositeScore and checks whether the
+ * best-reviewed nominee wins.
+ */
+export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const current = getTonySeasonWindow();
+  const seasons = getAllPredictionSeasons().filter(s => s.ceremonyYear < current.ceremonyYear);
+  const { winnersMap, nomineesMap } = buildAwardsMaps();
+
+  return computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
+    (show) => show.compositeScore);
+}
+
+export interface BlendedAccuracyStats extends AccuracyStats {
+  blendedRank1WinPct: number;
+  blendedTop2WinPct: number;
+  blendedAvgWinnerRank: number;
+  improvement: number;
+}
+
+/**
+ * Compute both critic-only and blended accuracy stats.
+ * Returns critic-only stats as the base, plus blended stats and improvement delta.
+ */
+export function computeBlendedAccuracyStats(allShows: ComputedShow[]): BlendedAccuracyStats {
+  const showMap = new Map(allShows.map(s => [s.id, s]));
+  const current = getTonySeasonWindow();
+  const seasons = getAllPredictionSeasons().filter(s => s.ceremonyYear < current.ceremonyYear);
+  const { winnersMap, nomineesMap } = buildAwardsMaps();
+
+  const criticStats = computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
+    (show) => show.compositeScore);
+
+  const blendedStats = computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
+    (show) => computeBlendedScoreForShow(
+      show.compositeScore,
+      getAudienceBuzz(show.id)?.combinedScore,
+    ));
+
+  return {
+    ...criticStats,
+    blendedRank1WinPct: blendedStats.rank1WinPct,
+    blendedTop2WinPct: blendedStats.top2WinPct,
+    blendedAvgWinnerRank: blendedStats.avgWinnerRank,
+    improvement: blendedStats.rank1WinPct - criticStats.rank1WinPct,
   };
 }
 
