@@ -132,7 +132,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         <div className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-2">
             <h1 className="text-3xl sm:text-4xl font-bold text-white">
-              Tony Predictions
+              Tony Awards Predictions
             </h1>
             <SeasonSelect
               basePath="/tony-awards/predictions"
@@ -172,18 +172,22 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
 
         {/* How This Works (current season only) */}
         {isCurrent && (
-          <div className="mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">How This Works</h2>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Shows are ranked by a 50/50 blend of critic scores and audience grades &mdash; combining
-              reviews from dozens of outlets (NYT, Vulture, Variety) with real audience sentiment from
-              multiple sources. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only scores.
-              These aren&apos;t editorial picks &mdash; they&apos;re what the data says.
-            </p>
-            <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
-              Learn about our scoring methodology &rarr;
-            </Link>
-          </div>
+          <details className="mb-10 rounded-xl border border-white/5 bg-surface-overlay">
+            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none">
+              How This Works
+            </summary>
+            <div className="px-4 sm:px-5 pb-4 sm:pb-5">
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Shows are ranked by a 50/50 blend of critic scores and audience grades &mdash; combining
+                reviews from dozens of outlets (NYT, Vulture, Variety) with real audience sentiment from
+                multiple sources. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only scores.
+                These aren&apos;t editorial picks &mdash; they&apos;re what the data says.
+              </p>
+              <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
+                Learn about our scoring methodology &rarr;
+              </Link>
+            </div>
+          </details>
         )}
 
         {/* Category Sections */}
@@ -202,6 +206,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <div className="flex flex-wrap gap-4 mt-3">
             <Link href="/tony-awards/predictions" className="text-brand hover:text-brand-hover transition-colors">
               All seasons &rarr;
+            </Link>
+            <Link href="/tony-awards/people" className="text-brand hover:text-brand-hover transition-colors">
+              All-time leaderboard &rarr;
             </Link>
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
               Scoring methodology &rarr;

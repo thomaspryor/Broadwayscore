@@ -273,6 +273,9 @@ export default function TonyAwardsHubPage() {
                 </tbody>
               </table>
             </div>
+            <Link href="/tony-awards/predictions" className="text-sm text-brand hover:text-brand-hover transition-colors mt-4 inline-block">
+              See all seasons &rarr;
+            </Link>
           </section>
         )}
 
