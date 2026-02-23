@@ -39,6 +39,10 @@ const showById = {};
 const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });
 
+function isBroadway(show) {
+  return show && !show.id.includes('west-end') && !show.id.includes('off-broadway');
+}
+
 // ============================================
 // Outlet tier mapping (from scoring.ts + outlet-id-mapper.ts)
 // ============================================
@@ -121,7 +125,7 @@ function computeCriticalGold(season, uncapped = false) {
   const results = [];
   for (const [showId, revs] of Object.entries(byShow)) {
     const show = showById[showId];
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (revs.length < cfg.minReviews) continue;
 
     let weightedSum = 0, weightSum = 0;
@@ -161,7 +165,7 @@ function computeAudienceGold(season, uncapped = false) {
 
   for (const [showId, data] of Object.entries(abShows)) {
     const show = showById[showId];
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < cfg.minScore) continue;
 
     results.push({
@@ -187,7 +191,7 @@ function computeBoxOfficeGold(season, uncapped = false) {
 
   for (const [slug, data] of Object.entries(showGrosses)) {
     const show = showBySlug[slug];
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     const allTime = data.allTime;
     if (!allTime || !allTime.performances || allTime.performances < cfg.minPerformances) continue;
     if (!allTime.gross || allTime.gross <= 0) continue;
@@ -236,7 +240,7 @@ function computeHotTicketGold(season, uncapped = false) {
   for (const [slug, capacities] of Object.entries(showCapacity)) {
     if (capacities.length < cfg.minWeeks) continue;
     const show = showBySlug[slug];
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
 
     const avgCapacity = capacities.reduce((a, b) => a + b, 0) / capacities.length;
     if (avgCapacity < cfg.minCapacity) continue;
