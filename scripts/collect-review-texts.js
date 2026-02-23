@@ -2813,25 +2813,38 @@ let _scrapingBeeSerpExhausted = false; // Track ScrapingBee SERP exhaustion (ski
 async function _serpViaScrapingBee(query) {
   if (_scrapingBeeSerpExhausted || !CONFIG.scrapingBeeKey) return null;
 
-  try {
-    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-      params: { api_key: CONFIG.scrapingBeeKey, search: query },
-      timeout: 30000,
-    });
-    stats.scrapingBeeCreditsUsed += 1;
-    const data = response.data;
-    return (data.organic_results || data.results || []).map(r => ({
-      url: r.url || r.link,
-      title: r.title || '',
-    }));
-  } catch (error) {
-    const status = error.response?.status;
-    if (status === 401 || status === 403 || status === 429) {
-      _scrapingBeeSerpExhausted = true;
-      console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — switching to Bright Data for URL discovery`);
+  const RETRYABLE_STATUSES = new Set([500, 502, 503]);
+  const MAX_ATTEMPTS = 2;
+  const RETRY_DELAY_MS = 3000;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+        params: { api_key: CONFIG.scrapingBeeKey, search: query },
+        timeout: 30000,
+      });
+      stats.scrapingBeeCreditsUsed += 1;
+      const data = response.data;
+      return (data.organic_results || data.results || []).map(r => ({
+        url: r.url || r.link,
+        title: r.title || '',
+      }));
+    } catch (error) {
+      const status = error.response?.status;
+      if (status === 401 || status === 403 || status === 429) {
+        _scrapingBeeSerpExhausted = true;
+        console.log(`    ⚠ ScrapingBee SERP exhausted (${status}) — switching to Bright Data for URL discovery`);
+        return null;
+      }
+      if (RETRYABLE_STATUSES.has(status) && attempt < MAX_ATTEMPTS) {
+        console.log(`    ↻ ScrapingBee SERP ${status}, retrying in ${RETRY_DELAY_MS / 1000}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
+        await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
+        continue;
+      }
+      return null;
     }
-    return null; // Signal to try next provider
   }
+  return null;
 }
 
 /**
