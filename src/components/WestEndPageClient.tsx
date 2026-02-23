@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, memo, useCallback, useState, Suspense } from 'react';
+import { useMemo, memo, useCallback, useState, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
@@ -363,7 +363,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    setFilters(prev => {
+    startTransition(() => setFilters(prev => {
       const next = { ...prev };
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
@@ -388,7 +388,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
 
       return next;
-    });
+    }));
   }, []);
 
   const clearAllFilters = useCallback(() => {
