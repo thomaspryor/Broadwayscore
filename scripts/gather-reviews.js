@@ -785,171 +785,93 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     });
     await sleep(1000);
 
-    // Now try to scroll the carousel to get more reviews using MULTIPLE methods
-    // Method 1: Click right arrows | Method 2: Keyboard navigation | Method 3: Direct scroll
-    let previousCount = reviews.length;
-    let noProgressRounds = 0;
-    const maxNoProgressRounds = 8; // Stop after 8 rounds with no new reviews
-    const maxTotalAttempts = 100; // Safety limit
-    let totalAttempts = 0;
-    const scrollStartTime = Date.now();
-    const scrollTimeoutMs = 30000; // 30s max for carousel scrolling
-
     console.log(`    Initial reviews found: ${reviews.length}`);
 
-    while (noProgressRounds < maxNoProgressRounds && totalAttempts < maxTotalAttempts) {
-      // Hard timeout for the entire scroll loop
-      if (Date.now() - scrollStartTime > scrollTimeoutMs) {
-        console.log(`    ⏱ Carousel scroll timeout (${scrollTimeoutMs/1000}s) — stopping with ${reviews.length} reviews`);
-        break;
-      }
-      totalAttempts++;
+    // Carousel scrolling to get additional reviews (wrapped in 30s timeout)
+    const scrollCarousel = async () => {
+      let previousCount = reviews.length;
+      let noProgressRounds = 0;
+      let totalAttempts = 0;
 
-      // Early exit if we've captured all expected reviews
-      if (expectedReviewCount && reviews.length >= expectedReviewCount) {
-        console.log(`    ✓ Captured all ${reviews.length} reviews (expected ${expectedReviewCount})`);
-        break;
-      }
+      while (noProgressRounds < 4 && totalAttempts < 20) {
+        totalAttempts++;
 
-      let navigated = false;
+        if (expectedReviewCount && reviews.length >= expectedReviewCount) {
+          console.log(`    ✓ Captured all ${reviews.length} reviews (expected ${expectedReviewCount})`);
+          return;
+        }
 
-      // Method 1: Try to find and click the right arrow (multiple selectors)
-      // Show Score uses .js-scrollable-block__next-page-btn for the critic carousel
-      const arrowSelectors = [
-        '.js-scrollable-block__next-page-btn',
-        '.scrollable-block__next-page-btn',
-        'div[class*="critic"] button[class*="right"]',
-        'div[class*="critic"] [class*="angle-right"]',
-        'h2:has-text("Critic Reviews") + div button:last-child',
-        '[class*="carousel"] button:last-child',
-        '[class*="slider"] button:last-child',
-        'button[aria-label*="next" i]',
-        'button[aria-label*="right" i]',
-        '[class*="swiper-button-next"]'
-      ];
-
-      for (const selector of arrowSelectors) {
-        const arrow = await page.$(selector);
+        // Use only the known-working selectors (tested: these resolve fast)
+        const arrow = await page.$('.js-scrollable-block__next-page-btn')
+                   || await page.$('.scrollable-block__next-page-btn');
         if (arrow) {
-          try {
-            await arrow.click();
-            navigated = true;
-            await sleep(600);
-            break;
-          } catch (e) {
-            // Arrow found but click failed, try next selector
-          }
-        }
-      }
-
-      // Method 2: If arrow click failed, try keyboard navigation
-      if (!navigated) {
-        // Focus on the carousel area and use arrow keys
-        await page.evaluate(() => {
-          const h2s = document.querySelectorAll('h2');
-          for (const h2 of h2s) {
-            if (h2.textContent.includes('Critic Reviews')) {
-              const carousel = h2.nextElementSibling;
-              if (carousel) {
-                carousel.focus();
-                // Also try clicking on it to give it focus
-                carousel.click();
+          try { await arrow.click(); } catch { /* click failed */ }
+        } else {
+          // Direct scroll fallback
+          await page.evaluate(() => {
+            const h2s = document.querySelectorAll('h2');
+            for (const h2 of h2s) {
+              if (h2.textContent.includes('Critic Reviews')) {
+                const next = h2.nextElementSibling;
+                if (next) next.scrollBy({ left: 350 });
+                break;
               }
-              break;
             }
-          }
-        });
-        await page.keyboard.press('ArrowRight');
-        navigated = true;
-        await sleep(600);
-      }
-
-      // Method 3: Try scrolling the carousel container directly
-      const scrolled = await page.evaluate(() => {
-        let criticSection = null;
-        document.querySelectorAll('h2').forEach(h2 => {
-          if (h2.textContent.includes('Critic Reviews')) {
-            criticSection = h2.nextElementSibling;
-          }
-        });
-        if (criticSection) {
-          // Find scrollable container
-          const scrollable = criticSection.querySelector('[class*="carousel"], [class*="slider"], [style*="overflow"]') || criticSection;
-          const beforeScroll = scrollable.scrollLeft;
-          scrollable.scrollBy({ left: 350, behavior: 'smooth' });
-          return scrollable.scrollLeft !== beforeScroll;
+          });
         }
-        return false;
-      });
+        await sleep(800);
 
-      await sleep(400);
-
-      // Extract reviews again after navigation
-      const newReviews = await page.evaluate(() => {
-        const reviews = [];
-        let criticSection = null;
-        document.querySelectorAll('h2').forEach(h2 => {
-          if (h2.textContent.includes('Critic Reviews')) {
-            criticSection = h2.nextElementSibling;
-          }
+        // Re-extract reviews
+        const newReviews = await page.evaluate(() => {
+          const results = [];
+          let section = null;
+          document.querySelectorAll('h2').forEach(h2 => {
+            if (h2.textContent.includes('Critic Reviews')) section = h2.nextElementSibling;
+          });
+          if (!section) return results;
+          section.querySelectorAll('a[href*="http"]:not([href*="show-score.com"])').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || /youtube|spotify|facebook|twitter|instagram/.test(href)) return;
+            const card = link.closest('.review-tile-v2') || link.closest('div[class]');
+            if (!card) return;
+            const outlet = card.querySelector('img[alt]')?.getAttribute('alt') || '';
+            const critic = card.querySelector('a[href*="/member/"]')?.textContent?.trim() || '';
+            const excerpt = card.querySelector('p')?.textContent?.replace(/Read more.*$/, '').trim() || '';
+            if (!results.some(r => r.url === href)) results.push({ url: href, outlet, critic, excerpt });
+          });
+          return results;
         });
 
-        if (!criticSection) return reviews;
-
-        const readMoreLinks = criticSection.querySelectorAll('a[href*="http"]:not([href*="show-score.com"])');
-        readMoreLinks.forEach(link => {
-          const href = link.getAttribute('href');
-          if (!href || href.includes('youtube.com') || href.includes('youtu.be') ||
-              href.includes('spotify.com') || href.includes('facebook.com') ||
-              href.includes('twitter.com') || href.includes('instagram.com')) {
-            return;
+        let newCount = 0;
+        for (const r of newReviews) {
+          if (!reviews.some(existing => existing.url === r.url)) {
+            reviews.push(r);
+            newCount++;
           }
+        }
 
-          // Must use .review-tile-v2 to reach the full card root (not just the excerpt div)
-          const card = link.closest('.review-tile-v2') || link.closest('div[class]');
-          if (!card) return;
-
-          const outletImg = card.querySelector('img[alt]');
-          const outlet = outletImg?.getAttribute('alt') || '';
-          const criticLink = card.querySelector('a[href*="/member/"]');
-          const critic = criticLink?.textContent?.trim() || '';
-
-          // Also extract excerpt for better matching
-          const paragraph = card.querySelector('p');
-          const excerpt = paragraph?.textContent?.replace(/Read more.*$/, '').trim() || '';
-
-          if (href && !reviews.some(r => r.url === href)) {
-            reviews.push({ url: href, outlet, critic, excerpt });
-          }
-        });
-
-        return reviews;
-      });
-
-      // Merge new reviews
-      let newCount = 0;
-      for (const review of newReviews) {
-        if (!reviews.some(r => r.url === review.url)) {
-          reviews.push(review);
-          newCount++;
+        if (reviews.length === previousCount) {
+          noProgressRounds++;
+        } else {
+          if (newCount > 0) console.log(`    Scroll ${totalAttempts}: +${newCount} reviews (total: ${reviews.length})`);
+          noProgressRounds = 0;
+          previousCount = reviews.length;
         }
       }
 
-      // Track progress
-      if (reviews.length === previousCount) {
-        noProgressRounds++;
-      } else {
-        if (newCount > 0) {
-          console.log(`    Scroll ${totalAttempts}: +${newCount} reviews (total: ${reviews.length})`);
-        }
-        noProgressRounds = 0; // Reset on progress
-        previousCount = reviews.length;
+      if (reviews.length < (expectedReviewCount || 0)) {
+        console.log(`    ⚠ Only captured ${reviews.length}/${expectedReviewCount} reviews (stopped after ${totalAttempts} attempts)`);
       }
-    }
+    };
 
-    if (reviews.length < (expectedReviewCount || 0)) {
-      console.log(`    ⚠ Only captured ${reviews.length}/${expectedReviewCount} reviews (stopped after ${totalAttempts} attempts)`);
-    }
+    // Wrap carousel scrolling in a hard 30s timeout
+    await Promise.race([
+      scrollCarousel(),
+      new Promise(resolve => setTimeout(() => {
+        console.log(`    ⏱ Carousel scroll timeout (30s) — stopping with ${reviews.length} reviews`);
+        resolve();
+      }, 30000))
+    ]);
 
     // Get the full HTML for fallback extraction
     const html = await page.content();
@@ -2127,6 +2049,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   const showScoreResult = await searchShowScore(show);
   if (showScoreResult) {
     health.showScore.found = true;
+    let showScoreCount = 0;
     // Extract initial reviews from page (first 8 visible in carousel)
     if (showScoreResult.reviews && showScoreResult.reviews.length > 0) {
       console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
@@ -2157,6 +2080,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
             }
           }
         }
+        showScoreCount++;
         foundReviews.push({
           showId,
           outlet: outletDisplayName,
