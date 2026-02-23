@@ -68,6 +68,20 @@ const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
+const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
+
+// Show Score URL map (curated from listings discovery)
+let _showScoreUrlMap = null;
+function getShowScoreUrlMap() {
+  if (_showScoreUrlMap) return _showScoreUrlMap;
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOW_SCORE_URLS_PATH, 'utf8'));
+    _showScoreUrlMap = data.shows || {};
+  } catch {
+    _showScoreUrlMap = {};
+  }
+  return _showScoreUrlMap;
+}
 
 // DTLI slug map (persistent mapping discovered from sitemaps)
 let _dtliSlugMap = null;
@@ -506,6 +520,29 @@ async function searchDTLI(show) {
  */
 async function searchShowScore(show) {
   console.log('  Searching Show Score...');
+
+  // Check curated URL map first (from discover-show-score-urls-from-listings.js)
+  const urlMap = getShowScoreUrlMap();
+  const curatedUrl = urlMap[show.id];
+  if (curatedUrl) {
+    console.log('    Using curated URL from show-score-urls.json');
+    const isOffBroadway = show.category === 'off-broadway';
+    if (chromium) {
+      const result = await scrapeShowScoreWithPlaywright(curatedUrl, { isOffBroadway });
+      if (result) {
+        console.log(`    ✓ Found at: ${curatedUrl}`);
+        return { url: curatedUrl, html: result.html, reviews: result.reviews };
+      }
+    } else {
+      const result = await searchAggregator('ShowScore', curatedUrl);
+      if (result.found && result.html && result.html.includes('score')) {
+        console.log(`    ✓ Found at: ${curatedUrl}`);
+        return { url: curatedUrl, html: result.html };
+      }
+    }
+    console.log('    Curated URL failed, falling back to slug variations...');
+  }
+
   const year = new Date(show.openingDate).getFullYear();
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
