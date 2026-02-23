@@ -2089,6 +2089,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   const outlets = loadOutlets();
   const isOffBroadway = show.category === 'off-broadway';
 
+  // Per-show health tracking
+  const health = {
+    category: show.category || 'broadway',
+    status: show.status,
+    dtli: { found: false, extracted: 0, skipped: false },
+    showScore: { found: false, extracted: 0, skipped: false },
+    bww: { found: false, extracted: 0, skipped: false },
+    serp: { calls: 0, hits: 0, skipped: false },
+  };
+
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
   console.log('\n[1/4] Checking aggregators...');
 
@@ -2096,7 +2106,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === Did They Like It ===');
   const dtliResult = await searchDTLI(show);
   if (dtliResult) {
+    health.dtli.found = true;
     const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url);
+    health.dtli.extracted = dtliReviews.length;
     foundReviews.push(...dtliReviews);
     // Archive the page
     archiveAggregatorPage('dtli', showId, dtliResult.url, dtliResult.html);
@@ -2107,6 +2119,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === Show Score ===');
   const showScoreResult = await searchShowScore(show);
   if (showScoreResult) {
+    health.showScore.found = true;
     // Extract initial reviews from page (first 8 visible in carousel)
     if (showScoreResult.reviews && showScoreResult.reviews.length > 0) {
       console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
