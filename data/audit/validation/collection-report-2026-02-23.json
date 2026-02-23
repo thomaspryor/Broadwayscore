@@ -1,0 +1,88 @@
+{
+  "runDate": "2026-02-23T00:00:45.284Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "hadestown-west-end-2024",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 5,
+    "failed": 8,
+    "skipped": 0,
+    "successRate": "38.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 5,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "hadestown-west-end-2024/guardian--arifa-akbar.json",
+    "hadestown-west-end-2024/lighting-and-sound-america--david-barbour.json",
+    "hadestown-west-end-2024/standard--nick-curtis.json",
+    "hadestown-west-end-2024/theatre-weekly--greg-stewart.json",
+    "hadestown-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
+  ],
+  "failed": [
+    "hadestown-west-end-2024/nypost--johnny-oleksinski.json",
+    "hadestown-west-end-2024/bww--cindy-marcolina.json",
+    "hadestown-west-end-2024/stage-uk--sam-marlowe.json",
+    "hadestown-west-end-2024/the-arts-desk--mert-dilek.json",
+    "hadestown-west-end-2024/the-times-uk--clive-davis.json",
+    "hadestown-west-end-2024/the-times-uk--unknown.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/washpost--peter-marks.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "hadestown-west-end-2024/guardian--arifa-akbar.json",
+      "hadestown-west-end-2024/lighting-and-sound-america--david-barbour.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "hadestown-west-end-2024/standard--nick-curtis.json",
+      "hadestown-west-end-2024/theatre-weekly--greg-stewart.json",
+      "hadestown-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
