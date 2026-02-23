@@ -5,7 +5,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
-import TonyPredictionsTable from '@/components/TonyPredictionsTable';
+import TonyPredictionsClient from '@/components/TonyPredictionsClient';
 import {
   getTonySeasonWindow,
   getTonySeasonWindowFor,
@@ -28,7 +28,7 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
   if (!season) return {};
 
   const title = `Tony Awards Predictions ${season.label} Season`;
-  const description = `Data-driven Tony predictions for the ${season.label} Broadway season. Every eligible show ranked by aggregated critic scores.`;
+  const description = `Data-driven Tony predictions for the ${season.label} Broadway season. Every eligible show ranked by blended critic + audience scores.`;
 
   return {
     title,
@@ -105,8 +105,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         acceptedAnswer: {
           '@type': 'Answer',
           text: isCurrent
-            ? `Based on aggregated critic scores, Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season. Historically, shows with the highest critic scores have a strong track record at the Tony Awards.`
-            : `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 critic-scored show won ${rank1Wins} of ${winnerCount} categories.`,
+            ? `Based on a blend of aggregated critic scores and audience grades, Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season. This combined approach historically predicts Tony winners with higher accuracy than critics alone.`
+            : `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`,
         },
       },
     ],
@@ -142,8 +142,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {isCurrent
-              ? 'Data-driven predictions powered by aggregated critic scores. Every Tony-eligible show ranked by review consensus.'
-              : `How critic scores predicted the ${season.ceremonyYear} Tony Awards.`}
+              ? 'Data-driven predictions powered by blended critic scores and audience grades. Every Tony-eligible show ranked by combined consensus.'
+              : `How blended critic + audience scores predicted the ${season.ceremonyYear} Tony Awards.`}
           </p>
           <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
             <span>{eligible.length} eligible shows</span>
@@ -163,7 +163,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <div className="mb-8 p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5">
             <p className="text-sm text-gray-300">
               <span className="text-amber-400 font-semibold">Season Result:</span>{' '}
-              The #1 critic-scored show won {rank1Wins} of {winnerCount} categories.
+              The #1 ranked show won {rank1Wins} of {winnerCount} categories.
               {rank1Wins === winnerCount && ' Perfect prediction season.'}
               {rank1Wins === 0 && ' A season of upsets.'}
             </p>
@@ -175,10 +175,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <div className="mb-10 p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
             <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">How This Works</h2>
             <p className="text-sm text-gray-400 leading-relaxed">
-              Shows are ranked by their aggregated CriticScore &mdash; a weighted average of reviews from dozens of outlets including
-              The New York Times, Vulture, Variety, and more. Historically, the Best Musical Tony winner has
-              been among the top-scored eligible shows in almost every recent season.
-              These aren&apos;t editorial picks &mdash; they&apos;re what the collective critical consensus says.
+              Shows are ranked by a 50/50 blend of critic scores and audience grades &mdash; combining
+              reviews from dozens of outlets (NYT, Vulture, Variety) with real audience sentiment from
+              multiple sources. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only scores.
+              These aren&apos;t editorial picks &mdash; they&apos;re what the data says.
             </p>
             <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
               Learn about our scoring methodology &rarr;
@@ -187,24 +187,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         )}
 
         {/* Category Sections */}
-        {categories.reduce<{ elements: React.ReactNode[]; runningIndex: number }>(
-          (acc, cat) => {
-            acc.elements.push(
-              <TonyPredictionsTable
-                key={cat.key}
-                title={cat.title}
-                description={cat.description}
-                shows={cat.shows}
-                upcoming={cat.upcoming}
-                startIndex={acc.runningIndex}
-                outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
-              />
-            );
-            acc.runningIndex += cat.shows.length + cat.upcoming.length;
-            return acc;
-          },
-          { elements: [], runningIndex: 0 }
-        ).elements}
+        <TonyPredictionsClient
+          categories={categories}
+          outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
+        />
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
