@@ -792,10 +792,17 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     const maxNoProgressRounds = 8; // Stop after 8 rounds with no new reviews
     const maxTotalAttempts = 100; // Safety limit
     let totalAttempts = 0;
+    const scrollStartTime = Date.now();
+    const scrollTimeoutMs = 30000; // 30s max for carousel scrolling
 
     console.log(`    Initial reviews found: ${reviews.length}`);
 
     while (noProgressRounds < maxNoProgressRounds && totalAttempts < maxTotalAttempts) {
+      // Hard timeout for the entire scroll loop
+      if (Date.now() - scrollStartTime > scrollTimeoutMs) {
+        console.log(`    ⏱ Carousel scroll timeout (${scrollTimeoutMs/1000}s) — stopping with ${reviews.length} reviews`);
+        break;
+      }
       totalAttempts++;
 
       // Early exit if we've captured all expected reviews
