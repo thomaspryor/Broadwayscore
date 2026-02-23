@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import {
   getAwardsDesignation,
   getTonyWinCount,
@@ -9,6 +10,16 @@ import {
 import type { ShowAwards, AwardsDesignation } from '@/lib/data-types';
 import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
+import { featureFlags } from '@/config/feature-flags';
+
+/** Convert short season "2025-26" to full label "2025-2026" for prediction URLs */
+function toFullSeasonLabel(season: string): string {
+  const parts = season.split('-');
+  if (parts.length !== 2) return season;
+  const endPart = parseInt(parts[1], 10);
+  const fullEnd = endPart < 100 ? 2000 + endPart : endPart;
+  return `${parts[0]}-${fullEnd}`;
+}
 
 interface AwardsCardProps {
   showId: string;
@@ -356,6 +367,18 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
             nominations={tonyNominationsOnly}
             defaultExpanded={tonyWinsList.length + tonyNominationsOnly.length <= 5}
           />
+
+          {/* Cross-link to predictions */}
+          {featureFlags.tonyPredictions && tonySeason && (
+            <div className="border-t border-white/5 pt-3 mt-3">
+              <Link
+                href={`/tony-awards/predictions/${toFullSeasonLabel(tonySeason)}`}
+                className="text-sm text-brand hover:text-brand-hover transition-colors"
+              >
+                See {tonySeason} predictions &rarr;
+              </Link>
+            </div>
+          )}
         </div>
       )}
 

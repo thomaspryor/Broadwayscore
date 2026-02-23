@@ -39,6 +39,19 @@ export function getTonyNominationCount(showId: string): number {
 }
 
 /**
+ * Check if Tony nominations have NOT yet been announced for a given season.
+ * Season format: "2025-26" → ceremony year 2026. Noms announced late April/early May.
+ */
+function isPreNominations(season: string): boolean {
+  const parts = season.split('-');
+  if (parts.length !== 2) return false;
+  const endPart = parseInt(parts[1], 10);
+  const ceremonyYear = endPart < 100 ? 2000 + endPart : endPart;
+  // Nominations typically announced late April / early May
+  return new Date() < new Date(ceremonyYear, 4, 1); // Before May 1
+}
+
+/**
  * Calculate awards designation for a show
  */
 export function getAwardsDesignation(showId: string): AwardsDesignation {
@@ -61,6 +74,7 @@ export function getAwardsDesignation(showId: string): AwardsDesignation {
   if (tonyWinCount >= 3) return 'lavished';
   if (tonyWinCount >= 1) return 'recognized';
   if (totalNominations > 0) return 'nominated';
+  if (tony.season && isPreNominations(tony.season)) return 'pre-season';
   return 'shut-out';
 }
 
