@@ -118,7 +118,7 @@ async function fetchShowsFromTodayTix() {
 
     showsList.push({
       title,
-      venue: show.venue?.name || 'TBA',
+      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
@@ -132,7 +132,7 @@ async function fetchShowsFromTodayTix() {
 
     showsList.push({
       title,
-      venue: show.venue?.name || 'TBA',
+      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
@@ -227,7 +227,7 @@ async function fetchShowsFromTodayTixLondon() {
     seen.add(title);
     showsList.push({
       title,
-      venue: show.venue?.name || 'TBA',
+      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
