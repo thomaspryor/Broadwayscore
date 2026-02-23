@@ -1401,7 +1401,7 @@ function validateReviewTextQuality(shows) {
         error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars) — likely a headline or sentence fragment`);
         garbageOutlets++;
         issues++;
-      } else if (/^(is |has |the show |a |an |in her |in his |but |with )/i.test(outlet)) {
+      } else if (/^(is |has |the show (is|was|has|features|stars|boasts) |a |an |in her |in his |but |with )/i.test(outlet)) {
         error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet}" starts with a sentence fragment`);
         garbageOutlets++;
         issues++;
