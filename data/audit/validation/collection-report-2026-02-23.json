@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-23T00:45:29.518Z",
+  "runDate": "2026-02-23T00:54:23.366Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 50,
-    "failed": 84,
+    "processed": 73,
+    "failed": 118,
     "skipped": 0,
-    "successRate": "37.3%"
+    "successRate": "38.2%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 22,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 40
+    "archiveToday": 2,
+    "archive": 50
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 9,
+    "tier1Attempts": 19,
+    "tier1Success": 18,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 66,
-    "tier4Success": 53,
-    "totalFailed": 77,
-    "scrapingBeeCreditsUsed": 63,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.8,
-    "urlDiscoveryAttempts": 63,
-    "urlDiscoverySuccess": 11,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 45,
+    "tier4Success": 25,
+    "totalFailed": 41,
+    "scrapingBeeCreditsUsed": 3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -99,7 +99,30 @@
     "the-house-of-blue-leaves-1986/chicagotribune--chris-jones.json",
     "the-house-of-blue-leaves-2011/chicagotribune--.json",
     "the-wiz-1975/chicagotribune--chris-jones.json",
-    "the-wiz-1984/chicagotribune--chris-jones.json"
+    "back-to-the-future-west-end-2021/telegraph--unknown.json",
+    "back-to-the-future-west-end-2021/the-telegraph-uk--dominic-cavendish.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/the-telegraph-uk--dominic-cavendish.json",
+    "matilda-the-musical-west-end-2021/the-telegraph-uk--charles-spencer.json",
+    "mj-the-musical-west-end-2024/telegraph--unknown.json",
+    "mj-the-musical-west-end-2024/the-telegraph-uk--claire-allfree.json",
+    "paranormal-activity-west-end-2025/the-telegraph-uk--tim-robey.json",
+    "stranger-things-the-first-shadow-west-end-2023/the-telegraph-uk--dominic-cavendish.json",
+    "the-lion-king-west-end-2021/the-telegraph-uk--david-gritten.json",
+    "woman-in-mind-west-end-2025/telegraph--unknown.json",
+    "woman-in-mind-west-end-2025/the-telegraph-uk--claire-allfree.json",
+    "1536-west-end-2026/telegraph--unknown.json",
+    "frozen-2004/telegraph--diane-snyder.json",
+    "hughie-1975/telegraph--hermione-hoby.json",
+    "hughie-1996/telegraph--hermione-hoby.json",
+    "les-liaisons-dangereuses-1987/telegraph--matt-wolf.json",
+    "m-butterfly-1988/telegraph--diane-snyder.json",
+    "of-mice-and-men-1974/telegraph--tom-wicker.json",
+    "sunday-in-the-park-with-george-1984/telegraph--diane-snyder.json",
+    "sunday-in-the-park-with-george-1994/telegraph--diane-snyder.json",
+    "the-heiress-1976/telegraph--tom-wicker.json",
+    "the-heiress-1995/telegraph--tom-wicker.json",
+    "the-real-thing-1984/telegraph--matt-wolf.json",
+    "the-real-thing-2000/telegraph--matt-wolf.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
@@ -179,13 +202,47 @@
     "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
     "the-visit-1973/chicagotribune--chris-jones.json",
     "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
-    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
-    "war-horse-2011/chicagotribune--.json",
-    "war-horse-2011/chicagotribune--chris-jones.json",
-    "west-side-story-1980/chicagotribune--chris-jones.json",
-    "whos-afraid-of-virginia-woolf-2012/chicagotribune--chris-jones.json",
-    "wit-2012/chicagotribune--chris-jones.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/the-telegraph-uk--marianka-swain.json",
+    "hamilton-west-end-2021/telegraph--unknown.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-telegraph-uk--dominic-cavendish.json",
+    "high-noon-west-end-2025/the-telegraph-uk--dominic-cavendish.json",
+    "im-sorry-prime-minister-west-end-2026/the-telegraph-uk--dominic-cavendish.json",
+    "im-sorry-prime-minister-west-end-2026/uk-daily-telegraph--dominic-cavendish.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "my-neighbour-totoro-west-end-2025/the-telegraph-uk--dominic-cavendish.json",
+    "my-neighbour-totoro-west-end-2025/uk-daily-telegraph--dominic-cavendish.json",
+    "oh-mary-west-end-2025/telegraph--dominic-cavendish.json",
+    "oh-mary-west-end-2025/uk-daily-telegraph--dominic-cavendish.json",
+    "oliver-west-end-2024/telegraph--unknown.json",
+    "oliver-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
+    "oliver-west-end-2024/uk-daily-telegraph--dominic-cavendish.json",
+    "shadowlands-west-end-2026/the-telegraph-uk--dominic-cavendish.json",
+    "shadowlands-west-end-2026/uk-daily-telegraph--dominic-cavendish.json",
+    "showstopper-the-improvised-musical-west-end-2023/the-telegraph-uk--dominic-cavendish.json",
+    "six-the-musical-west-end-2021/the-telegraph-uk--marianka-swain.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegraph-uk--marianka-swain.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegraph-uk--tim-walker.json",
+    "the-producers-west-end-2025/the-telegraph-uk--dominic-cavendish.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/the-telegraph-uk--dominic-cavendish.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/uk-daily-telegraph--dominic-cavendish.json",
+    "titanique-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
+    "wicked-west-end-2021/the-telegraph-uk--charles-spencer.json",
+    "a-raisin-in-the-sun-2004/telegraph--matt-wolf.json",
+    "beetlejuice-west-end-2026/telegraph--unknown.json",
+    "betrayal-2013/telegraph--matt-wolf.json",
+    "butley-2006/telegraph--matt-wolf.json",
+    "cabaret-1987/telegraph--hermione-hoby.json",
+    "city-of-angels-1989/telegraph--dominic-cavendish.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "king-charles-iii-2015/the-telegraph-uk--dominic-cavendish.json",
+    "matilda-the-musical-2013/telegraph--unknown.json",
+    "my-fair-lady-1976/telegraph--diane-snyder.json",
+    "my-fair-lady-1981/telegraph--diane-snyder.json",
+    "my-fair-lady-1993/telegraph--diane-snyder.json",
+    "west-side-story-1980/telegraph--diane-snyder.json",
+    "west-side-story-2020/telegraph--diane-snyder.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -197,7 +254,20 @@
       "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json",
       "follies-1971/chicagotribune--chris-jones.json",
       "once-on-this-island-1990/chicagotribune--chris-jones.json",
-      "the-wiz-1984/chicagotribune--chris-jones.json"
+      "back-to-the-future-west-end-2021/telegraph--unknown.json",
+      "mj-the-musical-west-end-2024/telegraph--unknown.json",
+      "mj-the-musical-west-end-2024/the-telegraph-uk--claire-allfree.json",
+      "paranormal-activity-west-end-2025/the-telegraph-uk--tim-robey.json",
+      "woman-in-mind-west-end-2025/telegraph--unknown.json",
+      "woman-in-mind-west-end-2025/the-telegraph-uk--claire-allfree.json",
+      "1536-west-end-2026/telegraph--unknown.json",
+      "frozen-2004/telegraph--diane-snyder.json",
+      "hughie-1975/telegraph--hermione-hoby.json",
+      "hughie-1996/telegraph--hermione-hoby.json",
+      "m-butterfly-1988/telegraph--diane-snyder.json",
+      "sunday-in-the-park-with-george-1984/telegraph--diane-snyder.json",
+      "sunday-in-the-park-with-george-1994/telegraph--diane-snyder.json",
+      "the-real-thing-2000/telegraph--matt-wolf.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -208,8 +278,7 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
-      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
-      "data/review-texts/war-horse-2011/chicagotribune--.json"
+      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json"
     ],
     "archive": [
       "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
@@ -251,65 +320,41 @@
       "sunset-boulevard-1994/chicagotribune--chris-jones.json",
       "the-house-of-blue-leaves-1986/chicagotribune--chris-jones.json",
       "the-house-of-blue-leaves-2011/chicagotribune--.json",
-      "the-wiz-1975/chicagotribune--chris-jones.json"
+      "the-wiz-1975/chicagotribune--chris-jones.json",
+      "back-to-the-future-west-end-2021/the-telegraph-uk--dominic-cavendish.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/the-telegraph-uk--dominic-cavendish.json",
+      "matilda-the-musical-west-end-2021/the-telegraph-uk--charles-spencer.json",
+      "stranger-things-the-first-shadow-west-end-2023/the-telegraph-uk--dominic-cavendish.json",
+      "the-lion-king-west-end-2021/the-telegraph-uk--david-gritten.json",
+      "les-liaisons-dangereuses-1987/telegraph--matt-wolf.json",
+      "of-mice-and-men-1974/telegraph--tom-wicker.json",
+      "the-heiress-1976/telegraph--tom-wicker.json",
+      "the-heiress-1995/telegraph--tom-wicker.json",
+      "the-real-thing-1984/telegraph--matt-wolf.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "follies-1971/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/news/columnists/chi-follies-review-broadway-20110912,0,5375281.column",
-      "newUrl": "https://www.chicagotribune.com/1988/07/17/follies-was-not-a-flop-musical/"
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 6,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "reviewId": "glengarry-glen-ross-1984/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/theaterloop/sc-ent-1209-glengarry-broadway-review-20121210,0,976516.column?track=rss",
-      "newUrl": "https://www.chicagotribune.com/2018/08/09/chicagos-amy-morton-will-direct-an-all-women-glengarry-glen-ross-on-broadway/"
+    "The Telegraph (UK)": {
+      "count": 5,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "reviewId": "hands-on-a-hardbody-2013/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/2013/04/05/hands-on-a-hardbody-review/",
-      "newUrl": "https://www.chicagotribune.com/2019/03/18/hands-on-a-hardbody-by-refuge-theater-has-a-fine-cast-but-feels-lost-imagine-if-you-staged-this-at-a-real-chicago-car-lot/"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-1971/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-      "newUrl": "https://www.chicagotribune.com/2017/05/10/jesus-christ-superstar-set-as-nbcs-next-live-musical/"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-2000/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-      "newUrl": "https://www.chicagotribune.com/2017/05/10/jesus-christ-superstar-set-as-nbcs-next-live-musical/"
-    },
-    {
-      "reviewId": "once-on-this-island-1990/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-on-this-island-broadway-review-1204-story.html",
-      "newUrl": "https://www.chicagotribune.com/2020/01/23/review-once-on-this-island-appears-lost-on-the-road-at-cadillac-palace/"
-    },
-    {
-      "reviewId": "pippin-1972/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-0425-pippin-broadway-review-20130425,0,2216307.column",
-      "newUrl": "https://www.chicagotribune.com/2015/07/30/review-pippin-still-has-its-circus-magic/"
-    },
-    {
-      "reviewId": "priscilla-queen-of-the-desert-2011/chicagotribune--.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/sc-ent-0320-priscilla-queen-desert-br20110320,0,5772636.column",
-      "newUrl": "https://www.chicagotribune.com/2022/08/01/review-heres-priscilla-queen-of-the-desert-at-the-mercury-theater-chicago-but-wheres-the-band-mates/"
-    },
-    {
-      "reviewId": "side-show-1997/chicagotribune--chris-jones.json",
-      "oldUrl": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-sideshow-broadway-review-20141117-column.html",
-      "newUrl": "https://www.chicagotribune.com/2014/11/17/broadway-review-side-show-at-st-james-theatre/"
-    },
-    {
-      "reviewId": "the-price-2017/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html",
-      "newUrl": "https://www.chicagotribune.com/2017/03/16/review-danny-devito-the-standout-in-the-price-on-broadway/"
-    },
-    {
-      "reviewId": "the-waverly-gallery-2018/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-ent-waverly-gallery-broadway-review-20181026-story.html",
-      "newUrl": "https://www.chicagotribune.com/2018/08/09/david-cromer-will-take-the-stage-with-broadways-the-waverly-gallery/"
+    "Telegraph": {
+      "count": 3,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
