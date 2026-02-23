@@ -13,12 +13,34 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Sync core data files to checkout
+    - name: Sync only modified core data files to checkout
       shell: bash
       run: |
+        # SAFETY: Only copy files that the workflow actually modified.
+        # Compares data/ (post-script) against the original checkout (cloned at
+        # workflow start). Prevents stale copies of unmodified files from
+        # overwriting concurrent updates by other workflows.
+        MODIFIED=""
         for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json; do
-          [ -f "data/$f" ] && cp -f "data/$f" /tmp/core-data-checkout/
+          if [ -f "data/$f" ]; then
+            if [ ! -f "/tmp/core-data-checkout/$f" ]; then
+              # New file — always copy
+              cp -f "data/$f" /tmp/core-data-checkout/
+              MODIFIED="$MODIFIED $f"
+              echo "  New file: $f"
+            elif ! diff -q "data/$f" "/tmp/core-data-checkout/$f" > /dev/null 2>&1; then
+              # File was modified by this workflow
+              cp -f "data/$f" /tmp/core-data-checkout/
+              MODIFIED="$MODIFIED $f"
+              echo "  Modified: $f"
+            fi
+          fi
         done
+        if [ -z "$MODIFIED" ]; then
+          echo "No core data files were modified by this workflow — skipping push"
+        else
+          echo "Files to push:$MODIFIED"
+        fi
 
     - name: Commit and push core data
       shell: bash
@@ -27,6 +49,11 @@ runs:
         CORE_DATA_TOKEN: ${{ inputs.token }}
         COMMIT_MSG: ${{ inputs.message }}
       run: |
+        if [ ! -d ".git" ]; then
+          echo "::warning::Core data checkout not found — skipping push (checkout may have failed)"
+          exit 0
+        fi
+
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
