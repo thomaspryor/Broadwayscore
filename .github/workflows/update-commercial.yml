@@ -77,14 +77,14 @@ jobs:
         run: npm run test:data
 
       - name: Build site
+        id: build
         if: always()
         run: npm run build
         env:
           NODE_ENV: production
-        continue-on-error: true
 
       - name: Commit and push changes
-        if: always()
+        if: always() && steps.build.outcome != 'failure'
         run: |
           git add data/commercial-changelog.json
 
@@ -125,7 +125,7 @@ jobs:
 
 
       - name: Push core data to private repo
-        if: always()
+        if: always() && steps.build.outcome != 'failure'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
