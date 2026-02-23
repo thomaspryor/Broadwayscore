@@ -4,7 +4,7 @@
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-devil-wears-prada-west-end-2024",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -1380,7 +1380,6 @@
       "the-disappear-2026/nytimes--helen-shaw.json",
       "the-monsters-2026/nytimes--brittani-samuel.json"
     ],
-    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/bloodlove-2026/hollywood-reporter--frank-scheck.json",
@@ -1777,5 +1776,16 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hells-kitchen-2024/usatoday--david-oliver.json",
+      "oldUrl": "https://www.usatoday.com/story/life/entertainment/music/coachella/2024/04/20/blurs-damon-albarn-says-coachella-weekend-2-2024-set-is-likely-their-last/73402876007/",
+      "newUrl": "https://www.usatoday.com/story/entertainment/music/2024/04/30/tony-awards-nominations-2024/73498777007/"
+    },
+    {
+      "reviewId": "illinoise-2024/usatoday--david-rooney.json",
+      "oldUrl": "https://www.usatoday.com/story/news/local/2024/04/27/lower-atlantic-region-gas-prices-rose-from-last-week-see-how-much-here/73444902007/",
+      "newUrl": "https://www.usatoday.com/story/entertainment/music/2024/05/12/best-new-broadway-shows-2024-ranked/73587655007/"
+    }
+  ]
 }
