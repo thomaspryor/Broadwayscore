@@ -122,12 +122,12 @@ export default function RootLayout({
               </div>
               <div className="flex items-center gap-3">
                 {featureFlags.westEnd && (
-                  <Link href="/west-end" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  <Link href="/west-end" className="hidden lg:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     West End
                   </Link>
                 )}
                 {featureFlags.offBroadway && (
-                  <Link href="/off-broadway" className="hidden sm:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                  <Link href="/off-broadway" className="hidden lg:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     Off-Broadway
                   </Link>
                 )}

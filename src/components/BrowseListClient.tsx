@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, startTransition } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
@@ -157,10 +157,10 @@ const ShowCard = memo(function ShowCard({
             {isMixedStatus && !isOpen && (
               <span className="text-orange-400">
                 {(() => {
-                  const runLen = getRunLength(show.openingDate, show.closingDate, 'compact', durationSuffix);
-                  if (runLen) return `Closed after ${runLen}`;
-                  if (show.closingDate) return `Closed ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`;
-                  return 'Closed';
+                  if (!show.closingDate) return 'Closed';
+                  const when = new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                  const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
+                  return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
                 })()}
               </span>
             )}
@@ -348,7 +348,7 @@ export default function BrowseListClient({
             {showScoreToggle && hasAnyAudienceData && (
               <ScoreToggle
                 value={scoreMode}
-                onChange={setScoreMode}
+                onChange={(v) => startTransition(() => setScoreMode(v))}
                 className="flex-shrink-0"
               />
             )}
