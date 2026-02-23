@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-23T16:09:25.085Z",
+  "runDate": "2026-02-23T16:55:58.066Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 239,
-    "failed": 402,
+    "processed": 262,
+    "failed": 491,
     "skipped": 0,
-    "successRate": "37.3%"
+    "successRate": "34.8%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 24,
     "amp": 631,
     "browserbase": 0,
     "directCookies": 12,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 82,
+    "archiveToday": 84,
     "archive": 34
   },
   "statistics": {
-    "tier1Attempts": 478,
-    "tier1Success": 3,
-    "ampAttempts": 475,
-    "ampSuccess": 438,
+    "tier1Attempts": 110,
+    "tier1Success": 92,
+    "ampAttempts": 20,
+    "ampSuccess": 20,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 6,
-    "tier3_6Success": 6,
-    "tier4Attempts": 98,
-    "tier4Success": 44,
-    "totalFailed": 293,
-    "scrapingBeeCreditsUsed": 94,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 27,
+    "tier4Success": 0,
+    "totalFailed": 89,
+    "scrapingBeeCreditsUsed": 36,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 42,
-    "urlDiscoverySuccess": 23,
+    "urlDiscoveryAttempts": 20,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -288,7 +288,30 @@
     "what-the-constitution-means-to-me-2019/hollywood-reporter--david-rooney.json",
     "working-1978/hollywood-reporter--david-rooney.json",
     "the-lifespan-of-a-fact-2018/hollywoodwood-reporter--david-rooney.json",
-    "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json"
+    "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
+    "anastasia-2017/huffpost--danny-groner.json",
+    "brief-encounter-2010/huffpost--mark-kennedy.json",
+    "charlie-and-the-chocolate-factory-2017/huffpost--david-finkle.json",
+    "groundhog-day-2017/huffpost--steven-suskin.json",
+    "hand-to-god-2015/huffpost--david-finkle.json",
+    "indecent-2017/huffpost--steven-suskin.json",
+    "john-lithgow-stories-by-heart-2018/huffpost--david-tereschuck.json",
+    "john-lithgow-stories-by-heart-2018/huffpost--david-tereshchuk.json",
+    "m-butterfly-2017/huffpost--christian-lewis.json",
+    "old-times-2015/huffpost--wilborn-hampton.json",
+    "school-of-rock-the-musical-2015/huffpost--david-finkle.json",
+    "the-audience-2015/huffpost--unknown.json",
+    "the-bridges-of-madison-county-2014/huffpost--steven-suskin.json",
+    "the-children-2017/huffpost--christian-lewis.json",
+    "the-country-house-2014/huffpost--david-finkle.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/huffpost--steven-suskin.json",
+    "the-front-page-2016/huffpost--steven-suskin.json",
+    "the-terms-of-my-surrender-2017/huffpost--steven-suskin.json",
+    "the-terms-of-my-surrender-2017/nysr--huffpost-steven-suskin.json",
+    "the-visit-2015/huffpost--steven-suskin.json",
+    "the-winslow-boy-2013/huffpost--david-finkle.json",
+    "waitress-2016/huffpost--christian-lewis.json",
+    "waitress-2016/huffpost--steven-suskin.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -692,11 +715,123 @@
     "magicbird-2012/the-record-bergen--robert-feldberg.json",
     "priscilla-queen-of-the-desert-2011/reuters--david-rooney.json",
     "topdog-underdog-2022/corey-hawkins--unknown.json",
-    "topdog-underdog-2022/kenny-leon--unknown.json"
+    "topdog-underdog-2022/kenny-leon--unknown.json",
+    "a-christmas-story-the-musical-2012/ap--mark-kennedy.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/huffpost--steven-suskin.json",
+    "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
+    "a-view-from-the-bridge-2015/huffpost--michael-glitz.json",
+    "airline-highway-2015/huffpost--david-finkle.json",
+    "airline-highway-2015/huffpost--michael-giltz.json",
+    "amazing-grace-2015/huffpost--steven-suskin.json",
+    "an-american-in-paris-2015/huffpost--david-finkle.json",
+    "bandstand-2017/huffpost--unknown.json",
+    "breakfast-at-tiffanys-2013/ap--mark-kennedy.json",
+    "bring-it-on-the-musical-2012/ap--mark-kennedy.json",
+    "butley-2006/ap--mark-kennedy.json",
+    "cats-1982/huffpost--david-finkle.json",
+    "chaplin-2012/ap--mark-kennedy.json",
+    "china-doll-2015/huffpost--steven-suskin.json",
+    "come-from-away-2017/huffpost--christian-lewis.json",
+    "dear-evan-hansen-2016/huffpost--christian-lewis.json",
+    "dear-evan-hansen-2016/huffpost--steven-suskin.json",
+    "dear-evan-hansen-2016/huffpost--unknown.json",
+    "doctor-zhivago-2015/huffpost--david-finkle.json",
+    "eclipsed-2016/huffpost--michael-glitz.json",
+    "farinelli-and-the-king-2017/huffpost--steven-suskin.json",
+    "first-date-2013/huffpost--unknown.json",
+    "fool-for-love-2015/huffpost--michael-glitz.json",
+    "ghetto-klown-2011/ap--mark-kennedy.json",
+    "hand-to-god-2015/huffpost--michael-giltz.json",
+    "heisenberg-2016/huffpost--michael-giltz.json",
+    "hughie-2016/huffpost--michael-glitz.json",
+    "in-transit-2016/huffpost--steven-suskin.json",
+    "indecent-2017/huffpost--michael-glitz.json",
+    "king-charles-iii-2015/huffpost--michael-giltz.json",
+    "king-charles-iii-2015/huffpost--steven-suskin.json",
+    "king-charles-iii-2015/huffpost--unknown.json",
+    "kinky-boots-2013/huffpost--michael-giltz.json",
+    "latin-history-for-morons-2017/huffpost--steven-suskin.json",
+    "leap-of-faith-2012/ap--mark-kennedy.json",
+    "long-days-journey-into-night-2016/huffpost--unknown.json",
+    "marvins-room-2017/huffpost--steven-suskin.json",
+    "misery-2015/huffpost--michael-giltz.json",
+    "motown-the-musical-2013/ap--mark-kennedy.json",
+    "noises-off-2016/huffpost--fern-siegel.json",
+    "noises-off-2016/huffpost--michael-glitz.json",
+    "noises-off-2016/huffpost--steven-suskin.json",
+    "old-times-2015/huffpost--michael-glitz.json",
+    "on-a-clear-day-you-can-see-forever-2011/ap--mark-kennedy.json",
+    "on-the-town-2014/huffpost--steven-suskin.json",
+    "on-your-feet-2015/huffpost--david-finkle.json",
+    "on-your-feet-2015/huffpost--fern-siegel.json",
+    "on-your-feet-2015/huffpost--michael-glitz.json",
+    "on-your-feet-2015/huffpost--unknown.json",
+    "once-2012/ap--mark-kennedy.json",
+    "once-on-this-island-2017/huffpost--david-finkle.json",
+    "other-desert-cities-2011/ap--mark-kennedy.json",
+    "peter-and-the-starcatcher-2012/ap--mark-kennedy.json",
+    "present-laughter-2010/huffpost--michael-glitz.json",
+    "prince-of-broadway-2017/huffpost--christian-lewis.json",
+    "prince-of-broadway-2017/huffpost--steven-suskind.json",
+    "prince-of-broadway-2017/nysr--huffington-post-steven-suskin.json",
+    "private-lives-2011/ap--mark-kennedy.json",
+    "rocky-2014/nysr--huffington-poststeven-suskin.json",
+    "romeo-and-juliet-2013/huffpost--unknown.json",
+    "she-loves-me-2016/huffpost--steven-suskin.json",
+    "side-show-2014/huffpost--michael-glitz.json",
+    "six-degrees-of-separation-2017/huffpost--michael-glitz.json",
+    "six-degrees-of-separation-2017/huffpost--steven-suskin.json",
+    "something-rotten-2015/huffpost--steven-suskin.json",
+    "spongebob-squarepants-2017/huffpost--steven-suskin.json",
+    "sunday-in-the-park-with-george-2017/huffpost--michael-glitz.json",
+    "the-bands-visit-2017/huffpost--steven-suskin.json",
+    "the-bridges-of-madison-county-2014/huffpost--huff-wires.json",
+    "the-children-2017/huffpost--steven-suskin.json",
+    "the-children-2017/nysr--huffpost-steven-suskin.json",
+    "the-color-purple-2005/huffpost--steven-suskin.json",
+    "the-columnist-2012/ap--mark-kennedy.json",
+    "the-gershwins-porgy-and-bess-2012/ap--mark-kennedy.json",
+    "the-parisian-woman-2017/huffpost--christian-lewis.json",
+    "the-parisian-woman-2017/nysr--huffpost-steven-suskin.json",
+    "the-present-2017/huffpost--steven-suskin.json",
+    "the-price-2017/huffpost--stephen-suskin.json",
+    "the-price-2017/huffpost--steven-suskin.json",
+    "the-real-thing-2014/huffpost--david-finkle.json",
+    "the-realistic-joneses-2014/huffpost--david-finkle.json",
+    "time-and-the-conways-2017/nysr--huffington-post-steven-suskin.json",
+    "venus-in-fur-2011/ap--mark-kennedy.json",
+    "violet-2014/huffpost--steven-suskin.json",
+    "war-paint-2017/huffpost--michael-glitz.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wolf-hall-parts-one-and-two-2015/huffpost--michael-glitz.json",
+    "you-cant-take-it-with-you-2014/huffpost--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
-      "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json"
+      "topdog-underdog-2022/yahya-abdul-mateen-ii--unknown.json",
+      "anastasia-2017/huffpost--danny-groner.json",
+      "brief-encounter-2010/huffpost--mark-kennedy.json",
+      "charlie-and-the-chocolate-factory-2017/huffpost--david-finkle.json",
+      "groundhog-day-2017/huffpost--steven-suskin.json",
+      "hand-to-god-2015/huffpost--david-finkle.json",
+      "indecent-2017/huffpost--steven-suskin.json",
+      "john-lithgow-stories-by-heart-2018/huffpost--david-tereschuck.json",
+      "john-lithgow-stories-by-heart-2018/huffpost--david-tereshchuk.json",
+      "m-butterfly-2017/huffpost--christian-lewis.json",
+      "old-times-2015/huffpost--wilborn-hampton.json",
+      "school-of-rock-the-musical-2015/huffpost--david-finkle.json",
+      "the-audience-2015/huffpost--unknown.json",
+      "the-bridges-of-madison-county-2014/huffpost--steven-suskin.json",
+      "the-children-2017/huffpost--christian-lewis.json",
+      "the-country-house-2014/huffpost--david-finkle.json",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/huffpost--steven-suskin.json",
+      "the-front-page-2016/huffpost--steven-suskin.json",
+      "the-terms-of-my-surrender-2017/huffpost--steven-suskin.json",
+      "the-terms-of-my-surrender-2017/nysr--huffpost-steven-suskin.json",
+      "the-visit-2015/huffpost--steven-suskin.json",
+      "the-winslow-boy-2013/huffpost--david-finkle.json",
+      "waitress-2016/huffpost--christian-lewis.json",
+      "waitress-2016/huffpost--steven-suskin.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -1430,7 +1565,9 @@
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/hollywood-reporter--angie-han.json",
       "data/review-texts/funny-girl-2022/hollywood-reporter--angie-han.json",
       "data/review-texts/skeleton-crew-2022/hollywood-reporter--angie-han.json",
-      "data/review-texts/some-like-it-hot-2022/hollywood-reporter--david-rooney.json"
+      "data/review-texts/some-like-it-hot-2022/hollywood-reporter--david-rooney.json",
+      "data/review-texts/king-charles-iii-2015/huffpost--michael-giltz.json",
+      "data/review-texts/kinky-boots-2013/huffpost--michael-giltz.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -1470,129 +1607,27 @@
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 11,
-      "domain": "hollywoodreporter.com",
+    "Associated Press": {
+      "count": 16,
+      "domain": "huffpost.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
+    },
+    "The Associated Press": {
+      "count": 1,
+      "domain": "huffpost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Huffington Post": {
+      "count": 1,
+      "domain": "huffpost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/a-strange-loop-broadway-review-1235133611/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/a-strange-loop-closing-broadway-tony-awards-1235239063/"
-    },
-    {
-      "reviewId": "death-of-a-salesman-2022/hollywood-reporter--anita-gates.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/death-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235248163/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/death-of-a-salesman-disrupted-disorderly-audience-member-1235288672/"
-    },
-    {
-      "reviewId": "dreamgirls-1981/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/dreamgirls-theater-review-1004044996.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/dreamgirls-theater-review-93776/"
-    },
-    {
-      "reviewId": "evita-2012/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/trayvon-martin-spike-lee-george-zimmerman-twitter-controversy-304775/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/evita-theater-review-ricky-martin-308779/"
-    },
-    {
-      "reviewId": "fences-1987/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-1004086466.story",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/fences-theater-review-29522/"
-    },
-    {
-      "reviewId": "fences-2010/hollywood-reporter--.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-1004086466.story",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/fences-theater-review-29522/"
-    },
-    {
-      "reviewId": "good-night-oscar-2023/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/good-night-oscar-broadway-review-1235458659/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/sean-hayes-good-night-oscar-broadway-play-1235223318/"
-    },
-    {
-      "reviewId": "guys-and-dolls-1992/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "http://www.hollywoodreporter.com/hr/film-reviews/theater-review-guys-and-dolls-1003946470.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/theater-review-guys-dolls-92937/"
-    },
-    {
-      "reviewId": "looped-2010/hollywood-reporter--.json",
-      "oldUrl": "https://www.hollywoodreporter.com/hr/film-reviews/looped-theater-review-1004075079.story",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/looped-theater-review-29397/"
-    },
-    {
-      "reviewId": "mcneal-2024/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/mcneal-broadway-review-1235991915/",
-      "newUrl": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-robert-downey-jr-1-million-oh-mary-breaks-record-1236010980/"
-    },
-    {
-      "reviewId": "misery-2015/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/movies/movie-news/birds-prey-poster-reveals-differences-comics-1240367/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/bruce-willis-misery-theater-review-840382/"
-    },
-    {
-      "reviewId": "new-york-new-york-2023/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-review-1235394031/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-kander-ebb-musical-broadway-lin-manuel-miranda-1235249123/"
-    },
-    {
-      "reviewId": "parade-2023/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/parade-broadway-review-1235338614/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/ben-platt-micaela-diamond-parade-broadway-1235294183/"
-    },
-    {
-      "reviewId": "paradise-square-2022/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/paradise-square-broadway-review-1235122963/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/"
-    },
-    {
-      "reviewId": "romeo-and-juliet-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/lebron-james-marries-longtime-girlfriend-629441/",
-      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/orlando-bloom-romeo-juliet-theater-632505/"
-    },
-    {
-      "reviewId": "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/tv/tv-news/queen-latifah-star-equalizer-reboot-at-cbs-1252089/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sea-wall-a-life-1186357/"
-    },
-    {
-      "reviewId": "sister-act-2011/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-broadway-review-179058/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/sister-act-theater-review-180739/"
-    },
-    {
-      "reviewId": "skeleton-crew-2022/hollywood-reporter--anita-gates.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/skeleton-crew-broadway-review-1235073974/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-skeleton-crew-omicron-1235093865/"
-    },
-    {
-      "reviewId": "some-like-it-hot-2022/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/some-like-it-hot-broadway-review-1235096633/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/some-like-it-hot-closing-broadway-december-2023-1235604442/"
-    },
-    {
-      "reviewId": "straight-white-men-2018/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/theater-review-straight-white-men-1129162/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/"
-    },
-    {
-      "reviewId": "the-humans-2016/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/humans-theater-review-942015/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/humans-will-migrate-broadway-834857/"
-    },
-    {
-      "reviewId": "the-nance-2013/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/rio-film-festival-true-blood-645127/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/nance-theater-review-439779/"
-    },
-    {
-      "reviewId": "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/the-sign-in-sidney-brusteins-window-theater-review-1235624316/",
-      "newUrl": "https://www.hollywoodreporter.com/news/general-news/oscar-isaac-rachel-brosnahan-broadway-play-the-sign-in-sidney-brusteins-window-1235366536/"
-    }
-  ]
+  "urlDiscoveries": []
 }
