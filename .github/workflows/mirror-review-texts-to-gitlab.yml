@@ -41,6 +41,23 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
 
+      - name: Checkout for notify action
+        if: failure()
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review Texts Mirror Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Verify mirror is in sync
         run: |
           GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
