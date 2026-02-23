@@ -75,8 +75,8 @@ function buildSearchTitle(show) {
 }
 
 function parseInfobox(content) {
-  const musicalBox = content.match(/\{\{Infobox musical(.*?)\n\}\}/s);
-  const playBox = content.match(/\{\{Infobox play(.*?)\n\}\}/s);
+  const musicalBox = content.match(/\{\{Infobox musical(.*?)\n\}\}/si);
+  const playBox = content.match(/\{\{Infobox play(.*?)\n\}\}/si);
   const infobox = musicalBox || playBox;
   if (!infobox) return null;
 
