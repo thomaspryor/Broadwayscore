@@ -172,9 +172,23 @@ function getShowInfo(showId) {
 // ============================================================================
 
 let _scrapingBeeSerpExhausted = false;
-let _scrapingBeeConsecutiveFailures = 0;
 let _brightDataConsecutiveFailures = 0;
 const MAX_CONSECUTIVE_FAILURES = 5;
+
+// Rolling window health tracking for ScrapingBee SERP
+const _scrapingBeeSerpResults = []; // true=success, false=failure
+const ROLLING_WINDOW_SIZE = 20;
+const ROLLING_FAILURE_THRESHOLD = 0.6; // disable if 60%+ failures
+function _recordSerpResult(success) {
+  _scrapingBeeSerpResults.push(success);
+  if (_scrapingBeeSerpResults.length > ROLLING_WINDOW_SIZE) _scrapingBeeSerpResults.shift();
+  if (_scrapingBeeSerpResults.length >= ROLLING_WINDOW_SIZE) {
+    const failures = _scrapingBeeSerpResults.filter(r => !r).length;
+    if (failures / ROLLING_WINDOW_SIZE >= ROLLING_FAILURE_THRESHOLD) {
+      _scrapingBeeSerpExhausted = true;
+    }
+  }
+}
 
 /**
  * Search via ScrapingBee SERP API (returns structured JSON).
@@ -184,32 +198,45 @@ async function _serpViaScrapingBee(query, apiKey, log) {
   if (_scrapingBeeSerpExhausted || !apiKey) return null;
 
   const axios = require('axios');
-  try {
-    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-      params: { api_key: apiKey, search: query },
-      timeout: 30000,
-    });
-    const data = response.data;
-    _scrapingBeeConsecutiveFailures = 0; // Reset on success
-    return (data.organic_results || data.results || []).map(r => ({
-      url: r.url || r.link,
-      title: r.title || '',
-    }));
-  } catch (error) {
-    const status = error.response?.status;
-    if (status === 401 || status === 403 || status === 429) {
-      _scrapingBeeSerpExhausted = true;
-      log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
-    } else {
-      _scrapingBeeConsecutiveFailures++;
-      log(`    ✗ ScrapingBee SERP error (${_scrapingBeeConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
-      if (_scrapingBeeConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+  const RETRYABLE_STATUSES = new Set([500, 502, 503]);
+  const MAX_ATTEMPTS = 2;
+  const RETRY_DELAY_MS = 3000;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+        params: { api_key: apiKey, search: query },
+        timeout: 30000,
+      });
+      const data = response.data;
+      _recordSerpResult(true);
+      return (data.organic_results || data.results || []).map(r => ({
+        url: r.url || r.link,
+        title: r.title || '',
+      }));
+    } catch (error) {
+      const status = error.response?.status;
+      if (status === 401 || status === 403 || status === 429) {
         _scrapingBeeSerpExhausted = true;
-        log(`    ⚠ ScrapingBee SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+        log(`    ⚠ ScrapingBee SERP exhausted (${status}) — falling back to Bright Data`);
+        return null;
       }
+      // Retry on 500-series errors
+      if (RETRYABLE_STATUSES.has(status) && attempt < MAX_ATTEMPTS) {
+        log(`    ↻ ScrapingBee SERP ${status}, retrying in ${RETRY_DELAY_MS / 1000}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
+        await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
+        continue;
+      }
+      _recordSerpResult(false);
+      const failCount = _scrapingBeeSerpResults.filter(r => !r).length;
+      log(`    ✗ ScrapingBee SERP error (${failCount}/${ROLLING_WINDOW_SIZE} recent failures): ${error.message}`);
+      if (_scrapingBeeSerpExhausted) {
+        log(`    ⚠ ScrapingBee SERP disabled — ${Math.round(failCount / ROLLING_WINDOW_SIZE * 100)}% failure rate exceeds threshold`);
+      }
+      return null;
     }
-    return null;
   }
+  return null;
 }
 
 /**
