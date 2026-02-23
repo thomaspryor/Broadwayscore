@@ -35,16 +35,21 @@ function fetchJson(url) {
 function cleanWikitext(text) {
   return text
     .replace(/<!--.*?-->/gs, '')
-    .replace(/<\/?(?:br|ref|small|nowiki)[^>]*>/gi, ' ')
-    .replace(/\{\{(?:hidden|collapse|based on|Infobox)[^}]*\}\}/gis, '')
-    .replace(/\{\{[Uu]bl\|([^}]*)\}\}/g, '$1')
-    .replace(/\{\{[Pp]lainlist\|([^}]*)\}\}/g, '$1')
-    .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2')
+    .replace(/<ref[^>]*>.*?<\/ref>/gis, '')       // Remove full ref tags
+    .replace(/<ref[^>]*\/>/gi, '')                  // Remove self-closing ref tags
+    .replace(/<\/?(?:br|small|nowiki)[^>]*>/gi, ', ') // br → separator
+    .replace(/\{\{(?:hidden|collapse|based on|Infobox|Cite)[^}]*\}\}/gis, '')
+    .replace(/\{\{efn\|[^}]*\}\}/gi, '')            // Remove efn (footnote) templates
+    .replace(/\{\{(?:unbulleted list|ubl|Ubl)\|/gi, '') // Strip list template open
+    .replace(/\{\{(?:Plainlist|plainlist)\|/gi, '')  // Strip plainlist template open
+    .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2') // [[link|text]] → text
     .replace(/'{2,3}/g, '')
     .replace(/\*/g, ' ')
     .replace(/\}\}/g, '')
+    .replace(/\s*,\s*,+/g, ',')                     // Collapse multiple commas
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
+    .replace(/^[,\s]+|[,\s]+$/g, '');               // Trim leading/trailing commas
 }
 
 function buildSearchTitle(show) {
