@@ -793,4 +793,7 @@ async function main() {
   console.log(`  Uncached shows: ${uncachedShows.length}`);
 }
 
-main().catch(console.error);
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

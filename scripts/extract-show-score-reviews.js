@@ -200,4 +200,7 @@ function main() {
   console.log(`Output written to: ${outputPath}`);
 }
 
-main();
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
