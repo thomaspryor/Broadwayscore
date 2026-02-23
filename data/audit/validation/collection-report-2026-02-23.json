@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-23T03:36:24.918Z",
+  "runDate": "2026-02-23T03:55:46.783Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,25 +11,25 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 711,
-    "failed": 622,
+    "processed": 725,
+    "failed": 680,
     "skipped": 0,
-    "successRate": "53.3%"
+    "successRate": "51.6%"
   },
   "tierBreakdown": {
-    "playwright": 322,
+    "playwright": 331,
     "amp": 2,
     "browserbase": 0,
     "directCookies": 7,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 8,
-    "archive": 383
+    "archive": 388
   },
   "statistics": {
-    "tier1Attempts": 164,
-    "tier1Success": 59,
-    "ampAttempts": 105,
+    "tier1Attempts": 55,
+    "tier1Success": 10,
+    "ampAttempts": 45,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
@@ -39,14 +39,14 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 204,
-    "tier4Success": 152,
-    "totalFailed": 72,
-    "scrapingBeeCreditsUsed": 26,
+    "tier4Attempts": 58,
+    "tier4Success": 40,
+    "totalFailed": 58,
+    "scrapingBeeCreditsUsed": 25,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 26,
-    "urlDiscoverySuccess": 4,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -760,7 +760,21 @@
     "waiting-for-godot-2013/newsday--linda-winer.json",
     "waitress-2016/newsday--linda-winer.json",
     "west-side-story-2020/newsday--unknown.json",
-    "you-cant-take-it-with-you-2014/newsday--linda-winer.json"
+    "you-cant-take-it-with-you-2014/newsday--linda-winer.json",
+    "fela-2009/newsday--linda-winer.json",
+    "ghetto-klown-2011/newsday--linda-winer.json",
+    "gigi-1973/newsday--linda-winer.json",
+    "lend-me-a-tenor-2010/newsday--linda-winer.json",
+    "merrily-we-roll-along-1981/newsday--linda-winer.json",
+    "orphans-2013/newsday--linda-winer.json",
+    "pacific-overtures-1976/newsday--linda-winer.json",
+    "pippin-2013/newsday--linda-winer.json",
+    "six-degrees-of-separation-1990/newsday--linda-winer.json",
+    "summer-2018/newsday--barbara-schuler.json",
+    "the-father-1981/newsday--linda-winer.json",
+    "the-last-ship-2014/newsday--linda-winer.json",
+    "the-real-thing-2000/newsday--linda-winer.json",
+    "wonderland-2011/newsday--linda-winer.json"
   ],
   "failed": [
     "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
@@ -1384,7 +1398,65 @@
     "tuck-everlasting-2016/newsday--linda-winer.json",
     "waiting-for-godot-2009/newsday--linda-winer.json",
     "war-horse-2011/newsday--linda-winer.json",
-    "wonderland-2011/newsday--linda-winer.json"
+    "wonderland-2011/newsday--linda-winer.json",
+    "an-ark-2026/newsday--linda-winer.json",
+    "bigfoot-2026/newsday--linda-winer.json",
+    "bloodlove-2026/newsday--linda-winer.json",
+    "1984-2017/newsday--elizabeth-vincentelli.json",
+    "33-variations-2009/newsday--unknown.json",
+    "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+    "a-delicate-balance-1996/newsday--linda-winer.json",
+    "a-little-night-music-1973/newsday--linda-winer.json",
+    "american-psycho-2016/newsday--linda-winer.json",
+    "ann-2013/newsday--linda-winer.json",
+    "baby-its-you-2011/newsday--.json",
+    "bernhardthamlet-2018/newsday--barbara-schuler.json",
+    "born-yesterday-1989/newsday--linda-winer.json",
+    "born-yesterday-2011/newsday--.json",
+    "carousel-1994/newsday--barbara-schuler.json",
+    "catch-me-if-you-can-2011/newsday--.json",
+    "catch-me-if-you-can-2011/newsday--linda-winer.json",
+    "come-fly-away-2010/newsday--linda-winer.json",
+    "cyrano-de-bergerac-1984/newsday--linda-winer.json",
+    "death-of-a-salesman-2012/newsday--linda-winer.json",
+    "exit-the-king-2009/ny-newsday--linda-winer.json",
+    "fiddler-on-the-roof-1976/newsday--linda-winer.json",
+    "fiddler-on-the-roof-1990/newsday--linda-winer.json",
+    "fiddler-on-the-roof-2004/newsday--linda-winer.json",
+    "ghost-the-musical-2012/newsday--linda-winer.json",
+    "golden-boy-2012/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "jekyll-and-hyde-1997/newsday--linda-winer.json",
+    "king-charles-iii-2015/newsday--linda-winer.json",
+    "les-liaisons-dangereuses-1987/newsday--linda-winer.json",
+    "les-liaisons-dangereuses-2016/newsday--linda-winer.json",
+    "love-letters-1989/newsday--linda-winer.json",
+    "lucky-guy-2013/newsday--linda-winer.json",
+    "magicbird-2012/newsday--neil-best.json",
+    "man-and-boy-2011/newsday--linda-winer.json",
+    "my-fair-lady-1976/newsday--elisabeth-vincentelli.json",
+    "my-fair-lady-1981/newsday--elisabeth-vincentelli.json",
+    "my-fair-lady-1993/newsday--elisabeth-vincentelli.json",
+    "newsies-the-musical-2012/newsday--linda-winer.json",
+    "noises-off-1983/newsday--linda-winer.json",
+    "of-mice-and-men-1974/newsday--linda-winer.json",
+    "of-mice-and-men-2014/newsday--linda-winer.json",
+    "present-laughter-1982/newsday--linda-winer.json",
+    "present-laughter-1996/newsday--linda-winer.json",
+    "prince-of-broadway-2017/newsday--barbara-schuler.json",
+    "straight-white-men-2018/newsday--barbara-schuler.json",
+    "sunset-boulevard-2017/newsday--linda-winer.json",
+    "the-assembled-parties-2013/newsday--linda-winer.json",
+    "the-big-knife-2013/newsday--linda-winer.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/newsday--linda-winer.json",
+    "the-gin-game-1977/newsday--linda-winer.json",
+    "the-gin-game-1997/newsday--linda-winer.json",
+    "the-heiress-1976/newsday--linda-winer.json",
+    "the-merchant-of-venice-1973/newsday--linda-winer.json",
+    "travesties-1975/newsday--barbara-schuler.json",
+    "tuck-everlasting-2016/newsday--linda-winer.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "war-horse-2011/newsday--linda-winer.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1709,7 +1781,16 @@
       "venus-in-fur-2011/newsday--linda-winer.json",
       "waiting-for-godot-2013/newsday--linda-winer.json",
       "waitress-2016/newsday--linda-winer.json",
-      "west-side-story-2020/newsday--unknown.json"
+      "west-side-story-2020/newsday--unknown.json",
+      "merrily-we-roll-along-1981/newsday--linda-winer.json",
+      "orphans-2013/newsday--linda-winer.json",
+      "pacific-overtures-1976/newsday--linda-winer.json",
+      "pippin-2013/newsday--linda-winer.json",
+      "six-degrees-of-separation-1990/newsday--linda-winer.json",
+      "summer-2018/newsday--barbara-schuler.json",
+      "the-last-ship-2014/newsday--linda-winer.json",
+      "the-real-thing-2000/newsday--linda-winer.json",
+      "wonderland-2011/newsday--linda-winer.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
@@ -2120,7 +2201,12 @@
       "the-visit-1973/newsday--linda-winer.json",
       "time-stands-still-2010/newsday--linda-winer.json",
       "torch-song-trilogy-1982/newsday--elisabeth-vincentelli.json",
-      "you-cant-take-it-with-you-2014/newsday--linda-winer.json"
+      "you-cant-take-it-with-you-2014/newsday--linda-winer.json",
+      "fela-2009/newsday--linda-winer.json",
+      "ghetto-klown-2011/newsday--linda-winer.json",
+      "gigi-1973/newsday--linda-winer.json",
+      "lend-me-a-tenor-2010/newsday--linda-winer.json",
+      "the-father-1981/newsday--linda-winer.json"
     ]
   },
   "failuresByOutlet": {
@@ -2134,24 +2220,19 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "falsettos-1992/newsday--linda-winer.json",
-      "oldUrl": "http://www.newsday.com/entertainment/theater/falsettos-review-revival-still-passionate-powerful-and-funny-too-1.12511596",
-      "newUrl": "https://www.newsday.com/entertainment/theater/andrew-rannells-joining-falsettos-cast-was-meaningful-i40639"
+      "reviewId": "american-psycho-2016/newsday--linda-winer.json",
+      "oldUrl": "https://www.newsday.com/entertainment/theater/american-psycho-review-benjamin-walker-terrific-in-musical-1.11718786",
+      "newUrl": "https://www.newsday.com/entertainment/theater/american-psycho-review-benjamin-walker-terrific-in-musical-c01751"
     },
     {
-      "reviewId": "m-butterfly-1988/newsday--barbara-schuler.json",
-      "oldUrl": "https://www.newsday.com/entertainment/theater/m-butterfly-review-1.14622484",
-      "newUrl": "https://www.newsday.com/entertainment/theater/david-henry-hwang-updates-tony-award-winning-m-butterfly-m40617"
+      "reviewId": "the-real-thing-2000/newsday--linda-winer.json",
+      "oldUrl": "http://www.newsday.com/entertainment/theater/the-real-thing-review-ewan-mcgregor-maggie-gyllenhaal-star-in-less-showy-revival-1.9560750",
+      "newUrl": "https://www.newsday.com/entertainment/theater/the-real-thing-review-ewan-mcgregor-maggie-gyllenhaal-star-in-less-showy-revival-e94351"
     },
     {
-      "reviewId": "matilda-the-musical-2013/newsday--unknown.json",
-      "oldUrl": "https://www.newsday.com/entertainment/theater/matilda-the-musical-review-a-brit-hit-1.5047416",
-      "newUrl": "https://www.newsday.com/entertainment/theater/matilda-the-musical-review-a-brit-hit-k85446"
-    },
-    {
-      "reviewId": "priscilla-queen-of-the-desert-2011/newsday--.json",
-      "oldUrl": "http://www.newsday.com/entertainment/theater/priscilla-gives-a-cheerful-ride-on-stage-1.2772593",
-      "newUrl": "https://www.newsday.com/news/new-york/theater-review-priscilla-queen-of-the-desert-2-stars-o70493"
+      "reviewId": "wonderland-2011/newsday--linda-winer.json",
+      "oldUrl": "https://www.newsday.com/entertainment/theater/an-irritating-spin-on-a-classic-fairy-tale-1.2823778",
+      "newUrl": "https://www.newsday.com/news/new-york/theater-review-wonderland-1-star-f25051"
     }
   ]
 }
