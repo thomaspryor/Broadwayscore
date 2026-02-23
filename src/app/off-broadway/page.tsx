@@ -75,11 +75,12 @@ export default function OffBroadwayPage() {
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
-  // Pass ALL shows to client — it handles filtering via status toggles
-  const serializedShows = shows.map(serializeShow);
+  // Only show currently open/previews OB shows (no historical inventory yet)
+  const activeShows = shows.filter(s => s.status === 'open' || s.status === 'previews');
+  const serializedShows = activeShows.map(serializeShow);
 
-  // Count reviews across all OB shows
-  const totalReviews = shows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
+  // Count reviews across active OB shows only
+  const totalReviews = activeShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
   return (
     <>
@@ -90,7 +91,7 @@ export default function OffBroadwayPage() {
 
       <OffBroadwayPageClient
         shows={serializedShows}
-        totalShows={shows.length}
+        totalShows={activeShows.length}
         totalReviews={totalReviews}
       />
     </>

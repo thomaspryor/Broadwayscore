@@ -55,7 +55,7 @@ const shardMode = shard !== null && totalShards !== null;
 
 // Config — subreddit per market
 const SUBREDDIT_BW = 'broadway';
-const SUBREDDIT_WE = 'WestEndTheatre';
+const SUBREDDIT_WE = 'TheWestEnd';
 function getSubreddit(show) {
   if (show.category === 'off-broadway') return null; // No relevant subreddit for OB
   return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;

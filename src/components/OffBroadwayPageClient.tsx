@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, memo, useCallback, useState, Suspense } from 'react';
+import { useMemo, memo, useCallback, useState, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
@@ -362,7 +362,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    setFilters(prev => {
+    startTransition(() => setFilters(prev => {
       const next = { ...prev };
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
@@ -387,7 +387,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
       window.history.replaceState({}, '', paramString ? `/off-broadway?${paramString}` : '/off-broadway');
 
       return next;
-    });
+    }));
   }, []);
 
   const clearAllFilters = useCallback(() => {
