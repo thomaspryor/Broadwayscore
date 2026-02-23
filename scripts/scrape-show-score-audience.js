@@ -187,21 +187,12 @@ function generateCandidateUrls(show) {
     candidates.push(titleSlug, showSlug.replace(/-west-end$/, ''));
   } else if (isOffBroadway) {
     // Off-Broadway: no -broadway suffix needed
+    // NOTE: OB slugs are unpredictable (often include venue name like "heathers-the-musical-new-world-stages").
+    // Primary discovery is via listings scraping (discover-show-score-urls-from-listings.js).
+    // This slug-based fallback only covers simple cases.
     candidates.push(titleSlug, titleNoColonSlug, showSlug);
     if (isMusical) {
       candidates.push(`${titleSlug}-the-musical`, `${titleNoColonSlug}-the-musical`);
-    }
-    // Off-Broadway shows sometimes use {title}-{venue} slugs (e.g. heathers-the-musical-new-world-stages)
-    if (show.venue && show.venue !== 'TBA') {
-      const venueSlug = slugifyTitle(show.venue);
-      candidates.push(
-        `${titleSlug}-${venueSlug}`,
-        `${titleNoColonSlug}-${venueSlug}`,
-        `${showSlug}-${venueSlug}`,
-      );
-      if (isMusical) {
-        candidates.push(`${titleSlug}-the-musical-${venueSlug}`);
-      }
     }
   } else {
     candidates.push(
@@ -635,7 +626,34 @@ async function main() {
     shows = shows.slice(0, showLimit);
   }
 
-  // ── Phase A: Discovery pass (uncached shows only, capped) ──
+  // ── Phase 0: Listings-based discovery (scrapes Show Score's actual listings pages) ──
+  // This is the PRIMARY discovery method. Phase A (slug guessing) is a fallback.
+  const uncachedBefore = shows.filter(s => !getCachedUrl(s.id)).length;
+  if (uncachedBefore > 0 && !shardMode) {
+    // Only run listings discovery in non-shard mode (shard runs are for scoring, not discovery)
+    console.log(`\n── Listings Discovery Phase: ${uncachedBefore} uncached shows ──`);
+    try {
+      const { execSync } = require('child_process');
+      const result = execSync('node scripts/discover-show-score-urls-from-listings.js', {
+        cwd: path.join(__dirname, '..'),
+        encoding: 'utf8',
+        timeout: 120000,
+      });
+      console.log(result);
+      // Reload URL cache after listings discovery
+      const freshUrlData = JSON.parse(fs.readFileSync(urlsPath, 'utf8'));
+      urlData.shows = freshUrlData.shows;
+      urlData._meta = freshUrlData._meta;
+      urlData._discoveryAttempts = freshUrlData._discoveryAttempts || urlData._discoveryAttempts;
+      const uncachedAfter = shows.filter(s => !getCachedUrl(s.id)).length;
+      console.log(`Listings discovery resolved ${uncachedBefore - uncachedAfter} URLs (${uncachedAfter} still uncached)\n`);
+    } catch (err) {
+      console.error(`Listings discovery failed: ${err.message}`);
+      console.log('Falling back to slug-based discovery...\n');
+    }
+  }
+
+  // ── Phase A: Slug-based discovery fallback (uncached shows only, capped) ──
   const uncachedShows = shows.filter(s => !getCachedUrl(s.id));
   if (uncachedShows.length > 0) {
     // Filter out shows we attempted recently
