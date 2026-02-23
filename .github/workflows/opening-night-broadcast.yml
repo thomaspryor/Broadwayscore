@@ -245,3 +245,13 @@ jobs:
             console.log(slugs.join(','));
           ")
           node scripts/submit-indexnow.js --shows "$SLUGS"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Broadcast Failed'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
