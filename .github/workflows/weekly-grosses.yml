@@ -158,6 +158,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Grosses Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Summary
         if: always()
         run: |
