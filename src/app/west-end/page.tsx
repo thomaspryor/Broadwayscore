@@ -79,6 +79,7 @@ export default function WestEndPage() {
 
   // Count reviews across all WE shows
   const totalReviews = shows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
+  const scoredShows = shows.filter(s => (s.criticScore?.reviewCount ?? 0) >= 3).length;
 
   return (
     <>
@@ -91,6 +92,7 @@ export default function WestEndPage() {
         shows={serializedShows}
         totalShows={shows.length}
         totalReviews={totalReviews}
+        scoredShows={scoredShows}
       />
     </>
   );
