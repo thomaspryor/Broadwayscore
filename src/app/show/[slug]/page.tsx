@@ -650,8 +650,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Awards - above Box Office */}
         {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
 
-        {/* Box Office Stats */}
-        {featureFlags.boxOffice && (
+        {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
+        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
           grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
             <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
           ) : show.status === 'previews' || show.status === 'upcoming' ? (
@@ -662,8 +662,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null
         )}
 
-        {/* Commercial Scorecard */}
-        {featureFlags.commercial && (
+        {/* Commercial Scorecard — Broadway only */}
+        {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
           commercial ? (
             <BizBuzzCard
               commercial={commercial}
@@ -681,8 +681,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null
         )}
 
-        {/* Lottery/Rush Tickets - below Commercial Performance, only show after previews start */}
-        {featureFlags.discountTickets && lotteryRush && (() => {
+        {/* Lottery/Rush Tickets — Broadway only */}
+        {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (() => {
           // Don't show until previews have started
           if (show.previewsStartDate) {
             const previewsStart = new Date(show.previewsStartDate);
