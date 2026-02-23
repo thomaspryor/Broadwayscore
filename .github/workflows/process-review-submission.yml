@@ -288,18 +288,11 @@ jobs:
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
-            const body = '## ✅ Review Successfully Added!
-
-' +
+            const body = '## ✅ Review Successfully Added!\n\n' +
               'The review has been scraped and added to our database. ' +
-              'It will appear on the site within a few minutes after the next deployment.
-
-' +
-              'Thank you for your contribution to Broadway Scorecard! 🎭
-
-' +
-              '---
-' +
+              'It will appear on the site within a few minutes after the next deployment.\n\n' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
+              '---\n' +
               '*Added by automated system • ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
