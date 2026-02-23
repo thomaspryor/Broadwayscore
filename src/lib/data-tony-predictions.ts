@@ -313,7 +313,7 @@ export interface AccuracyStats {
   byCategory: Array<{ category: string; pct: number }>;
   newWorksAccuracy: number;
   revivalsAccuracy: number;
-  fieldSizeData: Array<{ label: string; pct: number; note: string }>;
+  fieldSizeData: Array<{ label: string; pct: number; note: string; count: number }>;
   upsets: Array<{ winner: string; season: string; category: string; rank: number }>;
   seasonCount: number;
   categorySeasonCount: number;
@@ -463,6 +463,7 @@ function computeAccuracyWithScorer(
     label,
     pct: fieldResults[bucket]?.total > 0 ? Math.round((fieldResults[bucket].rank1 / fieldResults[bucket].total) * 100) : 0,
     note,
+    count: fieldResults[bucket]?.total || 0,
   }));
 
   return {
@@ -496,15 +497,19 @@ export function computeAccuracyStats(allShows: ComputedShow[]): AccuracyStats {
 }
 
 export interface BlendedAccuracyStats extends AccuracyStats {
+  /** Headline blended stats (same as base rank1WinPct etc.) */
   blendedRank1WinPct: number;
   blendedTop2WinPct: number;
   blendedAvgWinnerRank: number;
+  /** Critics-only headline for comparison */
+  criticsOnlyRank1WinPct: number;
   improvement: number;
 }
 
 /**
  * Compute both critic-only and blended accuracy stats.
- * Returns critic-only stats as the base, plus blended stats and improvement delta.
+ * Returns blended stats as the base (fieldSizeData, byCategory, upsets, etc.),
+ * plus critics-only headline for comparison.
  */
 export function computeBlendedAccuracyStats(allShows: ComputedShow[]): BlendedAccuracyStats {
   const showMap = new Map(allShows.map(s => [s.id, s]));
@@ -522,10 +527,11 @@ export function computeBlendedAccuracyStats(allShows: ComputedShow[]): BlendedAc
     ));
 
   return {
-    ...criticStats,
+    ...blendedStats,
     blendedRank1WinPct: blendedStats.rank1WinPct,
     blendedTop2WinPct: blendedStats.top2WinPct,
     blendedAvgWinnerRank: blendedStats.avgWinnerRank,
+    criticsOnlyRank1WinPct: criticStats.rank1WinPct,
     improvement: blendedStats.rank1WinPct - criticStats.rank1WinPct,
   };
 }

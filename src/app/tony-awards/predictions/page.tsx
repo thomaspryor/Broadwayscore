@@ -76,7 +76,7 @@ export default function TonyPredictionsOverviewPage() {
         name: 'How accurate are blended critic + audience scores at predicting Tony Awards?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Over ${stats.seasonCount} Tony seasons, blending critic scores with audience grades predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.rank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
+          text: `Over ${stats.seasonCount} Tony seasons, blending critic scores with audience grades predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.criticsOnlyRank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
         },
       },
     ],
@@ -127,11 +127,11 @@ export default function TonyPredictionsOverviewPage() {
             {categoryTeasers.length > 0 && (
               <div className="space-y-1.5">
                 {categoryTeasers.slice(0, 4).map(t => (
-                  <div key={t.label} className="flex items-center justify-between text-sm gap-2">
-                    <span className="text-gray-500 flex-shrink-0">{t.label}</span>
-                    <span className="text-white font-medium truncate">{t.showTitle}</span>
+                  <div key={t.label} className="flex items-center text-sm gap-2">
+                    <span className="text-gray-500 w-28 flex-shrink-0">{t.label}</span>
+                    <span className="text-white font-medium truncate flex-1 min-w-0">{t.showTitle}</span>
                     {t.score !== null && (
-                      <span className="text-gray-500 flex-shrink-0 text-xs">
+                      <span className="text-gray-500 flex-shrink-0 text-xs text-right">
                         <span className="text-brand font-medium">{t.score}</span>
                         {t.criticScore != null && t.audienceGrade && (
                           <span className="ml-1 text-gray-600">C:{t.criticScore} / A:{t.audienceGrade}</span>
@@ -159,7 +159,7 @@ export default function TonyPredictionsOverviewPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             {[
               { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
-              { stat: `${stats.rank1WinPct}%`, label: 'Critics-only #1 wins' },
+              { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
               { stat: `+${stats.improvement}pts`, label: 'Improvement from audience' },
               { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
             ].map(({ stat, label }) => (
@@ -174,7 +174,7 @@ export default function TonyPredictionsOverviewPage() {
           <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5 mb-5">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Field Size Changes Everything</h3>
             <div className="space-y-2.5">
-              {stats.fieldSizeData.map(({ label, pct, note }) => (
+              {stats.fieldSizeData.filter(d => d.count >= 2).map(({ label, pct, note, count }) => (
                 <div key={label} className="flex items-center gap-3">
                   <span className="text-sm text-gray-300 w-28 sm:w-32 flex-shrink-0">{label}</span>
                   <div className="flex-1 h-5 bg-white/5 rounded-full overflow-hidden">
@@ -184,7 +184,7 @@ export default function TonyPredictionsOverviewPage() {
                     />
                   </div>
                   <span className="text-sm font-semibold text-white w-10 text-right">{pct}%</span>
-                  <span className="text-xs text-gray-500 hidden sm:inline w-24">{note}</span>
+                  <span className="text-xs text-gray-500 hidden sm:inline w-24">{note} ({count})</span>
                 </div>
               ))}
             </div>
@@ -216,7 +216,7 @@ export default function TonyPredictionsOverviewPage() {
                 </div>
               </div>
               <p className="text-xs text-gray-500 mt-3">
-                Revivals carry nostalgia, star power, and cultural-moment factors that critic scores don&apos;t fully capture.
+                Revivals carry nostalgia, star power, and cultural-moment factors that blended scores don&apos;t fully capture.
               </p>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function TonyPredictionsOverviewPage() {
             <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5">
               <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
               <p className="text-xs text-gray-500 mb-3">
-                Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among nominees by critic score.
+                Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among nominees by blended score.
               </p>
               <div className="space-y-2">
                 {stats.upsets.map((upset, i) => (
@@ -240,7 +240,7 @@ export default function TonyPredictionsOverviewPage() {
                 ))}
               </div>
               <p className="text-xs text-gray-500 mt-3">
-                Every other &ldquo;upset&rdquo; was the #2 critic score edging out #1.
+                Every other &ldquo;upset&rdquo; was the #2 blended score edging out #1.
               </p>
             </div>
           )}
