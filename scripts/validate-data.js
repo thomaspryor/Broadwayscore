@@ -188,7 +188,7 @@ function validateRequiredFields(shows) {
 
 function validateStatus(shows) {
   info('Checking status values...');
-  const validStatuses = ['open', 'closed', 'previews'];
+  const validStatuses = ['open', 'closed', 'previews', 'upcoming', 'announced'];
   let invalid = 0;
 
   for (const show of shows) {
