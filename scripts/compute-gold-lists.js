@@ -39,8 +39,12 @@ const showById = {};
 const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });
 
+const { isOfficialBroadwayTheater } = require('./lib/broadway-theaters');
+
 function isBroadway(show) {
-  return show && !show.id.includes('west-end') && !show.id.includes('off-broadway');
+  if (!show) return false;
+  if (show.id.includes('west-end')) return false;
+  return isOfficialBroadwayTheater(show.venue);
 }
 
 // ============================================

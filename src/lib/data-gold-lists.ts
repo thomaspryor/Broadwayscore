@@ -72,8 +72,46 @@ const shows = (showsData as { shows: RawShowData[] }).shows;
 const showById = new Map(shows.map(s => [s.id, s]));
 const showBySlug = new Map(shows.map(s => [s.slug, s]));
 
+// Official Broadway theaters — canonical names + common aliases
+// Source: scripts/lib/broadway-theaters.js
+const BROADWAY_VENUES = new Set([
+  'Ambassador Theatre', 'Booth Theatre', 'Broadhurst Theatre', 'Broadway Theatre',
+  'James Earl Jones Theatre', 'Cort Theatre', 'Ethel Barrymore Theatre', 'Barrymore Theatre',
+  'Gerald Schoenfeld Theatre', 'Schoenfeld Theatre', 'Plymouth Theatre',
+  'John Golden Theatre', 'Golden Theatre', 'Imperial Theatre',
+  'Bernard B. Jacobs Theatre', 'Jacobs Theatre', 'Royale Theatre',
+  'Longacre Theatre', 'Lyceum Theatre', 'Majestic Theatre',
+  'Music Box Theatre', 'Shubert Theatre', 'Sam S. Shubert Theatre',
+  'Winter Garden Theatre',
+  'Brooks Atkinson Theatre', 'Atkinson Theatre', 'Gershwin Theatre', 'Uris Theatre',
+  'Lena Horne Theatre', 'Lunt-Fontanne Theatre', 'Lunt Fontanne',
+  'Marquis Theatre', 'Minskoff Theatre',
+  'Nederlander Theatre', 'National Theatre', 'Billy Rose Theatre', 'Trafalgar Theatre',
+  'Neil Simon Theatre', 'Simon Theatre', 'Alvin Theatre',
+  'Richard Rodgers Theatre', 'Rodgers Theatre', '46th Street Theatre',
+  'Palace Theatre',
+  'August Wilson Theatre', 'Virginia Theatre', 'ANTA Theatre', 'ANTA Playhouse',
+  'Al Hirschfeld Theatre', 'Hirschfeld Theatre', 'Martin Beck Theatre',
+  "Eugene O'Neill Theatre", "O'Neill Theatre", 'Forrest Theatre',
+  'Walter Kerr Theatre', 'Kerr Theatre', 'Ritz Theatre',
+  'St. James Theatre', 'Saint James Theatre',
+  'New Amsterdam Theatre',
+  'Stephen Sondheim Theatre', 'Sondheim Theatre', 'Henry Miller Theatre',
+  'Todd Haimes Theatre', 'American Airlines Theatre', 'Selwyn Theatre',
+  'Harold and Miriam Steinberg Center for Theatre', 'Studio 54',
+  'Vivian Beaumont Theater', 'Beaumont Theatre', 'Beaumont Theater',
+  'Helen Hayes Theater', 'Helen Hayes Theatre', 'Hayes Theater', 'Little Theatre',
+  'Samuel J. Friedman Theatre', 'Friedman Theatre', 'Biltmore Theatre',
+  'Circle in the Square Theatre', 'Hudson Theatre',
+  'Lyric Theatre', 'Ford Center', 'Ford Center for the Performing Arts', 'Hilton Theatre',
+  'Belasco Theatre',
+  'Morosco Theatre', 'Mark Hellinger Theatre', 'Hellinger Theatre',
+  'Bijou Theatre', 'Edison Theatre', 'Edison Hotel Theatre',
+]);
+
 function isBroadway(show: RawShowData): boolean {
-  return !show.id.includes('west-end') && !show.id.includes('off-broadway');
+  if (show.id.includes('west-end')) return false;
+  return BROADWAY_VENUES.has(show.venue);
 }
 const allReviews = Object.values(
   (reviewsData as unknown as { reviews: Record<string, RawReviewData> }).reviews
