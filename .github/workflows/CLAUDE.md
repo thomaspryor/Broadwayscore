@@ -14,7 +14,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
-| `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
+| `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline, **dispatches deploy** |
 | `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
@@ -85,8 +85,9 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Secrets required:** `ANTHROPIC_API_KEY`, `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
 - **Script:** `scripts/gather-reviews.js`
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
-- **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild`
+- **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild → deploy`
   - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
+  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it.
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
