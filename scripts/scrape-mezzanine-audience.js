@@ -131,6 +131,25 @@ function filterNYCProductions(productions) {
 }
 
 /**
+ * Filter to London/West End productions
+ * Uses Mezzanine's theater metadata: location, geocodedCity
+ */
+function filterLondonProductions(productions) {
+  return productions.filter(p => {
+    const theater = p.theater;
+    if (!theater) return false;
+
+    const loc = (theater.location || '').toLowerCase();
+    const city = (theater.geocodedCity || '').toLowerCase();
+
+    if (loc === 'london') return true;
+    if (city === 'london') return true;
+
+    return false;
+  });
+}
+
+/**
  * Extract date string from Parse Date object or plain string
  */
 function parseDate(val) {
@@ -345,12 +364,13 @@ async function main() {
   }
   console.log(`Fetched ${allProductions.length} productions with ratings`);
 
-  // 2. Filter to NYC/Broadway productions
+  // 2. Filter productions by market
   const nycProductions = filterNYCProductions(allProductions);
-  console.log(`Filtered to ${nycProductions.length} NYC/Broadway productions\n`);
+  const londonProductions = filterLondonProductions(allProductions);
+  console.log(`Filtered to ${nycProductions.length} NYC/Broadway + ${londonProductions.length} London/West End productions\n`);
 
-  // 3. Get shows to process (exclude West End — Mezzanine only has NYC productions)
-  let shows = showsData.shows.filter(s => s.category !== 'west-end');
+  // 3. Get shows to process (all categories — match each against its market's pool)
+  let shows = showsData.shows;
 
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -382,10 +402,18 @@ async function main() {
     shows = shows.slice(0, showLimit);
   }
 
-  console.log(`Matching ${shows.length} shows against ${nycProductions.length} Mezzanine productions...\n`);
+  // Split shows by market for correct pool matching
+  const nycShows = shows.filter(s => s.category !== 'west-end');
+  const weShows = shows.filter(s => s.category === 'west-end');
+  console.log(`Matching ${nycShows.length} NYC shows + ${weShows.length} WE shows against their market pools...\n`);
 
-  // 4. Match productions to shows
-  const matches = matchProductions(nycProductions, shows);
+  // 4. Match productions to shows (each market against its own pool)
+  const nycMatches = matchProductions(nycProductions, nycShows);
+  const weMatches = matchProductions(londonProductions, weShows);
+  const matches = [...nycMatches, ...weMatches];
+  if (weMatches.length > 0) {
+    console.log(`  West End matches: ${weMatches.length}`);
+  }
 
   console.log(`Found ${matches.length} matches\n`);
 
