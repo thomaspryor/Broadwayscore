@@ -71,6 +71,10 @@ interface GrossesHistoryFile {
 const shows = (showsData as { shows: RawShowData[] }).shows;
 const showById = new Map(shows.map(s => [s.id, s]));
 const showBySlug = new Map(shows.map(s => [s.slug, s]));
+
+function isBroadway(show: RawShowData): boolean {
+  return !show.id.includes('west-end') && !show.id.includes('off-broadway');
+}
 const allReviews = Object.values(
   (reviewsData as unknown as { reviews: Record<string, RawReviewData> }).reviews
 );
@@ -134,7 +138,7 @@ function computeCriticalGold(season: string): GoldListEntry[] {
 
   for (const [showId, reviews] of Array.from(byShow.entries())) {
     const show = showById.get(showId);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
 
     let weightedSum = 0;
@@ -182,7 +186,7 @@ function computeAudienceGold(season: string): GoldListEntry[] {
 
   for (const [showId, data] of Object.entries(abShows)) {
     const show = showById.get(showId);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < config.threshold) continue;
 
     results.push({
@@ -216,7 +220,7 @@ function computeBoxOfficeGold(season: string): GoldListEntry[] {
 
   for (const [slug, data] of Object.entries(showGrosses)) {
     const show = showBySlug.get(slug);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
 
     const allTime = data.allTime;
     if (!allTime || !allTime.performances || allTime.performances < 50) continue;
@@ -293,7 +297,7 @@ function computeHotTicketGold(season: string): GoldListEntry[] {
     if (capacities.length < 8) continue;
 
     const show = showBySlug.get(slug);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
 
     const avgCapacity = capacities.reduce((a: number, b: number) => a + b, 0) / capacities.length;
     if (avgCapacity < config.threshold) continue;
@@ -396,7 +400,7 @@ function computeCriticalGoldUncapped(season: string): GoldListEntry[] {
   const results: GoldListEntry[] = [];
   for (const [showId, reviews] of Array.from(byShow.entries())) {
     const show = showById.get(showId);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
 
     let weightedSum = 0, weightSum = 0;
@@ -427,7 +431,7 @@ function computeAudienceGoldUncapped(season: string): GoldListEntry[] {
 
   for (const [showId, data] of Object.entries(abShows)) {
     const show = showById.get(showId);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < config.threshold) continue;
 
     results.push({
@@ -445,7 +449,7 @@ function computeBoxOfficeGoldUncapped(season: string): GoldListEntry[] {
 
   for (const [slug, data] of Object.entries(showGrosses)) {
     const show = showBySlug.get(slug);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     const allTime = data.allTime;
     if (!allTime || !allTime.performances || allTime.performances < 50) continue;
     if (!allTime.gross || allTime.gross <= 0) continue;
@@ -488,7 +492,7 @@ function computeHotTicketGoldUncapped(season: string): GoldListEntry[] {
   for (const [slug, capacities] of Array.from(showCapacity.entries())) {
     if (capacities.length < 8) continue;
     const show = showBySlug.get(slug);
-    if (!show || getSeason(show.openingDate) !== season) continue;
+    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
 
     const avgCapacity = capacities.reduce((a: number, b: number) => a + b, 0) / capacities.length;
     if (avgCapacity < config.threshold) continue;
