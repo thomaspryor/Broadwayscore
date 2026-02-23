@@ -300,7 +300,7 @@ function updateAudienceBuzz(match) {
 
   // Recalculate combined score
   const sd = showMapById[showId];
-  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status, category: sd.category } : undefined;
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);
 
   if (score !== null) {
@@ -349,8 +349,8 @@ async function main() {
   const nycProductions = filterNYCProductions(allProductions);
   console.log(`Filtered to ${nycProductions.length} NYC/Broadway productions\n`);
 
-  // 3. Get shows to process
-  let shows = showsData.shows;
+  // 3. Get shows to process (exclude West End — Mezzanine only has NYC productions)
+  let shows = showsData.shows.filter(s => s.category !== 'west-end');
 
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);

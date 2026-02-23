@@ -163,7 +163,7 @@ function main() {
     // Recalculate combined score
     const sources = audienceBuzz.shows[showId].sources;
     const sd = showMapById[showId];
-    const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+    const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status, category: sd.category } : undefined;
     const { score } = calculateCombinedScore(sources, showInfo);
 
     if (score !== null) {
