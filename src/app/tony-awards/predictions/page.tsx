@@ -54,6 +54,8 @@ export default function TonyPredictionsOverviewPage() {
       label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
       showTitle: cat.shows[0].title,
       score: cat.shows[0].blendedScore,
+      criticScore: cat.shows[0].compositeScore,
+      audienceGrade: cat.shows[0].audienceGrade?.grade ?? null,
     }));
 
   // Season summaries for the grid
@@ -129,7 +131,12 @@ export default function TonyPredictionsOverviewPage() {
                     <span className="text-gray-500 flex-shrink-0">{t.label}</span>
                     <span className="text-white font-medium truncate">{t.showTitle}</span>
                     {t.score !== null && (
-                      <span className="text-brand flex-shrink-0">({t.score})</span>
+                      <span className="text-gray-500 flex-shrink-0 text-xs">
+                        <span className="text-brand font-medium">{t.score}</span>
+                        {t.criticScore != null && t.audienceGrade && (
+                          <span className="ml-1 text-gray-600">C:{t.criticScore} / A:{t.audienceGrade}</span>
+                        )}
+                      </span>
                     )}
                   </div>
                 ))}
