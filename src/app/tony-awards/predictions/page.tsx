@@ -9,7 +9,7 @@ import {
   getAllPredictionSeasons,
   getEligibleShows,
   groupIntoCategories,
-  computeAccuracyStats,
+  computeBlendedAccuracyStats,
   getSeasonSummary,
 } from '@/lib/data-tony-predictions';
 
@@ -17,14 +17,14 @@ const currentSeason = getTonySeasonWindow();
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Tony Awards Predictions — Every Season Ranked by Critic Scores',
-    description: `Data-driven Tony Awards predictions across ${getAllPredictionSeasons().length} seasons. See how critic scores predicted Tony winners with ${currentSeason.label} predictions and historical accuracy data.`,
+    title: 'Tony Awards Predictions — Blended Critic + Audience Rankings',
+    description: `Data-driven Tony Awards predictions across ${getAllPredictionSeasons().length} seasons. Blended critic + audience scores predict Tony winners more accurately than critics alone.`,
     alternates: {
       canonical: `${BASE_URL}/tony-awards/predictions`,
     },
     openGraph: {
       title: 'Tony Awards Predictions — Broadway Scorecard',
-      description: 'Every Tony-eligible show ranked by critic scores, with historical accuracy analysis.',
+      description: 'Every Tony-eligible show ranked by blended critic + audience scores, with historical accuracy analysis.',
       url: `${BASE_URL}/tony-awards/predictions`,
       type: 'website',
       images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: 'Tony Awards Predictions' }],
@@ -32,7 +32,7 @@ export function generateMetadata(): Metadata {
     twitter: {
       card: 'summary_large_image',
       title: 'Tony Awards Predictions — Broadway Scorecard',
-      description: 'Every Tony-eligible show ranked by critic scores.',
+      description: 'Every Tony-eligible show ranked by blended critic + audience scores.',
     },
   };
 }
@@ -42,7 +42,7 @@ export default function TonyPredictionsOverviewPage() {
 
   const allShows = getBroadwayShows();
   const seasons = getAllPredictionSeasons();
-  const stats = computeAccuracyStats(allShows);
+  const stats = computeBlendedAccuracyStats(allShows);
 
   // Current season data for the callout card
   const currentEligible = getEligibleShows(allShows, currentSeason);
@@ -53,7 +53,7 @@ export default function TonyPredictionsOverviewPage() {
     .map(cat => ({
       label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
       showTitle: cat.shows[0].title,
-      score: cat.shows[0].compositeScore,
+      score: cat.shows[0].blendedScore,
     }));
 
   // Season summaries for the grid
@@ -71,10 +71,10 @@ export default function TonyPredictionsOverviewPage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'How accurate are critic scores at predicting Tony Awards?',
+        name: 'How accurate are blended critic + audience scores at predicting Tony Awards?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Over ${stats.seasonCount} Tony seasons, the top 2 shows by aggregated critic score won the Tony ${stats.top2WinPct}% of the time. Best Musical is the most predictable category. Based on ${stats.categorySeasonCount} category-seasons of data.`,
+          text: `Over ${stats.seasonCount} Tony seasons, blending critic scores with audience grades predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.rank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
         },
       },
     ],
@@ -100,7 +100,7 @@ export default function TonyPredictionsOverviewPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            {seasons.length} seasons of data-driven Tony predictions. Every eligible show ranked by aggregated critic scores.
+            {seasons.length} seasons of data-driven Tony predictions. Every eligible show ranked by blended critic + audience scores.
           </p>
         </div>
 
@@ -143,18 +143,18 @@ export default function TonyPredictionsOverviewPage() {
 
         {/* Accuracy Stats Section */}
         <section className="mb-10">
-          <h2 className="text-xl font-bold text-white mb-2">How Accurate Are Critic Scores?</h2>
+          <h2 className="text-xl font-bold text-white mb-2">How Accurate Are Our Predictions?</h2>
           <p className="text-sm text-gray-400 mb-5">
-            Across {stats.categorySeasonCount} category-seasons over {stats.seasonCount} Tony ceremonies.
+            Blended critic + audience scores across {stats.categorySeasonCount} category-seasons over {stats.seasonCount} Tony ceremonies.
           </p>
 
           {/* Hero stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             {[
-              { stat: `${stats.rank1WinPct}%`, label: '#1 score wins' },
-              { stat: `${stats.top2WinPct}%`, label: 'Top 2 wins' },
-              { stat: `${stats.byCategory[0]?.pct || 0}%`, label: 'Best Musical accuracy' },
-              { stat: `${stats.avgWinnerRank}`, label: 'Avg winner rank' },
+              { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
+              { stat: `${stats.rank1WinPct}%`, label: 'Critics-only #1 wins' },
+              { stat: `+${stats.improvement}pts`, label: 'Improvement from audience' },
+              { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
             ].map(({ stat, label }) => (
               <div key={label} className="rounded-xl border border-white/5 bg-surface-overlay p-3 sm:p-4 text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-brand">{stat}</div>
