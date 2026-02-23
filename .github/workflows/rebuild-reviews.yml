@@ -272,6 +272,16 @@ jobs:
 
           echo "LLM scoring auto-triggered successfully."
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reviews Rebuild Failed'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Summary
         run: |
           echo "## Reviews Rebuild Summary" >> $GITHUB_STEP_SUMMARY

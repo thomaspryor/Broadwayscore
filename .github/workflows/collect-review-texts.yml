@@ -315,6 +315,15 @@ jobs:
           echo "Pull quote extraction dispatched."
         continue-on-error: true
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review Text Collection Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Upload collection report
         uses: actions/upload-artifact@v4
         if: always()
