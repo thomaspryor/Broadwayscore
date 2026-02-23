@@ -9,17 +9,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
-      with:
-        repository: thomaspryor/broadway-scorecard-data
-        token: ${{ inputs.token }}
-        path: .core-data-checkout
-        fetch-depth: 1
+    - name: Clone core data repo
+      shell: bash
+      env:
+        CORE_DATA_TOKEN: ${{ inputs.token }}
+      run: |
+        # Clone to /tmp to avoid nested .git inside workspace (causes
+        # actions/checkout post-cleanup "No url found for submodule" errors)
+        rm -rf /tmp/core-data-checkout
+        git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
 
     - name: Copy core data to data/
       shell: bash
       run: |
-        for f in .core-data-checkout/*.json; do
+        for f in /tmp/core-data-checkout/*.json; do
           [ -f "$f" ] && cp -f "$f" data/
         done
         # Canary check — fail fast if key files missing
@@ -27,4 +30,4 @@ runs:
           echo "::error::Core data checkout FAILED — shows.json or reviews.json missing"
           exit 1
         fi
-        echo "Core data restored from private repo ($(ls .core-data-checkout/*.json | wc -l) files)"
+        echo "Core data restored from private repo ($(ls /tmp/core-data-checkout/*.json | wc -l) files)"

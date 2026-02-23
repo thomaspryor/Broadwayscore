@@ -17,12 +17,12 @@ runs:
       shell: bash
       run: |
         for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json; do
-          [ -f "data/$f" ] && cp -f "data/$f" .core-data-checkout/
+          [ -f "data/$f" ] && cp -f "data/$f" /tmp/core-data-checkout/
         done
 
     - name: Commit and push core data
       shell: bash
-      working-directory: .core-data-checkout
+      working-directory: /tmp/core-data-checkout
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
         COMMIT_MSG: ${{ inputs.message }}
