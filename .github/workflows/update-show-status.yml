@@ -66,7 +66,7 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/discover-new-shows.js --include-west-end
+        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end
 
       # Step 3: Validate data before committing
       - name: Validate data
@@ -206,8 +206,8 @@ jobs:
             `;
 
             const title = shows.length === 1
-              ? `🎭 New Broadway Show: ${shows[0].title}`
-              : `🎭 ${shows.length} New Broadway Shows Discovered`;
+              ? `🎭 New Show: ${shows[0].title}`
+              : `🎭 ${shows.length} New Shows Discovered`;
 
             await github.rest.issues.create({
               owner: context.repo.owner,
@@ -259,9 +259,15 @@ jobs:
 
           # Also output ALL new shows (including previews) for cast backfill
           # Cast data is available on IBDB as soon as previews begin
+          # Skip OB/WE shows — IBDB is Broadway-only
           all_cast_slugs=""
           for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
             [ -z "$slug" ] && continue
+            category=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.category || 'broadway');")
+            if [ "$category" != "broadway" ] && [ "$category" != "" ]; then
+              echo "Skipping cast backfill for non-Broadway show: $slug ($category)"
+              continue
+            fi
             [ -n "$all_cast_slugs" ] && all_cast_slugs="$all_cast_slugs,$slug" || all_cast_slugs="$slug"
           done
           echo "cast_shows=$all_cast_slugs" >> $GITHUB_OUTPUT
