@@ -89,7 +89,8 @@ function parseInfobox(content) {
     const m = text.match(new RegExp(`\\|\\s*${f}\\s*=\\s*(.+?)(?:\\n\\||\\n\\}\\})`, 's'));
     if (m) {
       const val = cleanWikitext(m[1]);
-      if (val && val.length > 0) fields[f] = val;
+      // Skip garbage extractions — real names are under 200 chars
+      if (val && val.length > 0 && val.length < 200) fields[f] = val;
     }
   }
   return { fields, type };
@@ -129,19 +130,8 @@ async function getWikipediaInfobox(searchTitles) {
     }
   }
 
-  // Phase 2: Wikipedia search API fallback
-  try {
-    const baseTitle = searchTitles[0].replace(/ \(musical\)| \(play\)/g, '');
-    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(baseTitle + ' musical OR play theatre')}&srlimit=3&format=json`;
-    const searchData = await fetchJson(searchUrl);
-    for (const sr of (searchData.query?.search || [])) {
-      const content = await getPageContent(sr.title);
-      if (!content) continue;
-      const result = parseInfobox(content);
-      if (result) return { ...result, title: sr.title };
-    }
-  } catch (e) { /* ignore search failures */ }
-
+  // Search fallback disabled — too many false positives (wrong shows)
+  // Only exact title matches are reliable for creative team extraction
   return null;
 }
 
