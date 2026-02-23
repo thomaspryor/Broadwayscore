@@ -320,17 +320,10 @@ jobs:
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
-            const body = '## ⚠️ Scraping Failed
-
-' +
-              'The review validation passed, but we encountered an error while scraping the review content.
-
-' +
-              'A maintainer will investigate and manually add the review if possible.
-
-' +
-              '---
-' +
+            const body = '## ⚠️ Scraping Failed\n\n' +
+              'The review validation passed, but we encountered an error while scraping the review content.\n\n' +
+              'A maintainer will investigate and manually add the review if possible.\n\n' +
+              '---\n' +
               '*Error occurred at ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
