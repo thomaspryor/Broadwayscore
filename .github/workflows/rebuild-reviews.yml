@@ -81,7 +81,7 @@ jobs:
       - name: Extract pull quotes for new reviews
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/extract-pull-quotes.js --limit=100
+        run: node scripts/extract-pull-quotes.js --limit=500
         continue-on-error: true
 
       - name: Classify new review files
