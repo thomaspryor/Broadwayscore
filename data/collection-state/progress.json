@@ -1,32 +1,61 @@
 {
   "processed": [
-    "mexodus-2026/nytg--austin-fimmano.json",
-    "mexodus-2026/nytimes--brittani-samuel.json"
+    "seagull-true-story-2026/vulture--unknown.json",
+    "seagull-true-story-2026/theatermania--christian-lewis.json"
   ],
   "failed": [
-    "mexodus-2026/theatermania--zachary-stewart.json",
-    "mexodus-2026/theatrely--andrew-martini.json",
-    "mexodus-2026/dailybeast--tim-teeman.json"
+    "seagull-true-story-2026/nytimes--jesse-green.json",
+    "seagull-true-story-2026/observer--david-cote.json",
+    "seagull-true-story-2026/cititour--brian-scott-lipton.json",
+    "seagull-true-story-2026/josh-at-the-movies-josh-batchelder--josh-batchelder.json",
+    "seagull-true-story-2026/talkinbroadway--james-wilson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "mexodus-2026/nytg--austin-fimmano.json"
+      "seagull-true-story-2026/theatermania--christian-lewis.json"
     ],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "les-liaisons-dangereuses-1987/timeout--david-cote.json",
+      "macbeth-2008/timeout--david-cote.json",
+      "macbeth-2022/timeout--adam-feldman.json",
+      "magicbird-2012/timeout--davide-cote.json",
+      "once-on-this-island-1990/timeout--adam-feldman.json",
+      "once-on-this-island-2002/timeout--adam-feldman.json"
+    ],
     "scrapingbee": [
       "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
       "the-disappear-2026/nytimes--helen-shaw.json",
       "the-monsters-2026/nytimes--brittani-samuel.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/bloodlove-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/an-ark-2026/new-jersey-newsroom--micheal-sommers.json",
+      "data/review-texts/blackout-songs-2026/new-york-sun--elysa-gardner.json",
+      "data/review-texts/bloodlove-2026/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/bloodlove-2026/newsday--linda-winer.json",
+      "data/review-texts/elf-2024/amny--matt-windman.json",
+      "data/review-texts/hello-dolly-2017/amny--matt-windman.json",
+      "data/review-texts/miss-saigon-2017/amny--matt-windman.json",
+      "data/review-texts/spongebob-squarepants-2017/amny--matt-windman.json",
+      "data/review-texts/the-cherry-orchard-2016/amny--matt-windman.json",
+      "data/review-texts/private-lives-1975/ew--clark-collis.json",
+      "data/review-texts/private-lives-1983/ew--clark-collis.json",
+      "data/review-texts/private-lives-1992/ew--clark-collis.json",
+      "data/review-texts/private-lives-2002/ew--clark-collis.json",
+      "data/review-texts/private-lives-2011/ew--.json",
+      "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json",
+      "data/review-texts/elf-2024/amny--matt-windman.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+      "data/review-texts/once-2012/timeout--adam-feldman.json"
+    ],
     "archive": [
-      "mexodus-2026/nytimes--brittani-samuel.json"
+      "seagull-true-story-2026/vulture--unknown.json"
     ]
   },
-  "startTime": "2026-02-23T00:06:10.880Z",
-  "lastProcessed": "mexodus-2026/dailybeast--tim-teeman.json",
+  "startTime": "2026-02-23T00:12:52.410Z",
+  "lastProcessed": "seagull-true-story-2026/talkinbroadway--james-wilson.json",
   "log": []
 }
