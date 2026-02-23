@@ -208,7 +208,7 @@ function generateCandidateUrls(show) {
 
   // URL base depends on category
   const base = isWestEnd
-    ? 'https://www.show-score.com/london-shows'
+    ? 'https://www.show-score.com/uk/london/west-end-shows'
     : isOffBroadway
       ? 'https://www.show-score.com/off-broadway-shows'
       : 'https://www.show-score.com/broadway-shows';
@@ -284,8 +284,8 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
   if (url.includes('/off-off-broadway-shows/')) return false;
   // Reject off-broadway unless show is off-broadway
   if (!allowOffBroadway && url.includes('/off-broadway-shows/')) return false;
-  // Reject london-shows unless show is west-end
-  if (!allowWestEnd && url.includes('/london-shows/')) return false;
+  // Reject london/west-end shows unless show is west-end
+  if (!allowWestEnd && (url.includes('/london-shows/') || url.includes('/west-end-shows/'))) return false;
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const match of jsonLdMatch) {
@@ -303,9 +303,9 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
             if (verbose) console.log(`    Rejected: canonical URL is off-broadway (${data.url})`);
             return false;
           }
-          // Reject london-shows canonical unless show is west-end
-          if (!allowWestEnd && data.url && /\/london-shows\//.test(data.url)) {
-            if (verbose) console.log(`    Rejected: canonical URL is london-shows (${data.url})`);
+          // Reject london/west-end-shows canonical unless show is west-end
+          if (!allowWestEnd && data.url && (/\/london-shows\//.test(data.url) || /\/west-end-shows\//.test(data.url))) {
+            if (verbose) console.log(`    Rejected: canonical URL is west-end-shows (${data.url})`);
             return false;
           }
           // Title validation: reject if page is for a different show (listings page redirect)
