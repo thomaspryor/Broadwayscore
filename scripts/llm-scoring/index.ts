@@ -168,7 +168,8 @@ function writeProgress(
   totalFiles: number,
   errors: number,
   skipped: number,
-  startTime: number
+  startTime: number,
+  globalCounts?: { totalReviewFiles: number; totalScored: number; totalUnscored: number; totalSkipped: number }
 ): void {
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   const elapsedMin = Math.round(elapsed / 60);
@@ -209,7 +210,16 @@ function writeProgress(
     rateSecondsPerReview: parseFloat(rate) || 0,
     estimatedRemainingMinutes: typeof remaining === 'number' ? remaining : null,
     lastUpdated: timestamp,
-    runId: process.env.GITHUB_RUN_ID || null
+    runId: process.env.GITHUB_RUN_ID || null,
+    // Global counts across ALL review files (not just this batch/shard)
+    // These are the authoritative numbers — local data/review-texts/ is gitignored
+    // from the public repo, so only these counts are reliable after git pull.
+    ...(globalCounts ? {
+      globalTotalFiles: globalCounts.totalReviewFiles,
+      globalScored: globalCounts.totalScored,
+      globalUnscored: globalCounts.totalUnscored,
+      globalSkipped: globalCounts.totalSkipped,
+    } : {})
   };
   try { fs.writeFileSync(progressPath, JSON.stringify(progress, null, 2) + '\n'); } catch {}
 }
@@ -941,8 +951,23 @@ async function main(): Promise<void> {
     }
   }
 
-  // Write final progress
-  writeProgress(processed, finalFiles.length, errors, skipped, startTime);
+  // Compute global counts across ALL review files (not just this batch)
+  // This is the authoritative count that gets committed to the public repo.
+  const globalCounts = { totalReviewFiles: 0, totalScored: 0, totalUnscored: 0, totalSkipped: 0 };
+  for (const f of allFiles) {
+    globalCounts.totalReviewFiles++;
+    const d = f.data as any;
+    if (d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') {
+      globalCounts.totalSkipped++;
+    } else if (d.llmScore) {
+      globalCounts.totalScored++;
+    } else {
+      globalCounts.totalUnscored++;
+    }
+  }
+
+  // Write final progress with global counts
+  writeProgress(processed, finalFiles.length, errors, skipped, startTime, globalCounts);
 
   // Summary
   const completedAt = new Date().toISOString();
