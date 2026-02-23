@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, memo, useCallback, useState, Suspense } from 'react';
+import { useMemo, memo, useCallback, useState, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
@@ -33,6 +33,7 @@ interface WestEndPageClientProps {
   shows: WestEndShow[];
   totalShows: number;
   totalReviews: number;
+  scoredShows: number;
 }
 
 // URL parameter values
@@ -339,7 +340,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -362,7 +363,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    setFilters(prev => {
+    startTransition(() => setFilters(prev => {
       const next = { ...prev };
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
@@ -387,7 +388,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
       window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
 
       return next;
-    });
+    }));
   }, []);
 
   const clearAllFilters = useCallback(() => {
@@ -516,7 +517,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews }: WestEndPageClient
           Every show. Every review. One score.
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
 
