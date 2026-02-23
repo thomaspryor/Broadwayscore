@@ -1,139 +1,99 @@
 {
-  "runDate": "2026-02-23T00:21:53.908Z",
+  "runDate": "2026-02-23T00:25:39.723Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "the-devil-wears-prada-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 35,
+    "processed": 9,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "14.6%"
+    "successRate": "56.3%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 4
+    "archiveToday": 2,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 18,
-    "tier4Success": 3,
-    "totalFailed": 27,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 7,
+    "tier4Success": 2,
+    "totalFailed": 7,
     "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 10,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-west-end-2024/guardian--arifa-akbar.json",
-    "hadestown-west-end-2024/lighting-and-sound-america--david-barbour.json",
-    "hadestown-west-end-2024/standard--nick-curtis.json",
-    "hadestown-west-end-2024/theatre-weekly--greg-stewart.json",
-    "hadestown-west-end-2024/uk-daily-telegraph--dominic-cavendish.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-times-uk--maxie-szalwinska.json"
+    "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
+    "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
+    "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+    "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
+    "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+    "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json",
+    "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
   ],
   "failed": [
-    "hadestown-west-end-2024/nypost--johnny-oleksinski.json",
-    "hadestown-west-end-2024/bww--cindy-marcolina.json",
-    "hadestown-west-end-2024/stage-uk--sam-marlowe.json",
-    "hadestown-west-end-2024/the-arts-desk--mert-dilek.json",
-    "hadestown-west-end-2024/the-times-uk--clive-davis.json",
-    "hadestown-west-end-2024/the-times-uk--unknown.json",
-    "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "hadestown-west-end-2024/washpost--peter-marks.json",
-    "back-to-the-future-west-end-2021/the-times-uk--clive-davis.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/the-times-uk--quentin-letts.json",
-    "hadestown-west-end-2024/the-times-uk--clive-davis.json",
-    "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "hamilton-west-end-2021/the-times-uk--ann-treneman.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "jackals-2026/times-uk--anne-treneman.json",
-    "les-miserables-west-end-2021/the-times-uk--clive-davis.json",
-    "mj-the-musical-west-end-2024/the-times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/the-times-uk--clive-davis.json",
-    "my-neighbour-totoro-west-end-2025/the-times-uk--clive-davis.json",
-    "oh-mary-west-end-2025/times-uk--clive-davis.json",
-    "operation-mincemeat-west-end-2024/the-times-uk--clive-davis.json",
-    "stranger-things-the-first-shadow-west-end-2023/the-times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/the-times-uk--libby-purves.json",
-    "the-mousetrap-west-end-2021/the-times-uk--quentin-letts.json",
-    "the-play-that-goes-wrong-west-end-2021/the-times-uk--dominic-maxwell.json",
-    "the-winters-tale-2026/times-uk--ann-treneman.json",
-    "a-little-night-music-2009/the-times-ann-treneman--ann-treneman.json",
-    "merrily-we-roll-along-1981/times-uk--will-pavia.json",
-    "merrily-we-roll-along-2023/the-times--will-pavia.json",
-    "network-2018/the-times-ann-treneman--ann-treneman.json",
-    "oleanna-2009/the-times-uk--dominic-maxwell.json",
-    "rock-n-roll-2007/the-times-uk--rachel-halliburton.json",
-    "suffs-2024/the-times--nancy-durrant.json",
-    "the-front-page-2016/the-times-uk--kate-maltby.json",
-    "west-side-story-1980/times-uk--jesse-oxfeld.json"
+    "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+    "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+    "the-devil-wears-prada-west-end-2024/stage-uk--tim-bano.json",
+    "the-devil-wears-prada-west-end-2024/the-arts-desk--matt-wolf.json",
+    "the-devil-wears-prada-west-end-2024/the-independent-uk--alice-saville.json",
+    "the-devil-wears-prada-west-end-2024/the-times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/whatsonstage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hadestown-west-end-2024/guardian--arifa-akbar.json",
-      "hadestown-west-end-2024/lighting-and-sound-america--david-barbour.json"
+      "the-devil-wears-prada-west-end-2024/the-guardian-uk--arifa-akbar.json",
+      "the-devil-wears-prada-west-end-2024/billboard--unknown.json",
+      "the-devil-wears-prada-west-end-2024/financial-times-uk--unknown.json",
+      "the-devil-wears-prada-west-end-2024/london-theatre--olivia-rook.json",
+      "the-devil-wears-prada-west-end-2024/telegraph--unknown.json",
+      "the-devil-wears-prada-west-end-2024/theatre-weekly-uk--greg-stewart.json"
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-devil-wears-prada-west-end-2024/the-times-uk--clive-davis.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json"
+    ],
     "archive": [
-      "hadestown-west-end-2024/standard--nick-curtis.json",
-      "hadestown-west-end-2024/theatre-weekly--greg-stewart.json",
-      "hadestown-west-end-2024/uk-daily-telegraph--dominic-cavendish.json",
-      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-times-uk--maxie-szalwinska.json"
+      "the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
+      "the-devil-wears-prada-west-end-2024/uk-daily-telegraph--dominic-cavendish.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Times (UK)": {
-      "count": 6,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times": {
-      "count": 8,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (Ann Treneman)": {
-      "count": 1,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
