@@ -55,7 +55,7 @@ const shardMode = shard !== null && totalShards !== null;
 
 // Config — subreddit per market
 const SUBREDDIT_BW = 'broadway';
-const SUBREDDIT_WE = 'WestEndTheatre';
+const SUBREDDIT_WE = 'TheWestEnd';
 function getSubreddit(show) {
   if (show.category === 'off-broadway') return null; // No relevant subreddit for OB
   return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;
@@ -230,7 +230,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     `"${cleanTitle}" thoughts`,               // Discussion
     `"${cleanTitle}" loved`,                  // Positive reactions
     `"${cleanTitle}" recommend`,              // Recommendations
-    `"${cleanTitle}" "on ${marketName}"`,     // Market-specific
+    `"${cleanTitle}" "${isWestEnd ? 'in the West End' : 'on Broadway'}"`, // Market-specific phrasing
     `"${cleanTitle}"`,                        // Basic search (for neutral posts)
   ];
 
