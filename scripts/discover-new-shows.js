@@ -122,6 +122,8 @@ async function fetchShowsFromTodayTix() {
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
+      description: show.description || '',
+      todayTixCategory: show.category?.name || null,
     });
   }
 
@@ -137,6 +139,8 @@ async function fetchShowsFromTodayTix() {
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: 'off-broadway',
+      description: show.description || '',
+      todayTixCategory: show.category?.name || null,
     });
   }
 
@@ -232,6 +236,8 @@ async function fetchShowsFromTodayTixLondon() {
       openingDate: show.startDate || null,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: 'west-end',
+      description: show.description || '',
+      todayTixCategory: show.category?.name || null,
     });
   }
 
@@ -547,6 +553,15 @@ async function discoverShows() {
       detectedType = knownCheck.type || 'play';
       isRevival = true;
       confidence = 'high';
+    } else if (show.todayTixCategory) {
+      // TodayTix category is reliable for OB/WE (no IBDB available)
+      if (show.todayTixCategory === 'Musicals') {
+        detectedType = 'musical';
+        confidence = 'high';
+      } else if (show.todayTixCategory === 'Plays') {
+        detectedType = 'play';
+        confidence = 'high';
+      }
     } else if (show.ibdbShowType) {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
@@ -632,7 +647,7 @@ async function discoverShows() {
         runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
-        synopsis: '',
+        synopsis: show.description ? show.description.replace(/<[^>]*>/g, '').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim().substring(0, 500) : '',
         ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
         previewsStartDate: show.previewsStartDate || null,
         tags: tags,
