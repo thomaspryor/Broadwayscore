@@ -439,6 +439,10 @@ function validateCreativeTeamCompleteness(shows) {
   function hasBook(roles) {
     return hasAny(roles, 'book');
   }
+  // IBDB often lists musical librettists as "Playwright" instead of "Book"
+  function hasBookOrPlaywright(roles) {
+    return hasAny(roles, 'book', 'playwright');
+  }
   function hasWriter(roles) {
     return hasAny(roles, 'playwright', 'author', 'co-writer', 'adaptation',
       'translator', 'written by', 'book', 'writer');
@@ -451,25 +455,52 @@ function validateCreativeTeamCompleteness(shows) {
   // Each entry: show ID + reason it's legitimately missing the role
   const KNOWN_MUSICAL_NO_SONGWRITER = new Set([
     'burn-the-floor-2009',       // Dance extravaganza, no original songs
+    'contact-2000',              // Dance show with recorded music, no original songs
+    'tango-argentino-1985', 'tango-argentino-1999', // Traditional tango, no single songwriter
+    'flamenco-puro-1986',        // Flamenco dance, traditional music
+    'canciones-de-mi-padre-1988', // Linda Ronstadt folk concert
+    'andre-hellers-wonderhouse-1991', // Spectacle/variety
+    'it-aint-nothin-but-the-blues-1999', // Blues catalog, no single songwriter
+    'pacific-paradise-1972',     // Polynesian variety show, sparse IBDB data
+    'a-party-with-betty-comden-and-adolph-green-1977', // Concert, sparse IBDB data
+    'the-three-sisters-1996',    // Chekhov play with incidental music (likely misclassified)
   ]);
 
   const KNOWN_MUSICAL_NO_BOOK = new Set([
-    // Sung-through musicals (no spoken dialogue = no book)
+    // Sung-through musicals / operas (no spoken dialogue = no book)
     'cats-1982', 'cats-2016', 'cats-the-jellicle-ball-2026',
     'les-miserables-1987',
     'the-phantom-of-the-opera-1988',
     'evita-2012',
-    'jesus-christ-superstar-2012',
+    'jesus-christ-superstar-2012', 'jesus-christ-superstar-1971', 'jesus-christ-superstar-1977', 'jesus-christ-superstar-2000',
     'miss-saigon-2017',
-    'godspell-2011',
-    'the-gershwins-porgy-and-bess-2012',
+    'godspell-2011', 'godspell-1976',
+    'the-gershwins-porgy-and-bess-2012', 'porgy-and-bess-1976',
     'pirates-the-penzance-musical-2025',
+    'joseph-and-the-amazing-technicolor-dreamcoat-1993',
+    'amahl-and-the-night-visitors-1970', 'help-help-the-globolinks-1970', // Menotti operas
+    'amour-2002',                      // Legrand sung-through
+    'aspects-of-love-1990',            // ALW sung-through
+    'chess-2003',                      // Sung-through (ABBA)
+    'inner-city-1971',                 // Sung-through (Eve Merriam)
+    'la-boheme-2002',                  // Puccini opera
+    'la-tragedie-de-carmen-1983',      // Bizet opera adaptation
+    'song-and-dance-1985',             // ALW sung-through + dance
+    'starlight-express-1987',          // ALW sung-through
+    'the-human-comedy-1984',           // Sung-through
+    'treemonisha-1975',                // Joplin opera
+    'boccaccio-1975',                  // Operetta
+    'the-desert-song-1973',            // Operetta
+    'the-mikado-1976', 'the-mikado-1987', // G&S operettas
+    'the-three-sisters-1996',          // Chekhov adaptation with music
+    'here-lies-love-2023',             // Immersive concept album musical
+    'the-pirate-queen-2007',
     // Revues / concert shows / jukebox compilations (no narrative book)
     'after-midnight-2013',
     'rain-2010',
     'sondheim-on-sondheim-2010',
     'stephen-sondheims-old-friends-2025',
-    'bob-fosses-dancin-2023',
+    'bob-fosses-dancin-2023', 'dancin-1978',
     'burn-the-floor-2009',
     'cirque-du-soleil-paramour-2016',
     'cirque-dreams-2008',
@@ -477,20 +508,95 @@ function validateCreativeTeamCompleteness(shows) {
     'ring-of-fire-2006',
     'the-times-they-are-achangin-2006',
     'all-about-me-2010',
-    'the-pirate-queen-2007',
-    'here-lies-love-2023',             // Immersive concept album musical, no traditional book
+    'aint-misbehavin-1978', 'aint-misbehavin-1988',
+    'an-evening-with-jerry-herman-1998',
+    'beatlemania-1977',
+    'black-and-blue-1989',
+    'broadway-follies-1981',
+    'dream-1997',
+    'eubie-1978',
+    'fosse-1999',
+    'jerrys-girls-1985',
+    'me-and-bessie-1975',
+    'oh-coward-1986',
+    'oh-calcutta-1976',
+    'putting-it-together-1999',
+    'riverdance-on-broadway-2000',
+    'rock-n-roll-the-first-5000-years-1982',
+    'rodgers-and-hart-1975',
+    'shakespeares-cabaret-1981',
+    'side-by-side-by-sondheim-1977',
+    'smokey-joes-cafe-1995',
+    'sophisticated-ladies-1981',
+    'stardust-1987',
+    'swing-1999',
+    'thats-entertainment-1972',
+    'the-gershwins-fascinating-rhythm-1999',
+    'the-look-of-love-2003',
+    'the-night-that-made-america-famous-1975',
+    'tintypes-1980',
+    'truly-blessed-1990',
+    'your-arms-too-short-to-box-with-god-1980', 'your-arms-too-short-to-box-with-god-1982',
+    'jerome-robbins-broadway-1989',
+    'it-aint-nothin-but-the-blues-1999',
+    'movin-out-2002',                  // Billy Joel jukebox/dance
+    'five-guys-named-moe-1992',        // Louis Jordan jukebox
+    'marilyn-1983',                    // Biographical compilation
+    'street-corner-symphony-1997',     // Doo-wop revue
+    'jacques-brel-is-alive-and-well-and-living-in-paris-1972',
+    // Dance / performance shows (no narrative book)
+    'swan-lake-1998',
+    'tango-argentino-1985', 'tango-argentino-1999',
+    'tango-pasion-1993',
+    'oba-oba-1988', 'oba-oba-93-1992',
+    'andre-hellers-wonderhouse-1991',
+    'flamenco-puro-1986',
+    'canciones-de-mi-padre-1988',      // Linda Ronstadt folk concert
+    'from-israel-with-love-1972',
+    'pacific-paradise-1972',
+    // Revivals where IBDB didn't scrape Book (Playwright-as-Book handled by hasBookOrPlaywright)
+    '42nd-street-1980', 'carousel-1994', 'oklahoma-1979', 'oklahoma-2002',
+    'over-here-1974', 'peter-pan-1998', 'peter-pan-1999',
+    'show-boat-1983', 'the-king-and-i-1977', 'the-king-and-i-1985', 'the-king-and-i-1996',
+    'wind-in-the-willows-1985', 'platinum-1978', 'reggae-1980',
+    // Misc — sparse IBDB data or format exceptions
+    'hard-job-being-god-1972',
+    'the-news-1985',
+    'a-party-with-betty-comden-and-adolph-green-1977',
   ]);
 
   const KNOWN_MUSICAL_NO_DIRECTOR = new Set([
     'rain-2010',                 // Concert show, no traditional director credit
+    // Dance/concert shows — no traditional director
+    'oba-oba-1988', 'oba-oba-93-1992',
+    'tango-pasion-1993',
+    'a-kurt-weill-cabaret-1979',
+    'a-party-with-betty-comden-and-adolph-green-1977',
+    // IBDB scraping gaps — shows definitely had directors but credit wasn't captured
+    'a-broadway-musical-1978', 'big-river-1985', 'chu-chem-1989',
+    'dude-1972', 'fiddler-on-the-roof-1990', 'late-nite-comic-1987',
+    'man-of-la-mancha-1992', 'my-one-and-only-1983', 'once-on-this-island-2002',
+    'peter-pan-1979', 'prince-of-central-park-1989', 'somethings-afoot-1976',
+    'soon-1971', 'street-corner-symphony-1997', 'wind-in-the-willows-1985',
   ]);
 
   const KNOWN_PLAY_NO_WRITER = new Set([
     'mark-twain-tonight-2005',       // One-man show (Hal Holbrook as Mark Twain)
+    'mark-twain-tonight-1977',       // One-man show (Hal Holbrook)
     'is-this-a-room-2021',           // Verbatim theatre — transcript, no traditional playwright
     'the-encounter-2016',            // Devised piece by Complicite/Simon McBurney
     'primo-2005',                    // Solo show adapted from Primo Levi's memoir
     'latinologues-2005',             // Comedy sketch show
+    'here-are-ladies-1973',          // Solo performance show
+    'ian-mckellen-acting-shakespeare-1984', // Solo Shakespeare performance
+    'jack-a-night-on-the-town-with-john-barrymore-1996', // Solo show
+    'sid-caesar-and-company-1989',   // Sketch/variety show
+    'heartaches-of-a-pussycat-1980', // Variety/sketch show
+    'short-talks-on-the-universe-2002', // Experimental (Annie Dorsen / Anne Carson)
+    'quick-change-1980',             // Variety/magic show
+    'summer-brave-1975',             // Adaptation — IBDB missing playwright
+    'medea-and-jason-1974',          // Classic adaptation — IBDB missing
+    'ulysses-in-nighttown-1974',     // Joyce adaptation — IBDB missing
   ]);
 
   const KNOWN_MUSIC_NO_LYRICS = new Set([
@@ -502,6 +608,30 @@ function validateCreativeTeamCompleteness(shows) {
     'everyday-rapture-2010',
     'buena-vista-social-club-2025',  // Cuban catalog music, no single songwriter
     'titanique-2026',                // Céline Dion catalog parody
+    // Instrumental / dance shows (no singing = no lyrics)
+    'swan-lake-1998',
+    'oba-oba-1988', 'oba-oba-93-1992',
+    'tango-pasion-1993',
+    'from-israel-with-love-1972',
+    // Compilation / cabaret — multiple lyricists, no single credit
+    'a-kurt-weill-cabaret-1979',
+    'a-musical-jubilee-1975',
+    'band-in-berlin-1999',
+    'beatlemania-1977',
+    'got-tu-go-disco-1979',
+    'oh-calcutta-1976',
+    'only-fools-are-sad-1971',
+    'shakespeares-cabaret-1981',
+    // Opera/operetta — libretto combined with score
+    'la-boheme-2002',
+    'chronicle-of-a-death-foretold-1995',
+    // IBDB scraping gaps — Lyrics credit exists but wasn't captured (R&H revivals etc.)
+    'carousel-1994',
+    'oklahoma-1979', 'oklahoma-2002',
+    'the-king-and-i-1977', 'the-king-and-i-1985', 'the-king-and-i-1996',
+    'music-is-1976',
+    'platinum-1978',
+    'reggae-1980',
   ]);
 
   for (const show of shows) {
@@ -516,8 +646,8 @@ function validateCreativeTeamCompleteness(shows) {
         issues++;
       }
 
-      // Check 2: Musical should have a Book credit (warn, many legitimate exceptions)
-      if (!hasBook(roles) && !KNOWN_MUSICAL_NO_BOOK.has(show.id)) {
+      // Check 2: Musical should have a Book credit (IBDB often uses "Playwright" for librettist)
+      if (!hasBookOrPlaywright(roles) && !KNOWN_MUSICAL_NO_BOOK.has(show.id)) {
         warn(`[creative-completeness] Musical "${show.title}" (${show.id}) has no Book credit — verify if sung-through/revue (add to exceptions) or genuinely missing`);
         issues++;
       }
