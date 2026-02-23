@@ -80,7 +80,7 @@ jobs:
           if [ "${{ inputs.verify }}" != "false" ]; then
             VERIFY_FLAG="--verify"
           fi
-          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG
+          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
 
       - name: Archive images locally
         if: always()

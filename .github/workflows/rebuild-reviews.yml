@@ -140,7 +140,10 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # Core data files pushed to private repo by push-core-data action
-          git add data/audit/critic-outlet-affinity.json 2>/dev/null || true
+          # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
+          git add data/audit/*.json 2>/dev/null || true
+          # Reset any unstaged tracked files (e.g. core data overwritten by checkout-core-data)
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
 
           BEFORE=${{ steps.before.outputs.count }}
           AFTER=${{ steps.after.outputs.count }}
