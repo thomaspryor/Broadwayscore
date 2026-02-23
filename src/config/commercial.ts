@@ -51,7 +51,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Windfall',
     color: 'text-emerald-400',
-    description: 'Solid hit, recouped and profitable',
+    description: 'Solid hit, strong commercial performance',
     sortOrder: 2,
     showInLegend: true,
     icon: '💰',
