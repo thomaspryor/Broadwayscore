@@ -1,0 +1,101 @@
+{
+  "runDate": "2026-02-23T00:31:42.975Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "oliver-west-end-2024",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 6,
+    "failed": 13,
+    "skipped": 0,
+    "successRate": "31.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 4
+  },
+  "statistics": {
+    "tier1Attempts": 8,
+    "tier1Success": 7,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 10,
+    "tier4Success": 8,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 13,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "oliver-west-end-2024/variety--unknown.json",
+    "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+    "oliver-west-end-2024/bww--allya-al-hassan.json",
+    "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
+    "oliver-west-end-2024/theatre-weekly--greg-stewart.json",
+    "oliver-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+  ],
+  "failed": [
+    "oliver-west-end-2024/theatermania--david-gordon.json",
+    "oliver-west-end-2024/cityam--adam-bloodworth.json",
+    "oliver-west-end-2024/dailymail--unknown.json",
+    "oliver-west-end-2024/evening-standard--nick-curtis.json",
+    "oliver-west-end-2024/london-theatre--marianka-swain.json",
+    "oliver-west-end-2024/stageandcinema--unknown.json",
+    "oliver-west-end-2024/standard--henry-hitchings.json",
+    "oliver-west-end-2024/telegraph--unknown.json",
+    "oliver-west-end-2024/the-stage-uk--sam-marlowe.json",
+    "oliver-west-end-2024/the-telegraph-uk--dominic-cavendish.json",
+    "oliver-west-end-2024/the-times-uk--neil-fisher.json",
+    "oliver-west-end-2024/uk-daily-telegraph--dominic-cavendish.json",
+    "oliver-west-end-2024/whatsonstage--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+      "oliver-west-end-2024/theatre-weekly-uk--greg-stewart.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "oliver-west-end-2024/variety--unknown.json",
+      "oliver-west-end-2024/bww--allya-al-hassan.json",
+      "oliver-west-end-2024/the-arts-desk--helen-hawkins.json",
+      "oliver-west-end-2024/theatre-weekly--greg-stewart.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "oliver-west-end-2024/variety--unknown.json",
+      "oldUrl": "https://variety.com/1994/legit/reviews/oliver-4-1200439737/",
+      "newUrl": "https://variety.com/1968/film/reviews/oliver-3-1200421734/"
+    }
+  ]
+}
