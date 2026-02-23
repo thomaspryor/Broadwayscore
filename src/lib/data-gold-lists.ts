@@ -113,6 +113,10 @@ function isBroadway(show: RawShowData): boolean {
   if (show.id.includes('west-end')) return false;
   return BROADWAY_VENUES.has(show.venue);
 }
+
+function isWestEnd(show: RawShowData): boolean {
+  return show.id.includes('west-end');
+}
 const allReviews = Object.values(
   (reviewsData as unknown as { reviews: Record<string, RawReviewData> }).reviews
 );
@@ -198,6 +202,62 @@ function computeCriticalGold(season: string): GoldListEntry[] {
       title: show.title,
       slug: show.slug,
       rank: 0, // set after sorting
+      value: rounded,
+      displayValue: rounded.toFixed(1),
+      season,
+      venue: show.venue,
+      type: show.type,
+    });
+  }
+
+  results.sort((a, b) => b.value - a.value);
+  return results.slice(0, config.maxPerSeason).map((entry, i) => ({
+    ...entry,
+    rank: i + 1,
+  }));
+}
+
+// ============================================
+// 1b. CRITICAL GOLD LIST — WEST END
+// ============================================
+
+function computeCriticalGoldWestEnd(season: string): GoldListEntry[] {
+  const config = GOLD_LIST_MAP['critical-gold-west-end'];
+
+  const byShow = new Map<string, RawReviewData[]>();
+  for (const review of allReviews) {
+    if (!review.showId || review.assignedScore == null) continue;
+    const existing = byShow.get(review.showId) || [];
+    existing.push(review);
+    byShow.set(review.showId, existing);
+  }
+
+  const results: GoldListEntry[] = [];
+
+  for (const [showId, reviews] of Array.from(byShow.entries())) {
+    const show = showById.get(showId);
+    if (!show || !isWestEnd(show) || getSeason(show.openingDate) !== season) continue;
+    if (reviews.length < 5) continue;
+
+    let weightedSum = 0;
+    let weightSum = 0;
+    for (const r of reviews) {
+      if (r.assignedScore == null) continue;
+      const w = getTierWeight(r.outletId);
+      weightedSum += r.assignedScore * w;
+      weightSum += w;
+    }
+
+    if (weightSum === 0) continue;
+    const score = weightedSum / weightSum;
+    if (score < config.threshold) continue;
+
+    const rounded = Math.round(score * 10) / 10;
+    results.push({
+      showId: show.id,
+      title: show.title,
+      slug: show.slug,
+      rank: 0,
       value: rounded,
       displayValue: rounded.toFixed(1),
       season,
@@ -367,6 +427,7 @@ function computeHotTicketGold(season: string): GoldListEntry[] {
 
 const listComputeFns: Record<GoldListType, (season: string) => GoldListEntry[]> = {
   'critical-gold': computeCriticalGold,
+  'critical-gold-west-end': computeCriticalGoldWestEnd,
   'audience-gold': computeAudienceGold,
   'box-office-gold': computeBoxOfficeGold,
   'hot-ticket-gold': computeHotTicketGold,
@@ -417,6 +478,7 @@ function computeAllQualifying(type: GoldListType, season: string): GoldListEntry
   // We need uncapped results — compute directly
   switch (type) {
     case 'critical-gold': return computeCriticalGoldUncapped(season);
+    case 'critical-gold-west-end': return computeCriticalGoldWestEndUncapped(season);
     case 'audience-gold': return computeAudienceGoldUncapped(season);
     case 'box-office-gold': return computeBoxOfficeGoldUncapped(season);
     case 'hot-ticket-gold': return computeHotTicketGoldUncapped(season);
@@ -439,6 +501,43 @@ function computeCriticalGoldUncapped(season: string): GoldListEntry[] {
   for (const [showId, reviews] of Array.from(byShow.entries())) {
     const show = showById.get(showId);
     if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
+    if (reviews.length < 5) continue;
+
+    let weightedSum = 0, weightSum = 0;
+    for (const r of reviews) {
+      if (r.assignedScore == null) continue;
+      const w = getTierWeight(r.outletId);
+      weightedSum += r.assignedScore * w;
+      weightSum += w;
+    }
+    if (weightSum === 0) continue;
+    const score = weightedSum / weightSum;
+    if (score < config.threshold) continue;
+
+    const rounded = Math.round(score * 10) / 10;
+    results.push({
+      showId: show.id, title: show.title, slug: show.slug,
+      rank: 0, value: rounded, displayValue: rounded.toFixed(1),
+      season, venue: show.venue, type: show.type,
+    });
+  }
+  return results.sort((a, b) => b.value - a.value);
+}
+
+function computeCriticalGoldWestEndUncapped(season: string): GoldListEntry[] {
+  const config = GOLD_LIST_MAP['critical-gold-west-end'];
+  const byShow = new Map<string, RawReviewData[]>();
+  for (const review of allReviews) {
+    if (!review.showId || review.assignedScore == null) continue;
+    const existing = byShow.get(review.showId) || [];
+    existing.push(review);
+    byShow.set(review.showId, existing);
+  }
+
+  const results: GoldListEntry[] = [];
+  for (const [showId, reviews] of Array.from(byShow.entries())) {
+    const show = showById.get(showId);
+    if (!show || !isWestEnd(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
 
     let weightedSum = 0, weightSum = 0;

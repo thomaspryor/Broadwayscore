@@ -4,7 +4,7 @@
  * All Gold List components should import from here.
  */
 
-export type GoldListType = 'critical-gold' | 'audience-gold' | 'box-office-gold' | 'hot-ticket-gold';
+export type GoldListType = 'critical-gold' | 'critical-gold-west-end' | 'audience-gold' | 'box-office-gold' | 'hot-ticket-gold';
 
 export interface GoldListConfig {
   type: GoldListType;
@@ -43,6 +43,21 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     color: 'text-amber-400',
     bgClass: 'bg-amber-500/15',
     borderClass: 'border-amber-500/30',
+    threshold: 73,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'CriticScore',
+    metricSuffix: '',
+    minDataRequirement: '5+ scored reviews',
+  },
+  {
+    type: 'critical-gold-west-end',
+    title: 'West End Critical Gold List\u2122',
+    shortTitle: 'West End',
+    description: 'The highest-rated West End shows by professional critics',
+    color: 'text-sky-400',
+    bgClass: 'bg-sky-500/15',
+    borderClass: 'border-sky-500/30',
     threshold: 73,
     maxPerSeason: 10,
     maxAllTime: 25,

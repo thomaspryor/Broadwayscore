@@ -44,7 +44,8 @@ export function generateMetadata({ params }: { params: { listType: string; seaso
   if (!config) return {};
 
   const title = `${config.title} — ${params.season}`;
-  const description = `${config.description}. See the top Broadway shows for the ${params.season} season.`;
+  const market = params.listType.includes('west-end') ? 'West End' : 'Broadway';
+  const description = `${config.description}. See the top ${market} shows for the ${params.season} season.`;
 
   return {
     title,
@@ -82,7 +83,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
   const allSeasons = getSeasonsForList(listType);
   const isCurrent = isCurrentSeason(season);
   const isAudienceList = listType === 'audience-gold';
-  const isCriticList = listType === 'critical-gold';
+  const isCriticList = listType === 'critical-gold' || listType === 'critical-gold-west-end';
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -186,7 +187,7 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
                   {entry.thumbnail ? (
                     <img
                       src={getOptimizedImageUrl(entry.thumbnail, 'thumbnail')}
-                      alt={`${entry.title} Broadway ${entry.type || 'show'}`}
+                      alt={`${entry.title} ${entry.type || 'show'}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       width={96}
                       height={96}
