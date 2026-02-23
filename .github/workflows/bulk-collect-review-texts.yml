@@ -442,6 +442,22 @@ jobs:
             echo "Rebuild triggered."
           fi
 
+      - name: Trigger pull quote extraction
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow="Extract Pull Quotes" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="Extract Pull Quotes" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+          echo "Dispatching pull quote extraction for newly collected texts..."
+          gh workflow run "Extract Pull Quotes" -f chain=true -f remaining_batches=3
+          echo "Pull quote extraction dispatched."
+        continue-on-error: true
+
       - name: Count remaining reviews needing fullText
         id: count-remaining
         run: |

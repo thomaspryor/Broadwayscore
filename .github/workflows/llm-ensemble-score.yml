@@ -404,3 +404,22 @@ jobs:
           sleep 10
           gh workflow run "Update Critics' Take"
           echo "Consensus dispatched."
+
+      - name: Trigger pull quote extraction (chain complete)
+        if: >-
+          ${{ github.event.inputs.chain == 'true'
+          && (steps.count-remaining.outputs.remaining <= 10
+              || github.event.inputs.remaining_batches == '0') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow="Extract Pull Quotes" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="Extract Pull Quotes" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+          echo "Dispatching pull quote extraction post-scoring..."
+          gh workflow run "Extract Pull Quotes" -f chain=true -f remaining_batches=3
+          echo "Pull quote extraction dispatched."
+        continue-on-error: true
