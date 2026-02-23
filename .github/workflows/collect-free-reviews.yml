@@ -467,6 +467,15 @@ jobs:
             echo "chained=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Free-Outlet Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Summary
         run: |
           echo "## Free-Outlet Collection Round ${{ inputs.current_round }}" >> $GITHUB_STEP_SUMMARY

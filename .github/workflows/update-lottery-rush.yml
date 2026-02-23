@@ -97,6 +97,15 @@ jobs:
         if: always()
         uses: ./.github/actions/dispatch-deploy
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Lottery/Rush Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Summary
         run: |
           echo "## Lottery/Rush Update Summary" >> $GITHUB_STEP_SUMMARY
