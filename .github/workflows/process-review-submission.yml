@@ -68,6 +68,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           ISSUE_BODY="$(cat .issue-body.txt)" node scripts/validate-review-submission.js
+        # continue-on-error so cleanup steps (comments, labels) still run.
+        # Scrape job gates on recommendation=='approve', so crashes are safe.
         continue-on-error: true
 
       - name: Post validation result
