@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, memo, useCallback, useState, Suspense } from 'react';
+import { useMemo, memo, useCallback, useState, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
@@ -392,7 +392,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
 
   // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    setFilters(prev => {
+    startTransition(() => setFilters(prev => {
       const next = { ...prev };
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
@@ -418,7 +418,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
 
       return next;
-    });
+    }));
   }, []);
 
   // Clear all filters
