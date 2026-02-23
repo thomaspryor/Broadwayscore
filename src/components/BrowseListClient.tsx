@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, startTransition } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
@@ -348,7 +348,7 @@ export default function BrowseListClient({
             {showScoreToggle && hasAnyAudienceData && (
               <ScoreToggle
                 value={scoreMode}
-                onChange={setScoreMode}
+                onChange={(v) => startTransition(() => setScoreMode(v))}
                 className="flex-shrink-0"
               />
             )}

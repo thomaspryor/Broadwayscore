@@ -404,6 +404,17 @@ const COOKIE_DOMAIN_MAP = {
   'backstage.com': { envVar: 'BACKSTAGE_COOKIES', fileKey: 'backstage' },
   'amny.com': { envVar: 'AMNY_COOKIES', fileKey: 'amny' },
   'frontmezzjunkies.com': { envVar: 'FRONTMEZZJUNKIES_COOKIES', fileKey: 'frontmezzjunkies' },
+  // UK outlets
+  'telegraph.co.uk': { envVar: 'TELEGRAPH_COOKIES', fileKey: 'telegraph' },
+  'thetimes.co.uk': { envVar: 'THETIMES_COOKIES', fileKey: 'thetimes' },
+  'thetimes.com': { envVar: 'THETIMES_COOKIES', fileKey: 'thetimes' },
+  'standard.co.uk': { envVar: 'STANDARD_COOKIES', fileKey: 'standard' },
+  'independent.co.uk': { envVar: 'INDEPENDENT_COOKIES', fileKey: 'independent' },
+  // US outlets
+  'chicagotribune.com': { envVar: 'CHICAGOTRIBUNE_COOKIES', fileKey: 'chicagotribune' },
+  'thewrap.com': { envVar: 'THEWRAP_COOKIES', fileKey: 'thewrap' },
+  'nbcnewyork.com': { envVar: 'NBCNEWYORK_COOKIES', fileKey: 'nbcnewyork' },
+  'newsday.com': { envVar: 'NEWSDAY_COOKIES', fileKey: 'newsday' },
 };
 
 // Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login
