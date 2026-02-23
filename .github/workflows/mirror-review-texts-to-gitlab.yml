@@ -24,6 +24,15 @@ jobs:
         env:
           GH_PAT: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Unprotect main branch (allow force push)
+        run: |
+          PROJECT=$(echo "${GITLAB_NAMESPACE}/broadway-review-texts" | sed 's/\//%2F/g')
+          curl -s -X DELETE -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/projects/${PROJECT}/protected_branches/main" || true
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
       - name: Push to GitLab
         run: |
           cd repo.git
