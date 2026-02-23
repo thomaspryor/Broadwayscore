@@ -107,6 +107,11 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from auto-fix-feedback-bug'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
       - name: Update issue labels (no comment — avoids GitHub notification noise)
         if: always()
         uses: actions/github-script@v7

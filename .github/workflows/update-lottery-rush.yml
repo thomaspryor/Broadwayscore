@@ -92,6 +92,11 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-lottery-rush'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
       - name: Summary
         run: |
           echo "## Lottery/Rush Update Summary" >> $GITHUB_STEP_SUMMARY
