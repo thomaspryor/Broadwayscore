@@ -196,7 +196,19 @@ jobs:
         if: always() && steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+        run: |
+          # Skip deploy dispatch if one was triggered in the last 15 min (avoids spam during collection runs)
+          RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          if [ -n "$RECENT" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+            if [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy dispatch — last deploy was ${DIFF}s ago (< 15 min)"
+              exit 0
+            fi
+          fi
+          gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Auto-trigger LLM scoring if needed
         env:
