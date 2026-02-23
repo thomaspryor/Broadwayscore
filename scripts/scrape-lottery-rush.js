@@ -43,8 +43,8 @@ const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
-// Load shows data for matching
-const allShows = loadShows();
+// Load shows data for matching (Broadway-only — BwayRush/Playbill are Broadway sources)
+const allShows = loadShows().filter(s => !s.category || s.category === 'broadway');
 
 // Override map for titles fuzzy matching can't handle
 const TITLE_OVERRIDES = {

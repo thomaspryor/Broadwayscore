@@ -1723,7 +1723,8 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 // Process shows in batches with concurrency.
 // API-sourced shows (instant) are separated from scrape-needing shows.
 // checkpoint() is called every 25 shows to save progress to disk.
-async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, checkpoint) {
+async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, checkpoint, maxRuntimeMin = 0) {
+  const startTime = Date.now();
   const results = { success: [], failed: [], skipped: [] };
 
   // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
@@ -1763,7 +1764,18 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
 
   // Process scrape-needed shows with concurrency
   let processed = 0;
+  let stoppedEarly = false;
   for (let i = 0; i < scrapeShows.length; i += scrapeConcurrency) {
+    // Check time budget before each batch
+    if (maxRuntimeMin > 0) {
+      const elapsedMin = (Date.now() - startTime) / 60000;
+      if (elapsedMin >= maxRuntimeMin) {
+        console.log(`\n  Max runtime reached (${Math.round(elapsedMin)}/${maxRuntimeMin} min). Stopping gracefully.`);
+        console.log(`  Processed ${processed}/${scrapeShows.length} scrape shows. Remaining will be picked up next run.`);
+        stoppedEarly = true;
+        break;
+      }
+    }
     const batch = scrapeShows.slice(i, i + scrapeConcurrency);
     const batchResults = await Promise.allSettled(
       batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx))
@@ -1892,6 +1904,7 @@ async function main() {
   const isDryRun = args.includes('--dry-run');
   const auditExisting = args.includes('--audit-existing');
   const refetchFlagged = args.includes('--flagged');
+  const maxRuntimeMin = parseInt(args.find(a => a.startsWith('--max-runtime='))?.split('=')[1] || '0', 10);
 
   if (isDryRun) {
     dryRunMode = true;
@@ -2089,7 +2102,7 @@ async function main() {
   };
 
   // Use concurrent processing for large batches, sequential for small
-  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData);
+  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
   // Post-fetch duplicate image detection: hash all thumbnails, null out duplicates
   if (!dryRunMode && results.success.length > 0) {
