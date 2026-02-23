@@ -161,6 +161,46 @@ DOMAIN_GROUPS = {
         "output": "frontmezzjunkies.json",
         "secret_name": "FRONTMEZZJUNKIES_COOKIES",
     },
+    "telegraph": {
+        "domains": [".telegraph.co.uk", "telegraph.co.uk"],
+        "output": "telegraph.json",
+        "secret_name": "TELEGRAPH_COOKIES",
+    },
+    "thetimes": {
+        "domains": [".thetimes.co.uk", "thetimes.co.uk", ".thetimes.com", "thetimes.com"],
+        "output": "thetimes.json",
+        "secret_name": "THETIMES_COOKIES",
+    },
+    "chicagotribune": {
+        "domains": [".chicagotribune.com", "chicagotribune.com"],
+        "output": "chicagotribune.json",
+        "secret_name": "CHICAGOTRIBUNE_COOKIES",
+    },
+    "thewrap": {
+        "domains": [".thewrap.com", "thewrap.com"],
+        "output": "thewrap.json",
+        "secret_name": "THEWRAP_COOKIES",
+    },
+    "nbcnewyork": {
+        "domains": [".nbcnewyork.com", "nbcnewyork.com", ".nbcnews.com", "nbcnews.com"],
+        "output": "nbcnewyork.json",
+        "secret_name": "NBCNEWYORK_COOKIES",
+    },
+    "standard": {
+        "domains": [".standard.co.uk", "standard.co.uk"],
+        "output": "standard.json",
+        "secret_name": "STANDARD_COOKIES",
+    },
+    "independent": {
+        "domains": [".independent.co.uk", "independent.co.uk"],
+        "output": "independent.json",
+        "secret_name": "INDEPENDENT_COOKIES",
+    },
+    "newsday": {
+        "domains": [".newsday.com", "newsday.com"],
+        "output": "newsday.json",
+        "secret_name": "NEWSDAY_COOKIES",
+    },
 }
 
 # Project root (where data/ lives)

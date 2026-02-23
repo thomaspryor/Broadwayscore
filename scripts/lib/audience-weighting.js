@@ -20,12 +20,15 @@ const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
 /**
  * Check if Reddit data should be included for this show
  * @param {object} reddit - { score, reviewCount }
- * @param {object} [showInfo] - { closingDate?: string, status?: string }
+ * @param {object} [showInfo] - { closingDate?: string, status?: string, category?: string }
  * @returns {boolean}
  */
 function isRedditEligible(reddit, showInfo) {
   if (!reddit || reddit.score == null) return false;
   if (reddit.reviewCount < MIN_REDDIT_ITEMS) return false;
+
+  // Category gate: r/Broadway data is irrelevant for off-Broadway shows
+  if (showInfo && showInfo.category === 'off-broadway') return false;
 
   // Recency gate: exclude closed shows >3 years ago
   if (showInfo && showInfo.status === 'closed' && showInfo.closingDate) {
@@ -42,7 +45,7 @@ function isRedditEligible(reddit, showInfo) {
  * Calculate combined Audience Buzz score with proportional weighting
  *
  * @param {object} sources - { showScore?: { score, reviewCount }, mezzanine?: { score, reviewCount }, reddit?: { score, reviewCount } }
- * @param {object} [showInfo] - { closingDate?: string, status?: string } — pass to enable Reddit recency gate
+ * @param {object} [showInfo] - { closingDate?: string, status?: string, category?: string } — pass to enable Reddit/category gates
  * @returns {{ score: number|null, weights: object|null }}
  */
 function calculateCombinedScore(sources, showInfo) {
