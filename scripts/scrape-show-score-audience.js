@@ -191,6 +191,18 @@ function generateCandidateUrls(show) {
     if (isMusical) {
       candidates.push(`${titleSlug}-the-musical`, `${titleNoColonSlug}-the-musical`);
     }
+    // Off-Broadway shows sometimes use {title}-{venue} slugs (e.g. heathers-the-musical-new-world-stages)
+    if (show.venue && show.venue !== 'TBA') {
+      const venueSlug = slugifyTitle(show.venue);
+      candidates.push(
+        `${titleSlug}-${venueSlug}`,
+        `${titleNoColonSlug}-${venueSlug}`,
+        `${showSlug}-${venueSlug}`,
+      );
+      if (isMusical) {
+        candidates.push(`${titleSlug}-the-musical-${venueSlug}`);
+      }
+    }
   } else {
     candidates.push(
       `${titleSlug}-broadway`,

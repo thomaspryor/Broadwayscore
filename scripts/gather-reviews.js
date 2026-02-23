@@ -517,7 +517,7 @@ async function searchShowScore(show) {
 
   // Show Score URL base depends on category
   const showScoreBase = isWestEnd
-    ? 'https://www.show-score.com/london-shows'
+    ? 'https://www.show-score.com/uk/london/west-end-shows'
     : isOffBroadway
       ? 'https://www.show-score.com/off-broadway-shows'
       : 'https://www.show-score.com/broadway-shows';
