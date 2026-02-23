@@ -1827,6 +1827,36 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Standalone URL-year guard for dateless reviews (systematic cross-production prevention)
+      // Aggregator sources (serp-discovery, bww-roundup, dtli, playbill-verdict) match by title only.
+      // When they scrape reviews for "Heathers" or "The Other Place", they may pull reviews from
+      // prior productions (2014, 2013, etc.) and file them under the new show directory.
+      // These reviews typically have NO publishDate. The URL often contains the actual review year.
+      // If URL year is >2 years from show opening, flag as wrongProduction.
+      // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
+      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction) {
+        const showYear = showDateMap[showId].getFullYear();
+        // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
+        const yearMatches = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/g);
+        if (yearMatches) {
+          const urlYears = yearMatches
+            .map(m => parseInt(m.match(/\d{4}/)[0]))
+            .filter(y => y >= 1950 && y <= 2030);
+          if (urlYears.length > 0) {
+            const closestYear = urlYears.reduce((best, y) =>
+              Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
+            if (Math.abs(closestYear - showYear) > 2) {
+              console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} — likely wrong production`);
+              stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
+              data.wrongProduction = true;
+              data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
+              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              return;
+            }
+          }
+        }
+      }
+
       // Director cross-check for multi-production shows
       // If a review in an OLDER production's directory mentions a NEWER production's director,
       // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
@@ -2432,6 +2462,7 @@ const output = {
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       skippedFabricated: stats.skippedFabricated || 0,
       skippedCrossMarket: stats.skippedCrossMarket || 0,
+      skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
@@ -2558,6 +2589,7 @@ console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
+console.log(`  Skipped (URL-year standalone): ${stats.skippedUrlYearStandalone || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
 if (stats.circularDuplicateRecovered > 0) {
