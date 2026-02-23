@@ -38,6 +38,11 @@ const MEZZANINE_OVERRIDES = {
   'cabaret-at-the-kit-kat-club-west-end-2021': 'Cabaret',
   'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'Harry Potter and the Cursed Child',
   'six-the-musical-west-end-2021': 'Six',
+  // OB shows where our title appends "the Musical" but Mezzanine uses short title
+  'heathers-the-musical-2025': 'Heathers',
+  'little-women-the-musical-2026': 'Little Women',
+  'the-little-mermaid-the-musical-2026': 'The Little Mermaid',
+  'friends-the-musical-parody-2022': 'Friends! The Musical Parody',
 };
 
 // Paths
@@ -114,8 +119,9 @@ async function fetchAllProductions() {
 }
 
 /**
- * Filter to NYC/Broadway productions only
+ * Filter to NYC-area productions (Broadway + Off-Broadway)
  * Uses Mezzanine's own theater metadata: isBroadway, location, geocodedCity
+ * Includes Brooklyn venues (many OB theaters are in Brooklyn/Bushwick)
  */
 function filterNYCProductions(productions) {
   return productions.filter(p => {
@@ -125,9 +131,15 @@ function filterNYCProductions(productions) {
     // Primary: Mezzanine's own Broadway flag
     if (theater.isBroadway === true) return true;
 
-    // Fallback: location or geocoded city
-    if (theater.location === 'newYork') return true;
-    if ((theater.geocodedCity || '').toLowerCase() === 'new york') return true;
+    const loc = (theater.location || '').toLowerCase();
+    const city = (theater.geocodedCity || '').toLowerCase();
+
+    // Location field variants: "newYork", "NYC", "New York City", "Brooklyn, NY", etc.
+    if (loc === 'newyork' || loc === 'nyc') return true;
+    if (loc.includes('new york') || loc.includes('brooklyn') || loc.includes('manhattan')) return true;
+
+    // Geocoded city: "New York", "Brooklyn", "Manhattan"
+    if (city === 'new york' || city === 'brooklyn' || city === 'manhattan') return true;
 
     return false;
   });
