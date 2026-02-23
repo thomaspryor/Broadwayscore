@@ -57,7 +57,7 @@ const shardMode = shard !== null && totalShards !== null;
 const SUBREDDIT_BW = 'broadway';
 const SUBREDDIT_WE = 'TheWestEnd';
 function getSubreddit(show) {
-  if (show.category === 'off-broadway') return null; // No relevant subreddit for OB
+  // OB shows search r/Broadway (r/OffBroadway doesn't exist)
   return show.category === 'west-end' ? SUBREDDIT_WE : SUBREDDIT_BW;
 }
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
@@ -217,7 +217,8 @@ function classifyPost(post, showTitle) {
 async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '' } = {}) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
   const isWestEnd = category === 'west-end';
-  const marketName = isWestEnd ? 'West End' : 'Broadway';
+  const isOffBroadway = category === 'off-broadway';
+  const marketName = isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway';
 
   // Audience-focused search strategies (ordered by relevance)
   // For shows with movie adaptations, prioritize market-specific terms
