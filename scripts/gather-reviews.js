@@ -2114,6 +2114,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     } else {
       // Fall back to HTML extraction for initial reviews
       const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
+      showScoreCount += showScoreReviews.length;
       foundReviews.push(...showScoreReviews);
     }
 
@@ -2125,10 +2126,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     for (const review of paginatedReviews) {
       // Only add if not already found (avoid duplicates from initial extraction)
       if (!foundReviews.some(r => r.url === review.url)) {
+        showScoreCount++;
         foundReviews.push(review);
       }
     }
 
+    health.showScore.extracted = showScoreCount;
     // Archive the page
     archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html);
   }
@@ -2137,10 +2140,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
   console.log('\n  === BroadwayWorld Review Roundups ===');
   if (isOffBroadway) {
+    health.bww.skipped = true;
     console.log('    [SKIP] BWW roundups disabled for off-Broadway (wrong-production risk: roundup URL guessing matches wrong city/year)');
   }
   const bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
   if (bwwResult) {
+    health.bww.found = true;
     // Check if the roundup article is about a tour/regional/non-Broadway production.
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
@@ -2155,6 +2160,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId);
       // Validate publish year — reject roundups from older productions of the same title
       bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
+      health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page
       archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
@@ -2164,12 +2170,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)
   if (aggregatorsOnly) {
+    health.serp.skipped = true;
     console.log(`\n[2/4] SKIPPED SERP search (--aggregators-only mode)`);
   } else {
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
     const brightDataKey = process.env.BRIGHTDATA_TOKEN || '';
 
     if (!scrapingBeeKey && !brightDataKey) {
+      health.serp.skipped = true;
       console.log(`\n[2/4] SKIPPED SERP search (no SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN)`);
     } else {
       // Build set of outlets already found by aggregators to skip
@@ -2202,6 +2210,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey);
 
         if (result && result.url) {
+          health.serp.hits++;
           console.log('✓ Found');
           foundReviews.push({
             showId,
@@ -2218,6 +2227,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         await sleep(DELAY_MS);
       }
 
+      health.serp.calls = serpCallCount;
       console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
     }
   }
@@ -2335,19 +2345,33 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     console.log(`    Merged BWW data into ${merged} existing files, created ${stubsCreated} new stubs`);
   }
 
-  // Summary
+  // Per-show health warnings
+  const aggHits = [health.dtli, health.showScore, health.bww].filter(a => a.found).length;
+  if (aggHits === 0 && show.status === 'open') {
+    console.log(`\n⚠️  WARNING: Zero aggregators returned results for ${showId}`);
+  }
+  if (health.showScore.found && health.showScore.extracted === 0) {
+    console.log(`\n⚠️  WARNING: Show Score page found but 0 reviews extracted for ${showId}`);
+  }
+
+  // Enhanced summary
   console.log(`\n${'='.repeat(60)}`);
-  console.log('SUMMARY');
+  console.log(`SUMMARY for ${showId}`);
   console.log('='.repeat(60));
-  console.log(`Total reviews found: ${foundReviews.length}`);
-  console.log(`Review files created: ${created}`);
-  console.log(`Reviews needing URLs: ${foundReviews.filter(r => r.needsUrl).length}`);
+  console.log(`  Aggregators: DTLI=${health.dtli.extracted}, ShowScore=${health.showScore.extracted}, BWW=${health.bww.extracted}${health.bww.skipped ? ' (skipped)' : ''}`);
+  if (!health.serp.skipped) {
+    console.log(`  SERP: ${health.serp.hits}/${health.serp.calls} hits`);
+  } else {
+    console.log(`  SERP: skipped`);
+  }
+  console.log(`  Total found: ${foundReviews.length} → Created: ${created} files`);
 
   return {
     success: true,
     showId,
     reviewsFound: foundReviews.length,
-    filesCreated: created
+    filesCreated: created,
+    health,
   };
 }
 
@@ -2418,16 +2442,69 @@ async function main() {
     await rebuildReviewsJson();
   }
 
-  // Final summary
+  // Final per-show summary
   console.log('\n========================================');
   console.log('FINAL SUMMARY');
   console.log('========================================');
   for (const r of results) {
-    if (r.success) {
-      console.log(`✓ ${r.showId}: ${r.reviewsFound} reviews found, ${r.filesCreated} files created`);
+    if (r.skipped) {
+      console.log(`⟳ ${r.showId}: skipped (${r.reason})`);
+    } else if (r.success) {
+      console.log(`✓ ${r.showId}: ${r.reviewsFound} found, ${r.filesCreated} created`);
     } else {
       console.log(`✗ ${r.showId}: ${r.error}`);
     }
+  }
+
+  // Batch health report — aggregator hit rates catch systemic failures
+  const healthResults = results.filter(r => r.health);
+  if (healthResults.length >= 1) {
+    console.log(`\n${'═'.repeat(60)}`);
+    console.log('BATCH HEALTH REPORT');
+    console.log('═'.repeat(60));
+    console.log(`Shows processed: ${results.length} (${healthResults.length} with health data)`);
+
+    // Category breakdown
+    const categories = {};
+    for (const r of healthResults) {
+      const cat = r.health.category || 'unknown';
+      categories[cat] = (categories[cat] || 0) + 1;
+    }
+    console.log(`  By category: ${Object.entries(categories).map(([k, v]) => `${k}=${v}`).join(', ')}`);
+
+    // Aggregator hit rates per category
+    for (const cat of Object.keys(categories)) {
+      const catResults = healthResults.filter(r => r.health.category === cat);
+      const dtliHits = catResults.filter(r => r.health.dtli.found).length;
+      const ssHits = catResults.filter(r => r.health.showScore.found).length;
+      const ssExtracted0 = catResults.filter(r => r.health.showScore.found && r.health.showScore.extracted === 0).length;
+      const bwwHits = catResults.filter(r => r.health.bww.found).length;
+      const bwwSkipped = catResults.filter(r => r.health.bww.skipped).length;
+      const zeroAgg = catResults.filter(r =>
+        !r.health.dtli.found && !r.health.showScore.found && !r.health.bww.found && r.health.status === 'open'
+      ).length;
+
+      console.log(`\n  ${cat} (${catResults.length} shows):`);
+      console.log(`    DTLI: ${dtliHits}/${catResults.length} (${Math.round(100 * dtliHits / catResults.length)}%)`);
+      console.log(`    ShowScore: ${ssHits}/${catResults.length} (${Math.round(100 * ssHits / catResults.length)}%)${ssExtracted0 > 0 ? ` ⚠️ ${ssExtracted0} found but 0 extracted` : ''}`);
+      if (bwwSkipped === catResults.length) {
+        console.log(`    BWW: skipped (all ${cat})`);
+      } else {
+        console.log(`    BWW: ${bwwHits}/${catResults.length - bwwSkipped} (${catResults.length - bwwSkipped > 0 ? Math.round(100 * bwwHits / (catResults.length - bwwSkipped)) : 0}%)`);
+      }
+      if (zeroAgg > 0) {
+        console.log(`    ⚠️  ${zeroAgg} open shows with ZERO aggregator hits`);
+      }
+    }
+
+    // Total SERP stats
+    const totalSerpCalls = healthResults.reduce((s, r) => s + r.health.serp.calls, 0);
+    const totalSerpHits = healthResults.reduce((s, r) => s + r.health.serp.hits, 0);
+    if (totalSerpCalls > 0) {
+      console.log(`\n  SERP totals: ${totalSerpHits}/${totalSerpCalls} hits (${Math.round(100 * totalSerpHits / totalSerpCalls)}%)`);
+    }
+
+    console.log('═'.repeat(60));
   }
 
   // Set output for GitHub Actions
