@@ -539,7 +539,7 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
   // Recalculate combined score with dynamic weighting
   const sources = audienceBuzz.shows[showId].sources;
   const sd = showMapById[showId];
-  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status } : undefined;
+  const showInfo = sd ? { closingDate: sd.closingDate, status: sd.status, category: sd.category } : undefined;
   const { score, weights } = calculateCombinedScore(sources, showInfo);
 
   if (score !== null) {
