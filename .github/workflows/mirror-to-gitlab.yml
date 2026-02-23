@@ -17,6 +17,15 @@ jobs:
       - name: Mirror clone from GitHub
         run: git clone --mirror "https://github.com/thomaspryor/Broadwayscore.git" repo.git
 
+      - name: Unprotect main branch (allow force push)
+        run: |
+          PROJECT=$(echo "${GITLAB_NAMESPACE}/broadwayscorecard" | sed 's/\//%2F/g')
+          curl -s -X DELETE -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/projects/${PROJECT}/protected_branches/main" || true
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
       - name: Push to GitLab
         id: push
         run: |

@@ -36,7 +36,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-check-history.json
-          git diff --staged --quiet || git commit -m "data: Update health check history" && git push || true
+          if git diff --staged --quiet; then
+            echo "No health check history changes"
+          else
+            git commit -m "data: Update health check history"
+            git stash --include-untracked 2>/dev/null || true
+            git pull --rebase origin main 2>/dev/null || true
+            git stash pop 2>/dev/null || true
+            git push origin main || echo "::warning::Health check history push failed"
+          fi
 
       - name: Create issue on persistent failure
         if: failure()

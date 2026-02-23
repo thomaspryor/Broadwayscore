@@ -135,7 +135,8 @@ function checkSync() {
     const grosses = readJSON(path.join(DATA_DIR, 'grosses.json'));
 
     const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
-    const openShows = showList.filter(s => s.status === 'open');
+    // Only check Broadway shows — WE/OB are expected to have gaps
+    const openShows = showList.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
 
     // Build review lookup by showId from flat reviews array
     const reviewedShowIds = new Set();
