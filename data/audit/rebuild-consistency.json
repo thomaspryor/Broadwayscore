@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T20:21:58.585Z",
+  "generatedAt": "2026-02-23T09:55:01.517Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -36,6 +36,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "dracula-west-end-2025",
+      "outlet": "london-theatre",
+      "critic": "Olivia Rook",
+      "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "glengarry-glen-ross-2012",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -48,14 +56,6 @@
       "outlet": "digital-journal",
       "critic": "Markos Papadatos",
       "detail": "originalRating \"5/5\" (=100) vs score 25 (source: human-review)"
-    },
-    {
-      "type": "designation-score-mismatch",
-      "severity": "medium",
-      "showId": "lysistrata-jones-2011",
-      "outlet": "nytimes",
-      "critic": "Ben Brantley",
-      "detail": "Critics_Pick but score=43 (source: llmScore)"
     },
     {
       "type": "rating-score-mismatch",
@@ -140,14 +140,6 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "the-book-of-mormon-west-end-2024",
-      "outlet": "telegraph",
-      "critic": "Charles Spencer",
-      "detail": "originalRating \"60/100\" (=60) vs score 38 (source: llmScore-lowconf)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "the-elephant-man-2014",
       "outlet": "ew",
       "critic": "Jason Clark",
@@ -204,10 +196,26 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "titanique-west-end-2024",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"5/5\" (=100) vs score 25 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "venus-in-fur-2011",
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 51 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "waitress-2021",
+      "outlet": "cititour",
+      "critic": "Brian Scott Lipton",
+      "detail": "originalRating \"1/5\" (=20) vs score 81 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -239,7 +247,7 @@
       "showId": "wit-2012",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 61 (source: llmScore-lowconf)"
+      "detail": "originalRating \"1/5\" (=20) vs score 75 (source: human-review)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -412,22 +420,26 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "waitress-2021",
+      "outlet": "cititour",
+      "critic": "Brian Scott Lipton",
+      "detail": "humanReviewScore 81 (positive) overrides explicit \"1/5\" (=20, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "war-horse-2011",
       "outlet": "ew",
       "critic": "Thom Geier",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
     },
     {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "angels-in-america-perestroika-1993",
-      "detail": "10/15 reviews (67%) scored exactly 90"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "cabaret-1987",
-      "detail": "8/13 reviews (62%) scored exactly 80"
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "wit-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
     },
     {
       "type": "score-clustering",
