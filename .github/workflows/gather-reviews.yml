@@ -154,7 +154,6 @@ jobs:
 
       - name: Validate data before commit
         run: node scripts/validate-data.js
-        continue-on-error: true
 
       - name: Check for changes
         id: git-check
