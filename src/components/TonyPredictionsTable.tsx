@@ -1,8 +1,13 @@
+'use client';
+
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge, getScoreTier, StatusBadge } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
+
+export type PredictionMode = 'combined' | 'critics' | 'audience';
 
 export type { SerializedTonyShow };
 
@@ -15,6 +20,8 @@ interface TonyPredictionsTableProps {
   startIndex?: number;
   /** Tony outcomes for historical seasons: slug → 'winner' | 'nominated' */
   outcomes?: Record<string, 'winner' | 'nominated'>;
+  /** Which scoring mode to rank and display */
+  mode?: PredictionMode;
 }
 
 function formatDate(dateStr: string): string {
@@ -24,7 +31,6 @@ function formatDate(dateStr: string): string {
 
 function getEffectiveStatus(show: SerializedTonyShow): string {
   if (show.status !== 'previews') return show.status;
-  // If previews haven't started yet, show "announced" instead of "previews"
   const today = new Date().toISOString().slice(0, 10);
   const previewsStart = show.previewsStartDate || show.openingDate;
   if (previewsStart > today) return 'announced';
@@ -45,9 +51,69 @@ function TierLabel({ score, reviewCount, status }: { score: number | null; revie
   );
 }
 
-export default function TonyPredictionsTable({ title, description, shows, upcoming, startIndex = 0, outcomes }: TonyPredictionsTableProps) {
-  // Sort scored shows by score desc, upcoming by opening date
-  const scored = [...shows].sort((a, b) => (b.compositeScore ?? -1) - (a.compositeScore ?? -1));
+function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number | null {
+  switch (mode) {
+    case 'combined': return show.blendedScore;
+    case 'critics': return show.compositeScore;
+    case 'audience': return show.audienceCombinedScore;
+  }
+}
+
+function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: PredictionMode }) {
+  if (mode === 'audience') {
+    const grade = show.audienceGrade;
+    if (!grade || grade.grade === '—') {
+      return <span className="text-sm text-gray-500">—</span>;
+    }
+    return (
+      <div
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base sm:text-lg font-bold"
+        style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
+        title={grade.tooltip}
+      >
+        {grade.grade}
+      </div>
+    );
+  }
+
+  if (mode === 'combined') {
+    const grade = show.audienceGrade;
+    return (
+      <div className="flex flex-col items-center gap-0.5">
+        <TierLabel score={show.blendedScore} reviewCount={show.reviewCount} status={show.status} />
+        <ScoreBadge score={show.blendedScore} size="lg" reviewCount={show.reviewCount} status={show.status} />
+        {grade && grade.grade !== '—' && (
+          <span className="text-[9px] text-gray-400 whitespace-nowrap">
+            C: {show.compositeScore != null ? Math.round(show.compositeScore) : '—'} / A: {grade.grade}
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  // critics mode — original behavior
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
+      <ScoreBadge score={show.compositeScore} size="lg" reviewCount={show.reviewCount} status={show.status} />
+    </div>
+  );
+}
+
+export default function TonyPredictionsTable({ title, description, shows, upcoming, startIndex = 0, outcomes, mode = 'combined' }: TonyPredictionsTableProps) {
+  // Re-sort scored shows by the active mode's score
+  const scored = useMemo(() => {
+    return [...shows].sort((a, b) => {
+      const sa = getScoreForMode(a, mode);
+      const sb = getScoreForMode(b, mode);
+      // nulls sort to bottom
+      if (sa == null && sb == null) return 0;
+      if (sa == null) return 1;
+      if (sb == null) return -1;
+      return sb - sa;
+    });
+  }, [shows, mode]);
+
   const upcomingSorted = [...upcoming].sort((a, b) =>
     (a.openingDate || '').localeCompare(b.openingDate || '')
   );
@@ -132,8 +198,7 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
               {/* Score */}
               <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
-                <ScoreBadge score={show.compositeScore} size="lg" reviewCount={show.reviewCount} status={show.status} />
+                <ScoreDisplay show={show} mode={mode} />
               </div>
             </Link>
           );
