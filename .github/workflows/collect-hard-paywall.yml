@@ -231,7 +231,6 @@ jobs:
       - name: Validate data
         if: always()
         run: node scripts/validate-data.js
-        continue-on-error: true
 
       - name: Check for large files
         if: always()
@@ -582,7 +581,6 @@ jobs:
       - name: Validate data
         if: always()
         run: node scripts/validate-data.js
-        continue-on-error: true
 
       - name: Check for large files
         if: always()
