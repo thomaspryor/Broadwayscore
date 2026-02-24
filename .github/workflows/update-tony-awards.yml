@@ -2,8 +2,11 @@ name: Update Tony Awards Data
 
 on:
   # Run annually in late June after Tony Awards ceremony
+  # Plus daily during the nomination announcement window (late April – mid May)
   schedule:
-    - cron: '0 12 20 6 *'  # June 20th at noon UTC
+    - cron: '0 12 20 6 *'  # June 20th at noon UTC (post-ceremony)
+    - cron: '0 18 25-30 4 *'  # April 25-30 daily at 2pm ET (nomination window)
+    - cron: '0 18 1-20 5 *'  # May 1-20 daily at 2pm ET (nomination window)
 
   # Manual trigger
   workflow_dispatch:

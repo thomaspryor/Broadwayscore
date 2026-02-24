@@ -141,7 +141,48 @@ export function getEligibleShows(allShows: ComputedShow[], season: TonySeasonWin
   });
 }
 
-export function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
+/**
+ * Check if Tony nominations have been announced for a given season.
+ * Requires at least 2 of the 4 main categories to have nominees
+ * (avoids flipping to post-nom mode on partial data entry).
+ */
+export function hasNominationsBeenAnnounced(season: TonySeasonWindow): boolean {
+  const awardsShows = getAwardsShows();
+  const awardsSeason = toAwardsSeason(season.label);
+  const categoriesWithNominees = new Set<string>();
+  for (const [, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    const noms = data.tony?.nominatedFor || [];
+    for (const n of noms) {
+      if (TOP_CATEGORIES.includes(n as typeof TOP_CATEGORIES[number])) {
+        categoriesWithNominees.add(n);
+      }
+    }
+  }
+  return categoriesWithNominees.size >= 2;
+}
+
+/**
+ * Build a map of categoryTitle → Set<showId> for nominees in a given season.
+ */
+export function getNomineesForSeason(season: TonySeasonWindow): Map<string, Set<string>> {
+  const awardsShows = getAwardsShows();
+  const awardsSeason = toAwardsSeason(season.label);
+  const map = new Map<string, Set<string>>();
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    for (const cat of (data.tony?.nominatedFor || [])) {
+      if (!map.has(cat)) map.set(cat, new Set());
+      map.get(cat)!.add(showId);
+    }
+  }
+  return map;
+}
+
+export function groupIntoCategories(
+  eligible: ComputedShow[],
+  options?: { nomineesOnly?: boolean; season?: TonySeasonWindow },
+): TonyCategory[] {
   const categories = [
     {
       key: 'best-musical',
@@ -169,18 +210,36 @@ export function groupIntoCategories(eligible: ComputedShow[]): TonyCategory[] {
     },
   ];
 
+  // Build nominee map when filtering to nominees only
+  const nomineeMap = options?.nomineesOnly && options.season
+    ? getNomineesForSeason(options.season)
+    : null;
+
   return categories.map(cat => {
-    const matching = eligible.filter(cat.filter);
+    let matching = eligible.filter(cat.filter);
+
+    // In nomineesOnly mode, filter to only actual nominees for this category.
+    // Per-category fallback: if no nominees found for a category, keep all eligible.
+    if (nomineeMap) {
+      const nomineeIds = nomineeMap.get(cat.title);
+      if (nomineeIds && nomineeIds.size > 0) {
+        matching = matching.filter(s => nomineeIds.has(s.id));
+      }
+    }
 
     const scored = matching
       .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
       .map(serializeShow)
       .sort((a, b) => (b.blendedScore ?? 0) - (a.blendedScore ?? 0));
 
-    const upcoming = matching
-      .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
-      .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
-      .map(serializeShow);
+    // In nomineesOnly mode, all nominees should be scored (they've already opened),
+    // so upcoming is empty. Otherwise, normal behavior.
+    const upcoming = nomineeMap
+      ? []
+      : matching
+          .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
+          .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
+          .map(serializeShow);
 
     return {
       key: cat.key,
@@ -271,12 +330,28 @@ export function getEligibleShowsForPastSeason(allShows: ComputedShow[], season: 
 }
 
 /**
- * Get Tony outcomes for a past season: slug → 'winner' | 'nominated'.
- * Only covers the 4 main categories. Returns empty map for current/future seasons.
+ * Get Tony outcomes for a season: slug → 'winner' | 'nominated'.
+ * For past seasons: returns both winners and nominees.
+ * For current season with nominations announced: returns 'nominated' for all nominees.
+ * For current season pre-noms: returns empty.
  */
 export function getSeasonOutcomes(allShows: ComputedShow[], season: TonySeasonWindow): Record<string, 'winner' | 'nominated'> {
   const current = getTonySeasonWindow();
-  if (season.ceremonyYear >= current.ceremonyYear) return {};
+
+  // Current/future season: show nominee badges if nominations announced
+  if (season.ceremonyYear >= current.ceremonyYear) {
+    if (!hasNominationsBeenAnnounced(season)) return {};
+    const nominees = getNomineesForSeason(season);
+    const showMap = new Map(allShows.map(s => [s.id, s]));
+    const outcomes: Record<string, 'winner' | 'nominated'> = {};
+    for (const [, showIds] of Array.from(nominees)) {
+      for (const showId of Array.from(showIds)) {
+        const show = showMap.get(showId);
+        if (show && !outcomes[show.slug]) outcomes[show.slug] = 'nominated';
+      }
+    }
+    return outcomes;
+  }
 
   const awardsShows = getAwardsShows();
   const showMap = new Map(allShows.map(s => [s.id, s]));
@@ -389,11 +464,8 @@ function computeAccuracyWithScorer(
         continue;
       }
 
+      // Main categories (Best Musical/Play/Revival) typically have 4-5 nominees
       const nomineeIds = nomineesMap.get(key) || [];
-      if (nomineeIds.length > 6) {
-        skipped++;
-        continue;
-      }
       const nomineeShows = nomineeIds
         .map(id => showMap.get(id))
         .filter((s): s is ComputedShow => s != null && scorer(s) != null)
@@ -557,7 +629,10 @@ export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWin
   const isCurrent = season.label === current.label;
   const isPast = season.ceremonyYear < current.ceremonyYear;
   const eligible = isPast ? getEligibleShowsForPastSeason(allShows, season) : getEligibleShows(allShows, season);
-  const categories = groupIntoCategories(eligible);
+  const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  const categories = groupIntoCategories(eligible,
+    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+  );
 
   const awardsShows = getAwardsShows();
   const showMap = new Map(allShows.map(s => [s.id, s]));

@@ -11,6 +11,7 @@ import {
   getEligibleShows,
   groupIntoCategories,
   getHistoricalWinners,
+  hasNominationsBeenAnnounced,
 } from '@/lib/data-tony-predictions';
 
 // --- SEO ---
@@ -65,7 +66,10 @@ const faqSchema = {
 export default function TonyAwardsHubPage() {
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
-  const categories = groupIntoCategories(eligible);
+  const nominationsAnnounced = hasNominationsBeenAnnounced(season);
+  const categories = groupIntoCategories(eligible,
+    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+  );
   const historicalWinners = getHistoricalWinners(allShows);
 
   const totalScored = categories.reduce((sum, cat) => sum + cat.shows.length, 0);
