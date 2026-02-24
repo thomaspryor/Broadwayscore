@@ -54,6 +54,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { LETTER_GRADES } = require('./lib/score-extractors');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -2127,7 +2128,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     health.bww.skipped = true;
     console.log('    [SKIP] BWW roundups disabled for off-Broadway (wrong-production risk: roundup URL guessing matches wrong city/year)');
   }
-  const bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
+  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
+  // Validate page matches target show (prevents cross-show contamination)
+  if (bwwResult && bwwResult.html) {
+    const validation = await validatePageMatchesShow(bwwResult.html, show.title);
+    if (!validation.valid) {
+      console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${validation.reason}`);
+      bwwResult = null;
+    }
+  }
   if (bwwResult) {
     health.bww.found = true;
     // Check if the roundup article is about a tour/regional/non-Broadway production.
