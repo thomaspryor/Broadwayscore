@@ -251,7 +251,8 @@ export default function TonyAwardsHubPage() {
                 </thead>
                 <tbody>
                   {historicalWinners.map((winner, i) => {
-                    const tier = getScoreTier(winner.compositeScore);
+                    const displayScore = winner.blendedScore ?? winner.compositeScore;
+                    const tier = getScoreTier(displayScore);
                     return (
                       <tr key={`${winner.slug}-${i}`} className="border-b border-white/5">
                         <td className="py-2.5 pr-4 text-sm text-gray-400">{winner.season}</td>
@@ -262,9 +263,9 @@ export default function TonyAwardsHubPage() {
                         </td>
                         <td className="py-2.5 pr-4 text-sm text-gray-400">{winner.category.replace('Best ', '')}</td>
                         <td className="py-2.5 pr-4 text-right">
-                          {winner.compositeScore !== null ? (
+                          {displayScore !== null ? (
                             <span className="text-sm font-semibold" style={{ color: tier?.color || '#9ca3af' }}>
-                              {winner.compositeScore}
+                              {Math.round(displayScore)}
                             </span>
                           ) : (
                             <span className="text-sm text-gray-500">&mdash;</span>

@@ -682,6 +682,7 @@ export interface HistoricalWinner {
   season: string;
   category: string;
   compositeScore: number | null;
+  blendedScore: number | null;
   reviewCount: number;
 }
 
@@ -703,12 +704,17 @@ export function getHistoricalWinners(allShows?: ComputedShow[]): HistoricalWinne
     const show = showMap.get(showId);
     if (!show) continue;
 
+    const buzz = getAudienceBuzz(showId);
+    const audScore = buzz?.combinedScore ?? null;
+    const blended = computeBlendedScoreForShow(show.compositeScore, audScore);
+
     winners.push({
       slug: show.slug,
       title: show.title,
       season: data.tony?.season || '',
       category: topCategory,
       compositeScore: show.compositeScore,
+      blendedScore: blended,
       reviewCount: show.criticScore?.reviewCount || 0,
     });
   }
