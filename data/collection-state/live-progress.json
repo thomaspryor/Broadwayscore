@@ -1,52 +1,54 @@
 {
-  "updatedAt": "2026-02-24T23:31:13.635Z",
-  "processed": 28,
-  "failed": 52,
-  "successRate": "35.0%",
+  "updatedAt": "2026-02-24T23:36:03.923Z",
+  "processed": 189,
+  "failed": 421,
+  "successRate": "31.0%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 1,
+    "playwright": 114,
+    "amp": 0,
     "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 1,
+    "directCookies": 3,
+    "scrapingbee": 27,
     "brightdata": 0,
-    "archiveToday": 13,
-    "archive": 8
+    "archiveToday": 149,
+    "archive": 56
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-24T22:35:58.696Z",
+      "t": "2026-02-24T18:10:58.928Z",
       "event": "bb-session",
-      "session": "cfa09c16",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+      "session": "13e29120",
+      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
     },
     {
-      "t": "2026-02-24T22:35:59.949Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-24T22:54:49.973Z",
+      "t": "2026-02-24T18:16:35.485Z",
       "event": "bb-session",
-      "session": "3cd7a7c1",
-      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
+      "session": "27aad70f",
+      "url": "http://www.usatoday.com/printedition/life/20071205/d_broadwayroundup05.art.htm?l"
     },
     {
-      "t": "2026-02-24T22:54:53.407Z",
+      "t": "2026-02-24T18:16:37.370Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "usatoday.com"
     },
     {
-      "t": "2026-02-24T23:25:11.790Z",
+      "t": "2026-02-24T18:17:06.718Z",
       "event": "bb-session",
-      "session": "5c02db40",
-      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
+      "session": "0cf53b78",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
     },
     {
-      "t": "2026-02-24T23:25:12.904Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "t": "2026-02-24T18:19:13.631Z",
+      "event": "bb-session",
+      "session": "a8553b29",
+      "url": "https://www.thewrap.com/betrayal-broadway-review-tom-hiddleston-gives-a-master-c"
+    },
+    {
+      "t": "2026-02-24T18:23:21.404Z",
+      "event": "bb-session",
+      "session": "f10fbc19",
+      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
     }
   ]
 }
