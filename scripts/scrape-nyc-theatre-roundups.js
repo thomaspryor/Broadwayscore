@@ -95,13 +95,17 @@ function sleep(ms) {
 // Google Search via ScrapingBee
 // ---------------------------------------------------------------------------
 
-async function googleSearchForShow(showTitle) {
+async function googleSearchForShow(showTitle, category) {
   if (!SCRAPINGBEE_KEY) {
     console.log('  [WARN] No SCRAPINGBEE_API_KEY set, skipping Google search');
     return null;
   }
 
-  const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" broadway`;
+  // Use category-appropriate search term (don't search "broadway" for WE/OB shows)
+  const categoryLabel = category === 'west-end' ? 'west end'
+    : category === 'off-broadway' ? 'off-broadway'
+    : 'broadway';
+  const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" ${categoryLabel}`;
   const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
 
   return new Promise((resolve, reject) => {
@@ -380,6 +384,45 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
 }
 
 // ---------------------------------------------------------------------------
+// Page-level content validation — prevents cross-show contamination
+// ---------------------------------------------------------------------------
+
+/**
+ * Validates that a NYC Theatre roundup page is actually about the target show.
+ * Only checks page title and headings (NOT body text, which is too noisy —
+ * roundup pages contain excerpts from many reviews and will match almost any show).
+ *
+ * Returns { valid: boolean, reason: string }
+ */
+function validatePageMatchesShow(html, showTitle) {
+  const $ = cheerio.load(html);
+
+  // Extract page title + all headings (h1, h2)
+  const pageTitle = $('title').text() || '';
+  const h1Text = $('h1').map((_, el) => $(el).text()).get().join(' ');
+  const h2Text = $('h2').first().text() || '';
+  const headingText = `${pageTitle} ${h1Text} ${h2Text}`;
+
+  // Use titleWordsMatch against headings only (NOT body text)
+  if (titleWordsMatch(showTitle, headingText)) {
+    return { valid: true, reason: 'headings match' };
+  }
+
+  // Stricter fallback: check if the page URL/title contains the show slug
+  const showSlug = showTitle.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').trim();
+  const pageTitleLower = pageTitle.toLowerCase();
+  if (showSlug.length >= 4 && pageTitleLower.includes(showSlug)) {
+    return { valid: true, reason: 'slug in page title' };
+  }
+
+  return {
+    valid: false,
+    reason: `Page headings "${headingText.substring(0, 100)}" don't match show "${showTitle}"`
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -436,22 +479,31 @@ async function scrapeNYCTheatreRoundups() {
       (Date.now() - fs.statSync(effectiveArchivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
     if (archiveFresh) {
       const html = fs.readFileSync(effectiveArchivePath, 'utf8');
-      console.log(`[CACHE] ${showId}: Using archived HTML`);
 
-      const reviews = extractReviewsFromRoundup(html, showId);
-      stats.excerptsFounds += reviews.length;
+      // Validate cached page matches this show (prevents cross-contamination)
+      const validation = validatePageMatchesShow(html, show.title);
+      if (!validation.valid) {
+        console.log(`[CACHE] ${showId}: Cached page is WRONG show — ${validation.reason}. Deleting cache.`);
+        fs.unlinkSync(effectiveArchivePath);
+        // Fall through to re-fetch via Google search below
+      } else {
+        console.log(`[CACHE] ${showId}: Using archived HTML`);
 
-      for (const review of reviews) {
-        const result = saveNycTheatreExcerpt(showId, review);
-        if (result === 'new') {
-          console.log(`  [NEW] ${review.outlet}`);
-        } else if (result === 'updated') {
-          console.log(`  [UPD] ${review.outlet}: added excerpt`);
+        const reviews = extractReviewsFromRoundup(html, showId);
+        stats.excerptsFounds += reviews.length;
+
+        for (const review of reviews) {
+          const result = saveNycTheatreExcerpt(showId, review);
+          if (result === 'new') {
+            console.log(`  [NEW] ${review.outlet}`);
+          } else if (result === 'updated') {
+            console.log(`  [UPD] ${review.outlet}: added excerpt`);
+          }
         }
-      }
 
-      stats.skippedArchived++;
-      continue;
+        stats.skippedArchived++;
+        continue;
+      }
     }
 
     // Google search for this show
@@ -459,7 +511,7 @@ async function scrapeNYCTheatreRoundups() {
     console.log(`[SEARCH] ${showId}: "${show.title}"...`);
 
     try {
-      const url = await googleSearchForShow(show.title);
+      const url = await googleSearchForShow(show.title, show.category);
 
       if (!url) {
         console.log(`  No NYC Theatre page found.`);
@@ -480,13 +532,10 @@ async function scrapeNYCTheatreRoundups() {
       }
 
       // Verify page is actually about this show (prevent cross-show contamination)
-      // Check page title/h1 AND body text for show title words
-      const $page = cheerio.load(html);
-      const pageTitle = $page('title').text() + ' ' + $page('h1').text() + ' ' + $page('h2').first().text();
-      const pageText = $page('body').text();
-      // Check title/headings first (most reliable), fall back to body text
-      if (!titleWordsMatch(show.title, pageTitle) && !titleWordsMatch(show.title, pageText)) {
-        console.log(`  [SKIP] Page doesn't match "${show.title}" — likely wrong show`);
+      // STRICT: Only check page title/headings — NOT body text (too noisy, matches everything)
+      const validation = validatePageMatchesShow(html, show.title);
+      if (!validation.valid) {
+        console.log(`  [SKIP] Page doesn't match "${show.title}" — ${validation.reason}`);
         continue;
       }
 
