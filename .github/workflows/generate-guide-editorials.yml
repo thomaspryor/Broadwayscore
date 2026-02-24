@@ -68,3 +68,10 @@ jobs:
               echo "::warning::All push attempts failed"
             fi
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Generate Guide Editorials Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -76,3 +76,10 @@ jobs:
           if [ "$pushed" != "true" ]; then
             echo "::warning::All push attempts failed"
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Generate Related Shows Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -178,3 +178,10 @@ jobs:
             -f batch_size=10 \
             -f chain=true \
             -f remaining_batches=3 || true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Rediscover Review URLs Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

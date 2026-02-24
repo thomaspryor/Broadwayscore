@@ -138,3 +138,10 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from enrich-runtimes'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Runtimes Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

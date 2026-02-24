@@ -86,3 +86,10 @@ jobs:
         run: |
           echo "❌ AUDIT THRESHOLD EXCEEDED: ${{ steps.audit.outputs.flag_pct }}% flagged (threshold: 10%)"
           exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Monthly Scoring Audit Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
