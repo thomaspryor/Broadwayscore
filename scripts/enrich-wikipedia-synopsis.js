@@ -65,7 +65,7 @@ function buildSearchTitles(show) {
   const variants = [];
   if (type === 'musical') {
     variants.push(`${title} (musical)`, title, `${title} (Musical)`);
-  } else if (format === 'play') {
+  } else if (type === 'play') {
     variants.push(`${title} (play)`, title, `${title} (Play)`);
   } else {
     variants.push(title, `${title} (musical)`, `${title} (play)`);
