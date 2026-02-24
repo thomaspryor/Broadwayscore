@@ -650,6 +650,56 @@ function titleWordsMatch(showTitle, candidateText) {
   return matchCount >= threshold;
 }
 
+/**
+ * Confidence-aware version of titleWordsMatch for page validation.
+ * Returns metadata instead of boolean so callers can trigger LLM tiebreaker
+ * on low-confidence matches (short titles, borderline word counts).
+ *
+ * Own copy of matching logic — does NOT share internals with titleWordsMatch()
+ * so existing callers of the boolean version are unaffected.
+ *
+ * @param {string} showTitle - The show's title from shows.json
+ * @param {string} candidateText - Text to check (page title, headings)
+ * @returns {{ matched: boolean, confidence: number, matchCount: number, threshold: number, words: string[] }}
+ */
+function titleWordsMatchWithConfidence(showTitle, candidateText) {
+  const showTitleLower = showTitle.toLowerCase()
+    .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
+  let words = showTitleLower.split(/[\s,]+/)
+    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+
+  // Full-title fallback if pre-colon part has no meaningful words
+  if (words.length === 0) {
+    const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
+    words = fullTitleLower.split(/[\s,:()]+/)
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+  }
+
+  const candidateLower = candidateText.toLowerCase();
+
+  // Zero meaningful words — very low confidence
+  if (words.length === 0) {
+    const rawTitle = showTitleLower.split(/[\s,]+/)[0];
+    const matched = rawTitle && rawTitle.length >= 3 && candidateLower.includes(rawTitle);
+    return { matched, confidence: matched ? 0.3 : 0, matchCount: matched ? 1 : 0, threshold: 1, words: rawTitle ? [rawTitle] : [] };
+  }
+
+  // Single meaningful word — moderate confidence at best
+  if (words.length === 1) {
+    const word = words[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.'""])${word}(?:$|[\\s\\-/,.'""])`, 'i');
+    const matched = wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
+    return { matched, confidence: matched ? 0.6 : 0, matchCount: matched ? 1 : 0, threshold: 1, words };
+  }
+
+  // Multi-word: ≥50% of meaningful words, minimum 2
+  const matchCount = words.filter(w => candidateLower.includes(w)).length;
+  const threshold = Math.max(2, Math.ceil(words.length * 0.5));
+  const matched = matchCount >= threshold;
+  const confidence = matched ? matchCount / words.length : 0;
+  return { matched, confidence, matchCount, threshold, words };
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
@@ -657,5 +707,6 @@ module.exports = {
   normalizeTitle,
   titleToSlug,
   titleWordsMatch,
+  titleWordsMatchWithConfidence,
   KNOWN_ALIASES,
 };
