@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isJunkOutlet } = require('./lib/review-normalization');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -231,6 +232,12 @@ async function findDTLIPage(show) {
     if (result.found && result.html) {
       // Verify this is a show page, not the homepage or listing
       if (result.html.includes('review-item') && result.html.includes('READ THE REVIEW')) {
+        // Validate page is about the target show (LLM tiebreaker for edge cases)
+        const validation = await validatePageMatchesShow(result.html, show.title);
+        if (!validation.valid) {
+          console.log(`  [SKIP] DTLI page doesn't match "${show.title}": ${validation.reason}`);
+          continue;
+        }
         console.log(`  ✓ Found at: ${url}`);
         return { url, html: result.html, slug };
       }
