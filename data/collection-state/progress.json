@@ -524,7 +524,11 @@
     "imitation-of-life-2026/theatermania--unknown.json",
     "imitation-of-life-2026/thewrap--unknown.json",
     "imitation-of-life-2026/timeout--adam-feldman.json",
-    "indian-princesses-2025/theatermania--unknown.json"
+    "indian-princesses-2025/theatermania--unknown.json",
+    "into-the-woods-west-end-2025/guardian--unknown.json",
+    "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json",
+    "into-the-woods-west-end-2025/nydailynews--chris-jones.json",
+    "into-the-woods-west-end-2025/timeout--unknown.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1502,7 +1506,13 @@
     "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json",
     "imitation-of-life-2026/deadline--unknown.json",
     "imitation-of-life-2026/nydailynews--unknown.json",
-    "imitation-of-life-2026/nypost--johnny-oleksinski.json"
+    "imitation-of-life-2026/nypost--johnny-oleksinski.json",
+    "into-the-woods-west-end-2025/broadwaynews--unknown.json",
+    "into-the-woods-west-end-2025/ew--unknown.json",
+    "into-the-woods-west-end-2025/indiewire--unknown.json",
+    "into-the-woods-west-end-2025/nypost--unknown.json",
+    "into-the-woods-west-end-2025/thewrap--thom-geier.json",
+    "jackals-2026/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1599,7 +1609,10 @@
       "imitation-of-life-2026/theatermania--unknown.json",
       "imitation-of-life-2026/thewrap--unknown.json",
       "imitation-of-life-2026/timeout--adam-feldman.json",
-      "indian-princesses-2025/theatermania--unknown.json"
+      "indian-princesses-2025/theatermania--unknown.json",
+      "into-the-woods-west-end-2025/guardian--unknown.json",
+      "into-the-woods-west-end-2025/nydailynews--chris-jones.json",
+      "into-the-woods-west-end-2025/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -2561,7 +2574,8 @@
       "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
       "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
-      "data/review-texts/hold-on-to-your-butts-2026/theatermania--unknown.json"
+      "data/review-texts/hold-on-to-your-butts-2026/theatermania--unknown.json",
+      "data/review-texts/jackals-2026/broadwaynews--unknown.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2709,11 +2723,13 @@
       "chinese-republicans-2026/broadwaynews--unknown.json",
       "hamilton-2015/wsj--terry-teachout.json",
       "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/wsj--terry-teachout.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json",
+      "into-the-woods-west-end-2025/nypost--unknown.json"
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "indian-princesses-2025/theatermania--unknown.json",
+  "lastProcessed": "jackals-2026/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2918,6 +2934,17 @@
       "t": "2026-02-24T03:38:03.609Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-24T03:49:08.992Z",
+      "event": "bb-session",
+      "session": "d8e63941",
+      "url": "https://www.indiewire.com/criticism/culture/into-the-woods-reviews-rob-marshall-"
+    },
+    {
+      "t": "2026-02-24T03:49:11.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
     }
   ]
 }
