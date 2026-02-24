@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -144,9 +145,14 @@ async function searchBWWRoundup(show) {
     console.log(`  Using manual URL override: ${url}`);
     const result = await httpGet(url);
     if (result.found && result.html) {
-      return { url, html: result.html };
+      const validation = await validatePageMatchesShow(result.html, show.title);
+      if (validation.valid) {
+        return { url, html: result.html };
+      }
+      console.log(`  ✗ Manual URL override page doesn't match: ${validation.reason}`);
+    } else {
+      console.log(`  ✗ Manual URL override failed (status: ${result.status})`);
     }
-    console.log(`  ✗ Manual URL override failed (status: ${result.status})`);
   }
 
   const openingDate = new Date(show.openingDate);
@@ -202,14 +208,13 @@ async function searchBWWRoundup(show) {
       // For revivals, also check if it's about the right production
       const isRightYear = result.html.includes(String(year));
 
-      // Verify the show title appears in the page (prevents wrong-show matches)
-      const { titleWordsMatch } = require('./lib/show-matching');
-      const h1Text = (result.html.match(/<h1[^>]*>([^<]+)<\/h1>/i) || ['', ''])[1];
-      const showInPage = titleWordsMatch(show.title, pageTitle + ' ' + h1Text);
-
-      if (result.html.includes('Review Roundup') && (isBroadway || isRightYear) && showInPage) {
-        console.log(`  ✓ Found at: ${url}`);
-        return { url, html: result.html };
+      if (result.html.includes('Review Roundup') && (isBroadway || isRightYear)) {
+        // Validate page matches target show (LLM tiebreaker for edge cases)
+        const validation = await validatePageMatchesShow(result.html, show.title);
+        if (validation.valid) {
+          console.log(`  ✓ Found at: ${url}`);
+          return { url, html: result.html };
+        }
       }
     }
     await sleep(200);
@@ -267,14 +272,9 @@ async function searchWebForBWWRoundup(show) {
         const pageResult = await httpGet(url);
 
         if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
-          // Verify the page mentions the show title using robust word matching
-          // (filters generic words like "comedy", "about", "all" to prevent false matches)
-          const { titleWordsMatch } = require('./lib/show-matching');
-          const pageTitle = (pageResult.html.match(/<title>([^<]+)<\/title>/i) || ['', ''])[1];
-          const h1Text = (pageResult.html.match(/<h1[^>]*>([^<]+)<\/h1>/i) || ['', ''])[1];
-          const combinedText = pageTitle + ' ' + h1Text + ' ' + url;
-
-          if (titleWordsMatch(show.title, combinedText)) {
+          // Validate page matches target show (LLM tiebreaker for edge cases)
+          const validation = await validatePageMatchesShow(pageResult.html, show.title);
+          if (validation.valid) {
             console.log(`  ✓ Found via Google search: ${url}`);
             saveUrlOverride(show.id, url);
             return { url, html: pageResult.html };
