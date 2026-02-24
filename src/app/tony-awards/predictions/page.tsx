@@ -213,7 +213,7 @@ export default function TonyPredictionsOverviewPage() {
           </div>
 
           <details className="group rounded-xl border border-white/5 bg-surface-overlay">
-            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-gray-400 hover:text-white transition-colors list-none flex items-center justify-between">
+            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-gray-400 hover:text-white transition-colors list-none [&::-webkit-details-marker]:hidden flex items-center justify-between">
               <span>Accuracy breakdown</span>
               <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
