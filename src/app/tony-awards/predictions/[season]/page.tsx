@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
@@ -90,6 +92,21 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     }
   }
 
+  // Build per-category report card for past seasons
+  const reportCard = !isCurrent && winnerCount > 0 ? categories.map(cat => {
+    const predicted = cat.shows[0] || null;
+    const winner = cat.shows.find(s => outcomes[s.slug] === 'winner') || null;
+    const correct = predicted && winner && predicted.slug === winner.slug;
+    const winnerRank = winner ? cat.shows.findIndex(s => s.slug === winner.slug) + 1 : null;
+    return {
+      category: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
+      predicted,
+      winner,
+      correct,
+      winnerRank,
+    };
+  }).filter(rc => rc.winner) : [];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Tony Awards', url: `${BASE_URL}/tony-awards` },
@@ -166,15 +183,66 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </div>
         </div>
 
-        {/* Season Result Summary (past seasons only) */}
-        {!isCurrent && winnerCount > 0 && (
-          <div className="mb-8 p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5">
-            <p className="text-sm text-gray-300">
-              <span className="text-amber-400 font-semibold">Season Result:</span>{' '}
-              The #1 ranked show won {rank1Wins} of {winnerCount} categories.
-              {rank1Wins === winnerCount && ' Perfect prediction season.'}
-              {rank1Wins === 0 && ' A season of upsets.'}
-            </p>
+        {/* Report Card (past seasons only) */}
+        {reportCard.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-lg font-bold text-white">Prediction Report Card</h2>
+              <span className={`text-sm font-bold px-2 py-0.5 rounded ${
+                rank1Wins === winnerCount ? 'bg-emerald-500/20 text-emerald-400' :
+                rank1Wins >= winnerCount * 0.75 ? 'bg-blue-500/20 text-blue-400' :
+                rank1Wins >= winnerCount * 0.5 ? 'bg-amber-500/20 text-amber-400' :
+                'bg-red-500/20 text-red-400'
+              }`}>
+                {rank1Wins}/{winnerCount}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {reportCard.map(rc => (
+                <div key={rc.category} className={`p-4 rounded-xl border ${rc.correct ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-white/5 bg-surface-overlay'}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{rc.category}</p>
+                    <span className={`text-xs font-bold ${rc.correct ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {rc.correct ? 'Correct' : rc.winnerRank ? `Winner was #${rc.winnerRank}` : 'Missed'}
+                    </span>
+                  </div>
+                  {/* Predicted #1 */}
+                  {rc.predicted && (
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+                        {rc.predicted.thumbnailPath ? (
+                          <img src={getOptimizedImageUrl(rc.predicted.thumbnailPath, 'thumbnail')} alt={rc.predicted.title} className="w-full h-full object-cover" width={40} height={40} />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-500">Our #1 pick</p>
+                        <p className="text-sm font-medium text-white truncate">{rc.predicted.title}</p>
+                      </div>
+                      <ScoreBadge score={rc.predicted.blendedScore} size="sm" reviewCount={rc.predicted.reviewCount} status={rc.predicted.status} />
+                    </div>
+                  )}
+                  {/* Actual winner (only show if different from predicted) */}
+                  {rc.winner && !rc.correct && (
+                    <div className="flex items-center gap-3 pt-2 border-t border-white/5">
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+                        {rc.winner.thumbnailPath ? (
+                          <img src={getOptimizedImageUrl(rc.winner.thumbnailPath, 'thumbnail')} alt={rc.winner.title} className="w-full h-full object-cover" width={40} height={40} />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-sm">🏆</div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-amber-400">Actual winner</p>
+                        <p className="text-sm font-medium text-white truncate">{rc.winner.title}</p>
+                      </div>
+                      <ScoreBadge score={rc.winner.blendedScore} size="sm" reviewCount={rc.winner.reviewCount} status={rc.winner.status} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
