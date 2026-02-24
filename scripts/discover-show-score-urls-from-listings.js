@@ -59,14 +59,18 @@ function sleep(ms) {
 function normalizeTitle(title) {
   return (title || '')
     .toLowerCase()
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
     .replace(/\s*\(broadway\)\s*/gi, '')
     .replace(/\s*\(london\)\s*/gi, '')
     .replace(/\s*\(west end\)\s*/gi, '')
     .replace(/\s*\(off-broadway\)\s*/gi, '')
+    .replace(/\s*\(nyc\)\s*/gi, '')
     .replace(/\s*\([^)]*\)\s*$/g, '')  // Strip trailing parenthetical (venue, etc.)
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;/g, "'")
-    .replace(/[''""":,.!?]/g, '')
+    .replace(/^encores!\s*/i, '')  // Strip "Encores!" prefix for City Center shows
+    .replace(/\*+/g, '')  // Strip censoring asterisks (s**tshow → shtshow)
+    .replace(/[''""":,.!?–—-]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -91,6 +95,16 @@ function titlesMatch(a, b) {
     // Must match at a word boundary
     const regex = new RegExp(`\\b${shorterNoThe.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
     if (regex.test(longerNoThe) || longerNoThe.startsWith(shorterNoThe)) return true;
+  }
+  // Word-set matching: if ≥75% of significant words (3+ chars) from the shorter title
+  // appear in the longer title. Catches subtitle variations ("A Musical About Nothing"
+  // vs "An Unauthorized Musical Parody About Nothing") and censored titles ("shtshow"
+  // vs "shitshow" where 3/4 other words still match).
+  const shorterWords = shorterNoThe.split(' ').filter(w => w.length >= 3);
+  const longerWords = new Set(longerNoThe.split(' ').filter(w => w.length >= 3));
+  if (shorterWords.length >= 2) {
+    const matchCount = shorterWords.filter(w => longerWords.has(w)).length;
+    if (matchCount >= Math.ceil(shorterWords.length * 0.75)) return true;
   }
   return false;
 }
@@ -188,10 +202,21 @@ async function main() {
 
   // Build lookup maps by normalized title → shows (grouped by category)
   const showsByNormalizedTitle = {};
+  // Also build a "core title" map: normalizeTitle(before first comma/colon) → shows
+  // This catches "Beaches" matching "Beaches, A New Musical" — normalizeTitle strips
+  // commas so the comma-split in findBestMatch can't work on already-normalized text.
+  const showsByCoreTitle = {};
   for (const show of shows) {
     const norm = normalizeTitle(show.title);
     if (!showsByNormalizedTitle[norm]) showsByNormalizedTitle[norm] = [];
     showsByNormalizedTitle[norm].push(show);
+    // Extract core title from raw title (before comma or colon), normalize separately
+    const rawCore = show.title.split(/[,:]/, 1)[0].trim();
+    const normCore = normalizeTitle(rawCore);
+    if (normCore && normCore !== norm && normCore.length >= 5) {
+      if (!showsByCoreTitle[normCore]) showsByCoreTitle[normCore] = [];
+      showsByCoreTitle[normCore].push(show);
+    }
   }
 
   // Also build a reverse map: existing URL → show ID
@@ -259,21 +284,24 @@ async function main() {
     // Try exact normalized title match first
     let candidates = showsByNormalizedTitle[norm] || [];
 
-    // Try stripping subtitle after comma (e.g., "Beaches" vs "Beaches, A New Musical")
+    // Try core title matching: extract part before comma/colon from the RAW listing title
+    // (normalizeTitle strips commas, so we split the raw title first)
+    // This catches "Beaches" (ShowScore) → "Beaches, A New Musical" (our DB)
     if (candidates.length === 0) {
-      const beforeComma = norm.split(',')[0].trim();
-      if (beforeComma !== norm && showsByNormalizedTitle[beforeComma]) {
-        candidates = showsByNormalizedTitle[beforeComma];
-      }
-    }
-
-    // Also try matching where OUR title's before-comma matches the listing title
-    if (candidates.length === 0) {
-      for (const [normTitle, showGroup] of Object.entries(showsByNormalizedTitle)) {
-        const ourBeforeComma = normTitle.split(',')[0].trim();
-        if (ourBeforeComma === norm || norm === normTitle) {
-          candidates = candidates.concat(showGroup);
+      const listingCore = normalizeTitle(listingTitle.split(/[,:]/, 1)[0].trim());
+      if (listingCore && listingCore !== norm) {
+        // Listing's core title → our full normalized titles
+        if (showsByNormalizedTitle[listingCore]) {
+          candidates = showsByNormalizedTitle[listingCore];
         }
+        // Listing's core title → our core titles
+        if (candidates.length === 0 && showsByCoreTitle[listingCore]) {
+          candidates = showsByCoreTitle[listingCore];
+        }
+      }
+      // Also try: listing full title matches our core titles (reverse direction)
+      if (candidates.length === 0 && showsByCoreTitle[norm]) {
+        candidates = showsByCoreTitle[norm];
       }
     }
 
