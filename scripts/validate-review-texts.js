@@ -34,6 +34,9 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 
+// Registry alias index — built once at load for canonical outlet resolution
+let registryAliasIndex = {};
+
 // Garbage critic name patterns
 const GARBAGE_PATTERNS = [
   /^photo\s*(credit|by)?/i,
@@ -56,13 +59,20 @@ function loadOutletRegistry() {
     // Add all outlet IDs
     Object.keys(data.outlets || {}).forEach(id => validOutlets.add(id));
 
-    // Add all aliases from _aliasIndex
-    Object.keys(data._aliasIndex || {}).forEach(alias => validOutlets.add(alias));
+    // Add all aliases from _aliasIndex and build canonical mapping
+    Object.entries(data._aliasIndex || {}).forEach(([alias, canonical]) => {
+      validOutlets.add(alias);
+      registryAliasIndex[alias] = canonical;
+    });
 
     // Add all aliases from each outlet entry
-    Object.values(data.outlets || {}).forEach(outlet => {
+    Object.entries(data.outlets || {}).forEach(([id, outlet]) => {
       if (outlet.aliases) {
-        outlet.aliases.forEach(alias => validOutlets.add(alias.toLowerCase()));
+        outlet.aliases.forEach(alias => {
+          const lower = alias.toLowerCase();
+          validOutlets.add(lower);
+          registryAliasIndex[lower] = id;
+        });
       }
     });
 
@@ -92,11 +102,12 @@ function isGarbageCriticName(name) {
 }
 
 /**
- * Normalize outlet ID for comparison
+ * Normalize outlet ID to canonical form using registry aliases
  */
 function normalizeOutletId(id) {
   if (!id) return null;
-  return id.toLowerCase().trim();
+  const lower = id.toLowerCase().trim();
+  return registryAliasIndex[lower] || lower;
 }
 
 /**
@@ -126,6 +137,11 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
       message: `Failed to parse JSON: ${err.message}`
     });
     return { errors, warnings };
+  }
+
+  // Skip files excluded from rebuild (duplicates, wrong production, etc.)
+  if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.isRoundupArticle) {
+    return { errors, warnings, skipped: true };
   }
 
   // Check 1: Required fields
@@ -238,6 +254,7 @@ function main() {
   const allErrors = [];
   const allWarnings = [];
   let totalFiles = 0;
+  let skippedFiles = 0;
   const seenReviews = new Map();
 
   // Validate each show
@@ -246,9 +263,10 @@ function main() {
 
     for (const file of files) {
       totalFiles++;
-      const { errors, warnings } = validateReviewFile(file, validOutlets, seenReviews);
-      allErrors.push(...errors);
-      allWarnings.push(...warnings);
+      const result = validateReviewFile(file, validOutlets, seenReviews);
+      if (result.skipped) { skippedFiles++; continue; }
+      allErrors.push(...result.errors);
+      allWarnings.push(...result.warnings);
     }
   }
 
@@ -271,7 +289,7 @@ function main() {
     console.log(JSON.stringify(result, null, 2));
   } else {
     console.log('Validating review-text files...');
-    console.log(`  Scanning: ${showDirs.length} shows, ${totalFiles} files\n`);
+    console.log(`  Scanning: ${showDirs.length} shows, ${totalFiles} files (${skippedFiles} excluded)\n`);
 
     if (allErrors.length > 0) {
       console.log(`ERRORS (${allErrors.length}):`);
