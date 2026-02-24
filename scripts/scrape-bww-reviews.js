@@ -29,6 +29,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
@@ -274,6 +275,12 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
       stats.reviewsPagesFetched++;
       const html = await fetchHtml(url);
       if (html && html.includes('feedbacks')) {
+        // Validate page is actually about this show
+        const validation = await validatePageMatchesShow(html, show.title);
+        if (!validation.valid) {
+          console.log(`  [SKIP] /reviews/${slug} wrong show: ${validation.reason}`);
+          continue;
+        }
         // Archive and return
         if (!options.dryRun) {
           if (!fs.existsSync(reviewsArchiveDir)) fs.mkdirSync(reviewsArchiveDir, { recursive: true });
@@ -456,11 +463,10 @@ async function discoverBwwRoundup(show, showId, options = {}) {
       stats.roundupsFetched++;
       const html = await fetchHtml(url);
       if (html && (html.includes('critics') || html.includes('Review Roundup'))) {
-        // Validate page title actually matches show (BWW fuzzy URL routing can serve wrong articles)
-        const $ = cheerio.load(html);
-        const pageTitle = ($('title').text() + ' ' + $('h1').text());
-        if (!titleWordsMatch(searchTitle, pageTitle)) {
-          console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": "${pageTitle.slice(0, 80)}"`);
+        // Validate page actually matches show (LLM tiebreaker for edge cases)
+        const validation = await validatePageMatchesShow(html, searchTitle);
+        if (!validation.valid) {
+          console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": ${validation.reason}`);
           continue;
         }
 
