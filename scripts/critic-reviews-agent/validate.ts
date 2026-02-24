@@ -10,7 +10,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const TIER_WEIGHTS: Record<number, number> = { 1: 1.0, 2: 0.85, 3: 0.70 };
+const TIER_WEIGHTS: Record<number, number> = { 1: 1.0, 2: 0.75, 3: 0.45 };
 
 const OUTLET_TIERS: Record<string, number> = {
   // Tier 1
