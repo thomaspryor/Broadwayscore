@@ -293,8 +293,15 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
   if (majority && majority.count > n / 2) {
     const majorityResults = results.filter(r => r.bucket === majority.bucket);
     const outlierResults = results.filter(r => r.bucket !== majority.bucket);
-    const majorityAvg = mean(majorityResults.map(r => r.score));
-    const finalScore = Math.round(majorityAvg);
+
+    // Weighted average: majority models 1.5x, outlier models 1.0x
+    // This preserves outlier signal while anchoring to majority sentiment
+    const MAJORITY_WEIGHT = 1.5;
+    const OUTLIER_WEIGHT = 1.0;
+    const totalWeight = majorityResults.length * MAJORITY_WEIGHT + outlierResults.length * OUTLIER_WEIGHT;
+    const weightedSum = majorityResults.reduce((s, r) => s + r.score * MAJORITY_WEIGHT, 0)
+                      + outlierResults.reduce((s, r) => s + r.score * OUTLIER_WEIGHT, 0);
+    const finalScore = Math.round(weightedSum / totalWeight);
     // Derive bucket from numeric score — no clamping to voted bucket
     const derivedBucket = scoreToBucket(finalScore);
 
