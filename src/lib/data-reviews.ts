@@ -201,12 +201,14 @@ interface ShowMeta {
   status: string;
   type: string;
   thumbnail: string | null;
+  category: string;
 }
 
 const showMetaMap = new Map<string, ShowMeta>();
 for (const show of (showsData as { shows: Array<{
   id: string; title: string; slug: string; venue: string;
   openingDate: string; status: string; type: string;
+  category?: string;
   images?: { thumbnail?: string };
 }> }).shows) {
   showMetaMap.set(show.id, {
@@ -218,6 +220,7 @@ for (const show of (showsData as { shows: Array<{
     status: show.status,
     type: show.type,
     thumbnail: show.images?.thumbnail || null,
+    category: show.category || 'broadway',
   });
 }
 
@@ -268,6 +271,8 @@ const reviews = (reviewsData as { reviews: RawReviewEntry[] }).reviews;
 for (const review of reviews) {
   const show = showMetaMap.get(review.showId);
   if (!show) continue;
+  // Critic/outlet pages are Broadway-only — skip off-broadway and west-end reviews
+  if (show.category !== 'broadway') continue;
 
   // Normalize outletId — skip garbage entries
   const rawOutletId = review.outletId;
