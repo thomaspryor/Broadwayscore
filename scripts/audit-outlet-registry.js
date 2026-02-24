@@ -33,6 +33,7 @@ const FIX_MODE = args.includes('--fix');
 const DRY_RUN = args.includes('--dry-run');
 const JSON_OUTPUT = args.includes('--json');
 const UPDATE_MODE = args.includes('--update');
+const AUTO_MODE = args.includes('--auto'); // Skip confirmation prompts (for CI)
 
 // Load the outlet registry
 function loadRegistry() {
@@ -636,13 +637,16 @@ async function updateRegistry(auditResult) {
     console.log('');
   }
 
-  const confirmed = await askConfirmation(
-    `Add ${safeAdditions.length} outlets to registry? (y/n): `
-  );
-
-  if (!confirmed) {
-    console.log('Aborted.');
-    return;
+  if (!AUTO_MODE) {
+    const confirmed = await askConfirmation(
+      `Add ${safeAdditions.length} outlets to registry? (y/n): `
+    );
+    if (!confirmed) {
+      console.log('Aborted.');
+      return;
+    }
+  } else {
+    console.log(`\nAuto-adding ${safeAdditions.length} outlets (--auto mode)...`);
   }
 
   for (const entry of safeAdditions) {
