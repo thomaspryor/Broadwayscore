@@ -49,6 +49,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
 - **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
 - **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
+- **Metadata enrichment (after discovery):** Enriches newly discovered shows with TodayTix runtimes/intermissions/age (`enrich-todaytix-runtimes.js`), Wikipedia synopses (`enrich-wikipedia-synopsis.js --limit=20`), and Wikipedia runtimes (`enrich-wikipedia-runtimes.js --limit=20`). All `continue-on-error: true`. Added Feb 23, 2026.
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
 - **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`
 - **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
