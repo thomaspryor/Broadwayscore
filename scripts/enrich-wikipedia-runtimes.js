@@ -16,6 +16,7 @@ const https = require('https');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const CATEGORY_FILTER = process.argv.find(a => a.startsWith('--category='))?.split('=')[1] || null;
+const LIMIT = parseInt(process.argv.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
@@ -156,6 +157,11 @@ async function main() {
   if (CATEGORY_FILTER) {
     targets = targets.filter(s => (s.category || 'broadway') === CATEGORY_FILTER);
     console.log(`Filtering to category: ${CATEGORY_FILTER}`);
+  }
+
+  if (LIMIT > 0) {
+    targets = targets.slice(0, LIMIT);
+    console.log(`Limiting to ${LIMIT} shows`);
   }
 
   console.log(`Total shows: ${shows.length}`);
