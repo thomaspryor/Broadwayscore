@@ -2804,7 +2804,21 @@ async function resolveTimeoutListingUrl(review) {
  */
 const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs
 let _showsJsonCache = null; // Cached shows.json data (static within a run)
-let _scrapingBeeSerpExhausted = false; // Track ScrapingBee SERP exhaustion (skip after first 401)
+let _scrapingBeeSerpExhausted = false; // Track ScrapingBee SERP exhaustion
+// Rolling window health tracking — disables provider when 60%+ of last 20 calls fail
+const _serpResults = [];
+const SERP_WINDOW_SIZE = 20;
+const SERP_FAILURE_THRESHOLD = 0.6;
+function _recordSerpResult(success) {
+  _serpResults.push(success);
+  if (_serpResults.length > SERP_WINDOW_SIZE) _serpResults.shift();
+  if (_serpResults.length >= SERP_WINDOW_SIZE) {
+    const failures = _serpResults.filter(r => !r).length;
+    if (failures / SERP_WINDOW_SIZE >= SERP_FAILURE_THRESHOLD) {
+      _scrapingBeeSerpExhausted = true;
+    }
+  }
+}
 
 /**
  * Search via ScrapingBee SERP API (returns structured JSON).
@@ -2825,6 +2839,7 @@ async function _serpViaScrapingBee(query) {
       });
       stats.scrapingBeeCreditsUsed += 1;
       const data = response.data;
+      _recordSerpResult(true);
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
@@ -2841,6 +2856,7 @@ async function _serpViaScrapingBee(query) {
         await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
         continue;
       }
+      _recordSerpResult(false);
       return null;
     }
   }
