@@ -73,8 +73,8 @@ async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = showsData.shows;
 
-  // Find shows with todaytixId but no runtime
-  let targets = shows.filter(s => s.todaytixId && !s.runtime);
+  // Find shows with todaytixId that need runtime OR age recommendation
+  let targets = shows.filter(s => s.todaytixId && (!s.runtime || !s.ageRecommendation));
 
   if (CATEGORY_FILTER) {
     targets = targets.filter(s => (s.category || 'broadway') === CATEGORY_FILTER);
@@ -82,7 +82,7 @@ async function main() {
   }
 
   console.log(`Total shows: ${shows.length}`);
-  console.log(`Targets (has TodayTix ID, no runtime): ${targets.length}`);
+  console.log(`Targets (has TodayTix ID, needs runtime or age rec): ${targets.length}`);
   console.log(`DRY_RUN: ${DRY_RUN}\n`);
 
   let runtimeEnriched = 0, ageEnriched = 0, errors = 0, noRuntime = 0;
@@ -105,15 +105,17 @@ async function main() {
 
       const parts = [];
 
-      // Runtime
-      if (ttShow.runningTime && ttShow.runningTime.minutes) {
-        const runtime = formatRuntime(ttShow.runningTime.minutes);
-        if (!DRY_RUN) show.runtime = runtime;
-        parts.push(`runtime=${runtime}`);
-        runtimeEnriched++;
-      } else {
-        parts.push('no runtime');
-        noRuntime++;
+      // Runtime (only if show doesn't have one yet)
+      if (!show.runtime) {
+        if (ttShow.runningTime && ttShow.runningTime.minutes) {
+          const runtime = formatRuntime(ttShow.runningTime.minutes);
+          if (!DRY_RUN) show.runtime = runtime;
+          parts.push(`runtime=${runtime}`);
+          runtimeEnriched++;
+        } else {
+          parts.push('no runtime');
+          noRuntime++;
+        }
       }
 
       // Age recommendation (only if show doesn't have one)
@@ -127,7 +129,7 @@ async function main() {
       }
 
       // Intermissions (from runningTime description if present)
-      if (!show.intermissions && ttShow.runningTime && ttShow.runningTime.display) {
+      if (show.intermissions === undefined && ttShow.runningTime && ttShow.runningTime.display) {
         const display = ttShow.runningTime.display.toLowerCase();
         if (display.includes('no intermission') || display.includes('no interval')) {
           if (!DRY_RUN) show.intermissions = 0;
