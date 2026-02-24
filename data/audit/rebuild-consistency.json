@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-24T18:31:43.452Z",
+  "generatedAt": "2026-02-24T19:51:48.140Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -87,7 +87,7 @@
       "showId": "man-and-boy-2011",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-thumb-boosted)"
+      "detail": "originalRating \"1/5\" (=20) vs score 69 (source: llmScore-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -472,12 +472,6 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "war-horse-2011",
-      "detail": "12/24 reviews (50%) scored exactly 88"
     }
   ]
 }
