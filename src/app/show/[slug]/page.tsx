@@ -583,6 +583,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </Link>
         )}
 
+        {/* Section Jump Links */}
+        <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
+          <a href="#critic-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Reviews</a>
+          {audienceBuzz && audienceBuzz.combinedScore != null && (
+            <a href="#audience" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Audience</a>
+          )}
+          {featureFlags.awards && awards && (
+            <a href="#awards" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Awards</a>
+          )}
+          {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
+            <a href="#box-office" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>
+          )}
+          {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
+            <a href="#cast" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Cast</a>
+          )}
+        </nav>
+
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
@@ -614,6 +631,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Audience Buzz Section - below Critic Reviews */}
+        <div id="audience" className="scroll-mt-20" />
         {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
           // Minimum 5 total reviews across all sources to display
           const totalReviews = (audienceBuzz.sources.showScore?.reviewCount || 0)
@@ -648,9 +666,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Awards - above Box Office */}
+        <div id="awards" className="scroll-mt-20" />
         {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
 
         {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
+        <div id="box-office" className="scroll-mt-20" />
         {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
           grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
             <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
@@ -682,6 +702,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Lottery/Rush Tickets — Broadway only */}
+        <div id="discount-tickets" className="scroll-mt-20" />
         {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (() => {
           // Don't show until previews have started
           if (show.previewsStartDate) {
@@ -698,6 +719,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Creative Team — show only principal roles */}
+        <div id="creative-team" className="scroll-mt-20" />
         {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (() => {
           const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
           const principals = show.creativeTeam.filter(m => PRINCIPAL_ROLES.test(m.role));
@@ -726,6 +748,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Cast — OBC and current cast from IBDB */}
+        <div id="cast" className="scroll-mt-20" />
         {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
           <CastSection
             openingNightCast={castFile.openingNightCast}
