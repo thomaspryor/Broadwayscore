@@ -481,7 +481,10 @@
     "arcadia-west-end-2026/nydailynews--unknown.json",
     "arcadia-west-end-2026/theatermania--unknown.json",
     "arcadia-west-end-2026/thewrap--unknown.json",
-    "blackout-songs-2026/theatermania--pete-hempstead.json"
+    "blackout-songs-2026/theatermania--pete-hempstead.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1412,7 +1415,14 @@
     "bigfoot-2026/timeout--adam-feldman.json",
     "blackout-songs-2026/new-york-sun--elysa-gardner.json",
     "bloodlove-2026/new-jersey-newsroom--michael-sommers.json",
-    "bloodlove-2026/newsday--linda-winer.json"
+    "bloodlove-2026/newsday--linda-winer.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1470,7 +1480,9 @@
       "arcadia-west-end-2026/nydailynews--unknown.json",
       "arcadia-west-end-2026/theatermania--unknown.json",
       "arcadia-west-end-2026/thewrap--unknown.json",
-      "blackout-songs-2026/theatermania--pete-hempstead.json"
+      "blackout-songs-2026/theatermania--pete-hempstead.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bug-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -2419,7 +2431,8 @@
       "data/review-texts/an-ark-2026/new-jersey-newsroom--micheal-sommers.json",
       "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
       "data/review-texts/blackout-songs-2026/new-york-sun--elysa-gardner.json",
-      "data/review-texts/bloodlove-2026/new-jersey-newsroom--michael-sommers.json"
+      "data/review-texts/bloodlove-2026/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2562,11 +2575,12 @@
       "an-ark-2026/wsj--terry-teachout.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
       "anonymous-2026/broadwaynews--unknown.json",
-      "austentatious-an-improvised-jane-austen-novel-west-end-2025/broadwaynews--unknown.json"
+      "austentatious-an-improvised-jane-austen-novel-west-end-2025/broadwaynews--unknown.json",
+      "bug-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "bloodlove-2026/newsday--linda-winer.json",
+  "lastProcessed": "bug-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2710,6 +2724,23 @@
       "t": "2026-02-24T02:37:09.019Z",
       "event": "bb-cookie-inject",
       "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-02-24T02:45:36.857Z",
+      "event": "bb-session",
+      "session": "5079c58c",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-24T02:45:39.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T02:47:56.844Z",
+      "event": "bb-session",
+      "session": "f8104b62",
+      "url": "https://www.broadwaynews.com/the-broadway-review-buena-vista-social-club-brings-"
     }
   ]
 }
