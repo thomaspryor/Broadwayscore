@@ -1,49 +1,129 @@
 {
-  "updatedAt": "2026-02-24T08:32:00.594Z",
-  "processed": 211,
-  "failed": 419,
-  "successRate": "33.5%",
+  "updatedAt": "2026-02-24T08:37:57.259Z",
+  "processed": 582,
+  "failed": 1199,
+  "successRate": "32.7%",
   "tierBreakdown": {
-    "playwright": 131,
-    "amp": 0,
-    "browserbase": 1,
-    "directCookies": 1,
-    "scrapingbee": 27,
+    "playwright": 140,
+    "amp": 657,
+    "browserbase": 17,
+    "directCookies": 15,
+    "scrapingbee": 106,
     "brightdata": 0,
-    "archiveToday": 132,
-    "archive": 54
+    "archiveToday": 244,
+    "archive": 162
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-02-24T04:25:32.345Z",
-      "event": "bb-session",
-      "session": "4deeb0d6",
-      "url": "https://dougmarino.blogspot.com/2016/09/heisenberg.html"
+      "t": "2026-02-24T03:49:11.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
     },
     {
-      "t": "2026-02-24T04:38:12.988Z",
+      "t": "2026-02-24T04:31:33.245Z",
       "event": "bb-session",
-      "session": "7c08ef03",
-      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+      "session": "942b3c5a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/dr-anonymous-theater-"
     },
     {
-      "t": "2026-02-24T04:40:58.823Z",
-      "event": "bb-session",
-      "session": "335aab66",
-      "url": "https://www.thewrap.com/angels-in-america-broadway-review-andrew-garfield-nathan"
+      "t": "2026-02-24T04:31:35.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-02-24T04:52:45.746Z",
+      "t": "2026-02-24T04:34:34.561Z",
       "event": "bb-session",
-      "session": "c6ea9347",
-      "url": "http://www.thewrap.com/fiddler-on-the-roof-broadway-review-a-classic-tweaked-but"
+      "session": "0f41e75a",
+      "url": "https://www.nytimes.com/2026/02/19/theater/dinosaurs-blackout-songs-reservoir-an"
     },
     {
-      "t": "2026-02-24T04:55:07.638Z",
+      "t": "2026-02-24T04:34:36.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T04:37:36.032Z",
       "event": "bb-session",
-      "session": "da35d8ab",
-      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
+      "session": "131a8509",
+      "url": "https://variety.com/2024/film/reviews/arcadia-review-yorgos-zois-sarajevo-123612"
+    },
+    {
+      "t": "2026-02-24T04:37:38.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-24T04:41:22.970Z",
+      "event": "bb-session",
+      "session": "f7e3021f",
+      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
+    },
+    {
+      "t": "2026-02-24T04:41:25.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T04:46:29.347Z",
+      "event": "bb-session",
+      "session": "600d9677",
+      "url": "https://www.nytimes.com/2026/02/06/theater/high-spirits-review-a-ghostly-delight"
+    },
+    {
+      "t": "2026-02-24T04:46:31.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T05:07:24.963Z",
+      "event": "bb-session",
+      "session": "6ae9fd92",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-02-24T05:07:27.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T05:14:53.950Z",
+      "event": "bb-session",
+      "session": "744c1549",
+      "url": "https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musica"
+    },
+    {
+      "t": "2026-02-24T05:14:56.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-24T05:21:13.299Z",
+      "event": "bb-session",
+      "session": "d151b76c",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-02-24T05:21:15.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-24T05:30:51.561Z",
+      "event": "bb-session",
+      "session": "00256256",
+      "url": "https://variety.com/2025/legit/reviews/paranormal-activity-review-play-ahmanson-"
+    },
+    {
+      "t": "2026-02-24T05:30:53.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-24T05:48:50.583Z",
+      "event": "bb-session",
+      "session": "601821d4",
+      "url": "https://forum.broadwayworld.com/thread/WickedTour-Review02-08-06"
     }
   ]
 }
