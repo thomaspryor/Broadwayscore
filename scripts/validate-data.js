@@ -834,6 +834,30 @@ function validateReviewsJson() {
     }
   }
 
+  // Per-show review count regression check (catches cross-show contamination cleanup)
+  if (baseline && baseline.perShowReviews) {
+    const currentPerShow = {};
+    for (const r of reviews) {
+      const sid = r.showId || 'unknown';
+      currentPerShow[sid] = (currentPerShow[sid] || 0) + 1;
+    }
+    const bigDrops = [];
+    for (const [showId, prevCount] of Object.entries(baseline.perShowReviews)) {
+      const currCount = currentPerShow[showId] || 0;
+      if (prevCount >= 3 && currCount < prevCount * 0.5) {
+        bigDrops.push({ showId, prev: prevCount, curr: currCount, pct: Math.round((1 - currCount / prevCount) * 100) });
+      }
+    }
+    if (bigDrops.length > 0) {
+      warn(`${bigDrops.length} show(s) lost >50% of reviews (may indicate contamination cleanup or scraper regression):`);
+      for (const d of bigDrops.slice(0, 10)) {
+        warn(`  ${d.showId}: ${d.prev} → ${d.curr} (-${d.pct}%)`);
+      }
+    } else {
+      ok('Per-show review counts stable (no shows lost >50% of reviews)');
+    }
+  }
+
   // Check for duplicate outlet+critic per show
   const byShow = {};
   const duplicates = [];
@@ -2522,12 +2546,24 @@ function runValidation() {
 
   // Write baseline file on successful validation
   const openShows = shows.filter(s => s.status === 'open');
+  // Build per-show review counts for regression detection
+  const perShowReviews = {};
+  if (reviewCount > 0) {
+    try {
+      const reviewsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'reviews.json'), 'utf8'));
+      for (const r of (reviewsData.reviews || reviewsData)) {
+        const sid = r.showId || 'unknown';
+        perShowReviews[sid] = (perShowReviews[sid] || 0) + 1;
+      }
+    } catch (e) { /* skip per-show baseline if reviews.json unreadable */ }
+  }
   const newBaseline = {
     totalShows: shows.length,
     openShows: openShows.length,
     totalReviews: reviewCount,
     tonyNominations: tonyResult?.totalNominations || null,
     tonyWins: tonyResult?.totalWins || null,
+    perShowReviews,
     updatedAt: new Date().toISOString().split('T')[0],
   };
   try {
