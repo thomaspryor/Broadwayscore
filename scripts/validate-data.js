@@ -867,6 +867,24 @@ function validateReviewsJson() {
     ok('No duplicate outlet+critic combos in reviews.json');
   }
 
+  // Check for outletId inconsistencies (same display name → different outletIds)
+  const outletIdByName = {};
+  for (const r of reviews) {
+    const name = (r.outlet || '').toLowerCase().trim();
+    if (!name) continue;
+    if (!outletIdByName[name]) outletIdByName[name] = new Set();
+    outletIdByName[name].add(r.outletId);
+  }
+  const inconsistent = Object.entries(outletIdByName).filter(([, ids]) => ids.size > 1);
+  if (inconsistent.length > 0) {
+    error(`Found ${inconsistent.length} outlets with inconsistent outletIds in reviews.json:`);
+    inconsistent.forEach(([name, ids]) => {
+      error(`  "${name}": ${[...ids].join(', ')}`);
+    });
+  } else {
+    ok('No outlet ID inconsistencies in reviews.json');
+  }
+
   // Cross-outlet same-critic detection: flag when same critic appears at 2+ outlets for same show
   if (normalizeCritic && normalizeOutlet) {
     const byCriticShow = {};
@@ -1093,6 +1111,63 @@ function validateOutletFragmentation() {
     ok('No outlet fragmentation detected');
   } else {
     info(`${fragIssues} outlet fragmentation issue(s) found — run rebuild to resolve`);
+  }
+}
+
+/**
+ * Detect duplicate outlet entries in outlet-registry.json.
+ * Each outlet should have ONE canonical entry. Duplicates cause:
+ * - Inconsistent tier assignments (last entry wins)
+ * - Duplicate reviews in reviews.json after rebuild
+ * - Unreliable cross-market guard decisions
+ */
+function validateOutletRegistryDuplicates() {
+  info('Checking outlet-registry.json for duplicate entries...');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping');
+    return;
+  }
+
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const outlets = registry.outlets || registry;
+  const aliasIndex = registry._aliasIndex || {};
+
+  // Build a map of displayName → list of outlet IDs
+  const byDisplayName = {};
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    if (!entry || !entry.displayName) continue;
+    const key = entry.displayName.toLowerCase().trim();
+    if (!byDisplayName[key]) byDisplayName[key] = [];
+    byDisplayName[key].push({ id, tier: entry.tier });
+  }
+
+  let dupeCount = 0;
+  for (const [name, entries] of Object.entries(byDisplayName)) {
+    if (entries.length > 1) {
+      const ids = entries.map(e => `${e.id} (tier ${e.tier})`).join(', ');
+      error(`[registry-duplicate] "${name}" has ${entries.length} entries: ${ids} — merge into one canonical`);
+      dupeCount++;
+    }
+  }
+
+  // Also check for outlet IDs that are aliases of each other
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    if (!entry || !entry.aliases) continue;
+    for (const alias of entry.aliases) {
+      if (outlets[alias] && alias !== id) {
+        error(`[registry-duplicate] "${id}" lists "${alias}" as alias, but "${alias}" also exists as a separate outlet entry — remove one`);
+        dupeCount++;
+      }
+    }
+  }
+
+  if (dupeCount === 0) {
+    ok('No duplicate outlet entries in outlet-registry.json');
+  } else {
+    error(`Found ${dupeCount} duplicate outlet entries in outlet-registry.json`);
   }
 }
 
@@ -2375,6 +2450,8 @@ function runValidation() {
   const reviewCount = validateReviewsJson() || 0;
   console.log('');
   validateOutletFragmentation();
+  console.log('');
+  validateOutletRegistryDuplicates();
   console.log('');
   validateCrossMarketContamination();
   console.log('');
