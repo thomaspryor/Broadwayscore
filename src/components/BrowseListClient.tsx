@@ -312,22 +312,14 @@ export default function BrowseListClient({
         <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
           {/* Type filter row (only if mixed types) */}
           {showTypeFilter && (
-            <div className="flex items-center gap-1.5" role="group" aria-label="Filter by show type">
-              {(['all', 'musical', 'play'] as const).map(t => (
-                <button
-                  key={t}
-                  onClick={() => setTypeFilter(t)}
-                  aria-pressed={typeFilter === t}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors min-h-[36px] ${
-                    typeFilter === t
-                      ? 'bg-brand text-gray-900'
-                      : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
-                  }`}
-                >
-                  {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
-                </button>
-              ))}
-            </div>
+            <ToggleBar
+              variant="pill"
+              size="compact"
+              options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
+              value={typeFilter}
+              onChange={setTypeFilter}
+              ariaLabel="Filter by show type"
+            />
           )}
 
           {/* Sort + Toggle row (all on one line) */}
