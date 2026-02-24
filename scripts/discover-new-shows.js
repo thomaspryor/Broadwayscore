@@ -41,6 +41,8 @@ const NON_THEATER_PATTERNS = [
   'magic show:', 'magick', 'bubble show', // NOT 'magic' alone (false-positive: Magic Mike, The Magic Show, Magic/Bird)
   'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
   'quartet', 'quintet', 'ensemble',
+  'the metropolitan opera', // Met Opera productions (Turandot, La Boheme, etc.)
+  'royal opera', 'opera house', // London opera
   'selected shorts', 'book club', 'in conversation with',
   'nt live:', 'london\'s west end:',
   'dance company', 'dance +', 'ballet',
@@ -69,6 +71,9 @@ const EXCLUDED_TITLES = [
   'abby jimenez: the night we met', // Symphony Space author reading
   'caro claire burke: yesteryear', // Symphony Space author reading
   'the pelicot trial', // One-night event at church
+  'turandot', // Met Opera
+  'madama butterfly', // Met Opera
+  'la boheme', // Met Opera (also matches "La Bohème" after normalization)
 ];
 
 // Venues that categorically do not host theater
