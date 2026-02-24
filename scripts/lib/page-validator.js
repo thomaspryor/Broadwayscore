@@ -195,8 +195,10 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
     return { valid: true, confidence: match.confidence, reason: 'headings match (high confidence)' };
   }
 
-  // High confidence non-match — reject without LLM
-  if (!match.matched && match.confidence === 0 && match.words.length > 1) {
+  // High confidence non-match — reject without LLM when ZERO words from title appear
+  // This covers both multi-word titles and single-word titles where the word isn't present.
+  // Partial matches (e.g., "Sweeney" found but not "Todd") go to LLM tiebreaker.
+  if (!match.matched && match.matchCount === 0 && match.words.length >= 1) {
     return { valid: false, confidence: 0, reason: `headings "${headingText.substring(0, 80)}" don't match "${showTitle}"` };
   }
 
