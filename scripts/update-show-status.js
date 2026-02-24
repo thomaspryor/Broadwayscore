@@ -164,7 +164,9 @@ function updateShowStatuses() {
   return updates;
 }
 
-updateShowStatuses().catch(err => {
+try {
+  updateShowStatuses();
+} catch (err) {
   console.error('Fatal error:', err);
   process.exit(1);
-});
+}
