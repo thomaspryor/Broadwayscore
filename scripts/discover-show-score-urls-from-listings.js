@@ -432,7 +432,8 @@ async function main() {
   }
 
   // ── Write candidates file (unmatched listings for new show discovery) ──
-  if (candidates.length > 0) {
+  // Always run merge/prune logic (even with 0 new candidates) to expire stale entries
+  {
     // Load existing candidates and merge
     let existingCandidates = [];
     try {
@@ -470,20 +471,22 @@ async function main() {
       mergedCandidates.push(c);
     }
 
-    const candidatesData = {
-      _meta: {
-        lastUpdated: new Date().toISOString(),
-        totalCandidates: mergedCandidates.length,
-        ttlDays: CANDIDATE_TTL_DAYS,
-      },
-      candidates: mergedCandidates,
-    };
+    if (mergedCandidates.length > 0 || existingCandidates.length > 0) {
+      const candidatesData = {
+        _meta: {
+          lastUpdated: new Date().toISOString(),
+          totalCandidates: mergedCandidates.length,
+          ttlDays: CANDIDATE_TTL_DAYS,
+        },
+        candidates: mergedCandidates,
+      };
 
-    if (!dryRun) {
-      fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
-      console.log(`Wrote ${mergedCandidates.length} candidates to show-score-candidates.json (${candidates.length} new this run)`);
-    } else {
-      console.log(`[DRY RUN] Would write ${mergedCandidates.length} candidates (${candidates.length} new)`);
+      if (!dryRun) {
+        fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
+        console.log(`Wrote ${mergedCandidates.length} candidates to show-score-candidates.json (${candidates.length} new this run)`);
+      } else {
+        console.log(`[DRY RUN] Would write ${mergedCandidates.length} candidates (${candidates.length} new)`);
+      }
     }
   }
 }
