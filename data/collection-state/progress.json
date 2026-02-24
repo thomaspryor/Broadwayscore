@@ -1,53 +1,59 @@
 {
   "processed": [
-    "caroline-or-change-2004/nyt-theater--jonathan-mandell.json",
-    "data-2026/nyt-theater--jonathan-mandell.json",
-    "data-2026/nytg--allison-considine.json",
-    "doubt-a-parable/nytg--gillian-russo.json",
-    "fool-for-love-2015/nytg--stanford-friedman.json",
-    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytg--juan-michael-porter-ii.json",
-    "hamlet-2026/nytg--amelia-merrill.json",
-    "hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json"
+    "into-the-woods-west-end-2025/guardian--unknown.json",
+    "into-the-woods-west-end-2025/theatrely--unknown.json",
+    "into-the-woods-west-end-2025/billboard--unknown.json",
+    "into-the-woods-west-end-2025/chicagotribune--unknown.json",
+    "into-the-woods-west-end-2025/dailybeast--tim-teeman.json",
+    "into-the-woods-west-end-2025/rollingstone--unknown.json"
   ],
   "failed": [
-    "all-my-sons-1987/nytg--mark-shenton.json",
-    "american-buffalo-1983/nyt-theater--jonathan-mandell.json",
-    "anna-christie-1977/nyt-theater--jonathan-mandell.json",
-    "bells-are-ringing-2001/nytimes--ben-brantley.json",
-    "bob-fosses-dancin-2023/nytg--gillian-russo.json",
-    "boeingboeing-2008/variety--.json",
-    "company-1993/nyt-theater--jonathan-mandell.json",
-    "company-1993/nytg--ayanna-prescod.json",
-    "doubt-2005/nyt-theater--jonathan-mandell.json",
-    "doubt-2005/nytg--gillian-russo.json",
-    "flying-over-sunset-2021/nytg--joe-dziemianowicz.json",
-    "hells-kitchen-2024/nyt-theater--unknown.json"
+    "into-the-woods-west-end-2025/broadwaynews--unknown.json",
+    "into-the-woods-west-end-2025/ew--unknown.json",
+    "into-the-woods-west-end-2025/indiewire--unknown.json",
+    "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json",
+    "into-the-woods-west-end-2025/thewrap--thom-geier.json",
+    "into-the-woods-west-end-2025/frontmezzjunkies--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "caroline-or-change-2004/nyt-theater--jonathan-mandell.json",
-      "data-2026/nyt-theater--jonathan-mandell.json",
-      "data-2026/nytg--allison-considine.json",
-      "fool-for-love-2015/nytg--stanford-friedman.json",
-      "hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json"
+      "into-the-woods-west-end-2025/guardian--unknown.json",
+      "into-the-woods-west-end-2025/thewrap--thom-geier.json",
+      "into-the-woods-west-end-2025/billboard--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
-      "data/review-texts/boeingboeing-2008/variety--.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "doubt-a-parable/nytg--gillian-russo.json",
-      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytg--juan-michael-porter-ii.json",
-      "hamlet-2026/nytg--amelia-merrill.json"
+      "into-the-woods-west-end-2025/theatrely--unknown.json",
+      "into-the-woods-west-end-2025/chicagotribune--unknown.json",
+      "into-the-woods-west-end-2025/dailybeast--tim-teeman.json",
+      "into-the-woods-west-end-2025/rollingstone--unknown.json"
     ]
   },
-  "startTime": "2026-02-24T17:51:32.356Z",
-  "lastProcessed": "hells-kitchen-2024/nyt-theater--unknown.json",
-  "log": []
+  "startTime": "2026-02-24T17:48:00.353Z",
+  "lastProcessed": "into-the-woods-west-end-2025/rollingstone--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-24T17:51:40.338Z",
+      "event": "bb-session",
+      "session": "a82b980c",
+      "url": "https://www.indiewire.com/criticism/culture/into-the-woods-reviews-rob-marshall-"
+    },
+    {
+      "t": "2026-02-24T17:51:42.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-02-24T17:54:58.405Z",
+      "event": "bb-session",
+      "session": "2ed7c2cc",
+      "url": "https://www.thedailybeast.com/stephen-sondheims-into-the-woods-is-sheer-moving-m"
+    }
+  ]
 }
