@@ -2767,5 +2767,58 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   console.log('  To include a review despite late date, add "allowLateDate": true to the review file.');
 }
 
+// ========================================
+// AUTO-REGISTER NEW OUTLETS
+// ========================================
+{
+  // Collect all unique outletIds from just-built reviews
+  const reviewOutletIds = new Set(allReviews.map(r => r.outletId).filter(Boolean));
+  const registryIds = new Set();
+  for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+    registryIds.add(id.toLowerCase());
+    if (info.aliases) {
+      for (const alias of info.aliases) registryIds.add(alias.toLowerCase());
+    }
+  }
+  if (outletRegistry._aliasIndex) {
+    for (const alias of Object.keys(outletRegistry._aliasIndex)) {
+      registryIds.add(alias.toLowerCase());
+    }
+  }
+
+  const newOutlets = [];
+  for (const outletId of reviewOutletIds) {
+    if (!registryIds.has(outletId.toLowerCase())) {
+      newOutlets.push(outletId);
+    }
+  }
+
+  if (newOutlets.length > 0) {
+    // Auto-add missing outlets with tier 3
+    for (const outletId of newOutlets) {
+      const displayName = outletId
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      outletRegistry.outlets[outletId] = {
+        displayName,
+        tier: 3,
+        aliases: [outletId],
+        domain: null
+      };
+    }
+    if (outletRegistry._meta) {
+      outletRegistry._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    }
+    const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+    fs.writeFileSync(registryPath, JSON.stringify(outletRegistry, null, 2));
+    console.log(`\n✅ AUTO-REGISTERED ${newOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
+    for (const id of newOutlets.sort()) {
+      console.log(`  + ${id}`);
+    }
+    console.log('  Review tiers manually if needed.');
+  }
+}
+
 console.log('\n=== DONE ===');
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);
