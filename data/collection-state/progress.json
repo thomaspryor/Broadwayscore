@@ -7,7 +7,8 @@
     "burnout-paradise-2026/nytg--amelia-merrill.json",
     "dirty-books-2025/nyt-theater--jonathan-mandell.json",
     "gypsy-1974/nyt-theater--jonathan-mandell.json",
-    "gypsy-1974/nytg--austin-fimmano.json"
+    "gypsy-1974/nytg--austin-fimmano.json",
+    "lend-me-a-tenor-1989/nytheatrecom--michael-criscuolo.json"
   ],
   "failed": [
     "an-enemy-of-the-people-1971/nytg--allison-considine.json",
@@ -21,7 +22,16 @@
     "dirty-books-2025/nytg--unknown.json",
     "fun-home-2015/nytg--tulis-mccall.json",
     "ghosts-1982/nytg--caroline-cao.json",
-    "grey-house-2023/nyt-theater--jonathan-mandell.json"
+    "grey-house-2023/nyt-theater--jonathan-mandell.json",
+    "imitation-of-life-2026/nyt-theater--jonathan-mandell.json",
+    "m-butterfly-1988/hollywood-reporter--david-rooney.json",
+    "m-butterfly-1988/nytimes--ben-brantley.json",
+    "macbeth-2000/nyt-theater--jonathan-mandell.json",
+    "moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
+    "mrs-doubtfire-2021/nytg--joe-dziemianowicz.json",
+    "once-upon-a-mattress-2024/nytg--unknown.json",
+    "othello-1982/nytg--austin-fimmano.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,17 +47,22 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "lend-me-a-tenor-1989/nytheatrecom--michael-criscuolo.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/big-river-2003/nytimes--laura-collins-hughes.json",
-      "data/review-texts/big-river-2003/vulture--jesse-green.json"
+      "data/review-texts/big-river-2003/vulture--jesse-green.json",
+      "data/review-texts/m-butterfly-1988/hollywood-reporter--david-rooney.json",
+      "data/review-texts/m-butterfly-1988/nytimes--ben-brantley.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json"
     ],
     "archive": [
       "bad-cinderella-2023/nytg--amelia-merrill.json"
     ]
   },
   "startTime": "2026-02-24T17:21:19.986Z",
-  "lastProcessed": "gypsy-1974/nytg--austin-fimmano.json",
+  "lastProcessed": "othello-1982/nytg--austin-fimmano.json",
   "log": []
 }
