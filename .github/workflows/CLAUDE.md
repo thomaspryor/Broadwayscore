@@ -2,6 +2,21 @@
 
 Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secrets table and critical rules.
 
+## Failure Notifications
+
+All new workflows MUST include the `notify-failure` composite action (`.github/actions/notify-failure/`). Add as the LAST step in the last job:
+```yaml
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Workflow Name Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+```
+For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 69/98 workflows have notifications.
+
+---
+
 ## Data Sync Architecture
 
 **Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files in private repo `thomaspryor/broadway-review-texts`)
