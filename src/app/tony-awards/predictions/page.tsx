@@ -58,6 +58,7 @@ export default function TonyPredictionsOverviewPage() {
   const picks = currentCategories
     .filter(cat => cat.shows.length > 0)
     .map(cat => ({
+      key: cat.key,
       label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
       fullTitle: cat.title,
       show: cat.shows[0],
@@ -133,7 +134,7 @@ export default function TonyPredictionsOverviewPage() {
               {picks.map(pick => (
                 <Link
                   key={pick.label}
-                  href={`/tony-awards/predictions/${currentSeason.label}`}
+                  href={`/tony-awards/predictions/${currentSeason.label}#${pick.key}`}
                   className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group"
                 >
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{pick.label}</p>
@@ -174,8 +175,8 @@ export default function TonyPredictionsOverviewPage() {
                     </div>
                   </div>
                   {pick.runnerUp && (
-                    <p className="text-xs text-gray-500 mt-2.5 truncate">
-                      Runner-up: <span className="text-gray-400">{pick.runnerUp.title}</span>
+                    <p className="text-xs text-gray-500 mt-2.5 truncate border-t border-white/5 pt-2">
+                      Runner-up: <span className="text-gray-400 font-medium">{pick.runnerUp.title}</span>
                       {pick.runnerUp.blendedScore != null && (
                         <span className="text-gray-600 ml-1">({Math.round(pick.runnerUp.blendedScore)})</span>
                       )}
@@ -195,10 +196,10 @@ export default function TonyPredictionsOverviewPage() {
             </p>
           </div>
 
-          <details className="rounded-xl border border-white/5 bg-surface-overlay">
+          <details className="group rounded-xl border border-white/5 bg-surface-overlay">
             <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-gray-400 hover:text-white transition-colors list-none flex items-center justify-between">
               <span>Accuracy breakdown</span>
-              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
@@ -208,7 +209,7 @@ export default function TonyPredictionsOverviewPage() {
                 {[
                   { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
                   { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
-                  { stat: `+${stats.improvement}pts`, label: 'Improvement from audience' },
+                  { stat: `${stats.improvement >= 0 ? '+' : ''}${stats.improvement}pts`, label: 'Improvement from audience' },
                   { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
                 ].map(({ stat, label }) => (
                   <div key={label} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-center">

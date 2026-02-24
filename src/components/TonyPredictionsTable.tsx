@@ -16,6 +16,8 @@ interface TonyPredictionsTableProps {
   description: string;
   shows: SerializedTonyShow[];
   upcoming: SerializedTonyShow[];
+  /** Unique key used as the section anchor ID */
+  sectionId?: string;
   /** Global index offset so only the first few images across all sections are eager-loaded */
   startIndex?: number;
   /** Tony outcomes for historical seasons: slug → 'winner' | 'nominated' */
@@ -100,7 +102,7 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   );
 }
 
-export default function TonyPredictionsTable({ title, description, shows, upcoming, startIndex = 0, outcomes, mode = 'combined' }: TonyPredictionsTableProps) {
+export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, mode = 'combined' }: TonyPredictionsTableProps) {
   // Re-sort scored shows by the active mode's score
   const scored = useMemo(() => {
     return [...shows].sort((a, b) => {
@@ -125,7 +127,7 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
     getEffectiveStatus(show) === 'announced';
 
   return (
-    <section className="mb-10">
+    <section className="mb-10" id={sectionId}>
       <div className="mb-4">
         <h2 className="text-xl font-bold text-white">{title}</h2>
         <p className="text-sm text-gray-400 mt-1">{description}</p>

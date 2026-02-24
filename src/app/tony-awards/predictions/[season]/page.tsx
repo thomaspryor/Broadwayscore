@@ -110,7 +110,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           '@type': 'Answer',
           text: isCurrent
             ? `Based on a blend of aggregated critic scores and audience grades, Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season. This combined approach historically predicts Tony winners with higher accuracy than critics alone.`
-            : `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`,
+            : winnerCount > 0
+              ? `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`
+              : `The ${season.label} Tony season data includes all eligible shows ranked by blended critic and audience scores.`,
         },
       },
     ],

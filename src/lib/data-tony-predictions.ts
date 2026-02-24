@@ -659,7 +659,7 @@ export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWin
     return {
       category: catName.replace('Best ', '').replace('Revival of a ', 'Revival '),
       topShowTitle: topShow?.title || null,
-      topShowScore: topShow?.compositeScore || null,
+      topShowScore: topShow?.blendedScore ?? topShow?.compositeScore ?? null,
       winnerTitle: winnersByCategory.get(catName) || null,
     };
   });
