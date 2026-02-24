@@ -68,15 +68,80 @@ runs:
         CHANGED=$(git diff --staged --stat | tail -1)
         git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
 
+        # Save our audience-buzz.json before push attempts (for reconciliation)
+        if [ -f "audience-buzz.json" ]; then
+          cp audience-buzz.json /tmp/our-audience-buzz.json
+        fi
+
         for i in 1 2 3 4 5; do
-          # Use -X ours: locally-rebuilt derived data (reviews.json etc.) should
-          # take precedence over remote state, since rebuilds are serialized via
-          # concurrency group and always produce the most up-to-date version.
-          if git pull --rebase -X ours origin main && git push origin main; then
+          if git push origin main; then
             echo "Core data pushed successfully (attempt $i)"
             exit 0
           fi
-          git rebase --abort 2>/dev/null || true
+
+          # Push failed — another workflow pushed first. Fetch their version
+          # before rebasing so we can reconcile JSON data.
+          git fetch origin main 2>/dev/null || true
+
+          # Save remote's audience-buzz.json before rebase overwrites it
+          git show origin/main:audience-buzz.json > /tmp/remote-audience-buzz.json 2>/dev/null || true
+
+          # Rebase with -X ours: our version wins on conflicts
+          if ! git pull --rebase -X ours origin main; then
+            git rebase --abort 2>/dev/null || true
+            sleep $((RANDOM % 10 + 5))
+            continue
+          fi
+
+          # Reconcile audience-buzz.json: merge show-level entries from remote
+          # that our -X ours rebase may have dropped. This prevents concurrent
+          # audience-buzz writers from clobbering each other's work.
+          if [ -f "/tmp/our-audience-buzz.json" ] && [ -f "/tmp/remote-audience-buzz.json" ]; then
+            node -e '
+              const fs = require("fs");
+              try {
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-audience-buzz.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-audience-buzz.json", "utf8"));
+                const current = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
+                const shows = current.shows || {};
+                const remoteShows = remote.shows || {};
+                let recovered = 0;
+                for (const [id, entry] of Object.entries(remoteShows)) {
+                  if (!shows[id]) {
+                    // Remote has a show we dont — keep it
+                    shows[id] = entry;
+                    recovered++;
+                  } else {
+                    // Both have this show — merge sources we are missing
+                    const ourSrc = shows[id].sources || {};
+                    const remoteSrc = entry.sources || {};
+                    for (const [src, data] of Object.entries(remoteSrc)) {
+                      if (data && data.score != null && (!ourSrc[src] || ourSrc[src].score == null)) {
+                        ourSrc[src] = data;
+                        recovered++;
+                      }
+                    }
+                    shows[id].sources = ourSrc;
+                  }
+                }
+                if (recovered > 0) {
+                  current.shows = shows;
+                  fs.writeFileSync("audience-buzz.json", JSON.stringify(current, null, 2) + "\n");
+                  console.log("Reconciled " + recovered + " entries from remote audience-buzz.json");
+                }
+              } catch (e) {
+                console.error("Reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+
+            # Re-stage and amend if reconciliation changed the file
+            if ! git diff --quiet audience-buzz.json 2>/dev/null; then
+              git add audience-buzz.json
+              git commit --amend --no-edit
+              echo "Amended commit with reconciled audience-buzz.json"
+            fi
+          fi
+
           sleep $((RANDOM % 10 + 5))
         done
 
