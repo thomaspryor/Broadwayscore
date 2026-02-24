@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-24T03:37:26.766Z",
-  "processed": 520,
-  "failed": 971,
-  "successRate": "34.9%",
+  "updatedAt": "2026-02-24T03:45:36.293Z",
+  "processed": 525,
+  "failed": 976,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 88,
+    "playwright": 93,
     "amp": 640,
     "browserbase": 7,
     "directCookies": 14,
-    "scrapingbee": 99,
+    "scrapingbee": 100,
     "brightdata": 0,
-    "archiveToday": 189,
+    "archiveToday": 190,
     "archive": 146
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 19,
   "recentActivity": [
-    {
-      "t": "2026-02-24T01:05:39.487Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-02-24T01:21:47.723Z",
-      "event": "bb-session",
-      "session": "e7f0c429",
-      "url": "https://variety.com/2025/theater/global/paddington-the-musical-how-does-bear-wor"
-    },
     {
       "t": "2026-02-24T01:21:48.588Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-02-24T03:11:40.531Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T03:38:01.639Z",
+      "event": "bb-session",
+      "session": "0cf5fbd9",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/hold-on-to-your-butts_1"
+    },
+    {
+      "t": "2026-02-24T03:38:03.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }

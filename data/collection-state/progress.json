@@ -519,7 +519,12 @@
     "high-noon-west-end-2025/guardian--arifa-akbar.json",
     "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json",
     "high-noon-west-end-2025/time-out-london--andrzej-lukowski.json",
-    "high-noon-west-end-2025/timeout--unknown.json"
+    "high-noon-west-end-2025/timeout--unknown.json",
+    "hold-on-to-your-butts-2026/the-guardian-uk--chris-wiegand.json",
+    "imitation-of-life-2026/theatermania--unknown.json",
+    "imitation-of-life-2026/thewrap--unknown.json",
+    "imitation-of-life-2026/timeout--adam-feldman.json",
+    "indian-princesses-2025/theatermania--unknown.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1492,7 +1497,12 @@
     "hells-kitchen-2024/timeout--unknown.json",
     "hercules-west-end-2025/the-guardian-uk--arifa-akbar.json",
     "high-noon-west-end-2025/nbcnews--unknown.json",
-    "hold-on-to-your-butts-2026/broadwaynews--unknown.json"
+    "hold-on-to-your-butts-2026/broadwaynews--unknown.json",
+    "hold-on-to-your-butts-2026/theatermania--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json",
+    "imitation-of-life-2026/deadline--unknown.json",
+    "imitation-of-life-2026/nydailynews--unknown.json",
+    "imitation-of-life-2026/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1584,7 +1594,12 @@
       "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
       "high-noon-west-end-2025/guardian--arifa-akbar.json",
       "high-noon-west-end-2025/time-out-london--andrzej-lukowski.json",
-      "high-noon-west-end-2025/timeout--unknown.json"
+      "high-noon-west-end-2025/timeout--unknown.json",
+      "hold-on-to-your-butts-2026/the-guardian-uk--chris-wiegand.json",
+      "imitation-of-life-2026/theatermania--unknown.json",
+      "imitation-of-life-2026/thewrap--unknown.json",
+      "imitation-of-life-2026/timeout--adam-feldman.json",
+      "indian-princesses-2025/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -2352,7 +2367,8 @@
       "the-waterfall-2026/nyt-theater--unknown.json",
       "you-got-older-2026/nyt-theater--jonathan-mandell.json",
       "cold-war-choir-practice-2026/broadwaynews--unknown.json",
-      "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json"
+      "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json",
+      "hold-on-to-your-butts-2026/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2544,7 +2560,8 @@
       "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
       "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
-      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json"
+      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
+      "data/review-texts/hold-on-to-your-butts-2026/theatermania--unknown.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2696,7 +2713,7 @@
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "hold-on-to-your-butts-2026/broadwaynews--unknown.json",
+  "lastProcessed": "indian-princesses-2025/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2890,6 +2907,17 @@
       "t": "2026-02-24T03:11:40.531Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T03:38:01.639Z",
+      "event": "bb-session",
+      "session": "0cf5fbd9",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/hold-on-to-your-butts_1"
+    },
+    {
+      "t": "2026-02-24T03:38:03.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
