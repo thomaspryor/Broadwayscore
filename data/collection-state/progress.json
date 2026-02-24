@@ -439,7 +439,10 @@
     "heathers-the-musical-2025/vulture--jackson-mchenry.json",
     "hold-on-to-your-butts-2026/nyt-theater--unknown.json",
     "into-the-woods-west-end-2025/nytg--unknown.json",
-    "mamma-mia-west-end-2021/newyorker--unknown.json"
+    "mamma-mia-west-end-2021/newyorker--unknown.json",
+    "marcel-on-the-train-2026/nyt-theater--jonathan-mandell.json",
+    "marcel-on-the-train-2026/nytg--joe-dziemianowicz.json",
+    "marcel-on-the-train-2026/vulture--sara-holdren.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1302,7 +1305,14 @@
     "into-the-woods-west-end-2025/hollywood-reporter--david-rooney.json",
     "little-shop-of-horrors-2019/nytimes--ben-brantley.json",
     "little-shop-of-horrors-2019/variety--ad-amorosi.json",
-    "magic-mike-live-west-end-2021/nyt-theater--unknown.json"
+    "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
+    "mamma-mia-west-end-2021/nyt-theater--unknown.json",
+    "mamma-mia-west-end-2021/variety--unknown.json",
+    "man-and-boy-west-end-2026/nyt-theater--unknown.json",
+    "man-and-boy-west-end-2026/nytg--unknown.json",
+    "marcel-on-the-train-2026/nytimes--elisabeth-vincentelli.json",
+    "masquerade-2025/nyt-theater--jonathan-mandell.json",
+    "masquerade-2025/nytg--gillian-russo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1327,7 +1337,9 @@
       "high-noon-west-end-2025/vulture--unknown.json",
       "hold-on-to-your-butts-2026/nyt-theater--unknown.json",
       "into-the-woods-west-end-2025/hollywood-reporter--david-rooney.json",
-      "into-the-woods-west-end-2025/nytg--unknown.json"
+      "into-the-woods-west-end-2025/nytg--unknown.json",
+      "marcel-on-the-train-2026/nyt-theater--jonathan-mandell.json",
+      "marcel-on-the-train-2026/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -1963,7 +1975,9 @@
       "the-lifespan-of-a-fact-2018/hollywoodwood-reporter--david-rooney.json",
       "data/review-texts/arcadia-west-end-2026/variety--unknown.json",
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
-      "hells-kitchen-2024/variety--unknown.json"
+      "hells-kitchen-2024/variety--unknown.json",
+      "data/review-texts/little-shop-of-horrors-2019/variety--ad-amorosi.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/anonymous-2026/nytimes--unknown.json"
@@ -2244,7 +2258,8 @@
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json",
-      "data/review-texts/imitation-of-life-2026/nyt-theater--unknown.json"
+      "data/review-texts/imitation-of-life-2026/nyt-theater--unknown.json",
+      "data/review-texts/man-and-boy-west-end-2026/nyt-theater--unknown.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2371,11 +2386,13 @@
       "hamlet-2026/nytg--amelia-merrill.json",
       "hamlet-2026/vulture--sara-holdren.json",
       "heathers-the-musical-2025/vulture--jackson-mchenry.json",
-      "mamma-mia-west-end-2021/newyorker--unknown.json"
+      "mamma-mia-west-end-2021/newyorker--unknown.json",
+      "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
+      "marcel-on-the-train-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "mamma-mia-west-end-2021/newyorker--unknown.json",
+  "lastProcessed": "masquerade-2025/nytg--gillian-russo.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2409,6 +2426,17 @@
       "t": "2026-02-24T00:25:40.750Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-24T00:52:36.128Z",
+      "event": "bb-session",
+      "session": "5be93ce7",
+      "url": "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-et"
+    },
+    {
+      "t": "2026-02-24T00:52:38.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

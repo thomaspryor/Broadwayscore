@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-24T00:45:04.628Z",
-  "processed": 440,
-  "failed": 861,
+  "updatedAt": "2026-02-24T00:53:31.932Z",
+  "processed": 443,
+  "failed": 868,
   "successRate": "33.8%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 634,
+    "playwright": 23,
+    "amp": 636,
     "browserbase": 1,
     "directCookies": 13,
     "scrapingbee": 93,
     "brightdata": 0,
-    "archiveToday": 165,
-    "archive": 125
+    "archiveToday": 166,
+    "archive": 127
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -47,6 +47,17 @@
       "t": "2026-02-24T00:25:40.750Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-24T00:52:36.128Z",
+      "event": "bb-session",
+      "session": "5be93ce7",
+      "url": "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-et"
+    },
+    {
+      "t": "2026-02-24T00:52:38.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
