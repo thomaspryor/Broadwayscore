@@ -66,6 +66,9 @@ export default function TonyPredictionsOverviewPage() {
       totalInCategory: cat.shows.length + cat.upcoming.length,
     }));
 
+  // Upcoming shows count (awaiting reviews)
+  const totalUpcoming = currentCategories.reduce((sum, cat) => sum + cat.upcoming.length, 0);
+
   // Season summaries for the grid
   const summaries = seasons.map(s => getSeasonSummary(allShows, s));
 
@@ -129,6 +132,16 @@ export default function TonyPredictionsOverviewPage() {
               >
                 See all categories &rarr;
               </Link>
+            </div>
+            {/* Context bar — upcoming shows, key dates */}
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-4 text-xs text-gray-500">
+              {totalUpcoming > 0 && (
+                <span>{totalUpcoming} show{totalUpcoming !== 1 ? 's' : ''} still to open</span>
+              )}
+              {!nominationsAnnounced && (
+                <span>Nominations &sim; May {currentSeason.ceremonyYear}</span>
+              )}
+              <span>Ceremony &sim; June {currentSeason.ceremonyYear}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {picks.map(pick => (
