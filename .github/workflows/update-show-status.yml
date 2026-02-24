@@ -516,7 +516,6 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Notify on failure
-        if: failure()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Update Shows Failed'
@@ -524,6 +523,8 @@ jobs:
 
       - name: Check consecutive failures
         id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Count recent consecutive failures
           FAILURES=$(gh run list --workflow="Update Shows" --limit=5 --json conclusion -q '[.[] | select(.conclusion == "failure")] | length')
