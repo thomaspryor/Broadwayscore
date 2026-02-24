@@ -22,6 +22,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 
 // Paths
@@ -384,45 +385,6 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
 }
 
 // ---------------------------------------------------------------------------
-// Page-level content validation — prevents cross-show contamination
-// ---------------------------------------------------------------------------
-
-/**
- * Validates that a NYC Theatre roundup page is actually about the target show.
- * Only checks page title and headings (NOT body text, which is too noisy —
- * roundup pages contain excerpts from many reviews and will match almost any show).
- *
- * Returns { valid: boolean, reason: string }
- */
-function validatePageMatchesShow(html, showTitle) {
-  const $ = cheerio.load(html);
-
-  // Extract page title + all headings (h1, h2)
-  const pageTitle = $('title').text() || '';
-  const h1Text = $('h1').map((_, el) => $(el).text()).get().join(' ');
-  const h2Text = $('h2').first().text() || '';
-  const headingText = `${pageTitle} ${h1Text} ${h2Text}`;
-
-  // Use titleWordsMatch against headings only (NOT body text)
-  if (titleWordsMatch(showTitle, headingText)) {
-    return { valid: true, reason: 'headings match' };
-  }
-
-  // Stricter fallback: check if the page URL/title contains the show slug
-  const showSlug = showTitle.toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').trim();
-  const pageTitleLower = pageTitle.toLowerCase();
-  if (showSlug.length >= 4 && pageTitleLower.includes(showSlug)) {
-    return { valid: true, reason: 'slug in page title' };
-  }
-
-  return {
-    valid: false,
-    reason: `Page headings "${headingText.substring(0, 100)}" don't match show "${showTitle}"`
-  };
-}
-
-// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -481,7 +443,7 @@ async function scrapeNYCTheatreRoundups() {
       const html = fs.readFileSync(effectiveArchivePath, 'utf8');
 
       // Validate cached page matches this show (prevents cross-contamination)
-      const validation = validatePageMatchesShow(html, show.title);
+      const validation = await validatePageMatchesShow(html, show.title);
       if (!validation.valid) {
         console.log(`[CACHE] ${showId}: Cached page is WRONG show — ${validation.reason}. Deleting cache.`);
         fs.unlinkSync(effectiveArchivePath);
@@ -532,8 +494,7 @@ async function scrapeNYCTheatreRoundups() {
       }
 
       // Verify page is actually about this show (prevent cross-show contamination)
-      // STRICT: Only check page title/headings — NOT body text (too noisy, matches everything)
-      const validation = validatePageMatchesShow(html, show.title);
+      const validation = await validatePageMatchesShow(html, show.title);
       if (!validation.valid) {
         console.log(`  [SKIP] Page doesn't match "${show.title}" — ${validation.reason}`);
         continue;
