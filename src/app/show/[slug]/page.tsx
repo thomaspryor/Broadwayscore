@@ -855,12 +855,25 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
         <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
 
-        {/* Footer */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
-          <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
-            How are scores calculated? →
-          </Link>
-        </div>
+        {/* How Scores Work */}
+        <details className="group mt-6 rounded-xl border border-white/5 bg-surface-overlay">
+          <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none flex items-center justify-between">
+            How This Score Works
+            <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-gray-400 leading-relaxed">
+            <p>
+              The CriticScore is a weighted average of professional critic reviews.
+              Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.
+              Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
+            </p>
+            <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
+              Full scoring methodology &rarr;
+            </Link>
+          </div>
+        </details>
       </div>
 
       {/* Follow Show Banner */}
