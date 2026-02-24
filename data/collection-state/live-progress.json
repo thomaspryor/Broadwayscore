@@ -1,54 +1,59 @@
 {
-  "updatedAt": "2026-02-24T20:08:48.817Z",
-  "processed": 100,
-  "failed": 190,
-  "successRate": "34.5%",
+  "updatedAt": "2026-02-24T20:13:28.667Z",
+  "processed": 84,
+  "failed": 176,
+  "successRate": "32.3%",
   "tierBreakdown": {
-    "playwright": 60,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 18,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 58,
-    "archive": 24
+    "archiveToday": 61,
+    "archive": 35
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-24T18:10:58.928Z",
+      "t": "2026-02-24T18:32:13.621Z",
       "event": "bb-session",
-      "session": "13e29120",
-      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+      "session": "36f13075",
+      "url": "https://www.indiewire.com/criticism/culture/review-in-anonymous-roland-emmerich-"
     },
     {
-      "t": "2026-02-24T18:16:35.485Z",
-      "event": "bb-session",
-      "session": "27aad70f",
-      "url": "http://www.usatoday.com/printedition/life/20071205/d_broadwayroundup05.art.htm?l"
-    },
-    {
-      "t": "2026-02-24T18:16:37.370Z",
+      "t": "2026-02-24T18:32:15.795Z",
       "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
+      "domain": "indiewire.com"
     },
     {
-      "t": "2026-02-24T18:17:06.718Z",
+      "t": "2026-02-24T18:35:30.107Z",
       "event": "bb-session",
-      "session": "0cf53b78",
-      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+      "session": "5063dd06",
+      "url": "https://www.thewrap.com/betrayal-daniel-craig-rachel-weisz"
     },
     {
-      "t": "2026-02-24T18:19:13.631Z",
+      "t": "2026-02-24T18:40:24.757Z",
       "event": "bb-session",
-      "session": "a8553b29",
-      "url": "https://www.thewrap.com/betrayal-broadway-review-tom-hiddleston-gives-a-master-c"
+      "session": "caf754ef",
+      "url": "https://www.thewrap.com/camelot-broadway-review-musical-aaron-sorkin/"
     },
     {
-      "t": "2026-02-24T18:23:21.404Z",
+      "t": "2026-02-24T18:41:26.863Z",
       "event": "bb-session",
-      "session": "f10fbc19",
-      "url": "https://www.fordhamobserver.com/review-carousel-is-revived-on-broadway-ill-timed"
+      "session": "ea13fa2c",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-02-24T18:41:28.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-24T18:45:10.369Z",
+      "event": "bb-session",
+      "session": "73a0e34b",
+      "url": "http://www.thewrap.com/fiddler-on-the-roof-broadway-review-a-classic-tweaked-but"
     }
   ]
 }
