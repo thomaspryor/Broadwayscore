@@ -51,6 +51,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Daily Data Health Check Failed'
+          severity: 'critical'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

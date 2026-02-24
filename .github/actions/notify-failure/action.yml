@@ -9,6 +9,10 @@ inputs:
     description: Optional extra context (action required, likely cause)
     required: false
     default: ''
+  severity:
+    description: 'Alert severity: "critical" sends Discord (+ email if set). Anything else is silently skipped.'
+    required: false
+    default: 'low'
   email:
     description: Also send email alert (for critical pipelines)
     required: false
@@ -29,6 +33,7 @@ runs:
   using: composite
   steps:
     - name: Send failure alert
+      if: inputs.severity == 'critical'
       uses: actions/github-script@v7
       env:
         DISCORD_WEBHOOK_ALERTS: ${{ inputs.discord_webhook }}
