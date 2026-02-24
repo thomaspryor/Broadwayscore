@@ -431,7 +431,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
-    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway' })) {
+    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
       console.log(`  [SKIP] roundup: non-Broadway article: ${url.split('/article/')[1] || url}`);
       return false;
     }
@@ -911,7 +911,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway' })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
           stats.skippedGuards++;
           continue;
         }
