@@ -1,18 +1,59 @@
 {
-  "updatedAt": "2026-02-24T23:02:08.472Z",
-  "processed": 28,
-  "failed": 52,
-  "successRate": "35.0%",
+  "updatedAt": "2026-02-24T23:04:46.855Z",
+  "processed": 178,
+  "failed": 382,
+  "successRate": "31.8%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 108,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "directCookies": 2,
+    "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 3
+    "archiveToday": 124,
+    "archive": 63
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-24T18:32:13.621Z",
+      "event": "bb-session",
+      "session": "36f13075",
+      "url": "https://www.indiewire.com/criticism/culture/review-in-anonymous-roland-emmerich-"
+    },
+    {
+      "t": "2026-02-24T18:32:15.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-02-24T18:35:30.107Z",
+      "event": "bb-session",
+      "session": "5063dd06",
+      "url": "https://www.thewrap.com/betrayal-daniel-craig-rachel-weisz"
+    },
+    {
+      "t": "2026-02-24T18:40:24.757Z",
+      "event": "bb-session",
+      "session": "caf754ef",
+      "url": "https://www.thewrap.com/camelot-broadway-review-musical-aaron-sorkin/"
+    },
+    {
+      "t": "2026-02-24T18:41:26.863Z",
+      "event": "bb-session",
+      "session": "ea13fa2c",
+      "url": "https://preview.bloomberg.com/news/2010-04-29/linda-lavin-bellows-at-sarah-pauls"
+    },
+    {
+      "t": "2026-02-24T18:41:28.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-02-24T18:45:10.369Z",
+      "event": "bb-session",
+      "session": "73a0e34b",
+      "url": "http://www.thewrap.com/fiddler-on-the-roof-broadway-review-a-classic-tweaked-but"
+    }
+  ]
 }
