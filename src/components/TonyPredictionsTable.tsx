@@ -81,7 +81,7 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
     return (
       <div className="flex flex-col items-center gap-0.5">
         <TierLabel score={show.blendedScore} reviewCount={show.reviewCount} status={show.status} />
-        <ScoreBadge score={show.blendedScore} size="lg" reviewCount={show.reviewCount} status={show.status} />
+        <ScoreBadge score={show.blendedScore} size="lg" showCrown reviewCount={show.reviewCount} status={show.status} />
         {grade && grade.grade !== '—' && (
           <span className="text-[9px] text-gray-400 whitespace-nowrap">
             C: {show.compositeScore != null ? Math.round(show.compositeScore) : '—'} / A: {grade.grade}
@@ -95,7 +95,7 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   return (
     <div className="flex flex-col items-center gap-1">
       <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
-      <ScoreBadge score={show.compositeScore} size="lg" reviewCount={show.reviewCount} status={show.status} />
+      <ScoreBadge score={show.compositeScore} size="lg" showCrown reviewCount={show.reviewCount} status={show.status} />
     </div>
   );
 }

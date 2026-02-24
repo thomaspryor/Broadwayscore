@@ -188,6 +188,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
               <ScoreBadge
                 score={scoreA}
                 size="lg"
+                showCrown
                 reviewCount={showA.criticScore?.reviewCount}
                 status={showA.status}
               />
@@ -224,6 +225,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
               <ScoreBadge
                 score={scoreB}
                 size="lg"
+                showCrown
                 reviewCount={showB.criticScore?.reviewCount}
                 status={showB.status}
               />

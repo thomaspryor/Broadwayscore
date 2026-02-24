@@ -173,7 +173,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
-        <ScoreBadge score={score} size="md" />
+        <ScoreBadge score={score} size="md" showCrown />
         <span className="text-xs text-gray-500 hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>

@@ -401,6 +401,7 @@ export default function CheapBroadwayTicketsGuide() {
                     <ScoreBadge
                       score={show.criticScore?.score}
                       size="md"
+                      showCrown
                       reviewCount={show.criticScore?.reviewCount}
                       status={show.status}
                     />

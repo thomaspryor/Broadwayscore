@@ -162,7 +162,7 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                   )}
                 </div>
               </div>
-              <ScoreBadge score={displayScore} size="sm" status={show.status} />
+              <ScoreBadge score={displayScore} size="sm" showCrown status={show.status} />
             </Link>
           );
         })}
