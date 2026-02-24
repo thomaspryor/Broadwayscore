@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "description": "Broadway show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League",
-    "lastUpdated": "2026-02-21",
+    "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
+    "lastUpdated": "2026-02-24",
     "sources": [
       "Wikipedia",
       "Playbill",
       "TonyAwards.com",
-      "BroadwayWorld"
+      "BroadwayWorld",
+      "Wikipedia (Olivier Awards)"
     ]
   },
   "shows": {
@@ -62,6 +63,20 @@
         "wins": [
           "Distinguished Production of a Revival",
           "Distinguished Performance"
+        ]
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
         ]
       }
     },
@@ -122,6 +137,23 @@
         "season": "1997-98",
         "wins": [
           "Distinguished Performance"
+        ]
+      },
+      "olivier": {
+        "season": "1999-00",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Costume Design",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -236,6 +268,18 @@
         "wins": [
           "Distinguished Production of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2013-14",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "aladdin-2014": {
@@ -268,6 +312,14 @@
       },
       "dramaLeague": {
         "season": "2013-14",
+        "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
         "wins": []
       }
     },
@@ -653,6 +705,25 @@
         "season": "2022-23",
         "wins": [],
         "nominations": 2
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 8,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical"
+        ]
       }
     },
     "back-to-the-future-2023": {
@@ -1434,6 +1505,18 @@
         "ceremony": "79th",
         "eligible": false,
         "note": "Not yet eligible - opens Nov 2025"
+      },
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
       }
     },
     "two-strangers-bway-2025": {
@@ -1542,6 +1625,19 @@
           "Best Direction of a Musical",
           "Best Revival of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
+        ]
       }
     },
     "a-streetcar-named-desire-2012": {
@@ -1553,6 +1649,19 @@
           "Best Costume Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Actress in a Supporting Role"
+        ]
       }
     },
     "the-history-boys-2006": {
@@ -1576,6 +1685,20 @@
           "Best Lighting Design of a Play",
           "Best Play",
           "Best Scenic Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Director",
+          "Best New Play"
         ]
       }
     },
@@ -1696,6 +1819,18 @@
           "Best Original Score",
           "Best Scenic Design of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best New Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
       }
     },
     "the-wedding-singer-2006": {
@@ -1814,6 +1949,14 @@
           "Best Direction of a Musical",
           "Best Orchestrations"
         ]
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
       }
     },
     "the-threepenny-opera-2006": {
@@ -1860,6 +2003,18 @@
           "Best Featured Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Set Design"
+        ]
       }
     },
     "chita-rivera-the-dancers-life-2005": {
@@ -1894,6 +2049,18 @@
           "Best Original Score"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Sound Design"
+        ]
       }
     },
     "three-days-of-rain-2006": {
@@ -1951,6 +2118,17 @@
           "Best Play",
           "Best Scenic Design of a Play",
           "Best Sound Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
         ]
       }
     },
@@ -2140,6 +2318,17 @@
         "wins": [
           "Best Featured Actress in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "finians-rainbow-2009": {
@@ -2169,6 +2358,16 @@
         "wins": [
           "Best Actress in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ],
+        "wins": []
       }
     },
     "ragtime-2009": {
@@ -2195,6 +2394,16 @@
         "nominatedFor": [
           "Best Actor in a Play",
           "Best Lighting Design of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Director"
         ],
         "wins": []
       }
@@ -2294,6 +2503,20 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Director"
+        ]
       }
     },
     "the-addams-family-2010": {
@@ -2362,6 +2585,21 @@
           "Best Scenic Design of a Play",
           "Best Sound Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "good-people-2011": {
@@ -2393,6 +2631,21 @@
         ],
         "wins": [
           "Best Actor in a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Set Design"
         ]
       }
     },
@@ -2461,6 +2714,15 @@
           "Best Book of a Musical",
           "Best Musical",
           "Best Original Score"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Theatre Choreographer"
         ],
         "wins": []
       }
@@ -2604,6 +2866,16 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "baby-its-you-2011": {
@@ -2673,6 +2945,14 @@
           "Best Costume Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2010-11",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
       }
     },
     "women-on-the-verge-of-a-nervous-breakdown-2010": {
@@ -2713,6 +2993,19 @@
         ],
         "wins": [
           "Best Play"
+        ]
+      },
+      "olivier": {
+        "season": "2010-11",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
         ]
       }
     },
@@ -2910,6 +3203,14 @@
           "Best Revival of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "the-gershwins-porgy-and-bess-2012": {
@@ -2933,6 +3234,14 @@
           "Best Actress in a Musical",
           "Best Revival of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Musical Revival"
+        ],
+        "wins": []
       }
     },
     "evita-2012": {
@@ -2997,6 +3306,17 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2011-12",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "man-and-boy-2011": {
@@ -3030,6 +3350,17 @@
           "Best Actress in a Play",
           "Best Featured Actor in a Play",
           "Best Sound Design of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2010-11",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best New Play",
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -3088,6 +3419,16 @@
           "Best Featured Actress in a Musical",
           "Best Lighting Design of a Musical",
           "Best Scenic Design of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2011-12",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -3233,6 +3574,28 @@
           "Best Book of a Musical",
           "Best Lighting Design of a Musical",
           "Best Scenic Design of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2011-12",
+        "nominations": 8,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -3411,6 +3774,24 @@
           "Best Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2011-12",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Director",
+          "Best Revival",
+          "Best Set Design"
+        ]
       }
     },
     "chaplin-2012": {
@@ -3603,6 +3984,14 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2013-14",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "the-glass-menagerie-2013": {
@@ -3642,6 +4031,18 @@
           "Best Featured Actor in a Play",
           "Best Costume Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "hedwig-and-the-angry-inch-2014": {
@@ -3794,6 +4195,14 @@
           "Best Featured Actress in a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
       }
     },
     "bullets-over-broadway-2014": {
@@ -3846,6 +4255,27 @@
           "Best Play",
           "Best Scenic Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
+        ]
       }
     },
     "disgraced-2014": {
@@ -3891,6 +4321,21 @@
         ],
         "wins": [
           "Best Costume Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role",
+          "Best Costume Design"
         ]
       }
     },
@@ -3946,6 +4391,18 @@
           "Best Lighting Design of a Musical",
           "Best Orchestrations",
           "Best Scenic Design of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best New Musical",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Set Design"
         ]
       }
     },
@@ -4113,6 +4570,20 @@
           "Best Actress in a Play",
           "Best Featured Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Costume Design",
+          "Best Director"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role",
+          "Best Actress"
+        ]
       }
     },
     "the-heidi-chronicles-2015": {
@@ -4133,6 +4604,16 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Actress in a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Lighting Design",
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -4236,6 +4717,17 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2015-16",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actor"
+        ]
       }
     },
     "king-charles-iii-2015": {
@@ -4249,6 +4741,18 @@
           "Best Costume Design of a Play",
           "Best Direction of a Play",
           "Best Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design"
         ],
         "wins": []
       }
@@ -4278,6 +4782,14 @@
           "Best Book of a Musical",
           "Best Musical",
           "Best Original Score"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
         ],
         "wins": []
       }
@@ -4312,6 +4824,24 @@
           "Best Direction of a Play",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Director",
+          "Best Revival"
+        ]
       }
     },
     "blackbird-2016": {
@@ -4337,6 +4867,15 @@
           "Best Featured Actor in a Play",
           "Best Lighting Design of a Play",
           "Best Revival of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Revival"
         ],
         "wins": []
       }
@@ -4572,6 +5111,23 @@
           "Best Featured Actress in a Play",
           "Best Direction of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Director",
+          "Best Lighting Design"
+        ]
       }
     },
     "grand-horizons-2020": {
@@ -4675,6 +5231,17 @@
         ],
         "wins": [
           "Best Actress in a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
         ]
       }
     },
@@ -4802,6 +5369,18 @@
           "Best Lighting Design of a Play",
           "Best Direction of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director",
+          "Best New Play",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "clydes-2021": {
@@ -4882,6 +5461,14 @@
           "Best Musical",
           "Best Book of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
+        ],
+        "wins": []
       }
     },
     "girl-from-the-north-country-2022": {
@@ -5024,6 +5611,24 @@
           "Best Scenic Design of a Musical",
           "Best Direction of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Set Design"
+        ]
       }
     },
     "caroline-or-change-2021": {
@@ -5037,6 +5642,18 @@
           "Best Costume Design of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
       }
     },
     "the-music-man-2022": {
@@ -5062,6 +5679,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Actor in a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -5145,6 +5770,14 @@
           "Best Costume Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "diana-the-musical-2021": {
@@ -5176,6 +5809,18 @@
           "Best Featured Actor in a Play",
           "Best Costume Design of a Play",
           "Best Direction of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role",
+          "Best New Play"
         ]
       }
     },
@@ -5448,6 +6093,21 @@
           "Best Lighting Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Director",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Director"
+        ]
       }
     },
     "prima-facie-2023": {
@@ -5463,6 +6123,19 @@
         ],
         "wins": [
           "Best Actress in a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actress"
         ]
       }
     },
@@ -5504,6 +6177,25 @@
           "Best Scenic Design of a Play",
           "Best Lighting Design of a Play",
           "Best Sound Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Lighting Design",
+          "Best Set Design"
         ]
       }
     },
@@ -5711,6 +6403,14 @@
           "Best Actor in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
       }
     },
     "doubt-2024": {
@@ -5735,6 +6435,17 @@
           "Best Actor in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "days-of-wine-and-roses-2024": {
@@ -5849,6 +6560,15 @@
           "Best Direction of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "john-proctor-is-the-villain-2025": {
@@ -5944,6 +6664,30 @@
           "Best Actress in a Musical",
           "Best Lighting Design of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 10,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Sound Design"
+        ]
       }
     },
     "floyd-collins-2025": {
@@ -6001,6 +6745,16 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "the-picture-of-dorian-gray-2025": {
@@ -6019,6 +6773,18 @@
         "wins": [
           "Best Actress in a Play",
           "Best Costume Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Costume Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Costume Design"
         ]
       }
     },
@@ -6113,6 +6879,15 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "othello-2025": {
@@ -6186,6 +6961,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role in a Musical"
+        ],
+        "wins": []
       }
     },
     "sweeney-todd-2023": {
@@ -6217,6 +7000,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Costume Design"
+        ],
+        "wins": []
       }
     },
     "the-thanksgiving-play-2023": {
@@ -6369,6 +7160,16 @@
           "Best Featured Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "oklahoma-2019": {
@@ -6486,6 +7287,27 @@
         "wins": [
           "Best Featured Actor in a Play",
           "Best Lighting Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2015-16",
+        "nominations": 9,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role",
+          "Best Costume Design",
+          "Best Lighting Design"
         ]
       }
     },
@@ -6661,6 +7483,21 @@
           "Best Featured Actress in a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Revival"
+        ]
       }
     },
     "travesties-2018": {
@@ -6673,6 +7510,18 @@
           "Best Direction of a Play",
           "Best Revival of a Play",
           "Best Sound Design of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Revival",
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -6725,6 +7574,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "sunday-in-the-park-with-george-2017": {
@@ -6756,6 +7613,20 @@
           "Best Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "come-from-away-2017": {
@@ -6775,6 +7646,24 @@
         "wins": [
           "Best Direction of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best New Musical",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "the-price-2017": {
@@ -6784,6 +7673,15 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Featured Actor in a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role"
         ],
         "wins": []
       }
@@ -6796,6 +7694,15 @@
         "nominatedFor": [
           "Best Actress in a Musical",
           "Best Revival of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Musical Revival"
         ],
         "wins": []
       }
@@ -6834,6 +7741,15 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best New Musical"
+        ],
+        "wins": []
       }
     },
     "present-laughter-2017": {
@@ -6848,6 +7764,19 @@
         ],
         "wins": [
           "Best Actor in a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Actress in a Supporting Role"
         ]
       }
     },
@@ -6883,6 +7812,15 @@
           "Best Featured Actor in a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "groundhog-day-2017": {
@@ -6900,6 +7838,22 @@
           "Best Scenic Design of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
+        ]
       }
     },
     "indecent-2017": {
@@ -6970,6 +7924,21 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2013-14",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Costume Design",
+          "Best Lighting Design"
+        ]
       }
     },
     "anastasia-2017": {
@@ -7094,6 +8063,22 @@
           "Best Actress in a Musical",
           "Best Sound Design of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical"
+        ]
       }
     },
     "bronx-bombers-2014": {
@@ -7153,6 +8138,17 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Revival"
+        ]
       }
     },
     "breakfast-at-tiffanys-2013": {
@@ -7231,6 +8227,16 @@
         "wins": [
           "Best Costume Design of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Costume Design"
+        ],
+        "wins": [
+          "Best Costume Design"
+        ]
       }
     },
     "ghetto-klown-2011": {
@@ -7301,6 +8307,23 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Costume Design",
+          "Best Director",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Director",
+          "Best Revival",
+          "Best Set Design"
+        ]
       }
     },
     "the-story-of-my-life-2009": {
@@ -7323,6 +8346,22 @@
           "Best Scenic Design of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ]
       }
     },
     "33-variations-2009": {
@@ -7370,6 +8409,15 @@
         "wins": [
           "Best Featured Actress in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ],
+        "wins": []
       }
     },
     "god-of-carnage-2009": {
@@ -7516,6 +8564,17 @@
         "wins": [
           "Best Costume Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design"
+        ],
+        "wins": []
       }
     },
     "the-little-mermaid-2008": {
@@ -7547,6 +8606,14 @@
           "Best Lighting Design of a Play",
           "Best Sound Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "november-2008": {
@@ -7588,6 +8655,25 @@
           "Best Sound Design of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Set Design"
+        ]
       }
     },
     "passing-strange-2008": {
@@ -7711,6 +8797,21 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Director",
+          "Best Lighting Design"
+        ]
       }
     },
     "a-catered-affair-2008": {
@@ -7841,6 +8942,15 @@
           "Best Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "inherit-the-wind-2007": {
@@ -7870,6 +8980,14 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
       }
     },
     "bridge-and-tunnel-2006": {
@@ -7910,6 +9028,17 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "angels-in-america-2018": {
@@ -7935,6 +9064,22 @@
           "Best Featured Actor in a Play",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role",
+          "Best Revival"
+        ]
       }
     },
     "the-norman-conquests-2009": {
@@ -7954,6 +9099,15 @@
         "wins": [
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Revival"
+        ],
+        "wins": []
       }
     },
     "august-osage-county-2007": {
@@ -7976,6 +9130,18 @@
           "Best Direction of a Play",
           "Best Play",
           "Best Scenic Design of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
         ]
       }
     },
@@ -8212,6 +9378,24 @@
         ],
         "wins": [
           "Best Revival of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 8,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
         ]
       }
     },
@@ -8450,6 +9634,18 @@
           "Best Scenic Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2015-16",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "junk-2017": {
@@ -8567,6 +9763,19 @@
         "wins": [
           "Best Revival of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2013-14",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
       }
     },
     "meteor-shower-2017": {
@@ -8612,6 +9821,24 @@
           "Best Scenic Design of a Play",
           "Best Costume Design of a Play",
           "Best Direction of a Play"
+        ]
+      },
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Director",
+          "Best New Play"
         ]
       }
     },
@@ -8687,6 +9914,19 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Actor"
+        ]
       }
     },
     "to-kill-a-mockingbird-2018": {
@@ -8718,6 +9958,17 @@
         "nominatedFor": [
           "Best Actress in a Play",
           "Best Costume Design of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2015-16",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Revival",
+          "Best Set Design",
+          "Best Sound Design"
         ],
         "wins": []
       }
@@ -8809,6 +10060,19 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical"
+        ]
       }
     },
     "elf-2024": {
@@ -8867,6 +10131,17 @@
           "Best Play",
           "Best Scenic Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "the-little-dog-laughed-2006": {
@@ -8968,6 +10243,23 @@
         "wins": [
           "Best Scenic Design of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical",
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "company-2006": {
@@ -8982,6 +10274,18 @@
         ],
         "wins": [
           "Best Revival of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Set Design",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -9091,6 +10395,15 @@
           "Best Scenic Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "butley-2006": {
@@ -9159,6 +10472,24 @@
           "Best Orchestrations",
           "Best Scenic Design of a Musical",
           "Best Sound Design of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "2005-06",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -9317,6 +10648,20 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
       }
     },
     "cats-1982": {
@@ -9346,6 +10691,16 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1980-81",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "les-miserables-1987": {
@@ -9480,6 +10835,17 @@
           "Best Sound Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Revival",
+          "Best Sound Design"
+        ],
+        "wins": []
       }
     },
     "pass-over-2021": {
@@ -9500,6 +10866,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
+        ],
+        "wins": []
       }
     },
     "chicken-and-biscuits-2021": {
@@ -9656,6 +11030,18 @@
           "Best Revival of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1995-96",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Director"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Director"
+        ]
       }
     },
     "the-me-nobody-knows-1970": {
@@ -9905,6 +11291,14 @@
           "Best Featured Actress in a Musical",
           "Best Choreography",
           "Best Revival of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Theatre Choreographer"
         ],
         "wins": []
       }
@@ -10820,6 +12214,16 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
+        ],
+        "wins": [
+          "Best New Musical"
+        ]
       }
     },
     "bubbling-brown-sugar-1976": {
@@ -10831,6 +12235,14 @@
           "Best Actress in a Musical",
           "Best Choreography",
           "Best Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1976-77",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
         ],
         "wins": []
       }
@@ -10937,6 +12349,14 @@
           "Best Featured Actor in a Musical",
           "Best Featured Actress in a Musical",
           "Best Direction of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
         ],
         "wins": []
       }
@@ -11067,6 +12487,14 @@
           "Best Featured Actor in a Musical",
           "Best Direction of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1976-77",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
+        ],
+        "wins": []
       }
     },
     "side-by-side-by-sondheim-1977": {
@@ -11080,6 +12508,14 @@
           "Best Featured Actress in a Musical",
           "Best Featured Actress in a Musical",
           "Best Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Musical"
         ],
         "wins": []
       }
@@ -11330,6 +12766,15 @@
           "Best Original Score",
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best New Musical"
+        ],
+        "wins": []
       }
     },
     "runaways-1978": {
@@ -11538,6 +12983,17 @@
           "Best Original Score",
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
+        ]
       }
     },
     "ballroom-1978": {
@@ -11577,6 +13033,18 @@
         "wins": [
           "Best Featured Actor in a Musical",
           "Best Featured Actress in a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "1980-81",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best New Musical"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
         ]
       }
     },
@@ -11632,6 +13100,14 @@
         "wins": [
           "Best Lighting Design"
         ]
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "whoopee-1979": {
@@ -11684,6 +13160,14 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1977-78",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "talleys-folly-1980": {
@@ -11730,6 +13214,14 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1977-78",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
+        ],
+        "wins": []
       }
     },
     "a-day-in-hollywood-a-night-in-the-ukraine-1980": {
@@ -11775,6 +13267,16 @@
           "Best Actor in a Musical",
           "Best Costume Design",
           "Best Scenic Design"
+        ]
+      },
+      "olivier": {
+        "season": "1980-81",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
         ]
       }
     },
@@ -11858,6 +13360,16 @@
           "Best Play",
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "a-life-1980": {
@@ -11870,6 +13382,17 @@
           "Best Featured Actor in a Play",
           "Best Direction of a Play",
           "Best Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Set Design"
         ],
         "wins": []
       }
@@ -11959,6 +13482,16 @@
           "Best Book of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
+        ]
       }
     },
     "charlie-and-algernon-1980": {
@@ -11968,6 +13501,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Original Score"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
         ],
         "wins": []
       }
@@ -12013,6 +13554,14 @@
           "Best Direction of a Musical",
           "Best Revival"
         ]
+      },
+      "olivier": {
+        "season": "1981-82",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
       }
     },
     "cancan-1981": {
@@ -12075,6 +13624,22 @@
           "Best Play",
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Set Design"
+        ]
       }
     },
     "crimes-of-the-heart-1981": {
@@ -12099,6 +13664,14 @@
         "nominatedFor": [
           "Best Actor in a Play",
           "Best Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
         ],
         "wins": []
       }
@@ -12228,6 +13801,14 @@
           "Best Choreography"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "mass-appeal-1981": {
@@ -12272,6 +13853,17 @@
         "wins": [
           "Best Actor in a Play",
           "Best Play"
+        ]
+      },
+      "olivier": {
+        "season": "1984-85",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actor"
         ]
       }
     },
@@ -12392,6 +13984,17 @@
           "Best Actress in a Musical",
           "Best Revival"
         ]
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
       }
     },
     "brighton-beach-memoirs-1983": {
@@ -12488,6 +14091,14 @@
           "Best Direction of a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "glengarry-glen-ross-1984": {
@@ -12503,6 +14114,16 @@
         ],
         "wins": [
           "Best Featured Actor in a Play"
+        ]
+      },
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
         ]
       }
     },
@@ -12556,6 +14177,14 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1985-86",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
       }
     },
     "baby-1983": {
@@ -12647,6 +14276,16 @@
           "Best Revival"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "end-of-the-world-1984": {
@@ -12821,6 +14460,17 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "much-ado-about-nothing-1984": {
@@ -12862,6 +14512,18 @@
           "Best Revival"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Director",
+          "Best Set Design"
+        ]
       }
     },
     "im-not-rappaport-1985": {
@@ -12889,6 +14551,14 @@
         "nominatedFor": [
           "Best Actress in a Play",
           "Best Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
         ],
         "wins": []
       }
@@ -12989,6 +14659,14 @@
         "wins": [
           "Best Actress in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1981-82",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "tango-argentino-1985": {
@@ -13191,6 +14869,18 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1985-86",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress"
+        ]
       }
     },
     "les-miserables-2006": {
@@ -13227,6 +14917,18 @@
           "Best Actress in a Musical",
           "Best Choreography"
         ]
+      },
+      "olivier": {
+        "season": "1984-85",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best New Musical"
+        ]
       }
     },
     "rags-1986": {
@@ -13261,6 +14963,16 @@
         "wins": [
           "Best Costume Design"
         ]
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "smile-1986": {
@@ -13307,6 +15019,18 @@
           "Best Lighting Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Director",
+          "Best Set Design"
+        ]
       }
     },
     "m-butterfly-1988": {
@@ -13358,6 +15082,14 @@
         "wins": [
           "Best Featured Actress in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1984-85",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "speedtheplow-1988": {
@@ -13459,6 +15191,14 @@
           "Best Choreography",
           "Best Revival"
         ]
+      },
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "breaking-the-code-1987": {
@@ -13470,6 +15210,14 @@
           "Best Actor in a Play",
           "Best Featured Actor in a Play",
           "Best Direction of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1985-86",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
         ],
         "wins": []
       }
@@ -13682,6 +15430,15 @@
           "Best Actress in a Play",
           "Best Featured Actress in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1986-87",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "prelude-to-a-kiss-1990": {
@@ -13820,6 +15577,14 @@
           "Best Revival"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "sweeney-todd-1989": {
@@ -13894,6 +15659,14 @@
           "Best Featured Actress in a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "our-countrys-good-1991": {
@@ -13924,6 +15697,15 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "six-degrees-of-separation-1990": {
@@ -13940,6 +15722,14 @@
         "wins": [
           "Best Direction of a Play"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "the-will-rogers-follies-1991": {
@@ -13992,6 +15782,21 @@
           "Best Actor in a Musical",
           "Best Actress in a Musical",
           "Best Featured Actor in a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best New Musical",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
         ]
       }
     },
@@ -14093,6 +15898,18 @@
           "Best Direction of a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role",
+          "Best New Play",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
       }
     },
     "four-baboons-adoring-the-sun-1992": {
@@ -14161,6 +15978,19 @@
           "Best Costume Design",
           "Best Musical"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "falsettos-1992": {
@@ -14193,6 +16023,17 @@
           "Best Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "jellys-last-jam-1992": {
@@ -14227,6 +16068,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Original Score"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
         ],
         "wins": []
       }
@@ -14363,6 +16212,18 @@
           "Best Musical",
           "Best Original Score"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
       }
     },
     "blood-brothers-1993": {
@@ -14455,6 +16316,15 @@
           "Best Revival of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "anna-karenina-1992": {
@@ -14515,6 +16385,18 @@
           "Best Featured Actor in a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "1991-92",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "broken-glass-1994": {
@@ -14526,6 +16408,17 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Actress"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "the-kentucky-cycle-1993": {
@@ -14631,6 +16524,22 @@
           "Best Lighting Design",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role",
+          "Best Revival",
+          "Best Set Design"
+        ]
       }
     },
     "abe-lincoln-in-illinois-1993": {
@@ -14659,6 +16568,16 @@
         "wins": [
           "Best Actress in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "timon-of-athens-1993": {
@@ -14692,6 +16611,20 @@
           "Best Direction of a Musical",
           "Best Revival of a Musical",
           "Best Scenic Design"
+        ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
         ]
       }
     },
@@ -14727,6 +16660,17 @@
           "Best Featured Actor in a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "1996-97",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
       }
     },
     "arcadia-1995": {
@@ -14738,6 +16682,14 @@
           "Best Lighting Design",
           "Best Play",
           "Best Scenic Design"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role"
         ],
         "wins": []
       }
@@ -14801,6 +16753,14 @@
           "Best Original Score",
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "smokey-joes-cafe-1995": {
@@ -14854,6 +16814,16 @@
         "wins": [
           "Best Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design"
+        ],
+        "wins": []
       }
     },
     "the-rose-tattoo-1995": {
@@ -14890,6 +16860,18 @@
           "Best Costume Design",
           "Best Direction of a Musical",
           "Best Revival of a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Musical Revival"
         ]
       }
     },
@@ -15039,6 +17021,14 @@
           "Best Direction of a Play",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "a-midsummer-nights-dream-1996": {
@@ -15062,6 +17052,15 @@
           "Best Actor in a Play",
           "Best Direction of a Play",
           "Best Revival of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Costume Design"
         ],
         "wins": []
       }
@@ -15183,6 +17182,17 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1995-96",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "stanley-1997": {
@@ -15196,6 +17206,20 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1996-97",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Set Design"
+        ]
       }
     },
     "the-young-man-from-atlanta-1997": {
@@ -15291,6 +17315,14 @@
           "Best Featured Actor in a Musical",
           "Best Featured Actress in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "a-dolls-house-1997": {
@@ -15343,6 +17375,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Revival of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Theatre Choreographer"
         ],
         "wins": []
       }
@@ -15406,6 +17446,14 @@
           "Best Choreography"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "art-1998": {
@@ -15420,6 +17468,26 @@
         ],
         "wins": [
           "Best Play"
+        ]
+      },
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 9,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role",
+          "Best New Play",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -15442,6 +17510,14 @@
           "Best Featured Actress in a Play",
           "Best Direction of a Play"
         ]
+      },
+      "olivier": {
+        "season": "1996-97",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "freak-1998": {
@@ -15550,6 +17626,14 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Lighting Design"
+        ],
+        "wins": []
       }
     },
     "the-diary-of-anne-frank-1997": {
@@ -15622,6 +17706,15 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "the-lonesome-west-1999": {
@@ -15654,6 +17747,14 @@
         "wins": [
           "Best Scenic Design"
         ]
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "fosse-1999": {
@@ -15673,6 +17774,19 @@
         "wins": [
           "Best Lighting Design",
           "Best Orchestrations"
+        ]
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Musical Revival",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Musical Revival",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -15751,6 +17865,16 @@
           "Best Featured Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": [
+          "Best Actress"
+        ]
       }
     },
     "the-iceman-cometh-1999": {
@@ -15766,6 +17890,18 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Director"
+        ]
       }
     },
     "twelfth-night-1998": {
@@ -15779,6 +17915,18 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1995-96",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
       }
     },
     "peter-pan-1999": {
@@ -15814,6 +17962,14 @@
         "nominatedFor": [
           "Best Actress in a Musical",
           "Best Book of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
         ],
         "wins": []
       }
@@ -15940,6 +18096,15 @@
           "Best Choreography",
           "Best Musical"
         ]
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
       }
     },
     "james-joyces-the-dead-2000": {
@@ -16009,6 +18174,19 @@
           "Best Actress in a Play",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "1999-00",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
       }
     },
     "amadeus-1999": {
@@ -16021,6 +18199,19 @@
           "Best Revival of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Costume Design"
+        ]
       }
     },
     "a-moon-for-the-misbegotten-2000": {
@@ -16065,6 +18256,20 @@
           "Best Orchestrations",
           "Best Revival of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
       }
     },
     "jesus-christ-superstar-2000": {
@@ -16074,6 +18279,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Revival of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1996-97",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Musical Revival"
         ],
         "wins": []
       }
@@ -16120,6 +18333,14 @@
           "Best Original Score"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1995-96",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "aida-2000": {
@@ -16152,6 +18373,22 @@
           "Best Scenic Design"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Director",
+          "Best Revival"
+        ]
       }
     },
     "the-green-bird-2000": {
@@ -16184,6 +18421,14 @@
           "Best Direction of a Play",
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "the-invention-of-love-2001": {
@@ -16202,6 +18447,15 @@
           "Best Actor in a Play",
           "Best Featured Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1997-98",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "king-hedley-ii-2001": {
@@ -16419,6 +18673,16 @@
           "Best Direction of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2000-01",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": [
+          "Best Actor"
+        ]
       }
     },
     "the-goat-or-who-is-sylvia-2002": {
@@ -16433,6 +18697,15 @@
         "wins": [
           "Best Play"
         ]
+      },
+      "olivier": {
+        "season": "2004-05",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "fortunes-fool-2002": {
@@ -16504,6 +18777,16 @@
           "Best Musical",
           "Best Orchestrations"
         ]
+      },
+      "olivier": {
+        "season": "2003-04",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
       }
     },
     "mamma-mia-2001": {
@@ -16517,6 +18800,14 @@
           "Best Book of a Musical",
           "Best Musical",
           "Best Orchestrations"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1999-00",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
         ],
         "wins": []
       }
@@ -16581,6 +18872,24 @@
           "Best Actress in a Play",
           "Best Revival of a Play",
           "Best Scenic Design"
+        ]
+      },
+      "olivier": {
+        "season": "1999-00",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Costume Design",
+          "Best Set Design"
         ]
       }
     },
@@ -16654,6 +18963,17 @@
           "Best Lighting Design",
           "Best Revival of a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
       }
     },
     "oklahoma-2002": {
@@ -16672,6 +18992,24 @@
         ],
         "wins": [
           "Best Featured Actor in a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Theatre Choreographer"
         ]
       }
     },
@@ -16738,6 +19076,19 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Director",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best New Play"
+        ]
       }
     },
     "amour-2002": {
@@ -16822,6 +19173,14 @@
           "Best Actress in a Play",
           "Best Direction of a Play",
           "Best Revival of a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2001-02",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
         ],
         "wins": []
       }
@@ -17000,6 +19359,14 @@
         "wins": [
           "Best Featured Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
       }
     },
     "the-retreat-from-moscow-2003": {
@@ -17031,6 +19398,17 @@
         "wins": [
           "Best Featured Actress in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Musical",
+          "Best New Musical"
+        ],
+        "wins": [
+          "Best New Musical"
+        ]
       }
     },
     "henry-iv-2003": {
@@ -17050,6 +19428,15 @@
           "Best Direction of a Play",
           "Best Revival of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2001-02",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Lighting Design"
+        ],
+        "wins": []
       }
     },
     "jumpers-2004": {
@@ -17175,6 +19562,15 @@
           "Best Original Score"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Costume Design"
+        ],
+        "wins": []
       }
     },
     "bombay-dreams-2004": {
@@ -17186,6 +19582,15 @@
           "Best Choreography",
           "Best Costume Design",
           "Best Orchestrations"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best New Musical"
         ],
         "wins": []
       }
@@ -17234,6 +19639,14 @@
           "Best Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2003-04",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
       }
     },
     "gem-of-the-ocean-2004": {
@@ -17268,6 +19681,17 @@
           "Best Lighting Design of a Play",
           "Best Scenic Design of a Play"
         ]
+      },
+      "olivier": {
+        "season": "2003-04",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best New Play",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
       }
     },
     "spamalot-2005": {
@@ -17296,6 +19720,19 @@
           "Best Direction of a Musical",
           "Best Musical"
         ]
+      },
+      "olivier": {
+        "season": "2006-07",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "dirty-rotten-scoundrels-2005": {
@@ -17440,6 +19877,23 @@
           "Best Scenic Design of a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2003-04",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Theatre Choreographer"
+        ]
       }
     },
     "sweet-charity-2005": {
@@ -17466,6 +19920,14 @@
           "Best Featured Actress in a Musical",
           "Best Lighting Design of a Musical",
           "Best Scenic Design of a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
         ],
         "wins": []
       }
@@ -17495,6 +19957,18 @@
           "Best Lighting Design of a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Lighting Design",
+          "Best Revival",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
       }
     },
     "the-little-prince-2022": {
@@ -17589,6 +20063,16 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Musical Revival"
+        ]
       }
     },
     "the-graduate-2002": {
@@ -17599,6 +20083,16 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2000-01",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Lighting Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
       }
     },
     "the-elephant-man-2002": {
@@ -17641,6 +20135,15 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1996-97",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best New Play"
+        ],
+        "wins": []
       }
     },
     "bus-stop-1996": {
@@ -17691,6 +20194,20 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1991-92",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "translations-1995": {
@@ -17817,6 +20334,16 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role"
+        ]
       }
     },
     "search-and-destroy-1992": {
@@ -17839,6 +20366,16 @@
         ],
         "wins": [
           "Best Actress in a Play"
+        ]
+      },
+      "olivier": {
+        "season": "1991-92",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": [
+          "Best Actress"
         ]
       }
     },
@@ -17992,6 +20529,15 @@
         "wins": [
           "Best Featured Actor in a Play"
         ]
+      },
+      "olivier": {
+        "season": "1987-88",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "truly-blessed-1990": {
@@ -18039,6 +20585,16 @@
           "Best Featured Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1986-87",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
       }
     },
     "a-streetcar-named-desire-1988": {
@@ -18083,6 +20639,17 @@
           "Best Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1986-87",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Director"
+        ]
       }
     },
     "corpse-1986": {
@@ -18112,6 +20679,14 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Featured Actress in a Musical"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1984-85",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
         ],
         "wins": []
       }
@@ -18218,6 +20793,18 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Director",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
       }
     },
     "amys-view-1999": {
@@ -18414,6 +21001,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1977-78",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "west-side-story-1980": {
@@ -18531,6 +21126,16 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1980-81",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role"
+        ]
       }
     },
     "past-tense-1980": {
@@ -18676,6 +21281,14 @@
           "Best Actor in a Musical"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "the-effect-of-gamma-rays-on-maninthemoon-marigolds-1978": {
@@ -18817,6 +21430,15 @@
         "wins": [
           "Best Actor in a Musical"
         ]
+      },
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "whos-afraid-of-virginia-woolf-1976": {
@@ -19285,6 +21907,17 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
       }
     },
     "here-are-ladies-1973": {
@@ -19336,6 +21969,16 @@
           "Best Featured Actress in a Play"
         ],
         "wins": []
+      },
+      "olivier": {
+        "season": "1983-84",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role"
+        ]
       }
     },
     "stardust-1987": {
@@ -19788,6 +22431,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2002-03",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
+        ],
+        "wins": []
       }
     },
     "taller-than-a-dwarf-2000": {
@@ -19879,6 +22530,15 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Actress in a Play"
+        ],
+        "wins": []
+      },
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role",
+          "Best New Play"
         ],
         "wins": []
       }
@@ -20264,6 +22924,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "1976-77",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role"
+        ],
+        "wins": []
       }
     },
     "ladies-at-the-alamo-1977": {
@@ -20885,6 +23553,14 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      },
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": []
       }
     },
     "you-got-older-2026": {
@@ -21014,6 +23690,990 @@
         ],
         "wins": [
           "Best Actor in a Musical"
+        ]
+      },
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best Musical Revival",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Musical Revival"
+        ]
+      }
+    },
+    "buddy-1990": {
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical"
+        ],
+        "wins": []
+      }
+    },
+    "sunday-in-the-park-with-george-1994": {
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Costume Design",
+          "Best New Musical",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best New Musical"
+        ]
+      }
+    },
+    "kat-and-the-kings-1999": {
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best New Musical"
+        ]
+      }
+    },
+    "fela-2012": {
+      "olivier": {
+        "season": "2010-11",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
+      }
+    },
+    "hamilton-west-end-2021": {
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 9,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ]
+      }
+    },
+    "back-to-the-future-west-end-2021": {
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Lighting Design",
+          "Best New Musical",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best New Musical"
+        ]
+      }
+    },
+    "moulin-rouge-the-musical-west-end-2021": {
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best New Musical",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Costume Design"
+        ]
+      }
+    },
+    "mj-the-musical-west-end-2024": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best New Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Theatre Choreographer"
+        ]
+      }
+    },
+    "da-1978": {
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best New Play",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role",
+          "Best Director",
+          "Best New Play"
+        ]
+      }
+    },
+    "duet-for-one-1981": {
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best New Play"
+        ],
+        "wins": []
+      }
+    },
+    "the-mountaintop-2011": {
+      "olivier": {
+        "season": "2009-10",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
+      }
+    },
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021": {
+      "olivier": {
+        "season": "2016-17",
+        "nominations": 10,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best New Play",
+          "Best Set Design",
+          "Best Sound Design"
+        ]
+      }
+    },
+    "art-2025": {
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 6,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role",
+          "Best Actress in a Supporting Role",
+          "Best New Play",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actress in a Supporting Role",
+          "Best New Play"
+        ]
+      }
+    },
+    "giant-2026": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best New Play"
+        ],
+        "wins": [
+          "Best New Play"
+        ]
+      }
+    },
+    "joseph-and-the-amazing-technicolor-dreamcoat-1993": {
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
+      }
+    },
+    "harvey-2012": {
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Musical Revival"
+        ]
+      }
+    },
+    "cabaret-at-the-kit-kat-club-west-end-2021": {
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 11,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Director",
+          "Best Musical Revival",
+          "Best Sound Design"
+        ]
+      }
+    },
+    "hadestown-west-end-2024": {
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Musical Revival"
+        ],
+        "wins": []
+      }
+    },
+    "oliver-west-end-2024": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Lighting Design",
+          "Best Musical Revival",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
+      }
+    },
+    "starlight-express-west-end-2024": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best Musical Revival"
+        ],
+        "wins": [
+          "Best Costume Design"
+        ]
+      }
+    },
+    "the-seagull-2008": {
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": [
+          "Best Actress"
+        ]
+      }
+    },
+    "rain-2010": {
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Lighting Design",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "all-my-sons-2008": {
+      "olivier": {
+        "season": "2010-11",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "macbeth-2013": {
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "old-times-2015": {
+      "olivier": {
+        "season": "2012-13",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "private-lives-2011": {
+      "olivier": {
+        "season": "2013-14",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "les-liaisons-dangereuses-2016": {
+      "olivier": {
+        "season": "2015-16",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "witness-for-the-prosecution-west-end-2022": {
+      "olivier": {
+        "season": "2017-18",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "cyrano-de-bergerac-west-end-2026": {
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress in a Supporting Role",
+          "Best Director",
+          "Best Revival",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Revival"
+        ]
+      }
+    },
+    "waiting-for-godot-2025": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Revival"
+        ],
+        "wins": []
+      }
+    },
+    "a-christmas-carol-1994": {
+      "olivier": {
+        "season": "1993-94",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
+      }
+    },
+    "taking-sides-1996": {
+      "olivier": {
+        "season": "1995-96",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
+      }
+    },
+    "the-blue-room-1998": {
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actress",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
+        ]
+      }
+    },
+    "the-caretaker-2003": {
+      "olivier": {
+        "season": "2000-01",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Actor in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": []
+      }
+    },
+    "elling-2010": {
+      "olivier": {
+        "season": "2007-08",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
+      }
+    },
+    "elf-2012": {
+      "olivier": {
+        "season": "2008-09",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor",
+          "Best Costume Design"
+        ],
+        "wins": [
+          "Best Actor"
+        ]
+      }
+    },
+    "the-fear-of-13-2026": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor"
+        ],
+        "wins": []
+      }
+    },
+    "as-you-like-it-1986": {
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role"
+        ]
+      }
+    },
+    "prince-of-central-park-1989": {
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
+      }
+    },
+    "the-rise-and-fall-of-little-voice-1994": {
+      "olivier": {
+        "season": "1992-93",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Actress in a Supporting Role",
+          "Best Costume Design"
+        ],
+        "wins": [
+          "Best Actress",
+          "Best Costume Design"
+        ]
+      }
+    },
+    "betrayal-2013": {
+      "olivier": {
+        "season": "2011-12",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
+      }
+    },
+    "the-height-of-the-storm-2019": {
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress"
+        ],
+        "wins": []
+      }
+    },
+    "my-neighbour-totoro-west-end-2025": {
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Actress",
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": [
+          "Best Costume Design",
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
+        ]
+      }
+    },
+    "oklahoma-1979": {
+      "olivier": {
+        "season": "1979-80",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
+      }
+    },
+    "brothers-1983": {
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
+      }
+    },
+    "the-phantom-of-the-opera-west-end-1986": {
+      "olivier": {
+        "season": "1985-86",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Actor in a Musical"
+        ]
+      }
+    },
+    "chess-1988": {
+      "olivier": {
+        "season": "1984-85",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Set Design"
+        ],
+        "wins": []
+      }
+    },
+    "saturday-night-fever-1999": {
+      "olivier": {
+        "season": "1998-99",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
+      }
+    },
+    "little-shop-of-horrors-2019": {
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
+      }
+    },
+    "operation-mincemeat-west-end-2024": {
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Actor in a Musical",
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical",
+          "Best Actress in a Supporting Role in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role in a Musical"
+        ]
+      }
+    },
+    "the-king-and-i-1977": {
+      "olivier": {
+        "season": "1978-79",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actress in a Musical"
+        ]
+      }
+    },
+    "marilyn-1983": {
+      "olivier": {
+        "season": "1982-83",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Musical"
+        ],
+        "wins": []
+      }
+    },
+    "titanique-west-end-2024": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role in a Musical",
+          "Best Actress in a Musical"
+        ],
+        "wins": [
+          "Best Actor in a Supporting Role in a Musical"
+        ]
+      }
+    },
+    "the-tempest-1995": {
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Set Design"
+        ],
+        "wins": []
+      }
+    },
+    "cat-on-a-hot-tin-roof-2003": {
+      "olivier": {
+        "season": "2001-02",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role",
+          "Best Lighting Design"
+        ],
+        "wins": []
+      }
+    },
+    "all-my-sons-west-end-2025": {
+      "olivier": {
+        "season": "2019-20",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Supporting Role"
+        ],
+        "wins": []
+      }
+    },
+    "present-laughter-1982": {
+      "olivier": {
+        "season": "1980-81",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": [
+          "Best Actress in a Supporting Role"
+        ]
+      }
+    },
+    "the-crucible-1991": {
+      "olivier": {
+        "season": "1990-91",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
+      }
+    },
+    "passion-2004": {
+      "olivier": {
+        "season": "2000-01",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role",
+          "Best Director"
+        ],
+        "wins": []
+      }
+    },
+    "pride-west-end-2026": {
+      "olivier": {
+        "season": "2021-22",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
+      }
+    },
+    "as-you-like-it-globe-west-end-2026": {
+      "olivier": {
+        "season": "2022-23",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
+      }
+    },
+    "a-mirrored-monet-west-end-2026": {
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role"
+        ],
+        "wins": []
+      }
+    },
+    "cats-2016": {
+      "olivier": {
+        "season": "2014-15",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role in a Musical"
+        ],
+        "wins": []
+      }
+    },
+    "six-the-musical-west-end-2021": {
+      "olivier": {
+        "season": "2018-19",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role in a Musical",
+          "Best Costume Design",
+          "Best Theatre Choreographer"
+        ],
+        "wins": []
+      }
+    },
+    "the-devil-wears-prada-west-end-2024": {
+      "olivier": {
+        "season": "2024-25",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actress in a Supporting Role in a Musical"
+        ],
+        "wins": []
+      }
+    },
+    "the-three-sisters-1973": {
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
+        ],
+        "wins": [
+          "Best Director"
+        ]
+      }
+    },
+    "night-and-day-1979": {
+      "olivier": {
+        "season": "1975-76",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
+        ],
+        "wins": []
+      }
+    },
+    "the-secret-rapture-1989": {
+      "olivier": {
+        "season": "1987-88",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Director"
+        ],
+        "wins": []
+      }
+    },
+    "ghetto-1989": {
+      "olivier": {
+        "season": "1989-90",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Director",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
+      }
+    },
+    "stranger-things-the-first-shadow-west-end-2023": {
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Director",
+          "Best Lighting Design",
+          "Best Set Design",
+          "Best Sound Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
+      }
+    },
+    "andre-hellers-wonderhouse-1991": {
+      "olivier": {
+        "season": "1987-88",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Set Design"
+        ]
+      }
+    },
+    "the-miser-1990": {
+      "olivier": {
+        "season": "1991-92",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Set Design"
+        ],
+        "wins": []
+      }
+    },
+    "the-school-for-scandal-1995": {
+      "olivier": {
+        "season": "1994-95",
+        "nominations": 3,
+        "nominatedFor": [
+          "Best Costume Design",
+          "Best Lighting Design",
+          "Best Set Design"
+        ],
+        "wins": [
+          "Best Costume Design"
+        ]
+      }
+    },
+    "encores-la-cage-aux-folles-2026": {
+      "olivier": {
+        "season": "2023-24",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Costume Design"
+        ],
+        "wins": []
+      }
+    },
+    "after-the-night-and-the-music-2005": {
+      "olivier": {
+        "season": "2001-02",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Lighting Design"
+        ],
+        "wins": [
+          "Best Lighting Design"
         ]
       }
     }
