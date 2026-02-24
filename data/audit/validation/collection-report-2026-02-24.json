@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-02-24T18:01:00.379Z",
+  "runDate": "2026-02-24T18:08:41.214Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "shadowlands-west-end-2026",
+    "showFilter": "the-other-place-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 10,
+    "processed": 2,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "22.2%"
   },
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 13,
+    "tier1Attempts": 7,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 9,
-    "tier4Success": 0,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 40,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
@@ -50,63 +50,32 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "shadowlands-west-end-2026/the-guardian-uk--arifa-akbar.json",
-    "shadowlands-west-end-2026/time-out-london--andrzej-lukowski.json",
-    "shadowlands-west-end-2026/timeout--unknown.json",
-    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-    "shadowlands-west-end-2026/stage-uk--mahony.json",
-    "shadowlands-west-end-2026/the-arts-desk--helen-hawkins.json",
-    "shadowlands-west-end-2026/the-stage-uk--holly-o-mahony.json",
-    "shadowlands-west-end-2026/the-stage-uk--holly-omahony.json",
-    "shadowlands-west-end-2026/the-times-uk--clive-davis.json",
-    "shadowlands-west-end-2026/whatsonstage--unknown.json"
+    "the-other-place-2026/nytg--austin-fimmano.json",
+    "the-other-place-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
-    "shadowlands-west-end-2026/broadwaynews--unknown.json",
-    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "shadowlands-west-end-2026/billboard--unknown.json",
-    "shadowlands-west-end-2026/dailymail--unknown.json",
-    "shadowlands-west-end-2026/telegraph--unknown.json",
-    "shadowlands-west-end-2026/the-independent--alice-saville.json",
-    "shadowlands-west-end-2026/the-independent-uk--alice-saville.json",
-    "shadowlands-west-end-2026/the-telegraph-uk--dominic-cavendish.json",
-    "shadowlands-west-end-2026/the-times-uk--unknown.json",
-    "shadowlands-west-end-2026/uk-daily-telegraph--dominic-cavendish.json"
+    "the-other-place-2026/broadwaynews--unknown.json",
+    "the-other-place-2026/theatermania--david-gordon.json",
+    "the-other-place-2026/timeout--adam-feldman.json",
+    "the-other-place-2026/buy-tickets--unknown.json",
+    "the-other-place-2026/oneminutecritic--unknown.json",
+    "the-other-place-2026/theater-pizzazz--ron-fassler.json",
+    "the-other-place-2026/theshedorg--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "shadowlands-west-end-2026/the-guardian-uk--arifa-akbar.json",
-      "shadowlands-west-end-2026/time-out-london--andrzej-lukowski.json",
-      "shadowlands-west-end-2026/timeout--unknown.json",
-      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-      "shadowlands-west-end-2026/dailymail--unknown.json",
-      "shadowlands-west-end-2026/stage-uk--mahony.json",
-      "shadowlands-west-end-2026/the-arts-desk--helen-hawkins.json",
-      "shadowlands-west-end-2026/the-stage-uk--holly-o-mahony.json",
-      "shadowlands-west-end-2026/the-stage-uk--holly-omahony.json",
-      "shadowlands-west-end-2026/the-times-uk--clive-davis.json",
-      "shadowlands-west-end-2026/whatsonstage--unknown.json"
+      "the-other-place-2026/nytg--austin-fimmano.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "data/review-texts/shadowlands-west-end-2026/billboard--unknown.json",
-      "data/review-texts/shadowlands-west-end-2026/the-times-uk--unknown.json"
-    ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "the-other-place-2026/talkinbroadway--unknown.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 3,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
