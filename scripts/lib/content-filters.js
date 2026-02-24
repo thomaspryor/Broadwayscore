@@ -12,13 +12,13 @@
  * regional, film/TV, streaming, West End, etc.)
  *
  * @param {string} text - Title, outlet name, or article text to check
- * @param {Object} options - { allowOffBroadway: boolean }
+ * @param {Object} options - { allowOffBroadway: boolean, allowWestEnd: boolean }
  * @returns {boolean}
  */
 function isNotBroadway(text, options = {}) {
   if (!text) return false;
   const lower = text.toLowerCase();
-  const { allowOffBroadway = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false } = options;
 
   // Off-Broadway / regional — skip these checks if allowOffBroadway
   if (!allowOffBroadway) {
@@ -32,10 +32,18 @@ function isNotBroadway(text, options = {}) {
     }
   }
 
+  // West End / London — skip these checks if allowWestEnd
+  if (!allowWestEnd) {
+    if (lower.includes('west end') ||
+        lower.includes('london') ||
+        // UK venues that could appear in review text
+        lower.includes('playhouse theatre')) {
+      return true;
+    }
+  }
+
   return (
     // Always rejected regardless of category
-    lower.includes('west end') ||
-    lower.includes('london') ||
     lower.includes('opera') ||
     lower.includes('in chicago') ||
     // Touring
@@ -51,8 +59,7 @@ function isNotBroadway(text, options = {}) {
     lower.includes('movie') ||
     lower.includes('on film') ||
     lower.includes('on screen') ||
-    // Regional venues (NOT off-Broadway NYC venues)
-    lower.includes('playhouse theatre') ||
+    // Regional venues (NOT off-Broadway NYC venues, NOT West End)
     lower.includes('chicago shakespeare') ||
     lower.includes('old globe') || lower.includes('la jolla') ||
     lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||

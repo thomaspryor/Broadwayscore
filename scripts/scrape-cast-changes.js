@@ -442,7 +442,7 @@ async function scrapeArticles(targetShows) {
 
           // Filter: check title/description for tour/non-Broadway content
           const searchText = `${result.title} ${result.description}`;
-          if (isNotBroadway(searchText, { allowOffBroadway: show.category === 'off-broadway' })) {
+          if (isNotBroadway(searchText, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
             if (verbose) console.log(`    [Skip] Non-Broadway: ${result.title}`);
             continue;
           }
