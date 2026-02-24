@@ -33,7 +33,7 @@ const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
 // Non-theater content patterns — shared across all markets (Broadway, OB, West End)
 const NON_THEATER_PATTERNS = [
   'comedy club', 'comedy night', 'stand-up', 'standup',
-  'magic', 'magick', 'bubble show',
+  'magic show:', 'magick', 'bubble show', // NOT 'magic' alone (false-positive: Magic Mike, The Magic Show, Magic/Bird)
   'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
   'quartet', 'quintet', 'ensemble',
   'selected shorts', 'book club', 'in conversation with',
@@ -48,12 +48,37 @@ const NON_THEATER_PATTERNS = [
   'rakugo', // Japanese storytelling
   'museum of', 'exhibit', 'exhibition', // museums/exhibits, not shows
   'immersive experience', // non-theatrical experiences
+  'game show', 'gameshow', 'punishment game', // game shows (BATSU etc.)
+  'jazz at lincoln center', // jazz concerts, not theater
 ];
 
 // Known non-show titles that TodayTix lists but aren't theatrical productions
 const EXCLUDED_TITLES = [
   'the museum of broadway',
+  'batsu!', // restaurant game show at Kogame
+  'jeremy pelt and endea owens', // Jazz at Lincoln Center concert
+  'caribbean crossroads', // Jazz at Lincoln Center concert
+  'lindy west: adult braces', // Symphony Space author reading
+  'dave eggers: contrapposto', // Symphony Space author reading
+  'percival everett: james', // Symphony Space author reading
+  'abby jimenez: the night we met', // Symphony Space author reading
+  'caro claire burke: yesteryear', // Symphony Space author reading
+  'the pelicot trial', // One-night event at church
 ];
+
+// Venues that categorically do not host theater
+const NON_THEATER_VENUES = [
+  'kogame',           // restaurant (BATSU game show)
+  'appel room',       // Jazz at Lincoln Center
+  'rose theater',     // Jazz at Lincoln Center (review feedback: shortened for robustness)
+];
+
+// Check if a show is a one-night event (startDate === endDate)
+// Only applied to TodayTix ingestion, not IBDB historical data
+function isOneNightShow(show) {
+  if (!show.startDate || !show.endDate) return false;
+  return show.startDate === show.endDate;
+}
 
 function isNonTheaterContent(show) {
   const title = (show.displayName || show.name || '').toLowerCase();
@@ -61,6 +86,16 @@ function isNonTheaterContent(show) {
   if (NON_THEATER_PATTERNS.some(pattern => title.includes(pattern))) return true;
   const subcatNames = (show.subcategories || []).map(sc => sc.name);
   if (subcatNames.includes('Classical')) return true; // Opera
+
+  // Gate 2: Venue blocklist — categorically non-theater venues
+  const venue = (typeof show.venue === 'string' ? show.venue : show.venue?.name || '').toLowerCase();
+  if (NON_THEATER_VENUES.some(v => venue.includes(v))) return true;
+
+  // Gate 4: Synopsis keywords — catches shows with clean titles but non-theater descriptions
+  const description = (show.description || '').toLowerCase();
+  const SYNOPSIS_KEYWORDS = ['game show', 'punishment game', 'jazz at lincoln center'];
+  if (SYNOPSIS_KEYWORDS.some(kw => description.includes(kw))) return true;
+
   return false;
 }
 
@@ -99,14 +134,25 @@ async function fetchShowsFromTodayTix() {
   }
 
   // Filter by subcategories: Broadway always, Off-Broadway when flag is set
+  // Gate 1: One-night shows are filtered at TodayTix ingestion (not IBDB historical)
   const broadwayShows = allShows.filter(s =>
-    s.subcategories?.some(sc => sc.name === 'Broadway') && !isNonTheaterContent(s)
+    s.subcategories?.some(sc => sc.name === 'Broadway') && !isNonTheaterContent(s) && !isOneNightShow(s)
   );
   const offBroadwayShows = includeOffBroadway ? allShows.filter(s => {
     if (!s.subcategories?.some(sc => sc.name === 'Off Broadway')) return false;
     if (s.subcategories?.some(sc => sc.name === 'Broadway')) return false; // exclude shows tagged as both
-    return !isNonTheaterContent(s);
+    return !isNonTheaterContent(s) && !isOneNightShow(s);
   }) : [];
+
+  // Log filtered shows for CI visibility
+  const filteredByContent = allShows.filter(s => isNonTheaterContent(s));
+  const filteredByOneNight = allShows.filter(s => !isNonTheaterContent(s) && isOneNightShow(s));
+  if (filteredByContent.length > 0) {
+    console.log(`  Filtered ${filteredByContent.length} non-theater content: ${filteredByContent.slice(0, 5).map(s => s.displayName || s.name).join(', ')}${filteredByContent.length > 5 ? '...' : ''}`);
+  }
+  if (filteredByOneNight.length > 0) {
+    console.log(`  Filtered ${filteredByOneNight.length} one-night events: ${filteredByOneNight.map(s => s.displayName || s.name).join(', ')}`);
+  }
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
   const seen = new Set();
@@ -205,7 +251,7 @@ async function fetchShowsFromTodayTixLondon() {
       if (!isTheaterCategory && !hasTheaterSubcats) return false;
     }
 
-    return !isNonTheaterContent(s);
+    return !isNonTheaterContent(s) && !isOneNightShow(s);
   });
 
   // West End-specific additional filters

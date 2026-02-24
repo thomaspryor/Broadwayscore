@@ -2397,6 +2397,37 @@ function validateCrossMarketContamination() {
   }
 }
 
+// Warn about shows that look like non-theater content (game shows, concerts, readings, etc.)
+function validateNonTheaterContent(shows) {
+  console.log('--- Non-Theater Content Check ---');
+  const NON_THEATER_VENUES = ['kogame', 'appel room', 'rose theater'];
+  const SUSPICIOUS_KEYWORDS = ['game show', 'punishment game', 'jazz at lincoln center'];
+  let flagged = 0;
+
+  for (const show of shows) {
+    const reasons = [];
+    const venue = (show.venue || '').toLowerCase();
+    if (NON_THEATER_VENUES.some(v => venue.includes(v))) {
+      reasons.push(`suspicious venue "${show.venue}"`);
+    }
+    // One-night shows from 2025+ (TodayTix era)
+    if (show.openingDate && show.closingDate && show.openingDate === show.closingDate) {
+      const year = parseInt(show.openingDate.substring(0, 4));
+      if (year >= 2025) reasons.push('one-night event');
+    }
+    const desc = (show.description || '').toLowerCase();
+    if (SUSPICIOUS_KEYWORDS.some(kw => desc.includes(kw))) {
+      reasons.push('non-theater synopsis keywords');
+    }
+    if (reasons.length > 0) {
+      warn(`Possible non-theater content: "${show.title}" (${show.id}) — ${reasons.join(', ')}`);
+      flagged++;
+    }
+  }
+  if (flagged === 0) ok('No suspicious non-theater content detected');
+  else console.log(`  ⚠️  ${flagged} show(s) flagged for review`);
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -2474,6 +2505,8 @@ function runValidation() {
   validateActorImages();
   console.log('');
   validateAggregatorArchives(shows);
+  console.log('');
+  validateNonTheaterContent(shows);
 
   // Summary
   console.log('');

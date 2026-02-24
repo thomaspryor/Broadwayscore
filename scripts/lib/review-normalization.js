@@ -91,7 +91,8 @@ const OUTLET_ALIASES = {
   ],
   'vulture': [
     'vulture', 'new york magazine / vulture', 'new york magazine/vulture',
-    'ny mag', 'nymag', 'new york magazine', 'vult', 'vu', 'vulturecom'
+    'ny mag', 'nymag', 'new york magazine', 'vult', 'vu', 'vulturecom',
+    'newyorkmagazine', 'ny magazine', 'new-york-magazine'
   ],
   'variety': [
     'variety', 'variety magazine', 'varietycom', 'vartiey'
@@ -273,8 +274,14 @@ const OUTLET_ALIASES = {
   'time': [
     'time', 'time magazine'
   ],
-  'newyorkmagazine': [
-    'newyorkmagazine', 'new york magazine', 'ny magazine', 'ny mag'
+  'independent': [
+    'independent', 'the independent', 'the-independent', 'theindependent', 'the-independent-uk'
+  ],
+  'daily-mail': [
+    'daily-mail', 'dailymail', 'the-daily-mail', 'the daily mail', 'daily mail', 'daily-mail-uk'
+  ],
+  'la-voce-di-new-york': [
+    'la-voce-di-new-york', 'lavocedinewyork', 'la voce di new york'
   ],
   // New outlets from BWW/DTLI extraction scripts
   'newsday': [
@@ -298,8 +305,8 @@ const OUTLET_ALIASES = {
     'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york',
     'mbc new york', 'mbc-new-york', 'nbcnewyork'
   ],
-  'londontheatre': [
-    'londontheatre', 'london theatre', 'london-theatre', 'london theater'
+  'london-theatre': [
+    'londontheatre', 'london theatre', 'london-theatre', 'london theater', 'london-theatre-uk', 'londontheatreuk'
   ],
   'towncountry': [
     'towncountry', 'town & country', 'town-country', 'town and country', 'town-and-country'
@@ -1081,7 +1088,7 @@ function getOutletDisplayName(outletId) {
     'cbsnews': 'CBS News',
     'newsweek': 'Newsweek',
     'time': 'Time',
-    'newyorkmagazine': 'New York Magazine',
+    'newyorkmagazine': 'New York Magazine / Vulture',
     // New outlets from BWW/DTLI
     'newsday': 'Newsday',
     'npr': 'NPR',

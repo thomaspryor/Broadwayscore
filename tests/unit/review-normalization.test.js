@@ -694,11 +694,9 @@ describe('Alias consistency checks', () => {
     }
   });
 
-  test('detects duplicate aliases across outlets (known issues)', () => {
-    // This test documents known duplicate aliases.
-    // "new york magazine" maps to both "vulture" and "newyorkmagazine".
-    // In practice, this means "new york magazine" will match "vulture" since
-    // vulture comes first in the OUTLET_ALIASES object iteration.
+  test('no duplicate aliases across outlets', () => {
+    // All aliases should map to exactly one canonical outlet.
+    // Previously "new york magazine" was in both vulture and newyorkmagazine — now consolidated.
     const duplicates = new Map();
     const seenAliases = new Map();
     for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
@@ -712,18 +710,14 @@ describe('Alias consistency checks', () => {
         seenAliases.set(alias, canonical);
       }
     }
-    // Document the known duplicate
-    // Known issue: "new york magazine" and "ny mag" are in both vulture and newyorkmagazine
-    const knownDuplicates = ['new york magazine', 'ny mag'];
-    for (const known of knownDuplicates) {
-      assert.ok(
-        duplicates.has(known),
-        `Expected "${known}" to be a duplicate alias`
-      );
-    }
-    // Verify vulture wins for these aliases (comes first in iteration)
+    assert.strictEqual(
+      duplicates.size, 0,
+      `Found duplicate aliases: ${[...duplicates.entries()].map(([a, outlets]) => `"${a}" in [${outlets.join(', ')}]`).join('; ')}`
+    );
+    // Verify vulture owns all new york magazine variations
     assert.strictEqual(normalizeOutlet('new york magazine'), 'vulture');
     assert.strictEqual(normalizeOutlet('ny mag'), 'vulture');
+    assert.strictEqual(normalizeOutlet('newyorkmagazine'), 'vulture');
   });
 });
 
