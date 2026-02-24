@@ -452,6 +452,28 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
     },
   }), [shows]);
 
+  // Must-See picks — top 4 currently playing shows (score >= 83), mix of types
+  const mustSeePicks = useMemo(() => {
+    const scored = shows
+      .filter(s => s.status === 'open' && s.criticScore?.score != null && s.criticScore.score >= 83)
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+
+    // Try to get a mix: take top musicals and top plays, interleave
+    const musicals = scored.filter(s => s.type === 'musical');
+    const plays = scored.filter(s => s.type === 'play');
+
+    const picks: HomepageShow[] = [];
+    let mi = 0, pi = 0;
+    // Alternate musical/play when possible
+    while (picks.length < 4 && (mi < musicals.length || pi < plays.length)) {
+      if (picks.length % 2 === 0 && mi < musicals.length) picks.push(musicals[mi++]);
+      else if (pi < plays.length) picks.push(plays[pi++]);
+      else if (mi < musicals.length) picks.push(musicals[mi++]);
+    }
+
+    return picks;
+  }, [shows]);
+
   // Featured rows data - only shows opened in last 12 months
   const twelveMonthsAgo = useMemo(() => {
     const date = new Date();
@@ -653,6 +675,75 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
           {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
+
+      {/* Must-See Picks — 2x2 grid */}
+      {mustSeePicks.length >= 2 && (
+        <section className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-white">Must-See Right Now</h2>
+            <Link
+              href="/?sort=score_desc"
+              prefetch={false}
+              className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
+            >
+              All by score <ChevronRightIcon />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {mustSeePicks.map(show => {
+              const audGrade = show.audienceGrade;
+              return (
+                <Link
+                  key={show.id}
+                  href={`/show/${show.slug}`}
+                  prefetch={false}
+                  className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+                      <ShowImage
+                        sources={[
+                          show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
+                          show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
+                        ]}
+                        alt={show.title}
+                        priority
+                        loading="eager"
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                        fallback={<div className="w-full h-full flex items-center justify-center text-xl">🎭</div>}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-bold text-white truncate group-hover:text-brand transition-colors">
+                        {show.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-0.5">{show.venue}</p>
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <FormatPill type={show.type} />
+                        <ProductionPill isRevival={show.isRevival === true} />
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                      <ScoreBadge
+                        score={show.criticScore?.score}
+                        size="lg"
+                        showCrown
+                        reviewCount={show.criticScore?.reviewCount}
+                        status={show.status}
+                      />
+                      {audGrade && audGrade.grade !== '—' && (
+                        <AudienceChip grade={audGrade} />
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Best Recent Musicals - Featured Shelf */}
       {bestNewMusicals.length > 0 && (
