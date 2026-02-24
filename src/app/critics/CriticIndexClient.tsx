@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
+import HowThisWorks from '@/components/HowThisWorks';
 import { ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -209,6 +210,15 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
           {search.trim() ? ` matching "${search}"` : ''}
         </p>
       )}
+
+      {/* How This Works */}
+      <HowThisWorks className="mt-8">
+        <p>
+          Each critic&apos;s average score reflects the mean of their individual review scores across
+          all shows they&apos;ve reviewed on Broadway Scorecard. Review scores are derived from explicit
+          ratings, sentiment analysis, and language cues in each review.
+        </p>
+      </HowThisWorks>
     </div>
   );
 }

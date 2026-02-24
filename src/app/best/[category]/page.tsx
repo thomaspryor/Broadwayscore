@@ -7,6 +7,7 @@ import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
+import HowThisWorks from '@/components/HowThisWorks';
 import type { BrowseShow } from '@/components/BrowseListClient';
 
 export function generateStaticParams() {
@@ -153,6 +154,15 @@ export default function BestOfPage({ params }: { params: { category: string } })
           showScoreToggle={!isCriticSpecific}
           subtitle={`Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
         />
+
+        {/* How This Works */}
+        <HowThisWorks className="mt-8">
+          <p>
+            Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets.
+            Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets.
+            Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.
+          </p>
+        </HowThisWorks>
 
         {/* Other Lists */}
         <div className="mt-12 pt-8 border-t border-white/10">

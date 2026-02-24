@@ -9,6 +9,7 @@ import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
+import HowThisWorks from '@/components/HowThisWorks';
 import type { BrowseShow } from '@/components/BrowseListClient';
 
 export function generateStaticParams() {
@@ -253,12 +254,14 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Methodology Link */}
-        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
-          <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
-            How are scores calculated? →
-          </Link>
-        </div>
+        {/* How This Works */}
+        <HowThisWorks className="mt-8">
+          <p>
+            Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets.
+            Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets.
+            Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.
+          </p>
+        </HowThisWorks>
       </div>
     </>
   );
