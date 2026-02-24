@@ -28,6 +28,10 @@ on:
   repository_dispatch:
     types: [show-opened]
 
+concurrency:
+  group: audience-buzz
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

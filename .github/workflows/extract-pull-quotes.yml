@@ -107,8 +107,8 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # review-texts pushed via push-review-texts composite action above
-          # Stage any public repo changes (e.g. reviews.json if rebuild is inline)
-          git add -A
+          # Stage any public repo changes (audit files only — reviews.json is gitignored)
+          git add data/audit/ 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

@@ -192,7 +192,7 @@ jobs:
         id: check-changes
         if: always() && github.event.inputs.dry_run != 'true'
         run: |
-          git add -A
+          git add data/collection-state/ data/llm-scoring-runs.json data/llm-scoring-garbage-skips.json data/audit/ 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
