@@ -148,9 +148,21 @@ export default function MethodologyPage() {
         </p>
       </div>
 
+      {/* Table of Contents */}
+      <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
+        <a href="#overview" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Overview</a>
+        <a href="#score-interpretation" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Score Labels</a>
+        <a href="#critic-score" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">CriticScore</a>
+        <a href="#normalization" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Normalization</a>
+        <a href="#audience-grade" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">AudienceGrade</a>
+        <a href="#box-office-data" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>
+        <a href="#unique" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">What&apos;s Unique</a>
+        <a href="#transparency" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Transparency</a>
+      </nav>
+
       <div className="space-y-6">
         {/* Overview */}
-        <section className="card p-5 sm:p-6">
+        <section id="overview" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Overview</h2>
           <p className="text-gray-300 mb-4">
             Broadway Scorecard™ is an independent review aggregator built specifically for Broadway theater. Unlike general entertainment aggregators, we focus exclusively on theatrical productions with specialized features including box office data, theater information, and opening/closing tracking.
@@ -161,7 +173,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Score Labels */}
-        <section className="card p-5 sm:p-6">
+        <section id="score-interpretation" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Score Interpretation</h2>
           <p className="text-gray-300 mb-4">
             CriticScore ratings are labeled based on these thresholds:
@@ -213,7 +225,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Critic Score */}
-        <section className="card p-5 sm:p-6">
+        <section id="critic-score" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">CriticScore™ Calculation</h2>
           <p className="text-gray-300 mb-4">
             CriticScore ratings are weighted averages based on outlet tier. Each review is assigned a score from 0-100 based on its rating or sentiment. Higher-tier outlets carry more weight, reflecting their reach and theatrical expertise.
@@ -268,7 +280,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Rating Normalization */}
-        <section className="card p-5 sm:p-6">
+        <section id="normalization" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Rating Normalization</h2>
           <p className="text-gray-300 mb-4">
             All ratings are normalized to a 0–100 scale for comparability.
@@ -299,7 +311,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Audience Buzz */}
-        <section className="card p-5 sm:p-6">
+        <section id="audience-grade" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">AudienceGrade™</h2>
           <p className="text-gray-300 mb-4">
             The AudienceGrade captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single letter grade.
@@ -379,7 +391,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Box Office Data */}
-        {featureFlags.boxOffice && <section className="card p-5 sm:p-6">
+        {featureFlags.boxOffice && <section id="box-office-data" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Box Office Data</h2>
           <p className="text-gray-300 mb-4">
             Broadway Scorecard tracks weekly box office performance and all-time statistics for every production, providing transparency into commercial success alongside critical and audience reception.
@@ -446,7 +458,7 @@ export default function MethodologyPage() {
         </section>}
 
         {/* What Makes Us Different */}
-        <section className="card p-5 sm:p-6">
+        <section id="unique" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">What Makes Broadway Scorecard™ Unique</h2>
           <p className="text-gray-300 mb-4">
             Unlike general entertainment aggregators, Broadway Scorecard is built exclusively for theater:
@@ -476,7 +488,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* Transparency */}
-        <section className="card p-5 sm:p-6">
+        <section id="transparency" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Transparency</h2>
           <p className="text-gray-300 mb-4">
             We believe in complete transparency:
