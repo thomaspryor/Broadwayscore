@@ -40,6 +40,7 @@ export default function TonyPredictionsClient({ categories, outcomes }: TonyPred
         return (
           <TonyPredictionsTable
             key={cat.key}
+            sectionId={cat.key}
             title={cat.title}
             description={cat.description}
             shows={cat.shows}

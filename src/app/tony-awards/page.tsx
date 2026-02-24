@@ -86,7 +86,7 @@ export default function TonyAwardsHubPage() {
     .map(cat => ({
       label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
       showTitle: cat.shows[0].title,
-      score: cat.shows[0].compositeScore,
+      score: cat.shows[0].blendedScore ?? cat.shows[0].compositeScore,
     }));
 
   const breadcrumbSchema = generateBreadcrumbSchema([
