@@ -54,6 +54,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Discover new Show Score URLs from listings
+        run: node scripts/discover-show-score-urls-from-listings.js
+        continue-on-error: true
+
       - name: Run Show Score scraper
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
