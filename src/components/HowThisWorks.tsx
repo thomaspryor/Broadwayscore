@@ -16,7 +16,7 @@ interface HowThisWorksProps {
 export default function HowThisWorks({ children, heading = 'How This Works', className = '' }: HowThisWorksProps) {
   return (
     <details className={`group rounded-xl border border-white/5 bg-surface-overlay ${className}`}>
-      <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none flex items-center justify-between">
+      <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none [&::-webkit-details-marker]:hidden flex items-center justify-between">
         {heading}
         <svg
           className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180"

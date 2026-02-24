@@ -686,8 +686,6 @@ async function discoverShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
-  const seenInBatch = new Set(); // Prevent intra-batch duplicates
-
   for (const show of discoveredShows) {
     // Use the new comprehensive duplicate check
     const duplicateCheck = checkForDuplicate(show, data.shows);
@@ -701,17 +699,17 @@ async function discoverShows() {
       continue;
     }
 
-    // Intra-batch dedup: prefer TodayTix-sourced (richer metadata) over ShowScore-only
-    const batchKey = `${slugify(show.title)}-${show.category || 'broadway'}`;
-    if (seenInBatch.has(batchKey)) {
+    // Intra-batch dedup: also check against shows already accepted in this batch
+    // This catches cases where TodayTix and ShowScore discover the same show
+    const batchDuplicateCheck = checkForDuplicate(show, newShows);
+    if (batchDuplicateCheck.isDuplicate) {
       skippedDuplicates.push({
         title: show.title,
-        reason: 'Duplicate within discovery batch',
-        existingId: batchKey
+        reason: `Duplicate within discovery batch: ${batchDuplicateCheck.reason}`,
+        existingId: batchDuplicateCheck.existingShow?.id || batchDuplicateCheck.existingShow?.title
       });
       continue;
     }
-    seenInBatch.add(batchKey);
 
     // Convert date strings to ISO format
     let openingDate = null;
