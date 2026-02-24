@@ -9,6 +9,7 @@
  *   npx tsx scripts/re-ensemble-scores.ts                        # full run
  *   npx tsx scripts/re-ensemble-scores.ts --dry-run               # preview only
  *   npx tsx scripts/re-ensemble-scores.ts --show=two-strangers-bway-2025  # single show
+ *   npx tsx scripts/re-ensemble-scores.ts --max-delta=20                 # cap max score change
  */
 
 import * as fs from 'fs';
@@ -84,8 +85,11 @@ async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+  const maxDeltaArg = args.find(a => a.startsWith('--max-delta='))?.split('=')[1];
+  const maxDelta = maxDeltaArg ? parseInt(maxDeltaArg) : 20; // Default: cap at 20-point change
 
   console.log(`Re-ensemble scores${dryRun ? ' (DRY RUN)' : ''}`);
+  console.log(`Max delta: ${maxDelta} (changes beyond this are skipped)`);
   if (showFilter) console.log(`Filtering to show: ${showFilter}`);
 
   // Load progress for resume
@@ -113,7 +117,9 @@ async function main() {
   let unchanged = 0;
   let changed = 0;
   let errors = 0;
+  let capped = 0;
   const changeDetails: Array<{ file: string; oldScore: number; newScore: number; oldBucket: string; newBucket: string }> = [];
+  const cappedDetails: Array<{ file: string; oldScore: number; newScore: number; delta: number }> = [];
   const newProcessedFiles: string[] = [];
 
   for (const showDir of showDirs) {
@@ -151,6 +157,10 @@ async function main() {
 
         if (oldLlmScore === newScore) {
           unchanged++;
+        } else if (Math.abs(newScore - oldLlmScore) > maxDelta) {
+          // Safety cap: skip extreme changes (likely broken old defaults)
+          capped++;
+          cappedDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, delta: newScore - oldLlmScore });
         } else {
           changed++;
           const oldBucket = data.llmScore.bucket || 'unknown';
@@ -211,6 +221,7 @@ async function main() {
   console.log(`Skipped:      ${skipped}`);
   console.log(`Unchanged:    ${unchanged}`);
   console.log(`Changed:      ${changed}`);
+  console.log(`Capped (>${maxDelta}pt): ${capped}`);
   console.log(`Errors:       ${errors}`);
 
   if (changeDetails.length > 0) {
@@ -238,6 +249,17 @@ async function main() {
       }
       for (const [change, count] of Object.entries(bucketChanges).sort((a, b) => b[1] - a[1])) {
         console.log(`  ${change}: ${count}`);
+      }
+    }
+
+    // Show capped reviews
+    if (cappedDetails.length > 0) {
+      console.log(`\nCapped reviews (delta > ${maxDelta}, NOT changed):`);
+      for (const c of cappedDetails.slice(0, 20)) {
+        console.log(`  ${c.delta > 0 ? '+' : ''}${c.delta} | ${c.file}: ${c.oldScore} → ${c.newScore}`);
+      }
+      if (cappedDetails.length > 20) {
+        console.log(`  ... and ${cappedDetails.length - 20} more`);
       }
     }
 
