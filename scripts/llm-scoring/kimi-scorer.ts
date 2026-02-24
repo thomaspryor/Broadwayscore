@@ -6,7 +6,7 @@
  */
 
 import { SimplifiedLLMResult, Bucket } from './types';
-import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, clampScoreToBucket } from './config';
+import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 
 // ========================================
 // TYPES
@@ -220,7 +220,7 @@ export class KimiScorer {
       score = Math.floor((range.min + range.max) / 2);
     }
 
-    score = clampScoreToBucket(score, bucket);
+    score = Math.max(0, Math.min(100, score));
 
     const validConfidences = ['high', 'medium', 'low'];
     const confidence = validConfidences.includes(parsed.confidence)
@@ -247,7 +247,7 @@ export class KimiScorer {
     if (bucketMatch && scoreMatch) {
       const bucket = bucketMatch[1] as Bucket;
       let score = parseInt(scoreMatch[1]);
-      score = clampScoreToBucket(score, bucket);
+      score = Math.max(0, Math.min(100, score));
 
       return {
         bucket,

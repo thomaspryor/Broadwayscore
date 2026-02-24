@@ -9,7 +9,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { LLMScoringResult, ScoredReviewFile, ReviewTextFile, SimplifiedLLMResult, Bucket } from './types';
-import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES, clampScoreToBucket } from './config';
+import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
 
 // Import text quality assessment module
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -458,7 +458,7 @@ export class ReviewScorer {
       score = Math.floor((range.min + range.max) / 2);
     }
 
-    score = clampScoreToBucket(score, bucket);
+    score = Math.max(0, Math.min(100, score));
 
     const validConfidences = ['high', 'medium', 'low'];
     const confidence = validConfidences.includes(parsed.confidence)
@@ -485,7 +485,7 @@ export class ReviewScorer {
     if (bucketMatch && scoreMatch) {
       const bucket = bucketMatch[1] as Bucket;
       let score = parseInt(scoreMatch[1]);
-      score = clampScoreToBucket(score, bucket);
+      score = Math.max(0, Math.min(100, score));
 
       return {
         bucket,
