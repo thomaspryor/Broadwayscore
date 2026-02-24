@@ -139,6 +139,18 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     return { errors, warnings };
   }
 
+  // Validate duplicateOf target exists before skipping
+  if (data.duplicateOf) {
+    const targetPath = path.join(path.dirname(filePath), data.duplicateOf);
+    if (!fs.existsSync(targetPath)) {
+      errors.push({
+        file: relativePath,
+        check: 'broken_duplicate_ref',
+        message: `Broken duplicateOf reference: "${data.duplicateOf}" does not exist`
+      });
+    }
+  }
+
   // Skip files excluded from rebuild (duplicates, wrong production, etc.)
   if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution || data.isRoundupArticle) {
     return { errors, warnings, skipped: true };
