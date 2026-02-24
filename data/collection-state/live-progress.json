@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-02-24T00:16:22.977Z",
-  "processed": 420,
-  "failed": 851,
-  "successRate": "33.0%",
+  "updatedAt": "2026-02-24T00:17:39.435Z",
+  "processed": 437,
+  "failed": 844,
+  "successRate": "34.1%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 631,
-    "browserbase": 0,
+    "playwright": 17,
+    "amp": 632,
+    "browserbase": 1,
     "directCookies": 13,
-    "scrapingbee": 94,
+    "scrapingbee": 93,
     "brightdata": 0,
-    "archiveToday": 169,
-    "archive": 120
+    "archiveToday": 161,
+    "archive": 124
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-24T00:01:42.455Z",
+      "event": "bb-session",
+      "session": "a74c1fd4",
+      "url": "https://www.nytimes.com/2026/02/19/theater/dinosaurs-blackout-songs-reservoir-an"
+    },
+    {
+      "t": "2026-02-24T00:01:44.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
