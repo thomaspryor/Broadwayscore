@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-02-24T18:01:00.379Z",
+  "runDate": "2026-02-24T18:11:07.057Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "shadowlands-west-end-2026",
+    "showFilter": "marcel-on-the-train-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 10,
+    "processed": 6,
+    "failed": 6,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 13,
+    "tier1Attempts": 9,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 9,
-    "tier4Success": 0,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 40,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
@@ -50,42 +50,27 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "shadowlands-west-end-2026/the-guardian-uk--arifa-akbar.json",
-    "shadowlands-west-end-2026/time-out-london--andrzej-lukowski.json",
-    "shadowlands-west-end-2026/timeout--unknown.json",
-    "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-    "shadowlands-west-end-2026/stage-uk--mahony.json",
-    "shadowlands-west-end-2026/the-arts-desk--helen-hawkins.json",
-    "shadowlands-west-end-2026/the-stage-uk--holly-o-mahony.json",
-    "shadowlands-west-end-2026/the-stage-uk--holly-omahony.json",
-    "shadowlands-west-end-2026/the-times-uk--clive-davis.json",
-    "shadowlands-west-end-2026/whatsonstage--unknown.json"
+    "marcel-on-the-train-2026/nyt-theater--jonathan-mandell.json",
+    "marcel-on-the-train-2026/nytg--joe-dziemianowicz.json",
+    "marcel-on-the-train-2026/vulture--sara-holdren.json",
+    "marcel-on-the-train-2026/theatermania--zachary-stewart.json",
+    "marcel-on-the-train-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "marcel-on-the-train-2026/amny--matt-windman.json"
   ],
   "failed": [
-    "shadowlands-west-end-2026/broadwaynews--unknown.json",
-    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "shadowlands-west-end-2026/billboard--unknown.json",
-    "shadowlands-west-end-2026/dailymail--unknown.json",
-    "shadowlands-west-end-2026/telegraph--unknown.json",
-    "shadowlands-west-end-2026/the-independent--alice-saville.json",
-    "shadowlands-west-end-2026/the-independent-uk--alice-saville.json",
-    "shadowlands-west-end-2026/the-telegraph-uk--dominic-cavendish.json",
-    "shadowlands-west-end-2026/the-times-uk--unknown.json",
-    "shadowlands-west-end-2026/uk-daily-telegraph--dominic-cavendish.json"
+    "marcel-on-the-train-2026/broadwaynews--unknown.json",
+    "marcel-on-the-train-2026/new-york-sun--elysa-gardner.json",
+    "marcel-on-the-train-2026/cititour--unknown.json",
+    "marcel-on-the-train-2026/theatrely--unknown.json",
+    "marcel-on-the-train-2026/buy-tickets--unknown.json",
+    "marcel-on-the-train-2026/talkinbroadway--james-wilson.json"
   ],
   "tierDetails": {
     "playwright": [
-      "shadowlands-west-end-2026/the-guardian-uk--arifa-akbar.json",
-      "shadowlands-west-end-2026/time-out-london--andrzej-lukowski.json",
-      "shadowlands-west-end-2026/timeout--unknown.json",
-      "shadowlands-west-end-2026/artsdesk--helen-hawkins.json",
-      "shadowlands-west-end-2026/dailymail--unknown.json",
-      "shadowlands-west-end-2026/stage-uk--mahony.json",
-      "shadowlands-west-end-2026/the-arts-desk--helen-hawkins.json",
-      "shadowlands-west-end-2026/the-stage-uk--holly-o-mahony.json",
-      "shadowlands-west-end-2026/the-stage-uk--holly-omahony.json",
-      "shadowlands-west-end-2026/the-times-uk--clive-davis.json",
-      "shadowlands-west-end-2026/whatsonstage--unknown.json"
+      "marcel-on-the-train-2026/nyt-theater--jonathan-mandell.json",
+      "marcel-on-the-train-2026/nytg--joe-dziemianowicz.json",
+      "marcel-on-the-train-2026/theatermania--zachary-stewart.json",
+      "marcel-on-the-train-2026/theatre-reviews-limited--joseph-verlezza.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -93,20 +78,14 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "data/review-texts/shadowlands-west-end-2026/billboard--unknown.json",
-      "data/review-texts/shadowlands-west-end-2026/the-times-uk--unknown.json"
+      "data/review-texts/marcel-on-the-train-2026/new-york-sun--elysa-gardner.json",
+      "data/review-texts/marcel-on-the-train-2026/talkinbroadway--james-wilson.json"
     ],
-    "archive": []
+    "archive": [
+      "marcel-on-the-train-2026/vulture--sara-holdren.json",
+      "marcel-on-the-train-2026/amny--matt-windman.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 3,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
