@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-02-24T02:43:20.474Z",
-  "processed": 482,
-  "failed": 929,
-  "successRate": "34.2%",
+  "updatedAt": "2026-02-24T02:49:07.189Z",
+  "processed": 485,
+  "failed": 936,
+  "successRate": "34.1%",
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 56,
     "amp": 639,
     "browserbase": 7,
     "directCookies": 14,
     "scrapingbee": 97,
     "brightdata": 0,
-    "archiveToday": 181,
-    "archive": 141
+    "archiveToday": 182,
+    "archive": 142
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-02-24T00:52:36.128Z",
-      "event": "bb-session",
-      "session": "5be93ce7",
-      "url": "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-et"
-    },
-    {
-      "t": "2026-02-24T00:52:38.700Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-24T00:54:44.357Z",
-      "event": "bb-session",
-      "session": "0f157e2f",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
-    },
     {
       "t": "2026-02-24T00:54:46.595Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-02-24T02:37:09.019Z",
       "event": "bb-cookie-inject",
       "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-02-24T02:45:36.857Z",
+      "event": "bb-session",
+      "session": "5079c58c",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-24T02:45:39.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T02:47:56.844Z",
+      "event": "bb-session",
+      "session": "f8104b62",
+      "url": "https://www.broadwaynews.com/the-broadway-review-buena-vista-social-club-brings-"
     }
   ]
 }
