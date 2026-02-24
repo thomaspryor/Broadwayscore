@@ -198,13 +198,27 @@ async function main() {
 
     let content = null;
     for (const title of searchTitles) {
-      content = await getPageContent(title);
-      if (content) break;
+      try {
+        content = await getPageContent(title);
+        if (content) break;
+      } catch (e) {
+        // Skip API errors
+      }
       await new Promise(r => setTimeout(r, 200));
     }
 
     if (!content) {
       console.log('NOT FOUND');
+      notFound++;
+      await new Promise(r => setTimeout(r, 300));
+      continue;
+    }
+
+    // Validate this is a theatrical production page
+    const hasInfobox = /\{\{Infobox (musical|play|film|television)/i.test(content);
+    const hasTheatreContext = /\b(broadway|west end|off-broadway|theatre|theater|musical|playwright|librett)/i.test(content.substring(0, 2000));
+    if (!hasInfobox && !hasTheatreContext) {
+      console.log('not a theatre page');
       notFound++;
       await new Promise(r => setTimeout(r, 300));
       continue;
