@@ -239,8 +239,8 @@ const OUTLET_ALIASES = {
   'culturesauce': [
     'culturesauce', 'culture sauce', 'culture-sauce'
   ],
-  'oneminutecritic': [
-    'oneminutecritic', 'one minute critic', 'one-minute-critic', '1 minute critic', '1-minute-critic-matthew-wexler',
+  'one-minute-critic': [
+    'one-minute-critic', 'oneminutecritic', 'one minute critic', '1 minute critic', '1-minute-critic-matthew-wexler',
     '1minutecritic'
   ],
   'artsfuse': [
@@ -371,6 +371,23 @@ const OUTLET_ALIASES = {
   'blogcritics': [
     'blogcritics', 'blogcriticsorg'
   ],
+  // Outlets in scoring.ts mapper but previously missing from OUTLET_ALIASES
+  'slate': ['slate', 'slate magazine'],
+  'people': ['people', 'people magazine'],
+  'parade': ['parade', 'parade magazine'],
+  'backstage': ['backstage', 'back stage'],
+  'the-recs': ['the-recs', 'therecs', 'the recs'],
+  'ny1': ['ny1', 'ny 1', 'spectrum news ny1'],
+  'curtainup': ['curtainup', 'curtain up', 'curtain-up'],
+  'theater-scene': ['theater-scene', 'theaterscene', 'theaterscenecom', 'nytheaterscene', 'theater scene'],
+  'stagezine': ['stagezine', 'stage-zine', 'stage zine'],
+  'wnyc': ['wnyc'],
+  'queerty': ['queerty'],
+  'medium': ['medium'],
+  'exeunt-magazine': ['exeunt-magazine', 'exeunt', 'exeunt magazine'],
+  'northjerseycom': ['northjerseycom', 'northjereycom', 'northjersycom', 'north-jerseycom', 'north jersey', 'northjersey.com'],
+  'chicago-sun-times': ['chicago-sun-times', 'chicagosuntimes', 'chicago sun-times', 'chicago sun times'],
+  'new-york-sun': ['new-york-sun', 'newyorksun', 'new york sun', 'the new york sun'],
 };
 
 /**
@@ -1053,7 +1070,7 @@ function getOutletDisplayName(outletId) {
     'billboard': 'Billboard',
     'amny': 'amNewYork',
     'culturesauce': 'Culture Sauce',
-    'oneminutecritic': 'One Minute Critic',
+    'one-minute-critic': 'One Minute Critic',
     'artsfuse': 'The Arts Fuse',
     'jitney': 'The Jitney',
     'slantmagazine': 'Slant Magazine',
