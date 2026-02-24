@@ -1,18 +1,49 @@
 {
-  "updatedAt": "2026-02-24T22:43:08.182Z",
-  "processed": 20,
-  "failed": 30,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-24T22:44:57.924Z",
+  "processed": 178,
+  "failed": 302,
+  "successRate": "37.1%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "playwright": 101,
+    "amp": 11,
+    "browserbase": 2,
+    "directCookies": 4,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 5
+    "archiveToday": 90,
+    "archive": 66
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-24T18:03:25.064Z",
+      "event": "bb-session",
+      "session": "725ae240",
+      "url": "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arth"
+    },
+    {
+      "t": "2026-02-24T18:08:53.837Z",
+      "event": "bb-session",
+      "session": "63da4cd8",
+      "url": "https://www.thewrap.com/camelot-broadway-review-musical-aaron-sorkin/"
+    },
+    {
+      "t": "2026-02-24T18:09:32.389Z",
+      "event": "bb-session",
+      "session": "39301c84",
+      "url": "https://www.thewrap.com/carousel-broadway-review-classic-show-gets-classic-produ"
+    },
+    {
+      "t": "2026-02-24T18:13:47.657Z",
+      "event": "bb-session",
+      "session": "aecf081b",
+      "url": "https://www.thewrap.com/frankie-johnny-broadway-review-audra-mcdonald-michael-sh"
+    },
+    {
+      "t": "2026-02-24T18:16:04.446Z",
+      "event": "bb-session",
+      "session": "d9b54ec0",
+      "url": "http://www.thewrap.com/gigi-theater-review-vanessa-hudgens-turns-a-french-girl-i"
+    }
+  ]
 }
