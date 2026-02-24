@@ -439,7 +439,9 @@ async function main() {
     try {
       const existing = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
       existingCandidates = existing.candidates || [];
-    } catch { /* file doesn't exist yet */ }
+    } catch (e) {
+      if (e.code !== 'ENOENT') console.warn(`  Warning: could not parse ${CANDIDATES_PATH}: ${e.message}`);
+    }
 
     // Build URL set of current candidates for dedup
     const currentUrls = new Set(candidates.map(c => c.showScoreUrl));
