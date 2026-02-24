@@ -1,49 +1,52 @@
 {
-  "updatedAt": "2026-02-24T23:28:41.367Z",
-  "processed": 45,
-  "failed": 85,
-  "successRate": "34.6%",
+  "updatedAt": "2026-02-24T23:31:13.635Z",
+  "processed": 28,
+  "failed": 52,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 28,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 21,
+    "amp": 1,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 14
+    "archiveToday": 13,
+    "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-24T23:02:42.925Z",
+      "t": "2026-02-24T22:35:58.696Z",
       "event": "bb-session",
-      "session": "12c30b19",
-      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
+      "session": "cfa09c16",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
     },
     {
-      "t": "2026-02-24T23:05:35.886Z",
-      "event": "bb-session",
-      "session": "fd8957f8",
-      "url": "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arth"
+      "t": "2026-02-24T22:35:59.949Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-24T23:17:32.009Z",
+      "t": "2026-02-24T22:54:49.973Z",
       "event": "bb-session",
-      "session": "c80d304e",
-      "url": "https://www.thewrap.com/angels-in-america-broadway-review-andrew-garfield-nathan"
+      "session": "3cd7a7c1",
+      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
     },
     {
-      "t": "2026-02-24T23:21:16.160Z",
-      "event": "bb-session",
-      "session": "540ac49c",
-      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+      "t": "2026-02-24T22:54:53.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-24T23:24:01.689Z",
+      "t": "2026-02-24T23:25:11.790Z",
       "event": "bb-session",
-      "session": "ef5515d0",
-      "url": "https://www.thewrap.com/betrayal-daniel-craig-rachel-weisz"
+      "session": "5c02db40",
+      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
+    },
+    {
+      "t": "2026-02-24T23:25:12.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
