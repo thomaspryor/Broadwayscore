@@ -160,3 +160,10 @@ jobs:
               console.log('Max URLs: ' + r.maxUrls);
             " >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recover WSJ Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

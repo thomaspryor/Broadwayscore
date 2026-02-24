@@ -133,3 +133,10 @@ jobs:
             echo "## No Changes" >> $GITHUB_STEP_SUMMARY
             echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape All-Time Grosses Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

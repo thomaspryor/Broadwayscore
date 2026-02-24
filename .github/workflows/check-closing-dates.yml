@@ -113,3 +113,10 @@ jobs:
           echo "- [Broadway.org Shows](https://www.broadway.org/shows/)" >> $GITHUB_STEP_SUMMARY
           echo "- [Playbill Broadway](https://www.playbill.com/grosses)" >> $GITHUB_STEP_SUMMARY
           echo "- [BroadwayWorld News](https://www.broadwayworld.com/)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Closing Dates Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

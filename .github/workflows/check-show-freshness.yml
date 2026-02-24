@@ -151,6 +151,13 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✨ **Fully automated** - no human intervention needed!" >> $GITHUB_STEP_SUMMARY
 
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Auto-Maintain Show Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
   # Trigger image fetch if shows are missing images
   fetch-missing-images:
     needs: auto-maintain

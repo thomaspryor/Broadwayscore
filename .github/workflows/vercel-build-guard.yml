@@ -48,3 +48,10 @@ jobs:
             echo "::error::Failed to restore build guard! Manual intervention required."
             exit 1
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Vercel Build Guard Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
