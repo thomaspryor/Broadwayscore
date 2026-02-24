@@ -1,0 +1,80 @@
+name: Check Cookie Health
+on:
+  schedule:
+    - cron: '0 14 * * 2'  # Tuesday 2 PM UTC (9 AM EST)
+    - cron: '0 14 * * 5'  # Friday 2 PM UTC (9 AM EST)
+  workflow_dispatch:
+    inputs:
+      live_check:
+        description: 'Run Layer 3 live access test (costs ~175 ScrapingBee credits)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  check-cookies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check cookie health
+        env:
+          LIVE_CHECK: ${{ inputs.live_check || 'false' }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Critical outlet cookies
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          FT_COOKIES: ${{ secrets.FT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          # Other outlet cookies
+          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
+          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
+          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
+          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
+          THR_COOKIES: ${{ secrets.THR_COOKIES }}
+          VARIETY_COOKIES: ${{ secrets.VARIETY_COOKIES }}
+          INDIEWIRE_COOKIES: ${{ secrets.INDIEWIRE_COOKIES }}
+          EW_COOKIES: ${{ secrets.EW_COOKIES }}
+          THEATERMANIA_COOKIES: ${{ secrets.THEATERMANIA_COOKIES }}
+          HUFFPOST_COOKIES: ${{ secrets.HUFFPOST_COOKIES }}
+          USATODAY_COOKIES: ${{ secrets.USATODAY_COOKIES }}
+          NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
+          BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
+          THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
+          TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
+          BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
+          AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
+          FRONTMEZZJUNKIES_COOKIES: ${{ secrets.FRONTMEZZJUNKIES_COOKIES }}
+          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
+          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
+          STANDARD_COOKIES: ${{ secrets.STANDARD_COOKIES }}
+          INDEPENDENT_COOKIES: ${{ secrets.INDEPENDENT_COOKIES }}
+          CHICAGOTRIBUNE_COOKIES: ${{ secrets.CHICAGOTRIBUNE_COOKIES }}
+          THEWRAP_COOKIES: ${{ secrets.THEWRAP_COOKIES }}
+          NBCNEWYORK_COOKIES: ${{ secrets.NBCNEWYORK_COOKIES }}
+          NEWSDAY_COOKIES: ${{ secrets.NEWSDAY_COOKIES }}
+        run: node scripts/check-cookie-health.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Cookie Health Check Failed'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
