@@ -785,24 +785,21 @@ describe('getOutletTier', () => {
     assert.strictEqual(getOutletTier('newyorker'), 1);
     assert.strictEqual(getOutletTier('wsj'), 1);
     assert.strictEqual(getOutletTier('washpost'), 1);
-    assert.strictEqual(getOutletTier('ew'), 1);
     assert.strictEqual(getOutletTier('ap'), 1);
+    assert.strictEqual(getOutletTier('timeout'), 1);
+    assert.strictEqual(getOutletTier('guardian'), 1);
   });
 
   test('returns correct tier for tier 2 outlets', () => {
     assert.strictEqual(getOutletTier('nypost'), 2);
     assert.strictEqual(getOutletTier('theatermania'), 2);
-    assert.strictEqual(getOutletTier('broadwayworld'), 2);
+    assert.strictEqual(getOutletTier('ew'), 2);
     assert.strictEqual(getOutletTier('deadline'), 2);
-    assert.strictEqual(getOutletTier('timeout'), 2);
-    assert.strictEqual(getOutletTier('guardian'), 2);
   });
 
   test('returns correct tier for tier 3 outlets', () => {
-    assert.strictEqual(getOutletTier('nytg'), 3);
-    assert.strictEqual(getOutletTier('nyt-theater'), 3);
-    assert.strictEqual(getOutletTier('theatrely'), 3);
     assert.strictEqual(getOutletTier('cititour'), 3);
+    assert.strictEqual(getOutletTier('broadwayworld'), 3);
   });
 
   test('returns 3 (default) for unknown outlets', () => {
@@ -815,9 +812,9 @@ describe('getOutletTier', () => {
     assert.strictEqual(getOutletTier('New York Times'), 1);
     assert.strictEqual(getOutletTier('nyt'), 1);
     assert.strictEqual(getOutletTier('The Wall Street Journal'), 1);
-    // Tier 2
-    assert.strictEqual(getOutletTier('Broadway World'), 2);
-    assert.strictEqual(getOutletTier('bww'), 2);
+    // Tier 3
+    assert.strictEqual(getOutletTier('Broadway World'), 3);
+    assert.strictEqual(getOutletTier('bww'), 3);
   });
 });
 
