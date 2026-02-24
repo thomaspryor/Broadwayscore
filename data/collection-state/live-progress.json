@@ -1,36 +1,58 @@
 {
-  "updatedAt": "2026-02-24T23:18:32.356Z",
-  "processed": 44,
-  "failed": 76,
-  "successRate": "36.7%",
+  "updatedAt": "2026-02-24T23:20:29.287Z",
+  "processed": 37,
+  "failed": 23,
+  "successRate": "61.7%",
   "tierBreakdown": {
-    "playwright": 30,
-    "amp": 0,
+    "playwright": 23,
+    "amp": 2,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 5,
+    "directCookies": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 8
+    "archiveToday": 6,
+    "archive": 14
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-24T23:05:08.599Z",
+      "t": "2026-02-24T22:36:37.859Z",
       "event": "bb-session",
-      "session": "6fd66c98",
-      "url": "https://bloomberg.com/magazine/businessweek/17_27#:~:text=By%20Bloomberg%20News,"
+      "session": "da72f228",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
     },
     {
-      "t": "2026-02-24T23:05:09.704Z",
+      "t": "2026-02-24T22:36:39.502Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-02-24T23:16:59.182Z",
+      "t": "2026-02-24T22:47:39.479Z",
       "event": "bb-session",
-      "session": "fd34a1e1",
-      "url": "http://www.thewrap.com/cabaret-theater-review"
+      "session": "ad221af3",
+      "url": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_97186.html"
+    },
+    {
+      "t": "2026-02-24T22:47:40.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-24T22:52:31.780Z",
+      "event": "bb-session",
+      "session": "98c91a92",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-02-24T22:52:33.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T23:10:28.290Z",
+      "event": "bb-session",
+      "session": "27172b5d",
+      "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-"
     }
   ]
 }
