@@ -9,7 +9,7 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SimplifiedLLMResult, Bucket } from './types';
-import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, clampScoreToBucket, GEMINI_CALIBRATION_OFFSET } from './config';
+import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, GEMINI_CALIBRATION_OFFSET } from './config';
 
 // ========================================
 // TYPES
@@ -207,7 +207,7 @@ export class GeminiScorer {
     score = score + GEMINI_CALIBRATION_OFFSET;
 
     // Clamp to bucket range
-    score = clampScoreToBucket(score, bucket);
+    score = Math.max(0, Math.min(100, score));
 
     // Validate confidence
     const validConfidences = ['high', 'medium', 'low'];
@@ -236,7 +236,7 @@ export class GeminiScorer {
     if (bucketMatch && scoreMatch) {
       const bucket = bucketMatch[1] as Bucket;
       let score = parseInt(scoreMatch[1]) + GEMINI_CALIBRATION_OFFSET;
-      score = clampScoreToBucket(score, bucket);
+      score = Math.max(0, Math.min(100, score));
 
       return {
         bucket,
