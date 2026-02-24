@@ -111,6 +111,7 @@ When fixing an issue, also fix it **at the pipeline/automation level** so it nev
 ### Scoring
 Composite = tier-weighted average. **T1** (NYT, Vulture, Variety): 1.0 | **T2** (TheaterMania, NY Post): 0.75 | **T3** (blogs): 0.45
 Hierarchy: P0→P0.5→P0b→P1(LLM)→P2(aggregator)→P3(LLM low). Config: `src/config/scoring.ts`.
+**Score display rule:** `compositeScore` = critic-only (use on browse, best-of, homepage). `blendedScore` = 50/50 critic + audience (use on Tony predictions and anywhere the page says "blended"). Always use `blendedScore ?? compositeScore` as fallback.
 
 ### Data Structure
 `data/` — `shows.json` (source of truth), `reviews.json` (derived via rebuild), `review-texts/{show-id}/` (private repo §7a), grosses/commercial/audience-buzz/critic-consensus/critic-registry JSON files.
