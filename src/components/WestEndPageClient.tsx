@@ -554,22 +554,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       {/* Type Pills & Score Mode Toggle Row */}
       <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
-        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
-          {(['all', 'musical', 'play'] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => updateParams({ type: t })}
-              aria-pressed={type === t}
-              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
-                type === t
-                  ? 'bg-brand text-gray-900 shadow-glow-sm'
-                  : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
-              }`}
-            >
-              {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
-            </button>
-          ))}
-        </div>
+        <ToggleBar
+          variant="pill"
+          options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
+          value={type}
+          onChange={(t) => updateParams({ type: t })}
+          ariaLabel="Filter by type"
+        />
 
         <ScoreToggle
           value={scoreMode}
