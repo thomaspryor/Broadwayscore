@@ -493,7 +493,11 @@
     "cold-war-choir-practice-2026/theatermania--unknown.json",
     "data-2026/la-voce-di-new-york--elise-nussbaum.json",
     "data-2026/theatermania--zachary-stewart.json",
-    "dirty-books-2025/theatermania--unknown.json"
+    "dirty-books-2025/theatermania--unknown.json",
+    "drunk-romeo-and-juliet-2025/theatermania--unknown.json",
+    "drunk-shakespeare-2022/theatermania--unknown.json",
+    "gobstopper-2026/theatermania--unknown.json",
+    "hadestown-2019/timeout--adam-feldman.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1442,7 +1446,13 @@
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "dirty-books-2025/broadwaynews--unknown.json",
     "dracula-west-end-2025/the-guardian-uk--arifa-akbar.json",
-    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json"
+    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1511,7 +1521,11 @@
       "cold-war-choir-practice-2026/theatermania--unknown.json",
       "data-2026/la-voce-di-new-york--elise-nussbaum.json",
       "data-2026/theatermania--zachary-stewart.json",
-      "dirty-books-2025/theatermania--unknown.json"
+      "dirty-books-2025/theatermania--unknown.json",
+      "drunk-romeo-and-juliet-2025/theatermania--unknown.json",
+      "drunk-shakespeare-2022/theatermania--unknown.json",
+      "gobstopper-2026/theatermania--unknown.json",
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -2463,7 +2477,12 @@
       "data/review-texts/blackout-songs-2026/new-york-sun--elysa-gardner.json",
       "data/review-texts/bloodlove-2026/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/wsj--terry-teachout.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2612,7 +2631,7 @@
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+  "lastProcessed": "hadestown-2019/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2782,6 +2801,28 @@
     },
     {
       "t": "2026-02-24T02:58:34.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T03:09:37.948Z",
+      "event": "bb-session",
+      "session": "703f003c",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-24T03:09:39.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-24T03:11:38.398Z",
+      "event": "bb-session",
+      "session": "42874986",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-24T03:11:40.531Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
