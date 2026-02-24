@@ -28,6 +28,7 @@ import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
+import HowThisWorks from '@/components/HowThisWorks';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
@@ -585,7 +586,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Section Jump Links */}
         <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
-          <a href="#critic-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Reviews</a>
+          {show.criticScore && show.criticScore.reviews.length > 0 && (
+            <a href="#critic-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Reviews</a>
+          )}
           {audienceBuzz && audienceBuzz.combinedScore != null && (
             <a href="#audience" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Audience</a>
           )}
@@ -594,6 +597,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           )}
           {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
             <a href="#box-office" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>
+          )}
+          {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (
+            <a href="#discount-tickets" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Tickets</a>
+          )}
+          {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (
+            <a href="#creative-team" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Creative</a>
           )}
           {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
             <a href="#cast" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Cast</a>
@@ -879,24 +888,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
 
         {/* How Scores Work */}
-        <details className="group mt-6 rounded-xl border border-white/5 bg-surface-overlay">
-          <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none flex items-center justify-between">
-            How This Score Works
-            <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </summary>
-          <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-gray-400 leading-relaxed">
-            <p>
-              The CriticScore is a weighted average of professional critic reviews.
-              Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.
-              Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
-            </p>
-            <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
-              Full scoring methodology &rarr;
-            </Link>
-          </div>
-        </details>
+        <HowThisWorks heading="How This Score Works" className="mt-6">
+          <p>
+            The CriticScore is a weighted average of professional critic reviews.
+            Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.
+            Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
+          </p>
+        </HowThisWorks>
       </div>
 
       {/* Follow Show Banner */}
