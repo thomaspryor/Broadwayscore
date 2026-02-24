@@ -1,58 +1,41 @@
 {
-  "updatedAt": "2026-02-24T23:20:29.287Z",
-  "processed": 37,
-  "failed": 23,
-  "successRate": "61.7%",
+  "updatedAt": "2026-02-24T23:23:52.755Z",
+  "processed": 23,
+  "failed": 37,
+  "successRate": "38.3%",
   "tierBreakdown": {
-    "playwright": 23,
-    "amp": 2,
-    "browserbase": 0,
-    "directCookies": 2,
+    "playwright": 18,
+    "amp": 1,
+    "browserbase": 1,
+    "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 14
+    "archiveToday": 11,
+    "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-24T22:36:37.859Z",
+      "t": "2026-02-24T22:35:58.696Z",
       "event": "bb-session",
-      "session": "da72f228",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+      "session": "cfa09c16",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
     },
     {
-      "t": "2026-02-24T22:36:39.502Z",
+      "t": "2026-02-24T22:35:59.949Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-24T22:47:39.479Z",
+      "t": "2026-02-24T22:54:49.973Z",
       "event": "bb-session",
-      "session": "ad221af3",
-      "url": "https://www.theatermania.com/broadway/reviews/maybe-happy-ending_97186.html"
+      "session": "3cd7a7c1",
+      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
     },
     {
-      "t": "2026-02-24T22:47:40.985Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-02-24T22:52:31.780Z",
-      "event": "bb-session",
-      "session": "98c91a92",
-      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
-    },
-    {
-      "t": "2026-02-24T22:52:33.335Z",
+      "t": "2026-02-24T22:54:53.407Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-24T23:10:28.290Z",
-      "event": "bb-session",
-      "session": "27172b5d",
-      "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-"
     }
   ]
 }
