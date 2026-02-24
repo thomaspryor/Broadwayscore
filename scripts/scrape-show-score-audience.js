@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { JSDOM } = require('jsdom');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
 
 // Parse command line args
@@ -430,6 +431,143 @@ function extractAudienceData(html, showId) {
 }
 
 /**
+ * Extract metadata (runtime, synopsis) from Show Score HTML via JSDOM.
+ * Returns { runtime: string|null, synopsis: string|null }.
+ */
+function extractMetadata(html) {
+  const result = { runtime: null, synopsis: null };
+
+  try {
+    const dom = new JSDOM(html);
+    const doc = dom.window.document;
+
+    // ── Runtime extraction ──
+    // Show Score displays "1h 40m" or "2h" in the show header area.
+    // Uses non-word-boundary pattern to handle concatenated text from SPA spans.
+    // Negative lookahead excludes "Xh ago" timestamps.
+    const runtimePattern = /(?:^|[^a-zA-Z])(\d{1,2})\s*h(?:r?s?)?\s*(?:(\d{1,2})\s*m(?:in)?)?(?!\s*ago)/i;
+    const runtimePatternMinOnly = /(?:^|[^a-zA-Z])(\d{2,3})\s*min(?:ute)?s?/i;
+
+    function parseRuntime(text) {
+      const match = text.match(runtimePattern);
+      if (match) {
+        const hours = parseInt(match[1]);
+        const mins = match[2] ? parseInt(match[2]) : 0;
+        if (hours >= 1 && hours <= 5 && mins >= 0 && mins < 60) {
+          return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+        }
+      }
+      const minMatch = text.match(runtimePatternMinOnly);
+      if (minMatch) {
+        const totalMins = parseInt(minMatch[1]);
+        if (totalMins >= 30 && totalMins <= 300) {
+          const h = Math.floor(totalMins / 60);
+          const m = totalMins % 60;
+          return h > 0 ? (m > 0 ? `${h}h ${m}m` : `${h}h`) : `${totalMins}m`;
+        }
+      }
+      return null;
+    }
+
+    // Check individual child spans in header elements (handles SPA-rendered spans)
+    const headerCandidates = doc.querySelectorAll('h1, h2, [class*="detail"], [class*="header"], [class*="info"], [class*="show"], [class*="meta"]');
+    for (const el of headerCandidates) {
+      for (const child of el.querySelectorAll('span, div, p, a, li')) {
+        const childText = child.textContent || '';
+        if (childText.length > 2 && childText.length < 30) {
+          const rt = parseRuntime(childText);
+          if (rt) { result.runtime = rt; break; }
+        }
+      }
+      if (result.runtime) break;
+      const text = el.textContent || '';
+      const rt = parseRuntime(text);
+      if (rt) { result.runtime = rt; break; }
+    }
+
+    // Fallback: scan first 5000 chars of body text
+    if (!result.runtime) {
+      const bodyText = (doc.body?.textContent || '').slice(0, 5000);
+      result.runtime = parseRuntime(bodyText);
+    }
+
+    // ── Synopsis extraction ──
+    // Show Score structure: <div class="about-header"><h2>About the Show</h2></div>
+    // followed by <div class="about"><p>...</p></div> (sibling of heading's parent).
+    const headings = doc.querySelectorAll('h2, h3');
+    for (const heading of headings) {
+      const headingText = (heading.textContent || '').trim().toLowerCase();
+      if (headingText === 'about the show' || headingText === 'about this show') {
+        const container = heading.parentElement;
+
+        // Strategy 1: paragraphs in the heading's own parent
+        if (container) {
+          const paragraphs = container.querySelectorAll('p');
+          const texts = Array.from(paragraphs)
+            .map(p => (p.textContent || '').trim())
+            .filter(t => t.length > 10);
+          if (texts.length > 0) {
+            let synopsis = texts.join(' ').trim();
+            if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
+            result.synopsis = synopsis;
+            break;
+          }
+        }
+
+        // Strategy 2: heading's parent's next siblings (Show Score's actual pattern)
+        if (!result.synopsis && container) {
+          let parentSibling = container.nextElementSibling;
+          let checked = 0;
+          while (parentSibling && !result.synopsis && checked < 3) {
+            const paragraphs = parentSibling.querySelectorAll('p');
+            const texts = Array.from(paragraphs)
+              .map(p => (p.textContent || '').trim())
+              .filter(t => t.length > 10);
+            if (texts.length > 0) {
+              let synopsis = texts.join(' ').trim();
+              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
+              result.synopsis = synopsis;
+              break;
+            }
+            const sibText = (parentSibling.textContent || '').trim();
+            if (sibText.length > 20) {
+              let synopsis = sibText;
+              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
+              result.synopsis = synopsis;
+              break;
+            }
+            parentSibling = parentSibling.nextElementSibling;
+            checked++;
+          }
+        }
+
+        // Strategy 3: heading's own next siblings (generic fallback)
+        if (!result.synopsis) {
+          let sibling = heading.nextElementSibling;
+          while (sibling && !result.synopsis) {
+            const text = (sibling.textContent || '').trim();
+            if (text.length > 20) {
+              let synopsis = text;
+              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
+              result.synopsis = synopsis;
+            }
+            sibling = sibling.nextElementSibling;
+            if (sibling && sibling.tagName && /^H[1-6]$/.test(sibling.tagName)) break;
+          }
+        }
+        break;
+      }
+    }
+
+    dom.window.close();
+  } catch (e) {
+    if (verbose) console.log(`  Metadata extraction error: ${e.message}`);
+  }
+
+  return result;
+}
+
+/**
  * Get cached Show Score URL for a show (cache-only, no discovery)
  */
 function getCachedUrl(showId) {
@@ -494,17 +632,24 @@ async function processShow(show) {
     }
 
     const data = extractAudienceData(html, show.id);
+    const metadata = extractMetadata(html);
 
-    if (!data.score) {
-      console.log(`  SKIP: Could not extract audience score`);
+    if (metadata.runtime) console.log(`  Runtime: ${metadata.runtime}`);
+    if (metadata.synopsis) console.log(`  Synopsis: ${metadata.synopsis.slice(0, 80)}...`);
+
+    if (!data.score && !metadata.runtime && !metadata.synopsis) {
+      console.log(`  SKIP: No audience score or metadata found`);
       return null;
     }
 
-    console.log(`  Score: ${data.score}%, Reviews: ${data.reviewCount || 'unknown'}`);
+    if (data.score) {
+      console.log(`  Score: ${data.score}%, Reviews: ${data.reviewCount || 'unknown'}`);
+    }
 
     return {
       score: data.score,
       reviewCount: data.reviewCount || 0,
+      metadata,
     };
 
   } catch (error) {
@@ -716,6 +861,7 @@ async function main() {
 
   let processed = 0;
   let successful = 0;
+  let metadataEnriched = 0;
   const scoreDrops = [];
 
   for (const show of showsWithUrls) {
@@ -730,8 +876,26 @@ async function main() {
         }
 
         if (!dryRun) {
-          updateAudienceBuzz(show.id, show.title, data);
+          if (data.score) {
+            updateAudienceBuzz(show.id, show.title, data);
+          }
           successful++;
+
+          // ── Metadata enrichment: fill missing runtime/synopsis in shows.json ──
+          if (data.metadata) {
+            let enriched = false;
+            if (data.metadata.runtime && !show.runtime) {
+              show.runtime = data.metadata.runtime;
+              enriched = true;
+              console.log(`  ✓ Enriched runtime: ${data.metadata.runtime}`);
+            }
+            if (data.metadata.synopsis && !show.synopsis) {
+              show.synopsis = data.metadata.synopsis;
+              enriched = true;
+              console.log(`  ✓ Enriched synopsis (${data.metadata.synopsis.length} chars)`);
+            }
+            if (enriched) metadataEnriched++;
+          }
 
           // Save incrementally after each successful show
           audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
@@ -751,6 +915,11 @@ async function main() {
           console.log(`  ✓ Saved (${successful}/${showsWithUrls.length})`);
         } else {
           successful++;
+          // Log metadata findings in dry-run mode
+          if (data.metadata) {
+            if (data.metadata.runtime && !show.runtime) console.log(`  [dry-run] Would enrich runtime: ${data.metadata.runtime}`);
+            if (data.metadata.synopsis && !show.synopsis) console.log(`  [dry-run] Would enrich synopsis (${data.metadata.synopsis.length} chars)`);
+          }
         }
       } else if (previousScores[show.id] != null) {
         scoreDrops.push(show.id);
@@ -788,7 +957,14 @@ async function main() {
     console.log(`\nShard ${shard} output: ${Object.keys(shardOutput.scores).length} scores, ${Object.keys(shardOutput.discoveredUrls).length} URLs`);
   }
 
+  // ── Save shows.json if metadata was enriched ──
+  if (metadataEnriched > 0 && !dryRun) {
+    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2) + '\n');
+    console.log(`\nshows.json updated with ${metadataEnriched} metadata enrichments.`);
+  }
+
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Show Score data.`);
+  if (metadataEnriched > 0) console.log(`  Metadata enriched: ${metadataEnriched} shows (runtime/synopsis)`);
   console.log(`  Cached URLs: ${Object.keys(urlData.shows || {}).length}`);
   console.log(`  Uncached shows: ${uncachedShows.length}`);
 }
