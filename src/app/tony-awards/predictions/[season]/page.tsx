@@ -14,6 +14,7 @@ import {
   getEligibleShowsForPastSeason,
   groupIntoCategories,
   getSeasonOutcomes,
+  hasNominationsBeenAnnounced,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -65,7 +66,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const eligible = isCurrent
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
-  const categories = groupIntoCategories(eligible);
+  const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  const categories = groupIntoCategories(eligible,
+    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+  );
   const outcomes = getSeasonOutcomes(allShows, season);
 
   const totalScored = categories.reduce((sum, cat) => sum + cat.shows.length, 0);
@@ -141,9 +145,11 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             />
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            {isCurrent
-              ? 'Data-driven predictions powered by blended critic scores and audience grades. Every Tony-eligible show ranked by combined consensus.'
-              : `How blended critic + audience scores predicted the ${season.ceremonyYear} Tony Awards.`}
+            {nominationsAnnounced
+              ? 'Tony nominees ranked by blended critic + audience scores. Who will win?'
+              : isCurrent
+                ? 'Data-driven predictions powered by blended critic scores and audience grades. Every Tony-eligible show ranked by combined consensus.'
+                : `How blended critic + audience scores predicted the ${season.ceremonyYear} Tony Awards.`}
           </p>
           <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
             <span>{eligible.length} eligible shows</span>
@@ -170,8 +176,17 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </div>
         )}
 
-        {/* How This Works (current season only) */}
-        {isCurrent && (
+        {/* Post-Nomination Banner */}
+        {nominationsAnnounced && (
+          <div className="mb-8 p-4 sm:p-5 rounded-xl border border-brand/20 bg-brand/5">
+            <p className="text-sm text-gray-300">
+              <span className="text-brand font-semibold">Nominations announced</span> &mdash; showing only nominees, ranked by blended score to predict winners.
+            </p>
+          </div>
+        )}
+
+        {/* How This Works (current season only, pre-noms) */}
+        {isCurrent && !nominationsAnnounced && (
           <details className="mb-10 rounded-xl border border-white/5 bg-surface-overlay">
             <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none">
               How This Works

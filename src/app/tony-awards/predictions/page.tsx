@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { ScoreBadge } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -11,6 +13,7 @@ import {
   groupIntoCategories,
   computeBlendedAccuracyStats,
   getSeasonSummary,
+  hasNominationsBeenAnnounced,
 } from '@/lib/data-tony-predictions';
 
 const currentSeason = getTonySeasonWindow();
@@ -44,18 +47,22 @@ export default function TonyPredictionsOverviewPage() {
   const seasons = getAllPredictionSeasons();
   const stats = computeBlendedAccuracyStats(allShows);
 
-  // Current season data for the callout card
+  // Current season data — nomination-aware
   const currentEligible = getEligibleShows(allShows, currentSeason);
-  const currentCategories = groupIntoCategories(currentEligible);
-  const currentScored = currentCategories.reduce((sum, cat) => sum + cat.shows.length, 0);
-  const categoryTeasers = currentCategories
+  const nominationsAnnounced = hasNominationsBeenAnnounced(currentSeason);
+  const currentCategories = groupIntoCategories(currentEligible,
+    nominationsAnnounced ? { nomineesOnly: true, season: currentSeason } : undefined
+  );
+
+  // Build picks data: #1 show per category with thumbnail
+  const picks = currentCategories
     .filter(cat => cat.shows.length > 0)
     .map(cat => ({
       label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
-      showTitle: cat.shows[0].title,
-      score: cat.shows[0].blendedScore,
-      criticScore: cat.shows[0].compositeScore,
-      audienceGrade: cat.shows[0].audienceGrade?.grade ?? null,
+      fullTitle: cat.title,
+      show: cat.shows[0],
+      runnerUp: cat.shows.length > 1 ? cat.shows[1] : null,
+      totalInCategory: cat.shows.length + cat.upcoming.length,
     }));
 
   // Season summaries for the grid
@@ -102,148 +109,190 @@ export default function TonyPredictionsOverviewPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
-            {seasons.length} seasons of data-driven Tony predictions. Every eligible show ranked by blended critic + audience scores.
+            {nominationsAnnounced
+              ? `${currentSeason.label} nominees ranked by blended critic + audience scores. Who will win?`
+              : `${seasons.length} seasons of data-driven Tony predictions. Every eligible show ranked by blended critic + audience scores.`}
           </p>
         </div>
 
-        {/* Current Season Callout */}
-        {currentEligible.length > 0 && (
-          <Link
-            href={`/tony-awards/predictions/${currentSeason.label}`}
-            className="block mb-10 p-4 sm:p-5 rounded-xl border border-brand/20 bg-brand/5 hover:bg-brand/10 transition-colors group"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{currentSeason.label} Predictions</h2>
-                <span className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 bg-brand/20 text-brand rounded">Current</span>
-              </div>
-              <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+        {/* Current Season Picks — Prominent */}
+        {picks.length > 0 && (
+          <section className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">
+                {currentSeason.label} {nominationsAnnounced ? 'Winner Predictions' : 'Predictions'}
+              </h2>
+              <Link
+                href={`/tony-awards/predictions/${currentSeason.label}`}
+                className="text-sm text-brand hover:text-brand-hover transition-colors"
+              >
+                See all categories &rarr;
+              </Link>
             </div>
-            <p className="text-sm text-gray-400 mb-3">
-              {currentEligible.length} eligible shows &middot; {currentScored} reviewed
-            </p>
-            {categoryTeasers.length > 0 && (
-              <div className="space-y-1.5">
-                {categoryTeasers.slice(0, 4).map(t => (
-                  <div key={t.label} className="flex items-center text-sm gap-2">
-                    <span className="text-gray-500 w-28 flex-shrink-0">{t.label}</span>
-                    <span className="text-white font-medium truncate flex-1 min-w-0">{t.showTitle}</span>
-                    {t.score !== null && (
-                      <span className="text-gray-500 flex-shrink-0 text-xs text-right">
-                        <span className="text-brand font-medium">{t.score}</span>
-                        {t.criticScore != null && t.audienceGrade && (
-                          <span className="ml-1 text-gray-600">C:{t.criticScore} / A:{t.audienceGrade}</span>
-                        )}
-                      </span>
-                    )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {picks.map(pick => (
+                <Link
+                  key={pick.label}
+                  href={`/tony-awards/predictions/${currentSeason.label}`}
+                  className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group"
+                >
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{pick.label}</p>
+                  <div className="flex items-center gap-3">
+                    {/* Thumbnail */}
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+                      {pick.show.thumbnailPath ? (
+                        <img
+                          src={getOptimizedImageUrl(pick.show.thumbnailPath, 'thumbnail')}
+                          alt={pick.show.title}
+                          className="w-full h-full object-cover"
+                          width={64}
+                          height={64}
+                          loading="eager"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-xl">🎭</div>
+                      )}
+                    </div>
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-bold text-white truncate group-hover:text-brand transition-colors">
+                        {pick.show.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {pick.show.venue}
+                      </p>
+                    </div>
+                    {/* Score */}
+                    <div className="flex-shrink-0">
+                      <ScoreBadge
+                        score={pick.show.blendedScore}
+                        size="lg"
+                        reviewCount={pick.show.reviewCount}
+                        status={pick.show.status}
+                      />
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
-            <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
-              See full predictions &rarr;
-            </p>
-          </Link>
-        )}
-
-        {/* Accuracy Stats Section */}
-        <section className="mb-10">
-          <h2 className="text-xl font-bold text-white mb-2">How Accurate Are Our Predictions?</h2>
-          <p className="text-sm text-gray-400 mb-5">
-            Blended critic + audience scores across {stats.categorySeasonCount} category-seasons over {stats.seasonCount} Tony ceremonies.
-          </p>
-
-          {/* Hero stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            {[
-              { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
-              { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
-              { stat: `+${stats.improvement}pts`, label: 'Improvement from audience' },
-              { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
-            ].map(({ stat, label }) => (
-              <div key={label} className="rounded-xl border border-white/5 bg-surface-overlay p-3 sm:p-4 text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-brand">{stat}</div>
-                <div className="text-xs text-gray-400 mt-1">{label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Field size insight */}
-          <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5 mb-5">
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Field Size Changes Everything</h3>
-            <div className="space-y-2.5">
-              {stats.fieldSizeData.filter(d => d.count >= 2).map(({ label, pct, note, count }) => (
-                <div key={label} className="flex items-center gap-3">
-                  <span className="text-sm text-gray-300 w-28 sm:w-32 flex-shrink-0">{label}</span>
-                  <div className="flex-1 h-5 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-brand/70"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-semibold text-white w-10 text-right">{pct}%</span>
-                  <span className="text-xs text-gray-500 hidden sm:inline w-24">{note} ({count})</span>
-                </div>
+                  {pick.runnerUp && (
+                    <p className="text-xs text-gray-500 mt-2.5 truncate">
+                      Runner-up: <span className="text-gray-400">{pick.runnerUp.title}</span>
+                      {pick.runnerUp.blendedScore != null && (
+                        <span className="text-gray-600 ml-1">({Math.round(pick.runnerUp.blendedScore)})</span>
+                      )}
+                    </p>
+                  )}
+                </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Accuracy One-Liner + Expandable Details */}
+        <section className="mb-10">
+          <div className="flex items-baseline gap-2 mb-3">
+            <p className="text-sm text-gray-300">
+              Our #1 pick wins the Tony <span className="text-brand font-bold">{stats.blendedRank1WinPct}%</span> of the time &mdash; across {stats.seasonCount} seasons and {stats.categorySeasonCount} category-seasons.
+            </p>
           </div>
 
-          {/* Category breakdown + New vs Revival */}
-          <div className="grid sm:grid-cols-2 gap-3 mb-5">
-            <div className="rounded-xl border border-white/5 bg-surface-overlay p-4">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h3>
-              <div className="space-y-2">
-                {stats.byCategory.map(({ category, pct }) => (
-                  <div key={category} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">{category}</span>
-                    <span className={`text-sm font-bold ${pct >= 80 ? 'text-emerald-400' : pct >= 65 ? 'text-blue-400' : 'text-gray-400'}`}>{pct}%</span>
+          <details className="rounded-xl border border-white/5 bg-surface-overlay">
+            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-gray-400 hover:text-white transition-colors list-none flex items-center justify-between">
+              <span>Accuracy breakdown</span>
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div className="px-4 sm:px-5 pb-4 sm:pb-5 space-y-5">
+              {/* Hero stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
+                  { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
+                  { stat: `+${stats.improvement}pts`, label: 'Improvement from audience' },
+                  { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
+                ].map(({ stat, label }) => (
+                  <div key={label} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-center">
+                    <div className="text-xl font-bold text-brand">{stat}</div>
+                    <div className="text-xs text-gray-400 mt-1">{label}</div>
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="rounded-xl border border-white/5 bg-surface-overlay p-4">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">New Works vs. Revivals</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">New works</span>
-                  <span className={`text-sm font-bold ${stats.newWorksAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.newWorksAccuracy}%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">Revivals</span>
-                  <span className={`text-sm font-bold ${stats.revivalsAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.revivalsAccuracy}%</span>
-                </div>
-              </div>
-              <p className="text-xs text-gray-500 mt-3">
-                Revivals carry nostalgia, star power, and cultural-moment factors that blended scores don&apos;t fully capture.
-              </p>
-            </div>
-          </div>
 
-          {/* Upsets */}
-          {stats.upsets.length > 0 && (
-            <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
-              <p className="text-xs text-gray-500 mb-3">
-                Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among nominees by blended score.
-              </p>
-              <div className="space-y-2">
-                {stats.upsets.map((upset, i) => (
-                  <div key={`${upset.season}-${upset.category}`} className={`flex items-center justify-between py-1.5 ${i < stats.upsets.length - 1 ? 'border-b border-white/5' : ''}`}>
-                    <div>
-                      <span className="text-sm text-white font-medium">{upset.winner}</span>
-                      <span className="text-xs text-gray-500 ml-2">{upset.category} {upset.season}</span>
+              {/* Field size insight */}
+              <div>
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Field Size Changes Everything</h3>
+                <div className="space-y-2.5">
+                  {stats.fieldSizeData.filter(d => d.count >= 2).map(({ label, pct, note, count }) => (
+                    <div key={label} className="flex items-center gap-3">
+                      <span className="text-sm text-gray-300 w-28 sm:w-32 flex-shrink-0">{label}</span>
+                      <div className="flex-1 h-5 bg-white/5 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-brand/70"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="text-sm font-semibold text-white w-10 text-right">{pct}%</span>
+                      <span className="text-xs text-gray-500 hidden sm:inline w-24">{note} ({count})</span>
                     </div>
-                    <span className="text-sm text-amber-400 font-semibold">Ranked #{upset.rank}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                Every other &ldquo;upset&rdquo; was the #2 blended score edging out #1.
-              </p>
+
+              {/* Category breakdown + New vs Revival */}
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="rounded-lg border border-white/5 bg-white/[0.02] p-4">
+                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h3>
+                  <div className="space-y-2">
+                    {stats.byCategory.map(({ category, pct }) => (
+                      <div key={category} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-300">{category}</span>
+                        <span className={`text-sm font-bold ${pct >= 80 ? 'text-emerald-400' : pct >= 65 ? 'text-blue-400' : 'text-gray-400'}`}>{pct}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-lg border border-white/5 bg-white/[0.02] p-4">
+                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">New Works vs. Revivals</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">New works</span>
+                      <span className={`text-sm font-bold ${stats.newWorksAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.newWorksAccuracy}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">Revivals</span>
+                      <span className={`text-sm font-bold ${stats.revivalsAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.revivalsAccuracy}%</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3">
+                    Revivals carry nostalgia, star power, and cultural-moment factors that blended scores don&apos;t fully capture.
+                  </p>
+                </div>
+              </div>
+
+              {/* Upsets */}
+              {stats.upsets.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among nominees by blended score.
+                  </p>
+                  <div className="space-y-2">
+                    {stats.upsets.map((upset, i) => (
+                      <div key={`${upset.season}-${upset.category}`} className={`flex items-center justify-between py-1.5 ${i < stats.upsets.length - 1 ? 'border-b border-white/5' : ''}`}>
+                        <div>
+                          <span className="text-sm text-white font-medium">{upset.winner}</span>
+                          <span className="text-xs text-gray-500 ml-2">{upset.category} {upset.season}</span>
+                        </div>
+                        <span className="text-sm text-amber-400 font-semibold">Ranked #{upset.rank}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3">
+                    Every other &ldquo;upset&rdquo; was the #2 blended score edging out #1.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </details>
         </section>
 
         {/* Season Grid */}
