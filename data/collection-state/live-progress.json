@@ -1,41 +1,49 @@
 {
-  "updatedAt": "2026-02-24T23:23:52.755Z",
-  "processed": 23,
-  "failed": 37,
-  "successRate": "38.3%",
+  "updatedAt": "2026-02-24T23:28:41.367Z",
+  "processed": 45,
+  "failed": 85,
+  "successRate": "34.6%",
   "tierBreakdown": {
-    "playwright": 18,
-    "amp": 1,
-    "browserbase": 1,
+    "playwright": 28,
+    "amp": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 5
+    "archiveToday": 26,
+    "archive": 14
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-24T22:35:58.696Z",
+      "t": "2026-02-24T23:02:42.925Z",
       "event": "bb-session",
-      "session": "cfa09c16",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+      "session": "12c30b19",
+      "url": "http://www.thewrap.com/a-bronx-tale-broadway-review-chazz-palminteri-returns-to-"
     },
     {
-      "t": "2026-02-24T22:35:59.949Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-24T22:54:49.973Z",
+      "t": "2026-02-24T23:05:35.886Z",
       "event": "bb-session",
-      "session": "3cd7a7c1",
-      "url": "https://www.wsj.com/articles/les-miserables-review-the-more-things-change-115786"
+      "session": "fd8957f8",
+      "url": "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arth"
     },
     {
-      "t": "2026-02-24T22:54:53.407Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "t": "2026-02-24T23:17:32.009Z",
+      "event": "bb-session",
+      "session": "c80d304e",
+      "url": "https://www.thewrap.com/angels-in-america-broadway-review-andrew-garfield-nathan"
+    },
+    {
+      "t": "2026-02-24T23:21:16.160Z",
+      "event": "bb-session",
+      "session": "540ac49c",
+      "url": "https://www.thewrap.com/bad-cinderella-broadway-review-andrew-lloyd-webber-music"
+    },
+    {
+      "t": "2026-02-24T23:24:01.689Z",
+      "event": "bb-session",
+      "session": "ef5515d0",
+      "url": "https://www.thewrap.com/betrayal-daniel-craig-rachel-weisz"
     }
   ]
 }
