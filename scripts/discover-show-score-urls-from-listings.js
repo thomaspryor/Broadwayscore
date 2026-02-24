@@ -23,6 +23,10 @@ const https = require('https');
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const CANDIDATES_PATH = path.join(DATA_DIR, 'show-score-candidates.json');
+
+// Candidates older than this are pruned (show probably closed or was a one-off event)
+const CANDIDATE_TTL_DAYS = 90;
 
 const dryRun = process.argv.includes('--dry-run');
 const verbose = process.argv.includes('--verbose');
@@ -352,6 +356,7 @@ async function main() {
   let noMatch = 0;
   let urlConflict = 0;
   const discoveries = [];
+  const candidates = []; // Unmatched listings → potential new shows
   const assignedInThisRun = new Set(); // Prevent same show getting 2 URLs in one run
 
   function processListings(listings, category, label) {
@@ -371,6 +376,11 @@ async function main() {
       const match = findBestMatch(listing, category);
       if (!match) {
         noMatch++;
+        candidates.push({
+          title: displayTitle,
+          showScoreUrl: fullUrl,
+          category: category || 'broadway',
+        });
         if (verbose) console.log(`  [NO MATCH] ${displayTitle} (${listing.href})`);
         continue;
       }
@@ -398,11 +408,11 @@ async function main() {
   console.log('═══════════════════════════════════════');
   console.log(`New discoveries:  ${newDiscoveries}`);
   console.log(`Already cached:   ${alreadyCached}`);
-  console.log(`No match in DB:   ${noMatch}`);
+  console.log(`No match in DB:   ${noMatch} (→ candidates)`);
   console.log(`URL conflicts:    ${urlConflict}`);
   console.log('═══════════════════════════════════════\n');
 
-  // ── Write results ──
+  // ── Write URL results ──
   if (newDiscoveries > 0 && !dryRun) {
     for (const d of discoveries) {
       urlData.shows[d.showId] = d.url;
@@ -419,6 +429,62 @@ async function main() {
     }
   } else {
     console.log('No new URLs to write.');
+  }
+
+  // ── Write candidates file (unmatched listings for new show discovery) ──
+  if (candidates.length > 0) {
+    // Load existing candidates and merge
+    let existingCandidates = [];
+    try {
+      const existing = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
+      existingCandidates = existing.candidates || [];
+    } catch { /* file doesn't exist yet */ }
+
+    // Build URL set of current candidates for dedup
+    const currentUrls = new Set(candidates.map(c => c.showScoreUrl));
+
+    // Keep existing candidates that:
+    // 1. Aren't in the current batch (they weren't on listings this run — keep if not expired)
+    // 2. Haven't been matched to a show (URL not in urlData.shows values)
+    const matchedUrls = new Set(Object.values(urlData.shows));
+    const now = Date.now();
+    const ttlMs = CANDIDATE_TTL_DAYS * 24 * 60 * 60 * 1000;
+
+    const mergedCandidates = [];
+
+    // Add current run's candidates with fresh timestamp
+    for (const c of candidates) {
+      if (matchedUrls.has(c.showScoreUrl)) continue; // Already matched this run
+      mergedCandidates.push({
+        ...c,
+        discoveredAt: new Date().toISOString(),
+      });
+    }
+
+    // Carry over existing candidates not in this run and not expired/matched
+    for (const c of existingCandidates) {
+      if (currentUrls.has(c.showScoreUrl)) continue; // Replaced by fresh entry above
+      if (matchedUrls.has(c.showScoreUrl)) continue; // Matched since last run
+      const age = now - new Date(c.discoveredAt).getTime();
+      if (age > ttlMs) continue; // Expired (>90 days old)
+      mergedCandidates.push(c);
+    }
+
+    const candidatesData = {
+      _meta: {
+        lastUpdated: new Date().toISOString(),
+        totalCandidates: mergedCandidates.length,
+        ttlDays: CANDIDATE_TTL_DAYS,
+      },
+      candidates: mergedCandidates,
+    };
+
+    if (!dryRun) {
+      fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
+      console.log(`Wrote ${mergedCandidates.length} candidates to show-score-candidates.json (${candidates.length} new this run)`);
+    } else {
+      console.log(`[DRY RUN] Would write ${mergedCandidates.length} candidates (${candidates.length} new)`);
+    }
   }
 }
 

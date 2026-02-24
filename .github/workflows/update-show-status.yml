@@ -59,14 +59,20 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/update-show-status.js
 
-      # Step 2: Discover new Broadway + West End shows (unless skipped)
+      # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
+      - name: Discover ShowScore URLs and candidates
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/discover-show-score-urls-from-listings.js
+        continue-on-error: true
+
+      # Step 2b: Discover new Broadway + OB + WE shows (unless skipped)
       - name: Discover new shows
         id: discover
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end
+        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 
       # Step 3: Enrich new/incomplete shows with metadata from free APIs
       - name: Enrich shows with TodayTix runtimes
@@ -108,6 +114,8 @@ jobs:
           if [ -f data/new-shows-pending.json ]; then
             git add data/new-shows-pending.json
           fi
+          git add data/show-score-urls.json 2>/dev/null || true
+          git add data/show-score-candidates.json 2>/dev/null || true
 
           # Create appropriate commit message
           if [ "${{ steps.discover.outputs.new_shows_count }}" != "" ] && [ "${{ steps.discover.outputs.new_shows_count }}" != "0" ]; then
