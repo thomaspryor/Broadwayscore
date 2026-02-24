@@ -26,6 +26,11 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json')
 const dryRun = process.argv.includes('--dry-run');
 const includeOffBroadway = process.argv.includes('--include-off-broadway');
 const includeWestEnd = process.argv.includes('--include-west-end');
+const consumeShowScoreCandidates = process.argv.includes('--consume-show-score-candidates');
+const verbose = process.argv.includes('--verbose');
+
+const CANDIDATES_PATH = path.join(__dirname, '..', 'data', 'show-score-candidates.json');
+const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
@@ -291,6 +296,197 @@ async function fetchShowsFromTodayTixLondon() {
   return showsList;
 }
 
+// ── TodayTix search for ShowScore candidate validation ──
+
+function searchTodayTixByTitle(title, location = 1) {
+  const query = encodeURIComponent(title);
+  const url = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${location}`;
+  return new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        resolve(null);
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (!json.data || json.data.length === 0) { resolve(null); return; }
+
+          // Normalize for matching
+          const normTitle = title.toLowerCase()
+            .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+
+          // Exact match first
+          const exact = json.data.find(s => {
+            const n = (s.displayName || s.name || '').toLowerCase()
+              .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+            return n === normTitle;
+          });
+          if (exact) { resolve(exact); return; }
+
+          // Fuzzy: 60% word match
+          const ourWords = normTitle.split(' ').filter(w => w.length > 2);
+          for (const show of json.data) {
+            const apiName = (show.displayName || show.name || '').toLowerCase()
+              .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+            const matchCount = ourWords.filter(w => apiName.includes(w)).length;
+            if (matchCount >= Math.ceil(ourWords.length * 0.6)) {
+              resolve(show);
+              return;
+            }
+          }
+          resolve(null);
+        } catch { resolve(null); }
+      });
+      response.on('error', () => resolve(null));
+    }).on('error', () => resolve(null));
+  });
+}
+
+/**
+ * Load and validate ShowScore candidates, converting them into the same shape
+ * as TodayTix-discovered shows for the dedup pipeline.
+ *
+ * Tiered validation:
+ *   Tier 1: Found on TodayTix → full metadata + all filters
+ *   Tier 2: Not on TodayTix → title-based non-theater filter only (OB/WE shows often missing from TT)
+ */
+async function consumeShowScoreCandidatesFile() {
+  let candidatesData;
+  try {
+    candidatesData = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
+  } catch {
+    console.log('No ShowScore candidates file found, skipping');
+    return [];
+  }
+
+  const allCandidates = candidatesData.candidates || [];
+  if (allCandidates.length === 0) {
+    console.log('ShowScore candidates file is empty');
+    return [];
+  }
+
+  // Only consume OB and WE candidates (Broadway is well-covered by TodayTix)
+  const candidates = allCandidates.filter(c =>
+    c.category === 'off-broadway' || c.category === 'west-end'
+  );
+
+  if (candidates.length === 0) {
+    console.log('No OB/WE ShowScore candidates to process');
+    return [];
+  }
+
+  console.log(`Processing ${candidates.length} ShowScore candidates (${allCandidates.length - candidates.length} Broadway skipped)...`);
+
+  const validated = [];
+  let ttConfirmed = 0;
+  let ttMissing = 0;
+  let filteredNonTheater = 0;
+  let filteredOneNight = 0;
+
+  // West End-specific extra non-theater patterns
+  const WE_EXTRA_PATTERNS = [
+    'dining experience', 'candlelight', 'by candlelight',
+    'discovering dinosaurs', 'prehistoric planet',
+  ];
+
+  for (const candidate of candidates) {
+    const titleLower = candidate.title.toLowerCase();
+
+    // Gate 1: Title-based non-theater filter (always applied)
+    if (NON_THEATER_PATTERNS.some(pattern => titleLower.includes(pattern))) {
+      filteredNonTheater++;
+      if (verbose) console.log(`  [FILTERED] "${candidate.title}" — non-theater pattern`);
+      continue;
+    }
+    if (EXCLUDED_TITLES.some(excluded => titleLower.includes(excluded))) {
+      filteredNonTheater++;
+      if (verbose) console.log(`  [FILTERED] "${candidate.title}" — excluded title`);
+      continue;
+    }
+    // WE extra patterns
+    if (candidate.category === 'west-end' && WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) {
+      filteredNonTheater++;
+      if (verbose) console.log(`  [FILTERED] "${candidate.title}" — WE extra pattern`);
+      continue;
+    }
+
+    // Gate 2: Try TodayTix search for enrichment (optional, not required)
+    const location = candidate.category === 'west-end' ? 2 : 1;
+    let ttShow = null;
+    try {
+      ttShow = await searchTodayTixByTitle(candidate.title, location);
+      await new Promise(r => setTimeout(r, 300)); // Rate limit
+    } catch { /* TodayTix search failed — proceed without */ }
+
+    if (ttShow) {
+      // Full TodayTix validation: all gates apply
+      if (isNonTheaterContent(ttShow)) {
+        filteredNonTheater++;
+        if (verbose) console.log(`  [FILTERED] "${candidate.title}" — TT non-theater content`);
+        continue;
+      }
+      if (isOneNightShow(ttShow)) {
+        filteredOneNight++;
+        if (verbose) console.log(`  [FILTERED] "${candidate.title}" — one-night event`);
+        continue;
+      }
+
+      // Category cross-validation: ShowScore category should match TodayTix subcategories
+      const subcatNames = (ttShow.subcategories || []).map(sc => sc.name);
+      let categoryMatch = false;
+      if (candidate.category === 'off-broadway') {
+        categoryMatch = subcatNames.includes('Off Broadway') ||
+          (subcatNames.includes('Broadway') && !subcatNames.includes('Off Broadway')); // Some OB shows tagged as Broadway on TT
+      } else if (candidate.category === 'west-end') {
+        categoryMatch = subcatNames.includes('West End') || subcatNames.includes('Off West End');
+      }
+      if (!categoryMatch) {
+        if (verbose) console.log(`  [SKIP] "${candidate.title}" — category mismatch (SS: ${candidate.category}, TT: ${subcatNames.join(',')})`);
+        continue;
+      }
+
+      ttConfirmed++;
+      const title = (ttShow.displayName || ttShow.name || candidate.title).trim();
+      validated.push({
+        title,
+        venue: (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA',
+        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        openingDate: ttShow.startDate || null,
+        closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
+        category: candidate.category,
+        description: ttShow.description || '',
+        todayTixCategory: ttShow.category?.name || null,
+        _showScoreUrl: candidate.showScoreUrl,
+        _source: 'showScore+todayTix',
+      });
+      console.log(`  [TT+SS] "${candidate.title}" → confirmed on TodayTix`);
+    } else {
+      // Not on TodayTix — add with minimal metadata from ShowScore only.
+      // ShowScore itself validates it's a real show (they curate listings).
+      ttMissing++;
+      validated.push({
+        title: candidate.title,
+        venue: 'TBA',
+        slug: candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        openingDate: null,
+        closingDate: null,
+        category: candidate.category,
+        description: '',
+        todayTixCategory: null,
+        _showScoreUrl: candidate.showScoreUrl,
+        _source: 'showScore',
+      });
+      console.log(`  [SS] "${candidate.title}" → not on TodayTix, adding from ShowScore`);
+    }
+  }
+
+  console.log(`ShowScore candidates: ${validated.length} validated (${ttConfirmed} TT-confirmed, ${ttMissing} SS-only), ${filteredNonTheater} non-theater, ${filteredOneNight} one-night`);
+  return validated;
+}
+
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   return data;
@@ -439,6 +635,39 @@ async function discoverShows() {
       discoveredShows.push(...westEndShows);
     } catch (e) {
       console.log(`⚠️  TodayTix London API failed (${e.message}), skipping West End discovery`);
+    }
+    console.log('');
+  }
+
+  // ShowScore candidates: validated OB/WE shows from ShowScore listings
+  // that aren't in our DB yet. Joins the same dedup pipeline as TodayTix shows.
+  const consumedCandidateUrls = []; // ShowScore URLs for newly added shows
+  const processedCandidateUrls = new Set(); // ALL processed URLs (for pruning)
+  if (consumeShowScoreCandidates) {
+    console.log('');
+    console.log('🔍 Processing ShowScore candidates...');
+    try {
+      // Load all candidates to track which ones we processed
+      try {
+        const candidatesData = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
+        for (const c of (candidatesData.candidates || [])) {
+          if (c.category === 'off-broadway' || c.category === 'west-end') {
+            processedCandidateUrls.add(c.showScoreUrl);
+          }
+        }
+      } catch { /* file missing */ }
+
+      const ssValidated = await consumeShowScoreCandidatesFile();
+      if (ssValidated.length > 0) {
+        // Track ShowScore URLs for post-save assignment
+        for (const s of ssValidated) {
+          if (s._showScoreUrl) consumedCandidateUrls.push({ title: s.title, url: s._showScoreUrl });
+        }
+        discoveredShows.push(...ssValidated);
+        console.log(`Added ${ssValidated.length} ShowScore candidates to discovery pipeline`);
+      }
+    } catch (e) {
+      console.log(`⚠️  ShowScore candidate processing failed (continuing without): ${e.message}`);
     }
     console.log('');
   }
@@ -734,6 +963,51 @@ async function discoverShows() {
       shows: newShows,
     }, null, 2));
     console.log(`📋 Saved pending shows to ${OUTPUT_FILE}`);
+
+    // Post-save: assign ShowScore URLs + prune consumed candidates
+    if (consumeShowScoreCandidates && consumedCandidateUrls.length > 0) {
+      try {
+        // Assign ShowScore URLs to newly created shows
+        const urlData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
+        if (!urlData.shows) urlData.shows = {};
+        let urlsAssigned = 0;
+        for (const { title, url } of consumedCandidateUrls) {
+          // Find the newly created show by matching title
+          const addedShow = newShows.find(s => s.title === title);
+          if (addedShow && !urlData.shows[addedShow.id]) {
+            urlData.shows[addedShow.id] = url;
+            urlsAssigned++;
+          }
+        }
+        if (urlsAssigned > 0) {
+          urlData._meta = urlData._meta || {};
+          urlData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+          fs.writeFileSync(URLS_PATH, JSON.stringify(urlData, null, 2) + '\n');
+          console.log(`Assigned ${urlsAssigned} ShowScore URLs to new shows`);
+        }
+      } catch (e) {
+        console.log(`⚠️  ShowScore URL assignment failed (non-fatal): ${e.message}`);
+      }
+    }
+
+    // Prune ALL processed candidates (added, filtered, or deduped) from candidates file
+    if (consumeShowScoreCandidates && processedCandidateUrls.size > 0) {
+      try {
+        const candidatesData = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
+        const before = (candidatesData.candidates || []).length;
+        candidatesData.candidates = (candidatesData.candidates || []).filter(c =>
+          !processedCandidateUrls.has(c.showScoreUrl)
+        );
+        const pruned = before - candidatesData.candidates.length;
+        if (pruned > 0) {
+          candidatesData._meta = candidatesData._meta || {};
+          candidatesData._meta.lastUpdated = new Date().toISOString();
+          candidatesData._meta.totalCandidates = candidatesData.candidates.length;
+          fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
+          console.log(`Pruned ${pruned} processed candidates from show-score-candidates.json`);
+        }
+      } catch { /* candidates file missing — that's fine */ }
+    }
   }
 
   // GitHub Actions outputs

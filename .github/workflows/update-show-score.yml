@@ -78,6 +78,7 @@ jobs:
         if: always()
         run: |
           git add data/show-score-urls.json
+          git add data/show-score-candidates.json 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
