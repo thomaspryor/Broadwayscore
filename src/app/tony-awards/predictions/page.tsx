@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, AudienceChip } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -140,14 +140,14 @@ export default function TonyPredictionsOverviewPage() {
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{pick.label}</p>
                   <div className="flex items-center gap-3">
                     {/* Thumbnail */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
                       {pick.show.thumbnailPath ? (
                         <img
                           src={getOptimizedImageUrl(pick.show.thumbnailPath, 'thumbnail')}
                           alt={pick.show.title}
                           className="w-full h-full object-cover"
-                          width={64}
-                          height={64}
+                          width={80}
+                          height={80}
                           loading="eager"
                         />
                       ) : (
@@ -163,8 +163,8 @@ export default function TonyPredictionsOverviewPage() {
                         {pick.show.venue}
                       </p>
                     </div>
-                    {/* Score */}
-                    <div className="flex-shrink-0">
+                    {/* Score + Audience */}
+                    <div className="flex-shrink-0 flex flex-col items-center gap-1">
                       <ScoreBadge
                         score={pick.show.blendedScore}
                         size="lg"
@@ -172,6 +172,9 @@ export default function TonyPredictionsOverviewPage() {
                         reviewCount={pick.show.reviewCount}
                         status={pick.show.status}
                       />
+                      {pick.show.audienceGrade && pick.show.audienceGrade.grade !== '—' && (
+                        <AudienceChip grade={pick.show.audienceGrade} />
+                      )}
                     </div>
                   </div>
                   {pick.runnerUp && (
