@@ -489,7 +489,11 @@
     "burnout-paradise-2026/theatermania--zachary-stewart.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/the-guardian-uk--arifa-akbar.json",
     "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "chinese-republicans-2026/theatermania--unknown.json"
+    "chinese-republicans-2026/theatermania--unknown.json",
+    "cold-war-choir-practice-2026/theatermania--unknown.json",
+    "data-2026/la-voce-di-new-york--elise-nussbaum.json",
+    "data-2026/theatermania--zachary-stewart.json",
+    "dirty-books-2025/theatermania--unknown.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1432,7 +1436,13 @@
     "chess-2025/timeout--adam-feldman.json",
     "chicago-1996/nypost--elisabeth-vincentelli.json",
     "chinese-republicans-2026/broadwaynews--unknown.json",
-    "cold-war-choir-practice-2026/broadwaynews--unknown.json"
+    "cold-war-choir-practice-2026/broadwaynews--unknown.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "dirty-books-2025/broadwaynews--unknown.json",
+    "dracula-west-end-2025/the-guardian-uk--arifa-akbar.json",
+    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1497,7 +1507,11 @@
       "burnout-paradise-2026/theatermania--zachary-stewart.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/the-guardian-uk--arifa-akbar.json",
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "chinese-republicans-2026/theatermania--unknown.json"
+      "chinese-republicans-2026/theatermania--unknown.json",
+      "cold-war-choir-practice-2026/theatermania--unknown.json",
+      "data-2026/la-voce-di-new-york--elise-nussbaum.json",
+      "data-2026/theatermania--zachary-stewart.json",
+      "dirty-books-2025/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -2262,7 +2276,8 @@
       "pied-a-terre-2026/nyt-theater--unknown.json",
       "pied-a-terre-2026/nytg--unknown.json",
       "the-waterfall-2026/nyt-theater--unknown.json",
-      "you-got-older-2026/nyt-theater--jonathan-mandell.json"
+      "you-got-older-2026/nyt-theater--jonathan-mandell.json",
+      "cold-war-choir-practice-2026/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2447,7 +2462,8 @@
       "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
       "data/review-texts/blackout-songs-2026/new-york-sun--elysa-gardner.json",
       "data/review-texts/bloodlove-2026/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2591,11 +2607,12 @@
       "and-juliet-2022/thewrap--robert-hofler.json",
       "anonymous-2026/broadwaynews--unknown.json",
       "austentatious-an-improvised-jane-austen-novel-west-end-2025/broadwaynews--unknown.json",
-      "bug-2026/wsj--charles-isherwood.json"
+      "bug-2026/wsj--charles-isherwood.json",
+      "chinese-republicans-2026/broadwaynews--unknown.json"
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "cold-war-choir-practice-2026/broadwaynews--unknown.json",
+  "lastProcessed": "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2756,6 +2773,17 @@
       "event": "bb-session",
       "session": "f8104b62",
       "url": "https://www.broadwaynews.com/the-broadway-review-buena-vista-social-club-brings-"
+    },
+    {
+      "t": "2026-02-24T02:58:31.920Z",
+      "event": "bb-session",
+      "session": "aaca354c",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-24T02:58:34.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
