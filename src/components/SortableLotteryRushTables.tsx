@@ -185,7 +185,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     {lottery?.platform || special?.platform || '—'}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <ScoreBadge score={score} size="sm" />
+                    <ScoreBadge score={score} size="sm" showCrown />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
@@ -379,7 +379,7 @@ export function RushTable({ data }: RushTableProps) {
                     </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <ScoreBadge score={score} size="sm" />
+                    <ScoreBadge score={score} size="sm" showCrown />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">

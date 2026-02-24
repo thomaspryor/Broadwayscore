@@ -109,7 +109,7 @@ function ShowCard({ show, loading = 'lazy', tonyInfo }: { show: ActorProfile['sh
             {tier.label}
           </span>
         )}
-        <ScoreBadge score={show.score} size="sm" />
+        <ScoreBadge score={show.score} size="sm" showCrown />
       </div>
     </Link>
   );

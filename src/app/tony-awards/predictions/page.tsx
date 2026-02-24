@@ -167,6 +167,7 @@ export default function TonyPredictionsOverviewPage() {
                       <ScoreBadge
                         score={pick.show.blendedScore}
                         size="lg"
+                        showCrown
                         reviewCount={pick.show.reviewCount}
                         status={pick.show.status}
                       />

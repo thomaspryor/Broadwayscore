@@ -152,7 +152,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
           </h3>
           <p className="text-xs text-gray-500">{show.venue}</p>
         </div>
-        <ScoreBadge score={score} size="sm" />
+        <ScoreBadge score={score} size="sm" showCrown />
       </Link>
 
       {/* Events */}

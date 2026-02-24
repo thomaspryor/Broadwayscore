@@ -378,6 +378,7 @@ function NVPPageInner() {
                       <ScoreBadge
                         score={show.criticScore?.score}
                         size="lg"
+                        showCrown
                         reviewCount={show.criticScore?.reviewCount}
                         status={show.status}
                       />

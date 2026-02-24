@@ -238,7 +238,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                   const tier = getScoreTier(score ?? null);
                   return (
                     <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                      <ScoreBadge score={score} size="md" status={theater.currentShow!.status} />
+                      <ScoreBadge score={score} size="md" showCrown status={theater.currentShow!.status} />
                       {tier && (
                         <span
                           className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
