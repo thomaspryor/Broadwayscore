@@ -686,6 +686,9 @@ async function discoverShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
+  const existingSlugs = new Set(data.shows.map(s => s.slug));
+  const existingIds = new Set(data.shows.map(s => s.id));
+
   for (const show of discoveredShows) {
     // Use the new comprehensive duplicate check
     const duplicateCheck = checkForDuplicate(show, data.shows);
@@ -736,6 +739,20 @@ async function discoverShows() {
     const showId = show.category === 'west-end'
       ? `${slug}-west-end-${idYear}`
       : `${slug}-${idYear}`;
+
+    // Guard: skip if generated ID or slug collides with existing DB or batch
+    if (existingIds.has(showId)) {
+      skippedDuplicates.push({ title: show.title, reason: `ID collision: ${showId} already exists`, existingId: showId });
+      continue;
+    }
+    if (existingSlugs.has(slug)) {
+      skippedDuplicates.push({ title: show.title, reason: `Slug collision: ${slug} already exists`, existingId: slug });
+      continue;
+    }
+
+    // Track to prevent intra-batch slug/ID collisions
+    existingIds.add(showId);
+    existingSlugs.add(slug);
 
     newShows.push({
       ...show,
