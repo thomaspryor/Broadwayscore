@@ -258,7 +258,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         {/* How This Works (current season only, pre-noms) */}
         {isCurrent && !nominationsAnnounced && (
           <details className="mb-10 rounded-xl border border-white/5 bg-surface-overlay">
-            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none">
+            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none [&::-webkit-details-marker]:hidden">
               How This Works
             </summary>
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
