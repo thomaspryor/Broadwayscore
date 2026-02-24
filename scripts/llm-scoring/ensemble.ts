@@ -9,7 +9,7 @@
  */
 
 import { SimplifiedLLMResult, ModelScore, EnsembleResult, Bucket } from './types';
-import { BUCKET_RANGES, clampScoreToBucket } from './config';
+import { BUCKET_RANGES } from './config';
 
 // ========================================
 // CONSTANTS
@@ -132,15 +132,15 @@ function twoModelEnsemble(results: ModelScore[]): EnsembleResult {
 
   // Check if buckets match
   if (results[0].bucket === results[1].bucket) {
-    const bucket = results[0].bucket;
-    const clampedScore = clampScoreToBucket(avgScore, bucket);
+    // Derive bucket from numeric score — no clamping to voted bucket
+    const derivedBucket = scoreToBucket(avgScore);
 
     return {
-      score: clampedScore,
-      bucket,
+      score: avgScore,
+      bucket: derivedBucket,
       confidence: delta <= TIGHT_AGREEMENT_THRESHOLD ? 'high' : 'medium',
       source: 'two-model-fallback',
-      agreement: `Both models agree: ${bucket}`,
+      agreement: `Both models agree: ${results[0].bucket}`,
       modelResults: buildModelResultsMap(results),
       needsReview: delta > HIGH_DISAGREEMENT_THRESHOLD,
       reviewReason: delta > HIGH_DISAGREEMENT_THRESHOLD ? `Score delta ${delta} exceeds threshold` : undefined
@@ -167,11 +167,12 @@ function twoModelEnsemble(results: ModelScore[]): EnsembleResult {
  * Process single-model result (fallback when two models fail)
  */
 function singleModelFallback(result: ModelScore): EnsembleResult {
-  const clampedScore = clampScoreToBucket(result.score, result.bucket);
+  // Use score as-is; derive bucket from numeric score
+  const derivedBucket = scoreToBucket(result.score);
 
   return {
-    score: clampedScore,
-    bucket: result.bucket,
+    score: result.score,
+    bucket: derivedBucket,
     confidence: 'low',
     source: 'single-model-fallback',
     note: `Only ${result.model} succeeded`,
@@ -274,11 +275,12 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
   // Check if ALL models agree on bucket (unanimous)
   if (majority && majority.count === n) {
     const finalScore = Math.round(avgScore);
-    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
+    // Derive bucket from numeric score — no clamping to voted bucket
+    const derivedBucket = scoreToBucket(finalScore);
 
     return {
-      score: clampedScore,
-      bucket: majority.bucket,
+      score: finalScore,
+      bucket: derivedBucket,
       confidence: spread <= TIGHT_AGREEMENT_THRESHOLD ? 'high' : 'medium',
       source: 'ensemble-unanimous',
       agreement: `All ${n} models agree: ${majority.bucket}`,
@@ -293,7 +295,8 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
     const outlierResults = results.filter(r => r.bucket !== majority.bucket);
     const majorityAvg = mean(majorityResults.map(r => r.score));
     const finalScore = Math.round(majorityAvg);
-    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
+    // Derive bucket from numeric score — no clamping to voted bucket
+    const derivedBucket = scoreToBucket(finalScore);
 
     // Check if any outlier is severe (>1 bucket away)
     const severeOutlier = outlierResults.find(r => bucketDistance(majority.bucket, r.bucket) > 1);
@@ -303,8 +306,8 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
     const outlier = results.length === 3 ? findOutlier(results) : undefined;
 
     return {
-      score: clampedScore,
-      bucket: majority.bucket,
+      score: finalScore,
+      bucket: derivedBucket,
       confidence: majority.count >= n - 1 ? 'medium' : 'low',
       source: 'ensemble-majority',
       agreement: `${majority.count}/${n} models agree: ${majority.bucket}`,
