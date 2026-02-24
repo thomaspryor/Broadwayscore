@@ -436,7 +436,8 @@
     "hamlet-2026/vulture--sara-holdren.json",
     "heathers-the-musical-2025/nyt-theater--jonathan-mandell.json",
     "heathers-the-musical-2025/nytg--caroline-cao.json",
-    "heathers-the-musical-2025/vulture--jackson-mchenry.json"
+    "heathers-the-musical-2025/vulture--jackson-mchenry.json",
+    "hold-on-to-your-butts-2026/nyt-theater--unknown.json"
   ],
   "failed": [
     "kinky-boots-2026/cititour--brian-scott-lipton.json",
@@ -1282,7 +1283,16 @@
     "hadestown-2019/newyorker--hilton-als.json",
     "hadestown-west-end-2024/vulture--unknown.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/nyt-theater--unknown.json"
+    "hells-kitchen-2024/nyt-theater--unknown.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/nytg--unknown.json",
+    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+    "hells-kitchen-2024/nytimes--unknown.json",
+    "hells-kitchen-2024/variety--unknown.json",
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "hells-kitchen-2024/vulture--unknown.json",
+    "high-noon-west-end-2025/nytimes--elisabeth-vincentelli.json",
+    "high-noon-west-end-2025/vulture--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1303,7 +1313,9 @@
       "hamilton-west-end-2021/nyt-theater--unknown.json",
       "hamilton-west-end-2021/nytg--unknown.json",
       "heathers-the-musical-2025/nyt-theater--jonathan-mandell.json",
-      "heathers-the-musical-2025/nytg--caroline-cao.json"
+      "heathers-the-musical-2025/nytg--caroline-cao.json",
+      "high-noon-west-end-2025/vulture--unknown.json",
+      "hold-on-to-your-butts-2026/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/back-to-the-future-west-end-2021/hollywood-reporter--frank-scheck.json",
@@ -1937,7 +1949,9 @@
       "data/review-texts/priscilla-queen-of-the-desert-2011/reuters--david-rooney.json",
       "data/review-texts/the-lifespan-of-a-fact-2018/hollywoodwood-reporter--david-rooney.json",
       "the-lifespan-of-a-fact-2018/hollywoodwood-reporter--david-rooney.json",
-      "data/review-texts/arcadia-west-end-2026/variety--unknown.json"
+      "data/review-texts/arcadia-west-end-2026/variety--unknown.json",
+      "data/review-texts/hells-kitchen-2024/variety--unknown.json",
+      "hells-kitchen-2024/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/anonymous-2026/nytimes--unknown.json"
@@ -2214,7 +2228,9 @@
       "data/review-texts/ring-of-fire-2006/nytimes--ben-brantley.json",
       "data/review-texts/rock-of-ages-2009/nytimes--.json",
       "data/review-texts/age-is-a-feeling-2024/nyt-theater--unknown.json",
-      "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/nyt-theater--unknown.json"
+      "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/nyt-theater--unknown.json",
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/hells-kitchen-2024/vulture--helen-shaw.json"
     ],
     "archive": [
       "a-raisin-in-the-sun-2004/usatoday--elysa-gardner.json",
@@ -2344,7 +2360,7 @@
     ]
   },
   "startTime": "2026-02-23T09:31:09.237Z",
-  "lastProcessed": "hells-kitchen-2024/nyt-theater--unknown.json",
+  "lastProcessed": "hold-on-to-your-butts-2026/nyt-theater--unknown.json",
   "log": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -2356,6 +2372,28 @@
       "t": "2026-02-24T00:01:44.886Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T00:25:28.558Z",
+      "event": "bb-session",
+      "session": "3f2eac30",
+      "url": "https://www.nytimes.com/2026/02/06/theater/high-spirits-review-a-ghostly-delight"
+    },
+    {
+      "t": "2026-02-24T00:25:30.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T00:25:38.406Z",
+      "event": "bb-session",
+      "session": "c0587a22",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-24T00:25:40.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }

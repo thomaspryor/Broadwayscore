@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-24T00:17:39.435Z",
-  "processed": 437,
-  "failed": 844,
-  "successRate": "34.1%",
+  "updatedAt": "2026-02-24T00:29:17.077Z",
+  "processed": 438,
+  "failed": 853,
+  "successRate": "33.9%",
   "tierBreakdown": {
-    "playwright": 17,
-    "amp": 632,
+    "playwright": 19,
+    "amp": 634,
     "browserbase": 1,
     "directCookies": 13,
     "scrapingbee": 93,
     "brightdata": 0,
-    "archiveToday": 161,
+    "archiveToday": 163,
     "archive": 124
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-24T00:01:42.455Z",
@@ -25,6 +25,28 @@
       "t": "2026-02-24T00:01:44.886Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T00:25:28.558Z",
+      "event": "bb-session",
+      "session": "3f2eac30",
+      "url": "https://www.nytimes.com/2026/02/06/theater/high-spirits-review-a-ghostly-delight"
+    },
+    {
+      "t": "2026-02-24T00:25:30.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-24T00:25:38.406Z",
+      "event": "bb-session",
+      "session": "c0587a22",
+      "url": "https://www.vulture.com/article/hells-kitchen-broadway-review.html"
+    },
+    {
+      "t": "2026-02-24T00:25:40.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
