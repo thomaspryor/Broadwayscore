@@ -49,6 +49,24 @@ function formatRuntime(minutes) {
  * Extract age recommendation from TodayTix description or special notes.
  */
 function extractAgeRecommendation(show) {
+  // Check dedicated ageDescription field first (most reliable)
+  if (show.ageDescription) {
+    const ageDesc = show.ageDescription;
+    // Simple format: "12+", "10+", "21+ only"
+    const simpleMatch = ageDesc.match(/^(\d+)\+/);
+    if (simpleMatch) return `Ages ${simpleMatch[1]}+`;
+    // "Recommended for ages 7 and up", etc.
+    const recMatch = ageDesc.match(/(?:recommended|suitable)\s+(?:for\s+)?(?:ages?|children)\s+(\d+)/i);
+    if (recMatch) return `Ages ${recMatch[1]}+`;
+    // "at least six years old" style
+    const wordMatch = ageDesc.match(/at\s+least\s+(\w+)\s+years?\s+old/i);
+    if (wordMatch) {
+      const numWords = { three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
+      const n = numWords[wordMatch[1].toLowerCase()] || parseInt(wordMatch[1]);
+      if (n) return `Ages ${n}+`;
+    }
+  }
+
   const texts = [show.specialNote, show.description, show.heroSubtitle].filter(Boolean).join(' ');
 
   // Common patterns: "Ages 10+", "Recommended for ages 12 and up", "Suitable for ages 5+"
