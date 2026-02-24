@@ -362,8 +362,12 @@ async function consumeShowScoreCandidatesFile() {
   let candidatesData;
   try {
     candidatesData = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
-  } catch {
-    console.log('No ShowScore candidates file found, skipping');
+  } catch (e) {
+    if (e.code === 'ENOENT') {
+      console.log('No ShowScore candidates file found, skipping');
+    } else {
+      console.warn(`Warning: could not parse ${CANDIDATES_PATH}: ${e.message}`);
+    }
     return [];
   }
 
@@ -660,7 +664,9 @@ async function discoverShows() {
             processedCandidateUrls.add(c.showScoreUrl);
           }
         }
-      } catch { /* file missing */ }
+      } catch (e) {
+        if (e.code !== 'ENOENT') console.warn(`Warning: could not parse ${CANDIDATES_PATH}: ${e.message}`);
+      }
 
       const ssValidated = await consumeShowScoreCandidatesFile();
       if (ssValidated.length > 0) {
@@ -962,10 +968,13 @@ async function discoverShows() {
     if (needsReview > 0) console.log(`   ⚠️  ${needsReview} show(s) need manual type verification`);
     console.log('');
 
-    // Save pending shows for review
+    // Save pending shows for review (strip internal fields)
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
-      shows: newShows,
+      shows: newShows.map(s => {
+        const { _showScoreUrl, _source, ...clean } = s;
+        return clean;
+      }),
     }, null, 2));
     console.log(`📋 Saved pending shows to ${OUTPUT_FILE}`);
 
@@ -1011,7 +1020,9 @@ async function discoverShows() {
           fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
           console.log(`Pruned ${pruned} processed candidates from show-score-candidates.json`);
         }
-      } catch { /* candidates file missing — that's fine */ }
+      } catch (e) {
+        if (e.code !== 'ENOENT') console.warn(`Warning: could not parse ${CANDIDATES_PATH}: ${e.message}`);
+      }
     }
   }
 
