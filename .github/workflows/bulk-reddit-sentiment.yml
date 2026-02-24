@@ -29,6 +29,10 @@ on:
         type: number
         default: 10
 
+concurrency:
+  group: audience-buzz
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

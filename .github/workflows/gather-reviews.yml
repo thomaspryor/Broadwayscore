@@ -325,6 +325,9 @@ jobs:
     needs: [prepare, gather-reviews, scrape-aggregators]
     if: always() && needs.gather-reviews.result != 'cancelled'
     runs-on: ubuntu-latest
+    concurrency:
+      group: rebuild-reviews
+      cancel-in-progress: false
     steps:
       - name: Checkout (latest, after all batches pushed)
         uses: actions/checkout@v4
