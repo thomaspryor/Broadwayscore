@@ -96,11 +96,11 @@ export function normalizeRating(rating: string): { score: number; isInferred: bo
 // CRITIC SCORE CALCULATION
 // ============================================
 
-// Tier weights
+// Tier weights (must match src/config/scoring.ts)
 const TIER_WEIGHTS: Record<OutletTier, number> = {
-  1: 1.5,
-  2: 1.0,
-  3: 0.5,
+  1: 1.0,
+  2: 0.75,
+  3: 0.45,
 };
 
 /**
