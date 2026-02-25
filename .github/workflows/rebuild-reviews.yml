@@ -246,7 +246,7 @@ jobs:
 
           echo "Reviews needing LLM scoring: $UNSCORED"
 
-          THRESHOLD=100
+          THRESHOLD=5
           if [ "$UNSCORED" -lt "$THRESHOLD" ]; then
             echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
             exit 0

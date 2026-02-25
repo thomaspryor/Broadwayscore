@@ -20,7 +20,7 @@ permissions:
 jobs:
   broadcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -141,6 +141,28 @@ jobs:
           node scripts/gather-reviews.js --shows=${{ steps.check.outputs.pending_shows }}
 
       - name: Rebuild reviews.json
+        if: always() && steps.check.outputs.pending_shows != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Score reviews (LLM ensemble)
+        if: always() && steps.check.outputs.pending_shows != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          # Score unscored reviews for the opening-night shows
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            echo "Scoring reviews for $SHOW..."
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW" --run-calibration=false || true
+          done
+
+      - name: Rebuild after scoring
         if: always() && steps.check.outputs.pending_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
