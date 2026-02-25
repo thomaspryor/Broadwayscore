@@ -66,22 +66,7 @@ jobs:
             git commit -m "chore: LLM evaluation results (n=${{ github.event.inputs.test_size }})
 
             Co-Authored-By: Claude <noreply@anthropic.com>"
-            # Retry push with rebase in case remote has new commits
-            pushed=false
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                pushed=true
-                break
-              fi
-              echo "Push failed (attempt $i), pulling and rebasing..."
-              git pull --rebase origin main
-              sleep $((RANDOM % 5 + 2))
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
       - name: Notify on failure
         if: failure()

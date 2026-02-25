@@ -138,25 +138,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: URL rediscovery complete"
-          pushed=false
-          for i in 1 2 3 4 5; do
-            git fetch origin main
-            git rebase origin/main || {
-              git checkout --ours data/
-              git add data/
-              git rebase --continue || {
-                git rebase --abort
-                git merge origin/main -X ours --no-edit
-              }
-            }
-            git push origin HEAD:main && pushed=true && break
-            echo "Push attempt $i failed, retrying..."
-            sleep $((i * 3))
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh 5 HEAD:main
 
       - name: Trigger collection for newly-discovered URLs
         if: always()

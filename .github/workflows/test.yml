@@ -381,17 +381,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Update visual regression baselines [skip ci]"
-          pushed=false
-          for i in 1 2 3 4 5; do
-            git push origin main && pushed=true && break
-            echo "Push attempt $i failed, rebasing..."
-            git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

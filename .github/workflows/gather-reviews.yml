@@ -374,23 +374,7 @@ jobs:
             echo "No changes to reviews.json"
           else
             git commit -m "data: Auto-rebuild reviews.json after gather (${{ inputs.shows }})"
-            pushed=false
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                pushed=true
-                break
-              fi
-              echo "Retry $i: Waiting before retry..."
-              sleep $((RANDOM % 10 + 5))
-              git checkout -- . 2>/dev/null || true
-              git clean -fd 2>/dev/null || true
-              git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; git pull --no-rebase -X ours origin main; }
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
 
@@ -464,7 +448,8 @@ jobs:
 
           RUNNING=$(gh run list --workflow="Collect Review Texts" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Collect Review Texts" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED))
+          WAITING=$(gh run list --workflow="Collect Review Texts" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "Text collection already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
@@ -524,7 +509,8 @@ jobs:
 
           RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED))
+          WAITING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
