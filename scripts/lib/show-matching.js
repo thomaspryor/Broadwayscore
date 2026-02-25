@@ -640,7 +640,7 @@ function titleWordsMatch(showTitle, candidateText) {
   if (showSlugWords.length === 1) {
     // Single-word: word-boundary match to prevent partial matches
     const word = showSlugWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""])${word}(?:$|[\\s\\-/,.?!:;'""])`, 'i');
+    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${word}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
     return wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
   }
 
@@ -687,7 +687,7 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   // Single meaningful word — moderate confidence at best
   if (words.length === 1) {
     const word = words[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""])${word}(?:$|[\\s\\-/,.?!:;'""])`, 'i');
+    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${word}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
     const matched = wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
     return { matched, confidence: matched ? 0.6 : 0, matchCount: matched ? 1 : 0, threshold: 1, words };
   }
