@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-02-25T17:45:34.846Z",
+  "runDate": "2026-02-25T23:05:40.472Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 20,
+    "batchSize": 3,
+    "maxReviews": 3,
     "priority": "all",
-    "showFilter": "you-got-older-2026",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 3,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 5,
-    "amp": 2,
+    "playwright": 1,
+    "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 6
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 7,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
@@ -39,61 +39,37 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 3,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "you-got-older-2026/hollywood-reporter--unknown.json",
-    "you-got-older-2026/nytg--unknown.json",
-    "you-got-older-2026/vulture--unknown.json",
-    "you-got-older-2026/nydailynews--unknown.json",
-    "you-got-older-2026/theatermania--hayley-levitt.json",
-    "you-got-older-2026/theatermania--unknown.json",
-    "you-got-older-2026/thewrap--unknown.json",
-    "you-got-older-2026/timeout--adam-feldman.json",
-    "you-got-older-2026/timeout--unknown.json",
-    "you-got-older-2026/broadway-blog--becky-sarwate.json",
-    "you-got-older-2026/buy-tickets--unknown.json",
-    "you-got-older-2026/daily-herald--scott-c-morgan.json"
+    "hamilton-2015/chicago-tribune--chris-jones.json",
+    "hamilton-2015/dc-theatre-scene--jonathan-mandell.json"
   ],
   "failed": [
-    "you-got-older-2026/nytimes--unknown.json",
-    "you-got-older-2026/broadwaynews--unknown.json",
-    "you-got-older-2026/chicagotribune--unknown.json"
+    "hamilton-2015/bww--michael-dale.json"
   ],
   "tierDetails": {
     "playwright": [
-      "you-got-older-2026/nytg--unknown.json",
-      "you-got-older-2026/nydailynews--unknown.json",
-      "you-got-older-2026/theatermania--unknown.json",
-      "you-got-older-2026/thewrap--unknown.json",
-      "you-got-older-2026/daily-herald--scott-c-morgan.json"
+      "hamilton-2015/dc-theatre-scene--jonathan-mandell.json"
     ],
-    "amp": [
-      "data/review-texts/you-got-older-2026/hollywood-reporter--unknown.json",
-      "you-got-older-2026/hollywood-reporter--unknown.json"
-    ],
+    "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/you-got-older-2026/nytimes--unknown.json"
+      "data/review-texts/hamilton-2015/bww--michael-dale.json"
     ],
     "archive": [
-      "you-got-older-2026/vulture--unknown.json",
-      "you-got-older-2026/theatermania--hayley-levitt.json",
-      "you-got-older-2026/timeout--adam-feldman.json",
-      "you-got-older-2026/timeout--unknown.json",
-      "you-got-older-2026/broadway-blog--becky-sarwate.json",
-      "you-got-older-2026/buy-tickets--unknown.json"
+      "hamilton-2015/chicago-tribune--chris-jones.json"
     ]
   },
   "failuresByOutlet": {},
