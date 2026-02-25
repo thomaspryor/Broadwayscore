@@ -351,7 +351,12 @@
     "aladdin-2014/theatermania--charles-isherwood.json",
     "aladdin-2014/timeout--adam-feldman.json",
     "aladdin-2014/wsj--terry-teachout.json",
-    "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json"
+    "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json",
+    "all-my-sons-west-end-2025/theatermania--unknown.json",
+    "all-my-sons-west-end-2025/time-out-london--andrzej-lukowski.json",
+    "and-juliet-2022/theatermania--hayley-levitt.json",
+    "and-juliet-2022/thewrap--robert-hofler.json",
+    "and-juliet-2022/timeout--adam-feldman.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -971,7 +976,12 @@
     "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
     "all-my-sons-west-end-2025/broadwaynews--unknown.json",
     "all-my-sons-west-end-2025/nbcnews--unknown.json",
-    "all-my-sons-west-end-2025/nypost--unknown.json"
+    "all-my-sons-west-end-2025/nypost--unknown.json",
+    "an-ark-2026/new-jersey-newsroom--micheal-sommers.json",
+    "an-ark-2026/newsday--linda-winer.json",
+    "an-ark-2026/wsj--charles-isherwood.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "animal-wisdom-2022/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1186,7 +1196,10 @@
       "you-got-older-2026/hollywood-reporter--unknown.json",
       "you-got-older-2026/nytg--unknown.json",
       "aladdin-2014/theatermania--charles-isherwood.json",
-      "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json"
+      "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json",
+      "all-my-sons-west-end-2025/nbcnews--unknown.json",
+      "all-my-sons-west-end-2025/theatermania--unknown.json",
+      "and-juliet-2022/theatermania--hayley-levitt.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1466,7 +1479,12 @@
       "data/review-texts/starlight-express-west-end-2024/nyt-theater--unknown.json",
       "data/review-texts/the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/the-office-a-musical-parody-2018/nyt-theater--unknown.json",
-      "data/review-texts/the-playboy-of-the-western-world-west-end-2025/nyt-theater--unknown.json"
+      "data/review-texts/the-playboy-of-the-western-world-west-end-2025/nyt-theater--unknown.json",
+      "data/review-texts/all-my-sons-west-end-2025/broadwaynews--unknown.json",
+      "data/review-texts/all-my-sons-west-end-2025/nypost--unknown.json",
+      "data/review-texts/an-ark-2026/new-jersey-newsroom--micheal-sommers.json",
+      "data/review-texts/an-ark-2026/wsj--charles-isherwood.json",
+      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1557,11 +1575,14 @@
       "you-got-older-2026/vulture--unknown.json",
       "aladdin-2014/ew--thom-geier.json",
       "aladdin-2014/timeout--adam-feldman.json",
-      "aladdin-2014/wsj--terry-teachout.json"
+      "aladdin-2014/wsj--terry-teachout.json",
+      "all-my-sons-west-end-2025/time-out-london--andrzej-lukowski.json",
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "and-juliet-2022/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "all-my-sons-west-end-2025/the-guardian-uk--arifa-akbar.json",
+  "lastProcessed": "animal-wisdom-2022/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1762,6 +1783,28 @@
       "t": "2026-02-25T17:52:44.831Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T18:06:30.734Z",
+      "event": "bb-session",
+      "session": "f22cd9f8",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-02-25T18:06:31.831Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:08:32.839Z",
+      "event": "bb-session",
+      "session": "d637115f",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-25T18:08:33.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

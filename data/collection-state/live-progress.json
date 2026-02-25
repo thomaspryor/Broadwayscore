@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-02-25T18:03:15.233Z",
-  "processed": 352,
-  "failed": 618,
-  "successRate": "36.3%",
+  "updatedAt": "2026-02-25T18:09:12.755Z",
+  "processed": 357,
+  "failed": 623,
+  "successRate": "36.4%",
   "tierBreakdown": {
-    "playwright": 211,
+    "playwright": 214,
     "amp": 13,
     "browserbase": 6,
     "directCookies": 7,
     "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 192,
-    "archive": 89
+    "archiveToday": 197,
+    "archive": 92
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-02-25T16:53:02.328Z",
-      "event": "bb-session",
-      "session": "bfb23e93",
-      "url": "https://www.nytimes.com/1999/07/16/movies/on-stage-and-off-britons-exclaim-mamma"
-    },
-    {
-      "t": "2026-02-25T16:53:03.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-02-25T17:01:10.895Z",
-      "event": "bb-session",
-      "session": "43abe172",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
-    },
-    {
-      "t": "2026-02-25T17:01:12.162Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-25T17:19:45.416Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-02-25T17:52:44.831Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T18:06:30.734Z",
+      "event": "bb-session",
+      "session": "f22cd9f8",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-02-25T18:06:31.831Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:08:32.839Z",
+      "event": "bb-session",
+      "session": "d637115f",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-25T18:08:33.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
