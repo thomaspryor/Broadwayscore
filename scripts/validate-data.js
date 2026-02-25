@@ -1195,6 +1195,227 @@ function validateOutletRegistryDuplicates() {
   }
 }
 
+/**
+ * Validate outlet alias integrity in outlet-registry.json.
+ * Catches: cross-outlet alias collisions, _aliasIndex conflicts with aliases arrays.
+ */
+function validateOutletAliasIntegrity() {
+  info('Checking outlet alias integrity...');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping');
+    return;
+  }
+
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const outlets = registry.outlets || {};
+  const aliasIndex = registry._aliasIndex || {};
+  let issues = 0;
+
+  // Build alias → outlet ID map from aliases arrays
+  const aliasOwners = {}; // alias string → [outletId, outletId, ...]
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta' || !entry) continue;
+    for (const alias of (entry.aliases || [])) {
+      const key = alias.toLowerCase().trim();
+      if (!aliasOwners[key]) aliasOwners[key] = [];
+      aliasOwners[key].push(id);
+    }
+  }
+
+  // Check 1: Cross-outlet alias collision (same alias in 2+ DIFFERENT outlets)
+  for (const [alias, owners] of Object.entries(aliasOwners)) {
+    const unique = [...new Set(owners)];
+    if (unique.length > 1) {
+      error(`[alias-collision] "${alias}" claimed by ${unique.length} outlets: ${unique.join(', ')} — assign to one only`);
+      issues++;
+    }
+  }
+
+  // Check 2: _aliasIndex conflicts with aliases arrays
+  for (const [alias, indexTarget] of Object.entries(aliasIndex)) {
+    if (alias === '_note') continue;
+    const key = alias.toLowerCase().trim();
+    const arrayOwners = aliasOwners[key];
+    if (arrayOwners && arrayOwners.length === 1 && arrayOwners[0] !== indexTarget) {
+      error(`[alias-conflict] "${alias}" → "${indexTarget}" in _aliasIndex, but "${arrayOwners[0]}" claims it in aliases array`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok('No outlet alias integrity issues');
+  } else {
+    error(`Found ${issues} outlet alias integrity issue(s)`);
+  }
+}
+
+/**
+ * Validate sync between outlet mapping systems.
+ * Checks: OUTLET_ALIASES ↔ outlet-registry.json, outlet-id-mapper.ts → scoring.ts OUTLET_TIERS.
+ */
+function validateOutletMapperSync() {
+  info('Checking outlet mapper sync...');
+
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  const mapperFile = path.join(__dirname, '..', 'src', 'lib', 'outlet-id-mapper.ts');
+  const scoringFile = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
+
+  // --- Part A: OUTLET_ALIASES ↔ outlet-registry.json ---
+  let normModule;
+  try {
+    normModule = require('./lib/review-normalization');
+  } catch { /* not available */ }
+
+  if (normModule && normModule.OUTLET_ALIASES && fs.existsSync(registryFile)) {
+    const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    const outlets = registry.outlets || {};
+    const aliasIndex = registry._aliasIndex || {};
+    const aliases = normModule.OUTLET_ALIASES;
+    let syncIssues = 0;
+
+    for (const [canonical, variations] of Object.entries(aliases)) {
+      // Check canonical outlet exists in registry
+      if (!outlets[canonical]) {
+        warn(`[alias-sync] OUTLET_ALIASES canonical "${canonical}" not found in outlet-registry.json`);
+        syncIssues++;
+        continue;
+      }
+
+      // Check each alias appears in registry (aliases array or _aliasIndex)
+      const registryAliases = new Set((outlets[canonical].aliases || []).map(a => a.toLowerCase().trim()));
+      for (const alias of variations) {
+        const normalized = alias.toLowerCase().trim();
+        if (normalized === canonical) continue; // self-reference is fine
+        if (!registryAliases.has(normalized) && !aliasIndex[normalized]) {
+          // Only warn for non-slug aliases (slugified forms are expected to differ)
+          if (!normalized.includes(' ') && normalized.length > 3) {
+            warn(`[alias-sync] "${normalized}" in OUTLET_ALIASES["${canonical}"] missing from outlet-registry.json`);
+            syncIssues++;
+          }
+        }
+      }
+    }
+
+    if (syncIssues === 0) {
+      ok('OUTLET_ALIASES in sync with outlet-registry.json');
+    } else {
+      info(`${syncIssues} OUTLET_ALIASES ↔ registry sync issue(s) found`);
+    }
+  } else {
+    info('Skipping OUTLET_ALIASES sync check (module or registry not available)');
+  }
+
+  // --- Part B: outlet-id-mapper.ts → scoring.ts OUTLET_TIERS ---
+  if (!fs.existsSync(mapperFile) || !fs.existsSync(scoringFile)) {
+    info('Skipping mapper→scoring sync check (files not found)');
+    return;
+  }
+
+  const mapperSrc = fs.readFileSync(mapperFile, 'utf8');
+  const scoringSrc = fs.readFileSync(scoringFile, 'utf8');
+
+  // Extract all scoring ID values from mapper (right-hand side of 'key': 'VALUE')
+  const mapperScoringIds = new Set();
+  const mapperPattern = /['"]([^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g;
+  let match;
+  while ((match = mapperPattern.exec(mapperSrc)) !== null) {
+    mapperScoringIds.add(match[2]);
+  }
+
+  // Extract all OUTLET_TIERS keys
+  const tierKeys = new Set();
+  // Match lines like: 'NYT': { tier: ...
+  const tierPattern = /['"]([A-Z][A-Z0-9-]+)['"]\s*:\s*\{\s*tier:/g;
+  while ((match = tierPattern.exec(scoringSrc)) !== null) {
+    tierKeys.add(match[1]);
+  }
+
+  let tierIssues = 0;
+  for (const scoringId of mapperScoringIds) {
+    if (!tierKeys.has(scoringId)) {
+      warn(`[mapper-sync] outlet-id-mapper.ts maps to "${scoringId}" but it's not in OUTLET_TIERS (scoring.ts) — will default to Tier 3`);
+      tierIssues++;
+    }
+  }
+
+  if (tierIssues === 0) {
+    ok('outlet-id-mapper.ts scoring IDs all exist in OUTLET_TIERS');
+  }
+}
+
+/**
+ * Validate that review outlet IDs resolve to known scoring tiers.
+ * Catches: unresolvable outlets (silently default to Tier 3) and potential typo outlets.
+ */
+function validateReviewOutletTiers() {
+  info('Checking review outlet tier resolution...');
+
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+  if (!fs.existsSync(reviewsFile)) return;
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+  } catch { return; }
+
+  const reviews = data.reviews || [];
+
+  // Load outlet-id-mapper mappings by parsing the TS source
+  const mapperFile = path.join(__dirname, '..', 'src', 'lib', 'outlet-id-mapper.ts');
+  if (!fs.existsSync(mapperFile)) {
+    info('outlet-id-mapper.ts not found, skipping');
+    return;
+  }
+
+  const mapperSrc = fs.readFileSync(mapperFile, 'utf8');
+  const registryToScoring = {};
+  const mapperPattern = /['"]([^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g;
+  let match;
+  while ((match = mapperPattern.exec(mapperSrc)) !== null) {
+    registryToScoring[match[1].toLowerCase()] = match[2];
+  }
+
+  // Count reviews per outlet and check tier resolution
+  const outletCounts = {};
+  for (const r of reviews) {
+    const oid = (r.outletId || '').toLowerCase();
+    if (!oid) continue;
+    outletCounts[oid] = (outletCounts[oid] || 0) + 1;
+  }
+
+  const unresolvable = [];
+  const lowCount = [];
+
+  for (const [oid, count] of Object.entries(outletCounts)) {
+    // Check if outlet resolves to a known scoring ID
+    if (!registryToScoring[oid] && !registryToScoring[oid.toUpperCase()]) {
+      unresolvable.push({ oid, count });
+    }
+    // Flag outlets with very few reviews as potential typos
+    if (count < 3) {
+      lowCount.push({ oid, count });
+    }
+  }
+
+  if (unresolvable.length > 0) {
+    // Only warn about unresolvable outlets — many are legitimate Tier 3 blogs
+    const total = unresolvable.reduce((s, o) => s + o.count, 0);
+    info(`${unresolvable.length} outlet IDs in reviews.json don't resolve to known scoring tiers (${total} reviews, defaulting to Tier 3)`);
+    // Show top 10 by review count
+    unresolvable.sort((a, b) => b.count - a.count);
+    for (const { oid, count } of unresolvable.slice(0, 10)) {
+      info(`  ${oid}: ${count} reviews`);
+    }
+  } else {
+    ok('All review outlet IDs resolve to known scoring tiers');
+  }
+
+  if (lowCount.length > 0) {
+    info(`${lowCount.length} outlets have fewer than 3 reviews (potential typos — verify if new)`);
+  }
+}
+
 // ===========================================
 // COMMERCIAL DATA VALIDATION
 // ===========================================
@@ -2531,6 +2752,12 @@ function runValidation() {
   validateAggregatorArchives(shows);
   console.log('');
   validateNonTheaterContent(shows);
+  console.log('');
+  validateOutletAliasIntegrity();
+  console.log('');
+  validateOutletMapperSync();
+  console.log('');
+  validateReviewOutletTiers();
 
   // Summary
   console.log('');
