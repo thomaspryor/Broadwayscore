@@ -382,7 +382,11 @@
     "drunk-romeo-and-juliet-2025/theatermania--unknown.json",
     "eva-luna-2022/theatermania--unknown.json",
     "friends-the-musical-parody-2022/theatermania--hayley-levitt.json",
-    "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json"
+    "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+    "gobstopper-2026/theatermania--unknown.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-west-end-2024/theatermania--unknown.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -1021,7 +1025,13 @@
     "chicago-1996/nypost--elisabeth-vincentelli.json",
     "data-2026/broadwaynews--unknown.json",
     "death-becomes-her-2024/wsj--charles-isherwood.json",
-    "dirty-books-2025/broadwaynews--unknown.json"
+    "dirty-books-2025/broadwaynews--unknown.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "hadestown-west-end-2024/nbcnews--unknown.json",
+    "hadestown-west-end-2024/nypost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1264,7 +1274,10 @@
       "dracula-west-end-2025/the-guardian-uk--arifa-akbar.json",
       "eva-luna-2022/theatermania--unknown.json",
       "friends-the-musical-parody-2022/theatermania--hayley-levitt.json",
-      "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json"
+      "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+      "hadestown-2019/timeout--adam-feldman.json",
+      "hadestown-west-end-2024/nypost--unknown.json",
+      "hadestown-west-end-2024/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1553,7 +1566,9 @@
       "data/review-texts/blackout-songs-2026/new-york-sun--elysa-gardner.json",
       "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
       "data/review-texts/bughouse-2026/broadwaynews--unknown.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/wsj--charles-isherwood.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1652,11 +1667,13 @@
       "bug-2026/wsj--charles-isherwood.json",
       "cold-war-choir-practice-2026/theatermania--unknown.json",
       "drunk-romeo-and-juliet-2025/theatermania--unknown.json",
-      "dirty-books-2025/broadwaynews--unknown.json"
+      "dirty-books-2025/broadwaynews--unknown.json",
+      "gobstopper-2026/theatermania--unknown.json",
+      "hadestown-2019/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+  "lastProcessed": "hadestown-west-end-2024/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1910,6 +1927,17 @@
     },
     {
       "t": "2026-02-25T18:34:37.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:42:33.035Z",
+      "event": "bb-session",
+      "session": "aea84073",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-25T18:42:34.243Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

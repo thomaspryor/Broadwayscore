@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-25T18:39:21.591Z",
-  "processed": 383,
-  "failed": 637,
-  "successRate": "37.5%",
+  "updatedAt": "2026-02-25T18:47:35.414Z",
+  "processed": 387,
+  "failed": 643,
+  "successRate": "37.6%",
   "tierBreakdown": {
-    "playwright": 239,
+    "playwright": 242,
     "amp": 13,
     "browserbase": 6,
     "directCookies": 7,
     "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 201,
-    "archive": 97
+    "archiveToday": 203,
+    "archive": 99
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-02-25T17:25:18.094Z",
-      "event": "bb-session",
-      "session": "eb67b9e5",
-      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
-    },
-    {
-      "t": "2026-02-25T17:25:19.086Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-25T17:27:33.169Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-25T18:34:37.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:42:33.035Z",
+      "event": "bb-session",
+      "session": "aea84073",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-02-25T18:42:34.243Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
