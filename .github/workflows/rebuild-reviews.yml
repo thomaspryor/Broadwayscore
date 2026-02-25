@@ -105,7 +105,7 @@ jobs:
       - name: Classify medium-confidence wrong-production flags
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-production.js --apply --resume
+        run: node scripts/classify-wrong-production.js --apply --resume --limit=200
         continue-on-error: true
 
       - name: Rebuild reviews.json

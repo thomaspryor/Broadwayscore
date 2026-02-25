@@ -73,6 +73,9 @@ ga-service-account*.json
 data/archives/
 
 
+# LLM classification checkpoint (ephemeral, crash-recovery only)
+.classify-wp-checkpoint.json
+
 # Copyrighted content / scraped data (removed from public repo Feb 2026)
 data/master-review-list.json
 data/review-texts-quarantine/
