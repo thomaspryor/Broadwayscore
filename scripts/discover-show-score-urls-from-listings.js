@@ -58,6 +58,37 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
+// ── Venue extraction from listing titles ──
+// Show Score listing titles sometimes include venue in trailing parentheses:
+//   "Little Shop of Horrors (Sheen Center)"
+//   "Burnout Paradise (Astor Place Theatre)"
+// Category tags like (Broadway), (Off-Broadway) etc. are NOT venues.
+
+const CATEGORY_TAGS = /^(Broadway|London|West End|Off-Broadway|NYC|Off Broadway)$/i;
+
+function extractVenueFromTitle(rawTitle) {
+  const title = (rawTitle || '').replace(/&amp;/g, '&').replace(/&#39;/g, "'");
+  const match = title.match(/\s*\(([^)]+)\)\s*$/);
+  if (!match) return null;
+  if (CATEGORY_TAGS.test(match[1].trim())) return null;
+  return match[1].trim();
+}
+
+function venuesMatch(a, b) {
+  if (!a || !b) return false;
+  const norm = s => s.toLowerCase()
+    .replace(/\bthe\b/g, '')
+    .replace(/\btheatre\b/g, 'theater')
+    .replace(/[''""'":,.!?–—-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const na = norm(a);
+  const nb = norm(b);
+  if (na === nb) return true;
+  if (na.includes(nb) || nb.includes(na)) return true;
+  return false;
+}
+
 // ── Title normalization for fuzzy matching ──
 
 function normalizeTitle(title) {
@@ -279,7 +310,7 @@ async function main() {
     'west-end': 'west-end',
   };
 
-  function findBestMatch(listing, ourCategory) {
+  function findBestMatch(listing, ourCategory, listingVenue) {
     const listingTitle = listing.title
       .replace(/&amp;/g, '&')
       .replace(/&#39;/g, "'");
@@ -336,6 +367,22 @@ async function main() {
       return null;
     }
 
+    // Venue disambiguation: when listing title includes a venue and multiple candidates exist
+    if (filtered.length > 1 && listingVenue) {
+      const venueMatched = filtered.filter(s => venuesMatch(listingVenue, s.venue));
+      if (venueMatched.length >= 1) {
+        if (verbose && venueMatched.length < filtered.length) {
+          console.log(`    [VENUE] Narrowed ${filtered.length} → ${venueMatched.length} via venue "${listingVenue}"`);
+        }
+        filtered = venueMatched;
+      }
+    }
+
+    // Log ambiguous multi-production matches for spot-checking
+    if (filtered.length > 1 && verbose) {
+      console.log(`    [AMBIGUOUS] "${listing.title}" matches ${filtered.length}: ${filtered.map(s => s.id).join(', ')}`);
+    }
+
     // Prefer open/previews shows, then most recent
     filtered.sort((a, b) => {
       const statusOrder = { open: 0, previews: 1, upcoming: 2, closed: 3, rumored: 4 };
@@ -373,7 +420,8 @@ async function main() {
         continue;
       }
 
-      const match = findBestMatch(listing, category);
+      const listingVenue = extractVenueFromTitle(listing.title);
+      const match = findBestMatch(listing, category, listingVenue);
       if (!match) {
         noMatch++;
         candidates.push({
@@ -415,6 +463,13 @@ async function main() {
   // ── Write URL results ──
   if (newDiscoveries > 0 && !dryRun) {
     for (const d of discoveries) {
+      // Check for duplicate URL: another show already has this URL
+      const existingOwner = Object.entries(urlData.shows).find(([id, url]) => url === d.url && id !== d.showId);
+      if (existingOwner) {
+        console.log(`  [DUPLICATE URL] ${d.url} already assigned to ${existingOwner[0]}, skipping ${d.showId}`);
+        urlConflict++;
+        continue;
+      }
       urlData.shows[d.showId] = d.url;
     }
     urlData._meta = urlData._meta || {};
