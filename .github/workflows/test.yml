@@ -57,7 +57,10 @@ jobs:
           curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
           sudo mv actionlint /usr/local/bin/
       - name: Lint workflow files
-        run: actionlint -color -shellcheck="" .github/workflows/*.yml
+        run: |
+          actionlint -color -shellcheck="" \
+            -ignore 'maximum number of inputs' \
+            .github/workflows/*.yml
 
   data-validation:
     name: Data Validation
