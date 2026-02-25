@@ -696,6 +696,14 @@ async function main(): Promise<void> {
       dataQualitySkipped++;
       return false;
     }
+    // Skip reviews previously rejected by the LLM ensemble (wrong_production on WE/OB shows,
+    // garbage_text with contentTier='needs-rescrape', etc.). These have rejectionReason set
+    // but aren't caught by the flags above. Without this check, they get re-processed every run.
+    // If a review is re-scraped with better text, collect-review-texts should clear rejectionReason.
+    if (d.rejectionReason) {
+      dataQualitySkipped++;
+      return false;
+    }
     // Allow showNotMentioned reviews through if they have valid aggregator excerpts
     // The flag means "collected fullText didn't mention the show" but aggregator excerpts
     // ARE curated for this show and are valid for scoring
