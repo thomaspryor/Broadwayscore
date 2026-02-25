@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-25T18:33:13.832Z",
-  "processed": 375,
-  "failed": 635,
-  "successRate": "37.1%",
+  "updatedAt": "2026-02-25T18:39:21.591Z",
+  "processed": 383,
+  "failed": 637,
+  "successRate": "37.5%",
   "tierBreakdown": {
-    "playwright": 232,
+    "playwright": 239,
     "amp": 13,
     "browserbase": 6,
     "directCookies": 7,
     "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 200,
-    "archive": 95
+    "archiveToday": 201,
+    "archive": 97
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-02-25T17:23:59.695Z",
-      "event": "bb-session",
-      "session": "7ade94b6",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-02-25T17:24:00.800Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-25T17:25:18.094Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-25T18:24:18.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:34:36.770Z",
+      "event": "bb-session",
+      "session": "1f99aadd",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-02-25T18:34:37.834Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
