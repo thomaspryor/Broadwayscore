@@ -407,8 +407,8 @@ async function main() {
         return;
       }
 
-      // Skip already flagged
-      if (reviewData.wrongProduction || reviewData.wrongShow) {
+      // Skip already flagged or already classified by LLM
+      if (reviewData.wrongProduction || reviewData.wrongShow || reviewData.wpClassified) {
         stats.skippedAlreadyFlagged++;
         return;
       }
@@ -466,6 +466,16 @@ async function main() {
         } else {
           stats.uncertain++;
           if (VERBOSE) console.log(`  UNCERTAIN: ${key} — ${parsed.reasoning}`);
+        }
+
+        // Write persistent marker so future runs skip this review (avoids daily re-classification)
+        // Only write for non-WRONG verdicts; WRONG gets marked during --apply
+        if (parsed.verdict !== 'WRONG_PRODUCTION') {
+          reviewData.wpClassified = parsed.verdict.toLowerCase();
+          reviewData.wpClassifiedDate = new Date().toISOString().slice(0, 10);
+          try {
+            fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+          } catch (e) { /* non-fatal */ }
         }
 
         // Save to checkpoint incrementally
