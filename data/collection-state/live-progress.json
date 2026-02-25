@@ -1,28 +1,127 @@
 {
-  "updatedAt": "2026-02-25T17:45:32.234Z",
-  "processed": 12,
-  "failed": 3,
-  "successRate": "80.0%",
+  "updatedAt": "2026-02-25T18:03:15.233Z",
+  "processed": 352,
+  "failed": 618,
+  "successRate": "36.3%",
   "tierBreakdown": {
-    "playwright": 5,
-    "amp": 2,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "playwright": 211,
+    "amp": 13,
+    "browserbase": 6,
+    "directCookies": 7,
+    "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 6
+    "archiveToday": 192,
+    "archive": 89
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
-      "t": "2026-02-25T17:42:53.452Z",
+      "t": "2026-02-25T16:53:02.328Z",
       "event": "bb-session",
-      "session": "2b07a2da",
+      "session": "bfb23e93",
+      "url": "https://www.nytimes.com/1999/07/16/movies/on-stage-and-off-britons-exclaim-mamma"
+    },
+    {
+      "t": "2026-02-25T16:53:03.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:01:10.895Z",
+      "event": "bb-session",
+      "session": "43abe172",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-02-25T17:01:12.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:19:45.416Z",
+      "event": "bb-session",
+      "session": "069e43fa",
+      "url": "https://www.vulture.com/2023/02/theater-review-the-woodstock-ny-parker-posey.htm"
+    },
+    {
+      "t": "2026-02-25T17:19:46.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-25T17:23:01.998Z",
+      "event": "bb-session",
+      "session": "abb781ae",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-02-25T17:23:03.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-25T17:23:59.695Z",
+      "event": "bb-session",
+      "session": "7ade94b6",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-25T17:24:00.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:25:18.094Z",
+      "event": "bb-session",
+      "session": "eb67b9e5",
+      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
+    },
+    {
+      "t": "2026-02-25T17:25:19.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:27:33.169Z",
+      "event": "bb-session",
+      "session": "14e9c28e",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-02-25T17:27:34.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:29:51.725Z",
+      "event": "bb-session",
+      "session": "126232be",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
+    },
+    {
+      "t": "2026-02-25T17:29:52.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:40:59.752Z",
+      "event": "bb-session",
+      "session": "c6739538",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-02-25T17:41:00.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:52:43.735Z",
+      "event": "bb-session",
+      "session": "0cf6bc95",
       "url": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman"
     },
     {
-      "t": "2026-02-25T17:42:54.618Z",
+      "t": "2026-02-25T17:52:44.831Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
