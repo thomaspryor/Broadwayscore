@@ -94,31 +94,21 @@ jobs:
           echo "Creating stub review-text files from reviews.json..."
           node scripts/create-stubs-from-reviews-json.js
 
-      - name: Run reason-aware URL discovery (scheduled only)
+      - name: Run URL protocol/redirect fixes (scheduled only)
         if: github.event_name == 'schedule'
         env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           CI: true
         run: |
-          echo "=== Scheduled: Running URL discovery for all reason categories ==="
-          # url_dead: reviews whose URLs no longer work
-          echo "--- Phase: url_dead (limit 100) ---"
-          node scripts/rediscover-review-urls.js --reason=url_dead --phase=3 --limit=100 || true
+          echo "=== Scheduled: Running Phases 1-2 (protocol upgrades + redirect detection) ==="
+          echo "--- Phase 1: Protocol upgrades (limit 200) ---"
+          node scripts/rediscover-review-urls.js --phase=1 --limit=200 || true
 
           echo ""
-          echo "--- Phase: no_url (limit 50) ---"
-          node scripts/rediscover-review-urls.js --reason=no_url --phase=3 --limit=50 || true
-
-          echo ""
-          echo "--- Phase: wrong_content (limit 100) ---"
-          node scripts/rediscover-review-urls.js --reason=wrong_content --phase=3 --limit=100 || true
-
-          echo ""
-          echo "--- Phase: default (no reason filter, all phases) ---"
-          node scripts/rediscover-review-urls.js --limit=50 || true
+          echo "--- Phase 2: Redirect detection (limit 200) ---"
+          node scripts/rediscover-review-urls.js --phase=2 --limit=200 || true
+          # Phase 3 (SERP discovery) disabled Feb 25, 2026: 0/1965 SERP reviews
+          # ever reached production. 80%+ waste rate, attribution bugs, West End
+          # contamination. Still available via manual dispatch: --phase=3
 
       - name: Run URL rediscovery (manual dispatch)
         if: github.event_name == 'workflow_dispatch'

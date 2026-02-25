@@ -4821,11 +4821,12 @@ function findReviewsToProcess() {
         const id = f.reviewId || `${f.showId}/${f.file}`;
         const count = f.failureCount || 1;
         const reason = f.failureReason || '';
-        // Only permanently skip if: confirmed dead URL with 3+ failures, or any reason with 5+ failures
-        // garbage_content means the URL works but scraper got wrong page — always retriable
+        // Permanently skip if: confirmed dead URL with 3+ failures, other reasons with 5+ failures,
+        // or garbage_content with 10+ failures (URL works but always returns wrong content)
         const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
+        const isExhaustedGarbage = reason === 'garbage_content' && count >= 10;
         const threshold = isConfirmedDead ? 3 : 5;
-        if (reason !== 'garbage_content' && count >= threshold) {
+        if ((reason !== 'garbage_content' && count >= threshold) || isExhaustedGarbage) {
           permanentlyFailed.add(id);
           permanentSkipCount++;
         } else if (CONFIG.retryFailed) {
@@ -4835,7 +4836,7 @@ function findReviewsToProcess() {
     } catch (e) {}
   }
   if (permanentSkipCount > 0) {
-    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (confirmed dead 3+ or other 5+ failures)`);
+    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (dead 3+, other 5+, garbage 10+)`);
   }
 
   for (const showId of shows) {

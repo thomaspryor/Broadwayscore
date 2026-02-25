@@ -87,12 +87,17 @@ jobs:
           echo "dedup_summary=Outlet:$OUTLET Critic:$CRITIC CrossShow:$CROSS URL:$URL" >> $GITHUB_OUTPUT
 
 
+      - name: Backfill review quality flags (incremental)
+        run: |
+          echo "Running incremental backfill of showNotMentioned, misattributed, duplicateTextOf flags..."
+          node scripts/backfill-review-flags.js 2>&1 | tail -15
+
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "data: Weekly Data Integrity Check — Commit dedup cleanup"
+          message: "data: Weekly Data Integrity Check — Commit dedup cleanup + flag backfill"
       - name: Commit dedup cleanup
         if: always()
         run: |
