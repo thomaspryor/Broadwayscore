@@ -122,6 +122,25 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
 }
 
 /**
+ * Load show ID → title mapping for quality checks.
+ * assessTextQuality needs the human-readable title to validate show mentions.
+ */
+function loadShowTitles(): Map<string, string> {
+  const map = new Map<string, string>();
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf-8'));
+    for (const show of (shows.shows || shows)) {
+      if (show.id && show.title) {
+        map.set(show.id, show.title);
+      }
+    }
+  } catch {
+    // Fall through
+  }
+  return map;
+}
+
+/**
  * Sort reviews by scoring priority:
  *   1. Full-text reviews before excerpt-only
  *   2. Open shows before previews before closed
@@ -591,13 +610,18 @@ async function main(): Promise<void> {
   // Track garbage skips for logging
   const garbageSkips: GarbageSkipEntry[] = [];
 
+  // Load show titles for quality checks — assessTextQuality needs the human-readable
+  // title to properly validate show mentions (showId alone misses many valid reviews)
+  const showTitles = loadShowTitles();
+
   // Helper to get scorable text (fullText or excerpts)
   // Uses the full content-quality module for comprehensive garbage detection
   const getScorableText = (data: ReviewTextFile, filePath: string): string | null => {
     // Check fullText first (but not if it's garbage)
     if (data.fullText && data.fullText.length >= 100) {
       // Use the comprehensive content-quality module for garbage detection
-      const qualityCheck: ContentQualityResult = assessTextQuality(data.fullText, data.showId);
+      const showTitle = showTitles.get(data.showId) || undefined;
+      const qualityCheck: ContentQualityResult = assessTextQuality(data.fullText, data.showId, showTitle);
 
       if (qualityCheck.quality === 'garbage') {
         // Log and track the skip

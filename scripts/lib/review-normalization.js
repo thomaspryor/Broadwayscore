@@ -106,7 +106,8 @@ const OUTLET_ALIASES = {
   ],
   'timeout': [
     'timeout', 'time out', 'time out new york', 'timeout new york',
-    'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york'
+    'time out ny', 'timeout ny', 'timeout-ny', 'time-out-new-york',
+    'time out london', 'timeout london', 'timeout-london', 'time-out-london'
   ],
   'guardian': [
     'guardian', 'the guardian', 'theguardian', 'the-gaurdian', 'the-guardian-uk', 'uk-guardian'
@@ -178,7 +179,7 @@ const OUTLET_ALIASES = {
     'new-york-theater'
   ],
   'cititour': [
-    'cititour', 'citi tour', 'city tour', 'cititourcom'
+    'cititour', 'citi tour', 'city tour', 'cititourcom', 'citiour'
   ],
   'stagebuddy': [
     'stagebuddy', 'stage buddy', 'stage-buddy'
@@ -201,7 +202,7 @@ const OUTLET_ALIASES = {
     'usatoday', 'usa today', 'usa-today'
   ],
   'forward': [
-    'forward', 'the forward', 'jewish forward'
+    'forward', 'the forward', 'jewish forward', 'jewish daily forward', 'the-forward'
   ],
   'rollingstone': [
     'rollingstone', 'rolling stone', 'rolling-stone'
@@ -225,7 +226,8 @@ const OUTLET_ALIASES = {
     'whatsonstage', "what's on stage", 'whats on stage', 'whatson', 'whats-on-stage'
   ],
   'telegraph': [
-    'telegraph', 'the telegraph', 'daily telegraph', 'the-telegraphy', 'the-telegraph-uk'
+    'telegraph', 'the telegraph', 'daily telegraph', 'the-telegraphy', 'the-telegraph-uk',
+    'uk daily telegraph', 'the daily telegraph'
   ],
   'financialtimes': [
     'financialtimes', 'financial times', 'ft', 'the financial times', 'financial-times-uk'
@@ -260,7 +262,7 @@ const OUTLET_ALIASES = {
     'vox', 'vox media'
   ],
   'huffpost': [
-    'huffpost', 'huffington post', 'the huffington post', 'huff post', 'huffingtion-post'
+    'huffpost', 'huffington post', 'the huffington post', 'huff post', 'huffingtion-post', 'huffpo'
   ],
   'nbcnews': [
     'nbcnews', 'nbc news', 'nbc', 'nbc-news'
@@ -303,7 +305,7 @@ const OUTLET_ALIASES = {
   ],
   'nbcny': [
     'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york',
-    'mbc new york', 'mbc-new-york', 'nbcnewyork'
+    'mbc new york', 'mbc-new-york', 'nbcnewyork', 'wnbc'
   ],
   'london-theatre': [
     'londontheatre', 'london theatre', 'london-theatre', 'london theater', 'london-theatre-uk', 'londontheatreuk'
@@ -339,7 +341,7 @@ const OUTLET_ALIASES = {
   'new-jersey-newsroom': [
     'new-jersey-newsroom', 'new jersey newsroom', 'new jersey news room',
     'nj newsroom', 'nj-newsroom', 'newjerseynewsroom.com', 'newjerseynewsroomcom',
-    'new-jersey-news-room'
+    'new-jersey-news-room', 'njnewsroom'
   ],
   'faster-times': [
     'faster-times', 'faster times', 'the faster times', 'the-faster-times'
@@ -349,7 +351,7 @@ const OUTLET_ALIASES = {
   ],
   // New outlets from Feb 2026 dedup prevention audit
   'bloomberg': [
-    'bloomberg', 'bloomberg-news', 'bloombeg-news', 'bloomgberg-news'
+    'bloomberg', 'bloomberg-news', 'bloombeg-news', 'bloomgberg-news', 'bloomberg.com', 'bloombergcom'
   ],
   '4columns': [
     '4columns', '4 columns', 'four columns'
@@ -384,15 +386,15 @@ const OUTLET_ALIASES = {
   'parade': ['parade', 'parade magazine'],
   'backstage': ['backstage', 'back stage'],
   'the-recs': ['the-recs', 'therecs', 'the recs'],
-  'ny1': ['ny1', 'ny 1', 'spectrum news ny1'],
+  'ny1': ['ny1', 'ny 1', 'spectrum news ny1', 'ny1-on-stage', 'ny 1 time out magazine'],
   'curtainup': ['curtainup', 'curtain up', 'curtain-up'],
   'theater-scene': ['theater-scene', 'theaterscene', 'theaterscenecom', 'nytheaterscene', 'theater scene'],
   'stagezine': ['stagezine', 'stage-zine', 'stage zine'],
   'wnyc': ['wnyc'],
   'queerty': ['queerty'],
   'medium': ['medium'],
-  'exeunt-magazine': ['exeunt-magazine', 'exeunt', 'exeunt magazine'],
-  'northjerseycom': ['northjerseycom', 'northjereycom', 'northjersycom', 'north-jerseycom', 'north jersey', 'northjersey.com'],
+  'exeunt-magazine': ['exeunt-magazine', 'exeunt', 'exeunt magazine', 'exeunt nyc', 'exeunt-nyc'],
+  'northjerseycom': ['northjerseycom', 'northjereycom', 'northjersycom', 'north-jerseycom', 'north jersey', 'northjersey.com', 'north jersey.com', 'northjersy.com'],
   'chicago-sun-times': ['chicago-sun-times', 'chicagosuntimes', 'chicago sun-times', 'chicago sun times'],
   'new-york-sun': ['new-york-sun', 'newyorksun', 'new york sun', 'the new york sun'],
 };

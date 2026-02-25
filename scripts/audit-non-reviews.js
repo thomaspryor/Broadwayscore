@@ -51,16 +51,20 @@ const NON_REVIEW_PATTERNS = [
   { pattern: /(?:what to expect|first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
   // News/closings
   { pattern: /(?:closes? (?:early|unexpectedly|on)|final performance|closing notice|has been (?:cancelled|postponed|delayed))/i, type: 'news_article' },
-  // Interviews
-  { pattern: /(?:in (?:an|this) interview|(?:we|I) (?:spoke|sat down|chatted) with|Q&A with|Q:\s|exclusive interview)/i, type: 'interview' },
+  // Interviews — Q:\s requires Q&A context (not Times UK quiz "Q: What was...")
+  { pattern: /(?:in (?:an|this) interview|(?:we|I) (?:spoke|sat down|chatted) with|Q&A with|exclusive interview)/i, type: 'interview' },
+  { pattern: /Q:\s.{5,80}\nA:\s/i, type: 'interview' },
   // Listicles
   { pattern: /(?:top \d+ (?:shows|musicals|plays)|best (?:shows|musicals|plays) of \d{4}|our picks for|ranking (?:the|every)|must-see shows)/i, type: 'listicle' },
   // Award coverage
   { pattern: /(?:tony (?:nominations|winners|predictions)|award (?:nominations|winners)|receives? \d+ nomination)/i, type: 'awards_coverage' },
   // Photo galleries
   { pattern: /(?:photo gallery|see the photos|in photos|production photos|first photos)/i, type: 'photo_gallery' },
-  // Obituaries
-  { pattern: /(?:has died|passed away|(?:age|aged) \d{2,3}|in memoriam|remembering)/i, type: 'obituary' },
+  // Obituaries — age N requires death/memorial context (not biographical mentions like "at age 34, Wilson wrote...")
+  { pattern: /(?:has died|passed away|in memoriam)/i, type: 'obituary' },
+  { pattern: /(?:(?:age|aged) \d{2,3}).{0,40}(?:died|death|passed|memorial|funeral|tribute)/i, type: 'obituary' },
+  { pattern: /(?:died|death|passed|memorial|funeral|tribute).{0,40}(?:(?:age|aged) \d{2,3})/i, type: 'obituary' },
+  { pattern: /\bremembering\b.{0,20}(?:who|life|legacy|career)/i, type: 'obituary' },
   // Garbage scrapes: paywall walls, browser updates, CSS junk
   { pattern: /(?:BROWSER UPDATE|To gain access to the full experience|please upgrade your browser)/i, type: 'garbage_scrape' },
   { pattern: /(?:Subscribe to continue|subscribe now to read|sign in to continue reading|Already a subscriber)/i, type: 'paywall_wall' },
@@ -75,6 +79,8 @@ const REVIEW_INDICATORS = [
   /(?:the (?:production|performance|staging|direction) (?:is|was|feels?))/i,  // evaluative language
   /(?:brilliantly|masterfully|unfortunately|disappointing|thrilling|riveting|stunning)/i,  // review adjectives
   /(?:curtain call|standing ovation|intermission)/i,       // theater-specific
+  /\d\s*(?:out of|\/)\s*(?:5|10|4)\s*stars?/i,              // numeric rating (3/5 stars, 8 out of 10)
+  /(?:stars?|rating):\s*\d/i,                                // "stars: 4", "rating: 7"
 ];
 
 /**
@@ -253,6 +259,11 @@ async function main() {
       // Skip already-rejected unless --force
       if (!FORCE && data.rejectionReason === 'not_a_review') {
         stats.alreadyRejected++;
+        continue;
+      }
+
+      // Skip manually cleared files (false positives verified by human review)
+      if (!FORCE && data.nonReviewManualClear === true) {
         continue;
       }
 
