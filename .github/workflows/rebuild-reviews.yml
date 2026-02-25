@@ -90,6 +90,16 @@ jobs:
         run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
         continue-on-error: true
 
+      - name: Audit pre-2005 wrong-production reviews
+        run: node scripts/audit-pre2005-reviews.js
+        continue-on-error: true
+
+      - name: Classify medium-confidence wrong-production flags
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-wrong-production.js --apply --resume
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
