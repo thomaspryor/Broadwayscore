@@ -2037,7 +2037,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // 1a. Did They Like It - Has individual thumb ratings (Up/Meh/Down)
   console.log('\n  === Did They Like It ===');
-  const dtliResult = await searchDTLI(show);
+  let dtliResult = await searchDTLI(show);
+  if (dtliResult && dtliResult.html) {
+    const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title);
+    if (!dtliValidation.valid) {
+      console.log(`    ✗ DTLI page doesn't match "${show.title}": ${dtliValidation.reason}`);
+      dtliResult = null;
+    }
+  }
   if (dtliResult) {
     health.dtli.found = true;
     const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url);
@@ -2050,7 +2057,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // 1b. Show Score - Has critic reviews with excerpts
   console.log('\n  === Show Score ===');
-  const showScoreResult = await searchShowScore(show);
+  let showScoreResult = await searchShowScore(show);
+  if (showScoreResult && showScoreResult.html) {
+    const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title);
+    if (!ssValidation.valid) {
+      console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${ssValidation.reason}`);
+      showScoreResult = null;
+    }
+  }
   if (showScoreResult) {
     health.showScore.found = true;
     let showScoreCount = 0;
