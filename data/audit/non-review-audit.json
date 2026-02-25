@@ -3,6 +3,17 @@
     "generatedAt": "2026-02-25T14:09:08.171Z",
     "totalScanned": 25462,
     "flagged": 30,
+    "quarantined": 23,
+    "falsePositives": 7,
+    "falsePositiveFiles": [
+      "art-1998/amny--matt-windman.json (review mentioning Tony-winning cast)",
+      "diana-the-musical-2021/theater-life--barry-gordin.json (actual review by David Sheward)",
+      "the-father-2016/times-square-chronicles--suzanna-bowling.json (review excerpt mentioning Tony noms)",
+      "the-gin-game-1977/njcom--christopher-kelly.json (review mentioning actor ages)",
+      "the-gin-game-1997/njcom--christopher-kelly.json (review of revival production)",
+      "the-hills-of-california-2024/cititour--brian-scott-lipton.json (actual review, remembering is family context)",
+      "the-humans-2016/theatre-is-easy--ben-coleman.json (review behind browser warning preamble)"
+    ],
     "byType": {
       "news_article": 3,
       "garbage_scrape": 6,
