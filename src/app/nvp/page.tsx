@@ -4,7 +4,7 @@ import { useMemo, useCallback, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getBroadwayShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
@@ -259,7 +259,7 @@ function NVPPageInner() {
 
             if (scoreMode === 'audience') {
               const audienceBuzz = getAudienceBuzz(show.id);
-              if (audienceBuzz && audienceBuzz.combinedScore != null && show.status !== 'previews') {
+              if (audienceBuzz && hasEnoughAudienceReviews(audienceBuzz) && audienceBuzz.combinedScore != null && show.status !== 'previews') {
                 const grade = getAudienceGrade(audienceBuzz.combinedScore);
                 audienceGrade = grade;
                 tier = { label: grade.grade, color: grade.color, tooltip: grade.tooltip, range: '', glow: false };

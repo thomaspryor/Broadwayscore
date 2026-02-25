@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
 import { getShowGrosses } from '@/lib/data-grosses';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
@@ -164,8 +164,8 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       criticScore: show.criticScore
         ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
         : undefined,
-      audienceCombinedScore: buzz?.combinedScore ?? null,
-      audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
+      audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
       performances: grosses?.allTime?.performances ?? undefined,
       reviewYearNote: show.reviewYearNote ?? undefined,
     };

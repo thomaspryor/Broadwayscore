@@ -1,7 +1,7 @@
 // Server component — loads data at build time, passes serialized props to client
 import { getBroadwayShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow } from '@/components/HomePageClient';
 
@@ -25,8 +25,8 @@ function serializeShow(show: ComputedShow): HomepageShow {
     criticScore: show.criticScore
       ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
       : undefined,
-    audienceCombinedScore: buzz?.combinedScore ?? null,
-    audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+    audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
+    audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
   };
 }
 

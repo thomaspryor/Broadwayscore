@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories } from '@/lib/data-core';
 import type { BestOfCategory } from '@/lib/data-types';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
@@ -112,8 +112,8 @@ export default function BestOfPage({ params }: { params: { category: string } })
       criticScore: show.criticScore
         ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
         : undefined,
-      audienceCombinedScore: buzz?.combinedScore ?? null,
-      audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
+      audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
       reviewYearNote: show.reviewYearNote ?? undefined,
     };
   });

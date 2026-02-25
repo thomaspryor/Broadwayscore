@@ -5,7 +5,7 @@
 
 import { getBroadwayShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/engine';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
@@ -98,9 +98,10 @@ export function computeBlendedScoreForShow(
 
 export function serializeShow(show: ComputedShow): SerializedTonyShow {
   const buzz = getAudienceBuzz(show.id);
+  const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
   const audScore = buzz?.combinedScore ?? null;
-  const audGrade = audScore != null ? getAudienceGrade(audScore) : null;
-  const blended = computeBlendedScoreForShow(show.compositeScore, audScore);
+  const audGrade = enoughAudience && audScore != null ? getAudienceGrade(audScore) : null;
+  const blended = computeBlendedScoreForShow(show.compositeScore, enoughAudience ? audScore : null);
 
   return {
     slug: show.slug,

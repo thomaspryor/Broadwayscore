@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
@@ -38,8 +38,8 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     criticScore: show.criticScore
       ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
       : undefined,
-    audienceCombinedScore: buzz?.combinedScore ?? null,
-    audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+    audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
+    audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     creativeTeam: show.creativeTeam,
   };
 }

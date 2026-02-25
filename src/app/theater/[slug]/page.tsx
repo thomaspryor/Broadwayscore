@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -104,8 +104,8 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
       criticScore: show.criticScore
         ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
         : undefined,
-      audienceCombinedScore: buzz?.combinedScore ?? null,
-      audienceGrade: buzz ? getAudienceGrade(buzz.combinedScore) : null,
+      audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
+      audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     };
   });
 
