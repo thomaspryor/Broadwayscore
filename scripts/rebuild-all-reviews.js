@@ -1686,7 +1686,7 @@ showDirs.forEach(showId => {
       }
 
       // Skip non-reviews (profiles, interviews, previews, features, news articles)
-      if (data.isNonReview === true || data.nonReviewFlag === true) {
+      if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
