@@ -64,6 +64,8 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 
   return shows.filter(s => {
     if (s.status !== 'open' || !s.openingDate) return false;
+    // Opening night broadcasts are Broadway-only (no OB or WE yet)
+    if (s.category === 'off-broadway' || s.category === 'west-end') return false;
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);
     return d >= cutoff && d <= now;
