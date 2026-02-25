@@ -55,7 +55,7 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
  * Minimum total audience reviews required to display a grade.
  * Shows with fewer reviews get no grade (too unreliable).
  */
-const MIN_AUDIENCE_REVIEWS = 5;
+const MIN_AUDIENCE_REVIEWS = 15;
 
 /**
  * Get total audience review count across all sources.
