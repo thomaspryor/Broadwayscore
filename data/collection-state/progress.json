@@ -294,7 +294,10 @@
     "la-breve-y-maravillosa-vida-de-oscar-wao-2024/nyt-theater--unknown.json",
     "la-ternura-2025/nyt-theater--unknown.json",
     "la-ternura-2025/nytg--unknown.json",
-    "magic-mike-live-west-end-2021/nyt-theater--unknown.json"
+    "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
+    "marcel-on-the-train-2026/vulture--sara-holdren.json",
+    "masquerade-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -861,7 +864,14 @@
     "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
     "little-shop-of-horrors-2019/nytimes--ben-brantley.json",
     "los-soles-truncos-2025/nytg--unknown.json",
-    "mamma-mia-west-end-2021/nyt-theater--unknown.json"
+    "mamma-mia-west-end-2021/nyt-theater--unknown.json",
+    "mamma-mia-west-end-2021/variety--unknown.json",
+    "man-and-boy-west-end-2026/nyt-theater--unknown.json",
+    "man-and-boy-west-end-2026/nytg--unknown.json",
+    "masquerade-2025/nyt-theater--jonathan-mandell.json",
+    "masquerade-2025/nytg--gillian-russo.json",
+    "matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+    "maybe-happy-ending-2024/nytg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1061,13 +1071,17 @@
       "hells-kitchen-2024/variety--unknown.json"
     ],
     "browserbase": [
-      "data/review-texts/glengarry-glen-ross-1984/thewrap--robert-hofler.json"
+      "data/review-texts/glengarry-glen-ross-1984/thewrap--robert-hofler.json",
+      "data/review-texts/little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+      "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "cabaret-1987/usatoday--elysa-gardner.json",
       "call-me-izzy-2025/usatoday--patrick-ryan.json",
       "call-me-izzy-2025/usatoday--unknown.json",
-      "cat-on-a-hot-tin-roof-1990/usatoday--elysa-gardner.json"
+      "cat-on-a-hot-tin-roof-1990/usatoday--elysa-gardner.json",
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "1984-2017/bloomberg-news--jason-zinoman.json",
@@ -1111,7 +1125,8 @@
       "fish-in-the-dark-2015/latimes--david-ng.json",
       "fish-in-the-dark-2015/latimes--unknown.json",
       "fish-in-the-dark-2015/the-independent--tom-teodorczuk.json",
-      "data-2026/nytimes--tim-teeman.json"
+      "data-2026/nytimes--tim-teeman.json",
+      "los-soles-truncos-2025/nytg--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1292,7 +1307,8 @@
       "data/review-texts/fully-committed-2016/ap--unknown.json",
       "data/review-texts/age-is-a-feeling-2024/nyt-theater--unknown.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
-      "data/review-texts/la-llamada-2024/nyt-theater--unknown.json"
+      "data/review-texts/la-llamada-2024/nyt-theater--unknown.json",
+      "data/review-texts/man-and-boy-west-end-2026/nyt-theater--unknown.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1354,11 +1370,13 @@
       "heathers-the-musical-2025/vulture--jackson-mchenry.json",
       "la-ternura-2025/nyt-theater--unknown.json",
       "la-ternura-2025/nytg--unknown.json",
-      "magic-mike-live-west-end-2021/nyt-theater--unknown.json"
+      "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
+      "marcel-on-the-train-2026/vulture--sara-holdren.json",
+      "masquerade-2025/vulture--sara-holdrenjackson-mchenry.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "mamma-mia-west-end-2021/nyt-theater--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/nytg--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1416,6 +1434,28 @@
       "t": "2026-02-25T05:49:36.881Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-25T05:57:07.866Z",
+      "event": "bb-session",
+      "session": "cfdddaac",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-02-25T05:57:09.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T05:58:59.704Z",
+      "event": "bb-session",
+      "session": "6dee2b30",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-02-25T05:59:01.169Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

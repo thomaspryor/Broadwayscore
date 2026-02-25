@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-25T05:49:37.027Z",
-  "processed": 295,
-  "failed": 565,
+  "updatedAt": "2026-02-25T05:59:16.548Z",
+  "processed": 298,
+  "failed": 572,
   "successRate": "34.3%",
   "tierBreakdown": {
     "playwright": 189,
     "amp": 2,
-    "browserbase": 1,
-    "directCookies": 4,
-    "scrapingbee": 42,
+    "browserbase": 4,
+    "directCookies": 5,
+    "scrapingbee": 43,
     "brightdata": 0,
-    "archiveToday": 178,
-    "archive": 60
+    "archiveToday": 179,
+    "archive": 62
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -71,6 +71,28 @@
       "t": "2026-02-25T05:49:36.881Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-25T05:57:07.866Z",
+      "event": "bb-session",
+      "session": "cfdddaac",
+      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shu"
+    },
+    {
+      "t": "2026-02-25T05:57:09.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T05:58:59.704Z",
+      "event": "bb-session",
+      "session": "6dee2b30",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-02-25T05:59:01.169Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
