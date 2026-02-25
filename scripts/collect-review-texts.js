@@ -3693,33 +3693,56 @@ async function extractArticleText(page) {
 
     let bestText = '';
 
-    for (const selector of selectors) {
-      try {
-        const el = document.querySelector(selector);
-        if (el) {
-          const paragraphs = el.querySelectorAll('p');
-          if (paragraphs.length > 0) {
-            const text = Array.from(paragraphs)
-              .map(p => p.textContent.trim())
-              .filter(t => t.length > 30)
-              .join('\n\n');
-            if (text.length > bestText.length) {
-              bestText = text;
-            }
-            // Early exit: if a specific selector (not 'article' or 'main')
-            // returns enough text, prefer it over broader selectors that
-            // might include sidebar/related-posts content
-            if (text.length >= 500 && selector !== 'article' && selector !== 'main' && selector !== 'main article') {
-              break;
-            }
-          } else {
-            const text = el.textContent.trim();
-            if (text.length > bestText.length) {
-              bestText = text;
+    // Try JSON-LD first — many major sites embed articleBody in structured data
+    try {
+      const ldScripts = document.querySelectorAll('script[type="application/ld+json"]');
+      for (const script of ldScripts) {
+        try {
+          const data = JSON.parse(script.textContent);
+          const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
+          for (const item of items) {
+            const body = item.articleBody || item.reviewBody || item.text;
+            if (body && typeof body === 'string' && body.length > bestText.length) {
+              const cleaned = body.replace(/<[^>]+>/g, '').trim();
+              if (cleaned.length > bestText.length) {
+                bestText = cleaned;
+              }
             }
           }
-        }
-      } catch (e) {}
+        } catch (e) {}
+      }
+    } catch (e) {}
+
+    // If JSON-LD didn't give enough text, try CSS selectors
+    if (bestText.length < 500) {
+      for (const selector of selectors) {
+        try {
+          const el = document.querySelector(selector);
+          if (el) {
+            const paragraphs = el.querySelectorAll('p');
+            if (paragraphs.length > 0) {
+              const text = Array.from(paragraphs)
+                .map(p => p.textContent.trim())
+                .filter(t => t.length > 30)
+                .join('\n\n');
+              if (text.length > bestText.length) {
+                bestText = text;
+              }
+              // Early exit: if a specific selector (not 'article' or 'main')
+              // returns enough text, prefer it over broader selectors that
+              // might include sidebar/related-posts content
+              if (text.length >= 500 && selector !== 'article' && selector !== 'main' && selector !== 'main article') {
+                break;
+              }
+            } else {
+              const text = el.textContent.trim();
+              if (text.length > bestText.length) {
+                bestText = text;
+              }
+            }
+          }
+        } catch (e) {}
+      }
     }
 
     // Fallback: find all substantial paragraphs
@@ -3764,6 +3787,51 @@ async function extractArticleText(page) {
   });
 }
 
+/**
+ * Extract article text from JSON-LD structured data embedded in the page.
+ * Many major outlets (NYT, WaPo, HR, USA Today, The Wrap, etc.) embed
+ * the full article body in script[type="application/ld+json"] tags.
+ */
+function extractFromJsonLd(html) {
+  try {
+    const ldRegex = /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
+    let match;
+    let bestText = '';
+    while ((match = ldRegex.exec(html)) !== null) {
+      try {
+        const data = JSON.parse(match[1].trim());
+        const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
+        for (const item of items) {
+          const body = item.articleBody || item.reviewBody || item.text;
+          if (body && typeof body === 'string' && body.length > bestText.length) {
+            const cleaned = body
+              .replace(/<[^>]+>/g, '')
+              .replace(/&nbsp;/g, ' ')
+              .replace(/&amp;/g, '&')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/&rsquo;/g, '\u2019')
+              .replace(/&lsquo;/g, '\u2018')
+              .replace(/&rdquo;/g, '\u201D')
+              .replace(/&ldquo;/g, '\u201C')
+              .replace(/&mdash;/g, '\u2014')
+              .replace(/&ndash;/g, '\u2013')
+              .trim();
+            if (cleaned.length > bestText.length) {
+              bestText = cleaned;
+            }
+          }
+        }
+      } catch (e) { /* malformed JSON-LD */ }
+    }
+    return bestText;
+  } catch (e) {
+    return '';
+  }
+}
+
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
@@ -3772,6 +3840,10 @@ function extractTextFromHtml(html, url) {
     const nyText = extractNewYorkerFromHtml(html);
     if (nyText && nyText.length > 500) return nyText;
   }
+
+  // Try JSON-LD extraction — reliable when available, avoids CSS selector fragility
+  const jsonLdText = extractFromJsonLd(html);
+  if (jsonLdText && jsonLdText.length > 500) return jsonLdText;
 
   // Remove scripts, styles, nav, etc.
   let text = html
