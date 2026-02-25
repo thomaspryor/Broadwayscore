@@ -113,7 +113,8 @@ jobs:
             sleep $((3 + RANDOM % 5))
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
+            echo "::error::All push attempts failed"
+            exit 1
           fi
 
       - name: Trigger rebuild

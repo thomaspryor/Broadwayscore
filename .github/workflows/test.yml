@@ -13,6 +13,7 @@ on:
       - 'next.config.*'
       - 'tsconfig.*'
       - 'tailwind.config.*'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
   schedule:
@@ -42,6 +43,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint-workflows:
+    name: Lint Workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install actionlint
+        run: |
+          ACTIONLINT_VERSION=1.7.7
+          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
+          sudo mv actionlint /usr/local/bin/
+      - name: Lint workflow files
+        run: actionlint -color -shellcheck="" .github/workflows/*.yml
+
   data-validation:
     name: Data Validation
     runs-on: ubuntu-latest
@@ -369,7 +386,8 @@ jobs:
             sleep $((RANDOM % 5 + 2))
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
+            echo "::error::All push attempts failed"
+            exit 1
           fi
 
       - name: Upload test results

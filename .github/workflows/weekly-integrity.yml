@@ -69,7 +69,8 @@ jobs:
               git rebase -X theirs origin/main
             done
             if [ "$pushed" != "true" ]; then
-              echo "::warning::All push attempts failed"
+              echo "::error::All push attempts failed"
+              exit 1
             fi
           fi
 
@@ -117,7 +118,8 @@ jobs:
               git rebase -X theirs origin/main
             done
             if [ "$pushed" != "true" ]; then
-              echo "::warning::All push attempts failed"
+              echo "::error::All push attempts failed"
+              exit 1
             fi
           fi
 

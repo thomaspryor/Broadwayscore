@@ -264,7 +264,8 @@ jobs:
             sleep $((RANDOM % 21 + 10))
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
+            echo "::error::All push attempts failed"
+            exit 1
           fi
 
   # Job 2: Gather reviews for gap shows in parallel (aggregators only — no web search)
@@ -389,7 +390,8 @@ jobs:
                     sleep $((RANDOM % 21 + 10))
                   done
                   if [ "$pushed" != "true" ]; then
-                    echo "::warning::All push attempts failed"
+                    echo "::error::All push attempts failed"
+                    exit 1
                   fi
                 fi
               else
@@ -433,7 +435,8 @@ jobs:
               sleep $((RANDOM % 21 + 10))
             done
             if [ "$pushed" != "true" ]; then
-              echo "::warning::All push attempts failed"
+              echo "::error::All push attempts failed"
+              exit 1
             fi
           fi
 
@@ -541,7 +544,8 @@ jobs:
             sleep $((RANDOM % 21 + 10))
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
+            echo "::error::All push attempts failed"
+            exit 1
           fi
 
   # Job 4: Validate and rebuild reviews.json
@@ -620,7 +624,8 @@ jobs:
             sleep $((RANDOM % 21 + 10))
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
+            echo "::error::All push attempts failed"
+            exit 1
           fi
 
 
