@@ -104,3 +104,10 @@ jobs:
             echo "::error::All push attempts failed"
             exit 1
           fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Creative Team Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

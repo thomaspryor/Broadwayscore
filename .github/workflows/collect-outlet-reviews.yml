@@ -83,3 +83,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Collect ${{ github.event.inputs.market }} outlet reviews via SERP [T1-${{ github.event.inputs.max_tier }}]"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Outlet Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -136,3 +136,10 @@ jobs:
           else
             echo "No pending results file generated." >> $GITHUB_STEP_SUMMARY
           fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Batch Commercial Research Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

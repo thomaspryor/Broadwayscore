@@ -454,3 +454,10 @@ jobs:
           echo "Re-scraped truncated review texts across ${{ inputs.parallel_jobs }} parallel jobs." >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} truncated reviews" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Rescrape Truncated Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -163,3 +163,10 @@ jobs:
           gh workflow run "Rebuild Reviews Data" -f reason="Post overnight collection batch" || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Overnight Collect Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

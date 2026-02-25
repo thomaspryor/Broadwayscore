@@ -44,3 +44,9 @@ jobs:
         with:
           folder: out
           branch: gh-pages
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy Github Pages Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

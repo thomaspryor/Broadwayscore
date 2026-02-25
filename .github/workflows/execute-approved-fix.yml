@@ -169,3 +169,10 @@ jobs:
                 issue_number: issueNumber, labels: ['needs-manual-review']
               });
             }
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Execute Approved Fix Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
