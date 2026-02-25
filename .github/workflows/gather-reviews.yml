@@ -462,8 +462,10 @@ jobs:
           fi
 
           RUNNING=$(gh run list --workflow="Collect Review Texts" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ]; then
-            echo "Text collection already running ($RUNNING active runs). Skipping."
+          QUEUED=$(gh run list --workflow="Collect Review Texts" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Text collection already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
 
@@ -520,8 +522,10 @@ jobs:
           fi
 
           RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ]; then
-            echo "LLM scoring already running. Skipping."
+          QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
 
