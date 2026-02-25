@@ -138,7 +138,7 @@ async function loadDependencies() {
 // Configuration
 const CONFIG = {
   batchSize: parseInt(process.env.BATCH_SIZE || '10'),
-  maxReviews: parseInt(process.env.MAX_REVIEWS || '50'),
+  maxReviews: parseInt(process.env.MAX_REVIEWS || '1000'),
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
   showFilterSet: new Set((process.env.SHOW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)),
@@ -4949,6 +4949,9 @@ function findReviewsToProcess() {
           } catch (e) {}
         }
 
+        // Count previous fetch attempts (from file + failed-fetches.json)
+        const fileAttempts = Array.isArray(data.fetchAttempts) ? data.fetchAttempts.length : 0;
+
         reviews.push({
           reviewId,
           filePath,
@@ -4966,6 +4969,7 @@ function findReviewsToProcess() {
           isOpenShow: openShowIds.has(showId),
           incompleteReason: data.incompleteReason || null,
           fabricatedEntry: data.fabricatedEntry || false,
+          fetchAttempts: fileAttempts,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -4973,14 +4977,25 @@ function findReviewsToProcess() {
     }
   }
 
-  // Sort: open/preview shows first (unless CLOSED_SHOW_MODE), then by outlet tier priority
+  // Sort: open/preview shows first (unless CLOSED_SHOW_MODE),
+  // then never-attempted before previously-attempted,
+  // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => {
     if (!closedShowMode) {
       if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
     }
+    // Never-attempted reviews before previously-attempted ones
+    const aAttempted = a.fetchAttempts > 0 ? 1 : 0;
+    const bAttempted = b.fetchAttempts > 0 ? 1 : 0;
+    if (aAttempted !== bAttempted) return aAttempted - bAttempted;
     return a.priority - b.priority;
   });
+
+  // Log sort stats
+  const neverAttempted = reviews.filter(r => r.fetchAttempts === 0).length;
+  const previouslyAttempted = reviews.length - neverAttempted;
+  console.log(`  Queue: ${reviews.length} reviews (${neverAttempted} never attempted, ${previouslyAttempted} previously attempted)`);
 
   // Apply max limit
   if (CONFIG.maxReviews > 0) {
