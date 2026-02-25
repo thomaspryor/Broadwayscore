@@ -50,10 +50,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ---
 
 ## `rebuild-reviews.yml`
-- **Runs:** Daily at 4 AM UTC (11 PM EST), or manually triggered
+- **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
 - **Does:** Rebuilds `reviews.json` from `review-texts/` source files
 - **Manual trigger:** `gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"`
 - **Purpose:** PRIMARY sync mechanism for derived data
+- **Concurrency:** `rebuild-reviews` group (queued, not cancelled)
 - **When to use manually:**
   - After bulk imports (100s of shows via parallel gather-reviews)
   - After manual edits to review-texts files
@@ -318,7 +319,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/process-commercial-tip.js`
 
 ## `collect-review-texts.yml`
-- **Runs:** Nightly at 2 AM UTC (9 PM EST) + manual trigger
+- **Runs:** 3x daily at 2 AM, 10 AM, 6 PM UTC (150/batch + 2 chains for scheduled runs) + manual trigger
+- **Rebuild trigger:** Rebuild fires automatically via `workflow_run` when collection completes (no explicit dispatch needed)
 - **Does:** Fetches full review text using multi-tier fallback: Archive.org → Playwright → Browserbase → ScrapingBee → Bright Data. Supports subscription logins for paywalled sites.
 - **Manual trigger:** `gh workflow run "Collect Review Texts" --field show_filter=show-id`
 - **Parallel runs:** YES - launch multiple with different show_filter values
@@ -328,7 +330,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Truncation detection:** Checks for paywall text, "read more" prompts, proper punctuation, text length ratios, footer junk. Marks as `textQuality: "truncated"`.
 
 ## `llm-ensemble-score.yml`
-- **Runs:** Manual trigger only
+- **Runs:** Daily at 5 AM UTC (1 AM EST, after rebuild at 4 AM), auto-triggered by rebuild if 5+ unscored reviews, or manually
+- **Concurrency:** `scoring-reviews` group (queued, not cancelled — separate from rebuild to avoid blocking)
 - **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + GPT-4o + Gemini 2.0 Flash) with bucket-first approach
   - **Bucket-first scoring:** Models classify into bucket (Rave/Positive/Mixed/Negative/Pan) first, then score within range
   - **Voting logic:** Unanimous (all 3 agree) → Majority (2/3) → No consensus (uses median)

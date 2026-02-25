@@ -12,8 +12,12 @@ concurrency:
 
 on:
   schedule:
-    # Daily at 4 AM UTC (11 PM EST) - after other workflows typically complete
+    # Daily at 4 AM UTC (11 PM EST) - safety net if workflow_run misses
     - cron: '0 4 * * *'
+  workflow_run:
+    workflows: ["Collect Review Texts"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       reason:
@@ -39,6 +43,10 @@ permissions:
 jobs:
   rebuild:
     name: Rebuild reviews.json
+    # For workflow_run triggers, only run if collection succeeded
+    if: >-
+      github.event_name != 'workflow_run'
+      || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
