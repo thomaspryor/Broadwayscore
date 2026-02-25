@@ -1,0 +1,259 @@
+{
+  "_meta": {
+    "generatedAt": "2026-02-25T04:20:15.421Z",
+    "totalScanned": 25441,
+    "flagged": 22,
+    "byType": {
+      "news_article": 3,
+      "garbage_scrape": 4,
+      "awards_coverage": 4,
+      "obituary": 6,
+      "interview": 4,
+      "press_release": 1
+    }
+  },
+  "flagged": [
+    {
+      "showId": "aint-no-mo-2022",
+      "file": "stagebuddy--elyse-trevers.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "closing notice | LLM: NOT_REVIEW. While the text mentions aspects of the show, it primarily focuses on the show's closing ",
+      "outlet": "Stage Buddy",
+      "critic": "Elyse Trevers",
+      "score": 67
+    },
+    {
+      "showId": "allegiance-2015",
+      "file": "womens-voices-for-change--alexandra-macaaron.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily provides background information about George Takei's personal experie",
+      "outlet": "womens-voices-for-change",
+      "critic": "Alexandra MacAaron",
+      "score": 77
+    },
+    {
+      "showId": "art-1998",
+      "file": "amny--matt-windman.json",
+      "type": "awards_coverage",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Award winners",
+      "outlet": "amNY",
+      "critic": "Matt Windman",
+      "score": 56
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "file": "ap--.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "age 15 | LLM: NOT_REVIEW because the text primarily describes the character and setting of the play, lacking criti",
+      "outlet": "Associated Press",
+      "critic": null,
+      "score": 72
+    },
+    {
+      "showId": "bring-it-on-the-musical-2012",
+      "file": "the-faster-times--jonathan-mandell.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Tony winners | LLM: NOT_REVIEW. The text poses questions and expresses opinions about the creative choices behind the mu",
+      "outlet": "The Faster Times",
+      "critic": "Jonathan Mandell",
+      "score": 62
+    },
+    {
+      "showId": "eclipsed-2016",
+      "file": "wnbc--robert-kahn.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "remembering | LLM: NOT_REVIEW. The text focuses on the background of the play, its playwright, and the star actress, ra",
+      "outlet": "WNBC",
+      "critic": "Robert Kahn",
+      "score": 88
+    },
+    {
+      "showId": "eclipsed-2016",
+      "file": "wsj--terry-teachout.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and its author, but it doesn't offer a",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "score": 93
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "age 10 | LLM: NOT_REVIEW. The text primarily describes the plot of the play without offering critical evaluation o",
+      "outlet": "New York Daily News",
+      "critic": "Joe Dziemianowicz",
+      "score": 64
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "file": "the-times--susie-goldsbrough.json",
+      "type": "interview",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Q:  | LLM: NOT_REVIEW. The text is more of a commentary or opinion piece that references the play \"Good Night, ",
+      "outlet": "The Times",
+      "critic": "Susie Goldsbrough",
+      "score": 48
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "file": "culturesauce--unknown.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "age 47 | LLM: NOT_REVIEW. This text describes the musical \"Hamilton\" and its historical context, but it doesn't ev",
+      "outlet": "Culture Sauce",
+      "critic": "Unknown",
+      "score": 90
+    },
+    {
+      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "file": "broad-street-review--steve-cohen.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text provides historical context and background information about the origins of \"Ho",
+      "outlet": "broad-street-review",
+      "critic": "Steve Cohen",
+      "score": 77
+    },
+    {
+      "showId": "indecent-2017",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "closing notice | LLM: NOT_REVIEW. This text primarily reports on the extension of the show's run due to audience response,",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 82
+    },
+    {
+      "showId": "jitney-2017",
+      "file": "vulture--jesse-green.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "age 34 | LLM: NOT_REVIEW. The text primarily discusses the context of the play \"Jitney\" within August Wilson's lar",
+      "outlet": "Vulture",
+      "critic": "Jesse Green",
+      "score": 66
+    },
+    {
+      "showId": "marvins-room-2017",
+      "file": "broadwayworld--michael-dale.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and the play's history, rather th",
+      "outlet": "BroadwayWorld",
+      "critic": "Michael Dale",
+      "score": 75
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "file": "wnbc--robert-kahn.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "closing notice | LLM: NOT_REVIEW. While the text offers some evaluative comments (\"tighter,\" \"more endearing\"), it primari",
+      "outlet": "WNBC",
+      "critic": "Robert Kahn",
+      "score": 77
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "the-times--clive-davis.json",
+      "type": "interview",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Q:  | LLM: NOT_REVIEW. The text focuses on the secrecy surrounding the musical's debut and the lack of advance ",
+      "outlet": "The Times",
+      "critic": "Clive Davis",
+      "score": 80
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "the-times--nancy-durrant.json",
+      "type": "interview",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Q:  | LLM: NOT_REVIEW. This text primarily describes the background and context of the musical \"Suffs\" and its ",
+      "outlet": "The Times",
+      "critic": "Nancy Durrant",
+      "score": 73
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "file": "wsj--terry-teachout.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a collection of article titles and snippets from The Wall Street Jo",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "score": 75
+    },
+    {
+      "showId": "sweat-2017",
+      "file": "edge-new-york--steve-weinstein.json",
+      "type": "press_release",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "announce the | LLM: NOT_REVIEW. The text focuses more on the play's relevance and timing in relation to the political cl",
+      "outlet": "edge-new-york",
+      "critic": "Steve Weinstein",
+      "score": 63
+    },
+    {
+      "showId": "the-mountaintop-2011",
+      "file": "wsj--terry-teachout.json",
+      "type": "interview",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "in an interview | LLM: NOT_REVIEW. The text discusses public perception of Martin Luther King Jr. and doesn't evaluate a sp",
+      "outlet": "Wall Street Journal",
+      "critic": "Terry Teachout",
+      "score": 47
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "new-york-sun--elysa-gardner.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Award nominations | LLM: NOT_REVIEW. The text primarily discusses the context of the revival within the current Broadway seas",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "score": 79
+    },
+    {
+      "showId": "you-cant-take-it-with-you-2014",
+      "file": "deadline--jeremy-gerard.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "remembering | LLM: NOT_REVIEW. The text provides background information and a plot summary of \"You Can't Take It With Y",
+      "outlet": "Deadline",
+      "critic": "Jeremy Gerard",
+      "score": 61
+    }
+  ]
+}
