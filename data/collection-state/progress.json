@@ -407,7 +407,14 @@
     "high-noon-west-end-2025/guardian--arifa-akbar.json",
     "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json",
     "high-noon-west-end-2025/time-out-london--andrzej-lukowski.json",
-    "high-noon-west-end-2025/timeout--unknown.json"
+    "high-noon-west-end-2025/timeout--unknown.json",
+    "hold-on-to-your-butts-2026/the-guardian-uk--chris-wiegand.json",
+    "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json",
+    "indian-princesses-2025/theatermania--unknown.json",
+    "into-the-woods-west-end-2025/broadwaynews--unknown.json",
+    "into-the-woods-west-end-2025/ew--unknown.json",
+    "into-the-woods-west-end-2025/guardian--unknown.json",
+    "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -1061,7 +1068,10 @@
     "hells-kitchen-2024/deadline--pete-hammond.json",
     "hells-kitchen-2024/observer--rex-reed.json",
     "hells-kitchen-2024/thewrap--unknown.json",
-    "hold-on-to-your-butts-2026/broadwaynews--unknown.json"
+    "hold-on-to-your-butts-2026/broadwaynews--unknown.json",
+    "hold-on-to-your-butts-2026/theatermania--unknown.json",
+    "imitation-of-life-2026/deadline--unknown.json",
+    "into-the-woods-west-end-2025/indiewire--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1328,7 +1338,13 @@
       "hercules-west-end-2025/the-guardian-uk--arifa-akbar.json",
       "high-noon-west-end-2025/guardian--arifa-akbar.json",
       "high-noon-west-end-2025/time-out-london--andrzej-lukowski.json",
-      "high-noon-west-end-2025/timeout--unknown.json"
+      "high-noon-west-end-2025/timeout--unknown.json",
+      "hold-on-to-your-butts-2026/the-guardian-uk--chris-wiegand.json",
+      "imitation-of-life-2026/deadline--unknown.json",
+      "indian-princesses-2025/theatermania--unknown.json",
+      "into-the-woods-west-end-2025/broadwaynews--unknown.json",
+      "into-the-woods-west-end-2025/ew--unknown.json",
+      "into-the-woods-west-end-2025/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1362,7 +1378,8 @@
       "cat-on-a-hot-tin-roof-1990/usatoday--elysa-gardner.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "seagull-true-story-2026/vulture--unknown.json",
-      "six-2021/newyorker--naomi-fry.json"
+      "six-2021/newyorker--naomi-fry.json",
+      "im-sorry-prime-minister-west-end-2026/time-out-london--tom-wicker.json"
     ],
     "scrapingbee": [
       "1984-2017/bloomberg-news--jason-zinoman.json",
@@ -1416,7 +1433,8 @@
       "the-phantom-of-the-opera-west-end-2021/nyt-theater--unknown.json",
       "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json",
       "you-got-older-2026/nytimes--unknown.json",
-      "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json"
+      "high-noon-west-end-2025/the-guardian-uk--arifa-akbar.json",
+      "hold-on-to-your-butts-2026/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1625,7 +1643,8 @@
       "data/review-texts/hadestown-2019/wsj--charles-isherwood.json",
       "data/review-texts/hamilton-2015/wsj--terry-teachout.json",
       "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
-      "data/review-texts/harry-potter-2021/wsj--terry-teachout.json"
+      "data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
+      "data/review-texts/hold-on-to-your-butts-2026/theatermania--unknown.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1727,11 +1746,12 @@
       "dirty-books-2025/broadwaynews--unknown.json",
       "gobstopper-2026/theatermania--unknown.json",
       "hadestown-2019/wsj--terry-teachout.json",
-      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json"
+      "hells-kitchen-2024/theatre-reviews-limited--joseph-verlezza.json",
+      "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "hold-on-to-your-butts-2026/broadwaynews--unknown.json",
+  "lastProcessed": "into-the-woods-west-end-2025/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -2020,6 +2040,17 @@
       "t": "2026-02-25T18:56:29.450Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T19:11:02.025Z",
+      "event": "bb-session",
+      "session": "2ef8b59d",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/hold-on-to-your-butts_1"
+    },
+    {
+      "t": "2026-02-25T19:11:02.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
