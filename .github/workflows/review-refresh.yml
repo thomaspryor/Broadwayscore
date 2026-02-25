@@ -34,6 +34,8 @@ jobs:
     outputs:
       has_new_reviews: ${{ steps.check.outputs.has_new_reviews }}
       shows_with_updates: ${{ steps.check.outputs.shows_with_updates }}
+      priority_shows: ${{ steps.check.outputs.priority_shows }}
+      routine_shows: ${{ steps.check.outputs.routine_shows }}
 
     steps:
       - name: Checkout repository
@@ -143,8 +145,9 @@ jobs:
             showScoreData = JSON.parse(fs.readFileSync('data/show-score.json', 'utf8'));
           } catch {}
 
-          // Identify shows that might have new reviews available
-          const showsNeedingUpdate = [];
+          // Categorize shows into priority (genuine new reviews) vs routine (sync/low-count)
+          const priorityShows = []; // ShowScore says more reviews exist than we have
+          const routineShows = []; // Sync mismatches, awards season low-count
           const isAwardsSeason = process.env.IS_AWARDS_SEASON === 'true';
 
           for (const show of showsToCheck) {
@@ -153,36 +156,48 @@ jobs:
             const fileCount = fileReviewCounts[showId] || 0;
             const showScoreCount = showScoreData.shows?.[showId]?.criticReviewCount || 0;
 
-            // Flag if Show Score reports more reviews than we have (any gap matters)
+            // PRIORITY: ShowScore reports more reviews than we have (genuine new reviews)
             if (showScoreCount > fileCount) {
-              console.log(`  [NEW] ${show.title}: Show Score has ${showScoreCount} reviews, we have ${fileCount} files`);
-              showsNeedingUpdate.push(showId);
+              const gap = showScoreCount - fileCount;
+              console.log(`  [NEW] ${show.title}: Show Score has ${showScoreCount} reviews, we have ${fileCount} files (gap: ${gap})`);
+              priorityShows.push({ id: showId, gap });
             }
-            // During awards season, also check shows with few reviews
+            // ROUTINE: Awards season low-count
             else if (isAwardsSeason && currentCount < 5) {
               console.log(`  [LOW] ${show.title}: Only ${currentCount} reviews during awards season`);
-              showsNeedingUpdate.push(showId);
+              routineShows.push(showId);
             }
-            // Check for file vs database mismatch
+            // ROUTINE: File vs database mismatch
             else if (fileCount > currentCount) {
               console.log(`  [SYNC] ${show.title}: ${fileCount} files but only ${currentCount} in reviews.json`);
-              showsNeedingUpdate.push(showId);
+              routineShows.push(showId);
             }
           }
 
-          // Remove duplicates
-          const uniqueShows = [...new Set(showsNeedingUpdate)];
+          // Sort priority shows by gap size (biggest gaps first)
+          priorityShows.sort((a, b) => b.gap - a.gap);
+          const priorityIds = priorityShows.map(s => s.id);
 
-          console.log(`\nFound ${uniqueShows.length} shows that may need review updates`);
+          // Cap routine shows at 20 per run to avoid overwhelming the pipeline
+          const ROUTINE_CAP = 20;
+          const cappedRoutine = routineShows.slice(0, ROUTINE_CAP);
+          if (routineShows.length > ROUTINE_CAP) {
+            console.log(`\nCapped routine shows from ${routineShows.length} to ${ROUTINE_CAP}`);
+          }
+
+          const allShows = [...new Set([...priorityIds, ...cappedRoutine])];
+
+          console.log(`\nFound ${priorityIds.length} priority + ${cappedRoutine.length} routine = ${allShows.length} shows to process`);
 
           // Write outputs
-          const hasNew = uniqueShows.length > 0 || process.env.FORCE_COLLECTION === 'true';
+          const hasNew = allShows.length > 0 || process.env.FORCE_COLLECTION === 'true';
 
-          // GitHub Actions output
           const outputFile = process.env.GITHUB_OUTPUT;
           if (outputFile) {
             fs.appendFileSync(outputFile, `has_new_reviews=${hasNew}\n`);
-            fs.appendFileSync(outputFile, `shows_with_updates=${uniqueShows.join(',')}\n`);
+            fs.appendFileSync(outputFile, `shows_with_updates=${allShows.join(',')}\n`);
+            fs.appendFileSync(outputFile, `priority_shows=${priorityIds.join(',')}\n`);
+            fs.appendFileSync(outputFile, `routine_shows=${cappedRoutine.join(',')}\n`);
           }
 
           // Save detailed report for debugging
@@ -190,7 +205,10 @@ jobs:
             timestamp: new Date().toISOString(),
             isAwardsSeason,
             showsChecked: showsToCheck.length,
-            showsNeedingUpdate: uniqueShows,
+            priorityShows: priorityShows,
+            routineShows: cappedRoutine,
+            routineTotal: routineShows.length,
+            routineCapped: routineShows.length > ROUTINE_CAP,
             reviewCounts: currentReviewCounts,
             showScoreCounts: Object.fromEntries(
               showsToCheck.map(s => [s.id, showScoreData.shows?.[s.id]?.criticReviewCount || 0])
@@ -331,23 +349,34 @@ jobs:
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           fi
 
-  # Trigger full review collection if significant updates detected
+  # Trigger review collection — priority shows first (batched), then routine
   trigger-collection:
     needs: check-for-new-reviews
     if: needs.check-for-new-reviews.outputs.has_new_reviews == 'true' && needs.check-for-new-reviews.outputs.shows_with_updates != ''
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger review collection for each show
+      - name: Trigger batched review collection
         uses: actions/github-script@v7
         with:
           script: |
-            const shows = '${{ needs.check-for-new-reviews.outputs.shows_with_updates }}'.split(',').filter(Boolean);
-            console.log(`Triggering review collection for ${shows.length} shows: ${shows.join(', ')}`);
+            const priority = '${{ needs.check-for-new-reviews.outputs.priority_shows }}'.split(',').filter(Boolean);
+            const routine = '${{ needs.check-for-new-reviews.outputs.routine_shows }}'.split(',').filter(Boolean);
+
+            console.log(`Priority shows (genuine new reviews): ${priority.length}`);
+            console.log(`Routine shows (sync/low-count): ${routine.length}`);
 
             let triggered = 0;
             let failed = 0;
 
-            for (const show of shows) {
+            // Batch priority shows into groups of 10 for parallel gather
+            const BATCH_SIZE = 10;
+            const priorityBatches = [];
+            for (let i = 0; i < priority.length; i += BATCH_SIZE) {
+              priorityBatches.push(priority.slice(i, i + BATCH_SIZE));
+            }
+
+            // Dispatch priority batches first
+            for (const batch of priorityBatches) {
               try {
                 await github.rest.actions.createWorkflowDispatch({
                   owner: context.repo.owner,
@@ -355,17 +384,36 @@ jobs:
                   workflow_id: 'gather-reviews.yml',
                   ref: 'main',
                   inputs: {
-                    shows: show.trim()
+                    shows: batch.join(',')
                   }
                 });
-                console.log(`  Triggered review discovery for: ${show}`);
-                triggered++;
-                // Brief pause to avoid API rate limits
-                await new Promise(r => setTimeout(r, 2000));
+                console.log(`  [PRIORITY] Triggered gather for ${batch.length} shows: ${batch.join(', ')}`);
+                triggered += batch.length;
+                await new Promise(r => setTimeout(r, 3000));
               } catch (e) {
-                console.log(`  Failed to trigger for ${show}: ${e.message}`);
-                failed++;
+                console.log(`  [PRIORITY] Failed to trigger batch: ${e.message}`);
+                failed += batch.length;
               }
             }
 
-            console.log(`\nDone: ${triggered} triggered, ${failed} failed out of ${shows.length} shows`);
+            // Dispatch routine shows as a single batch (capped at 20)
+            if (routine.length > 0) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'gather-reviews.yml',
+                  ref: 'main',
+                  inputs: {
+                    shows: routine.join(',')
+                  }
+                });
+                console.log(`  [ROUTINE] Triggered gather for ${routine.length} shows`);
+                triggered += routine.length;
+              } catch (e) {
+                console.log(`  [ROUTINE] Failed to trigger: ${e.message}`);
+                failed += routine.length;
+              }
+            }
+
+            console.log(`\nDone: ${triggered} shows across ${priorityBatches.length + (routine.length > 0 ? 1 : 0)} dispatches (${failed} failed)`);
