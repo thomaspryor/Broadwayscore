@@ -52,6 +52,28 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
 }
 
 /**
+ * Minimum total audience reviews required to display a grade.
+ * Shows with fewer reviews get no grade (too unreliable).
+ */
+const MIN_AUDIENCE_REVIEWS = 5;
+
+/**
+ * Get total audience review count across all sources.
+ */
+export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
+  return (buzz.sources?.showScore?.reviewCount ?? 0)
+    + (buzz.sources?.mezzanine?.reviewCount ?? 0)
+    + (buzz.sources?.reddit?.reviewCount ?? 0);
+}
+
+/**
+ * Check if a show has enough audience reviews to display a grade.
+ */
+export function hasEnoughAudienceReviews(buzz: AudienceBuzzData): boolean {
+  return getTotalAudienceReviews(buzz) >= MIN_AUDIENCE_REVIEWS;
+}
+
+/**
  * Compute audience letter grade from combinedScore.
  * Grade scale shifted down 2 points from standard academic.
  * Colors use solid fills matching the critic score badge style.

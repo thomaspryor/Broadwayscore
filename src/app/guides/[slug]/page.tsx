@@ -25,7 +25,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
-import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -234,7 +234,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               const lotteryRush = getLotteryRush(show.id);
               const displayText = consensus || show.synopsis;
               const buzz = getAudienceBuzz(show.id);
-              const audienceGrade = buzz?.combinedScore != null ? getAudienceGrade(buzz.combinedScore) : null;
+              const audienceGrade = buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null;
 
               return (
                 <div key={show.id} className="card p-4 sm:p-5">
