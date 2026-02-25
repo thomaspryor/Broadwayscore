@@ -122,8 +122,43 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check if scoring needed (scheduled runs)
+        if: github.event_name == 'schedule'
+        id: check-needed
+        run: |
+          UNSCORED=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
+            let n = 0;
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.rejectionReason) return;
+                  const ct = r.contentTier || '';
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const scorable = ['complete', 'truncated', 'stub'].includes(ct);
+                  const needsScore = !r.assignedScore && !r.humanReviewScore;
+                  if ((hasText || scorable) && needsScore) n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "Unscored reviews: $UNSCORED"
+          echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
+          if [ "$UNSCORED" -lt 5 ]; then
+            echo "Below threshold (5). Nothing to score."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build CLI arguments
         id: build-args
+        if: github.event_name != 'schedule' || steps.check-needed.outputs.skip != 'true'
         run: |
           ARGS="--ensemble"
 
@@ -134,9 +169,11 @@ jobs:
             ARGS="$ARGS --all"
           fi
 
-          # Limit
+          # Limit — scheduled runs default to 400
           if [ -n "${{ github.event.inputs.limit }}" ]; then
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            ARGS="$ARGS --limit=400"
           fi
 
           # Calibration
@@ -185,6 +222,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run ensemble scoring pipeline
+        if: github.event_name != 'schedule' || steps.check-needed.outputs.skip != 'true'
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}
 
@@ -314,7 +352,7 @@ jobs:
           message: 'data: Update from llm-ensemble-score'
 
       - name: Auto-trigger rebuild for non-chain runs
-        if: ${{ github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}
+        if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -336,7 +374,7 @@ jobs:
           echo "Rebuild auto-triggered."
 
       - name: Count remaining unscored reviews
-        if: always() && github.event.inputs.chain == 'true' && github.event.inputs.dry_run != 'true'
+        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'
         id: count-remaining
         run: |
           # Count review files without llmScore (excluding invalid/wrongProduction)
@@ -359,7 +397,7 @@ jobs:
           echo "Unscored reviews remaining: $REMAINING"
 
       - name: Chain next batch
-        if: always() && job.status != 'cancelled' && github.event.inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10
+        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && steps.count-remaining.outputs.remaining > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -386,7 +424,7 @@ jobs:
 
       - name: Trigger rebuild + consensus (chain complete)
         if: >-
-          ${{ github.event.inputs.chain == 'true'
+          ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && (steps.count-remaining.outputs.remaining <= 10
               || github.event.inputs.remaining_batches == '0') }}
         env:
@@ -408,7 +446,7 @@ jobs:
 
       - name: Trigger pull quote extraction (chain complete)
         if: >-
-          ${{ github.event.inputs.chain == 'true'
+          ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && (steps.count-remaining.outputs.remaining <= 10
               || github.event.inputs.remaining_batches == '0') }}
         env:
