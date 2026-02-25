@@ -60,18 +60,7 @@ jobs:
             NEW=$(git diff --staged --stat | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "0")
             echo "new_typos=$NEW" >> $GITHUB_OUTPUT
             git commit -m "data: Auto-detect critic name typos"
-            pushed=false
-            for i in 1 2 3 4 5; do
-              git push origin main && pushed=true && break
-              echo "Push attempt $i failed, rebasing..."
-              sleep $((RANDOM % 10 + 5))
-              git fetch origin main
-              git rebase -X theirs origin/main
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Run dedup cleanup
@@ -109,18 +98,7 @@ jobs:
             echo "No dedup fixes needed"
           else
             git commit -m "chore: Auto-cleanup duplicate review files"
-            pushed=false
-            for i in 1 2 3 4 5; do
-              git push origin main && pushed=true && break
-              echo "Push attempt $i failed, rebasing..."
-              sleep $((RANDOM % 10 + 5))
-              git fetch origin main
-              git rebase -X theirs origin/main
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Clean up junk outlet files

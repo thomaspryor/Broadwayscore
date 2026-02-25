@@ -78,24 +78,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          pushed=false
-          for i in 1 2 3 4 5; do
-            if git push origin main; then
-              echo "Push succeeded on attempt $i"
-              pushed=true
-              break
-            fi
-            echo "Push failed (attempt $i), pulling and rebasing..."
-            git checkout -- . && git clean -fd
-            git pull --rebase -X theirs origin main || git rebase --abort
-            git add data/auto-fix-results.json
-            git commit -m "chore: Backfill historical show metadata" --allow-empty
-            sleep $((RANDOM % 20 + 10))
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh
 
 
       - name: Push core data to private repo

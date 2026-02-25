@@ -85,21 +85,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-            pushed=false
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                pushed=true
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              sleep $((10 + RANDOM % 20))
-              git pull --rebase -X theirs origin main
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
 
@@ -204,21 +190,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-            pushed=false
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                pushed=true
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              sleep $((10 + RANDOM % 20))
-              git pull --rebase -X theirs origin main
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Send thank-you email to submitter

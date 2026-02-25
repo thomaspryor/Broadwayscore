@@ -50,20 +50,7 @@ jobs:
       - name: Push audit data
         if: always()
         run: |
-          pushed=false
-          for i in 1 2 3 4 5; do
-            git push origin main && pushed=true && break
-            echo "Push attempt $i failed, rebasing..."
-            sleep $((RANDOM % 10 + 5))
-            git pull --rebase origin main || {
-              echo "::error::Rebase failed — audit data may conflict with concurrent push"
-              exit 1
-            }
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All 5 push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

@@ -432,7 +432,8 @@ jobs:
           # a concurrency group to prevent races with scoring shards and other collection runs.
           RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED))
+          WAITING=$(gh run list --workflow="Rebuild Reviews Data" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
 
           if [ "$ACTIVE" -gt 0 ]; then
             echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
@@ -449,7 +450,8 @@ jobs:
         run: |
           RUNNING=$(gh run list --workflow="Extract Pull Quotes" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Extract Pull Quotes" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+          WAITING=$(gh run list --workflow="Extract Pull Quotes" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
             echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
@@ -618,7 +620,8 @@ jobs:
           # Check if LLM scoring is already running or queued
           RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED))
+          WAITING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
             echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0

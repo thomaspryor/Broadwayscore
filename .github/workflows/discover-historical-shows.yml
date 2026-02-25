@@ -109,32 +109,7 @@ jobs:
             git commit -m "chore: Historical show discovery (no new shows)"
           fi
 
-          # Retry push with rebase
-          pushed=false
-          for i in 1 2 3 4 5; do
-            if git push origin main; then
-              echo "Push succeeded on attempt $i"
-              pushed=true
-              break
-            fi
-            echo "Push failed (attempt $i), rebasing..."
-            git pull --rebase -X theirs origin main || {
-              echo "Rebase conflict — aborting and using merge..."
-              git rebase --abort 2>/dev/null || true
-              git pull --no-rebase -X theirs origin main || true
-            }
-            # Re-stage our files in case rebase dropped them
-            # Core data files pushed to private repo by push-core-data action
-            if [ -f data/historical-shows-pending.json ]; then
-              git add data/historical-shows-pending.json
-            fi
-            git diff --cached --quiet || git commit -m "chore: Add historical shows from ${{ inputs.seasons }} (retry $i)"
-            sleep $((RANDOM % 10 + 5))
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh
 
   # Create issue for historical shows
 

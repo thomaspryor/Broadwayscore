@@ -370,9 +370,10 @@ jobs:
           # is the primary guard, this is defense-in-depth)
           RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED))
+          WAITING=$(gh run list --workflow="Rebuild Reviews Data" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
-            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping."
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
             exit 0
           fi
 
@@ -465,8 +466,9 @@ jobs:
           echo "Scoring chain complete. Triggering rebuild and consensus..."
           RUNNING=$(gh run list --workflow="Rebuild Reviews Data" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Rebuild Reviews Data" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
-            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
+          WAITING=$(gh run list --workflow="Rebuild Reviews Data" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping trigger."
           else
             gh workflow run "Rebuild Reviews Data" -f reason="Post LLM ensemble scoring chain"
             echo "Rebuild dispatched."
@@ -486,8 +488,9 @@ jobs:
         run: |
           RUNNING=$(gh run list --workflow="Extract Pull Quotes" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="Extract Pull Quotes" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
-            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
+          WAITING=$(gh run list --workflow="Extract Pull Quotes" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
+            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
             exit 0
           fi
           echo "Dispatching pull quote extraction post-scoring..."

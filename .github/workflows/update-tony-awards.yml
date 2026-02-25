@@ -79,18 +79,7 @@ jobs:
 
           Shows with awards: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}"
 
-          # Push with retry for concurrent workflows
-          pushed=false
-          for i in 1 2 3 4 5; do
-            git push && pushed=true && break
-            echo "Push failed, attempt $i/5, rebasing..."
-            git pull --rebase origin main
-            sleep 2
-          done
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
+          bash scripts/lib/push-with-retry.sh
 
       - name: Create IBDB scraper reminder issue
         if: steps.changes.outputs.has_changes == 'true'

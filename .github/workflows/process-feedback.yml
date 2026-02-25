@@ -59,30 +59,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-            pushed=false
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                pushed=true
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              echo "--- Unstaged files before cleanup ---"
-              git status --porcelain 2>/dev/null || true
-              git checkout -- . 2>/dev/null || true
-              git clean -fd 2>/dev/null || true
-              if git pull --rebase -X theirs origin main; then
-                echo "Rebase succeeded, retrying push..."
-              else
-                echo "Rebase failed, aborting..."
-                git rebase --abort 2>/dev/null || true
-              fi
-              sleep $((10 + RANDOM % 20))
-            done
-            if [ "$pushed" != "true" ]; then
-              echo "::error::All push attempts failed"
-              exit 1
-            fi
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Ensure owner is not watching repo (prevents GitHub notification emails)
