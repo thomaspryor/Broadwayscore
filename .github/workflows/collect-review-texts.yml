@@ -18,7 +18,7 @@ on:
       max_reviews:
         description: 'Maximum total reviews to process (0 = all)'
         required: false
-        default: '500'
+        default: '1000'
       priority:
         description: 'Priority filter (tier1, all)'
         required: false
