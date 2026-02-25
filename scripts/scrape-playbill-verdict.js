@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { isNotBroadway } = require('./lib/content-filters');
 const cheerio = require('cheerio');
@@ -485,17 +486,25 @@ async function processShowViaGoogle(show, showId, shows) {
   const effectiveArchive = fs.existsSync(existingArchive) ? existingArchive
     : (slugArchive && fs.existsSync(slugArchive) ? slugArchive : existingArchive);
   if (fs.existsSync(effectiveArchive)) {
-    console.log(`  [CACHE] ${showId}: Using archived HTML`);
     const html = fs.readFileSync(effectiveArchive, 'utf8');
-    const reviewLinks = extractReviewLinksFromArticle(html, showId);
-    stats.reviewLinksExtracted += reviewLinks.length;
-    for (const link of reviewLinks) {
-      const result = saveReviewFromPlaybill(showId, link);
-      if (result === 'new') {
-        console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
+    // Validate cached page matches this show
+    const cacheValidation = await validatePageMatchesShow(html, show.title);
+    if (!cacheValidation.valid) {
+      console.log(`  [CACHE] ${showId}: Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
+      fs.unlinkSync(effectiveArchive);
+      // Fall through to Google search below
+    } else {
+      console.log(`  [CACHE] ${showId}: Using archived HTML`);
+      const reviewLinks = extractReviewLinksFromArticle(html, showId);
+      stats.reviewLinksExtracted += reviewLinks.length;
+      for (const link of reviewLinks) {
+        const result = saveReviewFromPlaybill(showId, link);
+        if (result === 'new') {
+          console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
+        }
       }
+      return;
     }
-    return;
   }
 
   // Simplify title for search: strip venue qualifiers and subtitles
@@ -554,11 +563,10 @@ async function processShowViaGoogle(show, showId, shows) {
           continue;
         }
 
-        const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
-        const combinedText = pageTitle + ' ' + articleSlug;
-
-        if (!titleWordsMatch(show.title, combinedText)) {
-          console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
+        // Validate article matches target show (LLM tiebreaker for edge cases)
+        const articleValidation = await validatePageMatchesShow(html, show.title);
+        if (!articleValidation.valid) {
+          console.log(`    [SKIP] Article doesn't match show "${show.title}": ${articleValidation.reason}`);
           continue;
         }
 
