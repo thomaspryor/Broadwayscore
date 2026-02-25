@@ -132,12 +132,10 @@ jobs:
           git commit -m "data: Backfill cast data${SHARD_MSG}${SHOW_MSG} [${CAST_COUNT} files]"
 
           # Robust push with exponential backoff (15 retries)
-          PUSHED=false
           pushed=false
           for i in $(seq 1 15); do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
-              PUSHED=true
               pushed=true
               break
             fi
@@ -149,10 +147,6 @@ jobs:
             sleep $BACKOFF
           done
           if [ "$pushed" != "true" ]; then
-            echo "::warning::All push attempts failed"
-          fi
-
-          if [ "$PUSHED" != "true" ]; then
             echo "::error::FATAL: Failed to push after 15 attempts. Cast data for this shard was lost."
             exit 1
           fi
