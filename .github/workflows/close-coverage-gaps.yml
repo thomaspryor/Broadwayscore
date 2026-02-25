@@ -257,7 +257,7 @@ jobs:
 
           pushed=false
           for i in 1 2 3 4 5; do
-            if git push origin main; then break; fi
+            if git push origin main; then pushed=true; break; fi
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
@@ -379,6 +379,7 @@ jobs:
                   for i in 1 2 3 4 5; do
                     if git push origin main; then
                       echo "Checkpoint pushed ($TOTAL_COMMITTED total files so far)"
+                      pushed=true
                       break
                     fi
                     echo "Push retry $i..."
@@ -425,7 +426,7 @@ jobs:
             git commit -m "data: Batch ${{ matrix.batch_id }} final — $STAGED remaining files (${{ inputs.era }})" || true
             pushed=false
             for i in 1 2 3 4 5; do
-              if git push origin main; then break; fi
+              if git push origin main; then pushed=true; break; fi
               git checkout -- . 2>/dev/null || true
               git clean -fd 2>/dev/null || true
               git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
@@ -533,7 +534,7 @@ jobs:
 
           pushed=false
           for i in 1 2 3 4 5; do
-            if git push origin main; then break; fi
+            if git push origin main; then pushed=true; break; fi
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
@@ -612,7 +613,7 @@ jobs:
 
           pushed=false
           for i in 1 2 3 4 5; do
-            if git push origin main; then break; fi
+            if git push origin main; then pushed=true; break; fi
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
             git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }

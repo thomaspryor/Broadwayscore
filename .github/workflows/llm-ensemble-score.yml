@@ -292,6 +292,7 @@ jobs:
             # Try to push
             if git push origin HEAD:${{ github.ref_name }}; then
               echo "Push successful!"
+              pushed=true
               exit 0
             else
               echo "Push failed, will retry..."

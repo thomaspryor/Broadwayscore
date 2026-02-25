@@ -16,6 +16,10 @@ on:
         default: 'false'
         type: boolean
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   update-grosses:
     runs-on: ubuntu-latest
@@ -125,6 +129,7 @@ jobs:
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
+              pushed=true
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
@@ -156,7 +161,25 @@ jobs:
         if: always() && steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
+        run: |
+          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+
+          echo "Triggering deploy..."
+          gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Notify on failure
         if: failure()
