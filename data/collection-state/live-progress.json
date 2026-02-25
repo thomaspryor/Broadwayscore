@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-02-25T18:19:31.833Z",
-  "processed": 362,
-  "failed": 628,
-  "successRate": "36.6%",
+  "updatedAt": "2026-02-25T18:31:23.938Z",
+  "processed": 367,
+  "failed": 633,
+  "successRate": "36.7%",
   "tierBreakdown": {
-    "playwright": 220,
+    "playwright": 225,
     "amp": 13,
     "browserbase": 6,
     "directCookies": 7,
     "scrapingbee": 51,
     "brightdata": 0,
-    "archiveToday": 198,
-    "archive": 93
+    "archiveToday": 199,
+    "archive": 94
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-02-25T17:19:45.416Z",
-      "event": "bb-session",
-      "session": "069e43fa",
-      "url": "https://www.vulture.com/2023/02/theater-review-the-woodstock-ny-parker-posey.htm"
-    },
-    {
-      "t": "2026-02-25T17:19:46.506Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-25T17:23:01.998Z",
-      "event": "bb-session",
-      "session": "abb781ae",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
-    },
-    {
-      "t": "2026-02-25T17:23:03.256Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-02-25T17:23:59.695Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-02-25T18:08:33.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:20:42.885Z",
+      "event": "bb-session",
+      "session": "8983b905",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-25T18:20:43.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T18:24:17.807Z",
+      "event": "bb-session",
+      "session": "f89e568c",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-25T18:24:18.947Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
