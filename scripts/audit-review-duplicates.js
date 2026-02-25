@@ -19,7 +19,6 @@ const {
   normalizeOutlet,
   normalizeCritic,
   generateReviewKey,
-  OUTLET_ALIASES
 } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');

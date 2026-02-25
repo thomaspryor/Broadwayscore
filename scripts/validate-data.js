@@ -1261,51 +1261,7 @@ function validateOutletMapperSync() {
   const mapperFile = path.join(__dirname, '..', 'src', 'lib', 'outlet-id-mapper.ts');
   const scoringFile = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
 
-  // --- Part A: OUTLET_ALIASES ↔ outlet-registry.json ---
-  let normModule;
-  try {
-    normModule = require('./lib/review-normalization');
-  } catch { /* not available */ }
-
-  if (normModule && normModule.OUTLET_ALIASES && fs.existsSync(registryFile)) {
-    const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-    const outlets = registry.outlets || {};
-    const aliasIndex = registry._aliasIndex || {};
-    const aliases = normModule.OUTLET_ALIASES;
-    let syncIssues = 0;
-
-    for (const [canonical, variations] of Object.entries(aliases)) {
-      // Check canonical outlet exists in registry (either as outlet entry or _aliasIndex redirect)
-      const resolvedId = outlets[canonical] ? canonical : (aliasIndex[canonical] || null);
-      if (!resolvedId || !outlets[resolvedId]) {
-        warn(`[alias-sync] OUTLET_ALIASES canonical "${canonical}" not found in outlet-registry.json`);
-        syncIssues++;
-        continue;
-      }
-
-      // Check each alias appears in registry (aliases array or _aliasIndex)
-      const registryAliases = new Set((outlets[resolvedId].aliases || []).map(a => a.toLowerCase().trim()));
-      for (const alias of variations) {
-        const normalized = alias.toLowerCase().trim();
-        if (normalized === canonical) continue; // self-reference is fine
-        if (!registryAliases.has(normalized) && !aliasIndex[normalized]) {
-          // Only warn for non-slug aliases (slugified forms are expected to differ)
-          if (!normalized.includes(' ') && normalized.length > 3) {
-            warn(`[alias-sync] "${normalized}" in OUTLET_ALIASES["${canonical}"] missing from outlet-registry.json`);
-            syncIssues++;
-          }
-        }
-      }
-    }
-
-    if (syncIssues === 0) {
-      ok('OUTLET_ALIASES in sync with outlet-registry.json');
-    } else {
-      info(`${syncIssues} OUTLET_ALIASES ↔ registry sync issue(s) found`);
-    }
-  } else {
-    info('Skipping OUTLET_ALIASES sync check (module or registry not available)');
-  }
+  // Part A removed — OUTLET_ALIASES now auto-generates from registry, so sync check is tautological.
 
   // --- Part B: outlet-id-mapper.ts → scoring.ts OUTLET_TIERS ---
   if (!fs.existsSync(mapperFile) || !fs.existsSync(scoringFile)) {

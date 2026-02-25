@@ -31,10 +31,10 @@ const OUTPUT_PATH = path.join(__dirname, '../data/audit/normalization-diff.json'
 function parseCanonical(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
 
-  // Extract the OUTLET_ALIASES object
-  const match = content.match(/const OUTLET_ALIASES\s*=\s*\{([\s\S]*?)\n\};/);
+  // Extract the OUTLET_ALIASES object (renamed to LEGACY_OUTLET_ALIASES)
+  const match = content.match(/const (?:LEGACY_)?OUTLET_ALIASES\s*=\s*\{([\s\S]*?)\n\};/);
   if (!match) {
-    throw new Error('Could not find OUTLET_ALIASES in canonical file');
+    throw new Error('Could not find OUTLET_ALIASES/LEGACY_OUTLET_ALIASES in canonical file');
   }
 
   const aliasBlock = match[1];

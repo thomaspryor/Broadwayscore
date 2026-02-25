@@ -331,20 +331,12 @@ function parseClassifyResponse(raw) {
 function buildKnownOutletRegistry() {
   const registry = new Set();
 
-  // Load OUTLET_ALIASES
+  // Load outlets from outlet-registry.json (source of truth)
   try {
-    const normPath = path.join(__dirname, 'lib', 'review-normalization.js');
-    const normContent = fs.readFileSync(normPath, 'utf8');
-    // Extract outlet IDs from OUTLET_ALIASES keys
-    const aliasMatch = normContent.match(/const OUTLET_ALIASES\s*=\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}/s);
-    if (aliasMatch) {
-      const keys = normContent.match(/'([a-z0-9-]+)'\s*:\s*\[/g);
-      if (keys) {
-        for (const k of keys) {
-          const id = k.match(/'([^']+)'/)?.[1];
-          if (id) registry.add(id);
-        }
-      }
+    const regPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+    const outletRegistry = JSON.parse(fs.readFileSync(regPath, 'utf8'));
+    for (const id of Object.keys(outletRegistry.outlets || {})) {
+      if (id !== '_aliasIndex' && id !== '_meta') registry.add(id);
     }
   } catch (e) { /* skip */ }
 
