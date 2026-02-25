@@ -328,7 +328,15 @@
     "paranormal-activity-west-end-2025/variety--unknown.json",
     "perfect-crime-1987/nytimes--unknown.json",
     "pied-a-terre-2026/nytg--unknown.json",
-    "stranger-things-2024/nytimes--houman-barekat.json"
+    "stranger-things-2024/nytimes--houman-barekat.json",
+    "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "the-infinite-wrench-2025/nytg--unknown.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-monsters-2026/nyt-theater--jonathan-mandell.json",
+    "the-monsters-2026/nytg--amelia-merrill.json",
+    "the-monsters-2026/nytimes--brittani-samuel.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -931,7 +939,9 @@
     "seagull-true-story-2026/vulture--unknown.json",
     "six-2021/newyorker--naomi-fry.json",
     "six-the-musical-west-end-2021/nytimes--jesse-green.json",
-    "starlight-express-west-end-2024/nyt-theater--unknown.json"
+    "starlight-express-west-end-2024/nyt-theater--unknown.json",
+    "the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
+    "the-office-a-musical-parody-2018/nyt-theater--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1137,7 +1147,9 @@
       "masquerade-2025/nyt-theater--jonathan-mandell.json",
       "masquerade-2025/nytg--gillian-russo.json",
       "mj-the-musical-west-end-2024/nyt-theater--jonathan-mandell.json",
-      "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json"
+      "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
+      "the-monsters-2026/nyt-theater--jonathan-mandell.json",
+      "the-monsters-2026/nytg--amelia-merrill.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1165,7 +1177,8 @@
       "call-me-izzy-2025/usatoday--unknown.json",
       "cat-on-a-hot-tin-roof-1990/usatoday--elysa-gardner.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "seagull-true-story-2026/vulture--unknown.json"
+      "seagull-true-story-2026/vulture--unknown.json",
+      "six-2021/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "1984-2017/bloomberg-news--jason-zinoman.json",
@@ -1212,7 +1225,10 @@
       "data-2026/nytimes--tim-teeman.json",
       "los-soles-truncos-2025/nytg--unknown.json",
       "los-soles-truncos-2025/nytg--unknown.json",
-      "mamma-mia-west-end-2021/nyt-theater--unknown.json"
+      "mamma-mia-west-end-2021/nyt-theater--unknown.json",
+      "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "the-monsters-2026/nytimes--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1403,7 +1419,9 @@
       "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
       "data/review-texts/oliver-west-end-2024/nyt-theater--unknown.json",
       "data/review-texts/pen-pals-2025/nyt-theater--unknown.json",
-      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json"
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/starlight-express-west-end-2024/nyt-theater--unknown.json",
+      "data/review-texts/the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1483,11 +1501,14 @@
       "paddington-the-musical-west-end-2025/nytimes--unknown.json",
       "perfect-crime-1987/nytimes--unknown.json",
       "pied-a-terre-2026/nytg--unknown.json",
-      "stranger-things-2024/nytimes--houman-barekat.json"
+      "stranger-things-2024/nytimes--houman-barekat.json",
+      "the-infinite-wrench-2025/nytg--unknown.json",
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "the-lion-king-1997/vulture--john-simon.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "stranger-things-2024/nytimes--houman-barekat.json",
+  "lastProcessed": "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1622,6 +1643,50 @@
       "t": "2026-02-25T17:23:03.256Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-25T17:23:59.695Z",
+      "event": "bb-session",
+      "session": "7ade94b6",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-25T17:24:00.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:25:18.094Z",
+      "event": "bb-session",
+      "session": "eb67b9e5",
+      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
+    },
+    {
+      "t": "2026-02-25T17:25:19.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:27:33.169Z",
+      "event": "bb-session",
+      "session": "14e9c28e",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-02-25T17:27:34.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:29:51.725Z",
+      "event": "bb-session",
+      "session": "126232be",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
+    },
+    {
+      "t": "2026-02-25T17:29:52.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
