@@ -1,5 +1,69 @@
 [
   {
+    "date": "2026-02-25",
+    "timestamp": "2026-02-25T17:05:29.596Z",
+    "changesApplied": 1,
+    "changesFlagged": 2,
+    "changesSkipped": 0,
+    "deepResearchConflicts": 2,
+    "newEntries": 0,
+    "shadowDisagreements": 37,
+    "applied": [
+      {
+        "slug": "moulin-rouge",
+        "field": "notes",
+        "oldValue": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interrupti",
+        "newValue": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Closing July 26, 2026 after 7 years. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption loan.",
+        "confidence": "high",
+        "source": "Section F: Variety article confirms Moulin Rouge closing July 26 after 7 years, will have played 2,265 regular performances"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "hells-kitchen",
+        "field": "designation",
+        "newValue": "Fizzle",
+        "flagReason": "Designation upgrade between non-TBD categories requires manual review"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "designation",
+        "newValue": "Windfall",
+        "flagReason": "Designation upgrade between non-TBD categories requires manual review"
+      }
+    ],
+    "blocked": [
+      {
+        "slug": "death-becomes-her",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          70,
+          80
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 70-80%, proposed 10-30% (55pt difference)"
+      },
+      {
+        "slug": "chess",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          10,
+          20
+        ],
+        "proposedValue": [
+          30,
+          50
+        ],
+        "severity": "high",
+        "discrepancy": "verified 10-20%, proposed 30-50% (25pt difference)"
+      }
+    ]
+  },
+  {
     "date": "2026-02-18",
     "timestamp": "2026-02-18T17:02:12.997Z",
     "changesApplied": 7,
