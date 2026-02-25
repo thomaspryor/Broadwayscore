@@ -229,10 +229,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Count reviews needing LLM scoring (have scorable text, no score)
+          # Excludes reviews the scorer will skip: roundups, garbage, no text, duplicates
           UNSCORED=$(node -e '
             const fs = require("fs");
             const path = require("path");
             const base = "data/review-texts";
+            // Load garbage skip list so we do not count reviews the scorer already rejected
+            let garbageSuffix = new Set();
+            try {
+              const g = JSON.parse(fs.readFileSync("data/llm-scoring-garbage-skips.json","utf8"));
+              if (Array.isArray(g)) g.forEach(e => {
+                if (e.filePath) { const m = e.filePath.match(/data\/review-texts\/(.+)/); if (m) garbageSuffix.add(m[1]); }
+              });
+            } catch {}
             let n = 0;
             const dirs = fs.readdirSync(base).filter(d => {
               try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
@@ -241,14 +250,18 @@ jobs:
               const showDir = path.join(base, d);
               fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
                 try {
-                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  const fp = path.join(showDir, f);
+                  const r = JSON.parse(fs.readFileSync(fp, "utf8"));
                   if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
-                  const ct = r.contentTier || "";
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.contentTier === "invalid") return;
+                  if (garbageSuffix.has(d + "/" + f)) return;
                   const hasText = r.fullText && r.fullText.length > 100;
-                  const scorable = ["complete", "truncated", "stub"].includes(ct);
+                  const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                  if (!hasText && !hasExcerpt) return;
                   const needsScore = !r.assignedScore && !r.humanReviewScore;
                   const needsRescore = !!r.rescoreReason;
-                  if ((hasText || scorable) && (needsScore || needsRescore)) n++;
+                  if (needsScore || needsRescore) n++;
                 } catch {}
               });
             });
