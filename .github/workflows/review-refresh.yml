@@ -86,6 +86,7 @@ jobs:
           SHOW_FILTER: ${{ inputs.show_filter }}
           INCLUDE_CLOSED: ${{ inputs.include_closed }}
           IS_AWARDS_SEASON: ${{ steps.season.outputs.is_awards_season }}
+          FORCE_COLLECTION: ${{ inputs.force_collection }}
         run: |
           node << 'SCRIPT'
           const fs = require('fs');
@@ -99,7 +100,7 @@ jobs:
           const showFilter = process.env.SHOW_FILTER;
           const includeClosed = process.env.INCLUDE_CLOSED === 'true';
 
-          // On 1st Monday of each month, automatically include closed shows
+          // During first week of each month, automatically include closed shows
           const today = new Date();
           const isFirstWeek = today.getDate() <= 7;
           const checkAllShows = includeClosed || isFirstWeek;
