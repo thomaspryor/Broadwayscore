@@ -672,24 +672,22 @@ describe('Alias consistency checks', () => {
     }
   });
 
-  test('detects canonical IDs missing from their own aliases (known issues)', () => {
-    // This test documents known data issues in the aliases.
-    // These IDs have hyphenated canonical IDs but their aliases list
-    // doesn't include the hyphenated form. This doesn't affect functionality
-    // since lookups go from variations -> canonical, not canonical -> variations.
-    const missingFromOwnAliases = [];
+  test('OUTLET_ALIASES auto-generates from registry with substantial coverage', () => {
+    // OUTLET_ALIASES now auto-generates from outlet-registry.json
+    const count = Object.keys(OUTLET_ALIASES).length;
+    assert.ok(count > 100, `Expected >100 outlets, got ${count}`);
+    // Spot-check key outlets exist
+    assert.ok(OUTLET_ALIASES['nytimes'], 'nytimes should be in OUTLET_ALIASES');
+    assert.ok(OUTLET_ALIASES['variety'], 'variety should be in OUTLET_ALIASES');
+    assert.ok(OUTLET_ALIASES['vulture'], 'vulture should be in OUTLET_ALIASES');
+  });
+
+  test('all canonical IDs included in their own aliases (auto-generated)', () => {
+    // Auto-generated aliases always include the canonical ID itself
     for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
-      if (!aliases.includes(canonical)) {
-        missingFromOwnAliases.push(canonical);
-      }
-    }
-    // Document the known issues (don't fail, just assert they're the expected ones)
-    // Known issue: hollywood-reporter uses "hollywood reporter" in aliases but not "hollywood-reporter"
-    const knownMissing = ['hollywood-reporter'];
-    for (const known of knownMissing) {
       assert.ok(
-        missingFromOwnAliases.includes(known),
-        `Expected "${known}" to be missing from its own aliases`
+        aliases.includes(canonical),
+        `Canonical "${canonical}" should be in its own aliases`
       );
     }
   });

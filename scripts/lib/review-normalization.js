@@ -21,6 +21,7 @@ const { decodeHtmlEntities } = require('./text-cleaning');
 // Cache for the outlet registry data
 let _registryCache = null;
 let _registryAliasMap = null;
+let _outletAliasesCache = null;
 
 /**
  * Load and cache the outlet registry from JSON file.
@@ -78,13 +79,45 @@ function buildRegistryAliasMap() {
 }
 
 /**
+ * Build OUTLET_ALIASES-format object from outlet-registry.json.
+ * Returns { canonicalId: [alias1, alias2, ...], ... } or null on failure.
+ */
+function buildOutletAliasesFromRegistry() {
+  const registry = loadOutletRegistry();
+  if (!registry || !registry.outlets) return null;
+  const result = {};
+  for (const [outletId, data] of Object.entries(registry.outlets)) {
+    if (outletId === '_aliasIndex' || outletId === '_meta') continue;
+    const aliases = new Set();
+    aliases.add(outletId.toLowerCase());
+    for (const a of (data.aliases || [])) {
+      aliases.add(a.toLowerCase().trim());
+    }
+    result[outletId] = [...aliases];
+  }
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+/**
+ * Get OUTLET_ALIASES — auto-generated from registry, with legacy fallback.
+ */
+function getOutletAliases() {
+  if (_outletAliasesCache) return _outletAliasesCache;
+  _outletAliasesCache = buildOutletAliasesFromRegistry();
+  if (!_outletAliasesCache) {
+    _outletAliasesCache = LEGACY_OUTLET_ALIASES;
+  }
+  return _outletAliasesCache;
+}
+
+/**
  * Legacy outlet aliases - used as fallback if registry is not available.
  * The key is the canonical ID, values are all variations that should map to it.
  *
  * Format: 'canonical-id': ['variation1', 'variation2', ...]
  * Variations should be lowercase.
  */
-const OUTLET_ALIASES = {
+const LEGACY_OUTLET_ALIASES = {
   'nytimes': [
     'nytimes', 'new york times', 'the new york times', 'ny times', 'nyt',
     'newyorktimes', 'new-york-times', 'the-new-york-times'
@@ -557,8 +590,9 @@ function normalizeOutlet(outletName) {
     }
   }
 
-  // Fall back to built-in OUTLET_ALIASES
-  for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
+  // Fall back to OUTLET_ALIASES (auto-generated from registry, with legacy fallback)
+  const outletAliases = getOutletAliases();
+  for (const [canonical, aliases] of Object.entries(outletAliases)) {
     if (aliases.some(alias => {
       // Exact match
       if (lower === alias) return true;
@@ -574,7 +608,9 @@ function normalizeOutlet(outletName) {
   // Check for concatenated outlet-critic patterns (e.g., "variety-frank-rizzo", "new-york-magazinevulture-sara-holdren")
   // These come from upstream data sources that merge outlet and critic names
   const slug = slugify(outletName);
-  for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
+  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+    // Skip short canonical IDs to prevent false prefix matches (e.g., "new", "ap", "ew", "gq")
+    if (canonical.length < 4) continue;
     // Check if the slug starts with the canonical outlet ID followed by a critic name
     if (slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
       return canonical;
@@ -582,7 +618,7 @@ function normalizeOutlet(outletName) {
     // Check if the slug starts with any alias (slugified) followed by a critic name
     for (const alias of aliases) {
       const aliasSlug = slugify(alias);
-      if (aliasSlug && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
+      if (aliasSlug && aliasSlug.length >= 4 && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
         return canonical;
       }
       // Also check without separator (e.g., "newyorkmagazinevulture")
@@ -1244,6 +1280,14 @@ module.exports = {
   clearCriticRegistryCache,
   resolveOutletFromUrl,
   clearDomainCache,
-  OUTLET_ALIASES,
+  getOutletAliases,
+  LEGACY_OUTLET_ALIASES,
   CRITIC_ALIASES,
 };
+
+// OUTLET_ALIASES as a lazy getter — auto-generates from registry on first access
+Object.defineProperty(module.exports, 'OUTLET_ALIASES', {
+  get: getOutletAliases,
+  enumerable: true,
+  configurable: true,
+});
