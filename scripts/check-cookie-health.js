@@ -34,7 +34,7 @@ const CRITICAL_OUTLETS = {
   },
   wsj: {
     envVar: 'WSJ_COOKIES',
-    testUrl: 'https://www.wsj.com/articles/1776-review-roundabout-theatre-company-jeffery-l-page-diane-paulus-crystal-lucas-perry-patrena-murray-liz-mikel-sherman-edwards-peter-stone-carolee-carmello-sara-porkalob-eryn-lecroy-allyson-kaye-daniel-joanna-glushak-11665091478',
+    testUrl: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3',
     authCookies: ['sso', 'djcs_route', 'session'],
   },
   newyorker: {
@@ -44,7 +44,7 @@ const CRITICAL_OUTLETS = {
   },
   wapo: {
     envVar: 'WAPO_COOKIES',
-    testUrl: 'https://www.washingtonpost.com/entertainment/theater/hamilton-review-original-broadway/2015/08/06/2d0c3102-3bba-11e5-b3ac-8a79bc44e5e2_story.html',
+    testUrl: 'https://www.washingtonpost.com/theater-dance/2024/04/19/stereophonic-broadway-review/',
     authCookies: ['wp_ak_subs', 'wp_ak_signinv2'],
   },
   ft: {
@@ -154,11 +154,18 @@ function loadCookies(fileKey) {
   return null;
 }
 
-function buildCookieHeader(cookies) {
-  return cookies
-    .filter(c => c.name && c.value)
-    .map(c => `${c.name}=${c.value}`)
-    .join('; ');
+function buildCookieHeader(cookies, targetHostname = null) {
+  let filtered = cookies.filter(c => c.name && c.value);
+  if (targetHostname) {
+    // Only include cookies whose domain matches the target URL
+    // Cookie domain ".vulture.com" matches "www.vulture.com"
+    filtered = filtered.filter(c => {
+      if (!c.domain) return true;
+      const cookieDomain = c.domain.startsWith('.') ? c.domain.slice(1) : c.domain;
+      return targetHostname === cookieDomain || targetHostname.endsWith('.' + cookieDomain);
+    });
+  }
+  return filtered.map(c => `${c.name}=${c.value}`).join('; ');
 }
 
 // --- Paywall Detection (from collect-review-texts.js) ---
@@ -281,7 +288,8 @@ async function checkLiveAccess(fileKey, testUrl, cookies) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
   }
 
-  const cookieHeader = buildCookieHeader(cookies);
+  const targetHostname = new URL(testUrl).hostname;
+  const cookieHeader = buildCookieHeader(cookies, targetHostname);
   if (!cookieHeader || cookieHeader.length < 10) {
     return { status: 'warn', message: 'Cookie header too short' };
   }
