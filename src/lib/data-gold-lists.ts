@@ -6,7 +6,7 @@
 import type { GoldListEntry } from './data-types';
 import type { GoldListType } from '@/config/gold-lists';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
-import { OUTLET_TIERS, TIER_WEIGHTS, DEFAULT_TIER } from '@/config/scoring';
+import { OUTLET_TIERS, TIER_WEIGHTS, DEFAULT_TIER, SCORE_DISPLAY_YEAR_CUTOFF, MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF, LOW_CONF_SCORE_SOURCES } from '@/config/scoring';
 import { toScoringId } from './outlet-id-mapper';
 import { getSeason } from './data-commercial';
 
@@ -36,10 +36,7 @@ interface RawReviewData {
   scoreSource?: string;
 }
 
-// Pre-2005 Broadway review data is too unreliable (excerpt-only, wrong-production contamination)
-const GOLD_LIST_YEAR_CUTOFF = 2005;
-const GOLD_LIST_MIN_HIGH_CONF = 3;
-const LOW_CONF_SOURCES = new Set(['llmScore-lowconf', 'llmScore-thumb-boosted', 'thumb', 'bwwScore-fallback']);
+// Pre-2005 constants imported from @/config/scoring
 
 interface AudienceBuzzFile {
   shows: Record<string, {
@@ -191,9 +188,9 @@ function computeCriticalGold(season: string): GoldListEntry[] {
 
     // Pre-2005 gate: require minimum high-confidence reviews
     const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
-    if (openingYear < GOLD_LIST_YEAR_CUTOFF) {
-      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SOURCES.has(r.scoreSource)).length;
-      if (highConf < GOLD_LIST_MIN_HIGH_CONF) continue;
+    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
+      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)).length;
+      if (highConf < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) continue;
     }
 
     let weightedSum = 0;
@@ -518,9 +515,9 @@ function computeCriticalGoldUncapped(season: string): GoldListEntry[] {
 
     // Pre-2005 gate: require minimum high-confidence reviews
     const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
-    if (openingYear < GOLD_LIST_YEAR_CUTOFF) {
-      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SOURCES.has(r.scoreSource)).length;
-      if (highConf < GOLD_LIST_MIN_HIGH_CONF) continue;
+    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
+      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)).length;
+      if (highConf < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) continue;
     }
 
     let weightedSum = 0, weightSum = 0;
