@@ -679,10 +679,7 @@ async function main(): Promise<void> {
 
     if (excerpts.length > 0) {
       const combined = excerpts.join('\n\n');
-      const wordCount = combined.trim().split(/\s+/).length;
-      // Require both minimum character count AND 15+ words to score
-      // Excerpts under 15 words produce unreliable scores (~2.5% of excerpt-only reviews)
-      if (combined.length >= options.minTextLength && wordCount >= 15) {
+      if (combined.length >= options.minTextLength) {
         return combined;
       }
     }
