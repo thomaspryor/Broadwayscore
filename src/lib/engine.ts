@@ -102,6 +102,11 @@ export interface RawReview {
     bucket?: string;
     thumb?: string;
   };
+  // Scoring confidence metadata (from rebuild)
+  contentTier?: string;        // complete, truncated, excerpt, stub, invalid
+  scoreConfidence?: string;    // high, medium, low
+  dtliThumb?: string | null;   // DTLI thumb signal
+  bwwThumb?: string | null;    // BWW thumb signal
 }
 
 export interface RawAudience {
@@ -141,7 +146,8 @@ export interface ComputedReview {
   bucketScore?: number;
   thumbScore?: number;
   reviewScore: number;      // The computed score used for averaging
-  weightedScore: number;    // reviewScore × tierWeight
+  confidenceWeight: number; // Content quality multiplier (1.0 for full text, lower for excerpts)
+  weightedScore: number;    // reviewScore × tierWeight × confidenceWeight
   designation?: string;
   quote?: string;               // Direct quote from the review
   summary?: string;             // Third-person summary of the review
@@ -349,8 +355,18 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       }
     }
 
+    // Calculate confidence weight based on text quality
+    // Full text = full weight, excerpts = reduced weight
+    const hasThumb = !!(review.dtliThumb || review.bwwThumb);
+    let confidenceWeight = 1.0;
+    if (review.contentTier === 'excerpt' || review.contentTier === 'stub') {
+      confidenceWeight = hasThumb ? 0.75 : 0.5;
+    } else if (review.contentTier === 'truncated') {
+      confidenceWeight = 0.85;
+    }
+
     // Calculate weighted score
-    const weightedScore = reviewScore * tierWeight;
+    const weightedScore = reviewScore * tierWeight * confidenceWeight;
 
     return {
       showId: review.showId,
@@ -365,6 +381,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       bucketScore,
       thumbScore,
       reviewScore,
+      confidenceWeight,
       weightedScore,
       designation: review.designation,
       quote: review.quote,
@@ -381,7 +398,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
 
   // Weighted average using tier weights
   const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
-  const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight, 0);
+  const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight * r.confidenceWeight, 0);
   const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
 
   const tier1Count = computedReviews.filter(r => r.tier === 1).length;
