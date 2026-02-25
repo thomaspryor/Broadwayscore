@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-02-25T12:40:21.508Z",
-    "completedAt": "2026-02-25T13:19:57.420Z",
-    "totalReviews": 30278,
-    "processed": 0,
-    "skipped": 30211,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 166066,
-      "output": 2039,
-      "total": 326355
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-02-25T13:22:20.733Z",
     "completedAt": "2026-02-25T14:02:25.621Z",
     "totalReviews": 30278,
@@ -309631,6 +309617,31 @@
   {
     "startedAt": "2026-02-25T21:44:31.521Z",
     "completedAt": "2026-02-25T21:44:36.113Z",
+    "totalReviews": 30255,
+    "processed": 0,
+    "skipped": 30213,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "the-devil-wears-prada-west-end-2024",
+        "outletId": "artsdesk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "oh-mary-west-end-2025",
+        "outletId": "stage-uk",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-02-25T21:46:58.681Z",
+    "completedAt": "2026-02-25T21:47:03.267Z",
     "totalReviews": 30255,
     "processed": 0,
     "skipped": 30213,
