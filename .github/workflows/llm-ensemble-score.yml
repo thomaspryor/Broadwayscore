@@ -420,11 +420,19 @@ jobs:
           echo "Unscored reviews remaining: $REMAINING"
 
       - name: Chain next batch
-        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && steps.count-remaining.outputs.remaining > 10 && steps.check-changes.outputs.has_changes == 'true'
+        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10 && steps.check-changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BATCHES_LEFT=${{ github.event.inputs.remaining_batches }}
+          BATCHES_LEFT="${{ github.event.inputs.remaining_batches }}"
+          if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
+            if [ "${{ github.event_name }}" == "schedule" ]; then
+              BATCHES_LEFT=5
+            else
+              echo "No remaining batches. Stopping chain."
+              exit 0
+            fi
+          fi
           if [ "$BATCHES_LEFT" -le 0 ] 2>/dev/null; then
             echo "No remaining batches. Stopping chain."
             exit 0
@@ -448,7 +456,7 @@ jobs:
       - name: Trigger rebuild + consensus (chain complete)
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
-          && (steps.count-remaining.outputs.remaining <= 10
+          && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -470,7 +478,7 @@ jobs:
       - name: Trigger pull quote extraction (chain complete)
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
-          && (steps.count-remaining.outputs.remaining <= 10
+          && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
