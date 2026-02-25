@@ -4,8 +4,8 @@ name: Refresh Review Data
 
 on:
   schedule:
-    # Weekly on Mondays at 9 AM UTC (4 AM EST), year-round
-    - cron: '0 9 * * 1'
+    # Daily at 9 AM UTC (4 AM EST)
+    - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       show_filter:
