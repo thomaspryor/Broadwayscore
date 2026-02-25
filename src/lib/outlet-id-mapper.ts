@@ -186,12 +186,6 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'the-i': 'I-PAPER',
   'i-newspaper': 'I-PAPER',
 
-  // The Stage (UK) variants
-  'thestage': 'STAGE-UK',
-  'the-stage': 'STAGE-UK',
-  'stage-uk': 'STAGE-UK',
-  'the-stage-uk': 'STAGE-UK',
-
   // Duplicate outlet aliases (Feb 2026 normalization audit)
   'wnbc': 'NBC',
   'nbc-news': 'NBC',
