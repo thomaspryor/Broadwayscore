@@ -1686,7 +1686,7 @@ showDirs.forEach(showId => {
       }
 
       // Skip non-reviews (profiles, interviews, previews, features, news articles)
-      if (data.isNonReview === true) {
+      if (data.isNonReview === true || data.nonReviewFlag === true) {
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
@@ -1695,6 +1695,13 @@ showDirs.forEach(showId => {
       // Flagged by scripts/detect-syndicated-duplicates.js
       if (data.isSyndicatedDuplicate === true) {
         stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
+        return;
+      }
+
+      // Skip cross-outlet duplicates (different critic, same text across outlets)
+      // Flagged by scripts/detect-cross-outlet-duplicates.js
+      if (data.crossOutletDuplicate === true) {
+        stats.skippedCrossOutletDupe = (stats.skippedCrossOutletDupe || 0) + 1;
         return;
       }
 
@@ -2585,6 +2592,7 @@ if (stats.crossMarketDetails && stats.crossMarketDetails.length > 0) {
 }
 console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
+console.log(`  Skipped (cross-outlet duplicate): ${stats.skippedCrossOutletDupe || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
