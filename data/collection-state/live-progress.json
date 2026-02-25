@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-25T00:32:36.759Z",
-  "processed": 56,
-  "failed": 114,
-  "successRate": "32.9%",
+  "updatedAt": "2026-02-25T00:35:49.166Z",
+  "processed": 62,
+  "failed": 118,
+  "successRate": "34.4%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 44,
     "amp": 3,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 10
+    "archiveToday": 16,
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-25T00:09:44.244Z",
@@ -36,6 +36,17 @@
       "t": "2026-02-25T00:14:30.674Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-25T00:34:36.942Z",
+      "event": "bb-session",
+      "session": "22aba9d9",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-02-25T00:34:38.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

@@ -55,7 +55,13 @@
     "the-lion-king-west-end-2021/chicagotribune--unknown.json",
     "the-lion-king-west-end-2021/telegraph--unknown.json",
     "the-lion-king-west-end-2021/the-telegraph-uk--david-gritten.json",
-    "the-mousetrap-west-end-2021/artsfuse--unknown.json"
+    "the-mousetrap-west-end-2021/artsfuse--unknown.json",
+    "the-mousetrap-west-end-2021/evening-standard--unknown.json",
+    "the-mousetrap-west-end-2021/london-theatre--unknown.json",
+    "the-mousetrap-west-end-2021/one-minute-critic--unknown.json",
+    "the-mousetrap-west-end-2021/the-stage-uk--john-thaxter.json",
+    "the-mousetrap-west-end-2021/whatsonstage--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/nyt-theater--unknown.json",
@@ -171,7 +177,11 @@
     "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
     "the-lion-king-west-end-2021/stage-uk--unknown.json",
     "the-lion-king-west-end-2021/whatsonstage--unknown.json",
-    "the-mousetrap-west-end-2021/dailybeast--unknown.json"
+    "the-mousetrap-west-end-2021/dailybeast--unknown.json",
+    "the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/the-times-uk--quentin-letts.json",
+    "the-mousetrap-west-end-2021/the-times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -214,7 +224,12 @@
       "starlight-express-west-end-2024/billboard--unknown.json",
       "the-lion-king-west-end-2021/chicagotribune--unknown.json",
       "the-lion-king-west-end-2021/the-telegraph-uk--david-gritten.json",
-      "the-mousetrap-west-end-2021/artsfuse--unknown.json"
+      "the-mousetrap-west-end-2021/artsfuse--unknown.json",
+      "the-mousetrap-west-end-2021/evening-standard--unknown.json",
+      "the-mousetrap-west-end-2021/london-theatre--unknown.json",
+      "the-mousetrap-west-end-2021/one-minute-critic--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json"
     ],
     "amp": [
       "data/review-texts/mamma-mia-west-end-2021/variety--unknown.json",
@@ -251,7 +266,8 @@
       "data/review-texts/mamma-mia-west-end-2021/rollingstone--unknown.json",
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/chicagotribune--reviews-chris-jones.json",
       "data/review-texts/oh-mary-west-end-2025/stage-uk--holly-omahony.json",
-      "data/review-texts/oh-mary-west-end-2025/talkinbroadway--unknown.json"
+      "data/review-texts/oh-mary-west-end-2025/talkinbroadway--unknown.json",
+      "data/review-texts/the-mousetrap-west-end-2021/talkinbroadway--unknown.json"
     ],
     "archive": [
       "hadestown-west-end-2024/theatermania--unknown.json",
@@ -263,11 +279,12 @@
       "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
       "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
       "moulin-rouge-the-musical-west-end-2021/rollingstone--unknown.json",
-      "the-lion-king-west-end-2021/telegraph--unknown.json"
+      "the-lion-king-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/the-stage-uk--john-thaxter.json"
     ]
   },
   "startTime": "2026-02-24T22:34:56.154Z",
-  "lastProcessed": "the-mousetrap-west-end-2021/dailybeast--unknown.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json",
   "log": [
     {
       "t": "2026-02-25T00:09:44.244Z",
@@ -290,6 +307,17 @@
       "t": "2026-02-25T00:14:30.674Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-25T00:34:36.942Z",
+      "event": "bb-session",
+      "session": "22aba9d9",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-mousetrap-review-at-st-martins-theat"
+    },
+    {
+      "t": "2026-02-25T00:34:38.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
