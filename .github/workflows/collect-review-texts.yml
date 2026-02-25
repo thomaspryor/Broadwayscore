@@ -348,7 +348,7 @@ jobs:
           echo "Reviews still needing full text: $REMAINING"
 
       - name: Chain next collection batch
-        if: always() && (inputs.chain == 'true' || github.event_name == 'schedule') && steps.count-remaining.outputs.remaining > 10
+        if: always() && (inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
