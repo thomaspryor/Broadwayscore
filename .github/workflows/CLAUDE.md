@@ -11,9 +11,22 @@ All new workflows MUST include the `notify-failure` composite action (`.github/a
         uses: ./.github/actions/notify-failure
         with:
           title: 'Workflow Name Failed'
+          severity: 'critical'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 ```
-For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 69/98 workflows have notifications.
+For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 100/100 workflows have notifications.
+
+## Push Retry
+
+All push-to-remote steps MUST use the shared script instead of inline retry loops:
+```bash
+bash scripts/lib/push-with-retry.sh [max_retries] [branch]
+```
+Defaults: 5 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure.
+
+## Actionlint
+
+Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellcheck disabled (`-shellcheck=""`). `>10 inputs` rule suppressed (3 workflows legitimately exceed). Currently `continue-on-error: true` — remove after ~March 11 if stable.
 
 ---
 
