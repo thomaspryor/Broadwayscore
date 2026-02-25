@@ -304,7 +304,12 @@
     "anonymous-2026/nyt-theater--unknown.json",
     "chinese-republicans-2026/nyt-theater--unknown.json",
     "data-2026/newyorker--unknown.json",
-    "dirty-books-2025/nytg--unknown.json"
+    "dirty-books-2025/nytg--unknown.json",
+    "drunk-romeo-and-juliet-2025/nytg--unknown.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+    "hells-kitchen-2024/nytimes--unknown.json",
+    "hells-kitchen-2024/vulture--unknown.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -881,7 +886,12 @@
     "maybe-happy-ending-2024/nytg--unknown.json",
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
     "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
-    "cold-war-choir-practice-2026/nyt-theater--unknown.json"
+    "cold-war-choir-practice-2026/nyt-theater--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "hells-kitchen-2024/nyt-theater--unknown.json",
+    "hells-kitchen-2024/nytg--david-gordon.json",
+    "hells-kitchen-2024/nytg--unknown.json",
+    "hells-kitchen-2024/variety--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1079,7 +1089,8 @@
       "an-ark-2026/nytg--kyle-turner.json",
       "anonymous-2026/nyt-theater--unknown.json",
       "chinese-republicans-2026/nyt-theater--unknown.json",
-      "dirty-books-2025/nytg--unknown.json"
+      "dirty-books-2025/nytg--unknown.json",
+      "drunk-romeo-and-juliet-2025/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1089,7 +1100,9 @@
       "data/review-texts/glengarry-glen-ross-1984/thewrap--robert-hofler.json",
       "data/review-texts/little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
       "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
-      "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json"
+      "data/review-texts/matilda-the-musical-west-end-2021/nytimes--ben-brantley.json",
+      "data/review-texts/hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+      "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json"
     ],
     "directCookies": [
       "cabaret-1987/usatoday--elysa-gardner.json",
@@ -1324,7 +1337,8 @@
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/la-llamada-2024/nyt-theater--unknown.json",
       "data/review-texts/man-and-boy-west-end-2026/nyt-theater--unknown.json",
-      "data/review-texts/age-is-a-feeling-2024/nyt-theater--unknown.json"
+      "data/review-texts/age-is-a-feeling-2024/nyt-theater--unknown.json",
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1390,11 +1404,14 @@
       "marcel-on-the-train-2026/vulture--sara-holdren.json",
       "masquerade-2025/vulture--sara-holdrenjackson-mchenry.json",
       "an-ark-2026/vulture--sara-holdren.json",
-      "data-2026/newyorker--unknown.json"
+      "data-2026/newyorker--unknown.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hells-kitchen-2024/nytimes--unknown.json",
+      "hells-kitchen-2024/vulture--unknown.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "dirty-books-2025/nytg--unknown.json",
+  "lastProcessed": "hells-kitchen-2024/vulture--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1474,6 +1491,17 @@
       "t": "2026-02-25T05:59:01.169Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-25T16:37:58.209Z",
+      "event": "bb-session",
+      "session": "fcec5fe6",
+      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
+    },
+    {
+      "t": "2026-02-25T16:37:59.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
