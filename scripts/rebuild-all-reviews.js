@@ -1886,6 +1886,18 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
+      if (data.rejectionReason) {
+        stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
+        return;
+      }
+
+      // Skip roundup articles (multi-show reviews that aren't about this specific show)
+      if (data.isRoundupArticle === true) {
+        stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
+        return;
+      }
+
       // Skip reviews rejected by LLM ensemble Step 0 (wrong_show, wrong_production, not_a_review, garbage)
       if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) {
         stats.skippedLlmRejected = (stats.skippedLlmRejected || 0) + 1;
@@ -2599,6 +2611,8 @@ console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch |
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Skipped (URL-year standalone): ${stats.skippedUrlYearStandalone || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
+console.log(`  Skipped (rejection reason): ${stats.skippedRejectionReason || 0}`);
+console.log(`  Skipped (roundup article): ${stats.skippedRoundup || 0}`);
 console.log(`  Skipped (duplicate text flag): ${stats.skippedDuplicateText || 0}`);
 if (stats.circularDuplicateRecovered > 0) {
   console.log(`  Recovered (circular/stale duplicate flags): ${stats.circularDuplicateRecovered}`);
