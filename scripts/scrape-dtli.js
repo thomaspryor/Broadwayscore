@@ -445,13 +445,23 @@ async function processShow(show) {
   if (fs.existsSync(archivePath)) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
-    // Extract URL from archive header
-    const urlMatch = archiveContent.match(/Source:\s*(https?:\/\/[^\n]+)/);
-    if (urlMatch) {
-      dtliUrl = urlMatch[1].trim();
+    // Validate cached page is about the right show
+    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM });
+    if (!cacheValidation.valid) {
+      console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
+      fs.unlinkSync(archivePath);
+      // Fall through to re-fetch below
+    } else {
+      // Extract URL from archive header
+      const urlMatch = archiveContent.match(/Source:\s*(https?:\/\/[^\n]+)/);
+      if (urlMatch) {
+        dtliUrl = urlMatch[1].trim();
+      }
+      html = archiveContent;
     }
-    html = archiveContent;
-  } else {
+  }
+
+  if (!html) {
     // Find and fetch page
     const result = await findDTLIPage(show);
     if (!result) {
