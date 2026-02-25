@@ -36,11 +36,13 @@ const CRITICAL_OUTLETS = {
     envVar: 'WSJ_COOKIES',
     testUrl: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3',
     authCookies: ['sso', 'djcs_route', 'session'],
+    proxyBlocked: true, // WSJ aggressively blocks proxy access — live test unreliable
   },
   newyorker: {
     envVar: 'NEWYORKER_COOKIES',
     testUrl: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
     authCookies: ['CN_token_access', 'CN_token_id', 'CN_access'],
+    proxyBlocked: true, // Condé Nast blocks proxy access — live test unreliable
   },
   wapo: {
     envVar: 'WAPO_COOKIES',
@@ -409,7 +411,11 @@ async function main() {
         return { name: fileKey, layer: 3, status: 'skip', message: msg, isCritical: true };
       }
 
-      const live = await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
+      let live = await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
+      // Proxy-blocked outlets: downgrade fail→warn (site blocks proxies, not a cookie issue)
+      if (config.proxyBlocked && live.status === 'fail') {
+        live = { ...live, status: 'warn', message: live.message + ' (proxy-blocked site)' };
+      }
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
     });
