@@ -4189,6 +4189,16 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
 
+  // Clear previous LLM scoring rejection so re-scraped reviews can be scored again.
+  // The scoring pipeline skips files with rejectionReason set.
+  if (data.rejectionReason) {
+    delete data.rejectionReason;
+    delete data.rejectedAt;
+    delete data.rejectedBy;
+    delete data.rejectionReasoning;
+    delete data.promptVersion;
+  }
+
   // Extract original score from HTML/text if not already present
   if (!data.originalScore && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
