@@ -39,3 +39,9 @@ jobs:
       - name: Run consistency test
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/test-consistency.ts
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Test Model Consistency Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

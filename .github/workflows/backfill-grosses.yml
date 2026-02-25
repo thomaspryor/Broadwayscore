@@ -109,3 +109,10 @@ jobs:
             echo "## No Changes" >> $GITHUB_STEP_SUMMARY
             echo "All requested weeks already present in history." >> $GITHUB_STEP_SUMMARY
           fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Grosses Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

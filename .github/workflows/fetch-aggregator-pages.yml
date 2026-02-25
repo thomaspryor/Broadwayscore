@@ -146,3 +146,10 @@ jobs:
           else
             echo "No changes to commit." >> $GITHUB_STEP_SUMMARY
           fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fetch Aggregator Pages Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

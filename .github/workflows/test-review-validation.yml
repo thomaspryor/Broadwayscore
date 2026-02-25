@@ -50,3 +50,9 @@ jobs:
             "${{ inputs.show_name }}" \
             "${{ inputs.outlet_name }}" \
             "${{ inputs.critic_name }}"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Test Review Validation Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

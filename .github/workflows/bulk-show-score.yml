@@ -333,3 +333,10 @@ jobs:
             -f dry_run=false
 
           echo "✓ Next run triggered"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Bulk Show Score Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

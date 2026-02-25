@@ -114,3 +114,10 @@ jobs:
               exit 1
             fi
           fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Generate Theater Tips Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

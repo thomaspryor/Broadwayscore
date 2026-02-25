@@ -58,3 +58,9 @@ jobs:
           name: error-screenshots
           path: /tmp/*-error-*.png
           retention-days: 7
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Test Paywalled Access Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

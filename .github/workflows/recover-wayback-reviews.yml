@@ -175,3 +175,10 @@ jobs:
               console.log('No report generated: ' + e.message);
             }
           " >> $GITHUB_STEP_SUMMARY
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recover Wayback Reviews Failed'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
