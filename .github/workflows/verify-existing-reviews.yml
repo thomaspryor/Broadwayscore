@@ -254,7 +254,8 @@ jobs:
               }
             done
             if [ "$pushed" != "true" ]; then
-              echo "::warning::All push attempts failed"
+              echo "::error::All push attempts failed"
+              exit 1
             fi
           fi
 

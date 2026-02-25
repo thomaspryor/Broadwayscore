@@ -144,7 +144,8 @@ jobs:
               sleep $((RANDOM % 20 + 10))
             done
             if [ "$pushed" != "true" ]; then
-              echo "::warning::All push attempts failed"
+              echo "::error::All push attempts failed"
+              exit 1
             fi
             echo "✓ Changes committed and pushed"
           fi
