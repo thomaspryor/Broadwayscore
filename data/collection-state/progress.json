@@ -61,7 +61,9 @@
     "the-mousetrap-west-end-2021/one-minute-critic--unknown.json",
     "the-mousetrap-west-end-2021/the-stage-uk--john-thaxter.json",
     "the-mousetrap-west-end-2021/whatsonstage--unknown.json",
-    "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json"
+    "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/dailybeast--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/one-minute-critic--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/nyt-theater--unknown.json",
@@ -181,7 +183,15 @@
     "the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
     "the-mousetrap-west-end-2021/telegraph--unknown.json",
     "the-mousetrap-west-end-2021/the-times-uk--quentin-letts.json",
-    "the-mousetrap-west-end-2021/the-times-uk--unknown.json"
+    "the-mousetrap-west-end-2021/the-times-uk--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/evening-standard--fiona-mountford.json",
+    "the-play-that-goes-wrong-west-end-2021/financial-times-uk--sarah-hemming.json",
+    "the-play-that-goes-wrong-west-end-2021/frontmezzjunkies--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/london-theatre--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/the-stage-uk--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegraph-uk--marianka-swain.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegraph-uk--tim-walker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -229,7 +239,9 @@
       "the-mousetrap-west-end-2021/london-theatre--unknown.json",
       "the-mousetrap-west-end-2021/one-minute-critic--unknown.json",
       "the-mousetrap-west-end-2021/whatsonstage--unknown.json",
-      "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json"
+      "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/dailybeast--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/one-minute-critic--unknown.json"
     ],
     "amp": [
       "data/review-texts/mamma-mia-west-end-2021/variety--unknown.json",
@@ -267,7 +279,9 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/chicagotribune--reviews-chris-jones.json",
       "data/review-texts/oh-mary-west-end-2025/stage-uk--holly-omahony.json",
       "data/review-texts/oh-mary-west-end-2025/talkinbroadway--unknown.json",
-      "data/review-texts/the-mousetrap-west-end-2021/talkinbroadway--unknown.json"
+      "data/review-texts/the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/frontmezzjunkies--unknown.json",
+      "data/review-texts/the-play-that-goes-wrong-west-end-2021/the-stage-uk--unknown.json"
     ],
     "archive": [
       "hadestown-west-end-2024/theatermania--unknown.json",
@@ -284,7 +298,7 @@
     ]
   },
   "startTime": "2026-02-24T22:34:56.154Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/artsfuse--unknown.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/the-telegraph-uk--tim-walker.json",
   "log": [
     {
       "t": "2026-02-25T00:09:44.244Z",
@@ -316,6 +330,17 @@
     },
     {
       "t": "2026-02-25T00:34:38.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-25T00:38:34.029Z",
+      "event": "bb-session",
+      "session": "88db8398",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-02-25T00:38:35.531Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
