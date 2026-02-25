@@ -336,7 +336,12 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-monsters-2026/nyt-theater--jonathan-mandell.json",
     "the-monsters-2026/nytg--amelia-merrill.json",
-    "the-monsters-2026/nytimes--brittani-samuel.json"
+    "the-monsters-2026/nytimes--brittani-samuel.json",
+    "the-phantom-of-the-opera-west-end-2021/vulture--unknown.json",
+    "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json",
+    "the-unknown-2026/nytg--joe-dziemianowicz.json",
+    "this-is-my-favorite-song-2024/nyt-theater--unknown.json",
+    "what-we-did-before-our-moth-days-2026/nytg--unknown.json"
   ],
   "failed": [
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
@@ -941,7 +946,12 @@
     "six-the-musical-west-end-2021/nytimes--jesse-green.json",
     "starlight-express-west-end-2024/nyt-theater--unknown.json",
     "the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
-    "the-office-a-musical-parody-2018/nyt-theater--unknown.json"
+    "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
+    "the-phantom-of-the-opera-west-end-2021/nyt-theater--unknown.json",
+    "the-phantom-of-the-opera-west-end-2021/nytg--unknown.json",
+    "the-phantom-of-the-opera-west-end-2021/nytimes--unknown.json",
+    "the-playboy-of-the-western-world-west-end-2025/nyt-theater--unknown.json",
+    "the-reservoir-2026/nytg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1149,7 +1159,10 @@
       "mj-the-musical-west-end-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
       "the-monsters-2026/nyt-theater--jonathan-mandell.json",
-      "the-monsters-2026/nytg--amelia-merrill.json"
+      "the-monsters-2026/nytg--amelia-merrill.json",
+      "the-unknown-2026/nytg--joe-dziemianowicz.json",
+      "this-is-my-favorite-song-2024/nyt-theater--unknown.json",
+      "what-we-did-before-our-moth-days-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/hells-kitchen-2024/variety--unknown.json",
@@ -1228,7 +1241,9 @@
       "mamma-mia-west-end-2021/nyt-theater--unknown.json",
       "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
       "the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "the-monsters-2026/nytimes--brittani-samuel.json"
+      "the-monsters-2026/nytimes--brittani-samuel.json",
+      "the-phantom-of-the-opera-west-end-2021/nyt-theater--unknown.json",
+      "the-tragedy-of-coriolanus-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1421,7 +1436,9 @@
       "data/review-texts/pen-pals-2025/nyt-theater--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
       "data/review-texts/starlight-express-west-end-2024/nyt-theater--unknown.json",
-      "data/review-texts/the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json"
+      "data/review-texts/the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/the-office-a-musical-parody-2018/nyt-theater--unknown.json",
+      "data/review-texts/the-playboy-of-the-western-world-west-end-2025/nyt-theater--unknown.json"
     ],
     "archive": [
       "hamlet-2026/nytg--amelia-merrill.json",
@@ -1504,11 +1521,12 @@
       "stranger-things-2024/nytimes--houman-barekat.json",
       "the-infinite-wrench-2025/nytg--unknown.json",
       "the-lion-king-1997/nytimes--ben-brantley.json",
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "the-phantom-of-the-opera-west-end-2021/vulture--unknown.json"
     ]
   },
   "startTime": "2026-02-24T22:37:46.650Z",
-  "lastProcessed": "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
+  "lastProcessed": "what-we-did-before-our-moth-days-2026/nytg--unknown.json",
   "log": [
     {
       "t": "2026-02-24T23:05:08.599Z",
@@ -1685,6 +1703,17 @@
     },
     {
       "t": "2026-02-25T17:29:52.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:40:59.752Z",
+      "event": "bb-session",
+      "session": "c6739538",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-02-25T17:41:00.767Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
