@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-25T00:35:49.166Z",
-  "processed": 62,
-  "failed": 118,
-  "successRate": "34.4%",
+  "updatedAt": "2026-02-25T00:39:32.983Z",
+  "processed": 64,
+  "failed": 126,
+  "successRate": "33.7%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 46,
     "amp": 3,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 16,
+    "archiveToday": 18,
     "archive": 11
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-25T00:09:44.244Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-02-25T00:34:38.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-25T00:38:34.029Z",
+      "event": "bb-session",
+      "session": "88db8398",
+      "url": "https://www.thestage.co.uk/reviews/2014/the-play-that-goes-wrong/"
+    },
+    {
+      "t": "2026-02-25T00:38:35.531Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
