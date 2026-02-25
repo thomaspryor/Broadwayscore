@@ -146,8 +146,25 @@ jobs:
             showScoreData = JSON.parse(fs.readFileSync('data/show-score.json', 'utf8'));
           } catch {}
 
-          // Categorize shows into priority (genuine new reviews) vs routine (sync/low-count)
-          const priorityShows = []; // ShowScore says more reviews exist than we have
+          // Load aggregator summary (DTLI + BWW counts) for multi-source detection
+          let aggSummary = { dtli: {}, bww: {} };
+          try {
+            aggSummary = JSON.parse(fs.readFileSync('data/aggregator-summary.json', 'utf8'));
+            // Warn if aggregator data is stale (>10 days old)
+            const lastUpdated = aggSummary._meta?.lastUpdated;
+            if (lastUpdated) {
+              const ageDays = (today - new Date(lastUpdated)) / (1000 * 60 * 60 * 24);
+              if (ageDays > 10) {
+                console.log(`  ⚠ aggregator-summary.json is ${Math.floor(ageDays)} days old — DTLI/BWW gap detection may be stale`);
+              }
+            }
+          } catch {
+            console.log('  Note: aggregator-summary.json not found — using ShowScore only');
+          }
+
+          // Categorize shows into priority (genuine new reviews) vs routine (sync/low-count/recently-opened)
+          const priorityShows = []; // Aggregator(s) report more reviews than we have
+          const recentShows = []; // Recently opened — proactive check (always included, bypasses cap)
           const routineShows = []; // Sync mismatches, awards season low-count
           const isAwardsSeason = process.env.IS_AWARDS_SEASON === 'true';
 
@@ -155,13 +172,45 @@ jobs:
             const showId = show.id;
             const currentCount = currentReviewCounts[showId] || 0;
             const fileCount = fileReviewCounts[showId] || 0;
-            const showScoreCount = showScoreData.shows?.[showId]?.criticReviewCount || 0;
 
-            // PRIORITY: ShowScore reports more reviews than we have (genuine new reviews)
-            if (showScoreCount > fileCount) {
-              const gap = showScoreCount - fileCount;
-              console.log(`  [NEW] ${show.title}: Show Score has ${showScoreCount} reviews, we have ${fileCount} files (gap: ${gap})`);
-              priorityShows.push({ id: showId, gap });
+            // Multi-source gap detection: max across ShowScore, DTLI, BWW
+            // DTLI counts thumbs (may include excluded reviews), BWW includes roundup articles
+            // Use +1 tolerance to absorb structural counting differences
+            const ssCount = showScoreData.shows?.[showId]?.criticReviewCount || 0;
+            const dtliCount = aggSummary.dtli?.[showId]?.totalReviews || 0;
+            const bwwCount = aggSummary.bww?.[showId]?.totalReviews || 0;
+            const maxAggCount = Math.max(ssCount, dtliCount, bwwCount);
+
+            // Track which source(s) flagged the gap for logging
+            const sources = [];
+            if (ssCount > fileCount) sources.push(`SS:${ssCount}`);
+            if (dtliCount > fileCount) sources.push(`DTLI:${dtliCount}`);
+            if (bwwCount > fileCount) sources.push(`BWW:${bwwCount}`);
+
+            // PRIORITY: Aggregator(s) report more reviews than we have (genuine new reviews)
+            // +1 tolerance: DTLI counts thumbs, BWW includes roundups — not exact matches
+            if (maxAggCount > fileCount + 1) {
+              const gap = maxAggCount - fileCount;
+              console.log(`  [NEW] ${show.title}: aggregators say ${maxAggCount} (${sources.join(', ')}), we have ${fileCount} files (gap: ${gap})`);
+              priorityShows.push({ id: showId, gap, sources });
+              continue;
+            }
+
+            // RECENT: Recently opened shows — reviews trickle in for ~3 weeks
+            // Aggregators lag 1-3 days; proactively check even without signals
+            // Separate list: always included (not subject to routine cap)
+            const daysSinceOpening = show.openingDate
+              ? Math.floor((today - new Date(show.openingDate)) / (1000 * 60 * 60 * 24))
+              : null;
+
+            // Market-specific thresholds: OB/WE have fewer aggregator signals and fewer reviews total
+            const category = show.category || '';
+            const recentThreshold = (category === 'off-broadway' || category === 'west-end') ? 3 : 10;
+
+            if (daysSinceOpening !== null && daysSinceOpening >= 0 && daysSinceOpening <= 21
+                && fileCount < recentThreshold && show.status === 'open') {
+              console.log(`  [RECENT] ${show.title}: opened ${daysSinceOpening}d ago, ${fileCount}/${recentThreshold} files (${category || 'broadway'})`);
+              recentShows.push(showId);
             }
             // ROUTINE: Awards season low-count
             else if (isAwardsSeason && currentCount < 5) {
@@ -180,15 +229,16 @@ jobs:
           const priorityIds = priorityShows.map(s => s.id);
 
           // Cap routine shows at 20 per run to avoid overwhelming the pipeline
+          // Recently-opened shows bypass the cap (they're time-sensitive)
           const ROUTINE_CAP = 20;
           const cappedRoutine = routineShows.slice(0, ROUTINE_CAP);
           if (routineShows.length > ROUTINE_CAP) {
             console.log(`\nCapped routine shows from ${routineShows.length} to ${ROUTINE_CAP}`);
           }
 
-          const allShows = [...new Set([...priorityIds, ...cappedRoutine])];
+          const allShows = [...new Set([...priorityIds, ...recentShows, ...cappedRoutine])];
 
-          console.log(`\nFound ${priorityIds.length} priority + ${cappedRoutine.length} routine = ${allShows.length} shows to process`);
+          console.log(`\nFound ${priorityIds.length} priority + ${recentShows.length} recently-opened + ${cappedRoutine.length} routine = ${allShows.length} shows to process`);
 
           // Write outputs
           const hasNew = allShows.length > 0 || process.env.FORCE_COLLECTION === 'true';
@@ -198,7 +248,7 @@ jobs:
             fs.appendFileSync(outputFile, `has_new_reviews=${hasNew}\n`);
             fs.appendFileSync(outputFile, `shows_with_updates=${allShows.join(',')}\n`);
             fs.appendFileSync(outputFile, `priority_shows=${priorityIds.join(',')}\n`);
-            fs.appendFileSync(outputFile, `routine_shows=${cappedRoutine.join(',')}\n`);
+            fs.appendFileSync(outputFile, `routine_shows=${[...recentShows, ...cappedRoutine].join(',')}\n`);
           }
 
           // Save detailed report for debugging
@@ -207,12 +257,18 @@ jobs:
             isAwardsSeason,
             showsChecked: showsToCheck.length,
             priorityShows: priorityShows,
+            recentShows: recentShows,
             routineShows: cappedRoutine,
             routineTotal: routineShows.length,
             routineCapped: routineShows.length > ROUTINE_CAP,
             reviewCounts: currentReviewCounts,
-            showScoreCounts: Object.fromEntries(
-              showsToCheck.map(s => [s.id, showScoreData.shows?.[s.id]?.criticReviewCount || 0])
+            aggregatorCounts: Object.fromEntries(
+              showsToCheck.map(s => [s.id, {
+                showScore: showScoreData.shows?.[s.id]?.criticReviewCount || 0,
+                dtli: aggSummary.dtli?.[s.id]?.totalReviews || 0,
+                bww: aggSummary.bww?.[s.id]?.totalReviews || 0,
+                files: fileReviewCounts[s.id] || 0,
+              }])
             )
           };
 
