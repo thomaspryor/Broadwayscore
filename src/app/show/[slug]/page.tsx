@@ -443,7 +443,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Critics' Take - inline below the poster/score row */}
-          {consensus ? (
+          {consensus && show.criticScore ? (
             <div className="mt-4 pt-4 border-t border-white/5">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Critics&apos; Take</p>
               <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
