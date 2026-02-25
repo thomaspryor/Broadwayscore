@@ -529,7 +529,7 @@ async function searchShowScore(show) {
     console.log('    Using curated URL from show-score-urls.json');
     const isOffBroadway = show.category === 'off-broadway';
     if (chromium) {
-      const result = await scrapeShowScoreWithPlaywright(curatedUrl, { isOffBroadway });
+      const result = await scrapeShowScoreWithPlaywright(curatedUrl, { isOffBroadway, expectedVenue: show.venue, showId: show.id });
       if (result) {
         console.log(`    ✓ Found at: ${curatedUrl}`);
         return { url: curatedUrl, html: result.html, reviews: result.reviews };
@@ -620,7 +620,7 @@ async function searchShowScore(show) {
   if (chromium) {
     for (const slug of [...new Set(variations)]) {
       const url = `${showScoreBase}/${slug}`;
-      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway });
+      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway, expectedVenue: show.venue, showId: show.id });
       if (result) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html, reviews: result.reviews };
@@ -656,7 +656,7 @@ async function searchShowScore(show) {
  * This allows us to get ALL critic reviews, not just the first 8
  */
 async function scrapeShowScoreWithPlaywright(url, options = {}) {
-  const { isOffBroadway = false } = options;
+  const { isOffBroadway = false, expectedVenue = null, showId = null } = options;
   let browser = null;
   try {
     browser = await chromium.launch({ headless: true });
@@ -685,6 +685,22 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     if (title === 'Show Score | NYC Theatre Reviews and Tickets' || !title.includes('Show Score')) {
       await browser.close();
       return null;
+    }
+
+    // Soft venue validation: extract venue from meta description and compare
+    if (expectedVenue) {
+      const metaDesc = await page.$eval('meta[name="description"]', el => el.content).catch(() => '');
+      const cleaned = metaDesc.replace(/&nbsp;/g, ' ');
+      const venueMatch = cleaned.match(/\bfor\s+.+?\s+at\s+(.+?)(?:\.|,|$)/i);
+      if (venueMatch) {
+        const pageVenue = venueMatch[1].trim();
+        const normVenue = s => (s || '').toLowerCase().replace(/\bthe\b/g, '').replace(/\btheatre\b/g, 'theater').replace(/\s+/g, ' ').trim();
+        const nPage = normVenue(pageVenue);
+        const nExpected = normVenue(expectedVenue);
+        if (nPage && nExpected && !nPage.includes(nExpected) && !nExpected.includes(nPage)) {
+          console.log(`    [VENUE WARN] Show Score page says "${pageVenue}", expected "${expectedVenue}"${showId ? ` for ${showId}` : ''}`);
+        }
+      }
     }
 
     // Wait for critic reviews section to load
