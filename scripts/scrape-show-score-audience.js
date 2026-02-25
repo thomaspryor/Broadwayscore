@@ -17,6 +17,7 @@ const path = require('path');
 const https = require('https');
 const { JSDOM } = require('jsdom');
 const { calculateCombinedScore } = require('./lib/audience-weighting');
+const { validatePageMatchesShow } = require('./lib/page-validator');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -362,6 +363,12 @@ async function discoverShowScoreUrl(show) {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
       if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
+        // Additional heading-based validation with LLM tiebreaker
+        const pageValidation = await validatePageMatchesShow(html, show.title);
+        if (!pageValidation.valid) {
+          console.log(`  ✗ Page validator rejected: ${pageValidation.reason}`);
+          continue;
+        }
         console.log(`  ✓ Discovered: ${url}`);
         return url;
       }
@@ -625,6 +632,16 @@ async function processShow(show) {
     const jsonLdName = extractJsonLdName(html);
     if (jsonLdName && !titlesMatch(jsonLdName, show.title)) {
       console.log(`  SKIP: Title mismatch — page="${jsonLdName}", expected="${show.title}"`);
+      console.log(`  Removing bad cached URL for ${show.id}`);
+      if (urlData.shows) delete urlData.shows[show.id];
+      if (!dryRun) saveUrlCache();
+      return null;
+    }
+
+    // Additional heading-based validation with LLM tiebreaker
+    const pageValidation = await validatePageMatchesShow(html, show.title);
+    if (!pageValidation.valid) {
+      console.log(`  SKIP: Page validator rejected — ${pageValidation.reason}`);
       console.log(`  Removing bad cached URL for ${show.id}`);
       if (urlData.shows) delete urlData.shows[show.id];
       if (!dryRun) saveUrlCache();
