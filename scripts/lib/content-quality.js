@@ -452,6 +452,7 @@ function validateShowMentioned(text, showTitle, showId) {
  * Mirrors the curated set in excerpt-validation.js.
  */
 const COMMON_WORD_SHOW_TITLES = new Set([
+  // Common English words
   'company', 'doubt', 'network', 'proof', 'sweat', 'closer', 'home', 'nine',
   'cats', 'rent', 'once', 'hair', 'big', 'grease', 'chicago', 'fame',
   'oliver', 'pippin', 'annie', 'carousel', 'contact', 'curtains', 'follies',
@@ -463,6 +464,15 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'bug', 'juno', 'fela', 'fun', 'leap', 'loot',
   'junk', 'high', 'well', 'good', 'match', 'legend', 'broadway', 'the act',
   'the father', 'swept away', 'race', 'rose', 'dream', 'tribute',
+  // Common words that cause massive false positives in multi-show detection
+  'rain', 'sting', 'care', 'touch', 'soon', 'baby', 'angel', 'working',
+  'november', 'brooklyn', 'mail', 'players', 'voices', 'stages', 'data',
+  'purpose', 'english', 'giant', 'smash', 'tricks', 'nuts', 'fools',
+  'knockout', 'metro', 'plenty', 'grind', 'pride', 'punch', 'spread',
+  'shelter', 'scratch', 'smile', 'sugar', 'wanted', 'doubles', 'dude',
+  'enemies', 'frozen', 'freak', 'misery', 'orphans', 'rocky', 'rumors',
+  'thieves', 'trash', 'warp', 'brothers', 'bully', 'buddy',
+  'ambassador', 'steaming', 'monument', 'consumed', 'anonymous',
 ]);
 
 /**
@@ -486,6 +496,8 @@ function detectMultiShowContent(text, expectedShowId) {
     : [];
 
   // Find which shows are mentioned, excluding common-word titles
+  // Use word-boundary matching to prevent "elling" matching "compelling",
+  // "sting" matching "interesting", "touch" matching "touching", etc.
   const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
     // Skip common English words that happen to be show titles
     if (COMMON_WORD_SHOW_TITLES.has(show)) return false;
@@ -495,7 +507,10 @@ function detectMultiShowContent(text, expectedShowId) {
     const isExpectedShow = expectedWords.some(ew => showWords.some(sw => sw.includes(ew) || ew.includes(sw)));
     if (isExpectedShow) return false;
 
-    return lower.includes(show);
+    // Use word-boundary regex instead of substring matching
+    const escaped = show.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+    return regex.test(text);
   });
 
   // Scale threshold by text length — critics routinely reference other shows for comparison
