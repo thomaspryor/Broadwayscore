@@ -24,8 +24,8 @@ export function ScoreToggle({
     : [{ key: 'critics', label: 'Critics' }, { key: 'audience', label: 'Audience' }];
 
   const btnClass = size === 'large'
-    ? 'px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0'
-    : 'px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0';
+    ? 'px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs leading-none font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 inline-flex items-center justify-center'
+    : 'px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-[10px] sm:text-xs leading-none font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 inline-flex items-center justify-center';
 
   return (
     <div
