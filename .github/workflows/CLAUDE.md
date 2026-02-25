@@ -59,6 +59,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - After manual edits to review-texts files
   - When reviews.json appears stale
 - **Script:** `scripts/rebuild-all-reviews.js`
+- **Auto-scoring:** After rebuild, auto-triggers `llm-ensemble-score.yml` if 5+ reviews need scoring (threshold lowered from 100 on Feb 25, 2026)
 
 ## `update-show-status.yml`
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
@@ -82,7 +83,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `opening-night-broadcast.yml`
 - **Runs:** Daily at 4 AM UTC (~11 PM ET) and 5 AM UTC (~midnight ET), or manually
 - **Does:** Full opening-night pipeline: discovers reviews via SERP, gathers from aggregators, rebuilds/scores, generates consensus, sends broadcast email to all subscribers via Resend
-- **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → generate consensus → send broadcast → commit
+- **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → **LLM ensemble scoring** → rebuild after scoring → generate consensus → send broadcast → commit
 - **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
 - **Readiness gate:** 8+ scored reviews required before sending (lowered from 12 on Feb 20, 2026)
 - **Scoring:** Tier-weighted composite (matches website: T1=1.0, T2=0.75, T3=0.45) via outlet-registry.json lookup
@@ -103,7 +104,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
 - **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild → deploy`
   - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
-  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it.
+  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
