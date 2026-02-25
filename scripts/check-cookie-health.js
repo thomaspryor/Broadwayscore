@@ -314,10 +314,12 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
     if (res.status !== 200) return { status: 'warn', message: `HTTP ${res.status}` };
 
     const html = res.body;
-    if (isBlocked(html)) return { status: 'fail', message: `Blocked (${html.length} chars)` };
-    // For soft-paywall outlets (no auth cookies), large responses are success
-    // even if paywall text exists in footer/sidebar
+    // Soft-paywall outlets (no auth cookies): blocking/paywall signals are not cookie failures
     const isSoftPaywall = !authCookies || authCookies.length === 0;
+    if (isBlocked(html)) {
+      const severity = isSoftPaywall ? 'warn' : 'fail';
+      return { status: severity, message: `Blocked (${html.length} chars)` };
+    }
     if (isPaywalled(html)) {
       if (isSoftPaywall && html.length > 50000) {
         return { status: 'pass', message: `OK soft-paywall (${html.length} chars)` };
