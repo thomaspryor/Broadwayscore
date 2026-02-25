@@ -138,6 +138,7 @@ jobs:
             if git push origin main; then
               echo "Push succeeded on attempt $i"
               PUSHED=true
+              pushed=true
               break
             fi
             echo "Push failed (attempt $i/15), pulling and rebasing..."
