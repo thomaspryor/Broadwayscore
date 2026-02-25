@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-25T17:33:26.744Z",
-  "processed": 337,
-  "failed": 603,
-  "successRate": "35.9%",
+  "updatedAt": "2026-02-25T17:41:56.050Z",
+  "processed": 342,
+  "failed": 608,
+  "successRate": "36.0%",
   "tierBreakdown": {
-    "playwright": 204,
+    "playwright": 207,
     "amp": 10,
     "browserbase": 6,
     "directCookies": 7,
-    "scrapingbee": 48,
+    "scrapingbee": 50,
     "brightdata": 0,
-    "archiveToday": 190,
-    "archive": 81
+    "archiveToday": 192,
+    "archive": 82
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-25T05:58:59.704Z",
-      "event": "bb-session",
-      "session": "6dee2b30",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-02-25T05:59:01.169Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-02-25T16:37:58.209Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-25T17:29:52.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:40:59.752Z",
+      "event": "bb-session",
+      "session": "c6739538",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-02-25T17:41:00.767Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
