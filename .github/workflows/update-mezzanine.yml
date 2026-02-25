@@ -120,6 +120,7 @@ jobs:
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push successful"
+              pushed=true
               exit 0
             fi
             echo "Push failed, attempt $i/5. Rebasing..."

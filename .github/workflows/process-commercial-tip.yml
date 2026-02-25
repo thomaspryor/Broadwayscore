@@ -55,7 +55,7 @@ jobs:
 
             pushed=false
             for i in 1 2 3; do
-              if git push origin main; then break; fi
+              if git push origin main; then pushed=true; break; fi
               git pull --rebase origin main
               sleep 2
             done

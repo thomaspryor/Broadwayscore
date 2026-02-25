@@ -269,6 +269,7 @@ jobs:
             for i in 1 2 3 4 5; do
               if git push origin main; then
                 echo "Push succeeded on attempt $i"
+                pushed=true
                 break
               fi
               echo "Push failed (attempt $i), pulling and rebasing..."

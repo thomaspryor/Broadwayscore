@@ -315,12 +315,23 @@ jobs:
             exit 0
           fi
 
-          echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
-          gh workflow run "Collect Review Texts" \
-            -f max_reviews=300 \
-            -f browserbase_enabled=true \
-            -f retry_failed=true \
-            -f archive_first=true
+          SHOWS="${{ inputs.shows }}"
+          if [ -n "$SHOWS" ]; then
+            echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
+            gh workflow run "Collect Review Texts" \
+              -f show_filter="$SHOWS" \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          else
+            echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+            gh workflow run "Collect Review Texts" \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          fi
 
           echo "Text collection auto-triggered."
 
