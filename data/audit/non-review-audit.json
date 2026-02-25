@@ -1,14 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-25T04:20:15.421Z",
-    "totalScanned": 25441,
-    "flagged": 22,
+    "generatedAt": "2026-02-25T14:09:08.171Z",
+    "totalScanned": 25462,
+    "flagged": 30,
     "byType": {
       "news_article": 3,
-      "garbage_scrape": 4,
-      "awards_coverage": 4,
-      "obituary": 6,
-      "interview": 4,
+      "garbage_scrape": 6,
+      "awards_coverage": 5,
+      "obituary": 9,
+      "preview_article": 1,
+      "interview": 5,
       "press_release": 1
     }
   },
@@ -19,7 +20,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. While the text mentions aspects of the show, it primarily focuses on the show's closing ",
+      "evidence": "closing notice | LLM: NOT_REVIEW. The text focuses more on the show's closing notice, potential reasons for its lack of ti",
       "outlet": "Stage Buddy",
       "critic": "Elyse Trevers",
       "score": 67
@@ -52,7 +53,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "age 15 | LLM: NOT_REVIEW because the text primarily describes the character and setting of the play, lacking criti",
+      "evidence": "age 15 | LLM: NOT_REVIEW: This text is a plot summary with a brief character description, lacking any evaluation o",
       "outlet": "Associated Press",
       "critic": null,
       "score": 72
@@ -67,6 +68,17 @@
       "outlet": "The Faster Times",
       "critic": "Jonathan Mandell",
       "score": 62
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "file": "theater-life--barry-gordin.json",
+      "type": "preview_article",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "before it opens",
+      "outlet": "Theater Life",
+      "critic": "Barry Gordin",
+      "score": 42
     },
     {
       "showId": "eclipsed-2016",
@@ -85,10 +97,21 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and its author, but it doesn't offer a",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. While the text mentions \"Eclipsed\" and its author, it primarily focuses on Danai Gurira'",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
+    },
+    {
+      "showId": "exit-the-king-2009",
+      "file": "the-times-david-jays--david-jays.json",
+      "type": "interview",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Q:  | LLM: NOT_REVIEW. The text is a commentary on the current state of affairs and how it relates to absurd dr",
+      "outlet": "The Times (David Jays)",
+      "critic": "David Jays",
+      "score": 55
     },
     {
       "showId": "farinelli-and-the-king-2017",
@@ -96,7 +119,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "age 10 | LLM: NOT_REVIEW. The text primarily describes the plot of the play without offering critical evaluation o",
+      "evidence": "age 10 | LLM: NOT_REVIEW: The text primarily describes the plot of the play without offering critical evaluation o",
       "outlet": "New York Daily News",
       "critic": "Joe Dziemianowicz",
       "score": 64
@@ -118,7 +141,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "age 47 | LLM: NOT_REVIEW. This text describes the musical \"Hamilton\" and its historical context, but it doesn't ev",
+      "evidence": "age 47 | LLM: NOT_REVIEW. This text describes the premise of the show and the style of the music, but it doesn't e",
       "outlet": "Culture Sauce",
       "critic": "Unknown",
       "score": 90
@@ -151,7 +174,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "age 34 | LLM: NOT_REVIEW. The text primarily discusses the context of the play \"Jitney\" within August Wilson's lar",
+      "evidence": "age 34 | LLM: NOT_REVIEW. The text primarily discusses the play's context within August Wilson's larger body of wo",
       "outlet": "Vulture",
       "critic": "Jesse Green",
       "score": 66
@@ -162,7 +185,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and the play's history, rather th",
+      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and history of the play rather th",
       "outlet": "BroadwayWorld",
       "critic": "Michael Dale",
       "score": 75
@@ -193,9 +216,9 @@
       "showId": "suffs-2024",
       "file": "the-times--nancy-durrant.json",
       "type": "interview",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Q:  | LLM: NOT_REVIEW. This text primarily describes the background and context of the musical \"Suffs\" and its ",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Q: ",
       "outlet": "The Times",
       "critic": "Nancy Durrant",
       "score": 73
@@ -204,9 +227,9 @@
       "showId": "sunset-boulevard-2017",
       "file": "wsj--terry-teachout.json",
       "type": "garbage_scrape",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a collection of article titles and snippets from The Wall Street Jo",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "BROWSER UPDATE",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 75
@@ -221,6 +244,72 @@
       "outlet": "edge-new-york",
       "critic": "Steve Weinstein",
       "score": 63
+    },
+    {
+      "showId": "the-father-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "type": "awards_coverage",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Tony nominations",
+      "outlet": "Times Square Chronicles",
+      "critic": "Suzanna Bowling",
+      "score": 88
+    },
+    {
+      "showId": "the-gin-game-1977",
+      "file": "njcom--christopher-kelly.json",
+      "type": "obituary",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "age 84",
+      "outlet": "NJ.com",
+      "critic": "Christopher Kelly",
+      "score": 63
+    },
+    {
+      "showId": "the-gin-game-1997",
+      "file": "njcom--christopher-kelly.json",
+      "type": "obituary",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "age 84",
+      "outlet": "NJ.com",
+      "critic": "Christopher Kelly",
+      "score": 63
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "cititour--brian-scott-lipton.json",
+      "type": "obituary",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "remembering",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "score": 67
+    },
+    {
+      "showId": "the-humans-2016",
+      "file": "theatre-is-easy--ben-coleman.json",
+      "type": "garbage_scrape",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Please upgrade your browser",
+      "outlet": "Theatre is Easy",
+      "critic": "Ben Coleman",
+      "score": 93
+    },
+    {
+      "showId": "the-lifespan-of-a-fact-2018",
+      "file": "wsj--terry-teachout.json",
+      "type": "garbage_scrape",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "BROWSER UPDATE",
+      "outlet": "Wall Street Journal",
+      "critic": "Terry Teachout",
+      "score": 82
     },
     {
       "showId": "the-mountaintop-2011",
@@ -250,7 +339,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "remembering | LLM: NOT_REVIEW. The text provides background information and a plot summary of \"You Can't Take It With Y",
+      "evidence": "remembering | LLM: NOT_REVIEW. The text starts by discussing \"The Odd Couple\" and Kaufman and Hart's general writing st",
       "outlet": "Deadline",
       "critic": "Jeremy Gerard",
       "score": 61
