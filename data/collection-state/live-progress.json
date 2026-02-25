@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-25T19:10:22.797Z",
-  "processed": 408,
-  "failed": 652,
-  "successRate": "38.5%",
+  "updatedAt": "2026-02-25T19:16:27.634Z",
+  "processed": 415,
+  "failed": 655,
+  "successRate": "38.8%",
   "tierBreakdown": {
-    "playwright": 263,
+    "playwright": 269,
     "amp": 15,
     "browserbase": 6,
-    "directCookies": 7,
-    "scrapingbee": 52,
+    "directCookies": 8,
+    "scrapingbee": 53,
     "brightdata": 0,
-    "archiveToday": 206,
-    "archive": 100
+    "archiveToday": 207,
+    "archive": 101
   },
-  "browserbaseSessions": 19,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-02-25T17:40:59.752Z",
-      "event": "bb-session",
-      "session": "c6739538",
-      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
-    },
-    {
-      "t": "2026-02-25T17:41:00.767Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-25T17:52:43.735Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-02-25T18:56:29.450Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-25T19:11:02.025Z",
+      "event": "bb-session",
+      "session": "2ef8b59d",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/hold-on-to-your-butts_1"
+    },
+    {
+      "t": "2026-02-25T19:11:02.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
