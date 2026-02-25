@@ -33,7 +33,13 @@ interface RawReviewData {
   showId: string;
   outletId: string;
   assignedScore: number | null;
+  scoreSource?: string;
 }
+
+// Pre-2005 Broadway review data is too unreliable (excerpt-only, wrong-production contamination)
+const GOLD_LIST_YEAR_CUTOFF = 2005;
+const GOLD_LIST_MIN_HIGH_CONF = 3;
+const LOW_CONF_SOURCES = new Set(['llmScore-lowconf', 'llmScore-thumb-boosted', 'thumb', 'bwwScore-fallback']);
 
 interface AudienceBuzzFile {
   shows: Record<string, {
@@ -182,6 +188,13 @@ function computeCriticalGold(season: string): GoldListEntry[] {
     const show = showById.get(showId);
     if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
+
+    // Pre-2005 gate: require minimum high-confidence reviews
+    const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
+    if (openingYear < GOLD_LIST_YEAR_CUTOFF) {
+      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SOURCES.has(r.scoreSource)).length;
+      if (highConf < GOLD_LIST_MIN_HIGH_CONF) continue;
+    }
 
     let weightedSum = 0;
     let weightSum = 0;
@@ -502,6 +515,13 @@ function computeCriticalGoldUncapped(season: string): GoldListEntry[] {
     const show = showById.get(showId);
     if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
+
+    // Pre-2005 gate: require minimum high-confidence reviews
+    const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
+    if (openingYear < GOLD_LIST_YEAR_CUTOFF) {
+      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SOURCES.has(r.scoreSource)).length;
+      if (highConf < GOLD_LIST_MIN_HIGH_CONF) continue;
+    }
 
     let weightedSum = 0, weightSum = 0;
     for (const r of reviews) {
