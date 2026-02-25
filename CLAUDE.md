@@ -82,15 +82,13 @@ Read roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
 ### 10. Infrastructure Change Planning (MANDATORY)
 For changes touching 3+ workflows, CI/CD, data pipelines, or cross-repo operations:
 - **Plan:** Write changes, agent review for gaps, list assumptions, include testing phase.
-- **Test:** 3 representative workflows (simple, complex, write-heavy). Wait for completion. Check all step statuses. Test failure paths.
-- **Gotchas:** `git add <gitignored>` → exit code 1; nested `.git` dirs confuse git; `set -e` kills on any non-zero; parallel sessions switch branches.
+- **Test:** 3 representative workflows (simple, complex, write-heavy). Wait for completion. Check all step statuses.
+- **Gotchas:** `git add <gitignored>` → exit 1; nested `.git` confuses git; `set -e` kills on non-zero; parallel sessions switch branches.
 
 ### 11. Pipeline Operations
 **E2E test before any large dispatch** (5+ runs or 50+ reviews). Test 5 reviews, 1 batch, verify data lands in private repo.
-- **Before:** Verify secrets, check slots (<35), 10s+ spacing, shard scoring to 10.
-- **During:** Check within 15 min. Verify chaining.
-- **After:** Rebuild if needed. Verify data in private repo.
-- **Collection:** Always `-f chain=true -f remaining_batches=10` (default=0=no chaining).
+- **Before:** Verify secrets, check slots (<35), 10s+ spacing, shard scoring to 10. **During:** Check within 15 min.
+- **After:** Rebuild if needed. Verify data in private repo. **Collection:** Always `-f chain=true -f remaining_batches=10`.
 
 ### 12. Expansion Playbook (MANDATORY for new markets/categories)
 Aggregators first, web search second. See `memory/expansion-playbook.md` for the full process. Never skip aggregator scraping — it captures 70-90% of reviews. Web search is the cherry on top, not the foundation.
@@ -99,7 +97,10 @@ Aggregators first, web search second. See `memory/expansion-playbook.md` for the
 When wrapping up a task, recommend the best next task or follow-up. Don't just say "done" — tell the user what you'd prioritize next and why.
 
 ### 14. Fix Systematically, Not One-Off
-When fixing an issue, also fix it **at the pipeline/automation level** so it never recurs. This project runs continuous automated processes for new shows, historical backfills, and geographic expansion. One-off fixes are wasted work — the same issue will reappear next run. Every fix should ask: "How do I prevent this class of problem permanently?" Update scripts, add validation gates, improve error handling in workflows.
+When fixing an issue, fix it at the **pipeline/automation level** so it never recurs. One-off fixes are wasted work. Ask: "How do I prevent this class of problem permanently?"
+
+### 15. Test Before Committing (MANDATORY for logic changes)
+**Never commit script/logic changes without testing against real data.** Write a test script that covers: (1) correct matches (varied samples), (2) expected rejections/edge cases, (3) mass validation against archive/production data when available. Use `skipLlm` for fast bulk tests, then spot-check LLM paths. Fix failures before committing.
 
 ---
 
