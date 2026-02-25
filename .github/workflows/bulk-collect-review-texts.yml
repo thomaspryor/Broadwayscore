@@ -395,7 +395,7 @@ jobs:
           retention-days: 30
 
   rebuild:
-    needs: [collect]
+    needs: [prepare, collect]
     if: always() && needs.collect.result != 'cancelled'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -507,9 +507,17 @@ jobs:
           CURRENT_ROUND=${{ inputs.current_round }}
           MAX_ROUNDS=${{ inputs.max_rounds }}
 
+          INITIAL=${{ needs.prepare.outputs.total_reviews }}
+
           echo "=== CHAIN DECISION ==="
           echo "Round: $CURRENT_ROUND / $MAX_ROUNDS"
-          echo "Remaining reviews: $REMAINING"
+          echo "Remaining reviews: $REMAINING (started with $INITIAL)"
+
+          # Stop if no progress was made (remaining >= initial means nothing was collected)
+          if [ "$REMAINING" -ge "$INITIAL" ] 2>/dev/null; then
+            echo "No progress this round ($INITIAL → $REMAINING). Stopping chain to avoid infinite loop."
+            exit 0
+          fi
 
           # Stop if no more rounds
           if [ "$CURRENT_ROUND" -ge "$MAX_ROUNDS" ]; then
@@ -607,10 +615,12 @@ jobs:
             exit 0
           fi
 
-          # Check if LLM scoring is already running
+          # Check if LLM scoring is already running or queued
           RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ]; then
-            echo "LLM scoring already running ($RUNNING active runs). Skipping."
+          QUEUED=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
             exit 0
           fi
 
