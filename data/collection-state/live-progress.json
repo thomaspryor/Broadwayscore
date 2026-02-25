@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-02-25T17:10:00.301Z",
-  "processed": 326,
-  "failed": 594,
+  "updatedAt": "2026-02-25T17:23:06.041Z",
+  "processed": 329,
+  "failed": 601,
   "successRate": "35.4%",
   "tierBreakdown": {
     "playwright": 202,
     "amp": 10,
     "browserbase": 6,
-    "directCookies": 5,
+    "directCookies": 6,
     "scrapingbee": 45,
     "brightdata": 0,
-    "archiveToday": 185,
-    "archive": 75
+    "archiveToday": 188,
+    "archive": 78
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-02-24T23:05:08.599Z",
-      "event": "bb-session",
-      "session": "6fd66c98",
-      "url": "https://bloomberg.com/magazine/businessweek/17_27#:~:text=By%20Bloomberg%20News,"
-    },
-    {
-      "t": "2026-02-24T23:05:09.704Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-02-24T23:16:59.182Z",
-      "event": "bb-session",
-      "session": "fd34a1e1",
-      "url": "http://www.thewrap.com/cabaret-theater-review"
-    },
-    {
-      "t": "2026-02-24T23:24:10.277Z",
-      "event": "bb-session",
-      "session": "06f285a2",
-      "url": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/"
-    },
     {
       "t": "2026-02-24T23:27:14.710Z",
       "event": "bb-session",
@@ -126,6 +103,28 @@
       "t": "2026-02-25T17:01:12.162Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-25T17:19:45.416Z",
+      "event": "bb-session",
+      "session": "069e43fa",
+      "url": "https://www.vulture.com/2023/02/theater-review-the-woodstock-ny-parker-posey.htm"
+    },
+    {
+      "t": "2026-02-25T17:19:46.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-25T17:23:01.998Z",
+      "event": "bb-session",
+      "session": "abb781ae",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-02-25T17:23:03.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
