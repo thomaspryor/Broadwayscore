@@ -17,7 +17,7 @@ export function StatusBadge({ status }: { status: string }) {
   }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
@@ -32,7 +32,7 @@ export function FormatPill({ type }: { type: string }) {
     : 'border-blue-500/50 text-blue-400';
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide border ${colorClass}`}>
       {label}
     </span>
   );
@@ -42,7 +42,7 @@ export function FormatPill({ type }: { type: string }) {
 export function AudienceChip({ grade }: { grade: { grade: string; color: string; tooltip: string } }) {
   return (
     <div
-      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] leading-none font-bold"
       style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
       title={grade.tooltip}
     >
@@ -71,7 +71,7 @@ export function CategoryBadge({ category }: { category?: string }) {
   if (!cfg) return null;
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${cfg.colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${cfg.colorClass}`}>
       {cfg.label}
     </span>
   );
@@ -85,7 +85,7 @@ export function ProductionPill({ isRevival }: { isRevival: boolean }) {
     : 'bg-amber-500/20 text-amber-400';
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );

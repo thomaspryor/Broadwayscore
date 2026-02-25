@@ -30,8 +30,8 @@ export function ToggleBar<T extends string>({
 }: ToggleBarProps<T>) {
   if (variant === 'pill') {
     const pillSize = size === 'compact'
-      ? 'px-3 py-1.5 min-h-[36px] text-xs font-semibold uppercase tracking-wider'
-      : 'px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-0 text-xs sm:text-sm font-semibold';
+      ? 'px-3 py-1.5 min-h-[36px] text-xs leading-none font-semibold uppercase tracking-wider inline-flex items-center justify-center'
+      : 'px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-0 text-xs sm:text-sm leading-none font-semibold inline-flex items-center justify-center';
     return (
       <div
         className={`flex items-center gap-2${className ? ` ${className}` : ''}`}
@@ -57,8 +57,8 @@ export function ToggleBar<T extends string>({
   }
 
   const btnSize = size === 'compact'
-    ? 'px-2 py-1'
-    : 'px-2 py-1.5 sm:px-2 sm:py-1 min-h-[36px] sm:min-h-0';
+    ? 'px-2 py-1 leading-none'
+    : 'px-2 py-1.5 sm:px-2 sm:py-1 min-h-[36px] sm:min-h-0 leading-none inline-flex items-center justify-center';
   return (
     <div
       className={`flex items-center gap-0.5 sm:gap-2 flex-wrap${className ? ` ${className}` : ''}`}
