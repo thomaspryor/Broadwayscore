@@ -460,14 +460,16 @@ jobs:
             exit 0
           fi
 
-          echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+          # Target the specific gathered shows first for fast turnaround
+          SHOWS="${{ inputs.shows }}"
+          echo "Triggering targeted text collection for shows: $SHOWS"
           gh workflow run "Collect Review Texts" \
-            -f max_reviews=300 \
+            -f show_filter="$SHOWS" \
+            -f max_reviews=100 \
             -f browserbase_enabled=true \
             -f retry_failed=true \
             -f archive_first=true \
-            -f chain=true \
-            -f remaining_batches=3
+            -f chain=false
 
           echo "Text collection auto-triggered successfully."
 
