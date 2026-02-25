@@ -1275,15 +1275,16 @@ function validateOutletMapperSync() {
     let syncIssues = 0;
 
     for (const [canonical, variations] of Object.entries(aliases)) {
-      // Check canonical outlet exists in registry
-      if (!outlets[canonical]) {
+      // Check canonical outlet exists in registry (either as outlet entry or _aliasIndex redirect)
+      const resolvedId = outlets[canonical] ? canonical : (aliasIndex[canonical] || null);
+      if (!resolvedId || !outlets[resolvedId]) {
         warn(`[alias-sync] OUTLET_ALIASES canonical "${canonical}" not found in outlet-registry.json`);
         syncIssues++;
         continue;
       }
 
       // Check each alias appears in registry (aliases array or _aliasIndex)
-      const registryAliases = new Set((outlets[canonical].aliases || []).map(a => a.toLowerCase().trim()));
+      const registryAliases = new Set((outlets[resolvedId].aliases || []).map(a => a.toLowerCase().trim()));
       for (const alias of variations) {
         const normalized = alias.toLowerCase().trim();
         if (normalized === canonical) continue; // self-reference is fine
