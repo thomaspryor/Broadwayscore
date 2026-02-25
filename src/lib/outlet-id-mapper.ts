@@ -185,6 +185,22 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'i-paper': 'I-PAPER',
   'the-i': 'I-PAPER',
   'i-newspaper': 'I-PAPER',
+
+  // Duplicate outlet aliases (Feb 2026 normalization audit)
+  'wnbc': 'NBC',
+  'nbc-news': 'NBC',
+  'citiour': 'CITI',
+  'huffpo': 'HUFFPOST',
+  'bloombergcom': 'BLOOMBERG',
+  'northjersycom': 'NORTHJERSEY',
+  'north-jerseycom': 'NORTHJERSEY',
+  'exeunt-nyc': 'EXEUNT',
+  'uk-daily-telegraph': 'TELEGRAPH',
+  'jewish-daily-forward': 'FORWARD',
+  'njnewsroom': 'NJNEWSROOM',
+  'ny-1-time-out-magazine': 'NY1',
+  'ny1-on-stage': 'NY1',
+  'theater-new-online': 'THEATERNEWS',
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)
