@@ -107,6 +107,7 @@ export interface RawReview {
   scoreConfidence?: string;    // high, medium, low
   dtliThumb?: string | null;   // DTLI thumb signal
   bwwThumb?: string | null;    // BWW thumb signal
+  needsReview?: boolean;       // Score doesn't reflect current signals (needs rescore)
 }
 
 export interface RawAudience {
@@ -357,10 +358,12 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
 
     // Calculate confidence weight based on text quality
     // Full text = full weight, excerpts = reduced weight
-    const hasThumb = !!(review.dtliThumb || review.bwwThumb);
+    // If needsReview=true, the score doesn't reflect current signals (e.g., thumb
+    // was added after scoring), so don't credit the thumb until rescore happens
+    const thumbReflectedInScore = !!(review.dtliThumb || review.bwwThumb) && !review.needsReview;
     let confidenceWeight = 1.0;
     if (review.contentTier === 'excerpt' || review.contentTier === 'stub') {
-      confidenceWeight = hasThumb ? 0.75 : 0.5;
+      confidenceWeight = thumbReflectedInScore ? 0.75 : 0.5;
     } else if (review.contentTier === 'truncated') {
       confidenceWeight = 0.85;
     }
