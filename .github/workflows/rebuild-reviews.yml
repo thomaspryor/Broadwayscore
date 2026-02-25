@@ -268,7 +268,9 @@ jobs:
           echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
           gh workflow run "LLM Ensemble Score Reviews" \
             -f limit=$LIMIT \
-            -f run_calibration=false
+            -f run_calibration=false \
+            -f chain=true \
+            -f remaining_batches=5
 
           echo "LLM scoring auto-triggered successfully."
 

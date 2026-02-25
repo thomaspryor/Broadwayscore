@@ -465,7 +465,9 @@ jobs:
             -f max_reviews=300 \
             -f browserbase_enabled=true \
             -f retry_failed=true \
-            -f archive_first=true
+            -f archive_first=true \
+            -f chain=true \
+            -f remaining_batches=3
 
           echo "Text collection auto-triggered successfully."
 
