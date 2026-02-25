@@ -44,7 +44,7 @@ const CRITICAL_OUTLETS = {
   },
   wapo: {
     envVar: 'WAPO_COOKIES',
-    testUrl: 'https://www.washingtonpost.com/theater-dance/2024/04/19/stereophonic-broadway-review/',
+    testUrl: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/',
     authCookies: ['wp_ak_subs', 'wp_ak_signinv2'],
   },
   ft: {
@@ -282,7 +282,7 @@ function checkGeneralHealth(cookies) {
 
 // --- Layer 3: Live Access Test via ScrapingBee ---
 
-async function checkLiveAccess(fileKey, testUrl, cookies) {
+async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
@@ -307,7 +307,7 @@ async function checkLiveAccess(fileKey, testUrl, cookies) {
   const sbUrl = `https://app.scrapingbee.com/api/v1/?${params.toString()}`;
 
   try {
-    const res = await httpsGet(sbUrl, { 'Spb-Cookie': cookieHeader }, 45000);
+    const res = await httpsGet(sbUrl, { 'Spb-Cookie': cookieHeader }, 60000);
 
     if (res.status === 0) return { status: 'warn', message: `Request failed: ${res.body}` };
     if (res.status === 500) return { status: 'warn', message: 'ScrapingBee 500 (site blocking)' };
@@ -315,7 +315,15 @@ async function checkLiveAccess(fileKey, testUrl, cookies) {
 
     const html = res.body;
     if (isBlocked(html)) return { status: 'fail', message: `Blocked (${html.length} chars)` };
-    if (isPaywalled(html)) return { status: 'fail', message: `Paywalled (${html.length} chars)` };
+    // For soft-paywall outlets (no auth cookies), large responses are success
+    // even if paywall text exists in footer/sidebar
+    const isSoftPaywall = !authCookies || authCookies.length === 0;
+    if (isPaywalled(html)) {
+      if (isSoftPaywall && html.length > 50000) {
+        return { status: 'pass', message: `OK soft-paywall (${html.length} chars)` };
+      }
+      return { status: 'fail', message: `Paywalled (${html.length} chars)` };
+    }
     if (html.length < 2000) return { status: 'warn', message: `Short (${html.length} chars)` };
 
     return { status: 'pass', message: `OK (${html.length} chars)` };
@@ -399,7 +407,7 @@ async function main() {
         return { name: fileKey, layer: 3, status: 'skip', message: msg, isCritical: true };
       }
 
-      const live = await checkLiveAccess(fileKey, config.testUrl, existing.cookies);
+      const live = await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
     });
