@@ -24,6 +24,9 @@ import {
   AUDIENCE_DIVERGENCE_THRESHOLD,
   TOP_CRITICS,
   getCriticLabel,
+  SCORE_DISPLAY_YEAR_CUTOFF,
+  MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF,
+  LOW_CONF_SCORE_SOURCES,
 } from '@/config/scoring';
 import { toScoringId } from './outlet-id-mapper';
 
@@ -598,13 +601,10 @@ export function computeShowData(
   // Gate: Pre-2005 Broadway shows need minimum high-confidence reviews to display a score.
   // Most pre-2005 reviews are excerpt-only with low-confidence LLM scores, and many are
   // wrong-production (revival reviews mapped to the original production ID).
-  const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
-  const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
-  const LOW_CONF_SOURCES = new Set(['llmScore-lowconf', 'llmScore-thumb-boosted', 'thumb', 'bwwScore-fallback']);
   if (criticScore && show.openingDate && (!show.category || show.category === 'broadway')) {
     const openingYear = new Date(show.openingDate).getFullYear();
     if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
-      const highConfCount = showReviews.filter(r => r.scoreSource && !LOW_CONF_SOURCES.has(r.scoreSource)).length;
+      const highConfCount = showReviews.filter(r => r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)).length;
       if (highConfCount < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) {
         criticScore = null;
       }

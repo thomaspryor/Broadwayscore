@@ -6,6 +6,20 @@ export const METHODOLOGY_VERSION = "2.2.0";
 export const METHODOLOGY_DATE = "2026-02-22";
 
 // ===========================================
+// PRE-2005 SCORE GATING
+// ===========================================
+// Pre-2005 Broadway shows need minimum high-confidence reviews to display a score.
+// Reviews from these sources are considered low-confidence:
+export const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
+export const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
+export const LOW_CONF_SCORE_SOURCES = new Set([
+  'llmScore-lowconf',
+  'llmScore-thumb-boosted',
+  'thumb',
+  'bwwScore-fallback',
+]);
+
+// ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)
 // ===========================================
 export const COMPONENT_WEIGHTS = {
@@ -119,6 +133,11 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'TOWLEROAD': { tier: 3, name: 'Towleroad', scoreFormat: 'text_bucket' },
   'NORTHJERSEY': { tier: 3, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
   'NBC': { tier: 3, name: 'NBC New York', scoreFormat: 'text_bucket' },
+  'FORWARD': { tier: 3, name: 'The Forward', scoreFormat: 'text_bucket' },
+  'BERGENRECORD': { tier: 3, name: 'The Bergen Record', scoreFormat: 'text_bucket' },
+  'FORTWORTHST': { tier: 3, name: 'Fort Worth Star-Telegram', scoreFormat: 'text_bucket' },
+  'NJNEWSROOM': { tier: 3, name: 'NJ Newsroom', scoreFormat: 'text_bucket' },
+  'THEATERNEWS': { tier: 3, name: 'Theater News Online', scoreFormat: 'text_bucket' },
 };
 
 // ===========================================
