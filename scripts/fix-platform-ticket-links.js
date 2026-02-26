@@ -104,10 +104,16 @@ async function serpVerifyTicketmaster(showTitle, existingUrl) {
 
       const serpTitle = normalizeShowName(r.title || '');
       const showNorm = normalizeShowName(showTitle);
-      const showWords = showNorm.split(' ').filter(w => w.length > 2);
-      const matchCount = showWords.filter(w => serpTitle.includes(w)).length;
+      // Try both full title and primary title (before colon/subtitle) to avoid
+      // subtitle words diluting match ratio for short primary names
+      const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+      const matched = [showNorm, primaryTitle].some(candidate => {
+        const words = candidate.split(' ').filter(w => w.length > 2);
+        const matchCount = words.filter(w => serpTitle.includes(w)).length;
+        return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
+      });
 
-      if (showWords.length === 0 || matchCount >= Math.ceil(showWords.length * 0.5)) {
+      if (matched) {
         const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
         if (cleanUrl === existingUrl) {
           return { status: 'ok' };

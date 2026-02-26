@@ -171,13 +171,19 @@ function buildSearchQuery(show) {
 function scoreCandidate(url, serpTitle, showTitle) {
   const domain = getDomain(url);
   const showNorm = normalizeShowName(showTitle);
-  const showWords = showNorm.split(' ').filter(w => w.length > 2);
+  // Try both full title and primary title (before colon/subtitle) to avoid
+  // subtitle words diluting match ratio for short primary names
+  const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+  const wordSets = [showNorm, primaryTitle].map(t => t.split(' ').filter(w => w.length > 2));
   let score = 0;
 
   // Domain contains show name words (strong signal)
   const domainNorm = domain.replace(/[.-]/g, '');
-  const domainMatchCount = showWords.filter(w => domainNorm.includes(w)).length;
-  if (showWords.length > 0 && domainMatchCount >= Math.ceil(showWords.length * 0.5)) {
+  const domainMatches = wordSets.some(words => {
+    const matchCount = words.filter(w => domainNorm.includes(w)).length;
+    return words.length > 0 && matchCount >= Math.ceil(words.length * 0.5);
+  });
+  if (domainMatches) {
     score += 3;
   }
 
@@ -187,8 +193,11 @@ function scoreCandidate(url, serpTitle, showTitle) {
 
   // SERP title contains show name
   const titleNorm = normalizeShowName(serpTitle || '');
-  const titleMatchCount = showWords.filter(w => titleNorm.includes(w)).length;
-  if (showWords.length > 0 && titleMatchCount >= Math.ceil(showWords.length * 0.5)) {
+  const titleMatches = wordSets.some(words => {
+    const matchCount = words.filter(w => titleNorm.includes(w)).length;
+    return words.length > 0 && matchCount >= Math.ceil(words.length * 0.5);
+  });
+  if (titleMatches) {
     score += 2;
   }
 

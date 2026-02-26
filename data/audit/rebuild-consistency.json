@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-25T18:16:14.671Z",
+  "generatedAt": "2026-02-26T03:56:14.018Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -20,26 +20,10 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "arcadia-2011",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "originalRating \"D-\" (=30) vs score 90 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "back-to-the-future-west-end-2021",
       "outlet": "london-theatre",
       "critic": "Marianka Swain",
       "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "burn-the-floor-2009",
-      "outlet": "broadwayworld",
-      "critic": "Michael Dale",
-      "detail": "originalRating \"4/5\" (=80) vs score 44 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -204,14 +188,6 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "titanique-west-end-2024",
-      "outlet": "times-uk",
-      "critic": "Clive Davis",
-      "detail": "originalRating \"5/5\" (=100) vs score 25 (source: llmScore-lowconf)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "venus-in-fur-2011",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -272,30 +248,6 @@
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "arcadia-2011",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "humanReviewScore 90 (positive) overrides explicit \"D-\" (=30, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "burn-the-floor-2009",
-      "outlet": "broadwayworld",
-      "critic": "Michael Dale",
-      "detail": "humanReviewScore 44 (mixed) overrides explicit \"4/5\" (=80, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "cat-on-a-hot-tin-roof-2013",
-      "outlet": "nydailynews",
-      "critic": "Joe Dziemianowicz",
-      "detail": "humanReviewScore 42 (mixed) overrides explicit \"80\" (=80, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
