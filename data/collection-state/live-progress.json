@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T20:03:06.614Z",
-  "processed": 591,
-  "failed": 759,
-  "successRate": "43.8%",
+  "updatedAt": "2026-02-26T20:37:10.315Z",
+  "processed": 636,
+  "failed": 774,
+  "successRate": "45.1%",
   "tierBreakdown": {
-    "playwright": 397,
-    "amp": 121,
-    "browserbase": 2,
-    "directCookies": 63,
-    "scrapingbee": 25,
+    "playwright": 447,
+    "amp": 88,
+    "browserbase": 4,
+    "directCookies": 37,
+    "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 202,
-    "archive": 150
+    "archiveToday": 214,
+    "archive": 163
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -44,6 +44,39 @@
       "event": "bb-session",
       "session": "89ef6400",
       "url": "https://www.theaterreviewsfrommyseat.com/the-ferryman/"
+    },
+    {
+      "t": "2026-02-26T19:52:36.100Z",
+      "event": "bb-session",
+      "session": "7e820816",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-26T19:52:37.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-26T20:12:35.823Z",
+      "event": "bb-session",
+      "session": "736fd529",
+      "url": "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-revi"
+    },
+    {
+      "t": "2026-02-26T20:12:37.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-02-26T20:21:34.053Z",
+      "event": "bb-session",
+      "session": "63e1fa3a",
+      "url": "https://www.thestage.co.uk/reviews/beautiful-little-fool-review-southwark-playho"
+    },
+    {
+      "t": "2026-02-26T20:21:35.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
