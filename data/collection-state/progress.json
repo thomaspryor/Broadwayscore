@@ -841,7 +841,17 @@
     "bug-2026/wapo--naveen-kumar.json",
     "chicago-1996/nypost--elisabeth-vincentelli.json",
     "death-of-a-salesman-2026/wsj--charles-isherwood.json",
-    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json"
+    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-west-end-2024/broadway-news--charles-isherwood.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json",
+    "hadestown-west-end-2024/nbcnews--unknown.json",
+    "hadestown-west-end-2024/newsday--barbara-schuler.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "hadestown-west-end-2024/wapo--peter-marks.json",
+    "hamilton-west-end-2021/nbcnews--unknown.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1110,7 +1120,8 @@
       "mj-2022/thr--lovia-gyarkye.json",
       "data/review-texts/chess-2025/thr--richard-lawson.json",
       "data/review-texts/hadestown-west-end-2024/thr--david-rooney.json",
-      "hadestown-west-end-2024/thr--david-rooney.json"
+      "hadestown-west-end-2024/thr--david-rooney.json",
+      "data/review-texts/hadestown-west-end-2024/deadline--greg-evans.json"
     ],
     "browserbase": [
       "data/review-texts/children-of-a-lesser-god-2018/fordham-observer--michael-appler.json",
@@ -1173,7 +1184,8 @@
       "the-phantom-of-the-opera-west-end-2021/guardian-uk--michael-billington.json",
       "the-play-that-goes-wrong-west-end-2021/guardian-uk--kate-kellaway.json",
       "wicked-west-end-2021/guardian-uk--michael-billington.json",
-      "woman-in-mind-west-end-2025/guardian-uk--arifa-akbar.json"
+      "woman-in-mind-west-end-2025/guardian-uk--arifa-akbar.json",
+      "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1373,7 +1385,10 @@
       "data/review-texts/all-my-sons-west-end-2025/nypost--unknown.json",
       "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
       "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
-      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json"
+      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json",
+      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1493,7 +1508,7 @@
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+  "lastProcessed": "harry-potter-2021/indiewire--david-ehrlich.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1673,6 +1688,12 @@
       "t": "2026-02-26T14:56:06.324Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T15:04:27.924Z",
+      "event": "bb-session",
+      "session": "c1cd444f",
+      "url": "https://www.msn.com/en-us/news/us/local-students-first-in-area-to-tackle-hadesto"
     }
   ]
 }
