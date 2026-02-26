@@ -315,6 +315,10 @@ jobs:
             echo "Show Score extraction script not found, skipping"
           fi
 
+      - name: Convert Show Score data to review-text stubs
+        if: always() && steps.extract-ss.outcome == 'success'
+        run: node scripts/convert-show-score-to-review-texts.js
+
       - name: Rebuild reviews.json
         if: always() && (steps.extract-dtli.outcome == 'success' || steps.extract-ss.outcome == 'success')
         env:
