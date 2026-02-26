@@ -58,8 +58,14 @@ const BLOCKED_DOMAINS = new Set([
   'manhattantheatreclub.com', '2st.com', 'nytw.org', 'publictheater.org',
   'signaturetheatre.org', 'mintheatre.org', 'atlantictheater.org',
   'classicstage.org', 'irishrep.org', 'newworldstages.com',
-  // City/government sites
-  'cityofwhiteplains.com', 'nyc.gov',
+  // City/government/tourism sites
+  'cityofwhiteplains.com', 'nyc.gov', 'nyctourism.com',
+  // Our own site and other aggregators
+  'broadwayscorecard.com', 'exeuntnyc.com', 'stageandcinema.com',
+  'ticketnews.com', 'seatplan.com', 'newyorkcitytheatre.com',
+  'masterworksbroadway.com', 'filmedlivemusicals.com',
+  'broadwayacrossamerica.com', 'broadway.org.uk',
+  'londonsbroadwaybuzz.ca',
 ]);
 
 // ============================================================================
@@ -214,7 +220,11 @@ async function discoverOfficialUrl(show) {
       if (isBlockedDomain(url)) continue;
 
       const s = scoreCandidate(url, r.title || '', show.title);
-      if (s >= 3) {  // Minimum confidence threshold
+      // Off-Broadway shows need higher threshold — many don't have dedicated
+      // websites, so SERP returns listing/review sites as false positives
+      const cat = show.category || 'broadway';
+      const threshold = cat === 'off-broadway' ? 5 : 3;
+      if (s >= threshold) {
         candidates.push({ url, title: r.title, score: s });
       }
     }
