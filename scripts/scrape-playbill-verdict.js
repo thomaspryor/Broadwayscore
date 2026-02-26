@@ -20,7 +20,7 @@ const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
-const { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const cheerio = require('cheerio');
 
 // Paths
@@ -524,15 +524,7 @@ async function processShowViaGoogle(show, showId, shows) {
         stats.reviewLinksExtracted += reviewLinks.length;
 
         for (const link of reviewLinks) {
-          // Cross-show URL validation: skip if URL clearly belongs to a different show
-          const wrongShow = urlBelongsToDifferentShow(link.url, showId, show.slug || '', shows);
-          if (wrongShow) {
-            console.log(`    [SKIP] ${link.outletDomain}: URL belongs to "${wrongShow}", not "${showId}"`);
-            stats.skippedOffBroadway++;
-            continue;
-          }
-
-          // URL year validation (shared helper)
+          // URL year validation: skip if URL year is clearly outside production window
           if (isUrlYearOutsideWindow(link.url, showOpeningYear, showClosingYear)) {
             const urlYear = link.url.match(/\/((?:19|20)\d{2})\//)?.[1];
             console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside production window`);
@@ -741,15 +733,7 @@ async function scrapePlaybillVerdict() {
       ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
 
     for (const link of reviewLinks) {
-      // Cross-show URL validation: skip if URL clearly belongs to a different show
-      const wrongShow = urlBelongsToDifferentShow(link.url, article.showId, showEntry?.slug || '', shows);
-      if (wrongShow) {
-        console.log(`    [SKIP] ${link.outletDomain}: URL belongs to "${wrongShow}", not "${article.showId}"`);
-        stats.skippedOffBroadway++;
-        continue;
-      }
-
-      // URL year validation (shared helper)
+      // URL year validation: skip if URL year is clearly outside production window
       if (isUrlYearOutsideWindow(link.url, showOpeningYear, showClosingYear)) {
         const urlYear = link.url.match(/\/((?:19|20)\d{2})\//)?.[1];
         console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside production window`);

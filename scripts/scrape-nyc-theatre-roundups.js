@@ -24,7 +24,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
-const { urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -459,17 +459,10 @@ async function scrapeNYCTheatreRoundups() {
         const cachedOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
         const cachedClosingYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
         for (const review of reviews) {
-          // URL-slug guard
-          if (review.url) {
-            const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
-            if (wrongShow) {
-              console.log(`  [SKIP] ${review.outlet}: URL belongs to "${wrongShow}"`);
-              continue;
-            }
-            if (isUrlYearOutsideWindow(review.url, cachedOpeningYear, cachedClosingYear)) {
-              console.log(`  [SKIP] ${review.outlet}: URL year outside production window`);
-              continue;
-            }
+          // URL year guard: skip if URL year is clearly outside production window
+          if (review.url && isUrlYearOutsideWindow(review.url, cachedOpeningYear, cachedClosingYear)) {
+            console.log(`  [SKIP] ${review.outlet}: URL year outside production window`);
+            continue;
           }
 
           const result = saveNycTheatreExcerpt(showId, review);
@@ -530,17 +523,10 @@ async function scrapeNYCTheatreRoundups() {
       const fetchOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
       const fetchClosingYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
       for (const review of reviews) {
-        // URL-slug guard
-        if (review.url) {
-          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
-          if (wrongShow) {
-            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}"`);
-            continue;
-          }
-          if (isUrlYearOutsideWindow(review.url, fetchOpeningYear, fetchClosingYear)) {
-            console.log(`    [SKIP] ${review.outlet}: URL year outside production window`);
-            continue;
-          }
+        // URL year guard: skip if URL year is clearly outside production window
+        if (review.url && isUrlYearOutsideWindow(review.url, fetchOpeningYear, fetchClosingYear)) {
+          console.log(`    [SKIP] ${review.outlet}: URL year outside production window`);
+          continue;
         }
 
         const result = saveNycTheatreExcerpt(showId, review);

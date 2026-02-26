@@ -32,7 +32,7 @@ const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-mat
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
-const { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -877,7 +877,7 @@ function saveReview(showId, reviewData, options = {}) {
 // Process a single show
 // ---------------------------------------------------------------------------
 
-async function processShow(show, showId, options = {}, shows = []) {
+async function processShow(show, showId, options = {}) {
   // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
   if (show.status === 'previews') {
     console.log(`  [SKIP] ${showId}: Show is in previews (opens ${show.openingDate})`);
@@ -899,20 +899,12 @@ async function processShow(show, showId, options = {}, shows = []) {
       console.log(`    Extracted ${reviews.length} reviews from /reviews/ page${aggregateRating ? ` (rating: ${aggregateRating})` : ''}`);
 
       for (const review of reviews) {
-        // URL-slug guard: skip if URL clearly belongs to a different show
-        if (review.url) {
-          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
-          if (wrongShow) {
-            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}", not "${showId}"`);
-            stats.skippedGuards++;
-            continue;
-          }
-          if (isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
-            const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
-            console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
-            stats.skippedGuards++;
-            continue;
-          }
+        // URL year guard: skip if URL year is clearly outside production window
+        if (review.url && isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
+          const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+          console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
+          stats.skippedGuards++;
+          continue;
         }
 
         if (options.verify) {
@@ -942,20 +934,12 @@ async function processShow(show, showId, options = {}, shows = []) {
           continue;
         }
 
-        // URL-slug guard: skip if URL clearly belongs to a different show
-        if (review.url) {
-          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
-          if (wrongShow) {
-            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}", not "${showId}"`);
-            stats.skippedGuards++;
-            continue;
-          }
-          if (isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
-            const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
-            console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
-            stats.skippedGuards++;
-            continue;
-          }
+        // URL year guard: skip if URL year is clearly outside production window
+        if (review.url && isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
+          const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+          console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
+          stats.skippedGuards++;
+          continue;
         }
 
         if (options.verify) {
@@ -1069,7 +1053,7 @@ async function main() {
     console.log(`[${count}/${targetShows.length}] ${showId} (${show.title})`);
 
     try {
-      const results = await processShow(show, showId, options, shows);
+      const results = await processShow(show, showId, options);
 
       if (verify) {
         verifyResults[showId] = results;
