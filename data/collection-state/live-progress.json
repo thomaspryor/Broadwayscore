@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-26T15:15:04.631Z",
+  "updatedAt": "2026-02-26T15:34:21.147Z",
   "processed": 386,
-  "failed": 474,
-  "successRate": "44.9%",
+  "failed": 484,
+  "successRate": "44.4%",
   "tierBreakdown": {
     "playwright": 245,
     "amp": 19,
@@ -10,33 +10,11 @@
     "directCookies": 7,
     "scrapingbee": 41,
     "brightdata": 0,
-    "archiveToday": 202,
+    "archiveToday": 208,
     "archive": 114
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-02-26T09:46:12.226Z",
-      "event": "bb-session",
-      "session": "690c4111",
-      "url": "https://www.newyorker.com/podcast/critics-at-large/after-wicked-what-do-we-want-"
-    },
-    {
-      "t": "2026-02-26T09:46:13.599Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-26T09:50:06.241Z",
-      "event": "bb-session",
-      "session": "5093893a",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
-    },
-    {
-      "t": "2026-02-26T09:50:07.574Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-02-26T09:57:42.766Z",
       "event": "bb-session",
@@ -125,6 +103,28 @@
       "t": "2026-02-26T15:07:37.888Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T15:16:42.066Z",
+      "event": "bb-session",
+      "session": "fec58b02",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-26T15:16:43.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T15:21:48.357Z",
+      "event": "bb-session",
+      "session": "0e0be977",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-26T15:21:49.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
