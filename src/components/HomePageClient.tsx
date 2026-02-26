@@ -31,11 +31,13 @@ export interface HomepageShow {
   // Pre-computed server-side (avoids importing data-audience.ts on client)
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
+  category?: string;
 }
 
 interface HomePageClientProps {
   shows: HomepageShow[];
   upcomingShows: HomepageShow[];
+  offBroadwayShows?: HomepageShow[];
   totalShows: number;
   totalReviews: number;
 }
@@ -162,6 +164,9 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
           {!hideStatus && <StatusBadge status={show.status} />}
+          {show.category === 'off-broadway' && (
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
+          )}
         </div>
         <p className="text-sm text-gray-400 mt-2.5 truncate">
           {show.status === 'previews' || show.status === 'upcoming' ? (
@@ -365,7 +370,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomePageClientProps) {
+function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows, totalReviews }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -380,6 +385,27 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
   }));
+
+  // Off-Broadway toggle (URL-synced)
+  const [includeOB, setIncludeOB] = useState(() => initialSearchParams.get('offBway') === 'true');
+
+  const toggleOB = useCallback(() => {
+    setIncludeOB(prev => {
+      const next = !prev;
+      const urlParams = new URLSearchParams(window.location.search);
+      if (next) urlParams.set('offBway', 'true');
+      else urlParams.delete('offBway');
+      const paramString = urlParams.toString();
+      window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
+      return next;
+    });
+  }, []);
+
+  // Merge Broadway + OB shows when toggle is active
+  const allShows = useMemo(() => {
+    if (!includeOB || offBroadwayShows.length === 0) return shows;
+    return [...shows, ...offBroadwayShows];
+  }, [shows, offBroadwayShows, includeOB]);
 
   const status = filters.status;
   const sort = filters.sort;
@@ -434,7 +460,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
   }, []);
 
   // Fuse.js instance for fuzzy search across title, venue, and creative team
-  const fuse = useMemo(() => new Fuse(shows, {
+  const fuse = useMemo(() => new Fuse(allShows, {
     keys: [
       { name: 'title', weight: 0.6 },
       { name: 'venue', weight: 0.2 },
@@ -450,7 +476,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       }
       return Fuse.config.getFn(obj, path);
     },
-  }), [shows]);
+  }), [allShows]);
 
   // Featured rows data - only shows opened in last 12 months
   const twelveMonthsAgo = useMemo(() => {
@@ -551,7 +577,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
     }
 
     // Non-search filtering: apply score mode, status, and type filters
-    let result = shows.filter(show => {
+    let result = allShows.filter(show => {
       // Previews shows appear in the Upcoming carousel, not the main grid
       if (show.status === 'previews' || show.status === 'upcoming') return false;
       if (scoreMode === 'audience') {
@@ -634,7 +660,7 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
     }
 
     return result;
-  }, [shows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [allShows, fuse, statusFilter, type, searchQuery, sort, scoreMode]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
@@ -695,13 +721,35 @@ function HomePageInner({ shows, upcomingShows, totalShows, totalReviews }: HomeP
       {/* Type Pills & Score Mode Toggle Row */}
       <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
         {/* Type Filter Pills (Left) */}
-        <ToggleBar
-          variant="pill"
-          options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
-          value={type}
-          onChange={(t) => updateParams({ type: t })}
-          ariaLabel="Filter by type"
-        />
+        <div className="flex items-center gap-2">
+          <ToggleBar
+            variant="pill"
+            options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
+            value={type}
+            onChange={(t) => updateParams({ type: t })}
+            ariaLabel="Filter by type"
+          />
+          {offBroadwayShows.length > 0 && (
+            <>
+              <div className="w-px h-5 bg-white/10" />
+              <button
+                onClick={toggleOB}
+                className={`flex items-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-full text-xs font-semibold border transition-all min-h-[44px] sm:min-h-0 ${
+                  includeOB
+                    ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300'
+                    : 'bg-white/[0.04] border-white/[0.08] text-gray-500 hover:text-gray-300'
+                }`}
+                aria-pressed={includeOB}
+                title={includeOB ? 'Hide Off-Broadway shows' : 'Include Off-Broadway shows'}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  includeOB ? 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.5)]' : 'bg-gray-600'
+                }`} />
+                Off-Bway
+              </button>
+            </>
+          )}
+        </div>
 
         {/* Score Mode Picker (Right) */}
         <ScoreToggle
