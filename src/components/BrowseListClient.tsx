@@ -21,7 +21,7 @@ export interface BrowseShow {
   isRevival?: boolean;
   runtime?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
-  criticScore?: { score?: number; reviewCount?: number };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   performances?: number;
@@ -101,7 +101,8 @@ const ShowCard = memo(function ShowCard({
   } else {
     displayScore = show.criticScore?.score;
     const reviewCount = show.criticScore?.reviewCount ?? 0;
-    tier = hasEnoughReviews(reviewCount, show.category) ? getScoreTier(displayScore) : null;
+    const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+    tier = hasEnoughReviews(reviewCount, show.category, t1t2) ? getScoreTier(displayScore) : null;
   }
 
   return (
@@ -268,8 +269,9 @@ export default function BrowseListClient({
 
     // Helper: effective score for sorting (TBD shows sort to bottom)
     const getEffectiveScore = (s: BrowseShow) => {
-      const minReviews = (s.category === 'off-broadway' || s.category === 'west-end') ? 3 : 5;
-      if ((s.criticScore?.reviewCount ?? 0) < minReviews) return -1;
+      const reviewCount = s.criticScore?.reviewCount ?? 0;
+      const t1t2 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
+      if (!hasEnoughReviews(reviewCount, s.category, t1t2)) return -1;
       return s.criticScore?.score ?? -1;
     };
 

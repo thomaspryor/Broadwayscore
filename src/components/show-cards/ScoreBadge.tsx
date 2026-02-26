@@ -73,9 +73,10 @@ export interface ScoreBadgeProps {
   status?: string;
   showCrown?: boolean;
   category?: string;
+  tier1And2Count?: number;
 }
 
-export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category }: ScoreBadgeProps) {
+export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
@@ -91,8 +92,9 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     );
   }
 
-  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End)
-  const minReviews = (category === 'off-broadway' || category === 'west-end') ? 3 : 5;
+  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/West End; +2 if all T3)
+  let minReviews = (category === 'off-broadway' || category === 'west-end') ? 3 : 5;
+  if (tier1And2Count !== undefined && tier1And2Count === 0) minReviews += 2;
   if (reviewCount !== undefined && reviewCount < minReviews) {
     return (
       <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>

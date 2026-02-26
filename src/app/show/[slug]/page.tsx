@@ -335,13 +335,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
                 const reviewCount = show.criticScore?.reviewCount || 0;
-                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category);
-                const roundedScore = score ? Math.round(score) : null;
-                const sentiment = score ? getSentimentLabel(score) : null;
-
-                // Get tier counts for tooltip
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
+                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+                const roundedScore = score ? Math.round(score) : null;
+                const sentiment = score ? getSentimentLabel(score) : null;
                 const tier3Count = show.criticScore?.tier3Count || 0;
 
                 // Calculate breakdown
@@ -779,7 +777,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             {/* Key metrics first for AI extractability */}
-            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category) && (
+            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0)) && (
               <div>
                 <dt className="text-gray-500">CriticScore</dt>
                 <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>

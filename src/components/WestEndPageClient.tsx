@@ -9,6 +9,7 @@ import ShowImage from '@/components/ShowImage';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
+import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
 export interface WestEndShow {
@@ -23,7 +24,7 @@ export interface WestEndShow {
   isRevival?: boolean;
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
-  criticScore?: { score?: number; reviewCount?: number };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
@@ -53,6 +54,12 @@ const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
 // Min reviews for West End shows
 const MIN_REVIEWS_WE = 3;
+
+function weHasEnoughReviews(show: WestEndShow): boolean {
+  const rc = show.criticScore?.reviewCount ?? 0;
+  const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+  return hasEnoughReviews(rc, 'west-end', t1t2);
+}
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -224,7 +231,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           ) : null
         ) : (
           <>
-            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < MIN_REVIEWS_WE) ? (
+            {show.status === 'previews' || show.status === 'upcoming' || !weHasEnoughReviews(show) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
                 Not Yet Rated
               </span>
@@ -424,13 +431,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   // Featured rows
   const topMusicals = useMemo(() => {
     return shows
-      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && weHasEnoughReviews(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_WE)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && weHasEnoughReviews(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -461,7 +468,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           return statusFilter === 'previews' || statusFilter === 'all';
         }
         // Open and closed shows: require minimum reviews for a score
-        return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_WE;
+        return show.criticScore && weHasEnoughReviews(show);
       }
     });
 

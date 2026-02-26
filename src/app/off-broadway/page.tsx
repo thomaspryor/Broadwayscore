@@ -36,7 +36,7 @@ function serializeShow(show: ReturnType<typeof getOffBroadwayShows>[number]): Of
     reviewYearNote: show.reviewYearNote ?? undefined,
     images: show.images,
     criticScore: show.criticScore
-      ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount }
+      ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
       : undefined,
     audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
     audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,

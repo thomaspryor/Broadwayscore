@@ -9,6 +9,7 @@ import ShowImage from '@/components/ShowImage';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
+import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
 export interface OffBroadwayShow {
@@ -23,7 +24,7 @@ export interface OffBroadwayShow {
   isRevival?: boolean;
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
-  criticScore?: { score?: number; reviewCount?: number };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
@@ -52,6 +53,12 @@ const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
 // Min reviews for Off-Broadway shows
 const MIN_REVIEWS_OB = 3;
+
+function obHasEnoughReviews(show: OffBroadwayShow): boolean {
+  const rc = show.criticScore?.reviewCount ?? 0;
+  const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+  return hasEnoughReviews(rc, 'off-broadway', t1t2);
+}
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -223,7 +230,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           ) : null
         ) : (
           <>
-            {show.status === 'previews' || show.status === 'upcoming' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < MIN_REVIEWS_OB) ? (
+            {show.status === 'previews' || show.status === 'upcoming' || !obHasEnoughReviews(show) ? (
               <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
                 Not Yet Rated
               </span>
@@ -426,7 +433,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
       .filter(show => {
-        if (!show.criticScore?.score || !show.criticScore?.reviewCount || show.criticScore.reviewCount < MIN_REVIEWS_OB) return false;
+        if (!show.criticScore?.score || !obHasEnoughReviews(show)) return false;
         if (show.status === 'previews' || show.status === 'upcoming') return false;
         const opened = new Date(show.openingDate);
         return opened >= twelveMonthsAgo;
@@ -436,7 +443,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
 
   const topPlays = useMemo(() => {
     return shows
-      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && show.criticScore?.reviewCount && show.criticScore.reviewCount >= MIN_REVIEWS_OB)
+      .filter(show => show.type === 'play' && show.status === 'open' && show.criticScore?.score && obHasEnoughReviews(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
@@ -466,7 +473,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
           return statusFilter === 'previews' || statusFilter === 'all';
         }
         // Open and closed shows: require minimum reviews for a score
-        return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= MIN_REVIEWS_OB;
+        return show.criticScore && obHasEnoughReviews(show);
       }
     });
 
@@ -489,8 +496,8 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
             const bAud = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
             return bAud - aAud;
           }
-          const aHasEnough = a.criticScore?.reviewCount !== undefined && a.criticScore.reviewCount >= MIN_REVIEWS_OB;
-          const bHasEnough = b.criticScore?.reviewCount !== undefined && b.criticScore.reviewCount >= MIN_REVIEWS_OB;
+          const aHasEnough = obHasEnoughReviews(a);
+          const bHasEnough = obHasEnoughReviews(b);
           const aScore = (a.status === 'previews' || !aHasEnough) ? -1 : (a.criticScore?.score ?? -1);
           const bScore = (b.status === 'previews' || !bHasEnough) ? -1 : (b.criticScore?.score ?? -1);
           return bScore - aScore;

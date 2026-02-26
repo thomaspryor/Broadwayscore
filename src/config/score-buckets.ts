@@ -98,6 +98,9 @@ export const MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY = 3;
 /** Minimum reviews for West End (fewer UK outlets than Broadway) */
 export const MIN_REVIEWS_FOR_SCORE_WEST_END = 3;
 
+/** Extra reviews required when all reviews are T3 (no T1/T2 coverage) */
+export const T3_ONLY_EXTRA_REVIEWS = 2;
+
 /** Minimum tier 1 reviews for high confidence */
 export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 
@@ -149,12 +152,16 @@ export function getScoreBgColor(score: number | null): string {
 }
 
 /**
- * Check if a score meets the minimum threshold for display
+ * Check if a score meets the minimum threshold for display.
+ * T3-only shows (no T1/T2 reviews) require extra reviews for qualification.
  */
-export function hasEnoughReviews(reviewCount: number, category?: string): boolean {
-  const min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
+export function hasEnoughReviews(reviewCount: number, category?: string, tier1And2Count?: number): boolean {
+  let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
     : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : MIN_REVIEWS_FOR_SCORE;
+  if (tier1And2Count !== undefined && tier1And2Count === 0) {
+    min += T3_ONLY_EXTRA_REVIEWS;
+  }
   return reviewCount >= min;
 }
 

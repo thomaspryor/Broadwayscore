@@ -10,6 +10,7 @@ import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
+import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
 export interface HomepageShow {
@@ -27,7 +28,7 @@ export interface HomepageShow {
   creativeTeam?: Array<{ name: string; role: string }>;
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
-  criticScore?: { score?: number; reviewCount?: number };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   // Pre-computed server-side (avoids importing data-audience.ts on client)
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
@@ -572,7 +573,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
   // Best Off-Broadway shows (sorted by score)
   const bestOffBroadway = useMemo(() => {
     return offBroadwayShows
-      .filter(show => show.criticScore?.score && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= 3)
+      .filter(show => show.criticScore?.score && hasEnoughReviews(show.criticScore.reviewCount ?? 0, show.category, (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0)))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [offBroadwayShows]);
 

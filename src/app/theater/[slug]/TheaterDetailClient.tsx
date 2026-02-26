@@ -16,7 +16,7 @@ export interface TheaterShow {
   type: string;
   isRevival?: boolean;
   images?: { thumbnail?: string; poster?: string; hero?: string };
-  criticScore?: { score?: number; reviewCount?: number };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
 }
