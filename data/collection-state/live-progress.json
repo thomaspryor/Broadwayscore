@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T09:38:38.023Z",
-  "processed": 306,
-  "failed": 384,
-  "successRate": "44.3%",
+  "updatedAt": "2026-02-26T09:46:28.509Z",
+  "processed": 312,
+  "failed": 388,
+  "successRate": "44.6%",
   "tierBreakdown": {
-    "playwright": 226,
+    "playwright": 227,
     "amp": 15,
-    "browserbase": 3,
+    "browserbase": 6,
     "directCookies": 7,
-    "scrapingbee": 26,
+    "scrapingbee": 27,
     "brightdata": 0,
     "archiveToday": 175,
-    "archive": 66
+    "archive": 70
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -66,6 +66,50 @@
       "t": "2026-02-26T09:31:50.083Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-26T09:38:41.305Z",
+      "event": "bb-session",
+      "session": "eac9ee58",
+      "url": "http://variety.com/2011/legit/reviews/the-book-of-mormon-1117944886/"
+    },
+    {
+      "t": "2026-02-26T09:38:42.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-26T09:42:51.023Z",
+      "event": "bb-session",
+      "session": "9d164a26",
+      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-mer"
+    },
+    {
+      "t": "2026-02-26T09:42:52.590Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-26T09:43:57.953Z",
+      "event": "bb-session",
+      "session": "bd617767",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-02-26T09:43:59.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-26T09:46:12.226Z",
+      "event": "bb-session",
+      "session": "690c4111",
+      "url": "https://www.newyorker.com/podcast/critics-at-large/after-wicked-what-do-we-want-"
+    },
+    {
+      "t": "2026-02-26T09:46:13.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
