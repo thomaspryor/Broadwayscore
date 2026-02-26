@@ -245,6 +245,15 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --staged --stat
           fi
+          # Check if actual review files were scored (not just metadata)
+          SCORED=$(git diff --staged --name-only -- 'data/review-texts/' | wc -l | tr -d ' ')
+          if [ "$SCORED" -gt 0 ]; then
+            echo "has_scored_reviews=true" >> $GITHUB_OUTPUT
+            echo "Scored $SCORED review files"
+          else
+            echo "has_scored_reviews=false" >> $GITHUB_OUTPUT
+            echo "No review files scored this run"
+          fi
 
       - name: Check for large files
         if: always() && steps.check-changes.outputs.has_changes == 'true'
@@ -421,8 +430,25 @@ jobs:
           echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
           echo "Unscored reviews remaining: $REMAINING"
 
+      - name: Alert on zero reviews scored
+        if: >-
+          always() && job.status != 'cancelled'
+          && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.check-changes.outputs.has_scored_reviews == 'false'
+          && steps.check-needed.outputs.skip != 'true'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          REMAINING="${{ steps.count-remaining.outputs.remaining }}"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MSG="⚠️ **Scoring run scored 0 reviews** but ${REMAINING} remain unscored. Possible counter/scorer mismatch. [View run](${RUN_URL})"
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"${MSG}\"}" || true
+          echo "::warning::Scoring run processed 0 reviews with ${REMAINING} remaining unscored"
+
       - name: Chain next batch
-        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10 && steps.check-changes.outputs.has_changes == 'true'
+        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10 && steps.check-changes.outputs.has_scored_reviews == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
