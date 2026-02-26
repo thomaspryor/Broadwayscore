@@ -861,7 +861,17 @@
     "maggots-west-end-2026/timeout--unknown.json",
     "marcel-on-the-train-2026/broadwaynews--unknown.json",
     "masquerade-2025/nydailynews--chris-jones.json",
-    "masquerade-2025/observer--david-cote.json"
+    "masquerade-2025/observer--david-cote.json",
+    "masquerade-2025/wapo--naveen-kumar.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+    "my-joy-is-heavy-2025/broadwaynews--unknown.json",
+    "my-joy-is-heavy-2025/theatermania--unknown.json",
+    "oh-mary-west-end-2025/broadwaynews--unknown.json",
+    "oliver-west-end-2024/nbcnews--unknown.json",
+    "oliver-west-end-2024/nypost--unknown.json",
+    "pen-pals-2025/broadwaynews--unknown.json",
+    "perfect-crime-1987/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1400,7 +1410,13 @@
       "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json",
       "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
       "data/review-texts/jerome-2025/wsj--unknown.json",
-      "data/review-texts/maggots-west-end-2026/theatermania--unknown.json"
+      "data/review-texts/maggots-west-end-2026/theatermania--unknown.json",
+      "data/review-texts/los-soles-truncos-2025/broadwaynews--unknown.json",
+      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+      "data/review-texts/my-joy-is-heavy-2025/theatermania--unknown.json",
+      "data/review-texts/oh-mary-west-end-2025/broadwaynews--unknown.json",
+      "data/review-texts/oliver-west-end-2024/nbcnews--unknown.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1520,7 +1536,7 @@
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "masquerade-2025/observer--david-cote.json",
+  "lastProcessed": "perfect-crime-1987/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1717,6 +1733,28 @@
       "t": "2026-02-26T15:07:37.888Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T15:16:42.066Z",
+      "event": "bb-session",
+      "session": "fec58b02",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-26T15:16:43.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T15:21:48.357Z",
+      "event": "bb-session",
+      "session": "0e0be977",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-26T15:21:49.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
