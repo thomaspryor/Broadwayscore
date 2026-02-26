@@ -584,7 +584,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </Link>
         )}
 
-        {/* Section Jump Links */}
+        {/* Section Jump Links — hidden by default, re-enable via sectionJumpLinks feature flag */}
+        {featureFlags.sectionJumpLinks && (
         <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
           {show.criticScore && show.criticScore.reviews.length > 0 && (
             <a href="#critic-reviews" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Reviews</a>
@@ -608,6 +609,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <a href="#cast" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Cast</a>
           )}
         </nav>
+        )}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
