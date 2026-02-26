@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-02-26T10:08:28.490Z",
-  "processed": 353,
-  "failed": 407,
-  "successRate": "46.4%",
+  "updatedAt": "2026-02-26T10:15:44.892Z",
+  "processed": 361,
+  "failed": 409,
+  "successRate": "46.9%",
   "tierBreakdown": {
-    "playwright": 237,
+    "playwright": 238,
     "amp": 15,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 7,
-    "scrapingbee": 31,
+    "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 180,
-    "archive": 98
+    "archiveToday": 181,
+    "archive": 103
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-25T21:06:00.738Z",
-      "event": "bb-session",
-      "session": "4f1e930a",
-      "url": "https://www.thewrap.com/island-broadway-review-middling-musical-revival-long-suf"
-    },
-    {
-      "t": "2026-02-25T21:13:15.860Z",
-      "event": "bb-session",
-      "session": "44da1502",
-      "url": "https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/"
-    },
     {
       "t": "2026-02-25T21:18:03.173Z",
       "event": "bb-session",
@@ -126,6 +114,17 @@
       "t": "2026-02-26T10:04:16.791Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-26T10:15:02.069Z",
+      "event": "bb-session",
+      "session": "8015217d",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/16/ragtime-broadway"
+    },
+    {
+      "t": "2026-02-26T10:15:03.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
