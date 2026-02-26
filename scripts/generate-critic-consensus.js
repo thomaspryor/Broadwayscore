@@ -38,6 +38,9 @@ function loadReviewTexts(showId) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8'));
 
+      // Skip reviews flagged as wrong production or wrong show
+      if (data.wrongProduction || data.wrongShow) continue;
+
       // Collect all available text (prefer full text, fall back to excerpts)
       const textParts = [];
       if (data.fullText) {
