@@ -13,6 +13,7 @@
  *   --rescore             Re-score even if already scored
  *   --needs-rescore       Only score reviews flagged with needsRescore=true (excerpt→fullText upgrades)
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
+ *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --dry-run             Don't save results, just print what would happen
  *   --verbose             Detailed logging
  *   --limit=N             Only process N reviews
@@ -339,6 +340,7 @@ function parseArgs(): ScoringPipelineOptions & {
   groundTruth: boolean;
   needsRescore: boolean;
   outdated: boolean;
+  ensembleSource?: string;
   ensembleCalibrateOnly: boolean;
   checkpointInterval: number;
   shard?: number;
@@ -372,9 +374,12 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const outdated = args.includes('--outdated');
 
+  const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
+  const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;
+
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated,
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource,
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -389,6 +394,7 @@ function parseArgs(): ScoringPipelineOptions & {
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
     outdated,
+    ensembleSource,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     checkpointInterval,
     shard,
@@ -600,6 +606,13 @@ async function main(): Promise<void> {
       return compareSemver(meta.promptVersion, PROMPT_VERSION) < 0;
     });
     console.log(`Filtering to outdated reviews (promptVersion < ${PROMPT_VERSION}): ${filesToProcess.length} reviews\n`);
+  } else if (options.ensembleSource) {
+    // Filter to reviews with a specific ensemble source (e.g. two-model-fallback)
+    filesToProcess = allFiles.filter(f => {
+      const source = (f.data as any).ensembleData?.ensembleSource;
+      return source === options.ensembleSource;
+    });
+    console.log(`Filtering to reviews with ensembleSource="${options.ensembleSource}": ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
@@ -1144,6 +1157,7 @@ Options:
   --rescore             Re-score even if already scored
   --needs-rescore       Only score reviews flagged with needsRescore=true
   --outdated            Re-score reviews with promptVersion older than current
+  --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
   --shard=N             Shard index (0-based) for parallel runs
   --total-shards=N      Total number of parallel shards
   --dry-run             Don't save results, just print what would happen

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+const https = require('https');
+
 /**
  * IBDB Cast Scraper Module
  *
@@ -239,6 +241,90 @@ async function extractCastFromIBDBPage(url) {
 }
 
 /**
+ * Use LLM to validate whether two show titles refer to the same production.
+ * Uses Gemini Flash (cheapest) with fallback to OpenAI.
+ * Returns null if no LLM is available.
+ */
+async function llmValidateTitleMatch(ourTitle, ibdbTitle) {
+  const prompt = `Do these two titles refer to the same theater production? Answer ONLY "yes" or "no".
+
+Title 1: "${ourTitle}"
+Title 2: "${ibdbTitle}"`;
+
+  // Try Gemini first (cheapest)
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+        const body = JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0, maxOutputTokens: 10 }
+        });
+        const req = https.request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) {
+              try {
+                const json = JSON.parse(data);
+                resolve(json.candidates?.[0]?.content?.parts?.[0]?.text || '');
+              } catch (e) { reject(e); }
+            } else { reject(new Error(`Gemini HTTP ${res.statusCode}`)); }
+          });
+        });
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+      });
+      const answer = String(result).trim().toLowerCase();
+      if (answer.startsWith('yes')) return true;
+      if (answer.startsWith('no')) return false;
+    } catch (e) {
+      // Fall through to next provider
+    }
+  }
+
+  // Fallback to OpenAI
+  if (process.env.OPENAI_API_KEY) {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const body = JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 10,
+          temperature: 0
+        });
+        const req = https.request('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` }
+        }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) {
+              try {
+                const json = JSON.parse(data);
+                resolve(json.choices?.[0]?.message?.content || '');
+              } catch (e) { reject(e); }
+            } else { reject(new Error(`OpenAI HTTP ${res.statusCode}`)); }
+          });
+        });
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+      });
+      const answer = String(result).trim().toLowerCase();
+      if (answer.startsWith('yes')) return true;
+      if (answer.startsWith('no')) return false;
+    } catch (e) {
+      // Fall through
+    }
+  }
+
+  return null; // No LLM available
+}
+
+/**
  * Look up cast for a single show from IBDB.
  * Uses searchIBDB + findBestProduction from ibdb-dates.js for URL discovery,
  * then extracts cast from the page.
@@ -293,22 +379,46 @@ async function lookupIBDBCast(title, options = {}) {
     }
 
     // Title validation: check the IBDB page title matches our show
-    // Prevents false matches (e.g. Marcel on the Train → Sophisticated Ladies)
+    // Uses fast string checks first, LLM for ambiguous cases
     if (castData.pageTitle) {
       const normalize = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]/g, '');
+        .replace(/[^a-z0-9\s]/g, '').trim();
       const ourTitle = normalize(title);
       const ibdbTitle = normalize(castData.pageTitle);
-      // Check if either contains the other (handles subtitles, suffixes)
-      if (!ibdbTitle.includes(ourTitle) && !ourTitle.includes(ibdbTitle)) {
-        // Fuzzy fallback: check word overlap
+      // Fast path: substring match → accept, but only if shorter title is ≥50% of longer
+      // (avoids "Nine" matching "Nine to Five", "Once" matching "Once Upon a Time")
+      const shorter = ourTitle.length < ibdbTitle.length ? ourTitle : ibdbTitle;
+      const longer = ourTitle.length < ibdbTitle.length ? ibdbTitle : ourTitle;
+      const isSubstringMatch = longer.includes(shorter) && shorter.length >= longer.length * 0.5;
+      if (!isSubstringMatch) {
+        // Check word overlap for fast reject/accept
         const ourWords = new Set(ourTitle.match(/[a-z]{3,}/g) || []);
         const ibdbWords = new Set(ibdbTitle.match(/[a-z]{3,}/g) || []);
-        const overlap = [...ourWords].filter(w => ibdbWords.has(w)).length;
+        const overlap = Array.from(ourWords).filter(w => ibdbWords.has(w)).length;
         const maxWords = Math.max(ourWords.size, ibdbWords.size);
-        if (maxWords > 0 && overlap / maxWords < 0.3) {
+        const overlapRatio = maxWords > 0 ? overlap / maxWords : 0;
+
+        if (overlapRatio >= 0.7) {
+          // High overlap — accept without LLM
+        } else if (overlapRatio < 0.1) {
+          // Very low overlap — reject without LLM
           console.log(`  ⚠️  IBDB title mismatch: "${castData.pageTitle}" vs "${title}" — skipping`);
           return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+        } else {
+          // Ambiguous range — use LLM to decide
+          const llmResult = await llmValidateTitleMatch(title, castData.pageTitle);
+          if (llmResult === false) {
+            console.log(`  ⚠️  LLM rejected title match: "${castData.pageTitle}" vs "${title}" — skipping`);
+            return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+          } else if (llmResult === true) {
+            console.log(`  ✅ LLM confirmed title match: "${castData.pageTitle}" ≈ "${title}"`);
+          } else {
+            // No LLM available — fall back to conservative heuristic (reject if <30%)
+            if (overlapRatio < 0.3) {
+              console.log(`  ⚠️  IBDB title mismatch (no LLM): "${castData.pageTitle}" vs "${title}" — skipping`);
+              return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+            }
+          }
         }
       }
     }
