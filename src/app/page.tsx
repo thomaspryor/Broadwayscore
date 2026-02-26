@@ -35,7 +35,10 @@ export default function HomePage() {
   const allShows = getBroadwayShows();
   const stats = getDataStats();
   const upcomingShows = getUpcomingShows();
-  const obShows = getOffBroadwayShows().filter(s => s.status === 'open' || s.status === 'previews');
+  const obShows = getOffBroadwayShows().filter(s =>
+    (s.status === 'open' || s.status === 'previews') &&
+    s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
+  );
 
   return (
     <HomePageClient

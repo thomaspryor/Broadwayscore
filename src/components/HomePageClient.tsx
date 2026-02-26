@@ -745,7 +745,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
                 <span className={`w-1.5 h-1.5 rounded-full ${
                   includeOB ? 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.5)]' : 'bg-gray-600'
                 }`} />
-                Off-Bway
+                Off-Bway ({offBroadwayShows.length})
               </button>
             </>
           )}
