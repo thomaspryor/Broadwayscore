@@ -32,7 +32,7 @@ const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-mat
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
-const { isNotBroadway } = require('./lib/content-filters');
+const { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -877,12 +877,16 @@ function saveReview(showId, reviewData, options = {}) {
 // Process a single show
 // ---------------------------------------------------------------------------
 
-async function processShow(show, showId, options = {}) {
+async function processShow(show, showId, options = {}, shows = []) {
   // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
   if (show.status === 'previews') {
     console.log(`  [SKIP] ${showId}: Show is in previews (opens ${show.openingDate})`);
     return { reviews: [], roundup: [] };
   }
+
+  // Production date window for URL guards
+  const showOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
+  const showClosingYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
 
   const results = { reviews: [], roundup: [] };
 
@@ -895,6 +899,22 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from /reviews/ page${aggregateRating ? ` (rating: ${aggregateRating})` : ''}`);
 
       for (const review of reviews) {
+        // URL-slug guard: skip if URL clearly belongs to a different show
+        if (review.url) {
+          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
+          if (wrongShow) {
+            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}", not "${showId}"`);
+            stats.skippedGuards++;
+            continue;
+          }
+          if (isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
+            const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+            console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
+            stats.skippedGuards++;
+            continue;
+          }
+        }
+
         if (options.verify) {
           results.reviews.push(review);
         } else {
@@ -920,6 +940,22 @@ async function processShow(show, showId, options = {}) {
         if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
           stats.skippedGuards++;
           continue;
+        }
+
+        // URL-slug guard: skip if URL clearly belongs to a different show
+        if (review.url) {
+          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
+          if (wrongShow) {
+            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}", not "${showId}"`);
+            stats.skippedGuards++;
+            continue;
+          }
+          if (isUrlYearOutsideWindow(review.url, showOpeningYear, showClosingYear)) {
+            const urlYear = review.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+            console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
+            stats.skippedGuards++;
+            continue;
+          }
         }
 
         if (options.verify) {
@@ -1033,7 +1069,7 @@ async function main() {
     console.log(`[${count}/${targetShows.length}] ${showId} (${show.title})`);
 
     try {
-      const results = await processShow(show, showId, options);
+      const results = await processShow(show, showId, options, shows);
 
       if (verify) {
         verifyResults[showId] = results;

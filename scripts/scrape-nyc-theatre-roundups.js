@@ -24,6 +24,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -96,7 +97,7 @@ function sleep(ms) {
 // Google Search via ScrapingBee
 // ---------------------------------------------------------------------------
 
-async function googleSearchForShow(showTitle, category) {
+async function googleSearchForShow(showTitle, category, year) {
   if (!SCRAPINGBEE_KEY) {
     console.log('  [WARN] No SCRAPINGBEE_API_KEY set, skipping Google search');
     return null;
@@ -106,7 +107,8 @@ async function googleSearchForShow(showTitle, category) {
   const categoryLabel = category === 'west-end' ? 'west end'
     : category === 'off-broadway' ? 'off-broadway'
     : 'broadway';
-  const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" ${categoryLabel}`;
+  const yearSuffix = year ? ` ${year}` : '';
+  const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" ${categoryLabel}${yearSuffix}`;
   const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
 
   return new Promise((resolve, reject) => {
@@ -454,7 +456,22 @@ async function scrapeNYCTheatreRoundups() {
         const reviews = extractReviewsFromRoundup(html, showId);
         stats.excerptsFounds += reviews.length;
 
+        const cachedOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
+        const cachedClosingYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
         for (const review of reviews) {
+          // URL-slug guard
+          if (review.url) {
+            const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
+            if (wrongShow) {
+              console.log(`  [SKIP] ${review.outlet}: URL belongs to "${wrongShow}"`);
+              continue;
+            }
+            if (isUrlYearOutsideWindow(review.url, cachedOpeningYear, cachedClosingYear)) {
+              console.log(`  [SKIP] ${review.outlet}: URL year outside production window`);
+              continue;
+            }
+          }
+
           const result = saveNycTheatreExcerpt(showId, review);
           if (result === 'new') {
             console.log(`  [NEW] ${review.outlet}`);
@@ -473,7 +490,8 @@ async function scrapeNYCTheatreRoundups() {
     console.log(`[SEARCH] ${showId}: "${show.title}"...`);
 
     try {
-      const url = await googleSearchForShow(show.title, show.category);
+      const year = show.openingDate ? new Date(show.openingDate).getFullYear() : '';
+      const url = await googleSearchForShow(show.title, show.category, year);
 
       if (!url) {
         console.log(`  No NYC Theatre page found.`);
@@ -509,7 +527,22 @@ async function scrapeNYCTheatreRoundups() {
       stats.excerptsFounds += reviews.length;
       console.log(`  Found ${reviews.length} review excerpts`);
 
+      const fetchOpeningYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
+      const fetchClosingYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
       for (const review of reviews) {
+        // URL-slug guard
+        if (review.url) {
+          const wrongShow = urlBelongsToDifferentShow(review.url, showId, show.slug || '', shows);
+          if (wrongShow) {
+            console.log(`    [SKIP] ${review.outlet}: URL belongs to "${wrongShow}"`);
+            continue;
+          }
+          if (isUrlYearOutsideWindow(review.url, fetchOpeningYear, fetchClosingYear)) {
+            console.log(`    [SKIP] ${review.outlet}: URL year outside production window`);
+            continue;
+          }
+        }
+
         const result = saveNycTheatreExcerpt(showId, review);
         if (result === 'new') {
           console.log(`    [NEW] ${review.outlet}`);

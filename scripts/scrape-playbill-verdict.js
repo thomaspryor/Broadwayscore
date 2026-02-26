@@ -540,7 +540,6 @@ async function processShowViaGoogle(show, showId, shows) {
         ? new Date(showEntry.openingDate).getFullYear() : null;
       const showClosingYear = showEntry && showEntry.closingDate
         ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
-      const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
       // Try each candidate URL — skip non-Broadway/non-matching, use first good one
       let found = false;
@@ -584,17 +583,12 @@ async function processShowViaGoogle(show, showId, shows) {
             continue;
           }
 
-          // URL year validation
-          if (showOpeningYear && showUpperBound && link.url) {
-            const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
-            if (urlYearMatch) {
-              const urlYear = parseInt(urlYearMatch[1]);
-              if (urlYear < showOpeningYear - 3 || urlYear > showUpperBound) {
-                console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside ${showOpeningYear - 3}–${showUpperBound}`);
-                stats.skippedOffBroadway++;
-                continue;
-              }
-            }
+          // URL year validation (shared helper)
+          if (isUrlYearOutsideWindow(link.url, showOpeningYear, showClosingYear)) {
+            const urlYear = link.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+            console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside production window`);
+            stats.skippedOffBroadway++;
+            continue;
           }
 
           const result = saveReviewFromPlaybill(showId, link);
@@ -796,7 +790,6 @@ async function scrapePlaybillVerdict() {
       ? new Date(showEntry.openingDate).getFullYear() : null;
     const showClosingYear = showEntry && showEntry.closingDate
       ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
-    const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
     for (const link of reviewLinks) {
       // Cross-show URL validation: skip if URL clearly belongs to a different show
@@ -807,18 +800,12 @@ async function scrapePlaybillVerdict() {
         continue;
       }
 
-      // Check for URL year mismatch (catches TV reviews, wrong productions)
-      // Upper bound adapts to show run length (long-running shows get wider window)
-      if (showOpeningYear && showUpperBound && link.url) {
-        const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
-        if (urlYearMatch) {
-          const urlYear = parseInt(urlYearMatch[1]);
-          if (urlYear < showOpeningYear - 3 || urlYear > showUpperBound) {
-            console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside ${showOpeningYear - 3}–${showUpperBound} (${Math.abs(urlYear - showOpeningYear)}yr from opening)`);
-            stats.skippedOffBroadway++;
-            continue;
-          }
-        }
+      // URL year validation (shared helper)
+      if (isUrlYearOutsideWindow(link.url, showOpeningYear, showClosingYear)) {
+        const urlYear = link.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+        console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside production window`);
+        stats.skippedOffBroadway++;
+        continue;
       }
 
       const result = saveReviewFromPlaybill(article.showId, link);
