@@ -325,7 +325,11 @@
     "death-of-a-salesman-2026/broadway-news--brittani-samuel.json",
     "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
     "death-of-a-salesman-2026/theatermania--zachary-stewart.json",
-    "death-of-a-salesman-2026/wapo--peter-marks.json"
+    "death-of-a-salesman-2026/wapo--peter-marks.json",
+    "hadestown-2019/time-out-new-york--adam-feldman.json",
+    "hadestown-west-end-2024/am-new-york--matt-windman.json",
+    "hadestown-west-end-2024/daily-beast--tim-teeman.json",
+    "hadestown-west-end-2024/ew--jessica-derschowitz.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -721,7 +725,13 @@
     "bug-2026/wapo--naveen-kumar.json",
     "chicago-1996/newsday--linda-winer.json",
     "chicago-1996/nypost--elisabeth-vincentelli.json",
-    "death-of-a-salesman-2026/wsj--charles-isherwood.json"
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+    "drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-west-end-2024/broadway-news--charles-isherwood.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json",
+    "hadestown-west-end-2024/newnownext-com--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -954,7 +964,8 @@
       "death-of-a-salesman-2026/nyt-theater--jonathan-mandell.json",
       "this-is-my-favorite-song-2024/nytg--kyle-turner.json",
       "chess-2025/wapo--naveen-kumar.json",
-      "death-of-a-salesman-2026/theatermania--zachary-stewart.json"
+      "death-of-a-salesman-2026/theatermania--zachary-stewart.json",
+      "hadestown-2019/time-out-new-york--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1017,7 +1028,8 @@
       "the-book-of-mormon-west-end-2024/bloomberg--jeremy-gerard.json",
       "the-lion-king-1997/broadwayworld--roy-berko.json",
       "little-shop-of-horrors-2019/theater-news-online--brian-scott-lipton.json",
-      "the-unknown-2026/nytimes--helen-shaw.json"
+      "the-unknown-2026/nytimes--helen-shaw.json",
+      "hadestown-west-end-2024/daily-beast--tim-teeman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1196,7 +1208,11 @@
       "data/review-texts/the-reservoir-2026/talkinbroadway--unknown.json",
       "data/review-texts/little-shop-of-horrors-2019/curtainup--dan-rubins.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
-      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json"
+      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
+      "data/review-texts/hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1280,11 +1296,13 @@
       "death-becomes-her-2024/time-out-new-york--adam-feldman.json",
       "death-of-a-salesman-2026/broadway-news--brittani-samuel.json",
       "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
-      "death-of-a-salesman-2026/wapo--peter-marks.json"
+      "death-of-a-salesman-2026/wapo--peter-marks.json",
+      "hadestown-west-end-2024/am-new-york--matt-windman.json",
+      "hadestown-west-end-2024/ew--jessica-derschowitz.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+  "lastProcessed": "hadestown-west-end-2024/newnownext-com--michael-musto.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1392,6 +1410,12 @@
       "t": "2026-02-26T09:50:07.574Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T09:57:42.766Z",
+      "event": "bb-session",
+      "session": "c95166a1",
+      "url": "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-swee"
     }
   ]
 }
