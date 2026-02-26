@@ -2573,17 +2573,19 @@ function validateCrossMarketContamination() {
     warn(`... and ${issues - 5} more cross-market reviews`);
   }
 
-  // Reverse direction: London-only Tier 3 outlets on Broadway/off-Broadway shows
+  // Reverse direction: London outlets on Broadway/off-Broadway shows
+  // Unlike forward guard, Tier 1/2 exemption does NOT apply here — London Tier 1 outlets
+  // (Evening Standard, Times UK) never legitimately cover Broadway. Only DUAL_MARKET_OUTLETS are exempt.
   let reverseIssues = 0;
   const nonWeReviews = reviews.filter(r => showCategoryMap[r.showId] !== 'west-end');
   for (const r of nonWeReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
-    if (dualMarket.has(oid) || tier12Outlets.has(oid)) continue;
+    if (dualMarket.has(oid)) continue;  // Only dual-market exemption, NOT Tier 1/2
     const region = outletRegionMap[oid];
     if (region === 'london') {
       reverseIssues++;
       if (reverseIssues <= 5) {
-        warn(`Cross-market: Broadway show "${r.showId}" has review from London-only outlet "${r.outlet || oid}"`);
+        warn(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
       }
     }
   }
