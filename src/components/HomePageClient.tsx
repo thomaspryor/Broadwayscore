@@ -569,6 +569,13 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
+  // Best Off-Broadway shows (sorted by score)
+  const bestOffBroadway = useMemo(() => {
+    return offBroadwayShows
+      .filter(show => show.criticScore?.score && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= 3)
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [offBroadwayShows]);
+
   const filteredAndSortedShows = useMemo(() => {
     // When searching, include ALL shows (ignore status/type filters)
     // This ensures users can find any show in the database
@@ -731,10 +738,10 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
           />
           {offBroadwayShows.length > 0 && (
             <>
-              <div className="w-px h-5 bg-white/10" />
+              <div className="hidden sm:block w-px h-5 bg-white/10" />
               <button
                 onClick={toggleOB}
-                className={`flex items-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-full text-xs font-semibold border transition-all min-h-[44px] sm:min-h-0 ${
+                className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${
                   includeOB
                     ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300'
                     : 'bg-white/[0.04] border-white/[0.08] text-gray-500 hover:text-gray-300'
@@ -889,6 +896,11 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
           title="Upcoming"
           shows={upcomingShows}
           viewAllHref="/browse/upcoming-broadway-shows"
+        />
+        <FeaturedRow
+          title="Best Off-Broadway"
+          shows={bestOffBroadway}
+          viewAllHref="/off-broadway"
         />
         <FeaturedRow
           title="Tony Winning Shows"
