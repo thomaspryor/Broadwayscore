@@ -160,7 +160,7 @@ jobs:
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             echo "Scoring reviews for $SHOW..."
-            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW" --run-calibration=false || true
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW" --ensemble --run-calibration=false || true
           done
 
       - name: Rebuild after scoring
