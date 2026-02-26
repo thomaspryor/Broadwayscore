@@ -1,0 +1,63 @@
+name: Fix Platform Ticket Links
+
+on:
+  schedule:
+    # Monthly on 1st Monday at 4 PM UTC (11 AM EST)
+    - cron: '0 16 1-7 * 1'
+  workflow_dispatch: {}
+
+concurrency:
+  group: fix-platform-ticket-links
+  cancel-in-progress: true
+
+jobs:
+  fix-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Validate Telecharge and Ticketmaster links
+        id: fix
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/fix-platform-ticket-links.js
+
+      - name: Enrich missing official site URLs (Broadway)
+        id: official
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/enrich-official-urls.js --category=broadway
+        continue-on-error: true
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from fix-platform-ticket-links'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fix Platform Ticket Links Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
