@@ -32,10 +32,6 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const sourceFilter = (args.find(a => a.startsWith('--source=')) || '--source=all').split('=')[1];
 
-function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
 // Reject outlet IDs that are clearly sentence fragments or junk
 function isValidOutlet(outletId, outletRaw) {
   if (outletId.length > 35) return false;
