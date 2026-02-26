@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizePublishDate } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate } = require('./lib/review-normalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -217,7 +217,7 @@ function saveReview(review, overwrite = false) {
     fs.mkdirSync(showDir, { recursive: true });
   }
 
-  const filename = `${review.outletId}--${slugify(review.criticName)}.json`;
+  const filename = `${review.outletId}--${normalizeCritic(review.criticName)}.json`;
   const filepath = path.join(showDir, filename);
 
   // Check if file exists and merge data if so
