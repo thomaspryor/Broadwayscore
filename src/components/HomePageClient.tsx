@@ -637,9 +637,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
             }
             const aDesc = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.criticScore?.score ?? -1);
             const bDesc = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.criticScore?.score ?? -1);
-            if (bDesc !== aDesc) return bDesc - aDesc;
-            // Tiebreaker: more reviews = higher confidence = rank higher
-            return (b.criticScore?.reviewCount ?? 0) - (a.criticScore?.reviewCount ?? 0);
+            return bDesc - aDesc;
           }
           case 'score_asc': {
             if (scoreMode === 'audience') {
