@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T09:47:47.546Z",
-  "processed": 319,
-  "failed": 391,
-  "successRate": "44.9%",
+  "updatedAt": "2026-02-26T09:50:48.352Z",
+  "processed": 326,
+  "failed": 394,
+  "successRate": "45.3%",
   "tierBreakdown": {
-    "playwright": 227,
+    "playwright": 229,
     "amp": 15,
     "browserbase": 6,
     "directCookies": 7,
     "scrapingbee": 27,
     "brightdata": 0,
-    "archiveToday": 175,
-    "archive": 77
+    "archiveToday": 176,
+    "archive": 82
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -110,6 +110,17 @@
       "t": "2026-02-26T09:46:13.599Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-26T09:50:06.241Z",
+      "event": "bb-session",
+      "session": "5093893a",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-02-26T09:50:07.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

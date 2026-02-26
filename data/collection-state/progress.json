@@ -318,7 +318,14 @@
     "and-juliet-2022/time-out-new-york--adam-feldman.json",
     "and-juliet-2022/wapo--peter-marks.json",
     "book-of-mormon-2011/wapo--unknown.json",
-    "bug-2026/time-out-new-york--adam-feldman.json"
+    "bug-2026/time-out-new-york--adam-feldman.json",
+    "chess-2025/time-out-new-york--adam-feldman.json",
+    "chess-2025/wapo--naveen-kumar.json",
+    "death-becomes-her-2024/time-out-new-york--adam-feldman.json",
+    "death-of-a-salesman-2026/broadway-news--brittani-samuel.json",
+    "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
+    "death-of-a-salesman-2026/theatermania--zachary-stewart.json",
+    "death-of-a-salesman-2026/wapo--peter-marks.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -711,7 +718,10 @@
     "wicked-2003/newyorker--john-lahr.json",
     "book-of-mormon-2011/theatermania--david-rooney.json",
     "book-of-mormon-2011/time-out-new-york--david-cote.json",
-    "bug-2026/wapo--naveen-kumar.json"
+    "bug-2026/wapo--naveen-kumar.json",
+    "chicago-1996/newsday--linda-winer.json",
+    "chicago-1996/nypost--elisabeth-vincentelli.json",
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -942,7 +952,9 @@
       "little-shop-of-horrors-2019/off-off-online--edward-karam.json",
       "little-shop-of-horrors-2019/stageandcinema--unknown.json",
       "death-of-a-salesman-2026/nyt-theater--jonathan-mandell.json",
-      "this-is-my-favorite-song-2024/nytg--kyle-turner.json"
+      "this-is-my-favorite-song-2024/nytg--kyle-turner.json",
+      "chess-2025/wapo--naveen-kumar.json",
+      "death-of-a-salesman-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1183,7 +1195,8 @@
       "data/review-texts/the-rat-trap-west-end-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-reservoir-2026/talkinbroadway--unknown.json",
       "data/review-texts/little-shop-of-horrors-2019/curtainup--dan-rubins.json",
-      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json"
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1262,11 +1275,16 @@
       "and-juliet-2022/time-out-new-york--adam-feldman.json",
       "and-juliet-2022/wapo--peter-marks.json",
       "book-of-mormon-2011/wapo--unknown.json",
-      "bug-2026/time-out-new-york--adam-feldman.json"
+      "bug-2026/time-out-new-york--adam-feldman.json",
+      "chess-2025/time-out-new-york--adam-feldman.json",
+      "death-becomes-her-2024/time-out-new-york--adam-feldman.json",
+      "death-of-a-salesman-2026/broadway-news--brittani-samuel.json",
+      "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
+      "death-of-a-salesman-2026/wapo--peter-marks.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "bug-2026/wapo--naveen-kumar.json",
+  "lastProcessed": "death-of-a-salesman-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1363,6 +1381,17 @@
       "t": "2026-02-26T09:46:13.599Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-26T09:50:06.241Z",
+      "event": "bb-session",
+      "session": "5093893a",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-02-26T09:50:07.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
