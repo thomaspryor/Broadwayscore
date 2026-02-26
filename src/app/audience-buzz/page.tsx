@@ -49,7 +49,7 @@ const faqSchema = {
       name: 'What do the AudienceGrade ratings mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Shows receive a letter grade from A+ (93-100, audiences love it) through F (below 48, audiences dislike it). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception.',
+        text: 'Shows receive a letter grade from A+ (90-100, audiences love it) through F (below 48, audiences dislike it). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception.',
       },
     },
   ],
