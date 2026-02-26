@@ -73,56 +73,6 @@ function isNotBroadway(text, options = {}) {
 }
 
 /**
- * Check if a review URL clearly belongs to a different show.
- * Returns the detected wrong show slug if found, or null if URL is ok.
- *
- * Checks if URL path contains another show's slug as a distinct word-boundary
- * segment (e.g., "bug-broadway-review" matches "bug" but "debugging" does not).
- */
-function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
-  if (!url) return null;
-
-  let urlPath;
-  try {
-    urlPath = new URL(url).pathname.toLowerCase();
-  } catch (e) {
-    return null;
-  }
-
-  const pathSlug = urlPath
-    .replace(/^\//, '')
-    .replace(/\.(html?|php|asp)$/i, '');
-
-  for (const show of shows) {
-    if (show.id === targetShowId) continue;
-    if (!show.slug || show.slug.length < 3) continue;
-
-    const slug = show.slug.toLowerCase();
-    const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const slugPattern = new RegExp('(?:^|[/-])' + escaped + '(?:$|[/-])', 'i');
-
-    if (slugPattern.test(pathSlug)) {
-      // Check if target show's slug (or base slug without year suffix) appears in URL
-      const targetEscaped = targetSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const targetPattern = new RegExp('(?:^|[/-])' + targetEscaped + '(?:$|[/-])', 'i');
-      if (targetPattern.test(pathSlug)) continue;
-
-      // Also check base slug without trailing year (e.g., "cabaret-2024" → "cabaret")
-      const baseSlug = targetSlug.replace(/-(?:19|20)\d{2}$/, '');
-      if (baseSlug !== targetSlug && baseSlug.length >= 3) {
-        const baseEscaped = baseSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const basePattern = new RegExp('(?:^|[/-])' + baseEscaped + '(?:$|[/-])', 'i');
-        if (basePattern.test(pathSlug)) continue;
-      }
-
-      return show.slug;
-    }
-  }
-
-  return null;
-}
-
-/**
  * Check if a URL's embedded year falls outside a production's date window.
  * Returns true if the URL year is clearly wrong (safe reject filter).
  *
@@ -142,4 +92,4 @@ function isUrlYearOutsideWindow(url, openingYear, closingYear) {
   return urlYear < openingYear - 3 || urlYear > upper;
 }
 
-module.exports = { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow };
+module.exports = { isNotBroadway, isUrlYearOutsideWindow };
