@@ -7,6 +7,7 @@
  * Reddit quality gates:
  *   - Minimum 50 classified comments (below = too noisy)
  *   - Recency: excluded for shows closed >3 years ago (nostalgic mentions, not fresh reviews)
+ *   - Score calibration: +8 points (capped at 95) to align Reddit's scale with SS/Mezzanine
  *
  * Used by: scrape-reddit-sentiment.js, recalculate-audience-buzz.js,
  *          scrape-mezzanine-audience.js, scrape-show-score-audience.js,
@@ -16,6 +17,13 @@
 const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
+
+// Reddit scores average ~11 points below ShowScore and ~4 below Mezzanine on the same
+// shows — a systematic scale difference, not a signal difference. This calibration
+// aligns Reddit's scale with the other sources before combining.
+// Analysis: flat +8 minimizes avg gap to SS+Mezz consensus across 74 head-to-head shows.
+const REDDIT_SCORE_CALIBRATION = 8;
+const REDDIT_CALIBRATION_CAP = 95;
 
 /**
  * Check if Reddit data should be included for this show
@@ -55,7 +63,9 @@ function calculateCombinedScore(sources, showInfo) {
     active.push({ name: 'mezzanine', score: sources.mezzanine.score, volume: sources.mezzanine.reviewCount });
   }
   if (isRedditEligible(sources.reddit, showInfo)) {
-    active.push({ name: 'reddit', score: sources.reddit.score, volume: sources.reddit.reviewCount });
+    // Calibrate Reddit score to align with ShowScore/Mezzanine scale
+    const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
+    active.push({ name: 'reddit', score: calibrated, volume: sources.reddit.reviewCount });
   }
 
   if (active.length === 0) {
@@ -98,4 +108,4 @@ function calculateCombinedScore(sources, showInfo) {
   return { score: Math.round(combinedScore), weights };
 }
 
-module.exports = { calculateCombinedScore, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS };
+module.exports = { calculateCombinedScore, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP };
