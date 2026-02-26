@@ -687,19 +687,22 @@ function generateReviewKey(outlet, critic) {
 }
 
 /**
- * Create a slug from text (lowercase, hyphenated, no special chars)
+ * Create a slug from text (lowercase, hyphenated, no special chars).
+ * Handles HTML entities, Unicode curly quotes, diacritics, and em/en dashes.
  */
 function slugify(text) {
   if (!text) return '';
-  return text
+  return decodeHtmlEntities(text)                        // &#8217; → ' (U+2019), &eacute; → é
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')    // Strip diacritics: é → e, ñ → n
     .toLowerCase()
     .trim()
-    .replace(/['']/g, '')           // Remove apostrophes
-    .replace(/[&]/g, 'and')         // Replace & with and
-    .replace(/[^\w\s-]/g, '')       // Remove special chars except spaces and hyphens
-    .replace(/\s+/g, '-')           // Replace spaces with hyphens
-    .replace(/-+/g, '-')            // Collapse multiple hyphens
-    .replace(/^-+|-+$/g, '');       // Trim hyphens from ends
+    .replace(/['\u2018\u2019\u2032]/g, '')               // All apostrophe variants (straight + curly + prime)
+    .replace(/[\u2013\u2014]/g, '-')                     // Em/en dash → hyphen
+    .replace(/[&]/g, 'and')                              // Replace & with and
+    .replace(/[^\w\s-]/g, '')                            // Remove special chars except spaces and hyphens
+    .replace(/\s+/g, '-')                                // Replace spaces with hyphens
+    .replace(/-+/g, '-')                                 // Collapse multiple hyphens
+    .replace(/^-+|-+$/g, '');                            // Trim hyphens from ends
 }
 
 /**
@@ -1256,8 +1259,19 @@ function normalizeUrl(url) {
   }
 }
 
+/**
+ * Normalize an outlet name and return both the canonical ID and display name.
+ * Convenience wrapper combining normalizeOutlet() + getOutletDisplayName().
+ */
+function normalizeOutletFull(outletName) {
+  const outletId = normalizeOutlet(outletName);
+  const name = getOutletDisplayName(outletId);
+  return { name, outletId };
+}
+
 module.exports = {
   normalizeOutlet,
+  normalizeOutletFull,
   isJunkOutlet,
   normalizeCritic,
   normalizePublishDate,
