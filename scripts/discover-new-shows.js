@@ -854,9 +854,10 @@ async function discoverShows() {
   console.log('-'.repeat(40));
 
   // Build title index from existing shows for cross-reference revival detection
+  // Use full normalized title (no subtitle stripping) to avoid false positives
+  // e.g. "Seagull: True Story" should NOT match "The Seagull"
   const normalizeTitle = (t) => t.toLowerCase()
     .replace(/^(the|a|an)\s+/i, '')
-    .replace(/\s*[:(\-–—].*/g, '')  // strip subtitles
     .replace(/['']/g, "'")
     .replace(/[^a-z0-9' ]/g, '')
     .replace(/\s+/g, ' ')
@@ -864,7 +865,7 @@ async function discoverShows() {
   const existingTitleMap = new Map(); // normalized title → { type, id, category }
   for (const s of data.shows) {
     const norm = normalizeTitle(s.title);
-    if (norm.length < 3) continue; // skip very short titles to avoid false matches
+    if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
     if (!existingTitleMap.has(norm)) {
       existingTitleMap.set(norm, { type: s.type, id: s.id, category: s.category, title: s.title });
     }
@@ -886,8 +887,17 @@ async function discoverShows() {
       confidence = 'high';
     } else {
       // Cross-reference against existing shows in shows.json
+      // Try full normalized title first, then base title (before colon/parens) for 5+ char bases
       const norm = normalizeTitle(show.title);
-      const match = existingTitleMap.get(norm);
+      let match = existingTitleMap.get(norm);
+      if (!match || match.id === show.id) {
+        // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
+        const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
+        const normBase = normalizeTitle(base);
+        if (normBase.length >= 5 && normBase !== norm) {
+          match = existingTitleMap.get(normBase);
+        }
+      }
       if (match && match.id !== show.id) {
         isRevival = true;
         detectedType = match.type || detectedType;
