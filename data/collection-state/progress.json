@@ -606,7 +606,13 @@
     "beautiful-little-fool-west-end-2026/timeout--tim-bano.json",
     "bigfoot-2026/theatermania--unknown.json",
     "bigfoot-2026/thewrap--unknown.json",
-    "bigfoot-2026/timeout--unknown.json"
+    "bigfoot-2026/timeout--unknown.json",
+    "chinese-republicans-2026/thewrap--unknown.json",
+    "imitation-of-life-2026/ew--unknown.json",
+    "meat-suit-or-the-stshow-of-motherhood-2026/theatermania--rachel-graham.json",
+    "meat-suit-or-the-stshow-of-motherhood-2026/timeout--adam-feldman.json",
+    "night-side-songs-2026/theatermania--unknown.json",
+    "the-emporium-2025/theatermania--unknown.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -1351,7 +1357,11 @@
     "beautiful-little-fool-west-end-2026/broadwaynews--unknown.json",
     "bigfoot-2026/broadwaynews--unknown.json",
     "bigfoot-2026/deadline--unknown.json",
-    "bigfoot-2026/nypost--unknown.json"
+    "bigfoot-2026/nypost--unknown.json",
+    "imitation-of-life-2026/broadwaynews--unknown.json",
+    "night-side-songs-2026/broadwaynews--unknown.json",
+    "silver-manhattan-2026/broadwaynews--unknown.json",
+    "silver-manhattan-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1776,7 +1786,13 @@
       "beautiful-little-fool-west-end-2026/timeout--tim-bano.json",
       "bigfoot-2026/nypost--unknown.json",
       "bigfoot-2026/theatermania--unknown.json",
-      "bigfoot-2026/thewrap--unknown.json"
+      "bigfoot-2026/thewrap--unknown.json",
+      "imitation-of-life-2026/broadwaynews--unknown.json",
+      "imitation-of-life-2026/ew--unknown.json",
+      "meat-suit-or-the-stshow-of-motherhood-2026/theatermania--rachel-graham.json",
+      "meat-suit-or-the-stshow-of-motherhood-2026/timeout--adam-feldman.json",
+      "night-side-songs-2026/theatermania--unknown.json",
+      "the-emporium-2025/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1937,7 +1953,8 @@
       "starlight-express-west-end-2024/artsfuse--unknown.json",
       "the-book-of-mormon-west-end-2024/bloomberg--jeremy-gerard.json",
       "the-lion-king-1997/broadwayworld--roy-berko.json",
-      "age-is-a-feeling-2024/guardian--unknown.json"
+      "age-is-a-feeling-2024/guardian--unknown.json",
+      "chinese-republicans-2026/thewrap--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2146,7 +2163,9 @@
       "data/review-texts/book-of-mormon-2011/broadway-voice--gregory-g-allen.json",
       "data/review-texts/death-becomes-her-2024/the-gold-knight--chris-stack.json",
       "data/review-texts/singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json",
-      "data/review-texts/bigfoot-2026/broadwaynews--unknown.json"
+      "data/review-texts/bigfoot-2026/broadwaynews--unknown.json",
+      "data/review-texts/silver-manhattan-2026/broadwaynews--unknown.json",
+      "data/review-texts/silver-manhattan-2026/theatermania--unknown.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -2305,11 +2324,12 @@
       "mother-russia-2026/vulture--sara-holdren.json",
       "the-play-that-goes-wrong-2019/newyorker--michael-schulman.json",
       "the-play-that-goes-wrong-2019/nytimes--unknown.json",
-      "amaze-magic-2025/broadwaynews--unknown.json"
+      "amaze-magic-2025/broadwaynews--unknown.json",
+      "night-side-songs-2026/broadwaynews--unknown.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "bigfoot-2026/timeout--unknown.json",
+  "lastProcessed": "the-emporium-2025/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -2340,6 +2360,17 @@
       "event": "bb-session",
       "session": "89ef6400",
       "url": "https://www.theaterreviewsfrommyseat.com/the-ferryman/"
+    },
+    {
+      "t": "2026-02-26T19:52:36.100Z",
+      "event": "bb-session",
+      "session": "7e820816",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-26T19:52:37.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
