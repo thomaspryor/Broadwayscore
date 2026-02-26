@@ -2542,8 +2542,8 @@ function validateCrossMarketContamination() {
   } catch { /* no registry = skip check */ return; }
 
   // Dual-market outlets + Tier 1/2 outlets (major publications review international theatre)
-  const dualMarket = new Set(['guardian', 'financialtimes', 'variety', 'stage-uk',
-    'financial-times', 'financial-times-uk', 'ft', 'the-guardian-uk']);
+  const dualMarket = new Set(['guardian', 'financialtimes', 'variety', 'thestage', 'stage-uk',
+    'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk']);
   // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
   const tier12Outlets = new Set();
   for (const [id, info] of Object.entries(reg.outlets)) {
