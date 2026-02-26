@@ -459,15 +459,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex flex-wrap gap-2 mt-4">
               {/* Official Website */}
               {show.officialUrl && (
-                <a
-                  href={show.officialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TicketLink
+                  showName={show.title}
+                  showId={show.id}
+                  platform="Official Site"
+                  url={show.officialUrl}
+                  pageType="show"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <GlobeIcon />
                   Official Site
-                </a>
+                </TicketLink>
               )}
 
               {/* Ticket Links */}
