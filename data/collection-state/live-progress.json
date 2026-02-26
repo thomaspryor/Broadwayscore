@@ -1,25 +1,20 @@
 {
-  "updatedAt": "2026-02-26T16:04:10.630Z",
-  "processed": 388,
-  "failed": 522,
-  "successRate": "42.6%",
+  "updatedAt": "2026-02-26T16:12:42.558Z",
+  "processed": 390,
+  "failed": 530,
+  "successRate": "42.4%",
   "tierBreakdown": {
-    "playwright": 246,
+    "playwright": 248,
     "amp": 20,
     "browserbase": 10,
     "directCookies": 7,
     "scrapingbee": 41,
     "brightdata": 0,
-    "archiveToday": 221,
+    "archiveToday": 223,
     "archive": 115
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-26T10:04:16.791Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-02-26T10:15:02.069Z",
       "event": "bb-session",
@@ -124,6 +119,12 @@
       "t": "2026-02-26T15:48:21.714Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T16:11:55.294Z",
+      "event": "bb-session",
+      "session": "054a6ee1",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
     }
   ]
 }
