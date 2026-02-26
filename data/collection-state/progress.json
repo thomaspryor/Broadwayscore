@@ -851,7 +851,17 @@
     "hadestown-west-end-2024/observer--david-cote.json",
     "hadestown-west-end-2024/wapo--peter-marks.json",
     "hamilton-west-end-2021/nbcnews--unknown.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json"
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "jerome-2025/wsj--unknown.json",
+    "just-in-time-2025/wapo--naveen-kumar.json",
+    "little-shop-of-horrors-2019/theatre-reviews-limited--david-roberts.json",
+    "los-soles-truncos-2025/broadwaynews--unknown.json",
+    "maggots-west-end-2026/theatermania--unknown.json",
+    "maggots-west-end-2026/timeout--unknown.json",
+    "marcel-on-the-train-2026/broadwaynews--unknown.json",
+    "masquerade-2025/nydailynews--chris-jones.json",
+    "masquerade-2025/observer--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1388,7 +1398,9 @@
       "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
       "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json",
-      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json"
+      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
+      "data/review-texts/jerome-2025/wsj--unknown.json",
+      "data/review-texts/maggots-west-end-2026/theatermania--unknown.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1508,7 +1520,7 @@
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "harry-potter-2021/indiewire--david-ehrlich.json",
+  "lastProcessed": "masquerade-2025/observer--david-cote.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1694,6 +1706,17 @@
       "event": "bb-session",
       "session": "c1cd444f",
       "url": "https://www.msn.com/en-us/news/us/local-students-first-in-area-to-tackle-hadesto"
+    },
+    {
+      "t": "2026-02-26T15:07:36.568Z",
+      "event": "bb-session",
+      "session": "1701bd4f",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-26T15:07:37.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
