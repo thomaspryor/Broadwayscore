@@ -445,7 +445,7 @@ async function scrapeNYCTheatreRoundups() {
       const html = fs.readFileSync(effectiveArchivePath, 'utf8');
 
       // Validate cached page matches this show (prevents cross-contamination)
-      const validation = await validatePageMatchesShow(html, show.title);
+      const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
       if (!validation.valid) {
         console.log(`[CACHE] ${showId}: Cached page is WRONG show — ${validation.reason}. Deleting cache.`);
         fs.unlinkSync(effectiveArchivePath);
@@ -505,7 +505,7 @@ async function scrapeNYCTheatreRoundups() {
       }
 
       // Verify page is actually about this show (prevent cross-show contamination)
-      const validation = await validatePageMatchesShow(html, show.title);
+      const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
       if (!validation.valid) {
         console.log(`  [SKIP] Page doesn't match "${show.title}" — ${validation.reason}`);
         continue;
