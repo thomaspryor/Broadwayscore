@@ -895,7 +895,12 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     if (openingDate && reviews.length >= 3) {
       const showYear = new Date(openingDate).getFullYear();
       const datedReviews = reviews
-        .map(r => r.date ? new Date(r.date) : null)
+        .map(r => {
+          if (!r.date) return null;
+          // Strip ordinal suffixes (6th → 6, 1st → 1) before parsing
+          const clean = r.date.replace(/(\d+)(?:st|nd|rd|th)/i, '$1');
+          return new Date(clean);
+        })
         .filter(d => d && !isNaN(d.getTime()) && d.getFullYear() >= 2000);
 
       if (datedReviews.length >= 3) {
