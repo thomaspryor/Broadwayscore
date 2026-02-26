@@ -486,7 +486,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           }
           const aScore = (a.status === 'previews') ? -1 : (a.criticScore?.score ?? -1);
           const bScore = (b.status === 'previews') ? -1 : (b.criticScore?.score ?? -1);
-          return bScore - aScore;
+          if (bScore !== aScore) return bScore - aScore;
+          // Tiebreaker: more reviews = higher confidence = rank higher
+          return (b.criticScore?.reviewCount ?? 0) - (a.criticScore?.reviewCount ?? 0);
         }
         case 'audience_buzz': {
           const aScore = (a.status === 'previews') ? -1 : (a.audienceCombinedScore ?? -1);
