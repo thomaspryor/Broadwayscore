@@ -48,7 +48,7 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
 // Dual-market outlets that legitimately cover both Broadway and West End
 // Includes explicit allowlist PLUS all Tier 1/2 outlets (major publications review international theatre)
 const DUAL_MARKET_OUTLETS = new Set([
-  'guardian', 'financialtimes', 'variety', 'stage-uk',
+  'guardian', 'financialtimes', 'variety', 'thestage', 'stage-uk',
   // Include common aliases
   'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
 ]);
