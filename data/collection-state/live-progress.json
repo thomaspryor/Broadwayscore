@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-26T15:06:35.677Z",
+  "updatedAt": "2026-02-26T15:15:04.631Z",
   "processed": 386,
-  "failed": 464,
-  "successRate": "45.4%",
+  "failed": 474,
+  "successRate": "44.9%",
   "tierBreakdown": {
     "playwright": 245,
     "amp": 19,
@@ -10,22 +10,11 @@
     "directCookies": 7,
     "scrapingbee": 41,
     "brightdata": 0,
-    "archiveToday": 200,
+    "archiveToday": 202,
     "archive": 114
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-02-26T09:43:57.953Z",
-      "event": "bb-session",
-      "session": "bd617767",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-    },
-    {
-      "t": "2026-02-26T09:43:59.362Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-26T09:46:12.226Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "event": "bb-session",
       "session": "c1cd444f",
       "url": "https://www.msn.com/en-us/news/us/local-students-first-in-area-to-tackle-hadesto"
+    },
+    {
+      "t": "2026-02-26T15:07:36.568Z",
+      "event": "bb-session",
+      "session": "1701bd4f",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-26T15:07:37.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
