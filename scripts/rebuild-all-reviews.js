@@ -2180,10 +2180,17 @@ showDirs.forEach(showId => {
       const { score, source } = scoreResult;
       stats.scoreSources[source]++;
 
+      // Warn if file's showId disagrees with directory (data integrity issue)
+      if (data.showId && data.showId !== showId) {
+        console.log(`  [SHOW-ID MISMATCH] ${showId}/${file}: file claims showId=${data.showId} — using directory showId`);
+        stats.showIdMismatches = (stats.showIdMismatches || 0) + 1;
+      }
+
       // Build review object — normalize outletId to canonical form
+      // ALWAYS use directory showId — file's showId field is unreliable (can be stale from cross-production flagging)
       const canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
       const review = {
-        showId: data.showId || showId,
+        showId,
         outletId: canonicalOutletId,
         outlet: getOutletDisplayName(canonicalOutletId) || data.outlet || data.outletId || 'Unknown',
         assignedScore: score,
@@ -2684,6 +2691,9 @@ if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
 }
 console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
+if (stats.showIdMismatches > 0) {
+  console.log(`  ⚠️  showId mismatches (file vs directory): ${stats.showIdMismatches}`);
+}
 if (stats.showNotMentionedAutoCleared > 0) {
   console.log(`  Auto-cleared stale showNotMentioned (fullText valid): ${stats.showNotMentionedAutoCleared}`);
 }
