@@ -1497,7 +1497,18 @@ showDirs.forEach(showId => {
   files.forEach(file => {
     try {
       const filePath = path.join(showDir, file);
-      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const rawContent = fs.readFileSync(filePath, 'utf8');
+
+      // Guard: detect git merge conflict markers (silent data corruption)
+      if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
+        console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
+        stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
+        if (!stats.corruptedFiles) stats.corruptedFiles = [];
+        stats.corruptedFiles.push(`${showId}/${file}`);
+        return;
+      }
+
+      const data = JSON.parse(rawContent);
 
       // Recover review text from garbageFullText when fullText is missing
       // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
@@ -2235,7 +2246,14 @@ showDirs.forEach(showId => {
       stats.totalReviews++;
 
     } catch (e) {
-      console.error(`  Error processing ${file}: ${e.message}`);
+      if (e instanceof SyntaxError) {
+        console.error(`  [CORRUPTED] ${showId}/${file}: invalid JSON — ${e.message}`);
+        stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
+        if (!stats.corruptedFiles) stats.corruptedFiles = [];
+        stats.corruptedFiles.push(`${showId}/${file}`);
+      } else {
+        console.error(`  Error processing ${file}: ${e.message}`);
+      }
     }
   });
 });
@@ -2614,12 +2632,22 @@ fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
 
 // Print summary
 console.log('\n=== SUMMARY ===\n');
+// LOUD WARNING for corrupted files — these represent silent data loss
+if (stats.skippedCorrupted > 0) {
+  console.error(`\n${'!'.repeat(60)}`);
+  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted} files skipped due to corruption`);
+  console.error(`!! These files have merge conflicts or invalid JSON — reviews are LOST`);
+  stats.corruptedFiles.forEach(f => console.error(`!!   ${f}`));
+  console.error(`${'!'.repeat(60)}\n`);
+}
+
 console.log(`Total files processed: ${stats.totalFiles}`);
 console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
+console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (fabricated entry): ${stats.skippedFabricated || 0}`);
 console.log(`  Skipped (cross-market outlet): ${stats.skippedCrossMarket || 0}`);
