@@ -85,6 +85,26 @@ export function getOffBroadwayShows(): ComputedShow[] {
 }
 
 /**
+ * Get market stats for the header market picker
+ */
+export function getMarketStats() {
+  const bwShows = getBroadwayShows();
+  const weShows = getWestEndShows();
+  const bwOpen = bwShows.filter(s => s.status === 'open' || s.status === 'previews');
+  const weOpen = weShows.filter(s => s.status === 'open' || s.status === 'previews');
+  return {
+    nyc: {
+      openShows: bwOpen.length,
+      theaters: new Set(bwOpen.map(s => s.venue).filter(Boolean)).size,
+    },
+    westEnd: {
+      openShows: weOpen.length,
+      theaters: new Set(weOpen.map(s => s.venue).filter(Boolean)).size,
+    },
+  };
+}
+
+/**
  * Get shows filtered by status (excludes off-Broadway from public listings)
  */
 export function getShowsByStatus(status: 'open' | 'closed' | 'previews' | 'all', options?: { includeOffBroadway?: boolean }): ComputedShow[] {
@@ -143,26 +163,6 @@ export function getDataFreshness() {
     reviewsLastUpdated: reviewsData._meta.lastUpdated,
     audienceLastUpdated: audienceData._meta.lastUpdated,
     buzzLastUpdated: buzzData._meta.lastUpdated,
-  };
-}
-
-/**
- * Get market stats for the header market picker
- */
-export function getMarketStats() {
-  const bwShows = getBroadwayShows();
-  const weShows = getWestEndShows();
-  const bwOpen = bwShows.filter(s => s.status === 'open' || s.status === 'previews');
-  const weOpen = weShows.filter(s => s.status === 'open' || s.status === 'previews');
-  return {
-    nyc: {
-      openShows: bwOpen.length,
-      theaters: new Set(bwOpen.map(s => s.venue).filter(Boolean)).size,
-    },
-    westEnd: {
-      openShows: weOpen.length,
-      theaters: new Set(weOpen.map(s => s.venue).filter(Boolean)).size,
-    },
   };
 }
 
