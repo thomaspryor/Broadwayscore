@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T07:26:07.500Z",
-  "processed": 662,
-  "failed": 458,
-  "successRate": "59.1%",
+  "updatedAt": "2026-02-26T09:24:54.830Z",
+  "processed": 295,
+  "failed": 375,
+  "successRate": "44.0%",
   "tierBreakdown": {
-    "playwright": 496,
-    "amp": 6,
+    "playwright": 226,
+    "amp": 11,
     "browserbase": 2,
-    "directCookies": 17,
-    "scrapingbee": 48,
+    "directCookies": 7,
+    "scrapingbee": 26,
     "brightdata": 0,
-    "archiveToday": 188,
-    "archive": 141
+    "archiveToday": 174,
+    "archive": 55
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -44,6 +44,17 @@
       "event": "bb-session",
       "session": "89ef6400",
       "url": "https://www.theaterreviewsfrommyseat.com/the-ferryman/"
+    },
+    {
+      "t": "2026-02-26T09:12:08.146Z",
+      "event": "bb-session",
+      "session": "7e9283a7",
+      "url": "https://www.vulture.com/2022/11/theater-review-and-juliet-broadway.html"
+    },
+    {
+      "t": "2026-02-26T09:12:09.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
