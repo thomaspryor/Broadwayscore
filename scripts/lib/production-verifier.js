@@ -223,16 +223,70 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
   if (text) {
     const textLower = text.toLowerCase();
     for (const venue of WEST_END_VENUES) {
-      if (textLower.includes(venue.toLowerCase())) {
-        // For Broadway/OB shows, a London venue is high severity — likely wrong production
-        const isUSShow = category === 'broadway' || category === 'off-broadway';
-        const severity = isUSShow ? 'high' : 'medium';
+      const venueLower = venue.toLowerCase();
+      const venueIdx = textLower.indexOf(venueLower);
+      if (venueIdx === -1) continue;
+
+      const isUSShow = category === 'broadway' || category === 'off-broadway';
+      if (!isUSShow) {
+        // For WE shows, London venues are expected — low severity info only
+        issues.push({
+          type: 'london_venue',
+          message: `Found London venue: ${venue}`,
+          severity: 'low'
+        });
+        continue;
+      }
+
+      // For US shows, check if it's a transfer/origin mention vs reviewing the London production
+      // Look at the ~150 chars around the venue mention for transfer context
+      const contextStart = Math.max(0, venueIdx - 150);
+      const contextEnd = Math.min(textLower.length, venueIdx + venueLower.length + 150);
+      const context = textLower.substring(contextStart, contextEnd);
+
+      const transferPatterns = [
+        // Direct transfer language
+        'transferred from', 'transfer from', 'transferred to',
+        'originated at', 'originated in', 'premiered at', 'premiered in',
+        'premiering at', 'premiering in',  // present tense
+        'presented at', 'presented by',
+        'debuted at', 'debuted in',
+        // Historical context about London runs
+        'played in london', 'has played in london', 'played at london',
+        'run in london', 'run at london',  // catches "2024 run in London" / "run at London's"
+        'london premiere', 'west end premiere', 'off-west end premiere',
+        'london debut', 'london run',
+        // Co-production / import language
+        'is presenting', 'co-production with', 'in association with',
+        'imported by', 'imported from',
+        // Following / after language (broader)
+        'following a run', 'following its run', 'following a successful',
+        'after its run', 'after a run',
+      ];
+      // Also check with regex for "after a [year/adjective] run" patterns
+      const transferRegexes = [
+        /after a\s+\w+\s+run\b/,       // "after a 2024 run", "after a successful run", "after a sold-out run"
+        /after a\s+\w+-\w+\s+run\b/,   // "after a well-received run"
+        /following a\s+\w+\s+run\b/,    // "following a limited run"
+      ];
+      const isTransferMention = transferPatterns.some(p => context.includes(p))
+        || transferRegexes.some(r => r.test(context));
+
+      if (isTransferMention) {
+        // Review mentions the London venue as historical context — low severity
+        issues.push({
+          type: 'london_venue_transfer_mention',
+          message: `London venue "${venue}" mentioned in transfer/origin context (safe)`,
+          severity: 'low'
+        });
+      } else {
+        // No transfer context — likely reviewing the London production
         issues.push({
           type: 'london_venue_in_us_show',
-          message: `Found London venue "${venue}" in ${category || 'unknown'} show review`,
-          severity
+          message: `Found London venue "${venue}" in ${category} show review without transfer context`,
+          severity: 'high'
         });
-        confidence = isUSShow ? 'high' : 'medium';
+        confidence = 'high';
       }
     }
   }
