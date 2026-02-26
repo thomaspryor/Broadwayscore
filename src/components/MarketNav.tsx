@@ -1,0 +1,119 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+interface MarketStats {
+  nyc: { openShows: number; theaters: number };
+  westEnd: { openShows: number; theaters: number };
+}
+
+export default function MarketNav({ stats }: { stats: MarketStats }) {
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const isWestEnd = pathname.startsWith('/west-end');
+  const currentMarket = isWestEnd ? 'west-end' : 'nyc';
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    }
+  }, [isOpen]);
+
+  // Close on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  return (
+    <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
+      {/* Logo — changes per market */}
+      <Link href={isWestEnd ? '/west-end' : '/'} className="flex items-center group">
+        {isWestEnd ? (
+          <>
+            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WestEnd</span>
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span>
+          </>
+        ) : (
+          <>
+            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
+            <span className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
+          </>
+        )}
+        <span className="text-[8px] sm:text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+      </Link>
+
+      {/* Market Pill */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`
+          flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold
+          border transition-colors whitespace-nowrap
+          ${isOpen
+            ? 'bg-white/10 border-white/20 text-white'
+            : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
+          }
+        `}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-label="Switch market"
+      >
+        {currentMarket === 'nyc' ? 'NYC' : 'West End'}
+        <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {/* Dropdown */}
+      {isOpen && (
+        <div className="absolute top-14 left-3 right-3 sm:left-auto sm:right-auto sm:w-72 bg-[#1e1e2a] border border-white/10 rounded-xl p-1.5 shadow-2xl z-50">
+          <Link
+            href="/"
+            className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+              currentMarket === 'nyc' ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <div>
+              <div className="text-sm font-semibold text-white">NYC</div>
+              <div className="text-[11px] text-gray-500">{stats.nyc.openShows} open shows · {stats.nyc.theaters} theaters</div>
+            </div>
+            {currentMarket === 'nyc' && (
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </Link>
+          <div className="h-px bg-white/[0.06] mx-2 my-0.5" />
+          <Link
+            href="/west-end"
+            className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+              currentMarket === 'west-end' ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <div>
+              <div className="text-sm font-semibold text-white">West End</div>
+              <div className="text-[11px] text-gray-500">{stats.westEnd.openShows} open shows · {stats.westEnd.theaters} theaters</div>
+            </div>
+            {currentMarket === 'west-end' && (
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}

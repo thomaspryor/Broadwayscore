@@ -7,7 +7,8 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
-import { getDataStats } from '@/lib/data-core';
+import { getDataStats, getMarketStats } from '@/lib/data-core';
+import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
@@ -78,6 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { totalReviews } = getDataStats();
+  const marketStats = getMarketStats();
 
   return (
     <html lang="en" className={inter.variable}>
@@ -112,25 +114,9 @@ export default function RootLayout({
         </a>
         <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-6">
-                <Link href="/" className="flex items-center group">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
-                  <span className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
-                  <span className="text-[8px] sm:text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
-                </Link>
-              </div>
+            <div className="flex items-center justify-between h-16 relative">
+              <MarketNav stats={marketStats} />
               <div className="flex items-center gap-3">
-                {featureFlags.westEnd && (
-                  <Link href="/west-end" className="hidden lg:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                    West End
-                  </Link>
-                )}
-                {featureFlags.offBroadway && (
-                  <Link href="/off-broadway" className="hidden lg:block text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                    Off-Broadway
-                  </Link>
-                )}
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
@@ -144,6 +130,29 @@ export default function RootLayout({
         </ProGateProvider>
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            {/* Explore More Theatre — promoted market cards */}
+            {(featureFlags.offBroadway || featureFlags.westEnd) && (
+              <div className="mb-8 pb-8 border-b border-white/5">
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Explore More Theatre</h4>
+                <div className="flex gap-3">
+                  {featureFlags.offBroadway && (
+                    <Link href="/off-broadway" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-brand/30 hover:bg-brand/[0.03] transition-colors text-center group">
+                      <div className="text-xl mb-1">&#127914;</div>
+                      <div className="text-sm font-bold text-white group-hover:text-brand transition-colors">Off-Broadway</div>
+                      <div className="text-[10px] text-gray-500">NYC</div>
+                    </Link>
+                  )}
+                  {featureFlags.westEnd && (
+                    <Link href="/west-end" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-pink-400/30 hover:bg-pink-400/[0.03] transition-colors text-center group">
+                      <div className="text-xl mb-1">&#127468;&#127463;</div>
+                      <div className="text-sm font-bold text-white group-hover:text-pink-400 transition-colors">West End</div>
+                      <div className="text-[10px] text-gray-500">London</div>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Browse Categories */}
             <div className={`grid grid-cols-2 ${featureFlags.discountTickets ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-8 mb-8 pb-8 border-b border-white/5`}>
               <div>
@@ -188,8 +197,6 @@ export default function RootLayout({
                   {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
                   {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
                   {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
-                  {featureFlags.westEnd && <li><Link href="/west-end" className="hover:text-white transition-colors">West End</Link></li>}
-                  {featureFlags.offBroadway && <li><Link href="/off-broadway" className="hover:text-white transition-colors">Off-Broadway</Link></li>}
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
