@@ -446,7 +446,21 @@ async function processShowViaGoogle(show, showId, shows) {
       console.log(`  [CACHE] ${showId}: Using archived HTML`);
       const reviewLinks = extractReviewLinksFromArticle(html, showId);
       stats.reviewLinksExtracted += reviewLinks.length;
+
+      // URL year guard (same as fresh-fetch path)
+      const cacheOpeningYear = show.openingDate
+        ? new Date(show.openingDate).getFullYear() : null;
+      const cacheClosingYear = show.closingDate
+        ? new Date(show.closingDate).getFullYear() : null;
+
       for (const link of reviewLinks) {
+        if (isUrlYearOutsideWindow(link.url, cacheOpeningYear, cacheClosingYear)) {
+          const urlYear = link.url.match(/\/((?:19|20)\d{2})\//)?.[1];
+          console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside production window`);
+          stats.skippedOffBroadway++;
+          continue;
+        }
+
         const result = saveReviewFromPlaybill(showId, link);
         if (result === 'new') {
           console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
