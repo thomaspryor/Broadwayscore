@@ -57,7 +57,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold
+          flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold mt-0.5
           border transition-colors whitespace-nowrap
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
