@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T20:54:56.557Z",
-  "processed": 639,
-  "failed": 781,
+  "updatedAt": "2026-02-26T20:58:43.723Z",
+  "processed": 644,
+  "failed": 786,
   "successRate": "45.0%",
   "tierBreakdown": {
-    "playwright": 453,
+    "playwright": 456,
     "amp": 88,
     "browserbase": 4,
     "directCookies": 37,
-    "scrapingbee": 31,
+    "scrapingbee": 32,
     "brightdata": 0,
-    "archiveToday": 217,
-    "archive": 163
+    "archiveToday": 221,
+    "archive": 164
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -77,6 +77,17 @@
       "t": "2026-02-26T20:21:35.355Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-26T20:55:08.519Z",
+      "event": "bb-session",
+      "session": "f85f819b",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-02-26T20:55:10.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
