@@ -323,17 +323,17 @@ export default function MethodologyPage() {
           </p>
           <div className="space-y-2">
             {[
-              { grade: 'A+', range: '90-100', color: '#22c55e', desc: 'Audiences love it' },
-              { grade: 'A', range: '88-89', color: '#16a34a', desc: 'Audiences love it' },
-              { grade: 'A-', range: '83-87', color: '#14b8a6', desc: 'Strong audience reception' },
-              { grade: 'B+', range: '78-82', color: '#0ea5e9', desc: 'Solid audience reception' },
-              { grade: 'B', range: '73-77', color: '#f59e0b', desc: 'Mixed-positive reception' },
-              { grade: 'B-', range: '68-72', color: '#f97316', desc: 'Mixed audience reception' },
-              { grade: 'C+', range: '63-67', color: '#ef4444', desc: 'Below-average reception' },
-              { grade: 'C', range: '58-62', color: '#dc2626', desc: 'Weak audience reception' },
-              { grade: 'C-', range: '53-57', color: '#b91c1c', desc: 'Poor audience reception' },
-              { grade: 'D', range: '48-52', color: '#991b1b', desc: 'Very poor reception' },
-              { grade: 'F', range: '<48', color: '#6b7280', desc: 'Audiences dislike it' },
+              { grade: 'A+', color: '#22c55e', desc: 'Audiences love it' },
+              { grade: 'A', color: '#16a34a', desc: 'Audiences love it' },
+              { grade: 'A-', color: '#14b8a6', desc: 'Strong audience reception' },
+              { grade: 'B+', color: '#0ea5e9', desc: 'Solid audience reception' },
+              { grade: 'B', color: '#f59e0b', desc: 'Mixed-positive reception' },
+              { grade: 'B-', color: '#f97316', desc: 'Mixed audience reception' },
+              { grade: 'C+', color: '#ef4444', desc: 'Below-average reception' },
+              { grade: 'C', color: '#dc2626', desc: 'Weak audience reception' },
+              { grade: 'C-', color: '#b91c1c', desc: 'Poor audience reception' },
+              { grade: 'D', color: '#991b1b', desc: 'Very poor reception' },
+              { grade: 'F', color: '#6b7280', desc: 'Audiences dislike it' },
             ].map(g => (
               <div key={g.grade} className="flex items-center gap-3">
                 <span
@@ -342,7 +342,6 @@ export default function MethodologyPage() {
                 >
                   {g.grade}
                 </span>
-                <span className="text-gray-500 text-sm w-16 flex-shrink-0">{g.range}</span>
                 <span className="text-gray-400 text-sm">{g.desc}</span>
               </div>
             ))}
