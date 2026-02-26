@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T09:50:48.352Z",
-  "processed": 326,
-  "failed": 394,
-  "successRate": "45.3%",
+  "updatedAt": "2026-02-26T10:04:12.800Z",
+  "processed": 330,
+  "failed": 400,
+  "successRate": "45.2%",
   "tierBreakdown": {
-    "playwright": 229,
+    "playwright": 230,
     "amp": 15,
     "browserbase": 6,
     "directCookies": 7,
-    "scrapingbee": 27,
+    "scrapingbee": 28,
     "brightdata": 0,
-    "archiveToday": 176,
-    "archive": 82
+    "archiveToday": 180,
+    "archive": 84
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -121,6 +121,12 @@
       "t": "2026-02-26T09:50:07.574Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-26T09:57:42.766Z",
+      "event": "bb-session",
+      "session": "c95166a1",
+      "url": "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-swee"
     }
   ]
 }
