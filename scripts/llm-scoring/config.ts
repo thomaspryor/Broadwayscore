@@ -131,12 +131,20 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: 'Unqualified praise with superlatives ("triumph", "impeccable"), strong emotional impact promised, no caveats.'
   },
 
-  // 5-STAR example (score: 87) - measured language but still 5 stars
+  // 5-STAR example (score: 87) - measured language but still a rave
   {
     reviewExcerpt: `Daniel Aukin's superb production navigates the change without missing a beat. The jam has been preserved. With the greater sense of distance at the Golden Theatre, Stereophonic feels more than ever like watching a wide-screen film. There's nary a false note. The result is richly satisfying multitrack production. (5/5 stars)`,
     score: 87,
-    bucket: 'Positive',
-    reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). Even without extreme superlatives, 5 stars = 85+ range.'
+    bucket: 'Rave',
+    reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). Measured tone but unambiguous enthusiasm = Rave. Professional critics don\'t need to say "masterpiece" to rave.'
+  },
+
+  // MEASURED RAVE example (score: 85) - literary enthusiasm without extreme superlatives
+  {
+    reviewExcerpt: `The return of Clare Barron's gorgeously precise drama can feel like remission. Shawkat is a sure-footed comic, both vocally dry and drolly physical. Friedman's on-the-nail comic timing gives this stretch an exquisite, anti-sentimental topspin. Each actor surpasses the next, silly and moving by turns. In a superb play, it's a bravura scene. Barron's careful orchestration of detail alerts us to how profoundly we may be missing the appointments that matter. I have seen this play twice, and both times, this moment has frightened my own mind into total blankness.`,
+    score: 85,
+    bucket: 'Rave',
+    reasoning: 'No "masterpiece" or "must-see" but the enthusiasm is unmistakable: "superb play", "gorgeously precise", "bravura scene", "exquisite." Zero negatives. The critic saw it twice and was emotionally overwhelmed. Measured tone + sustained praise + no caveats = Rave.'
   },
 
   // 4-STAR example (score: 78) - clear recommendation
@@ -208,7 +216,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '5.2.0';
+export const PROMPT_VERSION = '5.3.0';
 
 // Gemini calibration offset (adjust if Gemini has systematic bias)
 export const GEMINI_CALIBRATION_OFFSET = 0;
@@ -306,8 +314,8 @@ Classify the review into ONE of these buckets:
 
 | Bucket | Description | Examples |
 |--------|-------------|----------|
-| **Rave** | Enthusiastic, must-see recommendation | "masterpiece", "unmissable", "triumph", "essential viewing" |
-| **Positive** | Recommends seeing it, with or without reservations | "worth seeing", "entertaining", "enjoyable", "recommended" |
+| **Rave** | Strong enthusiasm, no significant negatives. Includes both explosive praise AND measured literary raves. | "masterpiece", "superb", "brilliant", "extraordinary", "triumph", "unmissable", "bravura", "exquisite" |
+| **Positive** | Recommends seeing it, but with reservations or qualified praise | "worth seeing", "entertaining despite flaws", "enjoyable if imperfect", "recommended with caveats" |
 | **Mixed** | Neither recommends nor discourages | "has its moments", "uneven", "hit or miss", "for fans only" |
 | **Negative** | Does not recommend | "disappointing", "falls short", "skip the ticket price" |
 | **Pan** | Strongly negative | "avoid", "waste of time", "terrible", "a disaster" |
@@ -327,11 +335,28 @@ After choosing the bucket, assign a specific score within its range:
 Use the full range. A barely-positive review should be 70-72. A very strong positive should be 80-82.
 
 ## Score Distribution
-Do NOT default to the midpoint of a bucket. For Positive reviews:
-- Strong praise, enthusiastic tone → 81-84
-- Solid recommendation, some reservations → 75-79
-- Barely positive, qualified → 70-73
-Spread scores across the full bucket range based on recommendation strength.
+Do NOT default to the midpoint of a bucket. Use the full range:
+
+For Rave reviews (83-100):
+- Explosive superlatives, "masterpiece", "must-see" → 90-100
+- Strong enthusiasm, "superb", "brilliant", no negatives → 85-89
+- Clear rave with measured tone → 83-85
+
+For Positive reviews (70-82):
+- Strong praise BUT with specific reservations → 79-82
+- Solid recommendation, some reservations → 75-78
+- Barely positive, heavily qualified → 70-74
+
+The KEY difference: Rave = sustained praise with no significant negatives. Positive = praise tempered by actual criticisms.
+
+## The Positive/Rave Boundary (IMPORTANT)
+
+The most common scoring error is placing measured raves in the Positive bucket. Professional critics — especially at the NYT, New Yorker, and Vulture — express enthusiasm through literary craft, not superlatives. A review that:
+- Uses words like "superb", "brilliant", "extraordinary", "exquisite", "gorgeous"
+- Has NO significant negatives or caveats
+- Shows the critic was emotionally moved or deeply impressed
+
+...is a **Rave (83+)**, even without "masterpiece" or "must-see." Reserve Positive (70-82) for reviews with genuine reservations or qualified praise.
 
 ## Critical Instructions
 
