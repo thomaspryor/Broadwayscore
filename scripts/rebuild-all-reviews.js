@@ -1152,22 +1152,36 @@ function getBestScore(data) {
 
     // High/medium confidence: use directly
     if (effectiveConfidence !== 'low' && !needsReview) {
-      // Flag if BOTH thumbs agree with each other but disagree with LLM direction
-      const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
-      const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
-      const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
-      if (dtli && bww && dtli === bww && dtli !== llmThumb) {
-        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
-          `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
-      }
-      // Track bwwScore-LLM divergence as stat counter (not human-review flag — too noisy)
-      if (data.bwwScore != null) {
-        const bwwNorm = data.bwwScore * 10;
-        if (Math.abs(bwwNorm - data.llmScore.score) > 30) {
-          stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
+      // ENSEMBLE QUALITY GATE: Block single-model scores without ensemble validation
+      const hasEnsemble = !!data.ensembleData;
+      if (!hasEnsemble) {
+        if (!hasOriginalFullText) {
+          // BLOCK: excerpt-only + single-model = highest error rate, fall through
+          stats.blockedSingleModelExcerpt = (stats.blockedSingleModelExcerpt || 0) + 1;
+        } else {
+          // fullText + single-model: include but tag source differently
+          stats.warnSingleModelFullText = (stats.warnSingleModelFullText || 0) + 1;
+          return { score: data.llmScore.score, source: 'llmScore-single-model' };
         }
+      } else {
+        // Has ensemble — proceed with existing validation
+        // Flag if BOTH thumbs agree with each other but disagree with LLM direction
+        const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
+        const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+        const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+        if (dtli && bww && dtli === bww && dtli !== llmThumb) {
+          flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+            `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
+        }
+        // Track bwwScore-LLM divergence as stat counter (not human-review flag — too noisy)
+        if (data.bwwScore != null) {
+          const bwwNorm = data.bwwScore * 10;
+          if (Math.abs(bwwNorm - data.llmScore.score) > 30) {
+            stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
+          }
+        }
+        return { score: data.llmScore.score, source: 'llmScore' };
       }
-      return { score: data.llmScore.score, source: 'llmScore' };
     }
   }
 
@@ -1247,11 +1261,15 @@ function getBestScore(data) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
     const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom);
+    const hasEnsemble = !!data.ensembleData;
 
-    if (confidence === 'low' || isExcerptOnly) {
-      return { score: data.llmScore.score, source: 'llmScore-lowconf' };
-    }
-    if (needsReview) {
+    // ENSEMBLE QUALITY GATE: Block single-model excerpt-only scores entirely
+    if (!hasEnsemble && isExcerptOnly) {
+      stats.blockedSingleModelExcerpt = (stats.blockedSingleModelExcerpt || 0) + 1;
+      // Fall through to assignedScore/bucket/thumb fallbacks
+    } else if (confidence === 'low' || isExcerptOnly) {
+      return { score: data.llmScore.score, source: hasEnsemble ? 'llmScore-lowconf' : 'llmScore-lowconf-single-model' };
+    } else if (needsReview) {
       return { score: data.llmScore.score, source: 'llmScore-review' };
     }
   }
@@ -2738,6 +2756,18 @@ if (stats.bwwScoreLlmConflicts > 0) {
 }
 if (stats.bwwInternalConflicts > 0) {
   console.log(`  BWW thumb/score internal conflicts: ${stats.bwwInternalConflicts}`);
+}
+
+// Ensemble quality gate report
+const blockedExcerpt = stats.blockedSingleModelExcerpt || 0;
+const warnedFullText = stats.warnSingleModelFullText || 0;
+if (blockedExcerpt + warnedFullText > 0) {
+  console.log(`\nENSEMBLE QUALITY GATE:`);
+  console.log(`  Blocked (excerpt-only, no ensemble): ${blockedExcerpt}`);
+  console.log(`  Warned (fullText, no ensemble): ${warnedFullText}`);
+  if (blockedExcerpt > 0) {
+    console.log(`  → Run ensemble scoring to fix blocked reviews`);
+  }
 }
 
 console.log('\nScore sources:');
