@@ -6,27 +6,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 const SHOW_SCORE_FILE = 'data/show-score.json';
-
-// Normalize outlet names for matching
-function normalizeOutlet(name) {
-  return name.toLowerCase()
-    .replace(/[^a-z0-9]/g, '')
-    .replace('newyork', 'ny')
-    .replace('magazine', '')
-    .replace('thenew', '')
-    .replace('the', '');
-}
-
-// Normalize critic names for matching
-function normalizeCritic(name) {
-  if (!name) return '';
-  return name.toLowerCase()
-    .replace(/[^a-z]/g, '')
-    .replace('unknown', '');
-}
 
 function main() {
   console.log('=== Merging Show-Score URLs ===\n');
