@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DEFAULT_INPUT = path.join(__dirname, '..', 'data', 'west-end-reviews-input.json');
@@ -66,17 +67,6 @@ let showFilter = null;
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--input' && args[i + 1]) inputFile = args[++i];
   if (args[i] === '--show' && args[i + 1]) showFilter = args[++i];
-}
-
-function slugify(name) {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[''\u2019]/g, '')
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
 }
 
 /**
@@ -164,13 +154,15 @@ function main() {
       continue;
     }
 
-    const criticSlug = criticName ? slugify(criticName) : 'unknown';
-    const fileName = `${outletId}--${criticSlug}.json`;
+    const canonicalOutletId = normalizeOutlet(outletId);
+    const criticSlug = normalizeCritic(criticName);
+    const fileName = `${canonicalOutletId}--${criticSlug}.json`;
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const filePath = path.join(showDir, fileName);
 
-    // Skip if file already exists
-    if (fs.existsSync(filePath)) {
+    // Skip if file already exists (check both canonical and legacy filename)
+    const legacyFileName = `${outletId}--${criticSlug}.json`;
+    if (fs.existsSync(filePath) || (canonicalOutletId !== outletId && fs.existsSync(path.join(showDir, legacyFileName)))) {
       skipped++;
       continue;
     }
@@ -182,9 +174,9 @@ function main() {
 
     const reviewData = {
       showId,
-      outletId,
-      outlet: outlet || outletId,
-      criticName,
+      outletId: canonicalOutletId,
+      outlet: outlet || canonicalOutletId,
+      criticName: criticName || 'Unknown',
       url: url || null,
       publishDate: publishDate || null,
       fullText: null,

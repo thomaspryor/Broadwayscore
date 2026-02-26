@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -94,7 +95,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function slugify(str) {
+function slugifyHostname(str) {
   return str.toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
@@ -163,7 +164,7 @@ function domainToOutletId(url) {
         return id;
       }
     }
-    return slugify(hostname.replace(/\.(com|org|net|co\.uk|me)$/, ''));
+    return normalizeOutlet(slugifyHostname(hostname.replace(/\.(com|org|net|co\.uk|me)$/, '')));
   } catch {
     return null;
   }
@@ -292,7 +293,8 @@ async function main() {
         console.log(`         Outlet: ${discoveredOutletId}, Critic: ${criticName}`);
 
         if (!DRY_RUN) {
-          const filename = `${slugify(discoveredOutletId)}--${slugify(criticName)}.json`;
+          const canonicalOutletId = normalizeOutlet(discoveredOutletId);
+          const filename = generateReviewFilename(discoveredOutletId, criticName);
           const filepath = path.join(showDir, filename);
 
           // Don't overwrite existing files
@@ -303,9 +305,9 @@ async function main() {
 
           const reviewData = {
             showId,
-            outletId: discoveredOutletId,
-            outlet: result.title?.split(/[-–—|]/)[0]?.trim() || discoveredOutletId,
-            criticName,
+            outletId: canonicalOutletId,
+            outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
+            criticName: criticName || 'Unknown',
             url,
             publishDate: null,
             fullText: null,
@@ -383,7 +385,8 @@ async function main() {
       console.log(`         Outlet: ${outletId}, Critic: ${criticName}`);
 
       if (!DRY_RUN) {
-        const filename = `${slugify(outletId)}--${slugify(criticName)}.json`;
+        const canonicalOutletId = normalizeOutlet(outletId);
+        const filename = generateReviewFilename(outletId, criticName);
         const filepath = path.join(showDir, filename);
 
         if (fs.existsSync(filepath)) {
@@ -393,9 +396,9 @@ async function main() {
 
         const reviewData = {
           showId,
-          outletId,
-          outlet: outletId,
-          criticName,
+          outletId: canonicalOutletId,
+          outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
+          criticName: criticName || 'Unknown',
           url,
           publishDate: null,
           fullText: null,
