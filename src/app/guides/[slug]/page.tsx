@@ -315,17 +315,19 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     <div className="mt-3 pt-1 flex flex-wrap gap-2">
                       {/* Official Site */}
                       {show.officialUrl && (
-                        <a
-                          href={show.officialUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          platform="Official Site"
+                          url={show.officialUrl}
+                          pageType="guide"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                           </svg>
                           Official Site
-                        </a>
+                        </TicketLink>
                       )}
                       {/* Ticket Sources */}
                       {show.status === 'open' && ticketLinks.map((link, i) => (
