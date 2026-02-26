@@ -90,18 +90,12 @@ export function getOffBroadwayShows(): ComputedShow[] {
 export function getMarketStats() {
   const bwShows = getBroadwayShows();
   const weShows = getWestEndShows();
-  const obShows = getOffBroadwayShows();
   const bwOpen = bwShows.filter(s => s.status === 'open' || s.status === 'previews');
-  const obOpen = obShows.filter(s => s.status === 'open' || s.status === 'previews');
   const weOpen = weShows.filter(s => s.status === 'open' || s.status === 'previews');
   return {
     nyc: {
       openShows: bwOpen.length,
       theaters: new Set(bwOpen.map(s => s.venue).filter(Boolean)).size,
-    },
-    offBroadway: {
-      openShows: obOpen.length,
-      theaters: new Set(obOpen.map(s => s.venue).filter(Boolean)).size,
     },
     westEnd: {
       openShows: weOpen.length,
