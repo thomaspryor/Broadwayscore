@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-26T06:07:39.062Z",
+  "generatedAt": "2026-02-26T14:38:15.955Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -112,6 +112,14 @@
       "outlet": "ew",
       "critic": "Adam Markovitz",
       "detail": "originalRating \"D\" (=35) vs score 72 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "noises-off-2016",
+      "outlet": "njcom",
+      "critic": "Christopher Kelly",
+      "detail": "originalRating \"1/5\" (=20) vs score 45 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -236,6 +244,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "wicked-2003",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-thumb-boosted)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "wit-2012",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -268,6 +284,14 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "fish-in-the-dark-2015",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "humanReviewScore 72 (positive) overrides explicit \"40\" (=40, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "funny-girl-2022",
       "outlet": "deadline",
       "critic": "Greg Evans",
@@ -288,6 +312,14 @@
       "outlet": "ew",
       "critic": "Dalton Ross",
       "detail": "humanReviewScore 63 (mixed) overrides explicit \"93\" (=93, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "head-over-heels-2018",
+      "outlet": "timeout",
+      "critic": "Adam Feldman",
+      "detail": "humanReviewScore 78 (positive) overrides explicit \"40\" (=40, negative)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -328,6 +360,14 @@
       "outlet": "ew",
       "critic": "Adam Markovitz",
       "detail": "humanReviewScore 72 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "noises-off-2016",
+      "outlet": "njcom",
+      "critic": "Christopher Kelly",
+      "detail": "humanReviewScore 45 (mixed) overrides explicit \"1/5\" (=20, negative)"
     },
     {
       "type": "human-override-vs-explicit-grade",
