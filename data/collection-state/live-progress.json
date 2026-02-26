@@ -1,49 +1,54 @@
 {
-  "updatedAt": "2026-02-26T00:05:39.884Z",
-  "processed": 60,
-  "failed": 230,
-  "successRate": "20.7%",
+  "updatedAt": "2026-02-26T00:09:11.595Z",
+  "processed": 68,
+  "failed": 252,
+  "successRate": "21.3%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 5,
+    "browserbase": 1,
+    "directCookies": 3,
+    "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 111,
-    "archive": 10
+    "archiveToday": 144,
+    "archive": 12
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-25T21:04:49.289Z",
+      "t": "2026-02-25T20:45:31.843Z",
       "event": "bb-session",
-      "session": "604d1ba6",
+      "session": "535b04ec",
+      "url": "https://www.thewrap.com/bullets-broadway-theater-review-zach-braff-guys-dolls-re"
+    },
+    {
+      "t": "2026-02-25T20:46:15.833Z",
+      "event": "bb-session",
+      "session": "5f1ed89a",
       "url": "https://www.thewrap.com/camelot-broadway-review-musical-aaron-sorkin/"
     },
     {
-      "t": "2026-02-25T21:10:19.905Z",
+      "t": "2026-02-25T20:49:34.043Z",
       "event": "bb-session",
-      "session": "9ce7cea1",
-      "url": "https://www.thedailybeast.com/review-dead-outlaw-is-stunningand-broadways-most-i"
+      "session": "d6bfbecd",
+      "url": "http://www.thewrap.com/fiddler-on-the-roof-broadway-review-a-classic-tweaked-but"
     },
     {
-      "t": "2026-02-25T21:14:11.699Z",
+      "t": "2026-02-25T20:51:17.999Z",
       "event": "bb-session",
-      "session": "63e18caa",
-      "url": "http://www.thewrap.com/gigi-theater-review-vanessa-hudgens-turns-a-french-girl-i"
+      "session": "f20b1bec",
+      "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-"
     },
     {
-      "t": "2026-02-25T21:23:53.730Z",
+      "t": "2026-02-25T21:08:54.821Z",
       "event": "bb-session",
-      "session": "968a57c8",
-      "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-j"
+      "session": "77956e2d",
+      "url": "https://www.indiewire.com/criticism/movies/kiss-of-the-spider-woman-review-jenni"
     },
     {
-      "t": "2026-02-25T21:26:02.472Z",
-      "event": "bb-session",
-      "session": "73ba94c1",
-      "url": "https://www.thewrap.com/island-broadway-review-middling-musical-revival-long-suf"
+      "t": "2026-02-25T21:08:56.119Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
     }
   ]
 }
