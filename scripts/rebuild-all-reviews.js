@@ -1326,13 +1326,6 @@ function scoreToThumb(score) {
   return 'Down';
 }
 
-function normalizeOutletId(outlet) {
-  if (!outlet) return 'unknown';
-  return outlet.toString().toLowerCase()
-    .replace(/[^a-z0-9]/g, '')
-    .substring(0, 20);
-}
-
 // Main execution
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');

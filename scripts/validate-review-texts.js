@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -102,12 +103,12 @@ function isGarbageCriticName(name) {
 }
 
 /**
- * Normalize outlet ID to canonical form using registry aliases
+ * Normalize outlet ID to canonical form.
+ * Thin wrapper around canonical normalizeOutlet() that preserves null-in/null-out.
  */
 function normalizeOutletId(id) {
   if (!id) return null;
-  const lower = id.toLowerCase().trim();
-  return registryAliasIndex[lower] || lower;
+  return normalizeOutlet(id);
 }
 
 /**

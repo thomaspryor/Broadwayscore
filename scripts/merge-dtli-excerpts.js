@@ -7,51 +7,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 const dtliDir = 'data/aggregator-archive/dtli';
 const reviewTextsDir = 'data/review-texts';
-
-// Outlet normalization (same as extract-dtli-reviews.js)
-const outletNormalization = {
-  'new york times': 'nytimes',
-  'vulture': 'vulture',
-  'variety': 'variety',
-  'hollywood reporter': 'hollywood-reporter',
-  'the hollywood reporter': 'hollywood-reporter',
-  'theatermania': 'theatermania',
-  'deadline': 'deadline',
-  'new york post': 'nypost',
-  'ny post': 'nypost',
-  'entertainment weekly': 'ew',
-  'time out new york': 'timeout-ny',
-  'time out': 'timeout-ny',
-  'the guardian': 'guardian',
-  'guardian': 'guardian',
-  'daily beast': 'daily-beast',
-  'the daily beast': 'daily-beast',
-  'thewrap': 'thewrap',
-  'the wrap': 'thewrap',
-  'new yorker': 'new-yorker',
-  'the new yorker': 'new-yorker',
-  'new york daily news': 'nydn',
-  'ny daily news': 'nydn',
-  'associated press': 'ap',
-  'ap': 'ap',
-  'indiewire': 'indiewire',
-  'broadway news': 'broadway-news',
-  'broadway world': 'bww',
-  'broadwayworld': 'bww',
-  'ny1': 'ny1',
-  'ny stage review': 'ny-stage-review',
-  'stage and cinema': 'stage-and-cinema',
-  'theatrely': 'theatrely',
-  'cititour': 'cititour',
-};
-
-function normalizeOutletId(outlet) {
-  const lower = outlet.toLowerCase().trim();
-  return outletNormalization[lower] || lower.replace(/[^a-z0-9]+/g, '-');
-}
 
 function slugify(str) {
   if (!str) return 'unknown';
@@ -117,7 +76,7 @@ function extractDtliReviews(htmlContent, showId) {
     if (!excerpt || excerpt.length < 30) continue;
 
     reviews.push({
-      outletId: normalizeOutletId(outletRaw),
+      outletId: normalizeOutlet(outletRaw),
       criticName,
       excerpt,
       url,
