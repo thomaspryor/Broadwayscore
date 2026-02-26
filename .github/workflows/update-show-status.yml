@@ -529,6 +529,66 @@ jobs:
               }
             }
 
+  # Safety net: catch open shows that slipped through without review collection
+  catchup-zero-review-shows:
+    needs: update-shows
+    if: always() && needs.update-shows.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Find open shows with zero reviews
+        id: find-gaps
+        run: |
+          GAPS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const reviews = require('./data/reviews.json').reviews;
+            const rc = {};
+            for (const r of reviews) rc[r.showId] = (rc[r.showId] || 0) + 1;
+
+            // Open shows with 0 reviews that opened 3+ days ago (give initial pipeline time)
+            const cutoff = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
+            const gaps = shows.filter(s =>
+              s.status === 'open' &&
+              !rc[s.id] &&
+              s.openingDate && s.openingDate <= cutoff
+            );
+
+            // Limit to 10 per day to avoid overloading
+            const batch = gaps.slice(0, 10).map(s => s.id);
+            console.log(batch.join(','));
+          ")
+
+          echo "gap_shows=$GAPS" >> $GITHUB_OUTPUT
+          if [ -n "$GAPS" ]; then
+            COUNT=$(echo "$GAPS" | tr ',' '\n' | wc -l | tr -d ' ')
+            echo "Found $COUNT open shows with 0 reviews needing collection"
+          else
+            echo "No zero-review gap shows found"
+          fi
+
+      - name: Dispatch gather-reviews for gap shows
+        if: steps.find-gaps.outputs.gap_shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
+          gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}" || echo "Dispatch failed"
+
   # Alert on consecutive failures
   alert-on-failure:
     needs: update-shows
