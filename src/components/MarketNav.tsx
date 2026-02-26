@@ -15,6 +15,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isWestEnd = pathname.startsWith('/west-end');
+  const isOffBroadway = pathname.startsWith('/off-broadway');
   const currentMarket = isWestEnd ? 'west-end' : 'nyc';
 
   // Close dropdown on outside click
@@ -61,14 +62,16 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           border transition-colors whitespace-nowrap
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
-            : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
+            : isOffBroadway
+              ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
+              : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {currentMarket === 'nyc' ? 'NYC' : 'West End'}
+        {isOffBroadway ? 'Off-Bway' : currentMarket === 'nyc' ? 'NYC' : 'West End'}
         <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
