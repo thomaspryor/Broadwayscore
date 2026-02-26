@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS shows (
   opening_date TEXT,
   closing_date TEXT,
   previews_start_date TEXT,
-  status TEXT NOT NULL CHECK(status IN ('open','closed','previews')),
+  status TEXT NOT NULL CHECK(status IN ('open','closed','previews','upcoming','announced')),
   type TEXT,
   runtime TEXT,
   intermissions INTEGER,
