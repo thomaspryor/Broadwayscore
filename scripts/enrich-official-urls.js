@@ -44,9 +44,22 @@ const BLOCKED_DOMAINS = new Set([
   // Generic
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'pinterest.com', 'linkedin.com', 'tumblr.com',
+  // Theater listing/guide sites (not show-specific)
+  'broadway.org', 'newyorktheatreguide.com', 'theatreaccess.nyc', 'nystagereview.com',
+  'newyorktheater.me', 'theatrely.com', 'stagebuddy.com',
+  'londontheatre.co.uk', 'thestage.co.uk', 'broadwaybox.com',
+  // Event listing sites
+  'donyc.com', 'eventbrite.com', 'dice.fm', 'songkick.com',
+  // Licensing/production companies (not individual show sites)
+  'concordtheatricals.com', 'mtishows.com', 'samuelfrench.com',
+  'dramatists.com', 'tamswitmark.com',
   // Theater/venue sites (not show-specific)
   'shubert.nyc', 'nederlander.com', 'roundabouttheatre.org', 'lct.org',
-  'manhattantheatreclub.com', '2st.com',
+  'manhattantheatreclub.com', '2st.com', 'nytw.org', 'publictheater.org',
+  'signaturetheatre.org', 'mintheatre.org', 'atlantictheater.org',
+  'classicstage.org', 'irishrep.org', 'newworldstages.com',
+  // City/government sites
+  'cityofwhiteplains.com', 'nyc.gov',
 ]);
 
 // ============================================================================
