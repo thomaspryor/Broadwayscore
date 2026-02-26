@@ -162,7 +162,7 @@ function TicketIcon() {
 // Limited Run badge - eye-catching for shows ending soon
 function LimitedRunBadge() {
   return (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
       LIMITED RUN
     </span>
   );
@@ -463,7 +463,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   href={show.officialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <GlobeIcon />
                   Official Site
@@ -479,7 +479,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   platform={link.platform}
                   url={link.url}
                   pageType="show"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <TicketIcon />
                   {link.platform}
@@ -492,7 +492,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   href={show.trailerUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <PlayIcon />
                   Trailer
@@ -503,7 +503,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                 <a
                   href="#discount-tickets"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs font-medium transition-colors border border-emerald-500/30"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30"
                 >
                   <TicketIcon />
                   {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
@@ -587,25 +587,25 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Section Jump Links */}
         <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
           {show.criticScore && show.criticScore.reviews.length > 0 && (
-            <a href="#critic-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Reviews</a>
+            <a href="#critic-reviews" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Reviews</a>
           )}
           {audienceBuzz && audienceBuzz.combinedScore != null && (
-            <a href="#audience" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Audience</a>
+            <a href="#audience" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Audience</a>
           )}
           {featureFlags.awards && awards && (
-            <a href="#awards" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Awards</a>
+            <a href="#awards" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Awards</a>
           )}
           {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
-            <a href="#box-office" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>
+            <a href="#box-office" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Box Office</a>
           )}
           {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (
-            <a href="#discount-tickets" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Tickets</a>
+            <a href="#discount-tickets" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Tickets</a>
           )}
           {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (
-            <a href="#creative-team" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Creative</a>
+            <a href="#creative-team" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Creative</a>
           )}
           {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-            <a href="#cast" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Cast</a>
+            <a href="#cast" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Cast</a>
           )}
         </nav>
 
