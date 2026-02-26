@@ -80,6 +80,11 @@ jobs:
         run: node scripts/enrich-todaytix-runtimes.js
         continue-on-error: true
 
+      - name: Enrich shows with TodayTix ticket links
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/enrich-todaytix-data.js
+        continue-on-error: true
+
       - name: Enrich shows with Wikipedia synopses
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/enrich-wikipedia-synopsis.js --limit=20
