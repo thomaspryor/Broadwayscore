@@ -117,6 +117,9 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16 relative">
               <MarketNav stats={marketStats} />
               <div className="flex items-center gap-3">
+                <Link href="/off-broadway" className="hidden lg:block text-sm text-gray-400 hover:text-white transition-colors font-medium">
+                  Off-Broadway
+                </Link>
                 <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
