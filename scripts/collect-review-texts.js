@@ -4894,9 +4894,9 @@ function findReviewsToProcess() {
         const count = f.failureCount || 1;
         const reason = f.failureReason || '';
         // Permanently skip if: confirmed dead URL with 3+ failures, other reasons with 5+ failures,
-        // or garbage_content with 10+ failures (URL works but always returns wrong content)
+        // or garbage_content with 3+ failures (site returns content but not the review — won't improve)
         const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
-        const isExhaustedGarbage = reason === 'garbage_content' && count >= 10;
+        const isExhaustedGarbage = reason === 'garbage_content' && count >= 3;
         const threshold = isConfirmedDead ? 3 : 5;
         if ((reason !== 'garbage_content' && count >= threshold) || isExhaustedGarbage) {
           permanentlyFailed.add(id);
