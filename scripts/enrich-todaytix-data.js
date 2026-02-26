@@ -149,6 +149,19 @@ async function main() {
       changes.push(`todaytixUrl`);
     }
 
+    // Ensure ticketLinks includes a TodayTix entry
+    const ttUrl = show.todaytixUrl || buildTodayTixUrl(tt, location);
+    const links = show.ticketLinks || [];
+    const hasTTLink = links.some(l => l.platform === 'TodayTix');
+    if (!hasTTLink) {
+      if (!DRY_RUN) {
+        if (!show.ticketLinks) show.ticketLinks = [];
+        show.ticketLinks.push({ platform: 'TodayTix', url: ttUrl, priceFrom: null });
+      }
+      stats.ticketLinksSet = (stats.ticketLinksSet || 0) + 1;
+      changes.push('ticketLinks');
+    }
+
     if ((!show.synopsis || show.synopsis === '') && tt.description) {
       const synopsis = stripHtml(tt.description).substring(0, 500);
       if (synopsis.length > 20) {
@@ -192,9 +205,10 @@ async function main() {
   console.log(`todaytixId set: ${stats.todaytixIdSet}`);
   console.log(`todaytixUrl set: ${stats.todaytixUrlSet}`);
   console.log(`synopsis set: ${stats.synopsisSet}`);
+  console.log(`ticketLinks set: ${stats.ticketLinksSet || 0}`);
   console.log(`Unmatched TodayTix shows: ${stats.skipped}`);
 
-  if (!DRY_RUN && (stats.todaytixIdSet > 0 || stats.todaytixUrlSet > 0 || stats.synopsisSet > 0)) {
+  if (!DRY_RUN && (stats.todaytixIdSet > 0 || stats.todaytixUrlSet > 0 || stats.synopsisSet > 0 || (stats.ticketLinksSet || 0) > 0)) {
     fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
