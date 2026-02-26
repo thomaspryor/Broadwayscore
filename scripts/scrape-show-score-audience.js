@@ -735,8 +735,8 @@ async function main() {
   }
 
   // Get shows to process — open shows only by default, --all includes closed
-  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
-  let shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open');
+  const allActiveShows = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'closed');
+  let shows = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
 
   // Handle single show filter (can target any status)
   if (showFilter) {
