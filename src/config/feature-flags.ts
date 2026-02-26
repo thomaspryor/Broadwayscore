@@ -22,4 +22,5 @@ export const featureFlags = {
   westEnd: enabledFeatures.has('westEnd'),
   offBroadway: enabledFeatures.has('offBroadway'),
   tonyPeople: enabledFeatures.has('tonyPeople'),
+  sectionJumpLinks: enabledFeatures.has('sectionJumpLinks'),
 } as const;
