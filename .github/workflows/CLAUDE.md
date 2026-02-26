@@ -442,6 +442,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **No secrets needed** (public TodayTix API + HEAD requests)
 - **CLI:** `node scripts/fix-todaytix-links.js [--dry-run]`
 
+## `fix-platform-ticket-links.yml`
+- **Runs:** Monthly (1st Monday at 4 PM UTC), or manually
+- **Does:** Validates Telecharge/Ticketmaster links (separate from TodayTix). Telecharge: verifies URL matches deterministic construction from title. Ticketmaster: re-verifies via SERP. Removes stale links for closed shows. Also runs official URL enrichment for Broadway shows.
+- **Scripts:** `scripts/fix-platform-ticket-links.js`, `scripts/enrich-official-urls.js --category=broadway`
+- **Requires:** SCRAPINGBEE_API_KEY (for Ticketmaster SERP + official URL SERP)
+- **Note:** Neither Telecharge (Akamai queue-it → 302) nor Ticketmaster (requires JS) can be HTTP-verified. Validation uses URL construction matching and SERP re-verification respectively.
+- **CLI:** `node scripts/fix-platform-ticket-links.js [--dry-run]`
+
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
 - **Tests:** Data validation (duplicates, required fields, dates, status), **text quality audit** (35% full, <40% truncated, <5% unknown), E2E tests (homepage, show pages, navigation, filters, mobile)
