@@ -2208,9 +2208,26 @@ showDirs.forEach(showId => {
       if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
       if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
-      // Add designation if present
+      // Add designation if present, or auto-detect from text/archive
       if (data.designation) {
         review.designation = data.designation;
+      } else if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
+        // Auto-detect NYT Critics' Pick from review text or archived HTML
+        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || '';
+        const textHasPick = /CRITIC['\u2019]?S PICK/i.test(text);
+        let archiveHasPick = false;
+        if (!textHasPick && data.archivePath) {
+          try {
+            const archiveHtml = fs.readFileSync(path.join(__dirname, '..', data.archivePath), 'utf8');
+            archiveHasPick = /critic[''\u2019]?s[''\u2019]?\s*pick/i.test(archiveHtml) || /criticsPick/i.test(archiveHtml);
+          } catch (e) { /* archive not available */ }
+        }
+        if (textHasPick || archiveHasPick) {
+          review.designation = 'Critics_Pick';
+          // Persist back to source file so it's not re-detected every rebuild
+          data.designation = 'Critics_Pick';
+          try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2)); } catch (e) { /* read-only in CI */ }
+        }
       }
 
       allReviews.push(review);

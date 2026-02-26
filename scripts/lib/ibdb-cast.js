@@ -197,6 +197,10 @@ async function extractCastFromIBDBPage(url) {
     return result;
   }
 
+  // Extract production title for validation
+  const titleEl = doc.querySelector('h1.iblock');
+  result.pageTitle = titleEl ? titleEl.textContent.trim() : null;
+
   // Parse Opening Night Cast
   const oncSection = doc.getElementById('OpeningNightCast');
   if (oncSection) {
@@ -286,6 +290,27 @@ async function lookupIBDBCast(title, options = {}) {
     if (castData.openingNightCast.length === 0) {
       console.log(`  ❌ No OBC extracted from IBDB page for "${title}"`);
       return { ...notFound, ibdbUrl: bestMatch.url };
+    }
+
+    // Title validation: check the IBDB page title matches our show
+    // Prevents false matches (e.g. Marcel on the Train → Sophisticated Ladies)
+    if (castData.pageTitle) {
+      const normalize = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+      const ourTitle = normalize(title);
+      const ibdbTitle = normalize(castData.pageTitle);
+      // Check if either contains the other (handles subtitles, suffixes)
+      if (!ibdbTitle.includes(ourTitle) && !ourTitle.includes(ibdbTitle)) {
+        // Fuzzy fallback: check word overlap
+        const ourWords = new Set(ourTitle.match(/[a-z]{3,}/g) || []);
+        const ibdbWords = new Set(ibdbTitle.match(/[a-z]{3,}/g) || []);
+        const overlap = [...ourWords].filter(w => ibdbWords.has(w)).length;
+        const maxWords = Math.max(ourWords.size, ibdbWords.size);
+        if (maxWords > 0 && overlap / maxWords < 0.3) {
+          console.log(`  ⚠️  IBDB title mismatch: "${castData.pageTitle}" vs "${title}" — skipping`);
+          return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+        }
+      }
     }
 
     return {
