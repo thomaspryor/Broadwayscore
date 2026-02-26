@@ -1805,21 +1805,28 @@ function createReviewFile(showId, reviewData, options = {}) {
   }
 
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
-  if (!quickDateCheck(showId, reviewData.url, reviewData.publishDate)) {
-    const verification = verifyProduction({
-      showId,
-      url: reviewData.url,
-      publishDate: reviewData.publishDate,
-      text: reviewData.excerpt || reviewData.fullText,
-      category: allowOffBroadway ? 'off-broadway' : undefined
-    });
+  // Always run venue verification (cheap text scan). Date-based verification only when dates look suspicious.
+  {
+    const reviewText = reviewData.excerpt || reviewData.fullText;
+    const dateOk = quickDateCheck(showId, reviewData.url, reviewData.publishDate);
+    // Always run full verification if we have text (venue detection catches London reviews
+    // even when dates are missing/valid — e.g., shows that played both London and NYC)
+    if (!dateOk || reviewText) {
+      const verification = verifyProduction({
+        showId,
+        url: reviewData.url,
+        publishDate: reviewData.publishDate,
+        text: reviewText,
+        category: allowOffBroadway ? 'off-broadway' : undefined
+      });
 
-    if (verification.shouldReject) {
-      console.log(`    ✗ REJECTED ${filename}: Wrong production detected`);
-      for (const issue of verification.issues) {
-        console.log(`      - ${issue.message}`);
+      if (verification.shouldReject) {
+        console.log(`    ✗ REJECTED ${filename}: Wrong production detected`);
+        for (const issue of verification.issues) {
+          console.log(`      - ${issue.message}`);
+        }
+        return 'wrongProduction';
       }
-      return 'wrongProduction';
     }
   }
 

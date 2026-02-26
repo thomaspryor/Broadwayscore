@@ -72,14 +72,30 @@ const KNOWN_WRONG_INDICATORS = {
   }
 };
 
-// West End venues (for detecting UK reviews)
+// London venues (for detecting UK reviews in Broadway/OB shows)
+// Expanded to cover fringe, off-West End, and regional London venues
 const WEST_END_VENUES = [
+  // Major West End
   'Phoenix Theatre', 'Piccadilly Theatre', 'Prince Edward Theatre',
   'Prince of Wales Theatre', 'Dominion Theatre', 'Adelphi Theatre',
   'Gielgud Theatre', 'Savoy Theatre', 'Lyceum Theatre London',
   'London Palladium', 'Theatre Royal Drury Lane', 'Apollo Theatre',
-  'Wyndham\'s Theatre', 'National Theatre', 'Old Vic', 'Young Vic',
-  'Barbican', 'Donmar Warehouse', 'Hampstead Theatre', 'Almeida Theatre'
+  'Wyndham\'s Theatre', 'Noël Coward Theatre', 'Harold Pinter Theatre',
+  'Vaudeville Theatre', 'Playhouse Theatre', 'Criterion Theatre',
+  'Fortune Theatre', 'Garrick Theatre', 'Novello Theatre',
+  'Duchess Theatre', 'Duke of York\'s Theatre', 'Ambassadors Theatre',
+  'Trafalgar Theatre', 'Gillian Lynne Theatre', '@sohoplace',
+  // National/subsidized
+  'National Theatre', 'Old Vic', 'Young Vic', 'Barbican',
+  'Donmar Warehouse', 'Hampstead Theatre', 'Almeida Theatre',
+  'Royal Court Theatre', 'Bush Theatre', 'Menier Chocolate Factory',
+  // Fringe/Off-West End (where Edinburgh transfers land)
+  'Arcola Theatre', 'Soho Theatre London', 'Gate Theatre London',
+  'Southwark Playhouse', 'Park Theatre London', 'Kiln Theatre',
+  'Lyric Hammersmith', 'Battersea Arts Centre', 'Riverside Studios',
+  'Theatre503', 'Finborough Theatre', 'Jermyn Street Theatre',
+  'Bridge Theatre', 'Hackney Empire', 'Wilton\'s Music Hall',
+  'Sadler\'s Wells', 'Peacock Theatre', 'Ovalhouse', 'Camden People\'s Theatre'
 ];
 
 // UK publication indicators
@@ -203,17 +219,20 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
     }
   }
 
-  // 5. Check for West End venues in text
+  // 5. Check for London venues in text (strong wrongProduction signal for Broadway/OB)
   if (text) {
     const textLower = text.toLowerCase();
     for (const venue of WEST_END_VENUES) {
       if (textLower.includes(venue.toLowerCase())) {
+        // For Broadway/OB shows, a London venue is high severity — likely wrong production
+        const isUSShow = category === 'broadway' || category === 'off-broadway';
+        const severity = isUSShow ? 'high' : 'medium';
         issues.push({
-          type: 'west_end_venue',
-          message: `Found West End venue: ${venue}`,
-          severity: 'medium'
+          type: 'london_venue_in_us_show',
+          message: `Found London venue "${venue}" in ${category || 'unknown'} show review`,
+          severity
         });
-        if (confidence === 'low') confidence = 'medium';
+        confidence = isUSShow ? 'high' : 'medium';
       }
     }
   }
