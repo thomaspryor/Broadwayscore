@@ -1,10 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-26T14:38:16.035Z",
+    "generatedAt": "2026-02-26T16:30:54.458Z",
     "totalFlagged": 28,
     "reasons": {
-      "possible-tour-fulltext": 23,
-      "originalScore-llm-conflict": 5
+      "possible-tour-fulltext": 22,
+      "originalScore-llm-conflict": 5,
+      "both-thumbs-disagree-with-llm": 1
     }
   },
   "reviews": [
@@ -20,7 +21,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:23.873Z"
+      "flaggedAt": "2026-02-26T16:29:41.135Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -34,7 +35,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-02-26T14:37:25.087Z"
+      "flaggedAt": "2026-02-26T16:29:44.232Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -48,7 +49,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:27.065Z"
+      "flaggedAt": "2026-02-26T16:29:46.523Z"
     },
     {
       "showId": "bloody-bloody-andrew-jackson-2010",
@@ -62,7 +63,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:30.094Z"
+      "flaggedAt": "2026-02-26T16:29:53.594Z"
     },
     {
       "showId": "bright-star-2016",
@@ -76,7 +77,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-02-26T14:37:31.243Z"
+      "flaggedAt": "2026-02-26T16:29:54.484Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -90,7 +91,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:31.335Z"
+      "flaggedAt": "2026-02-26T16:29:54.605Z"
     },
     {
       "showId": "come-fly-away-2010",
@@ -104,7 +105,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:33.453Z"
+      "flaggedAt": "2026-02-26T16:29:58.676Z"
     },
     {
       "showId": "follies-2011",
@@ -118,21 +119,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T14:37:37.452Z"
-    },
-    {
-      "showId": "friends-the-musical-parody-2022",
-      "outletId": "one-minute-critic",
-      "criticName": "Unknown",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: \\bNorth American tour\\b",
-      "llmScore": 81,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:37.749Z"
+      "flaggedAt": "2026-02-26T16:30:04.265Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -146,7 +133,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T14:37:38.051Z"
+      "flaggedAt": "2026-02-26T16:30:05.074Z"
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
@@ -160,7 +147,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:42.753Z"
+      "flaggedAt": "2026-02-26T16:30:12.515Z"
     },
     {
       "showId": "indecent-2017",
@@ -174,7 +161,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:43.395Z"
+      "flaggedAt": "2026-02-26T16:30:14.823Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -188,7 +175,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:44.373Z"
+      "flaggedAt": "2026-02-26T16:30:16.414Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -202,21 +189,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:47.077Z"
+      "flaggedAt": "2026-02-26T16:30:20.750Z"
     },
     {
       "showId": "little-shop-of-horrors-2019",
       "outletId": "off-off-online",
       "criticName": "Edward Karam",
       "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"2/5\" (=40, bucket=negative) vs LLM 76 (bucket=positive, conf=medium)",
-      "llmScore": 76,
+      "detail": "originalScore \"2/5\" (=40, bucket=negative) vs LLM 78 (bucket=positive, conf=high)",
+      "llmScore": 78,
       "llmBucket": "Positive",
-      "llmConfidence": "medium",
+      "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:47.476Z"
+      "flaggedAt": "2026-02-26T16:30:21.369Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -230,7 +217,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:51.158Z"
+      "flaggedAt": "2026-02-26T16:30:26.147Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -244,7 +231,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:51.609Z"
+      "flaggedAt": "2026-02-26T16:30:26.643Z"
     },
     {
       "showId": "next-to-normal-2009",
@@ -258,7 +245,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:52.205Z"
+      "flaggedAt": "2026-02-26T16:30:28.017Z"
     },
     {
       "showId": "noises-off-2016",
@@ -272,7 +259,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T14:37:52.288Z"
+      "flaggedAt": "2026-02-26T16:30:28.357Z"
+    },
+    {
+      "showId": "othello-2025",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=66 (Flat), both thumbs=Up",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-02-26T16:30:30.755Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -286,7 +287,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:56.305Z"
+      "flaggedAt": "2026-02-26T16:30:33.244Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -300,7 +301,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:56.703Z"
+      "flaggedAt": "2026-02-26T16:30:33.975Z"
     },
     {
       "showId": "ragtime-2009",
@@ -314,7 +315,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:37:57.347Z"
+      "flaggedAt": "2026-02-26T16:30:34.611Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -328,7 +329,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T14:37:58.866Z"
+      "flaggedAt": "2026-02-26T16:30:36.199Z"
     },
     {
       "showId": "spamalot-2023",
@@ -342,7 +343,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:38:00.928Z"
+      "flaggedAt": "2026-02-26T16:30:37.685Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -356,7 +357,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:38:02.669Z"
+      "flaggedAt": "2026-02-26T16:30:39.531Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -370,7 +371,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T14:38:03.931Z"
+      "flaggedAt": "2026-02-26T16:30:42.004Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -384,7 +385,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T14:38:05.868Z"
+      "flaggedAt": "2026-02-26T16:30:43.258Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -398,7 +399,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T14:38:11.989Z"
+      "flaggedAt": "2026-02-26T16:30:50.169Z"
     }
   ]
 }

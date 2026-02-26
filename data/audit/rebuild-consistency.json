@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-26T14:38:15.955Z",
+  "generatedAt": "2026-02-26T16:30:54.414Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -272,6 +272,14 @@
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "airline-highway-2015",
+      "outlet": "culturesauce",
+      "critic": "Thom Geier",
+      "detail": "humanReviewScore 64 (mixed) overrides explicit \"93\" (=93, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
