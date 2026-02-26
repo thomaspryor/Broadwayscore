@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-26T21:07:57.917Z",
-    "totalFlagged": 30,
+    "generatedAt": "2026-02-26T21:23:52.228Z",
+    "totalFlagged": 39,
     "reasons": {
       "possible-tour-fulltext": 23,
-      "originalScore-llm-conflict": 5,
-      "both-thumbs-disagree-with-llm": 2
+      "both-thumbs-disagree-with-llm": 12,
+      "originalScore-llm-conflict": 4
     }
   },
   "reviews": [
@@ -21,7 +21,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:05:52.767Z"
+      "flaggedAt": "2026-02-26T21:23:10.348Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -35,7 +35,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-02-26T21:05:54.342Z"
+      "flaggedAt": "2026-02-26T21:23:11.358Z"
+    },
+    {
+      "showId": "all-in-comedy-about-love-2024",
+      "outletId": "nytimes",
+      "criticName": "Elisabeth Vincentelli",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=52 (Down), both thumbs=Meh",
+      "llmScore": 52,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": null,
+      "flaggedAt": "2026-02-26T21:23:12.409Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -49,21 +63,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:05:58.043Z"
-    },
-    {
-      "showId": "bloody-bloody-andrew-jackson-2010",
-      "outletId": "ew",
-      "criticName": null,
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 78 (bucket=positive, conf=medium)",
-      "llmScore": 78,
-      "llmBucket": "Positive",
-      "llmConfidence": "medium",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:04.596Z"
+      "flaggedAt": "2026-02-26T21:23:12.848Z"
     },
     {
       "showId": "bright-star-2016",
@@ -77,7 +77,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-02-26T21:06:05.968Z"
+      "flaggedAt": "2026-02-26T21:23:16.238Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -91,12 +91,12 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:06.477Z"
+      "flaggedAt": "2026-02-26T21:23:16.326Z"
     },
     {
       "showId": "come-fly-away-2010",
       "outletId": "wsj",
-      "criticName": null,
+      "criticName": "Unknown",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
       "llmScore": 15,
@@ -105,7 +105,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:14.033Z"
+      "flaggedAt": "2026-02-26T21:23:18.462Z"
     },
     {
       "showId": "follies-2011",
@@ -119,7 +119,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T21:06:21.539Z"
+      "flaggedAt": "2026-02-26T21:23:21.507Z"
     },
     {
       "showId": "friends-the-musical-parody-2022",
@@ -133,7 +133,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:22.616Z"
+      "flaggedAt": "2026-02-26T21:23:21.821Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -147,21 +147,35 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T21:06:23.167Z"
+      "flaggedAt": "2026-02-26T21:23:22.142Z"
     },
     {
-      "showId": "how-to-succeed-in-business-without-really-trying-2011",
-      "outletId": "ew",
-      "criticName": null,
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=high)",
-      "llmScore": 81,
-      "llmBucket": "Positive",
+      "showId": "glengarry-glen-ross-2025",
+      "outletId": "vulture",
+      "criticName": "Sara Holdren",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=42 (Down), both thumbs=Meh",
+      "llmScore": 42,
+      "llmBucket": "Negative",
       "llmConfidence": "high",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:22.755Z"
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "outletId": "nysr",
+      "criticName": "Frank Scheck",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"3/5 stars\" (=60, bucket=mixed) vs LLM 30 (bucket=negative, conf=medium)",
+      "llmScore": 30,
+      "llmBucket": "Pan",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": "Meh",
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:33.503Z"
+      "flaggedAt": "2026-02-26T21:23:22.952Z"
     },
     {
       "showId": "indecent-2017",
@@ -175,7 +189,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:34.966Z"
+      "flaggedAt": "2026-02-26T21:23:26.821Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -189,7 +203,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:38.540Z"
+      "flaggedAt": "2026-02-26T21:23:27.892Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -203,7 +217,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:44.102Z"
+      "flaggedAt": "2026-02-26T21:23:29.709Z"
     },
     {
       "showId": "little-shop-of-horrors-2019",
@@ -217,7 +231,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:45.149Z"
+      "flaggedAt": "2026-02-26T21:23:30.122Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -231,7 +245,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:53.341Z"
+      "flaggedAt": "2026-02-26T21:23:32.785Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -245,21 +259,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:54.293Z"
-    },
-    {
-      "showId": "next-to-normal-2009",
-      "outletId": "ew",
-      "criticName": null,
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"D\" (=35, bucket=negative) vs LLM 81 (bucket=positive, conf=high)",
-      "llmScore": 81,
-      "llmBucket": "Positive",
-      "llmConfidence": "high",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:06:55.889Z"
+      "flaggedAt": "2026-02-26T21:23:33.197Z"
     },
     {
       "showId": "noises-off-2016",
@@ -273,21 +273,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T21:06:56.044Z"
+      "flaggedAt": "2026-02-26T21:23:33.876Z"
     },
     {
       "showId": "othello-2025",
-      "outletId": "thewrap",
-      "criticName": "Robert Hofler",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
       "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=66 (Flat), both thumbs=Up",
-      "llmScore": 66,
-      "llmBucket": "Mixed",
+      "detail": "LLM=42 (Down), both thumbs=Meh",
+      "llmScore": 42,
+      "llmBucket": "Negative",
       "llmConfidence": "medium",
-      "dtliThumb": "Up",
-      "bwwThumb": "Up",
-      "bwwScore": 7,
-      "flaggedAt": "2026-02-26T21:07:00.861Z"
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:35.615Z"
+    },
+    {
+      "showId": "othello-2025",
+      "outletId": "variety",
+      "criticName": "Unknown",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=45 (Down), both thumbs=Meh",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:35.663Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -301,7 +315,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:04.601Z"
+      "flaggedAt": "2026-02-26T21:23:36.946Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -315,7 +329,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:05.336Z"
+      "flaggedAt": "2026-02-26T21:23:37.332Z"
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outletId": "ap",
+      "criticName": "Mark Kennedy",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=42 (Down), both thumbs=Meh",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 5,
+      "flaggedAt": "2026-02-26T21:23:37.747Z"
     },
     {
       "showId": "ragtime-2009",
@@ -329,7 +357,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:07.840Z"
+      "flaggedAt": "2026-02-26T21:23:37.922Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -343,7 +371,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T21:07:13.956Z"
+      "flaggedAt": "2026-02-26T21:23:39.350Z"
+    },
+    {
+      "showId": "smash-2025",
+      "outletId": "nytg",
+      "criticName": "Gillian Russo",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=52 (Down), both thumbs=Meh",
+      "llmScore": 52,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:40.083Z"
     },
     {
       "showId": "spamalot-2023",
@@ -357,7 +399,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:18.183Z"
+      "flaggedAt": "2026-02-26T21:23:40.497Z"
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "outletId": "nytimes",
+      "criticName": "Jesse Green",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=62 (Flat), both thumbs=Up",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-02-26T21:23:40.702Z"
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "outletId": "theater-life",
+      "criticName": "Barry Gordin",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"4/5 stars\" (=80, bucket=positive) vs LLM 45 (bucket=mixed, conf=high)",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-26T21:23:41.513Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -371,7 +441,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:25.834Z"
+      "flaggedAt": "2026-02-26T21:23:41.977Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -379,13 +449,13 @@
       "criticName": "Charles McNulty",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: \\btouring production\\b",
-      "llmScore": 94,
+      "llmScore": 95,
       "llmBucket": "Rave",
       "llmConfidence": "high",
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-26T21:07:30.116Z"
+      "flaggedAt": "2026-02-26T21:23:43.206Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -399,7 +469,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-26T21:07:33.433Z"
+      "flaggedAt": "2026-02-26T21:23:44.387Z"
     },
     {
       "showId": "the-great-gatsby-2024",
@@ -413,7 +483,35 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
       "bwwScore": 6,
-      "flaggedAt": "2026-02-26T21:07:34.018Z"
+      "flaggedAt": "2026-02-26T21:23:44.652Z"
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "outletId": "nytimes",
+      "criticName": "Jesse Green",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=78 (Up), both thumbs=Meh",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 5,
+      "flaggedAt": "2026-02-26T21:23:45.646Z"
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "outletId": "vulture",
+      "criticName": "Sara Holdren",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=42 (Down), both thumbs=Meh",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:45.662Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -427,7 +525,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-26T21:07:49.065Z"
+      "flaggedAt": "2026-02-26T21:23:49.115Z"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=42 (Down), both thumbs=Meh",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-26T21:23:50.987Z"
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outletId": "usatoday",
+      "criticName": "Patrick Ryan",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=68 (Flat), both thumbs=Up",
+      "llmScore": 68,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": 8,
+      "flaggedAt": "2026-02-26T21:23:50.990Z"
     }
   ]
 }
