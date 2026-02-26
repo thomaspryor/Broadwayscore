@@ -853,6 +853,23 @@ async function discoverShows() {
   console.log(`🎭 Found ${newShows.length} NEW show(s):`);
   console.log('-'.repeat(40));
 
+  // Build title index from existing shows for cross-reference revival detection
+  const normalizeTitle = (t) => t.toLowerCase()
+    .replace(/^(the|a|an)\s+/i, '')
+    .replace(/\s*[:(\-–—].*/g, '')  // strip subtitles
+    .replace(/['']/g, "'")
+    .replace(/[^a-z0-9' ]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const existingTitleMap = new Map(); // normalized title → { type, id, category }
+  for (const s of data.shows) {
+    const norm = normalizeTitle(s.title);
+    if (norm.length < 3) continue; // skip very short titles to avoid false matches
+    if (!existingTitleMap.has(norm)) {
+      existingTitleMap.set(norm, { type: s.type, id: s.id, category: s.category, title: s.title });
+    }
+  }
+
   // Analyze shows for revival detection
   const revivalDetection = newShows.map(show => {
     const knownCheck = checkKnownShow(show.title);
@@ -867,14 +884,27 @@ async function discoverShows() {
       detectedType = knownCheck.type || 'play';
       isRevival = true;
       confidence = 'high';
-    } else if (show.todayTixCategory) {
+    } else {
+      // Cross-reference against existing shows in shows.json
+      const norm = normalizeTitle(show.title);
+      const match = existingTitleMap.get(norm);
+      if (match && match.id !== show.id) {
+        isRevival = true;
+        detectedType = match.type || detectedType;
+        confidence = 'high';
+        console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${match.title}" (${match.id})`);
+      }
+    }
+
+    // Type detection (independent of revival status)
+    if (show.todayTixCategory) {
       // TodayTix category is reliable for OB/WE (no IBDB available)
       if (show.todayTixCategory === 'Musicals') {
         detectedType = 'musical';
-        confidence = 'high';
+        if (confidence === 'low') confidence = 'high';
       } else if (show.todayTixCategory === 'Plays') {
         detectedType = 'play';
-        confidence = 'high';
+        if (confidence === 'low') confidence = 'high';
       }
     } else if (show.ibdbShowType) {
       // IBDB classification is authoritative (from the production page itself)
