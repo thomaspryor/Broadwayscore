@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T09:30:39.147Z",
-  "processed": 300,
-  "failed": 380,
-  "successRate": "44.1%",
+  "updatedAt": "2026-02-26T09:38:38.023Z",
+  "processed": 306,
+  "failed": 384,
+  "successRate": "44.3%",
   "tierBreakdown": {
     "playwright": 226,
-    "amp": 13,
-    "browserbase": 2,
+    "amp": 15,
+    "browserbase": 3,
     "directCookies": 7,
     "scrapingbee": 26,
     "brightdata": 0,
     "archiveToday": 175,
-    "archive": 60
+    "archive": 66
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -55,6 +55,17 @@
       "t": "2026-02-26T09:12:09.542Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-26T09:31:48.545Z",
+      "event": "bb-session",
+      "session": "a81ea011",
+      "url": "http://www.nytimes.com/2005/10/03/theater/reviews/03perf.html?_r=0"
+    },
+    {
+      "t": "2026-02-26T09:31:50.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
