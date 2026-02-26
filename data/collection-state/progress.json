@@ -352,7 +352,15 @@
     "my-neighbour-totoro-west-end-2025/guardian-uk--arifa-akbar.json",
     "oh-mary-2024/time-out-new-york--adam-feldman.json",
     "oh-mary-west-end-2025/guardian-uk--arifa-akbar.json",
-    "operation-mincemeat-2025/guardian-uk--kate-wyver.json"
+    "operation-mincemeat-2025/guardian-uk--kate-wyver.json",
+    "paranormal-activity-west-end-2025/guardian-uk--kate-wyver.json",
+    "ragtime-2025/time-out-new-york--adam-feldman.json",
+    "shadowlands-west-end-2026/guardian-uk--arifa-akbar.json",
+    "six-2021/time-out-new-york--adam-feldman.json",
+    "stranger-things-2024/guardian-uk--arifa-akbar.json",
+    "the-book-of-mormon-west-end-2024/ew--lisa-schwarzbaum.json",
+    "the-book-of-mormon-west-end-2024/time-out-new-york--david-cote.json",
+    "the-book-of-mormon-west-end-2024/wapo--unknown.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -761,7 +769,9 @@
     "harry-potter-2021/indiewire--david-ehrlich.json",
     "just-in-time-2025/wapo--naveen-kumar.json",
     "masquerade-2025/observer--david-cote.json",
-    "masquerade-2025/wapo--naveen-kumar.json"
+    "masquerade-2025/wapo--naveen-kumar.json",
+    "pen-pals-2025/broadwaynews--unknown.json",
+    "ragtime-2025/wapo--naveen-kumar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1002,7 +1012,8 @@
       "little-women-the-musical-2026/guardian-uk--emma-john.json",
       "matilda-the-musical-west-end-2021/guardian-uk--lyn-gardner.json",
       "my-neighbour-totoro-west-end-2025/guardian-uk--arifa-akbar.json",
-      "oh-mary-west-end-2025/guardian-uk--arifa-akbar.json"
+      "oh-mary-west-end-2025/guardian-uk--arifa-akbar.json",
+      "shadowlands-west-end-2026/guardian-uk--arifa-akbar.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1028,7 +1039,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json",
-      "data/review-texts/hadestown-west-end-2024/deadline--greg-evans.json"
+      "data/review-texts/hadestown-west-end-2024/deadline--greg-evans.json",
+      "data/review-texts/ragtime-2025/wapo--naveen-kumar.json",
+      "ragtime-2025/wapo--naveen-kumar.json"
     ],
     "directCookies": [
       "annie-1997/usatoday--patrick-ryan.json",
@@ -1070,7 +1083,9 @@
       "hadestown-west-end-2024/daily-beast--tim-teeman.json",
       "mamma-mia-west-end-2021/guardian-uk--veronica-lee.json",
       "mj-the-musical-west-end-2024/guardian-uk--anya-ryan.json",
-      "operation-mincemeat-2025/guardian-uk--kate-wyver.json"
+      "operation-mincemeat-2025/guardian-uk--kate-wyver.json",
+      "paranormal-activity-west-end-2025/guardian-uk--kate-wyver.json",
+      "stranger-things-2024/guardian-uk--arifa-akbar.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1253,7 +1268,8 @@
       "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
       "data/review-texts/drunk-romeo-and-juliet-2025/broadwaynews--unknown.json",
       "data/review-texts/hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-      "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json"
+      "data/review-texts/hadestown-west-end-2024/broadway-news--charles-isherwood.json",
+      "data/review-texts/pen-pals-2025/broadwaynews--unknown.json"
     ],
     "archive": [
       "the-heidi-chronicles-2015/nbcnewyork--robert-kahn.json",
@@ -1353,11 +1369,16 @@
       "mj-2022/wapo--peter-marks.json",
       "moulin-rouge-2019/new-yorker--alexandra-schwartz.json",
       "moulin-rouge-2019/time-out-new-york--adam-feldman.json",
-      "oh-mary-2024/time-out-new-york--adam-feldman.json"
+      "oh-mary-2024/time-out-new-york--adam-feldman.json",
+      "ragtime-2025/time-out-new-york--adam-feldman.json",
+      "six-2021/time-out-new-york--adam-feldman.json",
+      "the-book-of-mormon-west-end-2024/ew--lisa-schwarzbaum.json",
+      "the-book-of-mormon-west-end-2024/time-out-new-york--david-cote.json",
+      "the-book-of-mormon-west-end-2024/wapo--unknown.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "operation-mincemeat-2025/guardian-uk--kate-wyver.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/wapo--unknown.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1482,6 +1503,17 @@
       "t": "2026-02-26T10:04:16.791Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-26T10:15:02.069Z",
+      "event": "bb-session",
+      "session": "8015217d",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/16/ragtime-broadway"
+    },
+    {
+      "t": "2026-02-26T10:15:03.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
