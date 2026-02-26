@@ -72,4 +72,61 @@ function isNotBroadway(text, options = {}) {
   );
 }
 
-module.exports = { isNotBroadway };
+/**
+ * Check if a review URL clearly belongs to a different show.
+ * Returns the detected wrong show slug if found, or null if URL is ok.
+ *
+ * Checks if URL path contains another show's slug as a distinct word-boundary
+ * segment (e.g., "bug-broadway-review" matches "bug" but "debugging" does not).
+ */
+function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
+  if (!url) return null;
+
+  let urlPath;
+  try {
+    urlPath = new URL(url).pathname.toLowerCase();
+  } catch (e) {
+    return null;
+  }
+
+  const pathSlug = urlPath
+    .replace(/^\//, '')
+    .replace(/\.(html?|php|asp)$/i, '');
+
+  for (const show of shows) {
+    if (show.id === targetShowId) continue;
+    if (!show.slug || show.slug.length < 3) continue;
+
+    const slug = show.slug.toLowerCase();
+    const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const slugPattern = new RegExp('(?:^|[/-])' + escaped + '(?:$|[/-])', 'i');
+
+    if (slugPattern.test(pathSlug)) {
+      const targetEscaped = targetSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const targetPattern = new RegExp('(?:^|[/-])' + targetEscaped + '(?:$|[/-])', 'i');
+      if (!targetPattern.test(pathSlug)) {
+        return show.slug;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Check if a URL's embedded year falls outside a production's date window.
+ * Returns true if the URL year is clearly wrong (safe reject filter).
+ *
+ * Per CLAUDE.md §6, URL years are unreliable for positive matching
+ * but safe as a reject filter.
+ */
+function isUrlYearOutsideWindow(url, openingYear, closingYear) {
+  if (!url || !openingYear) return false;
+  const m = url.match(/\/((?:19|20)\d{2})\//);
+  if (!m) return false;
+  const urlYear = parseInt(m[1]);
+  const upper = Math.max(openingYear + 2, (closingYear || openingYear) + 1);
+  return urlYear < openingYear - 3 || urlYear > upper;
+}
+
+module.exports = { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow };
