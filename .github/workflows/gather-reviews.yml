@@ -194,42 +194,14 @@ jobs:
 
           git commit -m "feat: Add review data for ${{ matrix.shows }}"
 
-          # Retry loop for push with rebase (handles parallel workflow conflicts)
-          MAX_RETRIES=5
-          RETRY_COUNT=0
+          # Stagger push by batch_id to avoid parallel matrix jobs colliding
+          BATCH_PUSH_DELAY=$((${{ matrix.batch_id }} * 15))
+          if [ $BATCH_PUSH_DELAY -gt 0 ]; then
+            echo "Staggering push by ${BATCH_PUSH_DELAY}s (batch ${{ matrix.batch_id }})"
+            sleep $BATCH_PUSH_DELAY
+          fi
 
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-
-            # Clean up any unstaged changes (reviews.json, etc.) before rebasing
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-
-            # Pull and rebase, auto-resolve conflicts by preferring our freshly-gathered data
-            if git pull --rebase -X theirs origin main; then
-              # Try to push
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))  # Random 10-30 second wait to avoid collision
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              # Re-fetch and try again
-              git fetch origin main
-            fi
-          done
-
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+          bash scripts/lib/push-with-retry.sh 8 main
 
   # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
   scrape-aggregators:
@@ -294,31 +266,7 @@ jobs:
 
           git commit -m "data: Add Playbill Verdict + NYC Theatre data for ${{ inputs.shows }}"
 
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            if git pull --rebase -X theirs origin main; then
-              if git push origin main; then
-                echo "Successfully pushed changes"
-                exit 0
-              fi
-            else
-              echo "Rebase failed, aborting and retrying..."
-              git rebase --abort 2>/dev/null || true
-            fi
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              WAIT_TIME=$((10 + RANDOM % 20))
-              echo "Waiting $WAIT_TIME seconds before retry..."
-              sleep $WAIT_TIME
-              git fetch origin main
-            fi
-          done
-          echo "Failed to push after $MAX_RETRIES attempts"
-          exit 1
+          bash scripts/lib/push-with-retry.sh 8 main
 
   # Step 4: Rebuild reviews.json after all batches and aggregators complete
   rebuild:

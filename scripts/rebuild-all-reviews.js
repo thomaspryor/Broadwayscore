@@ -49,7 +49,14 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
 // Includes explicit allowlist PLUS all Tier 1/2 outlets (major publications review international theatre)
 const DUAL_MARKET_OUTLETS = new Set([
   'guardian', 'financialtimes', 'variety', 'thestage', 'stage-uk',
-  // Include common aliases
+  // UK Tier 1 outlets that review Broadway (send critics to NYC openings)
+  'telegraph', 'the-telegraph', 'the-telegraph-uk', 'daily-telegraph',
+  'times-uk', 'the-times', 'the-times-uk', 'the-times-clive-davis', 'times-london',
+  'daily-mail', 'daily-mail-uk', 'dailymail', 'the-daily-mail',
+  // UK Tier 2 outlets that cover Broadway
+  'independent', 'the-independent', 'the-independent-uk', 'theindependent',
+  'whatsonstage', 'whats-on-stage',
+  // Common aliases for already-listed outlets
   'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
 ]);
 // Also allow all Tier 1/2 outlets — they legitimately review West End shows

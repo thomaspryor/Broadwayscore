@@ -31,7 +31,9 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     echo "Rebase failed, aborting..."
     git rebase --abort 2>/dev/null || true
   fi
-  sleep $((10 + RANDOM % 20))
+  WAIT=$((15 + RANDOM % 30))
+  echo "Waiting ${WAIT}s before retry..."
+  sleep $WAIT
 done
 
 if [ "$pushed" != "true" ]; then
