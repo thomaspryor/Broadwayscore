@@ -329,7 +329,13 @@
     "hadestown-2019/time-out-new-york--adam-feldman.json",
     "hadestown-west-end-2024/am-new-york--matt-windman.json",
     "hadestown-west-end-2024/daily-beast--tim-teeman.json",
-    "hadestown-west-end-2024/ew--jessica-derschowitz.json"
+    "hadestown-west-end-2024/ew--jessica-derschowitz.json",
+    "hadestown-west-end-2024/theatermania--zachary-stewart.json",
+    "hadestown-west-end-2024/time-out-new-york--adam-feldman.json",
+    "hadestown-west-end-2024/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-news--charles-isherwood.json",
+    "harry-potter-2021/time-out-new-york--adam-feldman.json",
+    "hells-kitchen-2024/time-out-new-york--adam-feldman.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -731,7 +737,11 @@
     "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
     "hadestown-west-end-2024/broadway-news--charles-isherwood.json",
     "hadestown-west-end-2024/deadline--greg-evans.json",
-    "hadestown-west-end-2024/newnownext-com--michael-musto.json"
+    "hadestown-west-end-2024/newnownext-com--michael-musto.json",
+    "hadestown-west-end-2024/newsday--barbara-schuler.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "hadestown-west-end-2024/wapo--peter-marks.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -965,7 +975,8 @@
       "this-is-my-favorite-song-2024/nytg--kyle-turner.json",
       "chess-2025/wapo--naveen-kumar.json",
       "death-of-a-salesman-2026/theatermania--zachary-stewart.json",
-      "hadestown-2019/time-out-new-york--adam-feldman.json"
+      "hadestown-2019/time-out-new-york--adam-feldman.json",
+      "hadestown-west-end-2024/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -990,7 +1001,8 @@
       "data/review-texts/perfect-crime-1987/nytimes--jason-zinoman.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json"
+      "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/hadestown-west-end-2024/deadline--greg-evans.json"
     ],
     "directCookies": [
       "annie-1997/usatoday--patrick-ryan.json",
@@ -1298,11 +1310,17 @@
       "death-of-a-salesman-2026/ew--lester-fabian-brathwaite.json",
       "death-of-a-salesman-2026/wapo--peter-marks.json",
       "hadestown-west-end-2024/am-new-york--matt-windman.json",
-      "hadestown-west-end-2024/ew--jessica-derschowitz.json"
+      "hadestown-west-end-2024/ew--jessica-derschowitz.json",
+      "hadestown-west-end-2024/newnownext-com--michael-musto.json",
+      "hadestown-west-end-2024/time-out-new-york--adam-feldman.json",
+      "hadestown-west-end-2024/wsj--terry-teachout.json",
+      "harry-potter-2021/broadway-news--charles-isherwood.json",
+      "harry-potter-2021/time-out-new-york--adam-feldman.json",
+      "hells-kitchen-2024/time-out-new-york--adam-feldman.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "hadestown-west-end-2024/newnownext-com--michael-musto.json",
+  "lastProcessed": "hells-kitchen-2024/time-out-new-york--adam-feldman.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -1416,6 +1434,17 @@
       "event": "bb-session",
       "session": "c95166a1",
       "url": "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-swee"
+    },
+    {
+      "t": "2026-02-26T10:04:15.973Z",
+      "event": "bb-session",
+      "session": "55723bf6",
+      "url": "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-cha"
+    },
+    {
+      "t": "2026-02-26T10:04:16.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
