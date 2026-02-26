@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T20:58:43.723Z",
-  "processed": 644,
-  "failed": 786,
-  "successRate": "45.0%",
+  "updatedAt": "2026-02-26T21:05:58.247Z",
+  "processed": 650,
+  "failed": 790,
+  "successRate": "45.1%",
   "tierBreakdown": {
-    "playwright": 456,
+    "playwright": 462,
     "amp": 88,
     "browserbase": 4,
     "directCookies": 37,
     "scrapingbee": 32,
     "brightdata": 0,
-    "archiveToday": 221,
-    "archive": 164
+    "archiveToday": 222,
+    "archive": 165
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -88,6 +88,28 @@
       "t": "2026-02-26T20:55:10.167Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-26T21:00:06.473Z",
+      "event": "bb-session",
+      "session": "f739978a",
+      "url": "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-nati"
+    },
+    {
+      "t": "2026-02-26T21:00:07.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-02-26T21:01:42.696Z",
+      "event": "bb-session",
+      "session": "2a968455",
+      "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-m"
+    },
+    {
+      "t": "2026-02-26T21:01:44.149Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
