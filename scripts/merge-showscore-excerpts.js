@@ -7,61 +7,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 const showScoreData = JSON.parse(fs.readFileSync('data/show-score.json', 'utf8'));
 const reviewTextsDir = 'data/review-texts';
-
-// Outlet normalization
-const outletNormalization = {
-  'the new york times': 'nytimes',
-  'new york times': 'nytimes',
-  'new york magazine / vulture': 'vulture',
-  'vulture': 'vulture',
-  'variety': 'variety',
-  'the hollywood reporter': 'hollywood-reporter',
-  'hollywood reporter': 'hollywood-reporter',
-  'theatermania': 'theatermania',
-  'deadline': 'deadline',
-  'deadline hollywood': 'deadline',
-  'new york post': 'nypost',
-  'ny post': 'nypost',
-  'entertainment weekly': 'ew',
-  'time out new york': 'timeout-ny',
-  'time out': 'timeout-ny',
-  'the guardian': 'guardian',
-  'guardian': 'guardian',
-  'daily beast': 'daily-beast',
-  'the daily beast': 'daily-beast',
-  'thewrap': 'thewrap',
-  'the wrap': 'thewrap',
-  'new yorker': 'new-yorker',
-  'the new yorker': 'new-yorker',
-  'new york daily news': 'nydn',
-  'ny daily news': 'nydn',
-  'associated press': 'ap',
-  'ap': 'ap',
-  'indiewire': 'indiewire',
-  'broadway news': 'broadway-news',
-  'broadwayworld': 'bww',
-  'broadway world': 'bww',
-  'ny stage review': 'ny-stage-review',
-  'new york stage review': 'ny-stage-review',
-  'new york theatre guide': 'ny-theatre-guide',
-  'stage and cinema': 'stage-and-cinema',
-  'theatrely': 'theatrely',
-  'cititour': 'cititour',
-  "the stage": 'the-stage',
-  'curtain up': 'curtain-up',
-  'chicago tribune': 'chicago-tribune',
-  'los angeles times': 'la-times',
-  'washington post': 'washpost',
-  'the washington post': 'washpost',
-};
-
-function normalizeOutletId(outlet) {
-  const lower = outlet.toLowerCase().trim();
-  return outletNormalization[lower] || lower.replace(/[^a-z0-9]+/g, '-');
-}
 
 let totalMatched = 0;
 let totalAdded = 0;
@@ -79,7 +28,7 @@ for (const [showId, showData] of Object.entries(showScoreData.shows || {})) {
 
   for (const ssReview of showData.criticReviews) {
     if (!ssReview.outlet) continue;
-    const ssOutletId = normalizeOutletId(ssReview.outlet);
+    const ssOutletId = normalizeOutlet(ssReview.outlet);
     const excerpt = ssReview.excerpt;
 
     if (!excerpt || excerpt.length < 20) continue;

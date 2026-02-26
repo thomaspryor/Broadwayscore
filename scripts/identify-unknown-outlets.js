@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -111,10 +112,7 @@ function shouldIgnore(outletId) {
 }
 
 function normalizeOutletId(id) {
-  return id.toLowerCase()
-    .replace(/^the-/, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+  return normalizeOutlet(id);
 }
 
 function main() {

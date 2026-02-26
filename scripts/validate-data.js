@@ -1374,6 +1374,121 @@ function validateReviewOutletTiers() {
 }
 
 // ===========================================
+// REVIEW-TEXT DUPLICATE DETECTION
+// ===========================================
+
+/**
+ * Detect duplicate review-text files:
+ * 1. Per-show: files with the same normalized outlet+critic (filename-based, no file reads)
+ * 2. Cross-show: files sharing the same URL (requires reading file contents)
+ *
+ * Skips flagged files (wrongProduction, wrongShow, isRoundupArticle, etc.) for URL checks.
+ */
+function validateReviewTextDuplicates() {
+  info('Checking for duplicate review-text files...');
+
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) {
+    info('No review-texts directory');
+    return;
+  }
+
+  // Aggregator sources legitimately share URLs across shows (roundup pages)
+  const AGGREGATOR_SOURCES = new Set([
+    'bww-roundup', 'bww-reviews', 'playbill-verdict', 'dtli',
+    'show-score', 'show-score-playwright', 'nyc-theatre-roundup'
+  ]);
+
+  let filesScanned = 0;
+  let dupeGroups = 0;
+  const urlMap = new Map(); // normalizedUrl -> [{showId, file, isAggregator}]
+
+  const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory() && !d.name.startsWith('.'));
+
+  for (const dir of showDirs) {
+    const showDir = path.join(reviewTextsDir, dir.name);
+    let files;
+    try {
+      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    } catch { continue; }
+
+    // Per-show: group by normalized outlet+critic from filename
+    const keyGroups = new Map();
+    for (const file of files) {
+      filesScanned++;
+      const match = file.match(/^(.+?)--(.+)\.json$/);
+      if (!match) continue;
+      const [, outletId, criticSlug] = match;
+      // Normalize the outlet ID through canonical to catch variant IDs
+      // (e.g., ny-daily-news vs nydailynews, bloomberg vs bloomberg-news)
+      const canonicalOutlet = normalizeOutlet ? normalizeOutlet(outletId) : outletId;
+      const key = `${canonicalOutlet}|${criticSlug}`;
+      if (!keyGroups.has(key)) keyGroups.set(key, []);
+      keyGroups.get(key).push(file);
+    }
+
+    for (const [, group] of keyGroups) {
+      if (group.length > 1) {
+        dupeGroups++;
+      }
+    }
+
+    // Cross-show URL check: read each file, extract URL, check global map
+    for (const file of files) {
+      const filePath = path.join(showDir, file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        // Skip flagged files — these are intentional duplicates or known-bad entries
+        if (data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
+            data.isCombinedReview || data.duplicateOf || data.fabricatedEntry) continue;
+        if (!data.url) continue;
+        // Simple URL normalization: strip protocol, www, trailing slash
+        const normUrl = data.url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '');
+        if (!normUrl) continue;
+        // Check if all sources are aggregator-based
+        const allSources = new Set();
+        if (data.source) allSources.add(data.source);
+        if (data.sources) data.sources.forEach(s => allSources.add(s));
+        const isAggregator = allSources.size > 0 && [...allSources].some(s => AGGREGATOR_SOURCES.has(s));
+
+        if (!urlMap.has(normUrl)) urlMap.set(normUrl, []);
+        urlMap.get(normUrl).push({ showId: dir.name, file, isAggregator });
+      } catch { continue; }
+    }
+  }
+
+  // Report cross-show URL dupes, separating aggregator-only from non-aggregator
+  let crossShowDupesAgg = 0;
+  let crossShowDupesNonAgg = 0;
+  for (const [, entries] of urlMap) {
+    const uniqueShows = new Set(entries.map(e => e.showId));
+    if (uniqueShows.size <= 1) continue;
+    const allAggregator = entries.every(e => e.isAggregator);
+    if (allAggregator) crossShowDupesAgg++;
+    else crossShowDupesNonAgg++;
+  }
+
+  // Thresholds — non-aggregator cross-show dupes are the real concern.
+  // Aggregator dupes are expected (roundup pages cover multiple shows).
+  // ~211 non-agg cross-show dupes are baseline (197 same-show-different-year + 14 truly different).
+  // A spike above baseline indicates a normalizer bug creating mass duplicates.
+  if (crossShowDupesNonAgg > 275) {
+    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~211, spike suggests data issue)`);
+  } else if (crossShowDupesNonAgg > 240) {
+    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~211)`);
+  }
+  // ~537 per-show outlet+critic dupes are baseline (variant outlet IDs like bloomberg vs bloomberg-news).
+  if (dupeGroups > 650) {
+    error(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~537, spike suggests normalizer bug)`);
+  } else if (dupeGroups > 590) {
+    warn(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~537)`);
+  }
+
+  ok(`Review-text duplicates: ${filesScanned} files, ${dupeGroups} intra-show dupe groups, ${crossShowDupesNonAgg} non-agg cross-show URL dupes (${crossShowDupesAgg} aggregator)`);
+}
+
+// ===========================================
 // COMMERCIAL DATA VALIDATION
 // ===========================================
 
@@ -2717,6 +2832,8 @@ function runValidation() {
   validateOutletMapperSync();
   console.log('');
   validateReviewOutletTiers();
+  console.log('');
+  validateReviewTextDuplicates();
 
   // Summary
   console.log('');

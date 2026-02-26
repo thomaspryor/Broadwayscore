@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-26T18:27:39.554Z",
+  "generatedAt": "2026-02-26T18:49:50.198Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -208,6 +208,14 @@
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "originalRating \"D\" (=35) vs score 90 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "titanique-west-end-2024",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"5/5\" (=100) vs score 25 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",

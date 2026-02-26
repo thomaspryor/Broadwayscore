@@ -18,73 +18,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutletFull: normalizeOutlet, slugify } = require('./lib/review-normalization');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const outputDir = path.join(__dirname, '../data/review-texts');
-
-// Outlet normalization
-const outletNormalization = {
-  'the new york times': { name: 'The New York Times', outletId: 'nytimes' },
-  'new york times': { name: 'The New York Times', outletId: 'nytimes' },
-  'broadwayworld': { name: 'BroadwayWorld', outletId: 'broadwayworld' },
-  'variety': { name: 'Variety', outletId: 'variety' },
-  'the hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-  'hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-  'vulture': { name: 'Vulture', outletId: 'vulture' },
-  'time out new york': { name: 'Time Out New York', outletId: 'timeout-ny' },
-  'time out ny': { name: 'Time Out New York', outletId: 'timeout-ny' },
-  'deadline': { name: 'Deadline', outletId: 'deadline' },
-  'the wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj' },
-  'wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj' },
-  'new york post': { name: 'New York Post', outletId: 'nypost' },
-  'the new york post': { name: 'New York Post', outletId: 'nypost' },
-  'newsday': { name: 'Newsday', outletId: 'newsday' },
-  'usa today': { name: 'USA Today', outletId: 'usa-today' },
-  'associated press': { name: 'Associated Press', outletId: 'ap' },
-  'entertainment weekly': { name: 'Entertainment Weekly', outletId: 'ew' },
-  'the guardian': { name: 'The Guardian', outletId: 'guardian' },
-  'the telegraph': { name: 'The Telegraph', outletId: 'telegraph' },
-  'theatermania': { name: 'TheaterMania', outletId: 'theatermania' },
-  'new york daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'the ny daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'am new york': { name: 'amNewYork', outletId: 'amny' },
-  'amnewyork': { name: 'amNewYork', outletId: 'amny' },
-  'amny': { name: 'amNewYork', outletId: 'amny' },
-  'the observer': { name: 'The Observer', outletId: 'observer' },
-  'the wrap': { name: 'TheWrap', outletId: 'thewrap' },
-  'thewrap': { name: 'TheWrap', outletId: 'thewrap' },
-  'rolling stone': { name: 'Rolling Stone', outletId: 'rolling-stone' },
-  'daily beast': { name: 'The Daily Beast', outletId: 'daily-beast' },
-  'the daily beast': { name: 'The Daily Beast', outletId: 'daily-beast' },
-  'new york stage review': { name: 'New York Stage Review', outletId: 'ny-stage-review' },
-  'chicago tribune': { name: 'Chicago Tribune', outletId: 'chicago-tribune' },
-  'nbc new york': { name: 'NBC New York', outletId: 'nbc-ny' },
-  'huffington post': { name: 'HuffPost', outletId: 'huffpost' },
-  'dc theatre scene': { name: 'DC Theatre Scene', outletId: 'dc-theatre-scene' },
-  'nj.com': { name: 'NJ.com', outletId: 'nj-com' },
-  'the stage': { name: 'The Stage', outletId: 'the-stage' },
-  'financial times': { name: 'Financial Times', outletId: 'financial-times' },
-  'the new yorker': { name: 'The New Yorker', outletId: 'new-yorker' },
-  'new yorker': { name: 'The New Yorker', outletId: 'new-yorker' },
-  'the washington post': { name: 'The Washington Post', outletId: 'washington-post' },
-  'washington post': { name: 'The Washington Post', outletId: 'washington-post' },
-};
-
-function normalizeOutlet(outlet) {
-  const key = outlet.toLowerCase().trim();
-  return outletNormalization[key] || {
-    name: outlet.trim(),
-    outletId: outlet.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-  };
-}
-
-function slugify(str) {
-  return (str || 'unknown')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
 
 function extractFromArticleBody(articleBody, showId, publishDate, sourceUrl) {
   if (!articleBody) return [];

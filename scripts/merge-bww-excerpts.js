@@ -13,25 +13,9 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
-
-// Normalize outlet names for matching
-function normalizeOutlet(outlet) {
-  if (!outlet) return '';
-  return outlet
-    .toLowerCase()
-    .replace(/^the\s+/i, '')
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '');
-}
-
-// Normalize critic names for matching
-function normalizeCritic(name) {
-  if (!name) return '';
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '');
-}
 
 // Get all review files for a show
 function getReviewFiles(showId) {
