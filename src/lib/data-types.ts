@@ -196,7 +196,7 @@ export type AwardsDesignation =
 // Audience Buzz types
 // ============================================
 
-export type AudienceBuzzDesignation = 'Loving' | 'Liking' | 'Shrugging' | 'Loathing';
+export type AudienceBuzzDesignation = 'Loving' | 'Liking' | 'Shrugging' | 'Disliking' | 'Loathing';
 
 export interface AudienceBuzzSource {
   score: number;

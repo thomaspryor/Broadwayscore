@@ -144,6 +144,12 @@ export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
         textClass: 'text-amber-400',
         borderClass: 'border-amber-500/25',
       };
+    case 'Disliking':
+      return {
+        bgClass: 'bg-red-500/15',
+        textClass: 'text-red-400',
+        borderClass: 'border-red-500/25',
+      };
     case 'Loathing':
       return {
         bgClass: 'bg-gray-500/15',
