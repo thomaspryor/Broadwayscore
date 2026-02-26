@@ -1256,9 +1256,9 @@ function getBestScore(data) {
                           'llmScore-thumb-validated', 'llmScore-thumb-boosted',
                           'extracted-grade', 'extracted-rating', 'extracted-unicode-stars',
                           'extracted-thumbs', 'extracted-strong-positive', 'extracted-strong-negative',
-                          'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
+                          'sentiment-rave', 'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
                           'sentiment-mixed', 'sentiment-mixed-negative', 'sentiment-negative',
-                          'sentiment-strong-negative', 'manual', 'manual-excerpt'];
+                          'sentiment-strong-negative', 'sentiment-pan', 'manual', 'manual-excerpt'];
 
     if (data.scoreSource && validSources.some(s => data.scoreSource.includes(s))) {
       return { score: data.assignedScore, source: 'assignedScore' };
