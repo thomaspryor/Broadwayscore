@@ -128,7 +128,7 @@ function main() {
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
 
     for (const file of files) {
-      const match = file.match(/^([^-]+)--(.+)\.json$/);
+      const match = file.match(/^(.+?)--(.+)\.json$/);
       if (!match) continue;
 
       const [, outletId, criticId] = match;

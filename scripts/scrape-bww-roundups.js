@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -92,9 +93,7 @@ function saveBWWSummary(showId, reviewCount, bwwUrl) {
 }
 
 function slugify(text) {
-  return text.toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  return canonicalSlugify(text);
 }
 
 /**
@@ -635,88 +634,12 @@ function extractBWWReviews(html, showId, bwwUrl) {
 }
 
 /**
- * Map outlet name to standardized outlet info
- * IMPORTANT: Check longer/more specific patterns FIRST to avoid false matches
- * e.g., "Washington Post" must not match "post" (New York Post)
- * e.g., "New York Stage Review" must not match "ew" (Entertainment Weekly)
+ * Map outlet name to standardized outlet info using canonical normalizer.
+ * Returns { outlet: displayName, outletId: canonicalId }.
  */
 function mapOutlet(outletName) {
-  const normalized = outletName.toLowerCase().trim();
-
-  // Ordered list - check LONGER/MORE SPECIFIC patterns FIRST
-  // This prevents "Washington Post" matching "post" before "washington post"
-  const outletPatterns = [
-    // Specific multi-word outlets first (to avoid partial matches)
-    { pattern: 'washington post', outlet: 'The Washington Post', outletId: 'wapo' },
-    { pattern: 'the washington post', outlet: 'The Washington Post', outletId: 'wapo' },
-    { pattern: 'new york stage review', outlet: 'New York Stage Review', outletId: 'nysr' },
-    { pattern: 'new york theatre guide', outlet: 'New York Theatre Guide', outletId: 'nytg' },
-    { pattern: 'new york theater guide', outlet: 'New York Theatre Guide', outletId: 'nytg' },
-    { pattern: 'new york theater', outlet: 'New York Theater', outletId: 'nyt-theater' },
-    { pattern: 'new york theatre', outlet: 'New York Theater', outletId: 'nyt-theater' },
-    { pattern: 'the new york times', outlet: 'The New York Times', outletId: 'nytimes' },
-    { pattern: 'new york times', outlet: 'The New York Times', outletId: 'nytimes' },
-    { pattern: 'new york daily news', outlet: 'New York Daily News', outletId: 'nydn' },
-    { pattern: 'the new yorker', outlet: 'The New Yorker', outletId: 'new-yorker' },
-    { pattern: 'new yorker', outlet: 'The New Yorker', outletId: 'new-yorker' },
-    { pattern: 'new york post', outlet: 'New York Post', outletId: 'nyp' },
-    { pattern: 'ny post', outlet: 'New York Post', outletId: 'nyp' },
-    { pattern: 'the hollywood reporter', outlet: 'The Hollywood Reporter', outletId: 'thr' },
-    { pattern: 'hollywood reporter', outlet: 'The Hollywood Reporter', outletId: 'thr' },
-    { pattern: 'time out new york', outlet: 'Time Out New York', outletId: 'time-out-new-york' },
-    { pattern: 'time out', outlet: 'Time Out New York', outletId: 'time-out-new-york' },
-    { pattern: 'timeout', outlet: 'Time Out New York', outletId: 'time-out-new-york' },
-    { pattern: 'entertainment weekly', outlet: 'Entertainment Weekly', outletId: 'ew' },
-    { pattern: 'wall street journal', outlet: 'Wall Street Journal', outletId: 'wsj' },
-    { pattern: 'the wall street journal', outlet: 'Wall Street Journal', outletId: 'wsj' },
-    { pattern: 'huffington post', outlet: 'Huffington Post', outletId: 'huffpo' },
-    { pattern: 'dc theatre scene', outlet: 'DC Theatre Scene', outletId: 'dc-theatre-scene' },
-    { pattern: 'broadway world', outlet: 'BroadwayWorld', outletId: 'bww' },
-    { pattern: 'broadwayworld', outlet: 'BroadwayWorld', outletId: 'bww' },
-    { pattern: 'broadway news', outlet: 'Broadway News', outletId: 'broadway-news' },
-    { pattern: 'chicago tribune', outlet: 'Chicago Tribune', outletId: 'chicago-tribune' },
-    { pattern: 'daily news', outlet: 'New York Daily News', outletId: 'nydn' },
-    { pattern: 'daily beast', outlet: 'The Daily Beast', outletId: 'daily-beast' },
-    { pattern: 'the daily beast', outlet: 'The Daily Beast', outletId: 'daily-beast' },
-    { pattern: 'associated press', outlet: 'Associated Press', outletId: 'ap' },
-    { pattern: 'am new york', outlet: 'AM New York', outletId: 'am-new-york' },
-    { pattern: 'nbc new york', outlet: 'NBC New York', outletId: 'nbc-ny' },
-    { pattern: 'the guardian', outlet: 'The Guardian', outletId: 'guardian' },
-    { pattern: 'guardian', outlet: 'The Guardian', outletId: 'guardian' },
-    { pattern: 'the wrap', outlet: 'The Wrap', outletId: 'the-wrap' },
-    { pattern: 'the stage', outlet: 'The Stage', outletId: 'the-stage' },
-    { pattern: 'usa today', outlet: 'USA Today', outletId: 'usa-today' },
-    { pattern: "talkin' broadway", outlet: "Talkin' Broadway", outletId: 'talkin-broadway' },
-    { pattern: 'talkin broadway', outlet: "Talkin' Broadway", outletId: 'talkin-broadway' },
-    // Single word outlets (check LAST to avoid false matches)
-    { pattern: 'theatermania', outlet: 'TheaterMania', outletId: 'theatermania' },
-    { pattern: 'theatrely', outlet: 'Theatrely', outletId: 'theatrely' },
-    { pattern: 'deadline', outlet: 'Deadline', outletId: 'deadline' },
-    { pattern: 'vulture', outlet: 'Vulture', outletId: 'vulture' },
-    { pattern: 'variety', outlet: 'Variety', outletId: 'variety' },
-    { pattern: 'newsday', outlet: 'Newsday', outletId: 'newsday' },
-    { pattern: 'cititour', outlet: 'Cititour', outletId: 'cititour' },
-    { pattern: 'observer', outlet: 'Observer', outletId: 'observer' },
-    { pattern: 'nytimes', outlet: 'The New York Times', outletId: 'nytimes' },
-    { pattern: 'wsj', outlet: 'Wall Street Journal', outletId: 'wsj' },
-    { pattern: 'ap', outlet: 'Associated Press', outletId: 'ap' },
-    // NOTE: Removed short patterns like 'post', 'wrap', 'ew' that cause false matches
-  ];
-
-  // Check patterns in order (longer/more specific first)
-  for (const { pattern, outlet, outletId } of outletPatterns) {
-    if (normalized.includes(pattern)) {
-      return { outlet, outletId };
-    }
-  }
-
-  // If no match, return a generic entry using the original name
-  // This ensures we don't lose reviews just because the outlet isn't mapped
-  console.log(`    ⚠ Unknown outlet: "${outletName}" - using as-is`);
-  return {
-    outlet: outletName.trim(),
-    outletId: outletName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-  };
+  const { name, outletId } = normalizeOutletFull(outletName);
+  return { outlet: name, outletId };
 }
 
 /**
