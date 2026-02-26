@@ -529,7 +529,7 @@ async function searchShowScore(show) {
     console.log('    Using curated URL from show-score-urls.json');
     const isOffBroadway = show.category === 'off-broadway';
     if (chromium) {
-      const result = await scrapeShowScoreWithPlaywright(curatedUrl, { isOffBroadway, expectedVenue: show.venue, showId: show.id });
+      const result = await scrapeShowScoreWithPlaywright(curatedUrl, { isOffBroadway, expectedVenue: show.venue, showId: show.id, openingDate: show.openingDate, closingDate: show.closingDate });
       if (result) {
         console.log(`    ✓ Found at: ${curatedUrl}`);
         return { url: curatedUrl, html: result.html, reviews: result.reviews };
@@ -620,7 +620,7 @@ async function searchShowScore(show) {
   if (chromium) {
     for (const slug of [...new Set(variations)]) {
       const url = `${showScoreBase}/${slug}`;
-      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway, expectedVenue: show.venue, showId: show.id });
+      const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway, expectedVenue: show.venue, showId: show.id, openingDate: show.openingDate, closingDate: show.closingDate });
       if (result) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html, reviews: result.reviews };
@@ -656,7 +656,7 @@ async function searchShowScore(show) {
  * This allows us to get ALL critic reviews, not just the first 8
  */
 async function scrapeShowScoreWithPlaywright(url, options = {}) {
-  const { isOffBroadway = false, expectedVenue = null, showId = null } = options;
+  const { isOffBroadway = false, expectedVenue = null, showId = null, openingDate = null, closingDate = null } = options;
   let browser = null;
   try {
     browser = await chromium.launch({ headless: true });
@@ -889,6 +889,26 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
         resolve();
       }, 30000))
     ]);
+
+    // Date-aware validation: check if review dates match this production
+    // Uses median review date — if >3 years from opening, it's likely a different production
+    if (openingDate && reviews.length >= 3) {
+      const showYear = new Date(openingDate).getFullYear();
+      const datedReviews = reviews
+        .map(r => r.date ? new Date(r.date) : null)
+        .filter(d => d && !isNaN(d.getTime()) && d.getFullYear() >= 2000);
+
+      if (datedReviews.length >= 3) {
+        datedReviews.sort((a, b) => a - b);
+        const median = datedReviews[Math.floor(datedReviews.length / 2)];
+        if (Math.abs(median.getFullYear() - showYear) > 3) {
+          console.log(`    [DATE MISMATCH] Median review date ${median.toISOString().split('T')[0]} is >3 years from opening ${openingDate} for ${showId || 'unknown'}`);
+          console.log(`    This Show Score page likely belongs to a different production — skipping`);
+          await browser.close();
+          return null;
+        }
+      }
+    }
 
     // Get the full HTML for fallback extraction
     const html = await page.content();

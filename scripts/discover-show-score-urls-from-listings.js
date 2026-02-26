@@ -89,6 +89,72 @@ function venuesMatch(a, b) {
   return false;
 }
 
+// ── Date-aware production validation ──
+// Fetches a Show Score page and uses two signals to verify it matches the
+// intended production:
+// 1. Status: Show Score displays "Closed" or "Open run" — compare against our status
+// 2. Median review date: if the median critic review date is >3 years away from the
+//    show's opening date, it's likely a different production
+// This prevents storing wrong URLs for multi-production shows (e.g., linking a 2007
+// production to a 2019 Show Score page).
+
+async function validateUrlDatesForShow(url, show) {
+  try {
+    const html = await fetchPage(url);
+
+    // Signal 1: Status mismatch detection
+    // Show Score displays status in div.show-page-v2__info-top-line: "Closed" or "Open run"
+    const statusMatch = html.match(/class="show-page-v2__info-top-line"[^>]*>\s*(Closed|Open run)/i);
+    const pageStatus = statusMatch ? statusMatch[1].toLowerCase().trim() : null;
+    if (pageStatus) {
+      const ourOpen = show.status === 'open' || show.status === 'previews';
+      const pageOpen = pageStatus === 'open run';
+      // If we say it's open but SS says closed (or vice versa), flag but don't reject
+      // (status can change between runs)
+      if (ourOpen !== pageOpen) {
+        // Only reject if our show is closed AND the page says open run
+        // (a currently-running SS page can't belong to a closed production if another
+        // production of the same title is currently open)
+        if (show.status === 'closed' && pageOpen) {
+          return { valid: false, reason: `Show Score page says "Open run" but our production (${show.id}) is closed — likely a different/newer production` };
+        }
+      }
+    }
+
+    // Signal 2: Median review date vs opening date
+    // Extract dates matching "Month DD, YYYY" pattern from critic reviews
+    const datePattern = /(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s*\d{4}/gi;
+    const rawDates = html.match(datePattern) || [];
+    const dates = [];
+    for (const m of rawDates) {
+      const d = new Date(m);
+      if (!isNaN(d.getTime()) && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
+        dates.push(d);
+      }
+    }
+
+    if (dates.length < 3) {
+      return { valid: true, reason: `${pageStatus || 'no status'}, ${dates.length} dates (too few to validate)` };
+    }
+
+    dates.sort((a, b) => a - b);
+    const median = dates[Math.floor(dates.length / 2)];
+    const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
+
+    if (showYear && Math.abs(median.getFullYear() - showYear) > 3) {
+      return {
+        valid: false,
+        reason: `Median review date ${median.toISOString().split('T')[0]} (year ${median.getFullYear()}) is >3 years from show opening ${show.openingDate} — wrong production`,
+      };
+    }
+
+    return { valid: true, reason: `${pageStatus || 'no status'}, median review ${median.getFullYear()}, show opens ${showYear} — OK (${dates.length} dates)` };
+  } catch (e) {
+    // Don't block on fetch errors — let it through
+    return { valid: true, reason: `fetch error: ${e.message}` };
+  }
+}
+
 // ── Title normalization for fuzzy matching ──
 
 function normalizeTitle(title) {
@@ -398,15 +464,27 @@ async function main() {
     return filtered[0];
   }
 
+  // Build multi-production lookup: shows with year suffix that share a base title
+  const productionsByBase = {};
+  for (const s of shows) {
+    const base = s.id.replace(/-\d{4}$/, '');
+    if (!productionsByBase[base]) productionsByBase[base] = [];
+    productionsByBase[base].push(s);
+  }
+  const multiProductionBases = new Set(
+    Object.entries(productionsByBase).filter(([_, p]) => p.length > 1).map(([b]) => b)
+  );
+
   let newDiscoveries = 0;
   let alreadyCached = 0;
   let noMatch = 0;
   let urlConflict = 0;
+  let dateRejected = 0;
   const discoveries = [];
   const candidates = []; // Unmatched listings → potential new shows
   const assignedInThisRun = new Set(); // Prevent same show getting 2 URLs in one run
 
-  function processListings(listings, category, label) {
+  async function processListings(listings, category, label) {
     console.log(`── Matching ${label} (${listings.length} shows) ──`);
 
     for (const listing of listings) {
@@ -440,6 +518,22 @@ async function main() {
         continue;
       }
 
+      // Date-aware validation for multi-production shows: fetch the Show Score page
+      // and verify review dates match this production's window before accepting the URL
+      const base = match.id.replace(/-\d{4}$/, '');
+      const isMultiProduction = multiProductionBases.has(base);
+      if (isMultiProduction && match.openingDate) {
+        console.log(`  [DATE CHECK] "${displayTitle}" → ${match.id} (${productionsByBase[base].length} productions, verifying...)`);
+        const validation = await validateUrlDatesForShow(fullUrl, match);
+        if (!validation.valid) {
+          console.log(`  [DATE REJECTED] ${match.id}: ${validation.reason}`);
+          dateRejected++;
+          continue;
+        }
+        console.log(`    [DATE OK] ${validation.reason}`);
+        await sleep(1000); // Rate limit after page fetch
+      }
+
       console.log(`  ✓ NEW: "${displayTitle}" → ${match.id} (${fullUrl})`);
       discoveries.push({ showId: match.id, title: match.title, url: fullUrl });
       assignedInThisRun.add(match.id);
@@ -448,9 +542,9 @@ async function main() {
     console.log('');
   }
 
-  processListings(broadwayListings, undefined, 'Broadway');
-  processListings(obListings, 'off-broadway', 'Off-Broadway');
-  processListings(weListings, 'west-end', 'West End');
+  await processListings(broadwayListings, undefined, 'Broadway');
+  await processListings(obListings, 'off-broadway', 'Off-Broadway');
+  await processListings(weListings, 'west-end', 'West End');
 
   // ── Summary ──
   console.log('═══════════════════════════════════════');
@@ -458,6 +552,7 @@ async function main() {
   console.log(`Already cached:   ${alreadyCached}`);
   console.log(`No match in DB:   ${noMatch} (→ candidates)`);
   console.log(`URL conflicts:    ${urlConflict}`);
+  console.log(`Date rejected:    ${dateRejected}`);
   console.log('═══════════════════════════════════════\n');
 
   // ── Write URL results ──
