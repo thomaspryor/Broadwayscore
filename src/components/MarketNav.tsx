@@ -37,7 +37,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   }, [pathname]);
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
+    <div className="flex items-center gap-3 sm:gap-3" ref={dropdownRef}>
       {/* Logo — changes per market */}
       <Link href={isWestEnd ? '/west-end' : '/'} className="flex items-center group">
         {isWestEnd ? (
