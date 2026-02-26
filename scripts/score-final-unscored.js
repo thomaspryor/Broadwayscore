@@ -198,6 +198,12 @@ showDirs.forEach(showId => {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       stats.total++;
 
+      // Skip flagged reviews — they're excluded from rebuild anyway
+      if (data.wrongProduction || data.wrongShow) {
+        stats.alreadyScored++;
+        return;
+      }
+
       // Skip if already has valid score
       if (data.scoreStatus !== 'TO_BE_CALCULATED') {
         stats.alreadyScored++;
