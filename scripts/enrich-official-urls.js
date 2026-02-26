@@ -1,0 +1,298 @@
+#!/usr/bin/env node
+/**
+ * Enrich shows.json with official website URLs via SERP discovery.
+ *
+ * For shows missing `officialUrl`, searches Google for the show's official website,
+ * filters out ticket platforms/review sites/social media, and sets the URL if a
+ * high-confidence match is found.
+ *
+ * Usage:
+ *   node scripts/enrich-official-urls.js [--dry-run] [--category=broadway|off-broadway|west-end]
+ *
+ * Requires: SCRAPINGBEE_API_KEY env var for SERP access.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const DRY_RUN = process.argv.includes('--dry-run');
+const CATEGORY_ARG = process.argv.find(a => a.startsWith('--category='));
+const CATEGORY_FILTER = CATEGORY_ARG ? CATEGORY_ARG.split('=')[1] : null;
+
+// ============================================================================
+// Domain blocklist — never treat these as official show sites
+// ============================================================================
+
+const BLOCKED_DOMAINS = new Set([
+  // Ticket platforms
+  'todaytix.com', 'telecharge.com', 'ticketmaster.com', 'broadwaydirect.com',
+  'seatgeek.com', 'stubhub.com', 'vividseats.com', 'broadwaybox.com',
+  'goldstar.com', 'headout.com', 'rush.app',
+  // Theater/review sites
+  'playbill.com', 'broadwayworld.com', 'broadway.com', 'ibdb.com',
+  'theatermania.com', 'showscore.com', 'whatsonstage.com',
+  'broadwayhd.com', 'bwayrush.com', 'nytimes.com', 'variety.com',
+  'hollywoodreporter.com', 'vulture.com', 'timeout.com', 'theguardian.com',
+  'nypost.com', 'deadline.com', 'ew.com', 'usatoday.com', 'apnews.com',
+  'washingtonpost.com', 'wsj.com', 'latimes.com',
+  // Reference/social
+  'wikipedia.org', 'wikidata.org', 'imdb.com',
+  'facebook.com', 'instagram.com', 'twitter.com', 'x.com',
+  'youtube.com', 'tiktok.com', 'reddit.com', 'threads.net',
+  // Generic
+  'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
+  'pinterest.com', 'linkedin.com', 'tumblr.com',
+  // Theater/venue sites (not show-specific)
+  'shubert.nyc', 'nederlander.com', 'roundabouttheatre.org', 'lct.org',
+  'manhattantheatreclub.com', '2st.com',
+]);
+
+// ============================================================================
+// SERP search
+// ============================================================================
+
+function httpGet(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const timeout = options.timeout || 30000;
+    const urlObj = new URL(url);
+    const proto = urlObj.protocol === 'https:' ? https : require('http');
+    const reqOptions = {
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+      timeout,
+    };
+    const req = proto.request(reqOptions, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => resolve({ statusCode: res.statusCode, body }));
+      res.on('error', () => resolve({ statusCode: res.statusCode, body }));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    req.end();
+  });
+}
+
+function httpHead(url) {
+  return new Promise((resolve) => {
+    try {
+      const urlObj = new URL(url);
+      const proto = urlObj.protocol === 'https:' ? https : require('http');
+      const reqOptions = {
+        hostname: urlObj.hostname,
+        path: urlObj.pathname + urlObj.search,
+        method: 'HEAD',
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+        timeout: 10000,
+      };
+      const req = proto.request(reqOptions, (res) => {
+        res.resume();
+        resolve(res.statusCode);
+      });
+      req.on('error', () => resolve(-1));
+      req.on('timeout', () => { req.destroy(); resolve(-1); });
+      req.end();
+    } catch {
+      resolve(-1);
+    }
+  });
+}
+
+function normalizeShowName(name) {
+  return name.toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getDomain(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+function isBlockedDomain(url) {
+  const domain = getDomain(url);
+  for (const blocked of BLOCKED_DOMAINS) {
+    if (domain === blocked || domain.endsWith('.' + blocked)) return true;
+  }
+  return false;
+}
+
+/**
+ * Build a market-appropriate SERP query for finding a show's official site.
+ */
+function buildSearchQuery(show) {
+  const cat = show.category || 'broadway';
+  const market = cat === 'west-end' ? 'west end' : 'broadway';
+
+  // For short/common titles, add disambiguators
+  const words = show.title.split(/\s+/).filter(w => w.length > 2);
+  const needsDisambig = words.length <= 2;
+
+  const type = show.type === 'Musical' ? 'musical' : (show.type === 'Play' ? 'play' : '');
+
+  if (needsDisambig && type) {
+    return `"${show.title}" ${market} ${type} official website`;
+  }
+  return `"${show.title}" ${market} official website`;
+}
+
+/**
+ * Check if a SERP result looks like a dedicated show website.
+ * Prefer domains that contain the show name or common patterns.
+ */
+function scoreCandidate(url, serpTitle, showTitle) {
+  const domain = getDomain(url);
+  const showNorm = normalizeShowName(showTitle);
+  const showWords = showNorm.split(' ').filter(w => w.length > 2);
+  let score = 0;
+
+  // Domain contains show name words (strong signal)
+  const domainNorm = domain.replace(/[.-]/g, '');
+  const domainMatchCount = showWords.filter(w => domainNorm.includes(w)).length;
+  if (showWords.length > 0 && domainMatchCount >= Math.ceil(showWords.length * 0.5)) {
+    score += 3;
+  }
+
+  // Common official site domain patterns
+  if (domain.match(/broadway|musical|theplay|theshow|onstage|onbroadway/)) score += 1;
+  if (domain.endsWith('.com')) score += 1;
+
+  // SERP title contains show name
+  const titleNorm = normalizeShowName(serpTitle || '');
+  const titleMatchCount = showWords.filter(w => titleNorm.includes(w)).length;
+  if (showWords.length > 0 && titleMatchCount >= Math.ceil(showWords.length * 0.5)) {
+    score += 2;
+  }
+
+  // SERP title says "official" (strong signal)
+  if (titleNorm.includes('official')) score += 2;
+
+  return score;
+}
+
+async function discoverOfficialUrl(show) {
+  const apiKey = process.env.SCRAPINGBEE_API_KEY;
+  if (!apiKey) return null;
+
+  const query = buildSearchQuery(show);
+  const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
+
+  try {
+    const result = await httpGet(searchUrl);
+    if (result.statusCode !== 200) return null;
+
+    const data = JSON.parse(result.body);
+    const results = data.organic_results || data.results || [];
+
+    // Score and filter candidates
+    const candidates = [];
+    for (const r of results) {
+      const url = r.url || r.link;
+      if (!url) continue;
+      if (isBlockedDomain(url)) continue;
+
+      const s = scoreCandidate(url, r.title || '', show.title);
+      if (s >= 3) {  // Minimum confidence threshold
+        candidates.push({ url, title: r.title, score: s });
+      }
+    }
+
+    if (candidates.length === 0) return null;
+
+    // Take highest-scoring candidate
+    candidates.sort((a, b) => b.score - a.score);
+    const best = candidates[0];
+
+    // HEAD verify the URL is reachable
+    const status = await httpHead(best.url);
+    if (status >= 200 && status < 400) {
+      return best.url;
+    }
+
+    console.log(`  ⚠ Best candidate returned HTTP ${status}: ${best.url}`);
+    return null;
+  } catch (e) {
+    console.log(`  ⚠ SERP error: ${e.message}`);
+    return null;
+  }
+}
+
+// ============================================================================
+// Main
+// ============================================================================
+
+async function main() {
+  console.log(`Official URL Enrichment ${DRY_RUN ? '(DRY RUN)' : ''}`);
+  if (CATEGORY_FILTER) console.log(`Category filter: ${CATEGORY_FILTER}`);
+  console.log('='.repeat(60));
+
+  if (!process.env.SCRAPINGBEE_API_KEY) {
+    console.log('⚠ SCRAPINGBEE_API_KEY not set — cannot perform SERP searches');
+    console.log('Set the env var and re-run.');
+    return;
+  }
+
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const shows = showsData.shows;
+
+  const targets = shows.filter(s => {
+    if (s.status !== 'open' && s.status !== 'previews') return false;
+    if (s.officialUrl) return false;
+    const cat = s.category || 'broadway';
+    if (CATEGORY_FILTER && cat !== CATEGORY_FILTER) return false;
+    return true;
+  });
+
+  console.log(`Shows missing officialUrl: ${targets.length}\n`);
+
+  let found = 0;
+  let notFound = 0;
+
+  for (const show of targets) {
+    process.stdout.write(`${show.id}: `);
+    const url = await discoverOfficialUrl(show);
+
+    if (url) {
+      console.log(`✓ ${url}`);
+      if (!DRY_RUN) show.officialUrl = url;
+      found++;
+    } else {
+      console.log('✗ no match');
+      notFound++;
+    }
+
+    // Rate limit SERP calls
+    await new Promise(r => setTimeout(r, 500));
+  }
+
+  console.log(`\n${'='.repeat(60)}`);
+  console.log(`Results: ${found} found, ${notFound} not found`);
+
+  if (!DRY_RUN && found > 0) {
+    fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    console.log('shows.json updated.');
+  } else if (DRY_RUN) {
+    console.log('(dry run — no files written)');
+  } else {
+    console.log('No changes needed.');
+  }
+
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `changes_made=${found > 0}\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `enriched=${found}\n`);
+  }
+}
+
+main().catch(e => {
+  console.error('Fatal error:', e);
+  process.exit(1);
+});
