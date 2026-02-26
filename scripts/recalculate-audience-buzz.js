@@ -28,10 +28,12 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   if (score !== null) {
     show.combinedScore = score;
 
-    if (score >= 88) show.designation = 'Loving';
-    else if (score >= 78) show.designation = 'Liking';
-    else if (score >= 68) show.designation = 'Shrugging';
-    else show.designation = 'Loathing';
+    // Designations match the grade labels in data-audience.ts getAudienceGrade()
+    if (score >= 88) show.designation = 'Loving';       // A+, A
+    else if (score >= 78) show.designation = 'Liking';  // A-, B+
+    else if (score >= 68) show.designation = 'Shrugging'; // B, B-
+    else if (score >= 53) show.designation = 'Disliking'; // C+, C, C-
+    else show.designation = 'Loathing';                 // D, F
 
     if (oldScore !== score) {
       console.log(`${show.title}: ${oldScore} → ${score} (SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%)`);
@@ -42,10 +44,11 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
 
 audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
 audienceBuzz._meta.designationThresholds = {
-  'Loving': '88-100',
-  'Liking': '78-87',
-  'Shrugging': '68-77',
-  'Loathing': '0-67'
+  'Loving': '88-100',   // A+, A
+  'Liking': '78-87',    // A-, B+
+  'Shrugging': '68-77', // B, B-
+  'Disliking': '53-67', // C+, C, C-
+  'Loathing': '0-52'    // D, F
 };
 audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
 
