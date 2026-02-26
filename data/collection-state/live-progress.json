@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-26T20:06:17.440Z",
-  "processed": 617,
-  "failed": 753,
-  "successRate": "45.0%",
+  "updatedAt": "2026-02-26T20:16:50.784Z",
+  "processed": 624,
+  "failed": 756,
+  "successRate": "45.2%",
   "tierBreakdown": {
-    "playwright": 432,
+    "playwright": 435,
     "amp": 88,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 37,
-    "scrapingbee": 28,
+    "scrapingbee": 30,
     "brightdata": 0,
     "archiveToday": 208,
-    "archive": 159
+    "archive": 163
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -55,6 +55,17 @@
       "t": "2026-02-26T19:52:37.575Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-26T20:12:35.823Z",
+      "event": "bb-session",
+      "session": "736fd529",
+      "url": "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-revi"
+    },
+    {
+      "t": "2026-02-26T20:12:37.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }

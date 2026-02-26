@@ -616,7 +616,14 @@
     "the-play-that-goes-wrong-2019/theatermania--unknown.json",
     "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
     "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json",
-    "the-reservoir-2026/theatermania--zachary-stewart.json"
+    "the-reservoir-2026/theatermania--zachary-stewart.json",
+    "the-reservoir-2026/theatre-reviews-limited--david-roberts.json",
+    "zack-2026/guardian--unknown.json",
+    "bigfoot-2026/theatrely--unknown.json",
+    "jerome-2025/forward--unknown.json",
+    "the-play-that-goes-wrong-2019/theatrely--unknown.json",
+    "the-reservoir-2026/cititour--unknown.json",
+    "amaze-magic-2025/chicagotribune--unknown.json"
   ],
   "failed": [
     "big-river-1985/nytimes--laura-collins-hughes.json",
@@ -1371,7 +1378,10 @@
     "the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
     "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json",
     "the-play-that-goes-wrong-2019/thewrap--unknown.json",
-    "the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json"
+    "the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json",
+    "the-reservoir-2026/thewrap--robert-hofler.json",
+    "what-we-did-before-our-moth-days-2026/broadwaynews--unknown.json",
+    "drunk-shakespeare-2022/cititour--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1807,7 +1817,10 @@
       "the-play-that-goes-wrong-2019/nydailynews--unknown.json",
       "the-play-that-goes-wrong-2019/theatermania--unknown.json",
       "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
-      "the-reservoir-2026/theatermania--zachary-stewart.json"
+      "the-reservoir-2026/theatermania--zachary-stewart.json",
+      "the-reservoir-2026/theatre-reviews-limited--david-roberts.json",
+      "zack-2026/guardian--unknown.json",
+      "amaze-magic-2025/chicagotribune--unknown.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1901,7 +1914,9 @@
     ],
     "browserbase": [
       "data/review-texts/children-of-a-lesser-god-2018/fordham-observer--michael-appler.json",
-      "children-of-a-lesser-god-2018/fordham-observer--michael-appler.json"
+      "children-of-a-lesser-god-2018/fordham-observer--michael-appler.json",
+      "data/review-texts/the-reservoir-2026/thewrap--robert-hofler.json",
+      "the-reservoir-2026/thewrap--robert-hofler.json"
     ],
     "directCookies": [
       "annie-1997/usatoday--patrick-ryan.json",
@@ -1970,7 +1985,9 @@
       "the-lion-king-1997/broadwayworld--roy-berko.json",
       "age-is-a-feeling-2024/guardian--unknown.json",
       "chinese-republicans-2026/thewrap--unknown.json",
-      "the-play-that-goes-wrong-2019/broadwaynews--unknown.json"
+      "the-play-that-goes-wrong-2019/broadwaynews--unknown.json",
+      "drunk-shakespeare-2022/cititour--unknown.json",
+      "the-reservoir-2026/cititour--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2342,11 +2359,15 @@
       "the-play-that-goes-wrong-2019/nytimes--unknown.json",
       "amaze-magic-2025/broadwaynews--unknown.json",
       "night-side-songs-2026/broadwaynews--unknown.json",
-      "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json"
+      "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json",
+      "the-play-that-goes-wrong-2019/thewrap--unknown.json",
+      "bigfoot-2026/theatrely--unknown.json",
+      "jerome-2025/forward--unknown.json",
+      "the-play-that-goes-wrong-2019/theatrely--unknown.json"
     ]
   },
   "startTime": "2026-02-25T20:37:56.603Z",
-  "lastProcessed": "the-reservoir-2026/theatermania--zachary-stewart.json",
+  "lastProcessed": "amaze-magic-2025/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-02-25T20:57:04.696Z",
@@ -2388,6 +2409,17 @@
       "t": "2026-02-26T19:52:37.575Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-26T20:12:35.823Z",
+      "event": "bb-session",
+      "session": "736fd529",
+      "url": "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-revi"
+    },
+    {
+      "t": "2026-02-26T20:12:37.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
