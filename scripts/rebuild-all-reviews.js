@@ -1652,15 +1652,25 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Reverse cross-market guard: London-only Tier 3 outlets should not score Broadway/off-Broadway
+      // Reverse cross-market guard: London outlets should not score Broadway/off-Broadway
+      // Unlike the forward guard, we DON'T exempt Tier 1/2 here — a London Tier 1 outlet like
+      // Evening Standard never covers Broadway. Only explicitly dual-market outlets (Guardian, FT, Variety)
+      // are allowed to cross markets. Tier 1/2 exemption was designed for US outlets reviewing WE.
       if ((showCategory === 'broadway' || showCategory === 'off-broadway')
-          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)
-          && !TIER_1_2_OUTLET_IDS.has(canonicalOutlet) && !TIER_1_2_OUTLET_IDS.has(rawOutlet)) {
+          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-        if (outletRegion === 'london') {
+        // URL-domain fallback: if outlet has no region in registry, check if the URL is a .co.uk domain
+        let urlIsUK = false;
+        if (!outletRegion && data.url) {
+          try {
+            const hostname = new URL(data.url).hostname || '';
+            urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk');
+          } catch (e) { /* ignore malformed URLs */ }
+        }
+        if (outletRegion === 'london' || urlIsUK) {
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
           if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
-          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway' });
+          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
           return;
         }
       }
