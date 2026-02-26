@@ -32,7 +32,7 @@ interface ShowBuzzData {
 }
 
 function getGradeFromScore(score: number): { grade: string; color: string } {
-  if (score >= 93) return { grade: 'A+', color: '#22c55e' };
+  if (score >= 90) return { grade: 'A+', color: '#22c55e' };
   if (score >= 88) return { grade: 'A', color: '#16a34a' };
   if (score >= 83) return { grade: 'A-', color: '#14b8a6' };
   if (score >= 78) return { grade: 'B+', color: '#0ea5e9' };

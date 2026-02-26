@@ -113,7 +113,7 @@ const faqSchema = {
       name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The AudienceGrade aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (93-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
+        text: 'The AudienceGrade aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit (r/Broadway) into letter grades from A+ (90-100) through F (below 48). Sources are weighted dynamically based on sample size, with no single source dominating the final score. Reddit sentiment is analyzed from actual attendee comments only — boycotts, source material opinions, and secondhand takes are filtered out.',
       },
     },
     {
@@ -323,8 +323,8 @@ export default function MethodologyPage() {
           </p>
           <div className="space-y-2">
             {[
-              { grade: 'A+', range: '93-100', color: '#22c55e', desc: 'Audiences love it' },
-              { grade: 'A', range: '88-92', color: '#16a34a', desc: 'Audiences love it' },
+              { grade: 'A+', range: '90-100', color: '#22c55e', desc: 'Audiences love it' },
+              { grade: 'A', range: '88-89', color: '#16a34a', desc: 'Audiences love it' },
               { grade: 'A-', range: '83-87', color: '#14b8a6', desc: 'Strong audience reception' },
               { grade: 'B+', range: '78-82', color: '#0ea5e9', desc: 'Solid audience reception' },
               { grade: 'B', range: '73-77', color: '#f59e0b', desc: 'Mixed-positive reception' },
