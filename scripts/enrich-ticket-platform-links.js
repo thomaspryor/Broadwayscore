@@ -171,12 +171,19 @@ async function discoverTicketmasterUrl(showTitle) {
       if (!url || !tmPattern.test(url)) continue;
 
       // Verify the SERP title matches our show
+      // Try both full title and primary title (before colon/subtitle) — subtitles
+      // dilute word-match ratio for short primary names like "All Out"
       const serpTitle = normalizeShowName(r.title || '');
       const showNorm = normalizeShowName(showTitle);
-      const showWords = showNorm.split(' ').filter(w => w.length > 2);
-      const matchCount = showWords.filter(w => serpTitle.includes(w)).length;
+      const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+      const candidates = [showNorm, primaryTitle];
+      const matched = candidates.some(candidate => {
+        const words = candidate.split(' ').filter(w => w.length > 2);
+        const matchCount = words.filter(w => serpTitle.includes(w)).length;
+        return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
+      });
 
-      if (showWords.length === 0 || matchCount >= Math.ceil(showWords.length * 0.5)) {
+      if (matched) {
         // Normalize to HTTPS www
         const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
         return cleanUrl;
