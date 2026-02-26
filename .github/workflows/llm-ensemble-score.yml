@@ -245,11 +245,12 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --staged --stat
           fi
-          # Check if actual review files were scored (not just metadata)
-          SCORED=$(git diff --staged --name-only -- 'data/review-texts/' | wc -l | tr -d ' ')
+          # Check if actual review files were scored via scoring-progress.json
+          # (review-texts is a nested git repo, so git diff --staged can't detect changes there)
+          SCORED=$(node -e "try { const p = JSON.parse(require('fs').readFileSync('data/collection-state/scoring-progress.json','utf8')); console.log(p.processed || 0); } catch { console.log(0); }")
           if [ "$SCORED" -gt 0 ]; then
             echo "has_scored_reviews=true" >> $GITHUB_OUTPUT
-            echo "Scored $SCORED review files"
+            echo "Scored $SCORED review files this run"
           else
             echo "has_scored_reviews=false" >> $GITHUB_OUTPUT
             echo "No review files scored this run"
@@ -448,7 +449,11 @@ jobs:
           echo "::warning::Scoring run processed 0 reviews with ${REMAINING} remaining unscored"
 
       - name: Chain next batch
-        if: always() && job.status != 'cancelled' && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10 && steps.check-changes.outputs.has_scored_reviews == 'true'
+        if: >-
+          always() && job.status != 'cancelled'
+          && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.check-changes.outputs.has_scored_reviews == 'true'
+          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -477,6 +482,10 @@ jobs:
           if [ -n "$SHARD" ] && [ -n "$TOTAL_SHARDS" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f shard=$SHARD -f total_shards=$TOTAL_SHARDS"
           fi
+          # Pass through outdated flag so rescore chains continue rescoring
+          if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
+          fi
 
           gh workflow run "LLM Ensemble Score Reviews" $CHAIN_ARGS
           echo "Next batch dispatched."
@@ -485,7 +494,8 @@ jobs:
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
-              || github.event.inputs.remaining_batches == '0') }}
+              || github.event.inputs.remaining_batches == '0'
+              || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
