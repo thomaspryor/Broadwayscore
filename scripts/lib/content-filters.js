@@ -102,11 +102,20 @@ function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
     const slugPattern = new RegExp('(?:^|[/-])' + escaped + '(?:$|[/-])', 'i');
 
     if (slugPattern.test(pathSlug)) {
+      // Check if target show's slug (or base slug without year suffix) appears in URL
       const targetEscaped = targetSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const targetPattern = new RegExp('(?:^|[/-])' + targetEscaped + '(?:$|[/-])', 'i');
-      if (!targetPattern.test(pathSlug)) {
-        return show.slug;
+      if (targetPattern.test(pathSlug)) continue;
+
+      // Also check base slug without trailing year (e.g., "cabaret-2024" → "cabaret")
+      const baseSlug = targetSlug.replace(/-(?:19|20)\d{2}$/, '');
+      if (baseSlug !== targetSlug && baseSlug.length >= 3) {
+        const baseEscaped = baseSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const basePattern = new RegExp('(?:^|[/-])' + baseEscaped + '(?:$|[/-])', 'i');
+        if (basePattern.test(pathSlug)) continue;
       }
+
+      return show.slug;
     }
   }
 
@@ -125,7 +134,11 @@ function isUrlYearOutsideWindow(url, openingYear, closingYear) {
   const m = url.match(/\/((?:19|20)\d{2})\//);
   if (!m) return false;
   const urlYear = parseInt(m[1]);
-  const upper = Math.max(openingYear + 2, (closingYear || openingYear) + 1);
+  // If show is still running (no closingYear), allow up to current year + 1
+  const currentYear = new Date().getFullYear();
+  const upper = closingYear
+    ? Math.max(closingYear + 1, openingYear + 2)
+    : currentYear + 1;
   return urlYear < openingYear - 3 || urlYear > upper;
 }
 

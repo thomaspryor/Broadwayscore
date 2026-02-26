@@ -20,7 +20,7 @@ const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
-const { isNotBroadway } = require('./lib/content-filters');
+const { isNotBroadway, urlBelongsToDifferentShow, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const cheerio = require('cheerio');
 
 // Paths
@@ -189,57 +189,6 @@ function extractArticlesFromCategoryPage(content) {
 // ---------------------------------------------------------------------------
 
 // isNotBroadway() imported from ./lib/content-filters
-
-// ---------------------------------------------------------------------------
-// Cross-show URL validation
-// Prevents review links from being attributed to the wrong show
-// (e.g., Bug reviews getting saved as All Out reviews)
-// ---------------------------------------------------------------------------
-
-/**
- * Check if a review URL clearly belongs to a different show.
- * Returns the detected wrong show slug if found, or null if URL is ok.
- */
-function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
-  if (!url) return null;
-
-  let urlPath;
-  try {
-    urlPath = new URL(url).pathname.toLowerCase();
-  } catch (e) {
-    return null;
-  }
-
-  // Strip common URL prefixes that aren't show-specific
-  const pathSlug = urlPath
-    .replace(/^\//, '')
-    .replace(/\.(html?|php|asp)$/i, '');
-
-  // Build a list of show slugs to check against (exclude the target show)
-  // Only check shows with slugs that are 3+ chars to avoid false positives
-  // (2-char slugs like "mj" would match too broadly in URLs)
-  for (const show of shows) {
-    if (show.id === targetShowId) continue;
-    if (!show.slug || show.slug.length < 3) continue;
-
-    // Check if URL path contains another show's slug as a distinct segment
-    // Use word-boundary-like matching to avoid partial matches
-    // e.g., "bug-broadway-review" matches "bug" but "debugging" should not
-    const slug = show.slug.toLowerCase();
-    const slugPattern = new RegExp(`(?:^|[/-])${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:$|[/-])`, 'i');
-
-    if (slugPattern.test(pathSlug)) {
-      // Also verify the target show's slug is NOT in the URL
-      // (if both are present, it might be a legitimate comparison article)
-      const targetPattern = new RegExp(`(?:^|[/-])${targetSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:$|[/-])`, 'i');
-      if (!targetPattern.test(pathSlug)) {
-        return show.slug;
-      }
-    }
-  }
-
-  return null;
-}
 
 // Map domains to recognizable outlet names so normalizeOutlet() can match them
 const DOMAIN_TO_OUTLET = {
