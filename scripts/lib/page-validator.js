@@ -132,10 +132,13 @@ function parseYesNo(response) {
  *
  * @param {string} headingText - Page title + headings text
  * @param {string} showTitle - The show we're looking for
+ * @param {object} [options]
+ * @param {number} [options.openingYear] - Show's opening year for disambiguation
  * @returns {Promise<{ match: boolean|null, provider: string }>}
  */
-async function llmValidatePageMatch(headingText, showTitle) {
-  const prompt = `Is this page a theater review or review roundup for the show "${showTitle}"?\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
+async function llmValidatePageMatch(headingText, showTitle, options = {}) {
+  const yearHint = options.openingYear ? ` The show opened in ${options.openingYear}.` : '';
+  const prompt = `Is this page a theater review or review roundup for the EXACT show titled "${showTitle}"?${yearHint}\nThe title must match exactly — similar titles (e.g., "Blood/Love" vs "Bloody Bloody Andrew Jackson") are DIFFERENT shows. Answer NO if the page is about a different show with a similar-sounding name.\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
 
   // Try Gemini first (cheapest)
   try {
@@ -176,6 +179,7 @@ async function llmValidatePageMatch(headingText, showTitle) {
  * @param {string} showTitle - The show title we're looking for
  * @param {object} [options] - Optional configuration
  * @param {boolean} [options.skipLlm] - Skip LLM tiebreaker (for testing)
+ * @param {number} [options.openingYear] - Show's opening year for year-mismatch detection
  * @returns {Promise<{ valid: boolean, confidence: number, reason: string, provider?: string }>}
  */
 async function validatePageMatchesShow(html, showTitle, options = {}) {
@@ -186,6 +190,20 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
   const h1Text = $('h1').map((_, el) => $(el).text()).get().join(' ');
   const h2Text = $('h2').first().text() || '';
   const headingText = `${pageTitle} ${h1Text} ${h2Text}`.trim();
+
+  // Layer 0: Year-mismatch detection (fast, pre-word-match)
+  // If headings mention a specific year that's far from the show's opening year,
+  // this is very likely the wrong production or wrong show entirely.
+  if (options.openingYear) {
+    const yearsInHeading = headingText.match(/\b(19\d{2}|20\d{2})\b/g);
+    if (yearsInHeading && yearsInHeading.length > 0) {
+      const headingYears = yearsInHeading.map(Number);
+      const closestDiff = Math.min(...headingYears.map(y => Math.abs(y - options.openingYear)));
+      if (closestDiff >= 4) {
+        return { valid: false, confidence: 0, reason: `year mismatch: heading years [${headingYears.join(',')}] vs show opened ${options.openingYear}` };
+      }
+    }
+  }
 
   // Layer 1: Word-match with confidence
   const match = titleWordsMatchWithConfidence(showTitle, headingText);
@@ -212,7 +230,7 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
 
   // Low confidence or borderline — try LLM tiebreaker
   if (!options.skipLlm) {
-    const llmResult = await llmValidatePageMatch(headingText, showTitle);
+    const llmResult = await llmValidatePageMatch(headingText, showTitle, { openingYear: options.openingYear });
 
     // Log every LLM decision for debugging
     console.log(`  [LLM-VALIDATE] "${showTitle}" | headings: "${headingText.substring(0, 60)}" | result: ${llmResult.match} | provider: ${llmResult.provider} | word-confidence: ${match.confidence}`);

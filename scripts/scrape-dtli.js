@@ -233,7 +233,7 @@ async function findDTLIPage(show) {
       // Verify this is a show page, not the homepage or listing
       if (result.html.includes('review-item') && result.html.includes('READ THE REVIEW')) {
         // Validate page is about the target show (LLM tiebreaker for edge cases)
-        const validation = await validatePageMatchesShow(result.html, show.title);
+        const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!validation.valid) {
           console.log(`  [SKIP] DTLI page doesn't match "${show.title}": ${validation.reason}`);
           continue;
@@ -446,7 +446,7 @@ async function processShow(show) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
     // Validate cached page is about the right show
-    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM });
+    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!cacheValidation.valid) {
       console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
       fs.unlinkSync(archivePath);

@@ -145,7 +145,7 @@ async function searchBWWRoundup(show) {
     console.log(`  Using manual URL override: ${url}`);
     const result = await httpGet(url);
     if (result.found && result.html) {
-      const validation = await validatePageMatchesShow(result.html, show.title);
+      const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
       if (validation.valid) {
         return { url, html: result.html };
       }
@@ -210,7 +210,7 @@ async function searchBWWRoundup(show) {
 
       if (result.html.includes('Review Roundup') && (isBroadway || isRightYear)) {
         // Validate page matches target show (LLM tiebreaker for edge cases)
-        const validation = await validatePageMatchesShow(result.html, show.title);
+        const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (validation.valid) {
           console.log(`  ✓ Found at: ${url}`);
           return { url, html: result.html };
@@ -273,7 +273,7 @@ async function searchWebForBWWRoundup(show) {
 
         if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
           // Validate page matches target show (LLM tiebreaker for edge cases)
-          const validation = await validatePageMatchesShow(pageResult.html, show.title);
+          const validation = await validatePageMatchesShow(pageResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
           if (validation.valid) {
             console.log(`  ✓ Found via Google search: ${url}`);
             saveUrlOverride(show.id, url);
@@ -831,7 +831,7 @@ async function processShow(show) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
     // Validate cached page is about the right show
-    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM });
+    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!cacheValidation.valid) {
       console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
       fs.unlinkSync(archivePath);

@@ -364,7 +364,7 @@ async function discoverShowScoreUrl(show) {
       const html = await fetchViaScrapingBee(url, 0); // No retries during discovery
       if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: show.category === 'west-end' })) {
         // Additional heading-based validation with LLM tiebreaker
-        const pageValidation = await validatePageMatchesShow(html, show.title);
+        const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!pageValidation.valid) {
           console.log(`  ✗ Page validator rejected: ${pageValidation.reason}`);
           continue;
@@ -639,7 +639,7 @@ async function processShow(show) {
     }
 
     // Additional heading-based validation with LLM tiebreaker
-    const pageValidation = await validatePageMatchesShow(html, show.title);
+    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!pageValidation.valid) {
       console.log(`  SKIP: Page validator rejected — ${pageValidation.reason}`);
       console.log(`  Removing bad cached URL for ${show.id}`);

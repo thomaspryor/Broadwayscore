@@ -2087,7 +2087,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === Did They Like It ===');
   let dtliResult = await searchDTLI(show);
   if (dtliResult && dtliResult.html) {
-    const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title);
+    const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!dtliValidation.valid) {
       console.log(`    ✗ DTLI page doesn't match "${show.title}": ${dtliValidation.reason}`);
       dtliResult = null;
@@ -2107,7 +2107,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   console.log('\n  === Show Score ===');
   let showScoreResult = await searchShowScore(show);
   if (showScoreResult && showScoreResult.html) {
-    const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title);
+    const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!ssValidation.valid) {
       console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${ssValidation.reason}`);
       showScoreResult = null;
@@ -2193,7 +2193,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
-    const validation = await validatePageMatchesShow(bwwResult.html, show.title);
+    const validation = await validatePageMatchesShow(bwwResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     if (!validation.valid) {
       console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${validation.reason}`);
       bwwResult = null;
