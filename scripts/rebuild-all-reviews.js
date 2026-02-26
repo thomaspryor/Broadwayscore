@@ -1465,8 +1465,10 @@ try {
 const crossShowFingerprints = new Map();
 
 showDirs.forEach(showId => {
-  // Skip shows in previews — they haven't opened yet, all reviews are wrong-production
-  if (showStatusMap[showId] === 'previews') {
+  // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
+  // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
+  const showCat = showCategoryMap[showId] || 'broadway';
+  if (showStatusMap[showId] === 'previews' && showCat === 'broadway') {
     stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
     return;
   }
