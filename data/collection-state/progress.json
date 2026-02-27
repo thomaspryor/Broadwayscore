@@ -20,7 +20,17 @@
     "death-of-a-salesman-2026/wsj--charles-isherwood.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
     "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json"
+    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "masquerade-2025/observer--david-cote.json",
+    "pen-pals-2025/broadwaynews--unknown.json",
+    "perfect-crime-1987/broadwaynews--unknown.json",
+    "shadowlands-west-end-2026/broadwaynews--unknown.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "silver-manhattan-2026/broadwaynews--unknown.json",
+    "silver-manhattan-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -31,7 +41,8 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "bigfoot-2026/broadwaynews--unknown.json"
+      "bigfoot-2026/broadwaynews--unknown.json",
+      "pen-pals-2025/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -41,12 +52,14 @@
       "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
-      "data/review-texts/hadestown-west-end-2024/broadwaynews--charles-isherwood.json"
+      "data/review-texts/hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+      "data/review-texts/shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "data/review-texts/silver-manhattan-2026/theatermania--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T00:08:45.628Z",
-  "lastProcessed": "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+  "lastProcessed": "silver-manhattan-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -80,6 +93,17 @@
       "t": "2026-02-27T00:34:06.310Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T00:55:03.094Z",
+      "event": "bb-session",
+      "session": "231a70e3",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-27T00:55:04.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
