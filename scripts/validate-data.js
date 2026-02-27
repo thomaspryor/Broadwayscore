@@ -990,6 +990,37 @@ function validateReviewsJson() {
     ok('No duplicate URLs within same show+outlet in reviews.json');
   }
 
+  // Score range validation: assignedScore must be 0-100
+  const outOfRange = reviews.filter(r => r.assignedScore != null && (r.assignedScore < 0 || r.assignedScore > 100));
+  if (outOfRange.length) {
+    error(`${outOfRange.length} reviews have assignedScore outside 0-100 range`);
+    outOfRange.slice(0, 5).forEach(r => error(`  ${r.showId}/${r.outletId}: ${r.assignedScore}`));
+  } else {
+    ok('All assignedScore values in 0-100 range');
+  }
+
+  // Content tier / scoring inconsistency: reviews with contentTier='invalid' that still have scores
+  const invalidScored = reviews.filter(r => r.contentTier === 'invalid' && r.assignedScore != null);
+  if (invalidScored.length) {
+    warn(`${invalidScored.length} reviews have contentTier='invalid' but still have assignedScore:`);
+    invalidScored.slice(0, 5).forEach(r => warn(`  ${r.showId}/${r.outletId}: score=${r.assignedScore}`));
+  }
+
+  // needsReview tracking
+  const needsReviewCount = reviews.filter(r => r.needsReview).length;
+  if (needsReviewCount > 0) {
+    info(`${needsReviewCount} reviews flagged needsReview`);
+  }
+
+  // publishDate format check: all non-null dates should be ISO 8601
+  const nonIsoDates = reviews.filter(r => r.publishDate && !/^\d{4}-\d{2}-\d{2}$/.test(r.publishDate));
+  if (nonIsoDates.length) {
+    warn(`${nonIsoDates.length} reviews have non-ISO publishDate format:`);
+    nonIsoDates.slice(0, 5).forEach(r => warn(`  ${r.showId}: "${r.publishDate}"`));
+  } else {
+    ok('All publishDate values are ISO 8601 format');
+  }
+
   // Phase 1 quality flag validation: check that new flags exist on review-text files
   // and that rebuild-all-reviews.js passes them through correctly
   info('Checking Phase 1 quality flags in review-texts...');
