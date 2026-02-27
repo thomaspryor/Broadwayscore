@@ -135,8 +135,8 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
   {
     reviewExcerpt: `Daniel Aukin's superb production navigates the change without missing a beat. The jam has been preserved. With the greater sense of distance at the Golden Theatre, Stereophonic feels more than ever like watching a wide-screen film. There's nary a false note. The result is richly satisfying multitrack production. (5/5 stars)`,
     score: 87,
-    bucket: 'Positive',
-    reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). Even without extreme superlatives, 5 stars = 85+ range.'
+    bucket: 'Rave',
+    reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). 5 stars with measured but unqualified praise = Rave range (83+).'
   },
 
   // 4-STAR example (score: 78) - clear recommendation
@@ -466,10 +466,10 @@ export function buildPrompt(reviewText: string): string {
  * Convert score to bucket
  */
 export function scoreToBucket(score: number): 'Rave' | 'Positive' | 'Mixed' | 'Negative' | 'Pan' {
-  if (score >= 90) return 'Rave';
-  if (score >= 75) return 'Positive';
-  if (score >= 50) return 'Mixed';
-  if (score >= 35) return 'Negative';
+  if (score >= BUCKET_RANGES.Rave.min) return 'Rave';       // 83
+  if (score >= BUCKET_RANGES.Positive.min) return 'Positive'; // 70
+  if (score >= BUCKET_RANGES.Mixed.min) return 'Mixed';       // 55
+  if (score >= BUCKET_RANGES.Negative.min) return 'Negative'; // 35
   return 'Pan';
 }
 

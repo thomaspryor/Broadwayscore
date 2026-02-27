@@ -8,6 +8,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { GroundTruthReview, ReviewEntry } from './types';
+import { scoreToBucket } from './config';
 
 // ========================================
 // RATING CONVERSION
@@ -174,13 +175,7 @@ function getRatingType(rating: string): 'fraction' | 'letterGrade' | 'stars' | '
   return 'other';
 }
 
-function scoreToBucket(score: number): string {
-  if (score >= 90) return 'Rave';
-  if (score >= 75) return 'Positive';
-  if (score >= 55) return 'Mixed';
-  if (score >= 40) return 'Negative';
-  return 'Pan';
-}
+// scoreToBucket imported from config.ts (single source of truth using BUCKET_RANGES)
 
 /**
  * Calculate calibration metrics against ground truth

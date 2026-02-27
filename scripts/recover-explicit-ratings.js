@@ -387,6 +387,49 @@ async function fetchNYSRRatings(reviews) {
   return recovered;
 }
 
+// Sites where archive.org should be tried first (paywalled/blocked)
+const ARCHIVE_FIRST_DOMAINS = [
+  'nytimes.com', 'vulture.com', 'nymag.com', 'washingtonpost.com',
+  'wsj.com', 'newyorker.com', 'ew.com', 'latimes.com',
+  'rollingstone.com', 'chicagotribune.com', 'nypost.com',
+  'timeout.com', 'usatoday.com', 'ft.com', 'telegraph.co.uk',
+  'thetimes.co.uk', 'thestage.co.uk', 'standard.co.uk',
+];
+
+function isArchiveFirstSite(url) {
+  const lower = (url || '').toLowerCase();
+  return ARCHIVE_FIRST_DOMAINS.some(d => lower.includes(d));
+}
+
+/**
+ * Fetch HTML from archive.org CDX API (no dependencies needed)
+ */
+async function fetchFromArchiveOrg(url) {
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008&to=2026`;
+  const cdxData = await httpGet(cdxUrl);
+  if (!cdxData) return null;
+
+  let rows;
+  try { rows = JSON.parse(cdxData); } catch { return null; }
+  if (!Array.isArray(rows) || rows.length < 2) return null;
+
+  // First row is header, rest are snapshots
+  const snapshots = rows.slice(1)
+    .filter(row => row[4] === '200' && (row[3] || '').includes('text/html'))
+    .sort((a, b) => b[1].localeCompare(a[1])); // newest-first for score extraction
+
+  for (let i = 0; i < Math.min(snapshots.length, 3); i++) {
+    const [, timestamp, original] = snapshots[i];
+    const archiveUrl = `http://web.archive.org/web/${timestamp}id_/${original}`;
+    try {
+      const html = await httpGet(archiveUrl);
+      if (html && html.length > 1000) return html;
+    } catch {}
+    await sleep(1500); // respect archive.org rate limit
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Phase 3: URL scraping
 // ---------------------------------------------------------------------------
@@ -403,9 +446,7 @@ async function phase3ScrapeURLs(reviews) {
   try {
     scraper = require('./lib/scraper');
   } catch (err) {
-    console.log('  Scraper module not available. Install dependencies or set API keys.');
-    console.log(`  Would scrape ${withUrls.length} URLs with: BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY`);
-    return reviews;
+    console.log('  Scraper module not available (Playwright/APIs). Will use archive.org only.');
   }
 
   const toProcess = LIMIT > 0 ? withUrls.slice(0, LIMIT) : withUrls;
@@ -413,10 +454,35 @@ async function phase3ScrapeURLs(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
+    const url = review.data.url;
     try {
-      console.log(`  [${i + 1}/${toProcess.length}] Scraping: ${review.data.url}`);
+      console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${url}`);
 
-      const html = await scraper.fetchPage(review.data.url);
+      let html = null;
+
+      // For paywall/blocked sites, try archive.org first
+      if (isArchiveFirstSite(url)) {
+        console.log(`    → Trying archive.org (paywall site)...`);
+        html = await fetchFromArchiveOrg(url);
+        if (html) console.log(`    → Archive.org: ${html.length} chars`);
+      }
+
+      // Fall back to scraper for non-paywall or if archive failed
+      if (!html && scraper) {
+        const result = await scraper.fetchPage(url);
+        if (result && result.content) {
+          html = result.content;
+          console.log(`    → ${result.source}: ${html.length} chars`);
+        }
+      }
+
+      // If no scraper and not archive-first, try archive.org as last resort
+      if (!html && !scraper) {
+        console.log(`    → Trying archive.org (no scraper available)...`);
+        html = await fetchFromArchiveOrg(url);
+        if (html) console.log(`    → Archive.org: ${html.length} chars`);
+      }
+
       stats.phase3Scraped++;
 
       if (html && html.length > 500) {
@@ -426,7 +492,7 @@ async function phase3ScrapeURLs(reviews) {
           stats.phase3Recovered++;
           trackOutlet(review.data.outletId, 'phase3');
 
-          console.log(`    ✓ ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
+          console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
 
           if (!DRY_RUN) {
             review.data.originalScore = result.originalScore;
@@ -441,7 +507,7 @@ async function phase3ScrapeURLs(reviews) {
           console.log(`    ✗ No score found in HTML`);
         }
       } else {
-        console.log(`    ✗ Scrape returned insufficient content`);
+        console.log(`    ✗ Fetch failed or insufficient content`);
         stats.phase3ScrapeFailed++;
       }
     } catch (err) {
@@ -454,6 +520,10 @@ async function phase3ScrapeURLs(reviews) {
     if (i < toProcess.length - 1) await sleep(2000);
   }
 
+  if (scraper && scraper.cleanup) {
+    try { await scraper.cleanup(); } catch {}
+  }
+
   console.log(`\n  Phase 3 result: ${recovered} ratings recovered from ${stats.phase3Scraped} scraped pages`);
   return reviews.filter(r => !r.recovered);
 }
@@ -463,15 +533,20 @@ async function phase3ScrapeURLs(reviews) {
 // ---------------------------------------------------------------------------
 
 function httpGet(url) {
+  const lib = url.startsWith('https') ? https : require('http');
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' } }, (res) => {
+    lib.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' }, timeout: 30000 }, (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return httpGet(res.headers.location).then(resolve).catch(reject);
+      }
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) resolve(data);
         else resolve(null);
       });
-    }).on('error', reject);
+    }).on('error', reject).on('timeout', () => reject(new Error('timeout')));
   });
 }
 
