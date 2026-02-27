@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -587,83 +588,44 @@ async function processReview(entry) {
   const { filePath, data } = entry;
   stats.scanned++;
 
-  const userPrompt = buildUserPrompt(data.fullText, data.outlet || data.outletId || '');
+  const currentScore = data.assignedScore || data.llmScore?.score;
 
-  let responseText;
+  let result;
   try {
-    responseText = await callLLMWithRetry(SYSTEM_PROMPT, userPrompt);
+    result = await extractExplicitScore({
+      text: data.fullText,
+      outletId: data.outletId || data.outlet || '',
+      provider: PROVIDER,
+      currentScore,
+      verbose: VERBOSE
+    });
+    stats.llmCalls++;
   } catch (e) {
     stats.errors++;
     if (VERBOSE) console.log(`  Error for ${path.basename(filePath)}: ${e.message}`);
     return;
   }
 
-  if (!responseText) { stats.errors++; return; }
-
-  let parsed = parseResponse(responseText);
-  if (!parsed) {
+  if (!result) {
     stats.notFound++;
-    return;
-  }
-
-  // Step 0: Text verification — confirm the rating actually exists in the source text
-  parsed = verifyInText(parsed, data.fullText);
-  if (!parsed) {
-    stats.notFound++;
-    return;
-  }
-
-  // Step 1: Post-extraction sanity checks (hypotheticals, runtimes, bare letters)
-  parsed = postValidate(parsed);
-  if (!parsed) {
-    stats.notFound++;
-    stats.postValidateReject = (stats.postValidateReject || 0) + 1;
-    return;
-  }
-
-  // Step 2: Heuristic correction for asterisk-based star ratings
-  parsed = validateAsteriskCount(parsed);
-
-  // Step 3: Cross-verify with second LLM when available
-  // Only cross-verify for high-impact changes (>15 point delta from current score)
-  const currentScore = data.assignedScore || data.llmScore?.score;
-  const tentativeNorm = normalizeScore(parsed);
-  const needsCrossVerify = tentativeNorm && currentScore &&
-    Math.abs(tentativeNorm.normalized - currentScore) > 15;
-
-  if (needsCrossVerify) {
-    const verified = await crossVerify(parsed, userPrompt);
-    if (!verified) {
-      stats.notFound++;
-      if (VERBOSE) {
-        console.log(`  REJECTED: [${data.showId}] ${tentativeNorm.originalScore} (=${tentativeNorm.normalized}) vs current ${currentScore} — cross-verify failed`);
-      }
-      return;
-    }
-    parsed = verified;
-  }
-
-  const normalized = normalizeScore(parsed);
-  if (!normalized) {
-    stats.notFound++;
-    if (VERBOSE) console.log(`  Could not normalize: ${JSON.stringify(parsed)}`);
     return;
   }
 
   stats.found++;
-  stats.byType[normalized.type] = (stats.byType[normalized.type] || 0) + 1;
 
   const showId = data.showId || path.basename(path.dirname(filePath));
   const reviewer = data.outlet || data.outletId || '';
   const currentScoreStr = currentScore || '?';
-  const delta = currentScore ? ` (Δ${normalized.normalized - currentScore > 0 ? '+' : ''}${normalized.normalized - currentScore})` : '';
+  const delta = currentScore ? ` (Δ${result.normalizedScore - currentScore > 0 ? '+' : ''}${result.normalizedScore - currentScore})` : '';
 
-  console.log(`  FOUND: [${showId}] ${reviewer} → ${normalized.originalScore} (=${normalized.normalized}) [was: ${currentScoreStr}]${delta} raw: "${normalized.raw}"`);
+  console.log(`  FOUND: [${showId}] ${reviewer} → ${result.originalScore} (=${result.normalizedScore}) [was: ${currentScoreStr}]${delta} raw: "${result.raw}"`);
 
   if (!DRY_RUN) {
-    data.originalScore = normalized.normalized;
-    data.originalRating = normalized.originalScore;
-    data.originalScoreSource = `llm-extracted-${PROVIDER}`;
+    // Write human-readable string to originalScore, numeric to originalScoreNormalized
+    data.originalScore = result.originalScore;
+    data.originalScoreNormalized = result.normalizedScore;
+    data.originalRating = result.originalScore;
+    data.originalScoreSource = result.source;
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
     stats.written++;
   }
