@@ -341,7 +341,17 @@
     "almost-famous-2022/nyt-theater--jonathan-mandell.json",
     "amelie-a-new-musical-2017/nytg--david-gordon.json",
     "american-buffalo-2022/hollywood-reporter--david-rooney.json",
-    "anything-goes-1987/hollywood-reporter--david-rooney.json"
+    "anything-goes-1987/hollywood-reporter--david-rooney.json",
+    "beetlejuice-2025/nyt-theater--jonathan-mandell.json",
+    "birthday-candles-2022/hollywood-reporter--angie-han.json",
+    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
+    "bob-fosses-dancin-2023/variety--peter-marks.json",
+    "boeingboeing-2008/variety--unknown.json",
+    "breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
+    "dana-h-2021/hollywood-reporter--angie-han.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "dead-accounts-2012/hollywood-reporter--david-rooney.json",
+    "dead-outlaw-2025/nytg--gillian-russo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -377,7 +387,9 @@
       "heathers-the-musical-2025/vulture--jackson-mchenry.json",
       "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
       "data/review-texts/american-buffalo-2022/hollywood-reporter--david-rooney.json",
-      "data/review-texts/anything-goes-1987/hollywood-reporter--david-rooney.json"
+      "data/review-texts/anything-goes-1987/hollywood-reporter--david-rooney.json",
+      "data/review-texts/days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+      "data/review-texts/dead-accounts-2012/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/giant-2026/nytimes--houman-barekat.json",
@@ -491,7 +503,9 @@
       "data/review-texts/you-got-older-2026/chicagotribune--unknown.json",
       "data/review-texts/a-view-from-the-bridge-2010/nytg--kathleen-campion.json",
       "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json",
-      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json"
+      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json",
+      "data/review-texts/boeingboeing-2008/variety--unknown.json",
+      "data/review-texts/breakfast-at-tiffanys-2013/variety--marilyn-stasio.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -506,7 +520,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "back-to-the-future-2023/variety--charles-isherwood.json",
+  "lastProcessed": "dead-outlaw-2025/nytg--gillian-russo.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -667,6 +681,17 @@
       "t": "2026-02-27T22:55:17.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T23:20:12.852Z",
+      "event": "bb-session",
+      "session": "a057f36a",
+      "url": "https://variety.com/2013/legit/reviews/breakfast-at-tiffanys-1200334041/"
+    },
+    {
+      "t": "2026-02-27T23:20:14.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

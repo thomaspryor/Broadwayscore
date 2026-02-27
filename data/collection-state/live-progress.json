@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-27T23:16:40.688Z",
+  "updatedAt": "2026-02-27T23:24:52.152Z",
   "processed": 33,
-  "failed": 307,
-  "successRate": "9.7%",
+  "failed": 317,
+  "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 21,
-    "amp": 9,
+    "amp": 11,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 101,
+    "archiveToday": 103,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-02-27T16:09:01.315Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-27T16:11:34.420Z",
-      "event": "bb-session",
-      "session": "08bdb937",
-      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
-    },
     {
       "t": "2026-02-27T16:11:35.688Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-02-27T22:55:17.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T23:20:12.852Z",
+      "event": "bb-session",
+      "session": "a057f36a",
+      "url": "https://variety.com/2013/legit/reviews/breakfast-at-tiffanys-1200334041/"
+    },
+    {
+      "t": "2026-02-27T23:20:14.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
