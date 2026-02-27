@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-27T04:23:02.732Z",
-    "totalFlagged": 30,
+    "generatedAt": "2026-02-27T04:45:10.490Z",
+    "totalFlagged": 41,
     "reasons": {
-      "possible-tour-fulltext": 25,
-      "both-thumbs-disagree-with-llm": 1,
-      "originalScore-llm-conflict": 4
+      "possible-tour-fulltext": 26,
+      "originalScore-llm-conflict": 14,
+      "both-thumbs-disagree-with-llm": 1
     }
   },
   "reviews": [
@@ -21,7 +21,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:21:52.959Z"
+      "flaggedAt": "2026-02-27T04:42:51.011Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -35,7 +35,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-02-27T04:21:57.699Z"
+      "flaggedAt": "2026-02-27T04:42:56.074Z"
+    },
+    {
+      "showId": "all-in-comedy-about-love-2024",
+      "outletId": "nypost",
+      "criticName": "Johnny Oleksinski",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"4 stars\" (=80, bucket=positive) vs LLM 39 (bucket=negative, conf=medium)",
+      "llmScore": 39,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": "Down",
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:43:00.674Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -49,7 +63,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:02.877Z"
+      "flaggedAt": "2026-02-27T04:43:01.309Z"
     },
     {
       "showId": "amelie-a-new-musical-2017",
@@ -63,7 +77,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:03.124Z"
+      "flaggedAt": "2026-02-27T04:43:01.606Z"
     },
     {
       "showId": "bigfoot-2026",
@@ -77,7 +91,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:09.523Z"
+      "flaggedAt": "2026-02-27T04:43:05.933Z"
     },
     {
       "showId": "bright-star-2016",
@@ -91,7 +105,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-02-27T04:22:10.354Z"
+      "flaggedAt": "2026-02-27T04:43:06.722Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -105,7 +119,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:10.604Z"
+      "flaggedAt": "2026-02-27T04:43:06.821Z"
+    },
+    {
+      "showId": "burn-this-2019",
+      "outletId": "theater-life",
+      "criticName": "David Sheward",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2/5 stars\" (=40, bucket=negative) vs LLM 84 (bucket=positive, conf=medium)",
+      "llmScore": 84,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:43:07.211Z"
     },
     {
       "showId": "come-fly-away-2010",
@@ -119,7 +147,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:14.964Z"
+      "flaggedAt": "2026-02-27T04:43:09.519Z"
     },
     {
       "showId": "dead-outlaw-2025",
@@ -133,7 +161,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
       "bwwScore": 7,
-      "flaggedAt": "2026-02-27T04:22:18.593Z"
+      "flaggedAt": "2026-02-27T04:43:10.545Z"
     },
     {
       "showId": "follies-2011",
@@ -147,7 +175,21 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-27T04:22:22.291Z"
+      "flaggedAt": "2026-02-27T04:43:14.059Z"
+    },
+    {
+      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+      "outletId": "theater-life",
+      "criticName": "David Sheward",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2/5 stars\" (=40, bucket=negative) vs LLM 81 (bucket=positive, conf=medium)",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:43:14.333Z"
     },
     {
       "showId": "friends-the-musical-parody-2022",
@@ -161,7 +203,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:22.586Z"
+      "flaggedAt": "2026-02-27T04:43:14.589Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -175,7 +217,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-27T04:22:22.898Z"
+      "flaggedAt": "2026-02-27T04:43:15.229Z"
     },
     {
       "showId": "indecent-2017",
@@ -189,7 +231,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:29.887Z"
+      "flaggedAt": "2026-02-27T04:43:30.140Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -203,7 +245,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:30.874Z"
+      "flaggedAt": "2026-02-27T04:43:34.964Z"
+    },
+    {
+      "showId": "king-kong-2018",
+      "outletId": "guardian",
+      "criticName": "Adrian Horton",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5 stars\" (=20, bucket=negative) vs LLM 62 (bucket=mixed, conf=high)",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:43:38.278Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -217,7 +273,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:32.482Z"
+      "flaggedAt": "2026-02-27T04:43:40.179Z"
     },
     {
       "showId": "little-shop-of-horrors-2019",
@@ -231,7 +287,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:32.864Z"
+      "flaggedAt": "2026-02-27T04:43:40.982Z"
+    },
+    {
+      "showId": "little-women-the-musical-2026",
+      "outletId": "theatermania",
+      "criticName": "Unknown",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:43:41.026Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -245,11 +315,11 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:35.363Z"
+      "flaggedAt": "2026-02-27T04:43:50.852Z"
     },
     {
       "showId": "my-fair-lady-2018",
-      "outletId": "melindasmalarky",
+      "outletId": "melindas-malarky",
       "criticName": "Melinda Pressler",
       "reason": "possible-tour-fulltext",
       "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
@@ -259,7 +329,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:35.851Z"
+      "flaggedAt": "2026-02-27T04:43:53.672Z"
     },
     {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
@@ -273,7 +343,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:36.164Z"
+      "flaggedAt": "2026-02-27T04:43:54.904Z"
     },
     {
       "showId": "noises-off-2016",
@@ -287,7 +357,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-27T04:22:36.618Z"
+      "flaggedAt": "2026-02-27T04:43:55.569Z"
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "outletId": "guardian",
+      "criticName": "Alexis Soloski",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"3/5 stars\" (=60, bucket=mixed) vs LLM 25 (bucket=negative, conf=high)",
+      "llmScore": 25,
+      "llmBucket": "Pan",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-02-27T04:43:59.516Z"
+    },
+    {
+      "showId": "pictures-from-home-2023",
+      "outletId": "theater-life",
+      "criticName": "David Sheward",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2/5 stars\" (=40, bucket=negative) vs LLM 78 (bucket=positive, conf=high)",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:44:04.844Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -301,7 +399,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:40.040Z"
+      "flaggedAt": "2026-02-27T04:44:05.641Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -315,7 +413,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:40.406Z"
+      "flaggedAt": "2026-02-27T04:44:08.980Z"
     },
     {
       "showId": "ragtime-2009",
@@ -329,7 +427,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:40.959Z"
+      "flaggedAt": "2026-02-27T04:44:11.022Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -343,7 +441,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-27T04:22:42.565Z"
+      "flaggedAt": "2026-02-27T04:44:19.254Z"
+    },
+    {
+      "showId": "something-rotten-2015",
+      "outletId": "guardian",
+      "criticName": "Alexis Soloski",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2/5 stars\" (=40, bucket=negative) vs LLM 69 (bucket=mixed, conf=medium)",
+      "llmScore": 69,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:44:23.906Z"
     },
     {
       "showId": "sondheim-on-sondheim-2010",
@@ -357,7 +469,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-02-27T04:22:43.830Z"
+      "flaggedAt": "2026-02-27T04:44:24.018Z"
     },
     {
       "showId": "spamalot-2023",
@@ -371,7 +483,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:44.044Z"
+      "flaggedAt": "2026-02-27T04:44:24.239Z"
+    },
+    {
+      "showId": "summer-1976-2023",
+      "outletId": "theater-life",
+      "criticName": "Samuel L. Leiter",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5 stars\" (=100, bucket=positive) vs LLM 66 (bucket=mixed, conf=medium)",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:44:26.696Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -385,7 +511,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:46.454Z"
+      "flaggedAt": "2026-02-27T04:44:29.608Z"
+    },
+    {
+      "showId": "take-me-out-2022",
+      "outletId": "theater-life",
+      "criticName": "David Sheward",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2/5 stars\" (=40, bucket=negative) vs LLM 84 (bucket=positive, conf=medium)",
+      "llmScore": 84,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:44:29.636Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -399,7 +539,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-02-27T04:22:47.820Z"
+      "flaggedAt": "2026-02-27T04:44:35.870Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -413,7 +553,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-02-27T04:22:49.244Z"
+      "flaggedAt": "2026-02-27T04:44:40.578Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -427,7 +567,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-02-27T04:22:58.002Z"
+      "flaggedAt": "2026-02-27T04:45:03.295Z"
+    },
+    {
+      "showId": "the-waverly-gallery-2018",
+      "outletId": "theater-life",
+      "criticName": "David Sheward",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"2.5/5 stars\" (=50, bucket=mixed) vs LLM 89 (bucket=positive, conf=medium)",
+      "llmScore": 89,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-02-27T04:45:03.328Z"
     }
   ]
 }
