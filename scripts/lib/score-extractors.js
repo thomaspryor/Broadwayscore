@@ -367,7 +367,7 @@ function extractUKStarRating(html, text) {
     const match = text.match(pattern);
     if (match) {
       const rating = parseFloat(match[1]);
-      if (rating >= 0 && rating <= 5) {
+      if (rating >= 1 && rating <= 5) {
         return {
           originalScore: `${rating}/5 stars`,
           normalizedScore: starsToNumeric(rating, 5),
