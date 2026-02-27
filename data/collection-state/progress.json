@@ -4,7 +4,10 @@
     "paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
     "paranormal-activity-west-end-2025/unknown--brooke-ivey-johnson.json",
     "the-25th-annual-putnam-county-spelling-bee-2025/dailybeast--tim-teeman.json",
-    "the-book-of-mormon-west-end-2024/rollingstone--peter-travers.json"
+    "the-book-of-mormon-west-end-2024/rollingstone--peter-travers.json",
+    "the-book-of-mormon-west-end-2024/the-times-uk--unknown.json",
+    "the-book-of-mormon-west-end-2024/theatre-is-easy--dan-dinero.json",
+    "the-devil-wears-prada-west-end-2024/the-times-uk--unknown.json"
   ],
   "failed": [
     "hadestown-west-end-2024/variety--marilyn-stasio.json",
@@ -141,11 +144,21 @@
     "the-book-of-mormon-west-end-2024/huffpost--david-finkle.json",
     "the-book-of-mormon-west-end-2024/northjerseycom--robert-feldberg.json",
     "the-book-of-mormon-west-end-2024/stage-uk--unknown.json",
-    "the-book-of-mormon-west-end-2024/stagezine--scott-harrah.json"
+    "the-book-of-mormon-west-end-2024/stagezine--scott-harrah.json",
+    "the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+    "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+    "the-dinosaurs-2026/buy-tickets--unknown.json",
+    "the-dinosaurs-2026/talkinbroadway--marc-miller.json",
+    "the-lion-king-1997/cleveland-plain-dealer--marianne-evett.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-book-of-mormon-west-end-2024/the-times-uk--unknown.json",
+      "the-devil-wears-prada-west-end-2024/the-times-uk--unknown.json"
+    ],
     "amp": [
       "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json",
       "data/review-texts/betty-buckley-random-notes-2026/huffpost--unknown.json"
@@ -207,15 +220,21 @@
       "data/review-texts/shadowlands-west-end-2026/billboard--unknown.json",
       "data/review-texts/shadowlands-west-end-2026/the-times-uk--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/chicagotribune--chris-jones.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/broadway-voice--gregory-g-allen.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/broadway-voice--gregory-g-allen.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+      "data/review-texts/the-dinosaurs-2026/talkinbroadway--marc-miller.json"
     ],
     "archive": [
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
-      "the-book-of-mormon-west-end-2024/rollingstone--peter-travers.json"
+      "the-book-of-mormon-west-end-2024/rollingstone--peter-travers.json",
+      "the-book-of-mormon-west-end-2024/huffpost--david-finkle.json",
+      "the-book-of-mormon-west-end-2024/theatre-is-easy--dan-dinero.json"
     ]
   },
   "startTime": "2026-02-27T00:08:45.628Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/stagezine--scott-harrah.json",
+  "lastProcessed": "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
   "log": [
     {
       "t": "2026-02-27T00:17:25.689Z",
