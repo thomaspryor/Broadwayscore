@@ -93,6 +93,18 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'CHISUNTIMES': { tier: 2, name: 'Chicago Sun-Times', scoreFormat: 'text_bucket' },
   'NYSUN': { tier: 2, name: 'The New York Sun', scoreFormat: 'text_bucket' },
 
+
+  // Tier 2 — Promoted from T3 (Feb 27 tier audit: professional journalism outlets)
+  'AMNY': { tier: 2, name: 'amNewYork', scoreFormat: 'text_bucket' },
+  'TALKINBWAY': { tier: 2, name: "Talkin' Broadway", scoreFormat: 'text_bucket' },
+  'NY1': { tier: 2, name: 'NY1', scoreFormat: 'text_bucket' },
+  'NBC': { tier: 2, name: 'NBC New York', scoreFormat: 'text_bucket' },
+  'CURTAINUP': { tier: 2, name: 'CurtainUp', scoreFormat: 'text_bucket' },
+  'NORTHJERSEY': { tier: 2, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
+  'NJCOM': { tier: 2, name: 'NJ.com', scoreFormat: 'text_bucket' },
+  'BERGENRECORD': { tier: 2, name: 'The Bergen Record', scoreFormat: 'text_bucket' },
+  'WNYC': { tier: 2, name: 'WNYC', scoreFormat: 'text_bucket' },
+
   // === LONDON / WEST END OUTLETS ===
   // Tier 1 — Major UK nationals
   'TIMES-UK': { tier: 1, name: 'The Times (UK)', scoreFormat: 'stars', maxScale: 5 },
@@ -111,7 +123,6 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   // Note: FT already listed in US Tier 2 — covers both Broadway and West End
 
   // Tier 3: Smaller outlets, blogs, niche sites
-  'AMNY': { tier: 3, name: 'amNewYork', scoreFormat: 'text_bucket' },
   'CITI': { tier: 3, name: 'Cititour', scoreFormat: 'text_bucket' },
   'CSCE': { tier: 3, name: 'Culture Sauce', scoreFormat: 'stars', maxScale: 5 },
   'FRONTMEZZ': { tier: 3, name: 'Front Mezz Junkies', scoreFormat: 'text_bucket' },
@@ -119,22 +130,14 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'OMC': { tier: 3, name: 'One Minute Critic', scoreFormat: 'stars', maxScale: 5 },
   'BWW': { tier: 3, name: 'BroadwayWorld', scoreFormat: 'text_bucket' },
   'STGCNMA': { tier: 3, name: 'Stage and Cinema', scoreFormat: 'text_bucket' },
-  'TALKINBWAY': { tier: 3, name: "Talkin' Broadway", scoreFormat: 'text_bucket' },
-  'NY1': { tier: 3, name: 'NY1', scoreFormat: 'text_bucket' },
-  'CURTAINUP': { tier: 3, name: 'CurtainUp', scoreFormat: 'text_bucket' },
   'THEATERSCENE': { tier: 3, name: 'TheaterScene', scoreFormat: 'text_bucket' },
-  'NJCOM': { tier: 3, name: 'NJ.com', scoreFormat: 'text_bucket' },
   'STAGEZINE': { tier: 3, name: 'StageZine', scoreFormat: 'text_bucket' },
   'MASHABLE': { tier: 3, name: 'Mashable', scoreFormat: 'text_bucket' },
-  'WNYC': { tier: 3, name: 'WNYC', scoreFormat: 'text_bucket' },
   'QUEERTY': { tier: 3, name: 'Queerty', scoreFormat: 'text_bucket' },
   'MEDIUM': { tier: 3, name: 'Medium', scoreFormat: 'text_bucket' },
   'EXEUNT': { tier: 3, name: 'Exeunt Magazine', scoreFormat: 'text_bucket' },
   'TOWLEROAD': { tier: 3, name: 'Towleroad', scoreFormat: 'text_bucket' },
-  'NORTHJERSEY': { tier: 3, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
-  'NBC': { tier: 3, name: 'NBC New York', scoreFormat: 'text_bucket' },
   'FORWARD': { tier: 3, name: 'The Forward', scoreFormat: 'text_bucket' },
-  'BERGENRECORD': { tier: 3, name: 'The Bergen Record', scoreFormat: 'text_bucket' },
   'FORTWORTHST': { tier: 3, name: 'Fort Worth Star-Telegram', scoreFormat: 'text_bucket' },
   'NJNEWSROOM': { tier: 3, name: 'NJ Newsroom', scoreFormat: 'text_bucket' },
   'THEATERNEWS': { tier: 3, name: 'Theater News Online', scoreFormat: 'text_bucket' },
