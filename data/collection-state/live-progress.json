@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-27T19:44:29.721Z",
+  "updatedAt": "2026-02-27T19:54:37.913Z",
   "processed": 2,
-  "failed": 98,
-  "successRate": "2.0%",
+  "failed": 108,
+  "successRate": "1.8%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 2,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 29,
+    "archiveToday": 33,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -53,6 +53,17 @@
       "t": "2026-02-27T19:24:10.459Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-27T19:46:30.507Z",
+      "event": "bb-session",
+      "session": "d7ee30a0",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-27T19:46:31.828Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
