@@ -856,6 +856,14 @@ async function main(): Promise<void> {
       dataQualitySkipped++;
       return false;
     }
+    // Skip roundup/multi-show reviews already flagged by a previous scoring run.
+    // isMultiShowReview is set by the multi-show detector (line ~1014), isRoundupArticle
+    // is set by gather-reviews or manual flagging. Without this check, these get re-loaded,
+    // quality-checked, and re-detected every run (~95 files currently).
+    if (d.isMultiShowReview || d.isRoundupArticle) {
+      dataQualitySkipped++;
+      return false;
+    }
     // Skip reviews previously rejected by the LLM ensemble (wrong_production on WE/OB shows,
     // garbage_text with contentTier='needs-rescrape', etc.). These have rejectionReason set
     // but aren't caught by the flags above. Without this check, they get re-processed every run.
@@ -878,7 +886,7 @@ async function main(): Promise<void> {
     return true;
   });
   if (dataQualitySkipped > 0) {
-    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/showNotMentioned-no-excerpts/invalid)\n`);
+    console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/multiShow/roundup/showNotMentioned-no-excerpts/invalid)\n`);
   }
   if (showNotMentionedWithExcerpts > 0) {
     console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);
