@@ -8,7 +8,8 @@
     "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json",
     "chinese-republicans-2026/nbcnews--unknown.json",
     "hadestown-west-end-2024/deadline--greg-evans.json",
-    "los-soles-truncos-2025/broadwaynews--unknown.json"
+    "los-soles-truncos-2025/broadwaynews--unknown.json",
+    "silver-manhattan-2026/broadwaynews--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -51,7 +52,16 @@
     "masquerade-2025/nydailynews--chris-jones.json",
     "masquerade-2025/observer--david-cote.json",
     "mj-2022/wsj--charles-isherwood.json",
-    "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json"
+    "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+    "my-joy-is-heavy-2025/broadwaynews--unknown.json",
+    "my-joy-is-heavy-2025/theatermania--unknown.json",
+    "oh-mary-west-end-2025/broadwaynews--unknown.json",
+    "oliver-west-end-2024/nypost--unknown.json",
+    "perfect-crime-1987/broadwaynews--unknown.json",
+    "shadowlands-west-end-2026/broadwaynews--unknown.json",
+    "silver-manhattan-2026/theatermania--unknown.json",
+    "starlight-express-west-end-2024/broadwaynews--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2025/newsweek--lauren-giella.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -62,7 +72,8 @@
       "wicked-west-end-2021/variety--unknown.json",
       "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json",
       "hadestown-west-end-2024/deadline--greg-evans.json",
-      "los-soles-truncos-2025/broadwaynews--unknown.json"
+      "los-soles-truncos-2025/broadwaynews--unknown.json",
+      "silver-manhattan-2026/broadwaynews--unknown.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json"
@@ -87,12 +98,14 @@
       "data/review-texts/jerome-2025/wsj--unknown.json",
       "data/review-texts/maggots-west-end-2026/theatermania--unknown.json",
       "data/review-texts/mj-2022/wsj--charles-isherwood.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+      "data/review-texts/my-joy-is-heavy-2025/theatermania--unknown.json",
+      "data/review-texts/silver-manhattan-2026/theatermania--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/broadwaynews--unknown.json",
+  "lastProcessed": "the-25th-annual-putnam-county-spelling-bee-2025/newsweek--lauren-giella.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -148,6 +161,28 @@
       "t": "2026-02-27T16:09:01.315Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:11:34.420Z",
+      "event": "bb-session",
+      "session": "08bdb937",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-27T16:11:35.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T16:13:56.861Z",
+      "event": "bb-session",
+      "session": "8aabaf2e",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-27T16:13:58.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
