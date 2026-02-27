@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -217,13 +217,16 @@ function saveReview(review, overwrite = false) {
     fs.mkdirSync(showDir, { recursive: true });
   }
 
-  const filename = `${review.outletId}--${normalizeCritic(review.criticName)}.json`;
-  const filepath = path.join(showDir, filename);
+  // Use canonical filename for new files
+  const filename = generateReviewFilename(review.outletId, review.criticName);
+  let filepath = path.join(showDir, filename);
 
-  // Check if file exists and merge data if so
-  if (fs.existsSync(filepath) && !overwrite) {
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    // Merge: preserve existing data while adding DTLI-specific fields
+  // Check for existing file under any outlet ID variant (canonical or legacy)
+  const existingFile = !overwrite ? findExistingReviewFile(showDir, review.outletId, review.criticName) : null;
+  if (existingFile && existingFile.data) {
+    // Merge into the existing file (preserve its path/filename)
+    filepath = existingFile.path;
+    const existing = existingFile.data;
     review = {
       ...existing,
       // Always update DTLI-specific fields from this extraction
