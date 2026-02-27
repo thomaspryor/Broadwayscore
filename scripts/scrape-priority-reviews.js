@@ -70,35 +70,20 @@ const CONFIG = {
 const { getTier: _getOutletTier } = require('./lib/outlet-tiers');
 
 // ============================================
-// PAYWALL STATUS
+// PAYWALL STATUS — derived from outlet-registry.json (single source of truth)
 // ============================================
 
-// FREE: No paywall, should scrape directly (canonical IDs)
-const FREE_OUTLETS = new Set([
-  'stageandcinema', 'theatrely', 'cititour', 'nyt-theater', 'culturesauce',
-  'frontmezzjunkies', 'talkinbroadway', 'broadwayworld', 'nysr', 'nytg',
-  'amny', 'playbill', 'dctheatrescene', 'artsfuse', 'towleroad',
-  'queerty', 'medium', 'buzzfeed', 'huffpost',
-]);
-
-// METERED: Some articles free, some paywalled - try Archive.org first (canonical IDs)
-const METERED_OUTLETS = new Set([
-  'variety', 'hollywood-reporter', 'deadline', 'indiewire', 'thewrap',
-  'billboard', 'rollingstone', 'observer', 'dailybeast', 'chicagotribune',
-  'latimes', 'newsday', 'ap', 'bloomberg', 'vox', 'slate', 'people',
-]);
-
-// PAYWALLED with credentials (user has subscriptions) (canonical IDs)
-const PAYWALLED_WITH_CREDENTIALS = new Set([
-  'nytimes', 'vulture', 'newyorker', 'washpost', 'wsj',
-]);
-
-// PAYWALLED without credentials - Archive.org only (canonical IDs)
-const PAYWALLED_NO_CREDENTIALS = new Set([
-  'ew', 'nypost', 'guardian', 'timeout', 'time', 'theatermania',
-  'telegraph', 'broadwaynews', 'usatoday', 'backstage', 'nydailynews',
-  'slantmagazine', 'financialtimes', 'times-uk',
-]);
+const _outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+const FREE_OUTLETS = new Set();
+const METERED_OUTLETS = new Set();
+const PAYWALLED_WITH_CREDENTIALS = new Set();
+const PAYWALLED_NO_CREDENTIALS = new Set();
+for (const [id, info] of Object.entries(_outletRegistry.outlets || {})) {
+  if (info.accessModel === 'free') FREE_OUTLETS.add(id);
+  else if (info.accessModel === 'metered') METERED_OUTLETS.add(id);
+  else if (info.accessModel === 'paywalled' && info.hasCredentials) PAYWALLED_WITH_CREDENTIALS.add(id);
+  else if (info.accessModel === 'paywalled') PAYWALLED_NO_CREDENTIALS.add(id);
+}
 
 // ============================================
 // HELPER FUNCTIONS

@@ -1612,29 +1612,23 @@ function validateBWWRoundupGeography(reviews, html, showId) {
     outletRegistry = reg.outlets || {};
   } catch (e) { /* proceed without registry */ }
 
-  // Known non-NYC outlet IDs (UK publications that cover theater)
-  const NON_NYC_OUTLET_IDS = new Set([
-    // UK national
-    'evening-standard', 'thestage', 'stage-uk', 'whatsonstage',
-    'the-times', 'telegraph', 'uk-daily-telegraph', 'the-independent',
-    'independent', 'financial-times', 'the-observer-uk', 'the-spectator',
-    'daily-mail', 'metro-uk', 'time-out-london', 'guardian', 'artsdesk',
-    // BWW-specific UK outlet IDs (BWW uses different slugs than our canonical IDs)
-    'the-guardian-uk', 'the-stage-uk', 'all-that-dazzles-uk',
-    // Chicago-specific
-    'chicagotribune', 'chicago-tribune', 'chicago-reader', 'chicago-sun-times',
-    'third-coast-review', 'daily-herald',
-    // Philadelphia-specific
-    'philadelphia-inquirer', 'philadelphia-edge',
-    // Other regional
-    'la-times', 'sfgate', 'boston-globe', 'boston-herald', 'artsfuse',
-  ]);
+  // Non-NYC outlets — derived from `region` field in outlet-registry.json (single source of truth).
+  // Includes canonical IDs + aliases for outlets whose region is not 'nyc' or 'national'.
+  const NON_NYC_OUTLET_IDS = new Set();
+  for (const [id, info] of Object.entries(outletRegistry)) {
+    if (info.region && info.region !== 'nyc' && info.region !== 'national') {
+      NON_NYC_OUTLET_IDS.add(id);
+      if (info.aliases) {
+        for (const alias of info.aliases) NON_NYC_OUTLET_IDS.add(alias.toLowerCase());
+      }
+    }
+  }
 
   // Also flag outlets with .co.uk domains, region!=nyc in registry, or "uk" in ID
   function isNonNYCOutlet(outletId) {
     if (NON_NYC_OUTLET_IDS.has(outletId)) return true;
-    // Catch any outlet with "-uk" suffix (e.g., "the-guardian-uk", "all-that-dazzles-uk")
-    if (outletId.endsWith('-uk')) return true;
+    // Catch any outlet with "-uk" suffix or "london" in name
+    if (outletId.endsWith('-uk') || outletId.includes('london')) return true;
     const entry = outletRegistry[outletId];
     if (!entry) return false;
     if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
