@@ -57,6 +57,11 @@ function buildRegistryAliasMap() {
       // Map the outlet ID itself
       _registryAliasMap.set(outletId.toLowerCase(), outletId);
 
+      // Map the display name (so "The Arts Fuse" → "artsfuse")
+      if (outletData.displayName) {
+        _registryAliasMap.set(outletData.displayName.toLowerCase(), outletId);
+      }
+
       // Map all aliases
       if (outletData.aliases) {
         for (const alias of outletData.aliases) {
@@ -625,6 +630,18 @@ function normalizeOutlet(outletName) {
       if (aliasSlug && aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
         return canonical;
       }
+    }
+  }
+
+  // Try the slugified form against the registry (catches display-name inputs
+  // like "The Arts Fuse" → slug "the-arts-fuse" → registered alias → "artsfuse")
+  if (slug !== lower) {
+    if (registryAliasMap.has(slug)) {
+      return registryAliasMap.get(slug);
+    }
+    const slugWithoutThe = slug.replace(/^the-/, '');
+    if (slugWithoutThe !== slug && registryAliasMap.has(slugWithoutThe)) {
+      return registryAliasMap.get(slugWithoutThe);
     }
   }
 
