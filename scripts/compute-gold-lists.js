@@ -53,42 +53,9 @@ function isWestEnd(show) {
 }
 
 // ============================================
-// Outlet tier mapping (from scoring.ts + outlet-id-mapper.ts)
+// Outlet tier lookup — from outlet-registry.json (single source of truth)
 // ============================================
-const REGISTRY_TO_SCORING = {
-  'nytimes': 'NYT', 'washpost': 'WASHPOST', 'latimes': 'LATIMES', 'wsj': 'WSJ',
-  'ap': 'AP', 'variety': 'VARIETY', 'hollywood-reporter': 'THR', 'vulture': 'VULT',
-  'guardian': 'GUARDIAN', 'timeout': 'TIMEOUTNY', 'broadwaynews': 'BWAYNEWS',
-  'newyorker': 'NEWYORKER',
-  'chicagotribune': 'CHTRIB', 'usatoday': 'USATODAY', 'nydailynews': 'NYDN',
-  'nypost': 'NYP', 'thewrap': 'WRAP', 'ew': 'EW', 'indiewire': 'INDIEWIRE',
-  'deadline': 'DEADLINE', 'slantmagazine': 'SLANT', 'dailybeast': 'TDB',
-  'observer': 'OBSERVER', 'nyt-theater': 'NYTHTR', 'nytg': 'NYTG', 'nysr': 'NYSR',
-  'theatermania': 'TMAN', 'theatrely': 'THLY', 'newsday': 'NEWSDAY', 'time': 'TIME',
-  'rollingstone': 'ROLLSTONE', 'bloomberg': 'BLOOMBERG', 'vox': 'VOX', 'slate': 'SLATE',
-  'people': 'PEOPLE', 'parade': 'PARADE', 'billboard': 'BILLBOARD', 'huffpost': 'HUFFPOST',
-  'backstage': 'BACKSTAGE', 'village-voice': 'VILLAGEVOICE', 'financial-times-uk': 'FT',
-  'financialtimes': 'FT', 'financial-times': 'FT',
-  'amny': 'AMNY', 'cititour': 'CITI', 'culturesauce': 'CSCE', 'frontmezzjunkies': 'FRONTMEZZ',
-  'the-recs': 'THERECS', 'one-minute-critic': 'OMC', 'broadwayworld': 'BWW',
-  'stageandcinema': 'STGCNMA', 'talkinbroadway': 'TALKINBWAY', 'ny1': 'NY1',
-  'curtainup': 'CURTAINUP', 'theater-scene': 'THEATERSCENE', 'njcom': 'NJCOM',
-  'stagezine': 'STAGEZINE', 'mashable': 'MASHABLE', 'wnyc': 'WNYC', 'queerty': 'QUEERTY',
-  'medium': 'MEDIUM', 'exeunt-magazine': 'EXEUNT', 'towleroad': 'TOWLEROAD',
-  'northjerseycom': 'NORTHJERSEY', 'nbcny': 'NBC',
-};
-
-// Synced with src/config/scoring.ts OUTLET_TIERS (Feb 27 tier audit)
-const TIER1 = new Set(['NYT', 'WASHPOST', 'LATIMES', 'WSJ', 'AP', 'VARIETY', 'THR', 'VULT', 'GUARDIAN', 'TIMEOUTNY', 'BWAYNEWS', 'NEWYORKER', 'TIMES-UK', 'TELEGRAPH', 'STANDARD', 'DAILYMAIL']);
-const TIER2 = new Set(['CHTRIB', 'USATODAY', 'NYDN', 'NYP', 'WRAP', 'EW', 'INDIEWIRE', 'DEADLINE', 'SLANT', 'TDB', 'OBSERVER', 'NYTHTR', 'NYTG', 'NYSR', 'TMAN', 'THLY', 'NEWSDAY', 'TIME', 'ROLLSTONE', 'BLOOMBERG', 'VOX', 'SLATE', 'PEOPLE', 'PARADE', 'BILLBOARD', 'HUFFPOST', 'BACKSTAGE', 'VILLAGEVOICE', 'FT', 'PHILINQ', 'CHISUNTIMES', 'NYSUN', 'STAGE-UK', 'WHATSONSTAGE', 'TIMEOUT-LONDON', 'INDEPENDENT', 'LONDONTHEATRE', 'I-PAPER', 'AMNY', 'TALKINBWAY', 'NY1', 'NBC', 'CURTAINUP', 'NORTHJERSEY', 'NJCOM', 'BERGENRECORD', 'WNYC']);
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
-
-function getTierWeight(outletId) {
-  const scoringId = REGISTRY_TO_SCORING[outletId] || outletId.toUpperCase();
-  if (TIER1.has(scoringId)) return TIER_WEIGHTS[1];
-  if (TIER2.has(scoringId)) return TIER_WEIGHTS[2];
-  return TIER_WEIGHTS[3];
-}
+const { getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 
 // Thresholds (must match src/config/gold-lists.ts)
 const THRESHOLDS = {

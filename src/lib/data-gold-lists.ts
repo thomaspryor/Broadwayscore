@@ -7,7 +7,6 @@ import type { GoldListEntry } from './data-types';
 import type { GoldListType } from '@/config/gold-lists';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import { OUTLET_TIERS, TIER_WEIGHTS, DEFAULT_TIER, SCORE_DISPLAY_YEAR_CUTOFF, MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF, LOW_CONF_SCORE_SOURCES } from '@/config/scoring';
-import { toScoringId } from './outlet-id-mapper';
 import { getSeason } from './data-commercial';
 
 import showsData from '../../data/shows.json';
@@ -132,9 +131,9 @@ const grossesHistory = grossesHistoryData as unknown as GrossesHistoryFile;
 // ============================================
 
 function getTierWeight(outletId: string): number {
-  const scoringId = toScoringId(outletId);
-  if (scoringId && OUTLET_TIERS[scoringId]) {
-    const tier = OUTLET_TIERS[scoringId].tier;
+  const normalized = outletId?.toLowerCase().trim();
+  if (normalized && OUTLET_TIERS[normalized]) {
+    const tier = OUTLET_TIERS[normalized].tier;
     return TIER_WEIGHTS[tier];
   }
   return TIER_WEIGHTS[DEFAULT_TIER];

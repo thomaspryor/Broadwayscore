@@ -62,6 +62,7 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'london-theatre': 'LONDONTHEATRE',
   'independent': 'INDEPENDENT',
   'i-paper': 'I-PAPER',
+  'timeout-london': 'TIMEOUT-LONDON',
 
   // Tier 2 outlets — promoted from T3 (Feb 27 tier audit)
   'amny': 'AMNY',
@@ -110,7 +111,6 @@ const MANUAL_ALIAS_OVERRIDES: Record<string, string> = {
   'new-york': 'VULT',  // New York Magazine (nymag.com) — too generic for registry
   'shelby-star-patrick-ryan': 'USATODAY',  // critic-specific alias
   'nbc-news': 'NBC',
-  'timeout-london': 'TIMEOUT-LONDON',  // separate from Time Out NY
   'time-out-london': 'TIMEOUT-LONDON',
 };
 

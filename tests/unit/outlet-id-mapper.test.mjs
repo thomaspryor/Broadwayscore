@@ -399,12 +399,12 @@ describe('Outlet ID Mapper', () => {
       }
     });
 
-    it('uppercase IDs work for backwards compatibility', () => {
-      // These should work directly without mapping
-      assert.strictEqual(getOutletConfig('NYT').tier, 1);
-      assert.strictEqual(getOutletConfig('VULT').tier, 1);
-      assert.strictEqual(getOutletConfig('NYP').tier, 2);
-      assert.strictEqual(getOutletConfig('BWW').tier, 3);
+    it('lowercase registry IDs work directly', () => {
+      // OUTLET_TIERS keys are now lowercase registry IDs
+      assert.strictEqual(getOutletConfig('nytimes').tier, 1);
+      assert.strictEqual(getOutletConfig('vulture').tier, 1);
+      assert.strictEqual(getOutletConfig('nypost').tier, 2);
+      assert.strictEqual(getOutletConfig('broadwayworld').tier, 3);
     });
 
     it('unknown outlets default to tier 3', () => {

@@ -1313,49 +1313,40 @@ function validateOutletAliasIntegrity() {
  * Checks: OUTLET_ALIASES ↔ outlet-registry.json, outlet-id-mapper.ts → scoring.ts OUTLET_TIERS.
  */
 function validateOutletMapperSync() {
-  info('Checking outlet mapper sync...');
+  info('Checking OUTLET_TIERS ↔ registry sync...');
 
   const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
-  const mapperFile = path.join(__dirname, '..', 'src', 'lib', 'outlet-id-mapper.ts');
   const scoringFile = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
 
-  // Part A removed — OUTLET_ALIASES now auto-generates from registry, so sync check is tautological.
-
-  // --- Part B: outlet-id-mapper.ts → scoring.ts OUTLET_TIERS ---
-  if (!fs.existsSync(mapperFile) || !fs.existsSync(scoringFile)) {
-    info('Skipping mapper→scoring sync check (files not found)');
+  if (!fs.existsSync(registryFile) || !fs.existsSync(scoringFile)) {
+    info('Skipping OUTLET_TIERS sync check (files not found)');
     return;
   }
 
-  const mapperSrc = fs.readFileSync(mapperFile, 'utf8');
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const registryOutlets = registry.outlets || registry;
   const scoringSrc = fs.readFileSync(scoringFile, 'utf8');
 
-  // Extract all scoring ID values from mapper (right-hand side of 'key': 'VALUE')
-  const mapperScoringIds = new Set();
-  const mapperPattern = /['"]([^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g;
-  let match;
-  while ((match = mapperPattern.exec(mapperSrc)) !== null) {
-    mapperScoringIds.add(match[2]);
-  }
-
-  // Extract all OUTLET_TIERS keys
+  // Extract all OUTLET_TIERS keys (now lowercase registry IDs)
   const tierKeys = new Set();
-  // Match lines like: 'NYT': { tier: ...
-  const tierPattern = /['"]([A-Z][A-Z0-9-]+)['"]\s*:\s*\{\s*tier:/g;
+  // Match lines like: 'nytimes': { tier: ...
+  const tierPattern = /['"]([a-z0-9-]+)['"]\s*:\s*\{\s*tier:\s*(\d)/g;
+  let match;
   while ((match = tierPattern.exec(scoringSrc)) !== null) {
     tierKeys.add(match[1]);
   }
 
-  let tierIssues = 0;
-  for (const scoringId of mapperScoringIds) {
-    if (!tierKeys.has(scoringId)) {
-      warn(`[mapper-sync] outlet-id-mapper.ts maps to "${scoringId}" but it's not in OUTLET_TIERS (scoring.ts) — will default to Tier 3`);
-      tierIssues++;
+  // Verify each OUTLET_TIERS key exists in outlet-registry.json
+  let issues = 0;
+  for (const key of tierKeys) {
+    if (!registryOutlets[key]) {
+      warn(`[tier-sync] OUTLET_TIERS key "${key}" not found in outlet-registry.json — tier may drift`);
+      issues++;
     }
   }
 
-  if (tierIssues === 0) {
-    ok('outlet-id-mapper.ts scoring IDs all exist in OUTLET_TIERS');
+  if (issues === 0) {
+    ok(`All ${tierKeys.size} OUTLET_TIERS keys exist in outlet-registry.json`);
   }
 }
 

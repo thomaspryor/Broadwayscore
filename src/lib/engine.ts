@@ -28,7 +28,7 @@ import {
   MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF,
   LOW_CONF_SCORE_SOURCES,
 } from '@/config/scoring';
-import { toScoringId, getRegistryTier } from './outlet-id-mapper';
+import { getRegistryTier } from './outlet-id-mapper';
 
 // ===========================================
 // TYPES
@@ -245,20 +245,15 @@ export interface ComputedShow {
 // ===========================================
 
 export function getOutletConfig(outletId?: string, outletName?: string) {
-  // Try direct lookup first (for uppercase IDs like 'NYT')
-  if (outletId && OUTLET_TIERS[outletId]) {
-    return { ...OUTLET_TIERS[outletId], id: outletId };
-  }
-
-  // Try mapping from registry format (lowercase) to scoring format (uppercase)
+  // Direct lookup — OUTLET_TIERS keys are lowercase registry IDs
   if (outletId) {
-    const scoringId = toScoringId(outletId);
-    if (scoringId && OUTLET_TIERS[scoringId]) {
-      return { ...OUTLET_TIERS[scoringId], id: outletId };
+    const normalized = outletId.toLowerCase().trim();
+    if (OUTLET_TIERS[normalized]) {
+      return { ...OUTLET_TIERS[normalized], id: outletId };
     }
   }
 
-  // Fallback to name lookup
+  // Fallback to name lookup (rare, legacy)
   if (outletName) {
     for (const [id, config] of Object.entries(OUTLET_TIERS)) {
       if (config.name.toLowerCase() === outletName.toLowerCase()) {
