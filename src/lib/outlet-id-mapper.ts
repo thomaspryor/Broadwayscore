@@ -261,3 +261,45 @@ export function toRegistryId(scoringId: string): string | undefined {
 export function isKnownOutlet(outletId: string): boolean {
   return toScoringId(outletId) !== undefined;
 }
+
+// ===========================================
+// REGISTRY-BASED TIER LOOKUP (fallback for unmapped outlets)
+// ===========================================
+// For the ~775 outlets not in REGISTRY_TO_SCORING, we can still resolve
+// their tier directly from outlet-registry.json. This prevents them from
+// silently defaulting to Tier 3 when their registry entry says otherwise.
+
+let _registryTierCache: Record<string, number> | null = null;
+
+function _loadRegistryTiers(): Record<string, number> {
+  if (_registryTierCache) return _registryTierCache;
+  _registryTierCache = {};
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const registryPath = path.join(process.cwd(), 'data', 'outlet-registry.json');
+    if (fs.existsSync(registryPath)) {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+      const outlets = registry.outlets || registry;
+      for (const [id, entry] of Object.entries(outlets)) {
+        const e = entry as { tier?: number };
+        if (e.tier) _registryTierCache[id] = e.tier;
+      }
+    }
+  } catch {
+    // Registry not available (e.g., in browser context) — return empty
+  }
+  return _registryTierCache;
+}
+
+/**
+ * Get the tier for an outlet directly from outlet-registry.json.
+ * Use as a fallback when toScoringId() returns undefined (outlet not in mapper).
+ * @param outletId - A canonical (lowercase) outlet ID
+ * @returns The tier (1, 2, or 3), or undefined if not in registry
+ */
+export function getRegistryTier(outletId: string): number | undefined {
+  if (!outletId) return undefined;
+  const tiers = _loadRegistryTiers();
+  return tiers[outletId.toLowerCase().trim()];
+}
