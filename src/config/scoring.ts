@@ -298,17 +298,18 @@ export const AUDIENCE_DIVERGENCE_THRESHOLD = 20;
 // These critics receive Tier 1 weight and "Top Critic" badge
 // regardless of which outlet they write for.
 export const TOP_CRITICS: ReadonlySet<string> = new Set([
-  'Jesse Green',
-  'Ben Brantley',
-  'Charles Isherwood',
-  'David Rooney',
-  'Hilton Als',
-  'Helen Shaw',
-  'Peter Marks',
-  'Elisabeth Vincentelli',
-  'Adam Feldman',
-  'Linda Winer',
-  'Alexis Soloski',
-  'Sara Holdren',
-  'Maya Phillips',
+  'Jesse Green',           // NYT / Vulture (331 reviews)
+  'Ben Brantley',          // NYT — retired 2020 (293 reviews)
+  'Charles Isherwood',     // WSJ / Variety / Broadway News (379 reviews)
+  'David Rooney',          // Hollywood Reporter (341 reviews)
+  'Hilton Als',            // New Yorker (15 reviews)
+  'Helen Shaw',            // Vulture / New Yorker (87 reviews)
+  'Peter Marks',           // Washington Post (262 reviews)
+  'Elisabeth Vincentelli', // NY Post → NYT (185 reviews)
+  'Adam Feldman',          // Time Out NY (369 reviews)
+  'Linda Winer',           // Newsday — retired (280 reviews)
+  'Alexis Soloski',        // Guardian → NYT (111 reviews)
+  'Sara Holdren',          // Vulture (88 reviews)
+  'Johnny Oleksinski',     // NY Post — current since 2017 (136 reviews)
+  'Chris Jones',           // Chicago Tribune / NY Daily News (382 reviews)
 ]);
