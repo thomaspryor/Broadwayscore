@@ -46,20 +46,15 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
   }
 }
 // Outlets that genuinely cover BOTH Broadway and West End markets.
-// NOT all London outlets — e.g., Evening Standard, London Theatre are London-only.
-// These are used by the REVERSE guard (London→Broadway), so adding London-only outlets
-// here would let London reviews contaminate Broadway scores.
-// IDs listed here get auto-expanded with all registry aliases.
-const DUAL_MARKET_OUTLET_IDS = [
-  'guardian', 'financialtimes', 'variety', 'thestage',
-  'telegraph', 'times-uk', 'daily-mail', 'independent', 'whatsonstage',
-];
+// Derived from `isDualMarket: true` in outlet-registry.json — single source of truth.
+// Used by the REVERSE guard (London→Broadway), so only truly dual-market outlets belong here.
 const DUAL_MARKET_OUTLETS = new Set();
-for (const targetId of DUAL_MARKET_OUTLET_IDS) {
-  DUAL_MARKET_OUTLETS.add(targetId);
-  const info = outletRegistry.outlets[targetId];
-  if (info && info.aliases) {
-    for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
+for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
+  if (info.isDualMarket) {
+    DUAL_MARKET_OUTLETS.add(id);
+    if (info.aliases) {
+      for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
+    }
   }
 }
 // Also allow all Tier 1/2 outlets — they legitimately review West End shows
