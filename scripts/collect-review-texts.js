@@ -818,6 +818,15 @@ async function fetchWithPlaywright(url, review) {
       // Dismiss paywall overlays and expand hidden content
       await dismissPaywallOverlays(page);
 
+      // Verify we're on the expected domain (prevents cross-domain contamination
+      // from redirects, ad interstitials, or stale page state)
+      const expectedDomain = new URL(url).hostname.replace(/^www\./, '');
+      const actualUrl = page.url();
+      const actualDomain = new URL(actualUrl).hostname.replace(/^www\./, '');
+      if (actualDomain !== expectedDomain && !actualDomain.includes(expectedDomain) && !expectedDomain.includes(actualDomain)) {
+        throw new Error(`Domain mismatch: expected ${expectedDomain} but landed on ${actualDomain} (${actualUrl})`);
+      }
+
       // Get page content
       const html = await page.content();
 
@@ -4064,6 +4073,23 @@ function archiveHtml(html, review, method) {
   FetchMethod: ${method}
   Archived: ${new Date().toISOString()}
 -->\n`;
+
+  // Verify HTML canonical URL matches expected domain (catches cross-domain contamination)
+  const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
+  if (canonicalMatch) {
+    try {
+      const canonicalDomain = new URL(canonicalMatch[1]).hostname.replace(/^www\./, '');
+      const expectedDomain = new URL(review.url).hostname.replace(/^www\./, '');
+      if (canonicalDomain !== expectedDomain && !canonicalDomain.includes(expectedDomain) && !expectedDomain.includes(canonicalDomain)) {
+        console.log(`  ⚠ ARCHIVE CONTAMINATION: canonical=${canonicalDomain} expected=${expectedDomain}`);
+        console.log(`    Canonical URL: ${canonicalMatch[1]}`);
+        // Still save archive (for debugging) but flag it
+        const warningHeader = `<!-- WARNING: Cross-domain contamination detected! canonical=${canonicalDomain} expected=${expectedDomain} -->\n`;
+        fs.writeFileSync(archivePath, warningHeader + header + html);
+        return archivePath;
+      }
+    } catch (e) { /* ignore parse errors */ }
+  }
 
   fs.writeFileSync(archivePath, header + html);
   return archivePath;
