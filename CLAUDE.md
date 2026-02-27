@@ -80,10 +80,8 @@ Read roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
 - **New discoveries:** Add to Backlog section + comment. Don't context-switch.
 
 ### 10. Infrastructure Change Planning (MANDATORY)
-For changes touching 3+ workflows, CI/CD, data pipelines, or cross-repo operations:
-- **Plan:** Write changes, agent review for gaps, list assumptions, include testing phase.
-- **Test:** 3 representative workflows (simple, complex, write-heavy). Wait for completion. Check all step statuses.
-- **Gotchas:** `git add <gitignored>` → exit 1; nested `.git` confuses git; `set -e` kills on non-zero; parallel sessions switch branches.
+For 3+ workflow/CI/pipeline changes: plan → agent review → test 3 representative workflows → verify all steps.
+Gotchas: `git add <gitignored>` → exit 1; nested `.git` confuses git; `set -e` kills on non-zero; parallel sessions switch branches.
 
 ### 11. Pipeline Operations
 **E2E test before any large dispatch** (5+ runs or 50+ reviews). Test 5 reviews, 1 batch, verify data lands in private repo.
@@ -101,6 +99,10 @@ When fixing an issue, fix it at the **pipeline/automation level** so it never re
 
 ### 15. Test Before Committing (MANDATORY for logic changes)
 **Never commit script/logic changes without testing against real data.** Write a test script that covers: (1) correct matches (varied samples), (2) expected rejections/edge cases, (3) mass validation against archive/production data when available. Use `skipLlm` for fast bulk tests, then spot-check LLM paths. Fix failures before committing.
+
+### 16. Prompt Changes Require A/B Distribution Check (MANDATORY)
+**NEVER rescore >100 reviews without the built-in A/B check.** The scoring pipeline (`--outdated`/`--rescore` with >100 files) auto-runs a 50-review sample comparison. If any bucket shifts >5% or mean drift >5pts, it aborts. Override with `--force-full-run` only after investigating.
+- Lesson learned: v5.3 prompt cost $420 to rescore 20k reviews, made scores worse, had to revert. Side effects of prompt changes are invisible without distribution testing.
 
 ---
 
