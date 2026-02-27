@@ -1,23 +1,32 @@
 {
-  "totalCandidates": 5,
-  "cdxFound": 3,
-  "cdxNotFound": 1,
-  "recovered": 3,
+  "totalCandidates": 100,
+  "cdxFound": 14,
+  "cdxNotFound": 30,
+  "recovered": 13,
   "recoveredByTier": {
-    "1": 3,
+    "1": 13,
     "2": 0,
     "3": 0
   },
   "recoveredByDomain": {
-    "variety.com": 1,
-    "nytimes.com": 2
+    "timeout.com": 3,
+    "nytimes.com": 3,
+    "washingtonpost.com": 2,
+    "hollywoodreporter.com": 1,
+    "vulture.com": 1,
+    "latimes.com": 3
   },
-  "tooShort": 0,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 1,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 19,
+  "notInArchive": 30,
+  "domainSkipped": 37,
+  "circuitBrokenDomains": [
+    "hollywoodreporter.com",
+    "timeout.com",
+    "washingtonpost.com",
+    "vulture.com"
+  ]
 }
