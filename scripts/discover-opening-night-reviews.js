@@ -297,10 +297,22 @@ async function main() {
           const filename = generateReviewFilename(discoveredOutletId, criticName);
           const filepath = path.join(showDir, filename);
 
-          // Don't overwrite existing files
+          // Don't overwrite existing files (scan all variants for canonical match)
           if (fs.existsSync(filepath)) {
             skippedDupe++;
             continue;
+          }
+          if (fs.existsSync(showDir)) {
+            const criticSlug = normalizeCritic(criticName);
+            const existingFiles = fs.readdirSync(showDir);
+            const hasDupe = existingFiles.some(f => {
+              const m = f.match(/^(.+?)--(.+)\.json$/);
+              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
+            });
+            if (hasDupe) {
+              skippedDupe++;
+              continue;
+            }
           }
 
           const reviewData = {
@@ -392,6 +404,18 @@ async function main() {
         if (fs.existsSync(filepath)) {
           skippedDupe++;
           continue;
+        }
+        if (fs.existsSync(showDir)) {
+          const criticSlug = normalizeCritic(criticName);
+          const existingFiles = fs.readdirSync(showDir);
+          const hasDupe = existingFiles.some(f => {
+            const m = f.match(/^(.+?)--(.+)\.json$/);
+            return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
+          });
+          if (hasDupe) {
+            skippedDupe++;
+            continue;
+          }
         }
 
         const reviewData = {
