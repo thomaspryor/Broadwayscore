@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T21:10:00.206Z",
+  "updatedAt": "2026-02-27T21:25:23.139Z",
   "processed": 10,
-  "failed": 190,
-  "successRate": "5.0%",
+  "failed": 200,
+  "successRate": "4.8%",
   "tierBreakdown": {
     "playwright": 7,
-    "amp": 5,
-    "browserbase": 5,
+    "amp": 7,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 63,
+    "archiveToday": 65,
     "archive": 2
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -103,6 +103,17 @@
       "t": "2026-02-27T21:05:30.195Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-27T21:13:02.773Z",
+      "event": "bb-session",
+      "session": "827d1dc7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-broadway-revie"
+    },
+    {
+      "t": "2026-02-27T21:13:04.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
