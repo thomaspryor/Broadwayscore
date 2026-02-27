@@ -353,7 +353,7 @@ function postValidate(result) {
   if (/\b(hours?|minutes?|mins?|hrs?)\b/.test(raw)) return null;
 
   // Reject audience/aggregator scores
-  if (/\b(user rating|audience|show score|rotten tomatoes|metacritic)\b/.test(raw)) return null;
+  if (/\b(user rating|audience|show score|rotten tomatoes|metacritic|average rating)\b/.test(raw)) return null;
 
   // Reject metaphorical star usage
   if (/\bgold star\b/.test(raw) || /\b\w+-star\s+(meal|restaurant|dining|hotel|resort|service|treatment|performance)\b/.test(raw)) return null;
@@ -417,6 +417,9 @@ async function crossVerify(result, userPrompt, primaryProvider) {
 function normalizeScore(result) {
   if (!result) return null;
   const { value, scale, type, raw } = result;
+
+  // Reject impossible values (LLM miscounted asterisks)
+  if (value > scale) return null;
 
   if (type === 'letter') {
     const gradeMatch = raw.match(/([A-D][+\-–—]?|F)/i);

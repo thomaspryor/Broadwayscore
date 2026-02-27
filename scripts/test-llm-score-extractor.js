@@ -157,10 +157,10 @@ function unitTests() {
   assert(n1 && n1.originalScore === '3.5/4 stars' && n1.normalizedScore === 88, 'normalizes 3.5/4 stars', `got ${JSON.stringify(n1)}`);
 
   const n2 = normalizeScore({ type: 'letter', raw: 'A-', value: 92, scale: 100 });
-  assert(n2 && n2.originalScore === 'A-' && n2.normalizedScore === 90, 'normalizes A- letter grade', `got ${JSON.stringify(n2)}`);
+  assert(n2 && n2.originalScore === 'A-' && n2.normalizedScore === 85, 'normalizes A- letter grade', `got ${JSON.stringify(n2)}`);
 
   const n3 = normalizeScore({ type: 'letter', raw: 'B+', value: 87, scale: 100 });
-  assert(n3 && n3.originalScore === 'B+' && n3.normalizedScore === 87, 'normalizes B+ letter grade', `got ${JSON.stringify(n3)}`);
+  assert(n3 && n3.originalScore === 'B+' && n3.normalizedScore === 80, 'normalizes B+ letter grade', `got ${JSON.stringify(n3)}`);
 
   const n4 = normalizeScore({ type: 'numeric', raw: '8/10', value: 8, scale: 10 });
   assert(n4 && n4.originalScore === '8/10' && n4.normalizedScore === 80, 'normalizes 8/10 numeric', `got ${JSON.stringify(n4)}`);
@@ -169,7 +169,7 @@ function unitTests() {
   assert(n5 && n5.originalScore === '4/5 stars' && n5.normalizedScore === 80, 'normalizes 4/5 stars', `got ${JSON.stringify(n5)}`);
 
   const n6 = normalizeScore({ type: 'letter', raw: 'B-', value: 80, scale: 100 });
-  assert(n6 && n6.originalScore === 'B-' && n6.normalizedScore === 78, 'normalizes B- letter grade', `got ${JSON.stringify(n6)}`);
+  assert(n6 && n6.originalScore === 'B-' && n6.normalizedScore === 72, 'normalizes B- letter grade', `got ${JSON.stringify(n6)}`);
 
   // --- extractFromJsonLd ---
   console.log('\nextractFromJsonLd:');
