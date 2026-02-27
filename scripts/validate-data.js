@@ -909,6 +909,33 @@ function validateReviewsJson() {
     ok('No outlet ID inconsistencies in reviews.json');
   }
 
+  // Check for outlets not in outlet-registry.json (truly unknown outlets)
+  try {
+    const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
+    if (fs.existsSync(registryPath)) {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+      const outlets = registry.outlets || registry;
+      const unknownOutlets = {};
+      for (const r of reviews) {
+        if (!r.outletId) continue;
+        if (!outlets[r.outletId]) {
+          if (!unknownOutlets[r.outletId]) unknownOutlets[r.outletId] = 0;
+          unknownOutlets[r.outletId]++;
+        }
+      }
+      const unknownCount = Object.keys(unknownOutlets).length;
+      if (unknownCount > 0) {
+        const sorted = Object.entries(unknownOutlets).sort((a, b) => b[1] - a[1]);
+        const top10 = sorted.slice(0, 10).map(([id, n]) => `${id}(${n})`).join(', ');
+        info(`${unknownCount} outlet IDs in reviews.json not in outlet-registry.json (top: ${top10})`);
+      } else {
+        ok('All review outlet IDs exist in outlet-registry.json');
+      }
+    }
+  } catch (e) {
+    info(`Skipped outlet registry check: ${e.message}`);
+  }
+
   // Cross-outlet same-critic detection: flag when same critic appears at 2+ outlets for same show
   if (normalizeCritic && normalizeOutlet) {
     const byCriticShow = {};
@@ -2708,18 +2735,18 @@ function validateCrossMarketContamination() {
     if (region !== 'london') {
       issues++;
       if (issues <= 5) {
-        warn(`Cross-market: WE show "${r.showId}" has review from non-London outlet "${r.outlet || oid}"`);
+        error(`Cross-market: WE show "${r.showId}" has review from non-London outlet "${r.outlet || oid}"`);
       }
     }
   }
 
   if (issues > 5) {
-    warn(`... and ${issues - 5} more cross-market reviews`);
+    error(`... and ${issues - 5} more US→WE cross-market reviews`);
   }
 
   // Reverse direction: London outlets on Broadway/off-Broadway shows
   // Unlike forward guard, Tier 1/2 exemption does NOT apply here — London Tier 1 outlets
-  // (Evening Standard, Times UK) never legitimately cover Broadway. Only DUAL_MARKET_OUTLETS are exempt.
+  // (Evening Standard, Times UK) never legitimately cover Broadway. Only isDualMarket outlets are exempt.
   let reverseIssues = 0;
   const nonWeReviews = reviews.filter(r => showCategoryMap[r.showId] !== 'west-end');
   for (const r of nonWeReviews) {
@@ -2729,19 +2756,19 @@ function validateCrossMarketContamination() {
     if (region === 'london') {
       reverseIssues++;
       if (reverseIssues <= 5) {
-        warn(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
+        error(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
       }
     }
   }
   if (reverseIssues > 5) {
-    warn(`... and ${reverseIssues - 5} more London→Broadway cross-market reviews`);
+    error(`... and ${reverseIssues - 5} more London→Broadway cross-market reviews`);
   }
 
   const totalIssues = issues + reverseIssues;
   if (totalIssues === 0) {
     ok('No cross-market contamination detected in reviews.json');
   } else {
-    warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway)`);
+    error(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway) — rebuild may have a guard regression`);
   }
 }
 
