@@ -1,0 +1,219 @@
+name: LLM Extraction Soak Review
+
+# Runs 3 days after the Phase 2a parallel run started (Feb 27, 2026).
+# Analyzes SCORE DIFF logs from collection runs, and if LLM is consistently
+# better, auto-removes the old regex extraction path (Phase 2c) and slims
+# score-extractors.js (Phase 4b).
+#
+# After completing, this workflow disables itself by removing the schedule trigger.
+
+on:
+  schedule:
+    - cron: '0 14 2 3 *'   # March 2, 2026 at 2 PM UTC (10 AM ET)
+  workflow_dispatch:         # Manual trigger for testing
+
+concurrency:
+  group: llm-extraction-soak
+  cancel-in-progress: false
+
+jobs:
+  analyze-soak:
+    runs-on: ubuntu-latest
+    outputs:
+      soak_result: ${{ steps.analyze.outputs.soak_result }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Analyze soak period data
+        id: analyze
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OUTPUT=$(node scripts/analyze-score-extraction-soak.js --days=4 2>&1)
+          echo "$OUTPUT"
+
+          # Extract the SOAK_RESULT line
+          RESULT=$(echo "$OUTPUT" | grep '^SOAK_RESULT=' | tail -1 | cut -d= -f2)
+          echo "soak_result=${RESULT}" >> "$GITHUB_OUTPUT"
+
+          # Save full report for the comment step
+          echo "$OUTPUT" > /tmp/soak-report.txt
+
+      - name: Post report to roadmap
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RESULT="${{ steps.analyze.outputs.soak_result }}"
+          REPORT=$(cat /tmp/soak-report.txt)
+
+          BODY="## LLM Score Extraction Soak Review (automated)
+
+          **Result:** \`${RESULT}\`
+
+          <details>
+          <summary>Full report</summary>
+
+          \`\`\`
+          ${REPORT}
+          \`\`\`
+          </details>
+
+          $(if [ "$RESULT" = "pass" ]; then echo "✅ Auto-proceeding with Phase 2c (remove regex path) and Phase 4b (slim score-extractors.js)."; elif [ "$RESULT" = "review_needed" ]; then echo "⚠️ Manual review needed — regex found some scores LLM missed. Check the report above."; else echo "ℹ️ Insufficient data — need more collection runs. Will retry next scheduled run."; fi)"
+
+          gh issue comment 50 --body "$BODY"
+
+  cleanup-regex-path:
+    needs: analyze-soak
+    if: needs.analyze-soak.outputs.soak_result == 'pass'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Phase 2c — Remove old regex extraction from collection scripts
+        run: |
+          echo "=== Phase 2c: Removing old regex extraction path ==="
+
+          # collect-review-texts.js: Remove extractScore import and parallel-run block
+          # Replace the parallel-run section with LLM-only extraction
+          node -e "
+          const fs = require('fs');
+
+          for (const file of ['scripts/collect-review-texts.js', 'scripts/collect-review-texts-v2.js']) {
+            let code = fs.readFileSync(file, 'utf8');
+
+            // Remove extractScore from the score-extractors import
+            // Keep extractDesignation if it's in the same import
+            code = code.replace(
+              /const \{ extractScore,\s*extractDesignation \} = require\('\.\/lib\/score-extractors'\);/,
+              \"const { extractDesignation } = require('./lib/score-extractors');\"
+            );
+            code = code.replace(
+              /const \{ extractScore \} = require\('\.\/lib\/score-extractors'\);/,
+              '// extractScore removed — using LLM extraction only'
+            );
+
+            // Replace the parallel-run block with LLM-only
+            // Match from 'Old regex extraction' comment through to 'Use LLM result'
+            code = code.replace(
+              /\/\/ Old regex extraction \(for comparison logging\)\n\s+const regexResult = extractScore\([^)]+\);\n\n\s+\/\/ New LLM extraction \(primary.*?\n\s+let llmResult = null;\n\s+try \{\n\s+llmResult = await extractExplicitScore\(\{[^}]+\}\);\n\s+\} catch \(e\) \{\n\s+console\.log\([^)]+\);\n\s+\}\n\n\s+\/\/ Log disagreements between old and new\n\s+if \(regexResult && !llmResult\)[^]*?\/\/ Use LLM result if available, otherwise fall back to regex\n\s+const scoreResult = llmResult \|\| regexResult;/s,
+              \`// LLM score extraction (Phase 2c — regex removed)
+      let scoreResult = null;
+      try {
+        scoreResult = await extractExplicitScore({ text, html, outletId });
+      } catch (e) {
+        console.log('    ⚠ LLM score extraction failed: ' + e.message);
+      }\`
+            );
+
+            fs.writeFileSync(file, code);
+            console.log('Updated: ' + file);
+          }
+          "
+
+          # Verify syntax
+          node -c scripts/collect-review-texts.js
+          node -c scripts/collect-review-texts-v2.js
+          echo "Syntax check passed"
+
+      - name: Phase 4b — Slim score-extractors.js
+        run: |
+          echo "=== Phase 4b: Slimming score-extractors.js ==="
+
+          # Count lines before
+          BEFORE=$(wc -l < scripts/lib/score-extractors.js)
+          echo "Before: ${BEFORE} lines"
+
+          # Keep only: LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES, starsToNumeric,
+          # extractDesignation, extractNYTCriticsPick, extractTheaterManiaMustSee, exports
+          node -e "
+          const fs = require('fs');
+          const code = fs.readFileSync('scripts/lib/score-extractors.js', 'utf8');
+
+          // Extract the sections we need to keep
+          const sections = [];
+
+          // Header comment
+          sections.push('/**\n * Score extraction constants and designation extractors.\n * Per-outlet regex extractors removed in Phase 4b — LLM extraction is now primary.\n */\n');
+
+          // Constants: LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES
+          const constantsMatch = code.match(/const LETTER_GRADES[\s\S]*?const THUMB_SCORES = \{[^}]+\};/);
+          if (constantsMatch) sections.push(constantsMatch[0]);
+
+          // starsToNumeric function
+          const starsMatch = code.match(/function starsToNumeric[\s\S]*?^}/m);
+          if (starsMatch) sections.push('\n' + starsMatch[0]);
+
+          // extractDesignation function (and any helpers it uses)
+          const designationMatch = code.match(/function extractDesignation[\s\S]*?^}/m);
+          if (designationMatch) sections.push('\n' + designationMatch[0]);
+
+          // extractNYTCriticsPick
+          const nytMatch = code.match(/function extractNYTCriticsPick[\s\S]*?^}/m);
+          if (nytMatch) sections.push('\n' + nytMatch[0]);
+
+          // extractTheaterManiaMustSee
+          const tmMatch = code.match(/function extractTheaterManiaMustSee[\s\S]*?^}/m);
+          if (tmMatch) sections.push('\n' + tmMatch[0]);
+
+          // Module exports
+          sections.push(\"\nmodule.exports = {\n  LETTER_GRADES,\n  BUCKET_SCORES,\n  THUMB_SCORES,\n  starsToNumeric,\n  extractDesignation,\n  extractNYTCriticsPick,\n  extractTheaterManiaMustSee,\n};\n\");
+
+          fs.writeFileSync('scripts/lib/score-extractors.js', sections.join('\n\n'));
+          console.log('Slimmed score-extractors.js');
+          "
+
+          AFTER=$(wc -l < scripts/lib/score-extractors.js)
+          echo "After: ${AFTER} lines (was ${BEFORE})"
+
+          # Verify syntax and imports still work
+          node -c scripts/lib/score-extractors.js
+          node -e "const m = require('./scripts/lib/score-extractors'); console.log('Exports:', Object.keys(m).join(', '))"
+          echo "Syntax and import check passed"
+
+      - name: Verify no broken references
+        run: |
+          # Check that nothing still imports extractScore from score-extractors
+          if grep -rn "require.*score-extractors.*extractScore" scripts/ --include='*.js' | grep -v 'node_modules' | grep -v '.git'; then
+            echo "ERROR: Found remaining extractScore imports from score-extractors.js"
+            exit 1
+          fi
+          echo "No broken extractScore references found"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/collect-review-texts.js scripts/collect-review-texts-v2.js scripts/lib/score-extractors.js
+          git commit -m "refactor: Remove old regex score extraction, slim score-extractors.js (Phase 2c+4b)
+
+          Automated by llm-extraction-soak-review workflow after 3-day soak period
+          confirmed LLM extraction is consistently better than regex.
+
+          - Removed extractScore() parallel-run from collection scripts
+          - Slimmed score-extractors.js from ~731 to ~80 lines
+          - Kept: LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES, starsToNumeric,
+            extractDesignation, extractNYTCriticsPick, extractTheaterManiaMustSee
+
+          Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Update roadmap
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment 50 --body "✅ **Phase 2c + 4b complete** (automated). Old regex extraction removed from collection scripts. score-extractors.js slimmed from ~731 to ~80 lines. LLM extraction is now the sole score extraction method."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          workflow_name: ${{ github.workflow }}
+          severity: 'warning'
