@@ -93,7 +93,10 @@ function mergeInto(winner, donor) {
   if ((CONTENT_TIER_RANK[donor.contentTier] || 0) > (CONTENT_TIER_RANK[winner.contentTier] || 0)) {
     winner.contentTier = donor.contentTier;
   }
-  if (donor.fullText && (!winner.fullText || donor.fullText.length > winner.fullText.length)) {
+  if (donor.fullText && (!winner.fullText || (
+    donor.fullText.length > winner.fullText.length &&
+    (CONTENT_TIER_RANK[donor.contentTier] || 0) >= (CONTENT_TIER_RANK[winner.contentTier] || 0)
+  ))) {
     winner.fullText = donor.fullText;
     if (donor.isFullReview) winner.isFullReview = true;
   }
@@ -101,7 +104,7 @@ function mergeInto(winner, donor) {
 
 function normalizeUrl(url) {
   if (!url) return null;
-  return url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').toLowerCase();
+  return url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
 }
 
 function buildDirectoryMap() {
@@ -151,7 +154,26 @@ function main() {
       if (fs.existsSync(canonicalFilePath)) {
         let canonicalData;
         try { canonicalData = JSON.parse(fs.readFileSync(canonicalFilePath, 'utf8')); } catch { continue; }
-        if (sourceData.wrongShow || sourceData.wrongProduction) {
+        const sourceFlagged = sourceData.wrongShow || sourceData.wrongProduction;
+        const canonFlagged = canonicalData.wrongShow || canonicalData.wrongProduction;
+        if (sourceFlagged && !canonFlagged) {
+          // Source is bad, canonical is good — delete source
+          if (!DRY_RUN) fs.unlinkSync(sourceFilePath);
+          stats.filesDeleted++;
+          continue;
+        }
+        if (canonFlagged && !sourceFlagged) {
+          // Canonical is bad, source is good — replace canonical with source
+          if (!DRY_RUN) {
+            sourceData.showId = canonicalId;
+            fs.writeFileSync(canonicalFilePath, JSON.stringify(sourceData, null, 2) + '\n');
+            fs.unlinkSync(sourceFilePath);
+          }
+          stats.filesMerged++;
+          continue;
+        }
+        if (sourceFlagged && canonFlagged) {
+          // Both flagged — delete source, keep canonical as-is
           if (!DRY_RUN) fs.unlinkSync(sourceFilePath);
           stats.filesDeleted++;
           continue;

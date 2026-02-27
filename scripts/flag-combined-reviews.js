@@ -15,7 +15,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 
 function normalizeUrl(url) {
   if (!url) return null;
-  return url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').toLowerCase();
+  return url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
 }
 
 function main() {
@@ -31,7 +31,7 @@ function main() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
-            data.isCombinedReview || data.duplicateOf || data.fabricatedEntry) continue;
+            data.duplicateOf || data.fabricatedEntry) continue;
         if (!data.url) continue;
         const normUrl = normalizeUrl(data.url);
         if (!normUrl) continue;
@@ -55,6 +55,12 @@ function main() {
     for (const entry of entries) {
       if (!DRY_RUN) {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+        // Re-check flags on fresh read (handles concurrent modifications)
+        if (data.wrongProduction || data.wrongShow || data.duplicateOf || data.fabricatedEntry) continue;
+        const newCombinedWith = showList.filter(s => s !== entry.showId).sort();
+        const existingCombinedWith = (data.combinedWith || []).slice().sort();
+        // Only write if flag is new or combinedWith list changed
+        if (data.isCombinedReview && JSON.stringify(newCombinedWith) === JSON.stringify(existingCombinedWith)) continue;
         data.isCombinedReview = true;
         data.combinedWith = showList.filter(s => s !== entry.showId);
         fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
