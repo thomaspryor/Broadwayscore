@@ -15,6 +15,7 @@
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
  *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
+ *   --score-range=MIN-MAX Only process reviews with existing LLM score in this range (e.g. 78-82)
  *   --dry-run             Don't save results, just print what would happen
  *   --verbose             Detailed logging
  *   --limit=N             Only process N reviews
@@ -491,6 +492,7 @@ function parseArgs(): ScoringPipelineOptions & {
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
+  scoreRange?: [number, number];
 } {
   const args = process.argv.slice(2);
 
@@ -523,6 +525,9 @@ function parseArgs(): ScoringPipelineOptions & {
   const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
   const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;
 
+  const scoreRangeArg = args.find(a => a.startsWith('--score-range='));
+  const scoreRange = scoreRangeArg ? scoreRangeArg.split('=')[1].split('-').map(Number) as [number, number] : undefined;
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource,
@@ -545,7 +550,8 @@ function parseArgs(): ScoringPipelineOptions & {
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     checkpointInterval,
     shard,
-    totalShards
+    totalShards,
+    scoreRange
   };
 }
 
@@ -765,6 +771,17 @@ async function main(): Promise<void> {
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
   } else {
     filesToProcess = allFiles;
+  }
+
+  // Additional filter: score range (can combine with --outdated or --rescore)
+  if (options.scoreRange) {
+    const [minScore, maxScore] = options.scoreRange;
+    const before = filesToProcess.length;
+    filesToProcess = filesToProcess.filter(f => {
+      const score = (f.data as any).llmScore?.score;
+      return score != null && score >= minScore && score <= maxScore;
+    });
+    console.log(`Filtering to score range ${minScore}-${maxScore}: ${filesToProcess.length} reviews (from ${before})\n`);
   }
 
   // Track garbage skips for logging
