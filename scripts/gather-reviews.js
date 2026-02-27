@@ -1337,7 +1337,8 @@ async function searchBWWRoundup(show, year) {
   if (SCRAPINGBEE_KEY) {
     try {
       const titleForSearch = show.title.replace(/'/g, '');
-      const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" broadway ${year}`;
+      const marketKeyword = (show.category === 'west-end') ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
+      const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
       console.log(`    Trying Google search for BWW roundup...`);
       const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}&nb_results=5`;
       const searchResult = await new Promise((resolve, reject) => {
@@ -2186,11 +2187,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
   // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
   console.log('\n  === BroadwayWorld Review Roundups ===');
-  if (isOffBroadway) {
+  if (isOffBroadway || isWestEnd) {
     health.bww.skipped = true;
-    console.log('    [SKIP] BWW roundups disabled for off-Broadway (wrong-production risk: roundup URL guessing matches wrong city/year)');
+    console.log(`    [SKIP] BWW roundups disabled for ${isOffBroadway ? 'off-Broadway' : 'West End'} (URL patterns are Broadway-specific)`);
   }
-  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
+  let bwwResult = (isOffBroadway || isWestEnd) ? null : await searchBWWRoundup(show, year);
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
     const validation = await validatePageMatchesShow(bwwResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
