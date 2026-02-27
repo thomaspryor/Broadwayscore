@@ -13,7 +13,7 @@ import * as path from 'path';
 import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
-import { BUCKET_RANGES } from './config';
+import { BUCKET_RANGES, scoreToBucket } from './config';
 
 // ========================================
 // TYPES
@@ -120,13 +120,6 @@ Respond with JSON only: {"bucket": "...", "score": N}`,
 // UTILITY FUNCTIONS
 // ========================================
 
-function scoreToBucket(score: number): string {
-  if (score >= 85) return 'Rave';
-  if (score >= 68) return 'Positive';
-  if (score >= 50) return 'Mixed';
-  if (score >= 30) return 'Negative';
-  return 'Pan';
-}
 
 function bucketToThumb(bucket: string): string {
   if (bucket === 'Rave' || bucket === 'Positive') return 'Up';
