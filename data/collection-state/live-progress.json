@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-27T23:42:43.583Z",
-  "processed": 33,
-  "failed": 327,
+  "updatedAt": "2026-02-27T23:55:22.326Z",
+  "processed": 34,
+  "failed": 336,
   "successRate": "9.2%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 15,
-    "browserbase": 2,
+    "playwright": 22,
+    "amp": 17,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 106,
+    "archiveToday": 107,
     "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-02-27T16:16:37.560Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-27T16:30:07.016Z",
-      "event": "bb-session",
-      "session": "93f6c460",
-      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
-    },
     {
       "t": "2026-02-27T16:30:45.028Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-27T23:35:48.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T23:42:47.048Z",
+      "event": "bb-session",
+      "session": "0ddce001",
+      "url": "https://www.hollywoodreporter.com/news/general-news/martin-mcdonaghs-hangmen-is-"
+    },
+    {
+      "t": "2026-02-27T23:42:48.286Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
