@@ -12,6 +12,15 @@ on:
         required: false
         type: boolean
         default: false
+      max_shows:
+        description: 'Maximum shows to regenerate per run (0 = unlimited)'
+        required: false
+        type: number
+        default: 200
+
+concurrency:
+  group: update-critic-consensus
+  cancel-in-progress: false
 
 jobs:
   update-consensus:
@@ -23,11 +32,16 @@ jobs:
         with:
           ref: main
 
-
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,24 +54,22 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          ARGS=""
           if [ "${{ inputs.force }}" = "true" ]; then
-            node scripts/generate-critic-consensus.js --force
-          else
-            node scripts/generate-critic-consensus.js
+            ARGS="$ARGS --force"
           fi
+          MAX_SHOWS="${{ inputs.max_shows }}"
+          if [ -n "$MAX_SHOWS" ] && [ "$MAX_SHOWS" != "0" ]; then
+            ARGS="$ARGS --max-shows=$MAX_SHOWS"
+          fi
+          node scripts/generate-critic-consensus.js $ARGS
 
-      - name: Commit and push if changed
+      - name: Note on commit
         if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Core data files pushed to private repo by push-core-data action
-          if git diff --staged --quiet; then
-            echo "No changes to Critics' Take"
-          else
-            git commit -m "chore: Update Critics' Take summaries (automated)"
-            bash scripts/lib/push-with-retry.sh
-          fi
+          # critic-consensus.json is gitignored (core data in private repo).
+          # push-core-data action below handles syncing to the private repo.
+          echo "Consensus file written locally — push-core-data will sync to private repo."
 
 
       - name: Push core data to private repo
