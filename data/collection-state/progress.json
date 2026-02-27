@@ -1,5 +1,7 @@
 {
-  "processed": [],
+  "processed": [
+    "into-the-woods-west-end-2025/rollingstone--unknown.json"
+  ],
   "failed": [
     "hadestown-west-end-2024/variety--marilyn-stasio.json",
     "hells-kitchen-2024/nyt-theater--unknown.json",
@@ -80,7 +82,16 @@
     "hadestown-2019/towleroad--naveen-kumar.json",
     "hadestown-2019/towleroad-naveen-kumar--naveen-kumar.json",
     "hadestown-west-end-2024/billboard--unknown.json",
-    "hadestown-west-end-2024/buy-tickets--unknown.json"
+    "hadestown-west-end-2024/buy-tickets--unknown.json",
+    "hadestown-west-end-2024/towleroad--naveen-kumar.json",
+    "hamilton-2015/bww--michael-dale.json",
+    "hamilton-2015/usa-today--elysa-gardner.json",
+    "hamilton-west-end-2021/telegraph--unknown.json",
+    "hamilton-west-end-2021/washpost--unknown.json",
+    "hells-kitchen-2024/rollingstone--brittany-spanos.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "hold-on-to-your-butts-2026/artsfuse--unknown.json",
+    "into-the-woods-west-end-2025/frontmezzjunkies--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -90,10 +101,13 @@
       "data/review-texts/betty-buckley-random-notes-2026/huffpost--unknown.json"
     ],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "hamilton-2015/usa-today--elysa-gardner.json"
+    ],
     "scrapingbee": [
       "bigfoot-2026/broadwaynews--unknown.json",
-      "pen-pals-2025/broadwaynews--unknown.json"
+      "pen-pals-2025/broadwaynews--unknown.json",
+      "into-the-woods-west-end-2025/rollingstone--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -120,14 +134,16 @@
       "data/review-texts/chicago-1996/ap--mark-kennedy.json",
       "data/review-texts/cold-war-choir-practice-2026/the-times-uk--unknown.json",
       "data/review-texts/drunk-shakespeare-2022/chicagotribune--unknown.json",
-      "data/review-texts/drunk-shakespeare-2022/one-minute-critic--unknown.json"
+      "data/review-texts/drunk-shakespeare-2022/one-minute-critic--unknown.json",
+      "data/review-texts/hamilton-2015/bww--michael-dale.json",
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json"
     ],
     "archive": [
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json"
     ]
   },
   "startTime": "2026-02-27T00:08:45.628Z",
-  "lastProcessed": "hadestown-west-end-2024/buy-tickets--unknown.json",
+  "lastProcessed": "into-the-woods-west-end-2025/rollingstone--unknown.json",
   "log": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -200,6 +216,28 @@
       "t": "2026-02-27T01:23:14.849Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-27T01:44:51.443Z",
+      "event": "bb-session",
+      "session": "509e87fc",
+      "url": "http://www.usatoday.com/story/life/theater/2015/08/06/hamilton-win-hearts-and-mi"
+    },
+    {
+      "t": "2026-02-27T01:44:52.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T01:46:20.354Z",
+      "event": "bb-session",
+      "session": "487fc83f",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-27T01:46:21.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
