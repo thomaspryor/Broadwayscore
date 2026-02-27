@@ -12,15 +12,6 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const dtliDir = 'data/aggregator-archive/dtli';
 const reviewTextsDir = 'data/review-texts';
 
-function slugify(str) {
-  if (!str) return 'unknown';
-  return str.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim();
-}
-
 function extractDtliReviews(htmlContent, showId) {
   const reviews = [];
   const parts = htmlContent.split('<div class="review-item">');
