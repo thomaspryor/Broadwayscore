@@ -386,11 +386,31 @@ function extractUKStarRating(html, text) {
  */
 function extractUSATodayScore(html, text) {
   // USA Today sometimes embeds the score in structured data
+  // Check bestRating first to determine scale
+  const bestRatingMatch = html.match(/"bestRating"\s*:\s*"?(\d+(?:\.\d+)?)"?/);
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/);
   if (jsonLdMatch) {
     const rating = parseFloat(jsonLdMatch[1]);
-    // USA Today uses 0-100 scale
-    if (rating >= 0 && rating <= 100) {
+    const bestRating = bestRatingMatch ? parseFloat(bestRatingMatch[1]) : null;
+
+    // If bestRating is available, use it to determine scale
+    if (bestRating && bestRating <= 5 && rating >= 1 && rating <= bestRating) {
+      return {
+        originalScore: `${rating}/${bestRating} stars`,
+        normalizedScore: starsToNumeric(rating, bestRating),
+        source: 'json-ld'
+      };
+    }
+    // If ratingValue <= 5, it's almost certainly a star rating (USA Today uses 4-star scale)
+    if (rating >= 1 && rating <= 5 && !bestRating) {
+      return {
+        originalScore: `${rating}/4 stars`,
+        normalizedScore: starsToNumeric(rating, 4),
+        source: 'json-ld'
+      };
+    }
+    // Only treat as 0-100 scale if value is clearly above star range
+    if (rating > 5 && rating <= 100) {
       return {
         originalScore: `${rating}/100`,
         normalizedScore: Math.round(rating),
@@ -560,6 +580,10 @@ const OUTLET_EXTRACTORS = {
   'the-recs': extractUKStarRating,
   'lost-in-theatreland': extractUKStarRating,
   'digital-journal': extractUKStarRating,
+  'rollingstone': extractUKStarRating,
+  'rolling-stone': extractUKStarRating,
+  'theater-life': extractUKStarRating,
+  'jks-theatre-scene': extractGenericLetterGrade,
 
   // Outlets WITHOUT explicit scores - return null to prevent false positives
   'variety': noScoreExtractor,

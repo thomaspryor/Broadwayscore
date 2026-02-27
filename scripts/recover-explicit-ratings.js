@@ -290,36 +290,42 @@ async function fetchTheaterLifeRatings(reviews) {
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
       if (!slug) continue;
 
-      const url = `https://theaterlife.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}`;
-      const result = await httpGet(url);
+      // Try posts first, then pages (Theater Life uses WordPress pages, not posts)
+      let posts = [];
+      for (const type of ['posts', 'pages']) {
+        const apiUrl = `https://theaterlife.com/wp-json/wp/v2/${type}?slug=${encodeURIComponent(slug)}`;
+        const result = await httpGet(apiUrl);
+        if (result) {
+          try { posts = JSON.parse(result); } catch {}
+          if (posts.length > 0) break;
+        }
+        await sleep(200);
+      }
 
-      if (result) {
-        const posts = JSON.parse(result);
-        if (posts.length > 0) {
-          const title = posts[0].title?.rendered || '';
-          // Check for star pattern in title
-          const match = title.match(/\s+([*★]{1,5})\s*(1\/2)?\s*$/);
-          if (match) {
-            const stars = match[1].length;
-            const halfStar = match[2] ? 0.5 : 0;
-            const total = stars + halfStar;
+      if (posts.length > 0) {
+        const title = posts[0].title?.rendered || '';
+        // Check for star pattern in title
+        const match = title.match(/\s+([*★]{1,5})\s*(1\/2)?\s*$/);
+        if (match) {
+          const stars = match[1].length;
+          const halfStar = match[2] ? 0.5 : 0;
+          const total = stars + halfStar;
 
-            recovered++;
-            stats.phase2Recovered++;
-            trackOutlet('theater-life', 'phase2');
+          recovered++;
+          stats.phase2Recovered++;
+          trackOutlet('theater-life', 'phase2');
 
-            console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${total}/5 stars`);
+          console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${total}/5 stars`);
 
-            if (!DRY_RUN) {
-              review.data.originalScore = `${total}/5 stars`;
-              review.data.originalScoreNormalized = Math.round((total / 5) * 100);
-              review.data.scoreSource = 'wp-api-title';
-              review.data.scoreExtractedFrom = 'api-metadata';
-              review.data.scoreRecoveredAt = new Date().toISOString();
-              fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
-            }
-            review.recovered = true;
+          if (!DRY_RUN) {
+            review.data.originalScore = `${total}/5 stars`;
+            review.data.originalScoreNormalized = Math.round((total / 5) * 100);
+            review.data.scoreSource = 'wp-api-title';
+            review.data.scoreExtractedFrom = 'api-metadata';
+            review.data.scoreRecoveredAt = new Date().toISOString();
+            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
           }
+          review.recovered = true;
         }
       }
     } catch (err) {
@@ -543,13 +549,14 @@ async function phase3ScrapeURLs(reviews) {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function httpGet(url) {
+function httpGet(url, maxRedirects = 5) {
   const lib = url.startsWith('https') ? https : require('http');
   return new Promise((resolve, reject) => {
     lib.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' }, timeout: 30000 }, (res) => {
-      // Follow redirects
+      // Follow redirects (with depth limit)
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return httpGet(res.headers.location).then(resolve).catch(reject);
+        if (maxRedirects <= 0) return reject(new Error('too many redirects'));
+        return httpGet(res.headers.location, maxRedirects - 1).then(resolve).catch(reject);
       }
       let data = '';
       res.on('data', chunk => data += chunk);
