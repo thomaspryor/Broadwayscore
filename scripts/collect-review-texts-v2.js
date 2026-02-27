@@ -14,6 +14,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+const { extractScore } = require('./lib/score-extractors');
 
 // Configuration
 const CONFIG = {
@@ -488,6 +489,18 @@ function updateReviewJson(review, text, archivePath, method) {
     textQuality: textQuality,
     sourceMethod: sourceMethod,
   };
+
+  // Extract explicit score from HTML if not already present
+  if (!updatedData.originalScore) {
+    const html = archivePath ? fs.readFileSync(archivePath, 'utf8') : '';
+    const scoreResult = extractScore(html, text, review.data.outletId || '');
+    if (scoreResult) {
+      updatedData.originalScore = scoreResult.originalScore;
+      updatedData.originalScoreNormalized = scoreResult.normalizedScore;
+      updatedData.scoreSource = scoreResult.source;
+      console.log(`    ★ Extracted score: ${scoreResult.originalScore} [${scoreResult.source}]`);
+    }
+  }
 
   fs.writeFileSync(review.filePath, JSON.stringify(updatedData, null, 2));
 }
