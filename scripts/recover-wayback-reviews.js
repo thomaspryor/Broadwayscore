@@ -29,7 +29,7 @@ const { execSync } = require('child_process');
 // Shared libraries
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
-const { extractScore } = require('./lib/score-extractors');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
 
 // ============================================================================
@@ -1321,14 +1321,19 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   data.contentTier = tierResult.contentTier || tierResult.tier;
   data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered from Wayback Machine';
 
-  // Score extraction from recovered HTML
-  if (html) {
+  // Score extraction from recovered HTML via LLM
+  if (html || cleanedText) {
     try {
-      const scoreResult = extractScore(html, cleanedText, candidate.outletId);
-      if (scoreResult && scoreResult.originalScore) {
+      const scoreResult = await extractExplicitScore({
+        text: cleanedText || '',
+        html: html || '',
+        outletId: candidate.outletId
+      });
+      if (scoreResult) {
         data.originalScore = scoreResult.originalScore;
         data.originalScoreNormalized = scoreResult.normalizedScore;
-        console.log(`    Found original score: ${scoreResult.originalScore}`);
+        data.originalScoreSource = scoreResult.source;
+        console.log(`    Found original score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
       }
     } catch {}
   }

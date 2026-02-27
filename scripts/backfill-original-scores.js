@@ -13,7 +13,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { extractScore, extractDesignation } = require('./lib/score-extractors');
+const { extractDesignation } = require('./lib/score-extractors');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_FILTER = process.argv.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -65,7 +66,7 @@ function findArchivedHtml(showId, outletId, criticName) {
 /**
  * Process a single review file
  */
-function processReview(filePath, showId) {
+async function processReview(filePath, showId) {
   try {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     stats.totalReviews++;
@@ -92,26 +93,19 @@ function processReview(filePath, showId) {
 
     const combinedText = textSources.join('\n\n');
 
-    // Try score extraction
+    // Try LLM score extraction (handles JSON-LD fast-path + LLM for text)
     let scoreResult = null;
     let scoreSource = null;
 
-    // Try HTML first (most reliable for structured data)
-    if (html) {
-      scoreResult = extractScore(html, '', outletId);
-      if (scoreResult) scoreSource = 'archive';
-    }
-
-    // Try fullText
-    if (!scoreResult && data.fullText && data.fullText.length > 200) {
-      scoreResult = extractScore('', data.fullText, outletId);
-      if (scoreResult) scoreSource = 'fullText';
-    }
-
-    // Try excerpts as last resort
-    if (!scoreResult && combinedText.length > 50) {
-      scoreResult = extractScore('', combinedText, outletId);
-      if (scoreResult) scoreSource = 'excerpt';
+    try {
+      scoreResult = await extractExplicitScore({
+        text: data.fullText || combinedText,
+        html: html || '',
+        outletId
+      });
+      if (scoreResult) scoreSource = data.fullText ? 'fullText' : 'excerpt';
+    } catch (e) {
+      // LLM extraction failed — continue without score
     }
 
     // Track designation extraction separately
@@ -209,7 +203,7 @@ async function main() {
 
     for (const file of files) {
       const filePath = path.join(showDir, file);
-      if (processReview(filePath, show)) {
+      if (await processReview(filePath, show)) {
         updatedCount++;
       }
     }

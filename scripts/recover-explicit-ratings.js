@@ -27,7 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { extractScore } = require('./lib/score-extractors');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -128,7 +128,7 @@ const stats = {
 // ---------------------------------------------------------------------------
 // Phase 1: Local extraction
 // ---------------------------------------------------------------------------
-function phase1ExtractLocal(reviews) {
+async function phase1ExtractLocal(reviews) {
   console.log('\n═══ PHASE 1: Local Extraction (existing fullText/excerpts) ═══\n');
   let recovered = 0;
 
@@ -142,7 +142,10 @@ function phase1ExtractLocal(reviews) {
 
     if (!text || text.length < 20) continue;
 
-    const result = extractScore('', text, review.data.outletId);
+    const result = await extractExplicitScore({
+      text,
+      outletId: review.data.outletId || ''
+    });
     if (result) {
       recovered++;
       stats.phase1Recovered++;
@@ -153,7 +156,7 @@ function phase1ExtractLocal(reviews) {
       if (!DRY_RUN) {
         review.data.originalScore = result.originalScore;
         review.data.originalScoreNormalized = result.normalizedScore;
-        review.data.scoreSource = result.source;
+        review.data.originalScoreSource = result.source;
         review.data.scoreExtractedFrom = 'local-text';
         review.data.scoreRecoveredAt = new Date().toISOString();
         fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
@@ -490,7 +493,11 @@ async function phase3ScrapeURLs(reviews) {
       stats.phase3Scraped++;
 
       if (html && html.length > 500) {
-        const result = extractScore(html, review.data.fullText || '', review.data.outletId);
+        const result = await extractExplicitScore({
+          text: review.data.fullText || '',
+          html: html || '',
+          outletId: review.data.outletId || ''
+        });
         if (result) {
           recovered++;
           stats.phase3Recovered++;
@@ -501,7 +508,7 @@ async function phase3ScrapeURLs(reviews) {
           if (!DRY_RUN) {
             review.data.originalScore = result.originalScore;
             review.data.originalScoreNormalized = result.normalizedScore;
-            review.data.scoreSource = result.source;
+            review.data.originalScoreSource = result.source;
             review.data.scoreExtractedFrom = 'scraped-html';
             review.data.scoreRecoveredAt = new Date().toISOString();
             fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
@@ -630,7 +637,7 @@ async function main() {
 
   // Phase 1: Local extraction
   if (PHASES.includes(1)) {
-    reviews = phase1ExtractLocal(reviews);
+    reviews = await phase1ExtractLocal(reviews);
   }
 
   // Phase 2: Free APIs
