@@ -80,6 +80,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Score extraction for original scores
 const { extractScore, extractDesignation } = require('./lib/score-extractors');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
@@ -4291,7 +4292,7 @@ function mapSourceMethod(method) {
   return map[method] || method;
 }
 
-function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
+async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
 
   // Get excerpt length for truncation detection
@@ -4339,17 +4340,44 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   }
 
   // Extract original score from HTML/text if not already present
+  // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
   if (!data.originalScore && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
-    const scoreResult = extractScore(html, text, outletId);
+
+    // Old regex extraction (for comparison logging)
+    const regexResult = extractScore(html, text, outletId);
+
+    // New LLM extraction (primary — async)
+    let llmResult = null;
+    try {
+      llmResult = await extractExplicitScore({ text, html, outletId });
+    } catch (e) {
+      console.log(`    ⚠ LLM score extraction failed: ${e.message}`);
+    }
+
+    // Log disagreements between old and new
+    if (regexResult && !llmResult) {
+      console.log(`    ⚠ SCORE DIFF: regex found "${regexResult.originalScore}" but LLM returned null [${outletId}]`);
+    } else if (!regexResult && llmResult) {
+      console.log(`    ✦ SCORE DIFF: LLM found "${llmResult.originalScore}" (${llmResult.normalizedScore}) but regex returned null [${outletId}]`);
+    } else if (regexResult && llmResult && regexResult.originalScore !== llmResult.originalScore) {
+      console.log(`    ⚠ SCORE DIFF: regex="${regexResult.originalScore}" vs LLM="${llmResult.originalScore}" (${llmResult.normalizedScore}) [${outletId}]`);
+    }
+
+    // Use LLM result if available, otherwise fall back to regex
+    const scoreResult = llmResult || regexResult;
     if (scoreResult) {
       data.originalScore = scoreResult.originalScore;
       data.originalScoreNormalized = scoreResult.normalizedScore;
       data.scoreSource = scoreResult.source;
+      data.originalScoreSource = scoreResult.source;
       if (scoreResult.confidence) {
         data.scoreConfidence = scoreResult.confidence;
       }
-      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)${scoreResult.confidence === 'low' ? ' [low confidence]' : ''}`);
+      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
+    } else {
+      // Both failed — mark as pending for retry
+      data.scoreExtractionPending = true;
     }
   }
 
@@ -5584,7 +5612,7 @@ async function processReview(review) {
     }
 
     // Update JSON (pass HTML for score extraction)
-    updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
+    await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
 
     // Persist URL discovery metadata if URL was changed via showNotMentioned recovery
     if (review._urlDiscovered && review.filePath) {
@@ -5688,7 +5716,7 @@ async function processReview(review) {
 
           const archivePath = retryResult.html ? archiveHtml(retryResult.html, review, retryResult.method) : null;
           const validation = validateReviewText(retryResult.text, review);
-          updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
+          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
 
           const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;
           if (retryMethodKey && state.tierBreakdown[retryMethodKey]) {

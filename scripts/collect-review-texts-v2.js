@@ -15,6 +15,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // Configuration
 const CONFIG = {
@@ -472,7 +473,7 @@ function mapSourceMethod(method) {
 }
 
 // Update review JSON with text
-function updateReviewJson(review, text, archivePath, method) {
+async function updateReviewJson(review, text, archivePath, method) {
   const wordCount = text.split(/\s+/).length;
   const showTitle = review.data.showId ? review.data.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
   const textQuality = classifyTextQuality(text, showTitle, wordCount);
@@ -490,15 +491,42 @@ function updateReviewJson(review, text, archivePath, method) {
     sourceMethod: sourceMethod,
   };
 
-  // Extract explicit score from HTML if not already present
+  // Extract explicit score from HTML/text if not already present
+  // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
   if (!updatedData.originalScore) {
     const html = archivePath ? fs.readFileSync(archivePath, 'utf8') : '';
-    const scoreResult = extractScore(html, text, review.data.outletId || '');
+    const outletId = review.data.outletId || '';
+
+    // Old regex extraction (for comparison logging)
+    const regexResult = extractScore(html, text, outletId);
+
+    // New LLM extraction (primary — async)
+    let llmResult = null;
+    try {
+      llmResult = await extractExplicitScore({ text, html, outletId });
+    } catch (e) {
+      console.log(`    ⚠ LLM score extraction failed: ${e.message}`);
+    }
+
+    // Log disagreements between old and new
+    if (regexResult && !llmResult) {
+      console.log(`    ⚠ SCORE DIFF: regex found "${regexResult.originalScore}" but LLM returned null [${outletId}]`);
+    } else if (!regexResult && llmResult) {
+      console.log(`    ✦ SCORE DIFF: LLM found "${llmResult.originalScore}" (${llmResult.normalizedScore}) but regex returned null [${outletId}]`);
+    } else if (regexResult && llmResult && regexResult.originalScore !== llmResult.originalScore) {
+      console.log(`    ⚠ SCORE DIFF: regex="${regexResult.originalScore}" vs LLM="${llmResult.originalScore}" (${llmResult.normalizedScore}) [${outletId}]`);
+    }
+
+    // Use LLM result if available, otherwise fall back to regex
+    const scoreResult = llmResult || regexResult;
     if (scoreResult) {
       updatedData.originalScore = scoreResult.originalScore;
       updatedData.originalScoreNormalized = scoreResult.normalizedScore;
       updatedData.scoreSource = scoreResult.source;
-      console.log(`    ★ Extracted score: ${scoreResult.originalScore} [${scoreResult.source}]`);
+      updatedData.originalScoreSource = scoreResult.source;
+      console.log(`    ★ Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
+    } else {
+      updatedData.scoreExtractionPending = true;
     }
   }
 
@@ -543,7 +571,7 @@ async function processReview(browser, review) {
     const validation = validateText(result.text, review);
     if (validation.valid) {
       const archivePath = saveArchive(review, result.html, result.method);
-      updateReviewJson(review, result.text, archivePath, result.method);
+      await updateReviewJson(review, result.text, archivePath, result.method);
       console.log(`  SUCCESS: ${validation.wordCount} words via ${result.method}`);
       return { success: true, method: result.method };
     } else {
@@ -565,7 +593,7 @@ async function processReview(browser, review) {
       const validation = validateText(result.text, review);
       if (validation.valid) {
         const archivePath = saveArchive(review, result.html, result.method);
-        updateReviewJson(review, result.text, archivePath, result.method);
+        await updateReviewJson(review, result.text, archivePath, result.method);
         console.log(`  SUCCESS: ${validation.wordCount} words via ${result.method}`);
         return { success: true, method: result.method };
       } else {
@@ -587,7 +615,7 @@ async function processReview(browser, review) {
     const validation = validateText(result.text, review);
     if (validation.valid) {
       const archivePath = saveArchive(review, result.html, result.method);
-      updateReviewJson(review, result.text, archivePath, result.method);
+      await updateReviewJson(review, result.text, archivePath, result.method);
       console.log(`  SUCCESS: ${validation.wordCount} words via ${result.method}`);
       return { success: true, method: result.method };
     } else {
