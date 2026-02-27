@@ -271,7 +271,17 @@
     "the-lion-king-1997/seattle-post-intelligencer--jeffrey-eric-jenkins.json",
     "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
     "the-lion-king-1997/unknown--frank-scheck.json",
-    "the-lion-king-1997/virginian-pilot--mal-vincent.json"
+    "the-lion-king-1997/virginian-pilot--mal-vincent.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-monsters-2026/talkinbroadway--james-wilson.json",
+    "the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
+    "the-other-place-2026/buy-tickets--unknown.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+    "the-play-that-goes-wrong-2019/chicagotribune--unknown.json",
+    "the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+    "the-play-that-goes-wrong-2019/frontmezzjunkies--steven-ross.json",
+    "the-play-that-goes-wrong-2019/paste-magazine--robert-massimi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -380,7 +390,13 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/broadway-voice--gregory-g-allen.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/broadwayworld--misha-davenport.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
-      "data/review-texts/the-dinosaurs-2026/talkinbroadway--marc-miller.json"
+      "data/review-texts/the-dinosaurs-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
+      "data/review-texts/the-monsters-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
+      "data/review-texts/the-outsiders-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/the-play-that-goes-wrong-2019/paste-magazine--robert-massimi.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -389,7 +405,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "the-lion-king-1997/virginian-pilot--mal-vincent.json",
+  "lastProcessed": "the-play-that-goes-wrong-2019/paste-magazine--robert-massimi.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -517,6 +533,17 @@
       "t": "2026-02-27T22:14:35.707Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T22:25:44.133Z",
+      "event": "bb-session",
+      "session": "1b221d84",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-27T22:25:45.262Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

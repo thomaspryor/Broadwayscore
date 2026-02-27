@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-27T22:25:36.047Z",
+  "updatedAt": "2026-02-27T22:32:43.723Z",
   "processed": 14,
-  "failed": 256,
-  "successRate": "5.2%",
+  "failed": 266,
+  "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 3,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 82,
+    "archiveToday": 88,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-02-27T15:54:33.509Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-27T15:58:17.775Z",
-      "event": "bb-session",
-      "session": "4f6f9827",
-      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
-    },
     {
       "t": "2026-02-27T15:58:19.255Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-02-27T22:14:35.707Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T22:25:44.133Z",
+      "event": "bb-session",
+      "session": "1b221d84",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-02-27T22:25:45.262Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
