@@ -1854,6 +1854,18 @@ function validateReviewTextQuality(shows) {
     return;
   }
 
+  // Build set of known outlet names from registry (skip garbage checks for these)
+  const knownOutletNames = new Set();
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (fs.existsSync(registryFile)) {
+    const reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    for (const [id, info] of Object.entries(reg.outlets)) {
+      knownOutletNames.add(id.toLowerCase());
+      if (info.name) knownOutletNames.add(info.name.toLowerCase());
+      if (info.aliases) info.aliases.forEach(a => knownOutletNames.add(a.toLowerCase()));
+    }
+  }
+
   // Build per-show maps of creative team and cast names
   const showCreativeTeam = {};  // showId -> Set of lowercase names
   const showCast = {};          // showId -> Set of lowercase names
@@ -1919,11 +1931,13 @@ function validateReviewTextQuality(shows) {
       }
 
       // CHECK 2: Outlet name is a sentence fragment (too long, contains verbs/articles)
-      if (outlet.length > 60) {
+      // Skip for known outlets in the registry (e.g., "A Younger Theatre" starts with "A " but is legitimate)
+      const isKnownOutlet = knownOutletNames.has(outlet.toLowerCase()) || knownOutletNames.has(file.split('--')[0]);
+      if (!isKnownOutlet && outlet.length > 60) {
         error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars) — likely a headline or sentence fragment`);
         garbageOutlets++;
         issues++;
-      } else if (/^(is |has |the show (is|was|has|features|stars|boasts) |a |an |in her |in his |but |with )/i.test(outlet)) {
+      } else if (!isKnownOutlet && /^(is |has |the show (is|was|has|features|stars|boasts) |a |an |in her |in his |but |with )/i.test(outlet)) {
         error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet}" starts with a sentence fragment`);
         garbageOutlets++;
         issues++;
