@@ -5,7 +5,9 @@
     "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
     "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
     "wicked-west-end-2021/variety--unknown.json",
-    "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json"
+    "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json",
+    "chinese-republicans-2026/nbcnews--unknown.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -31,7 +33,15 @@
     "bigfoot-2026/deadline--unknown.json",
     "book-of-mormon-2011/ew--thom-geier.json",
     "book-of-mormon-2011/theatermania--david-rooney.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json"
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "chicago-1996/nypost--elisabeth-vincentelli.json",
+    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+    "hadestown-west-end-2024/observer--david-cote.json",
+    "hamilton-west-end-2021/nbcnews--unknown.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "jerome-2025/wsj--unknown.json",
+    "kinky-boots-2026/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,13 +50,15 @@
       "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
       "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
       "wicked-west-end-2021/variety--unknown.json",
-      "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json"
+      "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json",
+      "hadestown-west-end-2024/deadline--greg-evans.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "perfect-crime-1987/nytimes--jason-zinoman.json"
+      "perfect-crime-1987/nytimes--jason-zinoman.json",
+      "chinese-republicans-2026/nbcnews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -56,12 +68,15 @@
       "data/review-texts/singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
       "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
+      "data/review-texts/hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hamilton-west-end-2021/nbcnews--unknown.json",
+      "data/review-texts/jerome-2025/wsj--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "book-of-mormon-2011/wsj--terry-teachout.json",
+  "lastProcessed": "kinky-boots-2026/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -93,6 +108,17 @@
     },
     {
       "t": "2026-02-27T15:58:19.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:04:36.319Z",
+      "event": "bb-session",
+      "session": "54452662",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-27T16:04:37.793Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
