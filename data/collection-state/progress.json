@@ -9,7 +9,10 @@
     "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-play-that-goes-wrong-2019/out-magazine--michael-musto.json",
     "the-producers-west-end-2025/london-theatre--for-chris-omaweng.json",
-    "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json"
+    "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json",
+    "you-got-older-2026/theatermania--hayley-levitt.json",
+    "you-got-older-2026/timeout--adam-feldman.json",
+    "you-got-older-2026/timeout--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -201,27 +204,7 @@
     "airline-highway-2015/nytg--stanford-friedman.json",
     "almost-famous-2022/nyt-theater--jonathan-mandell.json",
     "amelie-a-new-musical-2017/nytg--david-gordon.json",
-    "american-buffalo-2008/variety--daniel-daddario.json",
-    "american-buffalo-2022/hollywood-reporter--david-rooney.json",
-    "anything-goes-1987/hollywood-reporter--david-rooney.json",
-    "back-to-the-future-2023/variety--charles-isherwood.json",
-    "beetlejuice-2025/nyt-theater--jonathan-mandell.json",
-    "birthday-candles-2022/hollywood-reporter--angie-han.json",
-    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
-    "bob-fosses-dancin-2023/variety--peter-marks.json",
-    "boeingboeing-2008/variety--unknown.json",
-    "breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
-    "buena-vista-social-club-2023/variety--aramide-tinubu.json",
-    "dana-h-2021/hollywood-reporter--angie-han.json",
-    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
-    "dead-accounts-2012/hollywood-reporter--david-rooney.json",
-    "dead-outlaw-2025/nytg--gillian-russo.json",
-    "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
-    "eclipsed-2016/hollywood-reporter--david-rooney.json",
-    "falsettos-2016/nytg--david-roberts.json",
-    "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
-    "flying-over-sunset-2021/nytg--joe-dziemianowicz.json",
-    "fully-committed-2016/hollywood-reporter--david-rooney.json"
+    "american-buffalo-2008/variety--daniel-daddario.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -239,21 +222,16 @@
       "data/review-texts/betty-buckley-random-notes-2026/huffpost--unknown.json",
       "data/review-texts/a-strange-loop-2022/hollywood-reporter--david-rooney.json",
       "data/review-texts/a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json",
-      "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json",
-      "data/review-texts/american-buffalo-2008/variety--daniel-daddario.json",
-      "american-buffalo-2008/variety--daniel-daddario.json"
+      "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/you-got-older-2026/chicagotribune--unknown.json",
       "data/review-texts/a-view-from-the-bridge-2010/hollywood-reporter--leslie-felperin.json",
       "a-view-from-the-bridge-2010/hollywood-reporter--leslie-felperin.json",
       "data/review-texts/a-view-from-the-bridge-2015/variety--matt-trueman.json",
-      "a-view-from-the-bridge-2015/variety--matt-trueman.json",
-      "data/review-texts/american-buffalo-2022/hollywood-reporter--david-rooney.json"
+      "a-view-from-the-bridge-2015/variety--matt-trueman.json"
     ],
-    "directCookies": [
-      "buena-vista-social-club-2023/variety--aramide-tinubu.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [
       "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json"
     ],
@@ -321,18 +299,18 @@
       "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
       "data/review-texts/a-christmas-story-the-musical-2012/vulture--scott-brown.json",
       "data/review-texts/a-view-from-the-bridge-2010/nytg--kathleen-campion.json",
-      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json",
-      "data/review-texts/boeingboeing-2008/variety--unknown.json",
-      "data/review-texts/breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
-      "data/review-texts/falsettos-2016/nytg--david-roberts.json"
+      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json"
     ],
     "archive": [
       "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-      "kinky-boots-2026/talkinbroadway--unknown.json"
+      "kinky-boots-2026/talkinbroadway--unknown.json",
+      "you-got-older-2026/theatermania--hayley-levitt.json",
+      "you-got-older-2026/timeout--adam-feldman.json",
+      "you-got-older-2026/timeout--unknown.json"
     ]
   },
   "startTime": "2026-02-27T18:03:30.723Z",
-  "lastProcessed": "fully-committed-2016/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "you-got-older-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -422,17 +400,6 @@
       "t": "2026-02-27T21:05:30.195Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-02-27T21:13:02.773Z",
-      "event": "bb-session",
-      "session": "827d1dc7",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-broadway-revie"
-    },
-    {
-      "t": "2026-02-27T21:13:04.125Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
     }
   ]
 }
