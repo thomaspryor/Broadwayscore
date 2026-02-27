@@ -28,7 +28,7 @@ import {
   MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF,
   LOW_CONF_SCORE_SOURCES,
 } from '@/config/scoring';
-import { toScoringId } from './outlet-id-mapper';
+import { toScoringId, getRegistryTier } from './outlet-id-mapper';
 
 // ===========================================
 // TYPES
@@ -264,6 +264,19 @@ export function getOutletConfig(outletId?: string, outletName?: string) {
       if (config.name.toLowerCase() === outletName.toLowerCase()) {
         return { ...config, id };
       }
+    }
+  }
+
+  // Fallback to outlet-registry.json tier (covers ~775 outlets not in OUTLET_TIERS)
+  if (outletId) {
+    const registryTier = getRegistryTier(outletId);
+    if (registryTier) {
+      return {
+        tier: registryTier as 1 | 2 | 3,
+        name: outletName || outletId,
+        scoreFormat: 'text_bucket',
+        id: outletId,
+      };
     }
   }
 
