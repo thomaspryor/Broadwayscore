@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T20:49:45.076Z",
-  "processed": 9,
-  "failed": 181,
-  "successRate": "4.7%",
+  "updatedAt": "2026-02-27T21:10:00.206Z",
+  "processed": 10,
+  "failed": 190,
+  "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 7,
-    "amp": 2,
-    "browserbase": 1,
+    "amp": 5,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 61,
+    "archiveToday": 63,
     "archive": 2
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -81,6 +81,28 @@
       "event": "bb-session",
       "session": "6b6cc802",
       "url": "https://www.broadwayworld.com/chicago/article/Review-Roundup-YOU-GOT-OLDER-at-St"
+    },
+    {
+      "t": "2026-02-27T21:02:28.046Z",
+      "event": "bb-session",
+      "session": "0576b02f",
+      "url": "http://www.hollywoodreporter.com/review/mark-strong-a-view-bridge-774841"
+    },
+    {
+      "t": "2026-02-27T21:02:29.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T21:05:28.775Z",
+      "event": "bb-session",
+      "session": "e83a01f1",
+      "url": "http://variety.com/2015/legit/reviews/view-from-the-bridge-review-west-end-londo"
+    },
+    {
+      "t": "2026-02-27T21:05:30.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

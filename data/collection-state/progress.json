@@ -8,7 +8,8 @@
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "shadowlands-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-play-that-goes-wrong-2019/out-magazine--michael-musto.json",
-    "the-producers-west-end-2025/london-theatre--for-chris-omaweng.json"
+    "the-producers-west-end-2025/london-theatre--for-chris-omaweng.json",
+    "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -191,7 +192,16 @@
     "a-bronx-tale-2007/nyt-theater--jonathan-mandell.json",
     "a-christmas-carol-2001/hollywood-reporter--david-rooney.json",
     "a-christmas-story-the-musical-2012/vulture--scott-brown.json",
-    "a-dolls-house-2023/nytg--joe-dziemianowicz.json"
+    "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/variety--marilyn-stasio.json",
+    "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+    "a-view-from-the-bridge-2010/hollywood-reporter--leslie-felperin.json",
+    "a-view-from-the-bridge-2010/nytg--kathleen-campion.json",
+    "a-view-from-the-bridge-2015/variety--matt-trueman.json",
+    "airline-highway-2015/nytg--stanford-friedman.json",
+    "almost-famous-2022/nyt-theater--jonathan-mandell.json",
+    "amelie-a-new-musical-2017/nytg--david-gordon.json",
+    "american-buffalo-2008/variety--daniel-daddario.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -206,10 +216,17 @@
     ],
     "amp": [
       "data/review-texts/bigfoot-2026/deadline--unknown.json",
-      "data/review-texts/betty-buckley-random-notes-2026/huffpost--unknown.json"
+      "data/review-texts/betty-buckley-random-notes-2026/huffpost--unknown.json",
+      "data/review-texts/a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json",
+      "a-view-from-the-bridge-2010/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [
-      "data/review-texts/you-got-older-2026/chicagotribune--unknown.json"
+      "data/review-texts/you-got-older-2026/chicagotribune--unknown.json",
+      "data/review-texts/a-view-from-the-bridge-2010/hollywood-reporter--leslie-felperin.json",
+      "a-view-from-the-bridge-2010/hollywood-reporter--leslie-felperin.json",
+      "data/review-texts/a-view-from-the-bridge-2015/variety--matt-trueman.json",
+      "a-view-from-the-bridge-2015/variety--matt-trueman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -277,7 +294,9 @@
       "data/review-texts/wicked-west-end-2021/talkinbroadway--unknown.json",
       "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
       "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
-      "data/review-texts/a-christmas-story-the-musical-2012/vulture--scott-brown.json"
+      "data/review-texts/a-christmas-story-the-musical-2012/vulture--scott-brown.json",
+      "data/review-texts/a-view-from-the-bridge-2010/nytg--kathleen-campion.json",
+      "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json"
     ],
     "archive": [
       "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
@@ -285,7 +304,7 @@
     ]
   },
   "startTime": "2026-02-27T18:03:30.723Z",
-  "lastProcessed": "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
+  "lastProcessed": "american-buffalo-2008/variety--daniel-daddario.json",
   "log": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -353,6 +372,28 @@
       "event": "bb-session",
       "session": "6b6cc802",
       "url": "https://www.broadwayworld.com/chicago/article/Review-Roundup-YOU-GOT-OLDER-at-St"
+    },
+    {
+      "t": "2026-02-27T21:02:28.046Z",
+      "event": "bb-session",
+      "session": "0576b02f",
+      "url": "http://www.hollywoodreporter.com/review/mark-strong-a-view-bridge-774841"
+    },
+    {
+      "t": "2026-02-27T21:02:29.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T21:05:28.775Z",
+      "event": "bb-session",
+      "session": "e83a01f1",
+      "url": "http://variety.com/2015/legit/reviews/view-from-the-bridge-review-west-end-londo"
+    },
+    {
+      "t": "2026-02-27T21:05:30.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
