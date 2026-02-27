@@ -3,7 +3,8 @@
     "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
     "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
     "kinky-boots-2026/talkinbroadway--unknown.json",
-    "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json"
+    "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+    "oliver-west-end-2024/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -121,13 +122,23 @@
     "marcel-on-the-train-2026/talkinbroadway--james-wilson.json",
     "maybe-happy-ending-2024/culturesauce--thom-geier.json",
     "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/one-minute-critic--unknown.json",
-    "mj-the-musical-west-end-2024/dailybeast--unknown.json"
+    "mj-the-musical-west-end-2024/dailybeast--unknown.json",
+    "moulin-rouge-2019/curtainup--charles-wright.json",
+    "moulin-rouge-2019/theatres-leiter-side--samuel-l-leiter.json",
+    "my-joy-is-heavy-2025/one-minute-critic--unknown.json",
+    "my-joy-is-heavy-2025/stageandcinema--unknown.json",
+    "oh-mary-west-end-2025/financialtimes--sarah-hemming.json",
+    "oh-mary-west-end-2025/thestage--holly-omahony.json",
+    "oh-mary-west-end-2025/thestage--mahony.json",
+    "oh-mary-west-end-2025/usatoday--unknown.json",
+    "paddington-the-musical-west-end-2025/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-producers-west-end-2025/timeout--andrzej-lukowski.json",
-      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json"
+      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+      "oliver-west-end-2024/times-uk--dominic-maxwell.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-2026/deadline--unknown.json",
@@ -173,7 +184,10 @@
       "data/review-texts/kinky-boots-2026/talkinbroadway--matthew-murray.json",
       "data/review-texts/little-shop-of-horrors-2019/curtainup--dan-rubins.json",
       "data/review-texts/little-women-the-musical-2026/talkinbroadway--unknown.json",
-      "data/review-texts/marcel-on-the-train-2026/talkinbroadway--james-wilson.json"
+      "data/review-texts/marcel-on-the-train-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/moulin-rouge-2019/curtainup--charles-wright.json",
+      "data/review-texts/my-joy-is-heavy-2025/one-minute-critic--unknown.json",
+      "data/review-texts/my-joy-is-heavy-2025/stageandcinema--unknown.json"
     ],
     "archive": [
       "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
@@ -181,7 +195,7 @@
     ]
   },
   "startTime": "2026-02-27T18:03:30.723Z",
-  "lastProcessed": "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "paddington-the-musical-west-end-2025/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -230,6 +244,17 @@
     },
     {
       "t": "2026-02-27T19:46:31.828Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T20:09:52.794Z",
+      "event": "bb-session",
+      "session": "2cedc96d",
+      "url": "https://www.usatoday.com/story/entertainment/music/2024/12/18/best-broadway-show"
+    },
+    {
+      "t": "2026-02-27T20:09:54.381Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
     }
