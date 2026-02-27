@@ -25,6 +25,7 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'telegraph': 'TELEGRAPH',
   'standard': 'STANDARD',
   'times-uk': 'TIMES-UK',
+  'daily-mail': 'DAILYMAIL',
 
   // Tier 2 outlets
   'chicagotribune': 'CHTRIB',
