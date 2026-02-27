@@ -160,11 +160,22 @@ function main() {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const filePath = path.join(showDir, fileName);
 
-    // Skip if file already exists (check both canonical and legacy filename)
-    const legacyFileName = `${outletId}--${criticSlug}.json`;
-    if (fs.existsSync(filePath) || (canonicalOutletId !== outletId && fs.existsSync(path.join(showDir, legacyFileName)))) {
+    // Skip if any existing file maps to the same canonical outlet+critic
+    // (handles all outlet ID variants, not just the input ID)
+    if (fs.existsSync(filePath)) {
       skipped++;
       continue;
+    }
+    if (fs.existsSync(showDir)) {
+      const existingFiles = fs.readdirSync(showDir);
+      const hasDupe = existingFiles.some(f => {
+        const m = f.match(/^(.+?)--(.+)\.json$/);
+        return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
+      });
+      if (hasDupe) {
+        skipped++;
+        continue;
+      }
     }
 
     // Create show directory
