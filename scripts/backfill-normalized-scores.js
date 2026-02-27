@@ -20,10 +20,10 @@ const WRITE = process.argv.includes('--write');
 
 // Canonical mapping from src/config/scoring.ts
 const LETTER_GRADES = {
-  'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 78,
-  'C+': 72, 'C': 65, 'C-': 58,
-  'D+': 40, 'D': 35, 'D-': 30,
+  'A+': 95, 'A': 90, 'A-': 85,
+  'B+': 80, 'B': 76, 'B-': 72,
+  'C+': 67, 'C': 62, 'C-': 57,
+  'D+': 42, 'D': 35, 'D-': 30,
   'F': 20
 };
 

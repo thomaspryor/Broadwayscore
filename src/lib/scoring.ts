@@ -22,19 +22,19 @@ import {
 
 // Letter grade mappings (documented in methodology)
 const LETTER_GRADE_MAP: Record<string, number> = {
-  'A+': 98,
-  'A': 95,
-  'A-': 92,
-  'B+': 88,
-  'B': 85,
-  'B-': 82,
-  'C+': 78,
-  'C': 75,
-  'C-': 72,
-  'D+': 68,
-  'D': 65,
-  'D-': 62,
-  'F': 50,
+  'A+': 95,
+  'A': 90,
+  'A-': 85,
+  'B+': 80,
+  'B': 76,
+  'B-': 72,
+  'C+': 67,
+  'C': 62,
+  'C-': 57,
+  'D+': 42,
+  'D': 35,
+  'D-': 30,
+  'F': 20,
 };
 
 // Sentiment-based mappings (for reviews without explicit ratings)

@@ -23,11 +23,11 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
 // Letter grade conversions (same as other scripts)
 const LETTER_GRADES = {
-  'a+': 98, 'a': 95, 'a-': 92,
-  'b+': 88, 'b': 85, 'b-': 82,
-  'c+': 78, 'c': 75, 'c-': 72,
-  'd+': 68, 'd': 65, 'd-': 62,
-  'f': 40
+  'a+': 95, 'a': 90, 'a-': 85,
+  'b+': 80, 'b': 76, 'b-': 72,
+  'c+': 67, 'c': 62, 'c-': 57,
+  'd+': 42, 'd': 35, 'd-': 30,
+  'f': 20
 };
 
 // Designation patterns — INTENTIONALLY EMPTY
