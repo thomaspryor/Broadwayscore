@@ -314,7 +314,16 @@
     "the-little-mermaid-the-musical-2026/theatermania--unknown.json",
     "the-monsters-2026/new-york-sun--elysa-gardner.json",
     "the-monsters-2026/theatermania--pete-hempstead.json",
-    "the-office-a-musical-parody-2018/theatermania--unknown.json"
+    "the-office-a-musical-parody-2018/theatermania--unknown.json",
+    "the-other-place-2026/timeout--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-play-that-goes-wrong-2019/broadwaynews--unknown.json",
+    "the-play-that-goes-wrong-2019/nydailynews--unknown.json",
+    "the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
+    "the-play-that-goes-wrong-2019/theatermania--unknown.json",
+    "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
+    "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json",
+    "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -741,7 +750,8 @@
     "los-soles-truncos-2025/nypost--unknown.json",
     "six-2021/observer--david-cote.json",
     "stranger-things-2024/broadwaynews--brittani-samuel.json",
-    "the-office-a-musical-parody-2018/broadwaynews--unknown.json"
+    "the-office-a-musical-parody-2018/broadwaynews--unknown.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -975,7 +985,13 @@
       "the-great-gatsby-2024/timeout--adam-feldman.json",
       "the-little-mermaid-the-musical-2026/theatermania--unknown.json",
       "the-monsters-2026/new-york-sun--elysa-gardner.json",
-      "the-monsters-2026/theatermania--pete-hempstead.json"
+      "the-monsters-2026/theatermania--pete-hempstead.json",
+      "the-other-place-2026/timeout--adam-feldman.json",
+      "the-outsiders-2024/timeout--adam-feldman.json",
+      "the-play-that-goes-wrong-2019/nydailynews--unknown.json",
+      "the-play-that-goes-wrong-2019/theatermania--unknown.json",
+      "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
+      "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1043,7 +1059,8 @@
       "sweetmeats-west-end-2026/guardian--anya-ryan.json",
       "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
       "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
-      "the-lion-king-west-end-2021/guardian--michael-billington.json"
+      "the-lion-king-west-end-2021/guardian--michael-billington.json",
+      "the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1184,7 +1201,9 @@
       "data/review-texts/kinky-boots-2026/rollingstone--unknown.json",
       "data/review-texts/kinky-boots-2026/talkinbroadway--matthew-murray.json",
       "data/review-texts/kinky-boots-2026/talkinbroadway--unknown.json",
-      "data/review-texts/los-soles-truncos-2025/nypost--unknown.json"
+      "data/review-texts/los-soles-truncos-2025/nypost--unknown.json",
+      "data/review-texts/the-office-a-musical-parody-2018/broadwaynews--unknown.json",
+      "data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
@@ -1290,11 +1309,13 @@
       "the-emporium-2025/theatermania--unknown.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "the-lion-king-1997/new-york--john-simon.json",
-      "the-office-a-musical-parody-2018/theatermania--unknown.json"
+      "the-office-a-musical-parody-2018/theatermania--unknown.json",
+      "the-play-that-goes-wrong-2019/broadwaynews--unknown.json",
+      "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json"
     ]
   },
   "startTime": "2026-02-26T22:34:45.091Z",
-  "lastProcessed": "the-office-a-musical-parody-2018/theatermania--unknown.json",
+  "lastProcessed": "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json",
   "log": [
     {
       "t": "2026-02-27T11:31:04.518Z",
@@ -1317,6 +1338,17 @@
       "t": "2026-02-27T11:41:27.839Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T11:50:30.550Z",
+      "event": "bb-session",
+      "session": "5c90acea",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-27T11:50:31.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

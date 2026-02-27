@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T11:48:48.537Z",
-  "processed": 315,
-  "failed": 425,
-  "successRate": "42.6%",
+  "updatedAt": "2026-02-27T11:52:48.250Z",
+  "processed": 324,
+  "failed": 426,
+  "successRate": "43.2%",
   "tierBreakdown": {
-    "playwright": 230,
+    "playwright": 236,
     "amp": 30,
     "browserbase": 0,
     "directCookies": 24,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 138,
-    "archive": 104
+    "archiveToday": 140,
+    "archive": 106
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-27T11:31:04.518Z",
@@ -36,6 +36,17 @@
       "t": "2026-02-27T11:41:27.839Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T11:50:30.550Z",
+      "event": "bb-session",
+      "session": "5c90acea",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-02-27T11:50:31.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
