@@ -139,6 +139,22 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). 5 stars with measured but unqualified praise = Rave range (83+).'
   },
 
+  // MEASURED RAVE example (score: 85) - no superlatives, but consistent praise with no caveats
+  {
+    reviewExcerpt: `It's probably my favorite in the cycle. The ensemble is uniformly excellent, with each actor carving out a distinct, lived-in character. Ruben Santiago-Hudson's direction is assured and fluid, letting the overlapping conversations breathe naturally. The result is a deeply satisfying evening of theater that sneaks up on you emotionally. This is the kind of play that reminds you why live theater matters.`,
+    score: 85,
+    bucket: 'Rave',
+    reasoning: 'No superlatives like "masterpiece" or "triumph," but consistently positive throughout: "favorite," "uniformly excellent," "assured and fluid," "deeply satisfying," "reminds you why live theater matters." Zero caveats or reservations. Measured language + no reservations = Rave, not Positive.'
+  },
+
+  // STRONG POSITIVE example (score: 80) - high praise BUT with a real caveat
+  {
+    reviewExcerpt: `The new musical version is a delightfully daffy romp, so silly and fun-making that its sometimes heavy-handed political messaging doesn't get in the way of a Broadway good time. The performances are winning across the board, and the choreography is a showstopper. But the book labors to update the source material for modern sensibilities, and the seams show.`,
+    score: 80,
+    bucket: 'Positive',
+    reasoning: 'Strong praise ("delightfully daffy romp," "winning performances," "showstopper") BUT has real reservations ("heavy-handed political messaging," "the seams show," "labors to update"). The caveats are specific and meaningful — this is a strong Positive (80), not a Rave. Compare to the measured rave above: same level of praise, but THIS review has real problems identified.'
+  },
+
   // 4-STAR example (score: 78) - clear recommendation
   {
     reviewExcerpt: `The dancers and singers of the ensemble are first-rate, and Wheeldon gives them a lot to do. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jackson's signature sound and moves but also his otherworldly affect. The design is deluxe: dazzling costumes, a smooth set, flashy lighting. Worth seeing for the performances alone. (4/5 stars)`,
@@ -208,7 +224,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '5.2.0';
+export const PROMPT_VERSION = '5.3.0';
 
 // Gemini calibration offset (adjust if Gemini has systematic bias)
 export const GEMINI_CALIBRATION_OFFSET = 0;
@@ -306,8 +322,8 @@ Classify the review into ONE of these buckets:
 
 | Bucket | Description | Examples |
 |--------|-------------|----------|
-| **Rave** | Enthusiastic, must-see recommendation | "masterpiece", "unmissable", "triumph", "essential viewing" |
-| **Positive** | Recommends seeing it, with or without reservations | "worth seeing", "entertaining", "enjoyable", "recommended" |
+| **Rave** | Strong recommendation with no significant reservations. Does NOT require superlatives — consistent praise throughout is enough. | "superb", "first-rate", "a must-see", "masterpiece", "I loved it", "don't miss this" |
+| **Positive** | Recommends seeing it, BUT with reservations, caveats, or mixed elements | "worth seeing", "entertaining despite flaws", "enjoyable", "recommended with caveats" |
 | **Mixed** | Neither recommends nor discourages | "has its moments", "uneven", "hit or miss", "for fans only" |
 | **Negative** | Does not recommend | "disappointing", "falls short", "skip the ticket price" |
 | **Pan** | Strongly negative | "avoid", "waste of time", "terrible", "a disaster" |
@@ -326,12 +342,21 @@ After choosing the bucket, assign a specific score within its range:
 
 Use the full range. A barely-positive review should be 70-72. A very strong positive should be 80-82.
 
+## The Positive/Rave Boundary (IMPORTANT)
+
+The most common scoring error is putting Raves in Positive. Ask yourself:
+
+**Does this review have significant reservations or caveats?**
+- YES → Positive (70-82). The reviewer liked it but flagged real problems.
+- NO → Rave (83+). Consistent praise without significant caveats = Rave, even if the language is measured or professional rather than effusive.
+
+Professional critics often write in a measured tone even when highly enthusiastic. "A superb production" or "richly satisfying" from a respected critic is a Rave — they don't need to say "masterpiece" for it to qualify. If the review praises performances, direction, and writing with no meaningful caveats, it's a Rave.
+
 ## Score Distribution
-Do NOT default to the midpoint of a bucket. For Positive reviews:
-- Strong praise, enthusiastic tone → 81-84
-- Solid recommendation, some reservations → 75-79
-- Barely positive, qualified → 70-73
-Spread scores across the full bucket range based on recommendation strength.
+Do NOT default to the midpoint of a bucket.
+- **Rave** 83-87: Consistent praise, professional tone, no reservations. 88-95: Superlative language, "must-see." 96-100: Once-in-a-generation.
+- **Positive** 78-82: Strong praise but with at least one real caveat. 74-77: Solid recommendation, notable reservations. 70-73: Barely positive, heavily qualified.
+- Spread scores across the full bucket range based on recommendation strength.
 
 ## Critical Instructions
 
