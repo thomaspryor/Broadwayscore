@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-02-26T07:49:42.226Z",
-  "consecutiveErrorDays": 0,
+  "lastRun": "2026-02-27T07:42:35.107Z",
+  "consecutiveErrorDays": 1,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,23 +9,23 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "warn",
-      "message": "3d old (warn threshold: 2d)"
+      "status": "error",
+      "message": "4d old (error threshold: 4d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "16h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -35,7 +35,7 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "10d old"
+      "message": "11d old"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -49,13 +49,13 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 15279 vs baseline 17911"
+      "status": "pass",
+      "message": "2280 shows, 155 open, 16262 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "warn",
-      "message": "Last success 3d ago (threshold: 2d)"
+      "message": "Last success 4d ago (threshold: 2d)"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -65,27 +65,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 9h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 6d ago"
+      "message": "Last success 7d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 6d ago"
+      "message": "Last success 7d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 6d ago (threshold: 2d)"
+      "message": "Last success 7d ago (threshold: 2d)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "81.6% scored (15279/18720)"
+      "message": "95.4% scored (16262/17052)"
     },
     {
       "name": "Cookies: expiration",
@@ -93,5 +93,5 @@
       "message": "data/cookies/ not found"
     }
   ],
-  "lastCleanStreak": 3
+  "lastCleanStreak": 0
 }
