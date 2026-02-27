@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-27T22:20:02.841Z",
+  "generatedAt": "2026-02-27T22:40:54.371Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -66,12 +66,28 @@
       "detail": "originalRating \"5/5\" (=100) vs score 25 (source: human-review)"
     },
     {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "good-night-and-good-luck-2025",
+      "outlet": "ew",
+      "critic": "Dalton Ross",
+      "detail": "originalRating \"A\" (=93) vs score 63 (source: human-review)"
+    },
+    {
       "type": "designation-score-mismatch",
       "severity": "medium",
       "showId": "impressionism-2009",
       "outlet": "nytimes",
       "critic": "Ben Brantley",
       "detail": "Critics_Pick but score=47 (source: llmScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "ew",
+      "critic": "Melissa Rose Bernardo",
+      "detail": "originalRating \"C-\" (=58) vs score 25 (source: human-review)"
     },
     {
       "type": "designation-score-mismatch",
@@ -88,6 +104,14 @@
       "outlet": "theater-life",
       "critic": "Barry Gordin",
       "detail": "originalRating \"5/5 stars\" (=100) vs score 75 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "lucky-guy-2013",
+      "outlet": "ew",
+      "critic": "Lisa Schwarzbaum",
+      "detail": "originalRating \"C+\" (=72) vs score 48 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -152,6 +176,14 @@
       "outlet": "ew",
       "critic": "Lisa Schwarzbaum",
       "detail": "originalRating \"D\" (=35) vs score 95 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "patriots-2024",
+      "outlet": "ew",
+      "critic": "Kristen Baldwin",
+      "detail": "originalRating \"B+\" (=87) vs score 45 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -324,34 +356,10 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
-      "showId": "airline-highway-2015",
-      "outlet": "culturesauce",
-      "critic": "Thom Geier",
-      "detail": "humanReviewScore 64 (mixed) overrides explicit \"93\" (=93, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
       "showId": "collected-stories-2010",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "humanReviewScore 78 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "fish-in-the-dark-2015",
-      "outlet": "timeout",
-      "critic": "Adam Feldman",
-      "detail": "humanReviewScore 72 (positive) overrides explicit \"40\" (=40, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "funny-girl-2022",
-      "outlet": "deadline",
-      "critic": "Greg Evans",
-      "detail": "humanReviewScore 63 (mixed) overrides explicit \"93\" (=93, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -367,15 +375,7 @@
       "showId": "good-night-and-good-luck-2025",
       "outlet": "ew",
       "critic": "Dalton Ross",
-      "detail": "humanReviewScore 63 (mixed) overrides explicit \"93\" (=93, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "head-over-heels-2018",
-      "outlet": "timeout",
-      "critic": "Adam Feldman",
-      "detail": "humanReviewScore 78 (positive) overrides explicit \"40\" (=40, negative)"
+      "detail": "humanReviewScore 63 (mixed) overrides explicit \"A\" (=93, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -383,7 +383,7 @@
       "showId": "jekyll-and-hyde-2013",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
-      "detail": "humanReviewScore 25 (negative) overrides explicit \"58\" (=58, mixed)"
+      "detail": "humanReviewScore 25 (negative) overrides explicit \"C-\" (=58, mixed)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -391,7 +391,7 @@
       "showId": "lucky-guy-2013",
       "outlet": "ew",
       "critic": "Lisa Schwarzbaum",
-      "detail": "humanReviewScore 48 (mixed) overrides explicit \"72\" (=72, positive)"
+      "detail": "humanReviewScore 48 (mixed) overrides explicit \"C+\" (=72, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
@@ -447,7 +447,7 @@
       "showId": "patriots-2024",
       "outlet": "ew",
       "critic": "Kristen Baldwin",
-      "detail": "humanReviewScore 45 (mixed) overrides explicit \"87\" (=87, positive)"
+      "detail": "humanReviewScore 45 (mixed) overrides explicit \"B+\" (=87, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
