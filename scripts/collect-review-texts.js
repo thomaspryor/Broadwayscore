@@ -325,36 +325,8 @@ const CONFIG = {
   },
 };
 
-// Domain alias groups — sites that legitimately redirect between each other
-// (e.g., Penske Media properties, NY Mag network). Both directions are checked.
-const DOMAIN_ALIAS_GROUPS = [
-  ['vulture.com', 'nymag.com', 'thecut.com', 'grubstreet.com'], // NY Mag network
-  ['variety.com', 'deadline.com', 'indiewire.com', 'rollingstone.com', 'hollywoodlife.com'], // Penske Media
-  ['ew.com', 'people.com'], // Dotdash Meredith
-  ['usatoday.com', 'northjersey.com', 'azcentral.com', 'jsonline.com'], // Gannett/USA Today Network
-  ['newyorktheatreguide.com', 'broadwayworld.com'], // NYTG merged into BWW
-];
-
-// Build a fast lookup: domain → set of allowed aliases
-const DOMAIN_ALIASES = new Map();
-for (const group of DOMAIN_ALIAS_GROUPS) {
-  for (const domain of group) {
-    if (!DOMAIN_ALIASES.has(domain)) DOMAIN_ALIASES.set(domain, new Set());
-    for (const alias of group) {
-      if (alias !== domain) DOMAIN_ALIASES.get(domain).add(alias);
-    }
-  }
-}
-
-function domainMatchesExpected(expectedDomain, actualDomain) {
-  if (actualDomain === expectedDomain) return true;
-  // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
-  if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
-  // Known alias (e.g., vulture.com → nymag.com)
-  const aliases = DOMAIN_ALIASES.get(expectedDomain);
-  if (aliases && aliases.has(actualDomain)) return true;
-  return false;
-}
+// Domain alias matching — imported from shared lib (scraper.js)
+const { domainMatchesExpected } = require('./lib/scraper');
 
 // Outlet-specific Playwright wait configurations
 // Some outlets render content via JS and need specific selectors/waits
@@ -5028,6 +5000,10 @@ function findReviewsToProcess() {
 
         // Skip fabricated entries unless a reason_filter is active (enables targeted recovery)
         if (data.fabricatedEntry === true && CONFIG.incompleteReasonFilter.length === 0) continue;
+
+        // Skip permanently retired URLs (broken redirects, etc.) — these are in failed-fetches.json
+        // too, but checking the file field avoids re-reading failed-fetches for files added after load
+        if (data.incompleteReason === 'permanently_unavailable' && CONFIG.incompleteReasonFilter.length === 0) continue;
 
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
         const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;

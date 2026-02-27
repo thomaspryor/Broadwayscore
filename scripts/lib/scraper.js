@@ -20,6 +20,42 @@
 const https = require('https');
 const { chromium } = require('playwright');
 
+// --- Domain alias groups ---
+// Sites that legitimately redirect between each other
+// (e.g., Penske Media properties, NY Mag network). Both directions are checked.
+const DOMAIN_ALIAS_GROUPS = [
+  ['vulture.com', 'nymag.com', 'thecut.com', 'grubstreet.com'], // NY Mag network
+  ['variety.com', 'deadline.com', 'indiewire.com', 'rollingstone.com', 'hollywoodlife.com'], // Penske Media
+  ['ew.com', 'people.com'], // Dotdash Meredith
+  ['usatoday.com', 'northjersey.com', 'azcentral.com', 'jsonline.com'], // Gannett/USA Today Network
+  ['newyorktheatreguide.com', 'broadwayworld.com'], // NYTG merged into BWW
+];
+
+const DOMAIN_ALIASES = new Map();
+for (const group of DOMAIN_ALIAS_GROUPS) {
+  for (const domain of group) {
+    if (!DOMAIN_ALIASES.has(domain)) DOMAIN_ALIASES.set(domain, new Set());
+    for (const alias of group) {
+      if (alias !== domain) DOMAIN_ALIASES.get(domain).add(alias);
+    }
+  }
+}
+
+/**
+ * Check if an actual domain matches the expected domain, accounting for
+ * subdomains (amp.nytimes.com vs nytimes.com) and known alias groups
+ * (vulture.com → nymag.com). Domains should be pre-stripped of www. prefix.
+ */
+function domainMatchesExpected(expectedDomain, actualDomain) {
+  if (actualDomain === expectedDomain) return true;
+  // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
+  if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
+  // Known alias (e.g., vulture.com → nymag.com)
+  const aliases = DOMAIN_ALIASES.get(expectedDomain);
+  if (aliases && aliases.has(actualDomain)) return true;
+  return false;
+}
+
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -215,5 +251,7 @@ module.exports = {
   fetchWithBrightData,
   fetchWithScrapingBee,
   fetchWithPlaywright,
-  cleanup
+  cleanup,
+  domainMatchesExpected,
+  DOMAIN_ALIAS_GROUPS,
 };
