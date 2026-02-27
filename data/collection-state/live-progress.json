@@ -1,18 +1,124 @@
 {
-  "updatedAt": "2026-02-27T18:12:43.789Z",
-  "processed": 1,
-  "failed": 9,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-27T18:22:20.223Z",
+  "processed": 13,
+  "failed": 207,
+  "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
+    "playwright": 9,
+    "amp": 3,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 66,
+    "archive": 2
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-02-27T15:46:53.219Z",
+      "event": "bb-session",
+      "session": "25df96e7",
+      "url": "http://www.nytimes.com/2005/10/03/theater/reviews/03perf.html?_r=0"
+    },
+    {
+      "t": "2026-02-27T15:46:54.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T15:54:32.544Z",
+      "event": "bb-session",
+      "session": "be18cfb8",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-27T15:54:33.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T15:58:17.775Z",
+      "event": "bb-session",
+      "session": "4f6f9827",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-27T15:58:19.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:04:36.319Z",
+      "event": "bb-session",
+      "session": "54452662",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-27T16:04:37.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:09:00.004Z",
+      "event": "bb-session",
+      "session": "34550790",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-27T16:09:01.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:11:34.420Z",
+      "event": "bb-session",
+      "session": "08bdb937",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-27T16:11:35.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T16:13:56.861Z",
+      "event": "bb-session",
+      "session": "8aabaf2e",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-27T16:13:58.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T16:16:36.314Z",
+      "event": "bb-session",
+      "session": "c75ecb9c",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-02-27T16:16:37.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T16:30:07.016Z",
+      "event": "bb-session",
+      "session": "93f6c460",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
+    },
+    {
+      "t": "2026-02-27T16:30:45.028Z",
+      "event": "bb-session",
+      "session": "40da6b89",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-02-27T16:30:46.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    }
+  ]
 }
