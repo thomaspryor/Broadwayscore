@@ -492,15 +492,12 @@ export function scoreToThumb(score: number): 'Up' | 'Flat' | 'Down' {
 }
 
 /**
- * Calculate tier from outlet configuration
+ * Calculate tier from outlet configuration.
+ * Reads from outlet-registry.json (single source of truth).
  */
 export function getOutletTier(outletId: string): 1 | 2 | 3 {
-  // Synced with src/config/scoring.ts OUTLET_TIERS (Feb 27 tier audit)
-  const tier1 = ['NYT', 'VARIETY', 'THR', 'VULT', 'WASHPOST', 'WSJ', 'GUARDIAN', 'TIMEOUTNY', 'BWAYNEWS', 'LATIMES', 'AP', 'NEWYORKER', 'TIMES-UK', 'TELEGRAPH', 'STANDARD', 'DAILYMAIL'];
-  const tier2 = ['NYP', 'CHTRIB', 'USATODAY', 'NYDN', 'EW', 'INDIEWIRE', 'DEADLINE', 'OBSERVER', 'TDB', 'SLANT', 'NYTHTR', 'NYTG', 'NYSR', 'TMAN', 'THLY', 'WRAP', 'NEWSDAY', 'TIME', 'ROLLSTONE', 'BLOOMBERG', 'VOX', 'SLATE', 'PEOPLE', 'PARADE', 'BILLBOARD', 'HUFFPOST', 'BACKSTAGE', 'VILLAGEVOICE', 'FT', 'PHILINQ', 'CHISUNTIMES', 'NYSUN', 'STAGE-UK', 'WHATSONSTAGE', 'TIMEOUT-LONDON', 'INDEPENDENT', 'LONDONTHEATRE', 'I-PAPER', 'AMNY', 'TALKINBWAY', 'NY1', 'NBC', 'CURTAINUP', 'NORTHJERSEY', 'NJCOM', 'BERGENRECORD', 'WNYC'];
-
-  const normalizedId = outletId.toUpperCase();
-  if (tier1.includes(normalizedId)) return 1;
-  if (tier2.includes(normalizedId)) return 2;
-  return 3;
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { getTier } = require('../lib/outlet-tiers');
+  const tier = getTier(outletId);
+  return (tier === 1 || tier === 2 || tier === 3) ? tier : 3;
 }

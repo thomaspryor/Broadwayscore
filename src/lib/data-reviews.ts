@@ -4,7 +4,6 @@
 
 import type { ProfileReview, OutletProfile, CriticProfile } from './data-types';
 import { OUTLET_TIERS } from '@/config/scoring';
-import { toScoringId } from './outlet-id-mapper';
 import { OUTLET_LOGOS } from '@/config/outlet-logos';
 import { slugify } from './data-core';
 
@@ -139,8 +138,8 @@ const OUTLET_ID_FIXES: Record<string, string> = {
   'new-york-magazine': 'vulture',
   'new-york-magazine-vulture': 'vulture',
   'nymag-vulture': 'vulture',
-  'nbcny': 'nbcnewyork',
-  'nbc-new-york': 'nbcnewyork',
+  'nbcnewyork': 'nbcny',
+  'nbc-new-york': 'nbcny',
   'time-out': 'timeout',
   'time-out-new-york': 'timeout',
   'timeout-new-york': 'timeout',
@@ -229,9 +228,9 @@ for (const show of (showsData as { shows: Array<{
 // ============================================
 
 function getOutletTier(outletId: string): { tier: 1 | 2 | 3; name: string } {
-  const scoringId = toScoringId(outletId);
-  if (scoringId && OUTLET_TIERS[scoringId]) {
-    return { tier: OUTLET_TIERS[scoringId].tier, name: OUTLET_TIERS[scoringId].name };
+  const normalized = outletId?.toLowerCase().trim();
+  if (normalized && OUTLET_TIERS[normalized]) {
+    return { tier: OUTLET_TIERS[normalized].tier, name: OUTLET_TIERS[normalized].name };
   }
   return { tier: 3, name: '' };
 }

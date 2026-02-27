@@ -188,32 +188,6 @@ export interface ShowListItem {
   openingDate: string;
 }
 
-// ============================================
-// OUTLET TIER DEFINITIONS
-// ============================================
-
-export const OUTLET_TIERS: Record<string, OutletTier> = {
-  // Tier 1: Major national publications
-  'The New York Times': 1,
-  'Vulture': 1,
-  'Variety': 1,
-  'The Hollywood Reporter': 1,
-  'Time Out New York': 1,
-  'The Washington Post': 1,
-
-  // Tier 2: Major theatre-focused outlets
-  'TheaterMania': 2,
-  'Broadway News': 2,
-  'BroadwayWorld': 2,
-  'New York Magazine': 2,
-  'Entertainment Weekly': 2,
-  'The Guardian': 2,
-  'Associated Press': 2,
-
-  // Tier 3: Smaller outlets / blogs
-  // Default tier for unlisted outlets
-};
-
 export const DEFAULT_WEIGHTS: CompositeScoreWeights = {
   critic: 0.50,
   audience: 0.35,
