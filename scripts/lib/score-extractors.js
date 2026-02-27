@@ -82,6 +82,23 @@ function extractTimeOutScore(html, text) {
     }
   }
 
+  // TimeOut uses SVG stars: filled SVGs before _unfilledRating_ div, unfilled inside it
+  const ratingStarsIdx = html.indexOf('_ratingStars_');
+  if (ratingStarsIdx > -1) {
+    const unfilledIdx = html.indexOf('_unfilledRating_', ratingStarsIdx);
+    if (unfilledIdx > -1) {
+      const filledSection = html.slice(ratingStarsIdx, unfilledIdx);
+      const filledCount = (filledSection.match(/<svg /g) || []).length;
+      if (filledCount >= 1 && filledCount <= 5) {
+        return {
+          originalScore: `${filledCount}/5`,
+          normalizedScore: starsToNumeric(filledCount, 5),
+          source: 'timeout-svg-stars'
+        };
+      }
+    }
+  }
+
   // Try "X out of 5 stars" pattern
   const outOfMatch = html.match(/(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i) ||
                      text.match(/(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i);
@@ -92,22 +109,6 @@ function extractTimeOutScore(html, text) {
       normalizedScore: starsToNumeric(rating, 5),
       source: 'text-pattern'
     };
-  }
-
-  // Try star rating icons in HTML — these are unreliable (often from listing page
-  // templates, not actual review scores). Always marked low-confidence so the
-  // rebuild gate skips them in favor of LLM scoring.
-  const starIconMatch = html.match(/class="[^"]*star[^"]*"[^>]*>.*?(\d+)/i);
-  if (starIconMatch) {
-    const rating = parseInt(starIconMatch[1]);
-    if (rating >= 1 && rating <= 5) {
-      return {
-        originalScore: `${rating}/5`,
-        normalizedScore: starsToNumeric(rating, 5),
-        source: 'star-icon',
-        confidence: 'low'
-      };
-    }
   }
 
   return null;
@@ -299,9 +300,22 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 2. CSS star rating classes (common in UK review sites)
-  const starClassMatch = html.match(/(?:rating|stars?|score)[\s-]*(\d)/i) ||
-                         html.match(/class="[^"]*(?:rating|stars?)[\s-]*(\d)[^"]*"/i);
+  // 2. WhatsOnStage: yellow.png (filled) vs star-grey.png (empty) images
+  if (html.includes('article-star-rating-container') || html.includes('whatsonstage.com')) {
+    const yellow = (html.match(/yellow\.png/g) || []).length;
+    const grey = (html.match(/star-grey\.png/g) || []).length;
+    if (yellow > 0 && yellow + grey === 5) {
+      return {
+        originalScore: `${yellow}/5 stars`,
+        normalizedScore: starsToNumeric(yellow, 5),
+        source: 'wos-star-images'
+      };
+    }
+  }
+
+  // 3. CSS star rating classes (common in UK review sites)
+  // Be more specific to avoid false positives from CSS/text
+  const starClassMatch = html.match(/class="[^"]*(?:rating|review-score|star-count)[\s_-]*(\d)[^"]*"/i);
   if (starClassMatch) {
     const rating = parseInt(starClassMatch[1]);
     if (rating >= 1 && rating <= 5) {
@@ -313,8 +327,8 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 3. Unicode stars in text or HTML
-  const unicodeMatch = text.match(/([★☆]{1,5})/) || html.match(/([★☆]{1,5})/);
+  // 4. Unicode stars in text or HTML
+  const unicodeMatch = text.match(/([★☆]{2,5})/) || html.match(/([★☆]{2,5})/);
   if (unicodeMatch) {
     const stars = unicodeMatch[1];
     const filled = (stars.match(/★/g) || []).length;
@@ -328,7 +342,7 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 4. Text patterns: "X/5", "X out of 5", "X stars"
+  // 5. Text patterns: "X/5", "X out of 5", "X stars"
   const textPatterns = [
     /(\d(?:\.\d)?)\s*\/\s*5/,
     /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
