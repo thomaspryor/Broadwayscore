@@ -323,7 +323,16 @@
     "the-play-that-goes-wrong-2019/theatermania--unknown.json",
     "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
     "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json",
-    "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json"
+    "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json",
+    "the-rat-trap-west-end-2026/guardian--unknown.json",
+    "the-rat-trap-west-end-2026/timeout--unknown.json",
+    "the-reservoir-2026/broadwaynews--unknown.json",
+    "the-reservoir-2026/theatermania--zachary-stewart.json",
+    "the-reservoir-2026/theatre-reviews-limited--david-roberts.json",
+    "the-tragedy-of-coriolanus-2026/timeout--billy-mcentee.json",
+    "the-unknown-2026/theatermania--zachary-stewart.json",
+    "the-unknown-2026/thewrap--robert-hofler.json",
+    "the-unknown-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -751,7 +760,8 @@
     "six-2021/observer--david-cote.json",
     "stranger-things-2024/broadwaynews--brittani-samuel.json",
     "the-office-a-musical-parody-2018/broadwaynews--unknown.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json"
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "titanique-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -991,7 +1001,13 @@
       "the-play-that-goes-wrong-2019/nydailynews--unknown.json",
       "the-play-that-goes-wrong-2019/theatermania--unknown.json",
       "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
-      "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json"
+      "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json",
+      "the-rat-trap-west-end-2026/guardian--unknown.json",
+      "the-reservoir-2026/theatermania--zachary-stewart.json",
+      "the-reservoir-2026/theatre-reviews-limited--david-roberts.json",
+      "the-tragedy-of-coriolanus-2026/timeout--billy-mcentee.json",
+      "the-unknown-2026/theatermania--zachary-stewart.json",
+      "the-unknown-2026/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/wicked-west-end-2021/variety--unknown.json",
@@ -1050,7 +1066,8 @@
       "antigone-this-play-i-read-in-high-school-2026/timeout--unknown.json",
       "hold-on-to-your-butts-2026/timeout--dave-calhoun.json",
       "spread-2026/theatermania--unknown.json",
-      "sweetmeats-west-end-2026/timeout--unknown.json"
+      "sweetmeats-west-end-2026/timeout--unknown.json",
+      "the-rat-trap-west-end-2026/timeout--unknown.json"
     ],
     "scrapingbee": [
       "the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
@@ -1203,7 +1220,8 @@
       "data/review-texts/kinky-boots-2026/talkinbroadway--unknown.json",
       "data/review-texts/los-soles-truncos-2025/nypost--unknown.json",
       "data/review-texts/the-office-a-musical-parody-2018/broadwaynews--unknown.json",
-      "data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json"
+      "data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json",
+      "data/review-texts/titanique-2026/wsj--charles-isherwood.json"
     ],
     "archive": [
       "garry-starr-classic-penguins-garrick-west-end-2026/broadwayworld--franco-milazzo.json",
@@ -1311,11 +1329,13 @@
       "the-lion-king-1997/new-york--john-simon.json",
       "the-office-a-musical-parody-2018/theatermania--unknown.json",
       "the-play-that-goes-wrong-2019/broadwaynews--unknown.json",
-      "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json"
+      "the-play-that-goes-wrong-2019/wsj--edward-rothstein.json",
+      "the-reservoir-2026/broadwaynews--unknown.json",
+      "the-unknown-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-02-26T22:34:45.091Z",
-  "lastProcessed": "the-playboy-of-the-western-world-west-end-2025/guardian--unknown.json",
+  "lastProcessed": "titanique-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-27T11:31:04.518Z",
@@ -1347,6 +1367,17 @@
     },
     {
       "t": "2026-02-27T11:50:31.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T11:55:34.612Z",
+      "event": "bb-session",
+      "session": "2c120d95",
+      "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadw"
+    },
+    {
+      "t": "2026-02-27T11:55:35.916Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

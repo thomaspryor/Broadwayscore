@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T11:52:48.250Z",
-  "processed": 324,
-  "failed": 426,
-  "successRate": "43.2%",
+  "updatedAt": "2026-02-27T11:56:12.321Z",
+  "processed": 333,
+  "failed": 427,
+  "successRate": "43.8%",
   "tierBreakdown": {
-    "playwright": 236,
+    "playwright": 242,
     "amp": 30,
     "browserbase": 0,
-    "directCookies": 24,
+    "directCookies": 25,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 140,
-    "archive": 106
+    "archiveToday": 141,
+    "archive": 108
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-27T11:31:04.518Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-02-27T11:50:31.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T11:55:34.612Z",
+      "event": "bb-session",
+      "session": "2c120d95",
+      "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadw"
+    },
+    {
+      "t": "2026-02-27T11:55:35.916Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
