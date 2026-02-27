@@ -315,15 +315,20 @@ function extractUKStarRating(html, text) {
   }
 
   // 2b. The Stage: stageStar.svg (filled) vs stageNoStar.svg (empty)
+  // Extract from FIRST StarRating block only (page has related articles with their own ratings)
   if (html.includes('StarRating') || html.includes('stageStar.svg')) {
-    const filled = (html.match(/stageStar\.svg/g) || []).length;
-    const empty = (html.match(/stageNoStar\.svg/g) || []).length;
-    if (filled > 0 && filled + empty === 5) {
-      return {
-        originalScore: `${filled}/5 stars`,
-        normalizedScore: starsToNumeric(filled, 5),
-        source: 'stage-star-svg'
-      };
+    const blockMatch = html.match(/StarRating[^"]*">((?:<img[^>]*>[\s]*){1,5})/);
+    if (blockMatch) {
+      const block = blockMatch[1];
+      const filled = (block.match(/stageStar\.svg/g) || []).length;
+      const empty = (block.match(/stageNoStar\.svg/g) || []).length;
+      if (filled > 0 && filled + empty === 5) {
+        return {
+          originalScore: `${filled}/5 stars`,
+          normalizedScore: starsToNumeric(filled, 5),
+          source: 'stage-star-svg'
+        };
+      }
     }
   }
 

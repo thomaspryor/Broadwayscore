@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -142,10 +143,15 @@ async function phase1ExtractLocal(reviews) {
 
     if (!text || text.length < 20) continue;
 
-    const result = await extractExplicitScore({
-      text,
-      outletId: review.data.outletId || ''
-    });
+    // Try rule-based extraction first (free, no LLM)
+    let result = extractScoreRuleBased('', text, review.data.outletId || '');
+    // Fall back to LLM if rule-based didn't find anything
+    if (!result) {
+      result = await extractExplicitScore({
+        text,
+        outletId: review.data.outletId || ''
+      });
+    }
     if (result) {
       recovered++;
       stats.phase1Recovered++;
@@ -499,11 +505,16 @@ async function phase3ScrapeURLs(reviews) {
       stats.phase3Scraped++;
 
       if (html && html.length > 500) {
-        const result = await extractExplicitScore({
-          text: review.data.fullText || '',
-          html: html || '',
-          outletId: review.data.outletId || ''
-        });
+        // Try rule-based extractors first (free, handles SVG/CSS/image star patterns)
+        let result = extractScoreRuleBased(html, review.data.fullText || '', review.data.outletId || '');
+        // Fall back to LLM-based extraction if rule-based didn't find anything
+        if (!result) {
+          result = await extractExplicitScore({
+            text: review.data.fullText || '',
+            html: html || '',
+            outletId: review.data.outletId || ''
+          });
+        }
         if (result) {
           recovered++;
           stats.phase3Recovered++;
