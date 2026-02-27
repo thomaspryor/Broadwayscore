@@ -78,6 +78,26 @@ function normalizeThumb(thumb) {
   return thumb; // 'Up' or 'Down'
 }
 
+const MONTH_TO_NUM = { january:'01', february:'02', march:'03', april:'04', may:'05', june:'06', july:'07', august:'08', september:'09', october:'10', november:'11', december:'12' };
+function normalizePublishDate(dateStr) {
+  if (!dateStr) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  // ISO timestamp: "2018-04-22T20:11:20-04:00"
+  const isoTs = dateStr.match(/^(\d{4}-\d{2}-\d{2})T/);
+  if (isoTs) return isoTs[1];
+  // "Month Day, Year" or "Month DayOrd, Year"
+  const mdy = dateStr.match(/^(\w+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/i);
+  if (mdy && MONTH_TO_NUM[mdy[1].toLowerCase()]) {
+    return `${mdy[3]}-${MONTH_TO_NUM[mdy[1].toLowerCase()]}-${mdy[2].padStart(2, '0')}`;
+  }
+  // Garbage values
+  if (/previous production/i.test(dateStr)) return null;
+  // Last resort: JS Date
+  const d = new Date(dateStr);
+  if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  return null;
+}
+
 function flagForHumanReview(data, reason, detail) {
   humanReviewQueue.push({
     showId: data.showId,
@@ -100,163 +120,9 @@ const THUMB_TO_SCORE = THUMB_SCORES;
 const BUCKET_TO_SCORE = BUCKET_SCORES;
 const LETTER_TO_SCORE = LETTER_GRADES;
 
-/**
- * EXPLICIT RATING EXTRACTION
- * Extracts ratings directly from review text (stars, grades, X/5, etc.)
- * These are MORE RELIABLE than LLM inference when present
- */
-
-function extractStarRatingFromText(text) {
-  if (!text) return null;
-
-  // Match star symbols: ★★★★☆, ★★★☆☆, etc.
-  const match = text.match(/★+☆*/);
-  if (!match) return null;
-
-  const filled = (match[0].match(/★/g) || []).length;
-  const empty = (match[0].match(/☆/g) || []).length;
-  const total = filled + empty;
-
-  // Only trust 4-star or 5-star scales
-  if (total >= 4 && total <= 5) {
-    // When there are no empty stars (☆), we can't determine the scale.
-    // ★★★★ could be 4/4 (100%) or 4/5 (80%) — ambiguous without ☆ markers.
-    // Exception: ★★★★★ is always 100% regardless of scale.
-    // Skip ambiguous cases and let slash/outOf extractors or originalScore handle it.
-    if (empty === 0 && filled < 5) return null;
-
-    return {
-      type: 'stars',
-      raw: match[0],
-      score: Math.round((filled / total) * 100)
-    };
-  }
-  return null;
-}
-
-function extractOutOfRatingFromText(text) {
-  if (!text) return null;
-
-  // "4 out of 5", "3 out of 5", "8 out of 10", etc.
-  const match = text.match(/(\d+\.?\d*)\s+out\s+of\s+(5|10|4)\b/i);
-  if (!match) return null;
-
-  const value = parseFloat(match[1]);
-  const scale = parseInt(match[2]);
-
-  // Sanity check
-  if (value > scale || value < 0) return null;
-
-  // Reject computed site metrics (e.g., "7.31 out of 10" from Digital Journal sidebar).
-  // Real critic ratings use whole numbers or .5 increments, never 2+ decimal places.
-  if (value !== Math.floor(value) && value !== Math.floor(value) + 0.5) return null;
-
-  return {
-    type: `outOf${scale}`,
-    raw: match[0],
-    score: Math.round((value / scale) * 100)
-  };
-}
-
-function extractSlashRatingFromText(text) {
-  if (!text) return null;
-
-  // Match "3/5" or "4/5" but NOT dates like "2023/4" or "2003/10"
-  // Look for patterns NOT preceded by a 4-digit year
-  const match = text.match(/(?:^|[^\d])([\d]\.?[\d]?)\s*\/\s*(5|4)(?:[^\d]|$)/);
-  if (!match) return null;
-
-  const value = parseFloat(match[1]);
-  const scale = parseInt(match[2]);
-
-  // Sanity check - value should be <= scale and not be a year fragment
-  if (value > scale || value < 0) return null;
-
-  return {
-    type: `slash${scale}`,
-    raw: `${value}/${scale}`,
-    score: Math.round((value / scale) * 100)
-  };
-}
-
-function extractLetterGradeFromText(text) {
-  if (!text) return null;
-
-  // Letter grades need context to avoid false positives
-  // Look for: "grade: B+", "Grade: A-", etc.
-  // Note: [+\-–—] matches ASCII plus/minus AND en-dash/em-dash (EW uses en-dash for minus)
-  // Use (?!\w) instead of \b at end — \b fails after en-dash since it's not a word boundary
-  // Only "grade" and "rating" keywords — NOT "score" (too ambiguous in theater: "score a ticket", "score: a joyful combination")
-  // "grade" requires colon — "Grade B" without colon is an idiom meaning "mediocre", not a letter grade
-  // Removed "gives a X" pattern (captured article "a" as grade "A") and "X grade/rating" pattern (same false positive)
-  const patterns = [
-    /\b(?:grade:\s*|rating[:\s]+)([A-D][+\-–—]?|F)(?!\w)/i,
-  ];
-
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) {
-      // Normalize en-dash/em-dash to ASCII minus for lookup
-      const grade = match[1].toUpperCase().replace(/[–—]/g, '-');
-      const gradeMap = {
-        'A+': 97, 'A': 93, 'A-': 90,
-        'B+': 87, 'B': 83, 'B-': 78,
-        'C+': 72, 'C': 65, 'C-': 58,
-        'D+': 40, 'D': 35, 'D-': 30,
-        'F': 20
-      };
-      if (gradeMap[grade]) {
-        return {
-          type: 'letterGrade',
-          raw: grade,
-          score: gradeMap[grade]
-        };
-      }
-    }
-  }
-  return null;
-}
-
-/**
- * Extract explicit rating from all text sources in a review
- * Returns { type, raw, score } or null if no explicit rating found
- */
-function extractExplicitRating(data) {
-  // Only scan fullText — never excerpts. Aggregator excerpts (especially bwwExcerpt)
-  // can contain adjacent critics' ratings from roundup pages, causing cross-contamination.
-  // Excerpt-only reviews are already confidence-downgraded and scored via Priority 2/3.
-  let allText = data.fullText || '';
-
-  if (!allText.trim()) return null;
-
-  // Strip NYSR cross-reference lines before extraction — they contain other critics'
-  // star ratings (e.g., "[Read Steven Suskin's ★★★★☆ review here.]") that would
-  // be incorrectly extracted as this review's rating
-  allText = allText
-    .replace(/\[Read\s+[^\]]*?★[^\]]*?review[^\]]*?\]/gi, '')
-    .replace(/Read\s+\w[^.]*?★+☆*[^.]*?review here\.?/gi, '');
-
-  // Try each extraction method in order of reliability
-  // Stars are most reliable (no false positives)
-  const starRating = extractStarRatingFromText(allText);
-  if (starRating) return starRating;
-
-  // "X out of Y" is also very reliable
-  const outOfRating = extractOutOfRatingFromText(allText);
-  if (outOfRating) return outOfRating;
-
-  // Slash ratings (3/5) - DISABLED: 100% false positive rate across all 10 corpus matches.
-  // Matches dates (4/4/2017), runtimes (3 1/4-hour), music notation (4/4 time),
-  // "Platform 9 3/4". Caused ±58 point errors. Use originalScore for slash ratings instead.
-  // const slashRating = extractSlashRatingFromText(allText);
-  // if (slashRating) return slashRating;
-
-  // Letter grades - only with proper context
-  const letterGrade = extractLetterGradeFromText(allText);
-  if (letterGrade) return letterGrade;
-
-  return null;
-}
+// EXPLICIT RATING EXTRACTION removed — now handled at collection time
+// by LLM extraction (scripts/lib/llm-score-extractor.js).
+// Rebuild only consumes pre-stored originalScore via parseOriginalScore().
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -990,7 +856,7 @@ const stats = {
     'bwwScore-fallback': 0,
     thumb: 0
   },
-  explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
+  // explicitOverrideLlm removed — extraction now at collection time
   thumbValidatedLlm: 0,    // Count how many times thumb validated low-conf LLM direction
   unscoredWithText: [],     // Reviews with text but no LLM score (should be scored!)
   byShow: {}
@@ -1110,32 +976,10 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 1: Explicit ratings extracted from fullText only
-  // Star ratings, letter grades, "X out of Y" directly stated in the review.
-  // Runs after originalScore because fullText can contain garbage sidebar content
-  // (e.g., "Alaska scored 7.31 out of 10" in a Digital Journal review).
-  const explicitRating = extractExplicitRating(data);
-  if (explicitRating) {
-    // Track if this overrides an LLM score
-    if (data.llmScore && data.llmScore.score) {
-      const diff = Math.abs(explicitRating.score - data.llmScore.score);
-      if (diff > 15) {
-        stats.explicitOverrideLlm++;
-      }
-    }
-
-    // Map rating type to source
-    let sourceType = 'explicit-stars';
-    if (explicitRating.type.startsWith('outOf')) sourceType = 'explicit-outOf';
-    else if (explicitRating.type.startsWith('slash')) sourceType = 'explicit-slash';
-    else if (explicitRating.type === 'letterGrade') sourceType = 'explicit-letterGrade';
-
-    return {
-      score: explicitRating.score,
-      source: sourceType,
-      explicitRaw: explicitRating.raw
-    };
-  }
+  // Priority 1 (formerly 0b): Explicit rating extraction from fullText
+  // REMOVED — now handled at collection time by LLM extraction.
+  // Reviews with explicit ratings will have originalScore pre-populated,
+  // caught by Priority 0.5 above.
 
   // Priority 2: LLM score (HIGH/MEDIUM confidence only)
   if (data.llmScore && data.llmScore.score) {
@@ -2231,7 +2075,7 @@ showDirs.forEach(showId => {
         thumb: scoreToThumb(score),
         criticName: data.criticName || null,
         url: data.url || null,
-        publishDate: data.publishDate || null,
+        publishDate: normalizePublishDate(data.publishDate),
         originalRating: data.originalScore || null,
         pullQuote: (() => {
           data._showStatus = showStatusMap[showId];
@@ -2757,7 +2601,6 @@ const explicitCount = (stats.scoreSources['explicit-stars'] || 0) +
                       (stats.scoreSources['explicit-letterGrade'] || 0);
 if (explicitCount > 0) {
   console.log(`\nExplicit ratings extracted from text: ${explicitCount}`);
-  console.log(`  Overrode conflicting LLM scores: ${stats.explicitOverrideLlm}`);
 }
 
 // Thumb validation summary
