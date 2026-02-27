@@ -44,19 +44,19 @@ for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
     for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = info.region;
   }
 }
-// Legacy hardcoded dual-market outlets (fallback if registry incomplete)
-const LEGACY_DUAL_MARKET_OUTLET_IDS = new Set([
-  'guardian', 'financialtimes', 'variety', 'stage-uk',
-  'financial-times', 'ft', 'the-guardian-uk',
-]);
-// Auto-generate from outlet-registry.json: London Tier 1/2 + Variety (+ all aliases)
-const DUAL_MARKET_OUTLET_IDS = new Set(LEGACY_DUAL_MARKET_OUTLET_IDS);
-for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
-  if ((info.region === 'london' && (info.tier === 1 || info.tier === 2)) || id === 'variety') {
-    DUAL_MARKET_OUTLET_IDS.add(id);
-    if (info.aliases) {
-      for (const alias of info.aliases) DUAL_MARKET_OUTLET_IDS.add(alias.toLowerCase());
-    }
+// Outlets that genuinely cover BOTH Broadway and West End markets.
+// NOT all London outlets — e.g., Evening Standard, London Theatre are London-only.
+// IDs listed here get auto-expanded with all registry aliases.
+const DUAL_MARKET_IDS = [
+  'guardian', 'financialtimes', 'variety', 'thestage',
+  'telegraph', 'times-uk', 'daily-mail', 'independent', 'whatsonstage',
+];
+const DUAL_MARKET_OUTLET_IDS = new Set();
+for (const targetId of DUAL_MARKET_IDS) {
+  DUAL_MARKET_OUTLET_IDS.add(targetId);
+  const info = (outletRegistry.outlets || {})[targetId];
+  if (info && info.aliases) {
+    for (const alias of info.aliases) DUAL_MARKET_OUTLET_IDS.add(alias.toLowerCase());
   }
 }
 // Allow Tier 1/2 outlets — they legitimately review WE shows (cross-market guard targets Tier 3 only)
