@@ -1451,8 +1451,8 @@ function validateReviewTextDuplicates(shows) {
         if (data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
             data.isCombinedReview || data.duplicateOf || data.fabricatedEntry) continue;
         if (!data.url) continue;
-        // Simple URL normalization: strip protocol, www, trailing slash
-        const normUrl = data.url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '');
+        // URL normalization: strip protocol, www, trailing slash, query/fragment, lowercase
+        const normUrl = data.url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').toLowerCase();
         if (!normUrl) continue;
         // Check if all sources are aggregator-based
         const allSources = new Set();
