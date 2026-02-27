@@ -1178,6 +1178,22 @@ function getBestScore(data) {
             stats.bwwScoreLlmConflicts = (stats.bwwScoreLlmConflicts || 0) + 1;
           }
         }
+        // Borderline rave detection: ensemble score 78-82 with high confidence
+        // Calibration data shows 50% of true raves are misclassified, with 62% scoring 78-82.
+        // Flag these for human review so they can be manually promoted if warranted.
+        if (data.llmScore.score >= 78 && data.llmScore.score <= 82 && data.llmScore.confidence !== 'low') {
+          stats.borderlineRaves = (stats.borderlineRaves || 0) + 1;
+          // Only flag when we have corroborating evidence of rave-level reception
+          const dtliUp = data.dtliThumb && normalizeThumb(data.dtliThumb) === 'Up';
+          const bwwUp = data.bwwThumb && normalizeThumb(data.bwwThumb) === 'Up';
+          const bwwHigh = data.bwwScore != null && data.bwwScore >= 8;
+          const corroboratingSignals = (dtliUp ? 1 : 0) + (bwwUp ? 1 : 0) + (bwwHigh ? 1 : 0);
+          if (corroboratingSignals >= 2) {
+            flagForHumanReview(data, 'borderline-rave',
+              `LLM=${data.llmScore.score} (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.`);
+            stats.borderlineRavesFlagged = (stats.borderlineRavesFlagged || 0) + 1;
+          }
+        }
         return { score: data.llmScore.score, source: 'llmScore' };
       }
     }
@@ -2748,6 +2764,10 @@ if (explicitCount > 0) {
 if (stats.thumbValidatedLlm > 0) {
   console.log(`\nThumb-validated LLM scores (confidence upgraded): ${stats.thumbValidatedLlm}`);
   console.log(`  (Aggregator thumbs agreed with LLM direction, boosting confidence)`);
+}
+if (stats.borderlineRaves > 0) {
+  console.log(`\nBorderline raves (score 78-82, high conf): ${stats.borderlineRaves}`);
+  console.log(`  Flagged for human review (2+ corroborating signals): ${stats.borderlineRavesFlagged || 0}`);
 }
 if (stats.bwwScoreLlmConflicts > 0) {
   console.log(`  BWW score-LLM conflicts (>30pt divergence): ${stats.bwwScoreLlmConflicts}`);
