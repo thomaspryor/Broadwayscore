@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-02-27T11:20:53.380Z",
-  "processed": 275,
-  "failed": 415,
+  "updatedAt": "2026-02-27T11:34:37.538Z",
+  "processed": 279,
+  "failed": 421,
   "successRate": "39.9%",
   "tierBreakdown": {
-    "playwright": 201,
+    "playwright": 206,
     "amp": 28,
     "browserbase": 0,
     "directCookies": 22,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 134,
-    "archive": 98
+    "archiveToday": 137,
+    "archive": 99
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-27T11:31:04.518Z",
+      "event": "bb-session",
+      "session": "51bae127",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/theater-review-kinky-b"
+    },
+    {
+      "t": "2026-02-27T11:31:05.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    }
+  ]
 }
