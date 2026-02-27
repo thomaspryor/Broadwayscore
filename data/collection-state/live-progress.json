@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T15:52:52.092Z",
-  "processed": 4,
-  "failed": 16,
+  "updatedAt": "2026-02-27T15:58:55.384Z",
+  "processed": 6,
+  "failed": 24,
   "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -25,6 +25,28 @@
       "t": "2026-02-27T15:46:54.452Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T15:54:32.544Z",
+      "event": "bb-session",
+      "session": "be18cfb8",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-27T15:54:33.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T15:58:17.775Z",
+      "event": "bb-session",
+      "session": "4f6f9827",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-27T15:58:19.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
