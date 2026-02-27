@@ -4908,7 +4908,7 @@ function findReviewsToProcess() {
     } catch (e) {}
   }
   if (permanentSkipCount > 0) {
-    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (dead 3+, other 5+, garbage 10+)`);
+    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (dead 3+, other 5+, garbage 3+)`);
   }
 
   for (const showId of shows) {
@@ -5278,6 +5278,10 @@ function recordFailedFetch(review, reason, details = {}) {
   } else {
     failedFetches.push(entry);
   }
+
+  // Remove any duplicate entries for this reviewId (cleanup for historical bug)
+  const finalIdx = failedFetches.findIndex(f => f.reviewId === review.reviewId);
+  failedFetches = failedFetches.filter((f, i) => f.reviewId !== review.reviewId || i === finalIdx);
 
   try {
     fs.writeFileSync(failedFetchesPath, JSON.stringify(failedFetches, null, 2));
