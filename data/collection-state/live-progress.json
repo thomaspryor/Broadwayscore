@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T00:25:51.025Z",
+  "updatedAt": "2026-02-27T00:36:04.127Z",
   "processed": 0,
-  "failed": 10,
+  "failed": 20,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -25,6 +25,28 @@
       "t": "2026-02-27T00:17:26.803Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T00:26:25.879Z",
+      "event": "bb-session",
+      "session": "e8512b10",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-02-27T00:26:27.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T00:34:05.099Z",
+      "event": "bb-session",
+      "session": "79d2c9e8",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-02-27T00:34:06.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

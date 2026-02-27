@@ -10,7 +10,17 @@
     "singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json",
     "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json"
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "beautiful-little-fool-west-end-2026/broadwaynews--unknown.json",
+    "bigfoot-2026/broadwaynews--unknown.json",
+    "bigfoot-2026/deadline--unknown.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "chicago-1996/nypost--elisabeth-vincentelli.json",
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,17 +30,23 @@
     ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bigfoot-2026/broadwaynews--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/perfect-crime-1987/nytimes--jason-zinoman.json",
-      "data/review-texts/singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json"
+      "data/review-texts/singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json",
+      "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/hadestown-west-end-2024/broadwaynews--charles-isherwood.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T00:08:45.628Z",
-  "lastProcessed": "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -42,6 +58,28 @@
       "t": "2026-02-27T00:17:26.803Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T00:26:25.879Z",
+      "event": "bb-session",
+      "session": "e8512b10",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-02-27T00:26:27.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T00:34:05.099Z",
+      "event": "bb-session",
+      "session": "79d2c9e8",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-02-27T00:34:06.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
