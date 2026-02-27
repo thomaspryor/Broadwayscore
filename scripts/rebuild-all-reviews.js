@@ -45,24 +45,21 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
     }
   }
 }
-// Legacy hardcoded dual-market outlets (fallback if registry incomplete)
-const LEGACY_DUAL_MARKET_OUTLETS = new Set([
-  'guardian', 'financialtimes', 'variety', 'thestage', 'stage-uk',
-  'telegraph', 'the-telegraph', 'the-telegraph-uk', 'daily-telegraph',
-  'times-uk', 'the-times', 'the-times-uk', 'the-times-clive-davis', 'times-london',
-  'daily-mail', 'daily-mail-uk', 'dailymail', 'the-daily-mail',
-  'independent', 'the-independent', 'the-independent-uk', 'theindependent',
-  'whatsonstage', 'whats-on-stage',
-  'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
-]);
-// Auto-generate from outlet-registry.json: London Tier 1/2 + Variety (+ all aliases)
-const DUAL_MARKET_OUTLETS = new Set(LEGACY_DUAL_MARKET_OUTLETS);
-for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-  if ((info.region === 'london' && (info.tier === 1 || info.tier === 2)) || id === 'variety') {
-    DUAL_MARKET_OUTLETS.add(id);
-    if (info.aliases) {
-      for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
-    }
+// Outlets that genuinely cover BOTH Broadway and West End markets.
+// NOT all London outlets — e.g., Evening Standard, London Theatre are London-only.
+// These are used by the REVERSE guard (London→Broadway), so adding London-only outlets
+// here would let London reviews contaminate Broadway scores.
+// IDs listed here get auto-expanded with all registry aliases.
+const DUAL_MARKET_OUTLET_IDS = [
+  'guardian', 'financialtimes', 'variety', 'thestage',
+  'telegraph', 'times-uk', 'daily-mail', 'independent', 'whatsonstage',
+];
+const DUAL_MARKET_OUTLETS = new Set();
+for (const targetId of DUAL_MARKET_OUTLET_IDS) {
+  DUAL_MARKET_OUTLETS.add(targetId);
+  const info = outletRegistry.outlets[targetId];
+  if (info && info.aliases) {
+    for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
   }
 }
 // Also allow all Tier 1/2 outlets — they legitimately review West End shows
