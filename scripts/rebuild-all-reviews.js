@@ -45,20 +45,26 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
     }
   }
 }
-// Dual-market outlets that legitimately cover both Broadway and West End
-// Includes explicit allowlist PLUS all Tier 1/2 outlets (major publications review international theatre)
-const DUAL_MARKET_OUTLETS = new Set([
+// Legacy hardcoded dual-market outlets (fallback if registry incomplete)
+const LEGACY_DUAL_MARKET_OUTLETS = new Set([
   'guardian', 'financialtimes', 'variety', 'thestage', 'stage-uk',
-  // UK Tier 1 outlets that review Broadway (send critics to NYC openings)
   'telegraph', 'the-telegraph', 'the-telegraph-uk', 'daily-telegraph',
   'times-uk', 'the-times', 'the-times-uk', 'the-times-clive-davis', 'times-london',
   'daily-mail', 'daily-mail-uk', 'dailymail', 'the-daily-mail',
-  // UK Tier 2 outlets that cover Broadway
   'independent', 'the-independent', 'the-independent-uk', 'theindependent',
   'whatsonstage', 'whats-on-stage',
-  // Common aliases for already-listed outlets
   'financial-times', 'financial-times-uk', 'ft', 'the guardian', 'the-guardian-uk',
 ]);
+// Auto-generate from outlet-registry.json: London Tier 1/2 + Variety (+ all aliases)
+const DUAL_MARKET_OUTLETS = new Set(LEGACY_DUAL_MARKET_OUTLETS);
+for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+  if ((info.region === 'london' && (info.tier === 1 || info.tier === 2)) || id === 'variety') {
+    DUAL_MARKET_OUTLETS.add(id);
+    if (info.aliases) {
+      for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
+    }
+  }
+}
 // Also allow all Tier 1/2 outlets — they legitimately review West End shows
 // The cross-market guard targets Tier 3 / untiered regional US outlets (Fayetteville Flyer, etc.)
 // Uses outlet-registry.json tiers (not scoring.ts — registry IDs match review-text file IDs)
