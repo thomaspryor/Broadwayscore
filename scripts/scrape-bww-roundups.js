@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
+const { normalizeOutletFull, slugify: canonicalSlugify, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -666,15 +666,17 @@ function saveReview(review) {
     fs.mkdirSync(showDir, { recursive: true });
   }
 
-  const criticSlug = slugify(review.criticName || 'unknown');
-  const outletSlug = review.outletId.toLowerCase();
-  const filename = `${outletSlug}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
+  // Use canonical filename for new files
+  const filename = generateReviewFilename(review.outletId, review.criticName);
+  let filepath = path.join(showDir, filename);
 
-  // Check if file exists
-  if (fs.existsSync(filepath)) {
-    // Read existing and merge BWW data
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  // Check for existing file under any outlet ID variant (canonical or legacy)
+  const existingFile = findExistingReviewFile(showDir, review.outletId, review.criticName);
+  if (existingFile && existingFile.data) {
+    // Merge BWW data into the existing file (preserve its path/filename)
+    filepath = existingFile.path;
+    const existingFilename = existingFile.filename;
+    const existing = existingFile.data;
 
     let updated = false;
 
@@ -682,7 +684,7 @@ function saveReview(review) {
     if (!existing.url && review.url) {
       existing.url = review.url;
       updated = true;
-      console.log(`      Added URL to ${filename}`);
+      console.log(`      Added URL to ${existingFilename}`);
     }
 
     if (!existing.bwwExcerpt && review.bwwExcerpt) {
@@ -700,20 +702,20 @@ function saveReview(review) {
       existing.bwwThumb = review.bwwThumb;
       updated = true;
       if (oldThumb) {
-        console.log(`      Corrected bwwThumb: ${oldThumb} → ${review.bwwThumb} in ${filename}`);
+        console.log(`      Corrected bwwThumb: ${oldThumb} → ${review.bwwThumb} in ${existingFilename}`);
       }
     }
 
     if (updated) {
       fs.writeFileSync(filepath, JSON.stringify(existing, null, 2));
-      console.log(`      Updated ${filename} with BWW data`);
+      console.log(`      Updated ${existingFilename} with BWW data`);
       return { created: false, updated: true, urlAdded: !!(review.url && !existing.url) };
     } else {
       return { created: false, updated: false, urlAdded: false };
     }
   }
 
-  // Create new file
+  // Create new file with canonical filename
   const reviewData = {
     showId: review.showId,
     outletId: review.outletId,

@@ -21,7 +21,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -256,12 +256,16 @@ function saveReviewFile(showId, criticSlug, reviewData) {
     fs.mkdirSync(showDir, { recursive: true });
   }
 
+  // Use canonical filename for new files
   const filename = `nysr--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
+  let filepath = path.join(showDir, filename);
 
-  if (fs.existsSync(filepath)) {
-    // Merge with existing
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  // Check for existing file under any outlet ID variant (canonical or legacy)
+  const existingFile = findExistingReviewFile(showDir, 'nysr', reviewData.criticName || criticSlug.replace(/-/g, ' '));
+  if (existingFile && existingFile.data) {
+    // Merge into the existing file (preserve its path/filename)
+    filepath = existingFile.path;
+    const existing = existingFile.data;
 
     // Only update if we have new/better data
     let updated = false;
