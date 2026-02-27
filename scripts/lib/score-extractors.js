@@ -40,10 +40,10 @@ function cleanHtmlForScoring(html) {
 
 // Letter grade → 0-100
 const LETTER_GRADES = {
-  'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 78,
-  'C+': 72, 'C': 65, 'C-': 58,
-  'D+': 40, 'D': 35, 'D-': 30,
+  'A+': 95, 'A': 90, 'A-': 85,
+  'B+': 80, 'B': 76, 'B-': 72,
+  'C+': 67, 'C': 62, 'C-': 57,
+  'D+': 42, 'D': 35, 'D-': 30,
   'F': 20
 };
 
@@ -287,8 +287,9 @@ function extractCultureSauceScore(html, text) {
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
 function extractUKStarRating(html, text) {
-  // 1. JSON-LD structured data (most reliable)
-  const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/);
+  // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
+  const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
+                      html.match(/"ratingValue"\s+content="(\d+(?:\.\d+)?)"/);
   if (jsonLdMatch) {
     const rating = parseFloat(jsonLdMatch[1]);
     if (rating >= 1 && rating <= 5) {
@@ -300,7 +301,7 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 2. WhatsOnStage: yellow.png (filled) vs star-grey.png (empty) images
+  // 2a. WhatsOnStage: yellow.png (filled) vs star-grey.png (empty) images
   if (html.includes('article-star-rating-container') || html.includes('whatsonstage.com')) {
     const yellow = (html.match(/yellow\.png/g) || []).length;
     const grey = (html.match(/star-grey\.png/g) || []).length;
@@ -309,6 +310,19 @@ function extractUKStarRating(html, text) {
         originalScore: `${yellow}/5 stars`,
         normalizedScore: starsToNumeric(yellow, 5),
         source: 'wos-star-images'
+      };
+    }
+  }
+
+  // 2b. The Stage: stageStar.svg (filled) vs stageNoStar.svg (empty)
+  if (html.includes('StarRating') || html.includes('stageStar.svg')) {
+    const filled = (html.match(/stageStar\.svg/g) || []).length;
+    const empty = (html.match(/stageNoStar\.svg/g) || []).length;
+    if (filled > 0 && filled + empty === 5) {
+      return {
+        originalScore: `${filled}/5 stars`,
+        normalizedScore: starsToNumeric(filled, 5),
+        source: 'stage-star-svg'
       };
     }
   }

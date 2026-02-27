@@ -20,67 +20,67 @@ const {
 
 describe('Score Conversion Rules', () => {
   describe('Letter Grade Conversions', () => {
-    it('A+ = 97', () => {
-      assert.strictEqual(getExpectedScore('A+'), 97);
+    it('A+ = 95', () => {
+      assert.strictEqual(getExpectedScore('A+'), 95);
     });
 
-    it('A = 93', () => {
-      assert.strictEqual(getExpectedScore('A'), 93);
+    it('A = 90', () => {
+      assert.strictEqual(getExpectedScore('A'), 90);
     });
 
-    it('A- = 90', () => {
-      assert.strictEqual(getExpectedScore('A-'), 90);
+    it('A- = 85', () => {
+      assert.strictEqual(getExpectedScore('A-'), 85);
     });
 
-    it('B+ = 87', () => {
-      assert.strictEqual(getExpectedScore('B+'), 87);
+    it('B+ = 80', () => {
+      assert.strictEqual(getExpectedScore('B+'), 80);
     });
 
-    it('B = 83', () => {
-      assert.strictEqual(getExpectedScore('B'), 83);
+    it('B = 76', () => {
+      assert.strictEqual(getExpectedScore('B'), 76);
     });
 
-    it('B- = 80', () => {
-      assert.strictEqual(getExpectedScore('B-'), 80);
+    it('B- = 72', () => {
+      assert.strictEqual(getExpectedScore('B-'), 72);
     });
 
-    it('C+ = 77', () => {
-      assert.strictEqual(getExpectedScore('C+'), 77);
+    it('C+ = 67', () => {
+      assert.strictEqual(getExpectedScore('C+'), 67);
     });
 
-    it('C = 73', () => {
-      assert.strictEqual(getExpectedScore('C'), 73);
+    it('C = 62', () => {
+      assert.strictEqual(getExpectedScore('C'), 62);
     });
 
-    it('C- = 70', () => {
-      assert.strictEqual(getExpectedScore('C-'), 70);
+    it('C- = 57', () => {
+      assert.strictEqual(getExpectedScore('C-'), 57);
     });
 
-    it('D = 60', () => {
-      assert.strictEqual(getExpectedScore('D'), 60);
+    it('D = 35', () => {
+      assert.strictEqual(getExpectedScore('D'), 35);
     });
 
-    it('F = 50', () => {
-      assert.strictEqual(getExpectedScore('F'), 50);
+    it('F = 20', () => {
+      assert.strictEqual(getExpectedScore('F'), 20);
     });
 
     it('case insensitive', () => {
-      assert.strictEqual(getExpectedScore('b+'), 87);
-      assert.strictEqual(getExpectedScore('a-'), 90);
+      assert.strictEqual(getExpectedScore('b+'), 80);
+      assert.strictEqual(getExpectedScore('a-'), 85);
     });
   });
 
   describe('Letter Grade Ranges', () => {
-    it('B+/A- averages to 88.5', () => {
+    it('B+/A- averages to 82.5', () => {
       const result = parseRating('B+/A-');
       assert.strictEqual(result.type, 'letter_range');
-      assert.strictEqual(result.expected, 88.5);
+      assert.strictEqual(result.expected, 82.5);
     });
 
-    it('B+ to A- averages to 88.5', () => {
+    it('B+ to A- averages to 82.5', () => {
       const result = parseRating('B+ to A-');
       assert.strictEqual(result.type, 'letter_range');
-      assert.strictEqual(result.expected, 88.5);
+      assert.strictEqual(result.expected, 82.5);
     });
   });
 
@@ -274,17 +274,17 @@ describe('Score Conversion Rules', () => {
 
   describe('validateScore', () => {
     it('correct score within tolerance passes', () => {
-      const result = validateScore('B+', 85, 10);
+      const result = validateScore('B+', 78, 10);
       assert.strictEqual(result.valid, true);
-      assert.strictEqual(result.expected, 87);
+      assert.strictEqual(result.expected, 80);
       assert.strictEqual(result.difference, 2);
     });
 
     it('incorrect score outside tolerance fails', () => {
       const result = validateScore('A', 50, 10);
       assert.strictEqual(result.valid, false);
-      assert.strictEqual(result.expected, 93);
-      assert.strictEqual(result.difference, 43);
+      assert.strictEqual(result.expected, 90);
+      assert.strictEqual(result.difference, 40);
     });
 
     it('null rating is skipped', () => {
