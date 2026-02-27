@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-02-27T01:21:30.383Z",
+  "updatedAt": "2026-02-27T01:28:03.855Z",
   "processed": 0,
-  "failed": 60,
+  "failed": 70,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 18,
+    "archiveToday": 22,
     "archive": 0
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -75,6 +75,17 @@
       "event": "bb-session",
       "session": "0b37e9dd",
       "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy"
+    },
+    {
+      "t": "2026-02-27T01:23:13.507Z",
+      "event": "bb-session",
+      "session": "4da234a2",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-02-27T01:23:14.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
