@@ -10,17 +10,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const TIER_WEIGHTS: Record<number, number> = { 1: 1.0, 2: 0.75, 3: 0.45 };
-
-const OUTLET_TIERS: Record<string, number> = {
-  // Tier 1
-  'NYT': 1, 'WASHPOST': 1, 'VARIETY': 1, 'VULT': 1, 'TIMEOUTNY': 1, 'THR': 1, 'GUARDIAN': 1,
-  // Tier 2
-  'DEADLINE': 2, 'INDIEWIRE': 2, 'NYDN': 2, 'NYP': 2, 'TDB': 2, 'CHTRIB': 2,
-  'TMAN': 2, 'NYSR': 2, 'NYTG': 2, 'NYTHTR': 2, 'EW': 2, 'WRAP': 2, 'THLY': 2,
-  // Tier 3
-  'AMNY': 3, 'CSCE': 3, 'FRONTMEZZ': 3, 'BWW': 3, 'JITNEY': 3, 'STGCNMA': 3, 'CITI': 3, 'OMC': 3,
-};
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getTier, TIER_WEIGHTS } = require('../lib/outlet-tiers') as { getTier: (id: string) => number; TIER_WEIGHTS: Record<number, number> };
 
 interface Review {
   showId: string;
@@ -52,7 +44,7 @@ function validate(showId: string) {
   const tierCounts: Record<number, { count: number; sum: number }> = { 1: { count: 0, sum: 0 }, 2: { count: 0, sum: 0 }, 3: { count: 0, sum: 0 } };
 
   reviews.forEach(r => {
-    const tier = OUTLET_TIERS[r.outletId || ''] || 3;
+    const tier = getTier(r.outletId || '');
     const weight = TIER_WEIGHTS[tier];
     weightedSum += r.assignedScore! * weight;
     totalWeight += weight;
@@ -120,7 +112,7 @@ function validate(showId: string) {
   console.log('\nAll Reviews:');
   const sorted = [...reviews].sort((a, b) => (b.assignedScore || 0) - (a.assignedScore || 0));
   sorted.forEach(r => {
-    const tier = OUTLET_TIERS[r.outletId || ''] || 3;
+    const tier = getTier(r.outletId || '');
     console.log(`  [T${tier}] ${r.outlet}${r.criticName ? ` (${r.criticName})` : ''}: ${r.assignedScore} (${r.bucket})`);
   });
 }

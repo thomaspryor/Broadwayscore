@@ -65,28 +65,8 @@ function loadShows() {
   return Object.values(data).filter(v => v && typeof v === 'object' && v.title);
 }
 
-// Outlet tier mapping (from src/config/scoring.ts via src/lib/outlet-id-mapper.ts)
-// Tier weights: 1 = 1.0, 2 = 0.75, 3 = 0.45 (default = 3)
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
-const OUTLET_TIER_MAP = {
-  // Tier 1
-  'nytimes': 1, 'nyt-theater': 1, 'washpost': 1, 'latimes': 1, 'wsj': 1,
-  'ap': 1, 'associated-press': 1, 'variety': 1, 'hollywood-reporter': 1,
-  'vulture': 1, 'guardian': 1, 'timeout': 1, 'broadwaynews': 1, 'newyorker': 1,
-  // Tier 2
-  'chicagotribune': 2, 'usatoday': 2, 'usa-today': 2, 'nydailynews': 2, 'nypost': 2,
-  'thewrap': 2, 'ew': 2, 'entertainment-weekly': 2, 'indiewire': 2, 'deadline': 2,
-  'slantmagazine': 2, 'dailybeast': 2, 'observer': 2, 'nytg': 2, 'nysr': 2,
-  'theatermania': 2, 'theatrely': 2, 'newsday': 2, 'time': 2, 'rollingstone': 2,
-  'bloomberg': 2, 'vox': 2, 'slate': 2, 'people': 2, 'parade': 2, 'billboard': 2,
-  'huffpost': 2, 'backstage': 2, 'village-voice': 2,
-  // Everything else defaults to Tier 3
-};
-
-function getOutletTier(outletId) {
-  if (!outletId) return 3;
-  return OUTLET_TIER_MAP[outletId.toLowerCase()] || 3;
-}
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier: getOutletTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 
 /**
  * Compute per-show scores from flat reviews array using tier-weighted averaging.

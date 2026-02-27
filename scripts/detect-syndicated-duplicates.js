@@ -47,20 +47,8 @@ const KNOWN_SYNDICATION = {
   'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
 };
 
-// --- Outlet tier lookup (from scoring.ts, simplified) ---
-const OUTLET_TIERS = {
-  'nytimes': 1, 'vulture': 1, 'variety': 1, 'hollywood-reporter': 1,
-  'washpost': 1, 'wsj': 1, 'timeout': 1, 'ap': 1, 'guardian': 1,
-  'broadwaynews': 1, 'newyorker': 1, 'latimes': 1,
-  'chicagotribune': 2, 'nydailynews': 2, 'nypost': 2, 'ew': 2,
-  'theatermania': 2, 'nytg': 2, 'newsday': 2, 'deadline': 2,
-  'usatoday': 2, 'indiewire': 2, 'backstage': 2, 'reuters': 2,
-  'front-row-center': 3, 'entertainmenthour': 3, 'whatsonstage': 3,
-};
-
-function getTier(outlet) {
-  return OUTLET_TIERS[outlet] || 3;
-}
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier } = require('./lib/outlet-tiers');
 
 // --- Text similarity (word trigram Jaccard) ---
 function trigramSimilarity(text1, text2) {

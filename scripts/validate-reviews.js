@@ -73,16 +73,8 @@ const LETTER_RANGES = {
   'F': { min: 0, max: 40 }
 };
 
-// Outlet tier definitions (from outlets.ts)
-const OUTLET_TIERS = {
-  'NYT': 1, 'VULT': 1, 'VARIETY': 1, 'THR': 1, 'GUARDIAN': 1, 'WASHPOST': 1,
-  'AP': 1, 'NEWYORKER': 1, 'TIMEOUTNY': 1,
-  'TMAN': 2, 'NYP': 2, 'DEADLINE': 2, 'EW': 2, 'CHTRIB': 2, 'USATODAY': 2,
-  'NYDN': 2, 'WRAP': 2, 'TDB': 2, 'OBSERVER': 2, 'INDIEWIRE': 2, 'SLANT': 2,
-  'NYTHTR': 2, 'NYTG': 2, 'NYSR': 2, 'THLY': 2, 'BWAYNEWS': 2, 'LATIMES': 2, 'WSJ': 2,
-  'BWW': 3, 'AMNY': 3, 'CITI': 3, 'CSCE': 3, 'FRONTMEZZ': 3, 'THERECS': 3,
-  'OMC': 3, 'STGCIN': 3, 'STGCNMA': 3, 'BACKSTAGE': 3, 'NEWSDAY': 3, 'NY1': 3, 'HUFFPOST': 3, 'JITNEY': 3
-};
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier } = require('./lib/outlet-tiers');
 
 // Results storage
 const results = {
@@ -512,9 +504,14 @@ function checkRatingConversion(review) {
 function checkOutletTier(review) {
   const outletId = review.outletId;
 
-  if (outletId && !OUTLET_TIERS[outletId]) {
-    recordIssue(review.showId, 'info', '10-outlet-tier',
-      `Unknown outlet ID: ${outletId}`, review);
+  if (outletId && getTier(outletId) === 3) {
+    // Only flag if not even in the registry (truly unknown, not just Tier 3)
+    const reg = require(path.join(__dirname, '..', 'data', 'outlet-registry.json'));
+    const outlets = reg.outlets || reg;
+    if (!outlets[outletId]) {
+      recordIssue(review.showId, 'info', '10-outlet-tier',
+        `Unknown outlet ID: ${outletId}`, review);
+    }
   }
 
   return true;

@@ -66,21 +66,8 @@ const CONFIG = {
 // OUTLET TIERS (from scoring.ts)
 // ============================================
 
-// Tier 1: Major national publications & top culture sites (canonical IDs from outlet-registry)
-const TIER_1_OUTLETS = new Set([
-  'nytimes', 'variety', 'vulture', 'hollywood-reporter', 'deadline',
-  'guardian', 'newyorker', 'time', 'washpost', 'wsj',
-  'latimes', 'ap', 'timeout', 'broadwaynews',
-]);
-
-// Tier 2: Regional papers, trades, theatre-specific outlets (canonical IDs)
-const TIER_2_OUTLETS = new Set([
-  'theatermania', 'nypost', 'nydailynews', 'ew', 'usatoday',
-  'observer', 'indiewire', 'thewrap', 'dailybeast', 'telegraph',
-  'broadwayworld', 'chicagotribune', 'newsday', 'rollingstone',
-  'bloomberg', 'vox', 'slate', 'people', 'billboard', 'huffpost',
-  'backstage', 'nysr', 'nytg', 'nyt-theater', 'theatrely', 'slantmagazine',
-]);
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier: _getOutletTier } = require('./lib/outlet-tiers');
 
 // ============================================
 // PAYWALL STATUS
@@ -121,9 +108,7 @@ const PAYWALLED_NO_CREDENTIALS = new Set([
  * Determine outlet tier (1, 2, or 3)
  */
 function getOutletTier(canonicalId) {
-  if (TIER_1_OUTLETS.has(canonicalId)) return 1;
-  if (TIER_2_OUTLETS.has(canonicalId)) return 2;
-  return 3;
+  return _getOutletTier(canonicalId);
 }
 
 /**

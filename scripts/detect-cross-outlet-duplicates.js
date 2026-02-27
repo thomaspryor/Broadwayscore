@@ -44,17 +44,8 @@ const THRESHOLD = parseInt((args.find(a => a.startsWith('--threshold=')) || '').
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_DIR = path.join(__dirname, '../data/audit');
 
-// --- Outlet tier lookup ---
-const OUTLET_TIERS = {
-  'nytimes': 1, 'vulture': 1, 'variety': 1, 'hollywood-reporter': 1,
-  'washpost': 1, 'wsj': 1, 'timeout': 1, 'ap': 1, 'guardian': 1,
-  'broadwaynews': 1, 'newyorker': 1, 'latimes': 1,
-  'chicagotribune': 2, 'nydailynews': 2, 'nypost': 2, 'ew': 2,
-  'theatermania': 2, 'nytg': 2, 'newsday': 2, 'deadline': 2,
-  'usatoday': 2, 'indiewire': 2, 'backstage': 2, 'reuters': 2,
-};
-
-function getTier(outlet) { return OUTLET_TIERS[outlet] || 3; }
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier } = require('./lib/outlet-tiers');
 
 // ============================================================
 // Text Processing
