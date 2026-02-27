@@ -57,10 +57,7 @@ const { OUTLET_DOMAINS } = (() => {
 // Tier 1/2 outlet lists — derived from outlet-registry.json (single source of truth).
 // Includes canonical IDs + aliases so OUTLET_DOMAINS lookup works with either form.
 // BW: non-London outlets (or dual-market). WE: London outlets (or dual-market).
-const _reg = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8')); }
-  catch { return { outlets: {} }; }
-})();
+const _reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
 const TIER1_OUTLETS_BW = [];
 const TIER2_OUTLETS_BW = [];
 const TIER1_OUTLETS_WE = [];
