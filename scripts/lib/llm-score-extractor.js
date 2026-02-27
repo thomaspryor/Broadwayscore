@@ -371,8 +371,9 @@ function postValidate(result) {
     const gradeMatch = raw.match(/([a-d][+\-]?|f)/i);
     if (gradeMatch) {
       const grade = gradeMatch[0];
-      if (grade.length === 1 && !/\b(grade|rating)\b/.test(raw)) {
-        if (raw.trim().length > 5) return null;
+      if (grade.length === 1 && raw.trim().length > 5) {
+        // Single letter in a long raw string — require "Grade:" or "Rating:" with colon
+        if (!/\b(grade|rating)\s*:/i.test(raw)) return null;
       }
     }
   }
