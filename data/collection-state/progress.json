@@ -3,7 +3,9 @@
     "hadestown-west-end-2024/variety--marilyn-stasio.json",
     "perfect-crime-1987/nytimes--jason-zinoman.json",
     "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
-    "the-office-a-musical-parody-2018/nyt-theater--unknown.json"
+    "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
+    "wicked-west-end-2021/variety--unknown.json",
+    "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -21,14 +23,24 @@
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
     "the-phantom-of-the-opera-west-end-2021/nytg--unknown.json",
     "the-phantom-of-the-opera-west-end-2021/nytimes--unknown.json",
-    "the-reservoir-2026/nytg--unknown.json"
+    "the-reservoir-2026/nytg--unknown.json",
+    "wicked-2003/newyorker--john-lahr.json",
+    "all-my-sons-west-end-2025/nypost--unknown.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "beautiful-little-fool-west-end-2026/broadwaynews--unknown.json",
+    "bigfoot-2026/deadline--unknown.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "hadestown-west-end-2024/variety--marilyn-stasio.json",
       "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
-      "the-office-a-musical-parody-2018/nyt-theater--unknown.json"
+      "the-office-a-musical-parody-2018/nyt-theater--unknown.json",
+      "wicked-west-end-2021/variety--unknown.json",
+      "antigone-this-play-i-read-in-high-school-2026/broadwaynews--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -42,12 +54,14 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-2026/nyt-theater--unknown.json",
       "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
       "data/review-texts/singfeld-a-musical-about-nothing-2023/nyt-theater--unknown.json",
-      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json"
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
+      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "the-reservoir-2026/nytg--unknown.json",
+  "lastProcessed": "book-of-mormon-2011/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -59,6 +73,28 @@
       "t": "2026-02-27T15:46:54.452Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T15:54:32.544Z",
+      "event": "bb-session",
+      "session": "be18cfb8",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-02-27T15:54:33.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T15:58:17.775Z",
+      "event": "bb-session",
+      "session": "4f6f9827",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-02-27T15:58:19.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
