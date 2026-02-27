@@ -139,22 +139,6 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). 5 stars with measured but unqualified praise = Rave range (83+).'
   },
 
-  // MEASURED RAVE example (score: 85) - no superlatives, but consistent praise with no caveats
-  {
-    reviewExcerpt: `It's probably my favorite in the cycle. The ensemble is uniformly excellent, with each actor carving out a distinct, lived-in character. Ruben Santiago-Hudson's direction is assured and fluid, letting the overlapping conversations breathe naturally. The result is a deeply satisfying evening of theater that sneaks up on you emotionally. This is the kind of play that reminds you why live theater matters.`,
-    score: 85,
-    bucket: 'Rave',
-    reasoning: 'No superlatives like "masterpiece" or "triumph," but consistently positive throughout: "favorite," "uniformly excellent," "assured and fluid," "deeply satisfying," "reminds you why live theater matters." Zero caveats or reservations. Measured language + no reservations = Rave, not Positive.'
-  },
-
-  // STRONG POSITIVE example (score: 80) - high praise BUT with a real caveat
-  {
-    reviewExcerpt: `The new musical version is a delightfully daffy romp, so silly and fun-making that its sometimes heavy-handed political messaging doesn't get in the way of a Broadway good time. The performances are winning across the board, and the choreography is a showstopper. But the book labors to update the source material for modern sensibilities, and the seams show.`,
-    score: 80,
-    bucket: 'Positive',
-    reasoning: 'Strong praise ("delightfully daffy romp," "winning performances," "showstopper") BUT has real reservations ("heavy-handed political messaging," "the seams show," "labors to update"). The caveats are specific and meaningful — this is a strong Positive (80), not a Rave. Compare to the measured rave above: same level of praise, but THIS review has real problems identified.'
-  },
-
   // 4-STAR example (score: 78) - clear recommendation
   {
     reviewExcerpt: `The dancers and singers of the ensemble are first-rate, and Wheeldon gives them a lot to do. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jackson's signature sound and moves but also his otherworldly affect. The design is deluxe: dazzling costumes, a smooth set, flashy lighting. Worth seeing for the performances alone. (4/5 stars)`,
