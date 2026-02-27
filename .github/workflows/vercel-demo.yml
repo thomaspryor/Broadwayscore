@@ -49,17 +49,6 @@ jobs:
           done
           echo "Feature flags overridden to: $ALL_FEATURES"
 
-      - name: Verify data files present
-        run: |
-          echo "=== Data files ==="
-          ls -la data/grosses.json data/commercial.json data/shows.json data/reviews.json data/audience-buzz.json 2>&1
-          echo "=== Grosses show count ==="
-          node -e "const d=require('./data/grosses.json'); console.log('grosses shows:', Object.keys(d.shows||{}).length); console.log('hamilton:', !!d.shows['hamilton'])"
-          echo "=== Commercial show count ==="
-          node -e "const d=require('./data/commercial.json'); console.log('commercial shows:', Object.keys(d.shows||d).length); console.log('hamilton:', !!(d.shows||d)['hamilton'])"
-          echo "=== Feature flags from env ==="
-          cat .vercel/.env.preview.local 2>/dev/null | grep NEXT_PUBLIC_FEATURES || echo "NOT FOUND in .env.preview.local"
-
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
