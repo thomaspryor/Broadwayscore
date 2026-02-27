@@ -99,6 +99,7 @@ When fixing an issue, fix it at the **pipeline/automation level** so it never re
 
 ### 15. Test Before Committing (MANDATORY for logic changes)
 **Never commit script/logic changes without testing against real data.** Write a test script that covers: (1) correct matches (varied samples), (2) expected rejections/edge cases, (3) mass validation against archive/production data when available. Use `skipLlm` for fast bulk tests, then spot-check LLM paths. Fix failures before committing.
+- **Scoring verification: use the engine, not manual scripts.** Never reimplement tier-weighted averaging to verify scores. Instead: `npm run build` → extract `CriticScore` from `out/show/*.html`, or run dev server and screenshot. The engine (`engine.ts`) is the source of truth — manual scripts miss top-critic promotions, designation bumps, floor rules, and registry fallbacks.
 
 ### 16. Prompt Changes Require A/B Distribution Check (MANDATORY)
 **NEVER rescore >100 reviews without the built-in A/B check.** The scoring pipeline (`--outdated`/`--rescore` with >100 files) auto-runs a 50-review sample comparison. If any bucket shifts >5% or mean drift >5pts, it aborts. Override with `--force-full-run` only after investigating.
@@ -126,12 +127,10 @@ Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full
 **Scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`, `enrich-ibdb-dates.js`, `scrape-grosses.ts`, `generate-critic-consensus.js`, `fetch-show-images-auto.js` (PINNED_IMAGES — never overwrite)
 
 ### Content Quality
-5 tiers: complete → truncated → excerpt → stub → invalid (`content-quality.js`). 5-layer quality gates on rebuild.
-Flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded. 4-layer wrong-production prevention.
+5 tiers: complete→truncated→excerpt→stub→invalid. Flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
 
 ### Automation
-Source: `data/review-texts/` → Derived: `reviews.json`. See `.github/workflows/CLAUDE.md`.
-Run `node scripts/validate-data.js` before pushing. Secrets via `env:` blocks. Local keys in `.env`.
+Source: `data/review-texts/` → Derived: `reviews.json`. Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
 ### Web Scraping
 Fallback: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
