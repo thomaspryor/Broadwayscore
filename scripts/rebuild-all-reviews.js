@@ -989,7 +989,9 @@ function getBestScore(data) {
     // Downgrade confidence when scoring from excerpt-only text
     // Audit showed ~50% error rate on excerpt-only high/medium confidence scores
     // Also downgrade when fullText was recovered from garbage — the LLM scored the excerpt, not the recovered text
-    const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom;
+    // Also downgrade when contentVerification flagged the article as wrong — the text is from a different article
+    const cvWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
+    const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom && !cvWrongArticle;
     const effectiveConfidence = (!hasOriginalFullText && confidence !== 'low') ? 'low' : confidence;
 
     // High/medium confidence: use directly
