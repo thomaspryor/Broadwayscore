@@ -324,6 +324,37 @@ const CONFIG = {
   },
 };
 
+// Domain alias groups — sites that legitimately redirect between each other
+// (e.g., Penske Media properties, NY Mag network). Both directions are checked.
+const DOMAIN_ALIAS_GROUPS = [
+  ['vulture.com', 'nymag.com', 'thecut.com', 'grubstreet.com'], // NY Mag network
+  ['variety.com', 'deadline.com', 'indiewire.com', 'rollingstone.com', 'hollywoodlife.com'], // Penske Media
+  ['ew.com', 'people.com'], // Dotdash Meredith
+  ['usatoday.com', 'northjersey.com', 'azcentral.com', 'jsonline.com'], // Gannett/USA Today Network
+  ['newyorktheatreguide.com', 'broadwayworld.com'], // NYTG merged into BWW
+];
+
+// Build a fast lookup: domain → set of allowed aliases
+const DOMAIN_ALIASES = new Map();
+for (const group of DOMAIN_ALIAS_GROUPS) {
+  for (const domain of group) {
+    if (!DOMAIN_ALIASES.has(domain)) DOMAIN_ALIASES.set(domain, new Set());
+    for (const alias of group) {
+      if (alias !== domain) DOMAIN_ALIASES.get(domain).add(alias);
+    }
+  }
+}
+
+function domainMatchesExpected(expectedDomain, actualDomain) {
+  if (actualDomain === expectedDomain) return true;
+  // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
+  if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
+  // Known alias (e.g., vulture.com → nymag.com)
+  const aliases = DOMAIN_ALIASES.get(expectedDomain);
+  if (aliases && aliases.has(actualDomain)) return true;
+  return false;
+}
+
 // Outlet-specific Playwright wait configurations
 // Some outlets render content via JS and need specific selectors/waits
 const OUTLET_WAIT_CONFIGS = {
@@ -820,11 +851,19 @@ async function fetchWithPlaywright(url, review) {
 
       // Verify we're on the expected domain (prevents cross-domain contamination
       // from redirects, ad interstitials, or stale page state)
-      const expectedDomain = new URL(url).hostname.replace(/^www\./, '');
       const actualUrl = page.url();
-      const actualDomain = new URL(actualUrl).hostname.replace(/^www\./, '');
-      if (actualDomain !== expectedDomain && !actualDomain.includes(expectedDomain) && !expectedDomain.includes(actualDomain)) {
-        throw new Error(`Domain mismatch: expected ${expectedDomain} but landed on ${actualDomain} (${actualUrl})`);
+      if (!actualUrl || actualUrl === 'about:blank' || actualUrl.startsWith('chrome-error')) {
+        throw new Error(`Page failed to load: ${actualUrl || '(empty)'}`);
+      }
+      try {
+        const expectedDomain = new URL(url).hostname.replace(/^www\./, '');
+        const actualDomain = new URL(actualUrl).hostname.replace(/^www\./, '');
+        if (!domainMatchesExpected(expectedDomain, actualDomain)) {
+          throw new Error(`Domain mismatch: expected ${expectedDomain} but landed on ${actualDomain} (${actualUrl})`);
+        }
+      } catch (e) {
+        if (e.message.startsWith('Domain mismatch') || e.message.startsWith('Page failed')) throw e;
+        // Fail open on URL parse errors (don't block on edge cases)
       }
 
       // Get page content
@@ -4075,12 +4114,14 @@ function archiveHtml(html, review, method) {
 -->\n`;
 
   // Verify HTML canonical URL matches expected domain (catches cross-domain contamination)
+  // Skip check for archive.org sources — they always set canonical to web.archive.org
   const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
   if (canonicalMatch) {
     try {
       const canonicalDomain = new URL(canonicalMatch[1]).hostname.replace(/^www\./, '');
       const expectedDomain = new URL(review.url).hostname.replace(/^www\./, '');
-      if (canonicalDomain !== expectedDomain && !canonicalDomain.includes(expectedDomain) && !expectedDomain.includes(canonicalDomain)) {
+      const isArchiveSource = canonicalDomain === 'web.archive.org' || method === 'archive';
+      if (!isArchiveSource && !domainMatchesExpected(expectedDomain, canonicalDomain)) {
         console.log(`  ⚠ ARCHIVE CONTAMINATION: canonical=${canonicalDomain} expected=${expectedDomain}`);
         console.log(`    Canonical URL: ${canonicalMatch[1]}`);
         // Still save archive (for debugging) but flag it
