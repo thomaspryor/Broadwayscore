@@ -166,7 +166,7 @@ export interface ComputedAudience extends RawAudience {
 }
 
 export interface CriticScoreResult {
-  score: number;                // Simple average of review scores
+  score: number;                // Tier-weighted average (same as weightedScore)
   weightedScore: number;        // Weighted average using tier weights
   reviewCount: number;
   tier1Count: number;
@@ -426,13 +426,13 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   const tier3Count = computedReviews.filter(r => r.tier === 3).length;
 
   return {
-    score: simpleScore,
+    score: weightedScore,
     weightedScore,
     reviewCount: reviews.length,
     tier1Count,
     tier2Count,
     tier3Count,
-    label: getCriticLabel(simpleScore),
+    label: getCriticLabel(weightedScore),
     reviews: computedReviews.sort((a, b) => b.reviewScore - a.reviewScore),
   };
 }
