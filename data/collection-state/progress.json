@@ -30,7 +30,17 @@
     "shadowlands-west-end-2026/broadwaynews--unknown.json",
     "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
     "silver-manhattan-2026/broadwaynews--unknown.json",
-    "silver-manhattan-2026/theatermania--unknown.json"
+    "silver-manhattan-2026/theatermania--unknown.json",
+    "starlight-express-west-end-2024/broadwaynews--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-2025/newsweek--lauren-giella.json",
+    "the-book-of-mormon-west-end-2024/broadwaynews--unknown.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-lion-king-west-end-2021/nbcnews--unknown.json",
+    "the-monsters-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json",
+    "the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json",
+    "the-playboy-of-the-western-world-west-end-2025/nbcnews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,12 +64,15 @@
       "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
       "data/review-texts/hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
       "data/review-texts/shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "data/review-texts/silver-manhattan-2026/theatermania--unknown.json"
+      "data/review-texts/silver-manhattan-2026/theatermania--unknown.json",
+      "data/review-texts/silver-manhattan-2026/broadwaynews--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
+      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-27T00:08:45.628Z",
-  "lastProcessed": "silver-manhattan-2026/theatermania--unknown.json",
+  "lastProcessed": "the-playboy-of-the-western-world-west-end-2025/nbcnews--unknown.json",
   "log": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -104,6 +117,17 @@
       "t": "2026-02-27T00:55:04.487Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-27T01:03:17.623Z",
+      "event": "bb-session",
+      "session": "7da28502",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-02-27T01:03:19.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
