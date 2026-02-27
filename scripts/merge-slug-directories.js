@@ -176,7 +176,7 @@ function main() {
         }
         stats.filesMerged++;
         const sLlm = path.join(LLM_SCORES_DIR, sourceDir, file);
-        if (fs.existsSync(sLlm)) { if (!DRY_RUN) try { fs.unlinkSync(sLlm); } catch {} stats.llmOps++; }
+        if (fs.existsSync(sLlm)) { if (!DRY_RUN) { try { fs.unlinkSync(sLlm); } catch {} } stats.llmOps++; }
       } else {
         if (!DRY_RUN) {
           sourceData.showId = canonicalId;
