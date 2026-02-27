@@ -351,7 +351,17 @@
     "dana-h-2021/hollywood-reporter--angie-han.json",
     "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
     "dead-accounts-2012/hollywood-reporter--david-rooney.json",
-    "dead-outlaw-2025/nytg--gillian-russo.json"
+    "dead-outlaw-2025/nytg--gillian-russo.json",
+    "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
+    "eclipsed-2016/hollywood-reporter--david-rooney.json",
+    "falsettos-2016/nytg--david-roberts.json",
+    "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
+    "flying-over-sunset-2021/nytg--joe-dziemianowicz.json",
+    "fully-committed-2016/hollywood-reporter--david-rooney.json",
+    "funny-girl-2022/hollywood-reporter--angie-han.json",
+    "grey-house-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/nyt-theater--jonathan-mandell.json",
+    "hangmen-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -389,7 +399,11 @@
       "data/review-texts/american-buffalo-2022/hollywood-reporter--david-rooney.json",
       "data/review-texts/anything-goes-1987/hollywood-reporter--david-rooney.json",
       "data/review-texts/days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
-      "data/review-texts/dead-accounts-2012/hollywood-reporter--david-rooney.json"
+      "data/review-texts/dead-accounts-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/fully-committed-2016/hollywood-reporter--david-rooney.json",
+      "data/review-texts/grey-house-2023/hollywood-reporter--angie-han.json",
+      "grey-house-2023/hollywood-reporter--angie-han.json"
     ],
     "browserbase": [
       "data/review-texts/giant-2026/nytimes--houman-barekat.json",
@@ -505,7 +519,10 @@
       "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json",
       "data/review-texts/amelie-a-new-musical-2017/nytg--david-gordon.json",
       "data/review-texts/boeingboeing-2008/variety--unknown.json",
-      "data/review-texts/breakfast-at-tiffanys-2013/variety--marilyn-stasio.json"
+      "data/review-texts/breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
+      "data/review-texts/falsettos-2016/nytg--david-roberts.json",
+      "data/review-texts/eclipsed-2016/hollywood-reporter--david-rooney.json",
+      "data/review-texts/funny-girl-2022/hollywood-reporter--angie-han.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -520,7 +537,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "dead-outlaw-2025/nytg--gillian-russo.json",
+  "lastProcessed": "hangmen-2022/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -692,6 +709,28 @@
       "t": "2026-02-27T23:20:14.286Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-27T23:31:39.811Z",
+      "event": "bb-session",
+      "session": "ded5a570",
+      "url": "https://www.hollywoodreporter.com/news/eclipsed-theater-review-1058128/"
+    },
+    {
+      "t": "2026-02-27T23:31:41.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T23:35:46.914Z",
+      "event": "bb-session",
+      "session": "b3d4cd0d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/funny-girl-broadway-review-bean"
+    },
+    {
+      "t": "2026-02-27T23:35:48.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
