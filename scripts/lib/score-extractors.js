@@ -327,10 +327,25 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 4. Unicode stars in text or HTML
-  const unicodeMatch = text.match(/([★☆]{2,5})/) || html.match(/([★☆]{2,5})/);
+  // 4. "Star rating: five stars ★ ★ ★ ★ ★" pattern (Musical Theatre Review)
+  const wordStarMatch = html.match(/star\s*rating[:\s]*<[^>]*>?(one|two|three|four|five)\s*stars?/i) ||
+                        text.match(/star\s*rating[:\s]*(one|two|three|four|five)\s*stars?/i);
+  if (wordStarMatch) {
+    const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+    const rating = wordMap[wordStarMatch[1].toLowerCase()];
+    if (rating) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'word-stars'
+      };
+    }
+  }
+
+  // 5. Unicode stars in text or HTML (consecutive or space-separated)
+  const unicodeMatch = text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/);
   if (unicodeMatch) {
-    const stars = unicodeMatch[1];
+    const stars = unicodeMatch[1].replace(/\s/g, '');
     const filled = (stars.match(/★/g) || []).length;
     const total = stars.length;
     if (total >= 2 && total <= 5) {
@@ -342,7 +357,7 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 5. Text patterns: "X/5", "X out of 5", "X stars"
+  // 6. Text patterns: "X/5", "X out of 5", "X stars"
   const textPatterns = [
     /(\d(?:\.\d)?)\s*\/\s*5/,
     /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
