@@ -1,63 +1,49 @@
 {
-  "updatedAt": "2026-02-27T12:05:32.778Z",
-  "processed": 351,
-  "failed": 429,
-  "successRate": "45.0%",
+  "updatedAt": "2026-02-27T14:49:05.875Z",
+  "processed": 872,
+  "failed": 1308,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 252,
-    "amp": 30,
-    "browserbase": 0,
-    "directCookies": 26,
-    "scrapingbee": 9,
+    "playwright": 589,
+    "amp": 296,
+    "browserbase": 2,
+    "directCookies": 170,
+    "scrapingbee": 80,
     "brightdata": 0,
-    "archiveToday": 142,
-    "archive": 115
+    "archiveToday": 289,
+    "archive": 197
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-02-27T11:31:04.518Z",
+      "t": "2026-02-25T20:57:04.696Z",
       "event": "bb-session",
-      "session": "51bae127",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater/theater-review-kinky-b"
+      "session": "30a70d1b",
+      "url": "https://www.fordhamobserver.com/review-children-of-a-lesser-god-is-revived-with-"
     },
     {
-      "t": "2026-02-27T11:31:05.595Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-02-27T11:41:26.766Z",
+      "t": "2026-02-25T21:01:26.550Z",
       "event": "bb-session",
-      "session": "f77646db",
-      "url": "https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/spread"
+      "session": "996b4f2d",
+      "url": "https://www.thewrap.com/my-fair-lady-broadway-review-lauren-ambrose-diana-rigg-h"
     },
     {
-      "t": "2026-02-27T11:41:27.839Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-02-27T11:50:30.550Z",
+      "t": "2026-02-25T21:06:00.738Z",
       "event": "bb-session",
-      "session": "5c90acea",
-      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+      "session": "4f1e930a",
+      "url": "https://www.thewrap.com/island-broadway-review-middling-musical-revival-long-suf"
     },
     {
-      "t": "2026-02-27T11:50:31.615Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-27T11:55:34.612Z",
+      "t": "2026-02-25T21:13:15.860Z",
       "event": "bb-session",
-      "session": "2c120d95",
-      "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadw"
+      "session": "44da1502",
+      "url": "https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/"
     },
     {
-      "t": "2026-02-27T11:55:35.916Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "t": "2026-02-25T21:18:03.173Z",
+      "event": "bb-session",
+      "session": "89ef6400",
+      "url": "https://www.theaterreviewsfrommyseat.com/the-ferryman/"
     }
   ]
 }

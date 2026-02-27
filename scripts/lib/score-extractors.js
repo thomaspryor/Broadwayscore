@@ -443,7 +443,7 @@ function extractGenericStarRating(html, text) {
         };
       } else {
         const rating = parseFloat(match[1]);
-        if (rating >= 0 && rating <= 5) {
+        if (rating >= 1 && rating <= 5) {
           return {
             originalScore: `${rating}/5`,
             normalizedScore: starsToNumeric(rating, 5),
