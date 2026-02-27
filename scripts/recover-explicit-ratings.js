@@ -59,8 +59,7 @@ const RATED_OUTLETS = new Map([
   ['entertainment-weekly', { format: 'letter-grade', api: null }],
   ['usatoday', { format: 'numeric/100', api: null }],
   ['usa-today', { format: 'numeric/100', api: null }],
-  ['culturesauce', { format: 'stars/5', api: null }],
-  ['culture-sauce', { format: 'stars/5', api: null }],
+  // CultureSauce removed: text-only reviews, no consistent explicit ratings
   ['theater-life', { format: 'stars/5', api: 'wordpress' }],
   ['nypost', { format: 'mixed', api: null }],
   ['ny-post', { format: 'mixed', api: null }],
@@ -405,29 +404,34 @@ function isArchiveFirstSite(url) {
  * Fetch HTML from archive.org CDX API (no dependencies needed)
  */
 async function fetchFromArchiveOrg(url) {
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008&to=2026`;
-  const cdxData = await httpGet(cdxUrl);
-  if (!cdxData) return null;
+  try {
+    const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008&to=2026`;
+    const cdxData = await httpGet(cdxUrl);
+    if (!cdxData) return null;
 
-  let rows;
-  try { rows = JSON.parse(cdxData); } catch { return null; }
-  if (!Array.isArray(rows) || rows.length < 2) return null;
+    let rows;
+    try { rows = JSON.parse(cdxData); } catch { return null; }
+    if (!Array.isArray(rows) || rows.length < 2) return null;
 
-  // First row is header, rest are snapshots
-  const snapshots = rows.slice(1)
-    .filter(row => row[4] === '200' && (row[3] || '').includes('text/html'))
-    .sort((a, b) => b[1].localeCompare(a[1])); // newest-first for score extraction
+    // First row is header, rest are snapshots
+    const snapshots = rows.slice(1)
+      .filter(row => row[4] === '200' && (row[3] || '').includes('text/html'))
+      .sort((a, b) => b[1].localeCompare(a[1])); // newest-first for score extraction
 
-  for (let i = 0; i < Math.min(snapshots.length, 3); i++) {
-    const [, timestamp, original] = snapshots[i];
-    const archiveUrl = `http://web.archive.org/web/${timestamp}id_/${original}`;
-    try {
-      const html = await httpGet(archiveUrl);
-      if (html && html.length > 1000) return html;
-    } catch {}
-    await sleep(1500); // respect archive.org rate limit
+    for (let i = 0; i < Math.min(snapshots.length, 3); i++) {
+      const [, timestamp, original] = snapshots[i];
+      const archiveUrl = `https://web.archive.org/web/${timestamp}id_/${original}`;
+      try {
+        const html = await httpGet(archiveUrl);
+        if (html && html.length > 1000) return html;
+      } catch {}
+      await sleep(1500); // respect archive.org rate limit
+    }
+    return null;
+  } catch (err) {
+    console.log(`    → Archive.org error: ${err.message}`);
+    return null;
   }
-  return null;
 }
 
 // ---------------------------------------------------------------------------
