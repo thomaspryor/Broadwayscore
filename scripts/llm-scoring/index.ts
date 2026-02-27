@@ -13,6 +13,7 @@
  *   --rescore             Re-score even if already scored
  *   --needs-rescore       Only score reviews flagged with needsRescore=true (excerpt→fullText upgrades)
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
+ *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --dry-run             Don't save results, just print what would happen
  *   --verbose             Detailed logging
@@ -62,7 +63,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
 
 import { detectMultiShow } from './multi-show-detector';
-import { PROMPT_VERSION } from './config';
+import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 
 // ========================================
 // SEMVER COMPARISON
@@ -79,6 +80,150 @@ function compareSemver(a: string, b: string): number {
     if (diff !== 0) return diff;
   }
   return 0;
+}
+
+// ========================================
+// A/B DISTRIBUTION CHECK (RESCORE GUARDRAIL)
+// ========================================
+
+const AB_SAMPLE_SIZE = 50;
+const AB_BUCKET_SHIFT_THRESHOLD = 5; // % shift in any bucket triggers warning
+
+interface ABCheckResult {
+  passed: boolean;
+  sampleSize: number;
+  bucketShifts: Record<string, { old: number; new: number; shift: number }>;
+  meanSignedDrift: number;
+  meanAbsDrift: number;
+  details: string;
+}
+
+/**
+ * Before a bulk rescore, sample N reviews, score them with the new prompt,
+ * and compare against their existing scores. If the distribution shifts
+ * significantly, refuse to proceed without --force-full-run.
+ */
+async function runABDistributionCheck(
+  files: Array<{ path: string; data: ReviewTextFile }>,
+  getScorableText: (data: ReviewTextFile, filePath: string) => string | null,
+  scorer: EnsembleReviewScorer,
+  verbose: boolean
+): Promise<ABCheckResult> {
+  console.log(`\n${'='.repeat(60)}`);
+  console.log(`  RESCORE A/B DISTRIBUTION CHECK`);
+  console.log(`  Scoring ${AB_SAMPLE_SIZE} random reviews with new prompt (v${PROMPT_VERSION})`);
+  console.log(`  to compare against their existing scores.`);
+  console.log(`${'='.repeat(60)}\n`);
+
+  // Sample reviews that have existing scores (for comparison)
+  const withScores = files.filter(f => (f.data as any).llmScore?.score != null);
+  const shuffled = [...withScores].sort(() => Math.random() - 0.5);
+  const sample = shuffled.slice(0, AB_SAMPLE_SIZE);
+
+  const buckets = ['Rave', 'Positive', 'Mixed', 'Negative', 'Pan'] as const;
+  const oldBucketCounts: Record<string, number> = {};
+  const newBucketCounts: Record<string, number> = {};
+  for (const b of buckets) { oldBucketCounts[b] = 0; newBucketCounts[b] = 0; }
+
+  const drifts: number[] = [];
+  let scored = 0;
+
+  for (let i = 0; i < sample.length; i++) {
+    const { path: filePath, data: reviewFile } = sample[i];
+    const text = getScorableText(reviewFile, filePath);
+    if (!text) continue;
+
+    const oldScore = (reviewFile as any).llmScore.score as number;
+    const oldBucket = (reviewFile as any).llmScore.bucket as string;
+
+    process.stdout.write(`  [${i + 1}/${sample.length}] ${reviewFile.showId} / ${reviewFile.outletId || ''}... `);
+
+    try {
+      const result = await scorer.scoreReview(text);
+      if (!result || !('score' in result)) {
+        console.log('SKIPPED (rejection/error)');
+        continue;
+      }
+
+      const newScore = result.score;
+      const newBucket = result.bucket;
+      const drift = newScore - oldScore;
+      drifts.push(drift);
+
+      oldBucketCounts[oldBucket] = (oldBucketCounts[oldBucket] || 0) + 1;
+      newBucketCounts[newBucket] = (newBucketCounts[newBucket] || 0) + 1;
+      scored++;
+
+      const dir = drift > 0 ? '↑' : drift < 0 ? '↓' : '=';
+      console.log(`${oldScore}→${newScore} (${dir}${Math.abs(drift)}) [${oldBucket}→${newBucket}]`);
+    } catch (e: any) {
+      console.log(`ERROR: ${e.message?.slice(0, 60)}`);
+    }
+  }
+
+  if (scored < 10) {
+    return {
+      passed: true,
+      sampleSize: scored,
+      bucketShifts: {},
+      meanSignedDrift: 0,
+      meanAbsDrift: 0,
+      details: 'Too few reviews scored for comparison — proceeding.'
+    };
+  }
+
+  // Calculate stats
+  const meanSigned = drifts.reduce((a, b) => a + b, 0) / drifts.length;
+  const meanAbs = drifts.map(d => Math.abs(d)).reduce((a, b) => a + b, 0) / drifts.length;
+
+  // Bucket shifts as percentages
+  const bucketShifts: Record<string, { old: number; new: number; shift: number }> = {};
+  let maxShift = 0;
+  for (const b of buckets) {
+    const oldPct = (oldBucketCounts[b] / scored) * 100;
+    const newPct = (newBucketCounts[b] / scored) * 100;
+    const shift = newPct - oldPct;
+    bucketShifts[b] = { old: Math.round(oldPct), new: Math.round(newPct), shift: Math.round(shift) };
+    maxShift = Math.max(maxShift, Math.abs(shift));
+  }
+
+  // Print report
+  console.log(`\n${'─'.repeat(55)}`);
+  console.log(`  A/B CHECK RESULTS (n=${scored})`);
+  console.log(`${'─'.repeat(55)}`);
+  console.log(`  Mean signed drift:   ${meanSigned > 0 ? '+' : ''}${meanSigned.toFixed(1)} pts`);
+  console.log(`  Mean absolute drift: ${meanAbs.toFixed(1)} pts`);
+  console.log('');
+  console.log('  Bucket        Old%   New%   Shift');
+  for (const b of buckets) {
+    const s = bucketShifts[b];
+    const sign = s.shift > 0 ? '+' : '';
+    const flag = Math.abs(s.shift) >= AB_BUCKET_SHIFT_THRESHOLD ? ' ⚠️' : '';
+    console.log(`  ${b.padEnd(12)} ${String(s.old).padStart(4)}%  ${String(s.new).padStart(4)}%  ${sign}${s.shift}%${flag}`);
+  }
+
+  const passed = maxShift < AB_BUCKET_SHIFT_THRESHOLD && Math.abs(meanSigned) < 5;
+
+  if (!passed) {
+    console.log(`\n  ⛔ DISTRIBUTION SHIFT DETECTED`);
+    console.log(`  A bucket shifted by ≥${AB_BUCKET_SHIFT_THRESHOLD}% or mean drift ≥5 pts.`);
+    console.log(`  This suggests the prompt change has unintended side effects.`);
+    console.log(`  Pass --force-full-run to override this check.`);
+  } else {
+    console.log(`\n  ✅ Distribution looks stable. Proceeding.`);
+  }
+  console.log('');
+
+  return {
+    passed,
+    sampleSize: scored,
+    bucketShifts,
+    meanSignedDrift: meanSigned,
+    meanAbsDrift: meanAbs,
+    details: passed
+      ? `Distribution stable: max bucket shift ${maxShift.toFixed(0)}%, mean drift ${meanSigned > 0 ? '+' : ''}${meanSigned.toFixed(1)}`
+      : `Distribution shifted: max bucket shift ${maxShift.toFixed(0)}%, mean drift ${meanSigned > 0 ? '+' : ''}${meanSigned.toFixed(1)}`
+  };
 }
 
 // ========================================
@@ -340,6 +485,7 @@ function parseArgs(): ScoringPipelineOptions & {
   groundTruth: boolean;
   needsRescore: boolean;
   outdated: boolean;
+  forceFullRun: boolean;
   ensembleSource?: string;
   ensembleCalibrateOnly: boolean;
   checkpointInterval: number;
@@ -394,6 +540,7 @@ function parseArgs(): ScoringPipelineOptions & {
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
     outdated,
+    forceFullRun: args.includes('--force-full-run'),
     ensembleSource,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     checkpointInterval,
@@ -785,6 +932,29 @@ async function main(): Promise<void> {
     return;
   }
 
+  // ========================================
+  // A/B DISTRIBUTION CHECK (rescore guardrail)
+  // ========================================
+  // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
+  // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
+  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource);
+  if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
+    const abResult = await runABDistributionCheck(
+      finalFiles,
+      getScorableText,
+      scorer as EnsembleReviewScorer,
+      options.verbose
+    );
+
+    if (!abResult.passed) {
+      console.log(`\n⛔ ABORTING: Distribution check failed.`);
+      console.log(`   ${abResult.details}`);
+      console.log(`\n   To override, re-run with --force-full-run`);
+      console.log(`   To investigate, re-run with --limit=20 --verbose\n`);
+      process.exit(1);
+    }
+  }
+
   // Process files
   const startedAt = new Date().toISOString();
   const startTime = Date.now();
@@ -1157,6 +1327,7 @@ Options:
   --rescore             Re-score even if already scored
   --needs-rescore       Only score reviews flagged with needsRescore=true
   --outdated            Re-score reviews with promptVersion older than current
+  --force-full-run      Skip A/B distribution check (required for rescore >100 reviews)
   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
   --shard=N             Shard index (0-based) for parallel runs
   --total-shards=N      Total number of parallel shards
