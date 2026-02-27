@@ -58,6 +58,7 @@ function loadReviewTexts(showId) {
           text: textParts.join('\n\n'),
           score: data.assignedScore,
           publishDate: data.publishDate,
+          hasFullText: !!data.fullText,
         });
       }
     } catch (err) {
@@ -122,6 +123,50 @@ Write only the concise consensus (max 280 chars), nothing else.`;
 }
 
 /**
+ * Determine if a show's consensus should be regenerated.
+ * Returns { should: boolean, reason: string }
+ */
+function shouldRegenerate(existing, reviews) {
+  if (!existing) return { should: true, reason: 'new show (no existing consensus)' };
+
+  const currentReviewCount = reviews.length;
+  const currentFullTextCount = reviews.filter(r => r.hasFullText).length;
+  const scoredReviews = reviews.filter(r => r.score != null);
+  const currentMeanScore = scoredReviews.length > 0
+    ? Math.round(scoredReviews.reduce((a, r) => a + r.score, 0) / scoredReviews.length)
+    : null;
+
+  // Trigger 1: New reviews added (existing behavior)
+  const reviewCountDiff = currentReviewCount - (existing.reviewCount || 0);
+  if (reviewCountDiff >= 3) {
+    return { should: true, reason: `${reviewCountDiff} new reviews` };
+  }
+
+  // Trigger 2: Full text upgrades (excerpt → full text)
+  if (existing.fullTextCount != null) {
+    const fullTextGain = currentFullTextCount - existing.fullTextCount;
+    if (fullTextGain >= 3) {
+      return { should: true, reason: `${fullTextGain} reviews upgraded to full text` };
+    }
+  }
+
+  // Trigger 3: Reviews removed (wrongProduction flags, etc.)
+  if (reviewCountDiff <= -2) {
+    return { should: true, reason: `${Math.abs(reviewCountDiff)} reviews removed` };
+  }
+
+  // Trigger 4: Mean score drift (rescoring, rave calibration)
+  if (existing.meanScore != null && currentMeanScore != null) {
+    const scoreDrift = Math.abs(currentMeanScore - existing.meanScore);
+    if (scoreDrift >= 8) {
+      return { should: true, reason: `mean score shifted ${scoreDrift}pts (${existing.meanScore} → ${currentMeanScore})` };
+    }
+  }
+
+  return { should: false };
+}
+
+/**
  * Main execution
  */
 async function main() {
@@ -135,6 +180,18 @@ async function main() {
 
   const force = process.argv.includes('--force');
   const cleanupOrphans = process.argv.includes('--cleanup-orphans');
+
+  // Parse --show=X filter (single-show mode for opening night, etc.)
+  const showArg = process.argv.find(a => a.startsWith('--show='));
+  const showFilter = showArg ? showArg.split('=')[1].replace(/['"]/g, '') : null;
+
+  // Parse --max-shows=N cap (cost control)
+  const maxShowsArg = process.argv.find(a => a.startsWith('--max-shows='));
+  const maxShows = maxShowsArg ? parseInt(maxShowsArg.split('=')[1], 10) : 0; // 0 = unlimited
+
+  if (showFilter) console.log(`🎯 Single-show mode: ${showFilter}\n`);
+  if (maxShows > 0) console.log(`📊 Max shows cap: ${maxShows}\n`);
+
   let processedCount = 0;
   let skippedCount = 0;
   let errorCount = 0;
@@ -169,6 +226,15 @@ async function main() {
     const showId = show.id;
     const showTitle = show.title;
 
+    // --show filter: skip non-matching shows
+    if (showFilter && showId !== showFilter) continue;
+
+    // Max shows cap: stop after N generations
+    if (maxShows > 0 && processedCount >= maxShows) {
+      console.log(`\n⚠️  Reached max-shows cap (${maxShows}). Stopping.`);
+      break;
+    }
+
     console.log(`\n📖 ${showTitle} (${showId})`);
 
     // Load reviews
@@ -178,6 +244,11 @@ async function main() {
     const scoredReviews = reviews.filter(r => r.score != null);
     if (scoredReviews.length < 2) {
       console.log(`  ⏭️  Skipped - only ${scoredReviews.length} scored reviews (need 2+)`);
+      // Delete stale consensus if show dropped below threshold
+      if (consensusData.shows[showId] && (consensusData.shows[showId].reviewCount || 0) >= 2) {
+        console.log(`  🗑️  Removing stale consensus (reviews dropped below threshold)`);
+        delete consensusData.shows[showId];
+      }
       skippedCount++;
       continue;
     }
@@ -195,16 +266,16 @@ async function main() {
       continue;
     }
 
-    // Check if we should regenerate
+    // Check if we should regenerate (multi-trigger)
     const existing = consensusData.shows[showId];
     if (existing && !force) {
-      const reviewCountDiff = reviews.length - (existing.reviewCount || 0);
-      if (reviewCountDiff < 3) {
-        console.log(`  ⏭️  Skipped - existing consensus, only ${reviewCountDiff} new reviews (need 3+)`);
+      const result = shouldRegenerate(existing, reviews);
+      if (!result.should) {
+        console.log(`  ⏭️  Skipped - no significant changes`);
         skippedCount++;
         continue;
       }
-      console.log(`  🔄 Regenerating - ${reviewCountDiff} new reviews detected`);
+      console.log(`  🔄 Regenerating - ${result.reason}`);
     }
 
     try {
@@ -230,25 +301,28 @@ async function main() {
       }
 
       // Layer 5b: Output validation — length check (> 280 chars = too long)
+      let finalText = consensus;
       if (consensus.length > 280) {
         console.warn(`  ⚠️  Generated ${consensus.length} chars (max 280) — truncating at sentence boundary`);
         const truncated = consensus.substring(0, 280);
         const lastSentence = truncated.lastIndexOf('.');
-        const finalText = lastSentence > 100 ? truncated.substring(0, lastSentence + 1) : truncated;
-
-        consensusData.shows[showId] = {
-          text: finalText,
-          lastUpdated: new Date().toISOString().split('T')[0],
-          reviewCount: reviews.length,
-        };
-      } else {
-        // Store result
-        consensusData.shows[showId] = {
-          text: consensus,
-          lastUpdated: new Date().toISOString().split('T')[0],
-          reviewCount: reviews.length,
-        };
+        finalText = lastSentence > 100 ? truncated.substring(0, lastSentence + 1) : truncated;
       }
+
+      // Build fingerprint for change detection on future runs
+      const fullTextCount = reviews.filter(r => r.hasFullText).length;
+      const scoredForMean = reviews.filter(r => r.score != null);
+      const meanScore = scoredForMean.length > 0
+        ? Math.round(scoredForMean.reduce((a, r) => a + r.score, 0) / scoredForMean.length)
+        : null;
+
+      consensusData.shows[showId] = {
+        text: finalText,
+        lastUpdated: new Date().toISOString().split('T')[0],
+        reviewCount: reviews.length,
+        fullTextCount,
+        meanScore,
+      };
 
       console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
       processedCount++;
@@ -265,7 +339,7 @@ async function main() {
   consensusData._meta = {
     description: "LLM-generated Critics' Take summaries for shows (concise 1-2 sentence summary, max 280 chars)",
     lastGenerated: new Date().toISOString(),
-    updatePolicy: "Regenerate weekly if 3+ new reviews added to any show",
+    updatePolicy: "Auto-regenerate on: 3+ new reviews, 3+ full-text upgrades, 2+ reviews removed, or 8+ pt mean score drift",
   };
 
   fs.writeFileSync(CONSENSUS_FILE, JSON.stringify(consensusData, null, 2));
@@ -274,12 +348,13 @@ async function main() {
   console.log(`   Processed: ${processedCount}`);
   console.log(`   Skipped: ${skippedCount}`);
   console.log(`   Errors: ${errorCount}`);
+  if (maxShows > 0) console.log(`   Max shows cap: ${maxShows}`);
   console.log(`\n💾 Saved to: ${path.relative(ROOT, CONSENSUS_FILE)}`);
 
   if (force) {
     console.log(`\n💡 Used --force flag to regenerate all shows`);
   } else {
-    console.log(`\n💡 Use --force to regenerate all shows regardless of update count`);
+    console.log(`\n💡 Use --force to regenerate all shows regardless of triggers`);
   }
 }
 
