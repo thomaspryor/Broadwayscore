@@ -91,20 +91,8 @@ const DOMAIN_TO_OUTLET = {
   'reuters.com': 'reuters',
 };
 
-// Outlet tier mappings (for stratified sampling)
-const OUTLET_TIERS = {
-  // Tier 1
-  'nytimes': 1, 'washpost': 1, 'latimes': 1, 'wsj': 1, 'ap': 1,
-  'variety': 1, 'hollywood-reporter': 1, 'vulture': 1, 'guardian': 1,
-  'timeout': 1, 'broadwaynews': 1,
-  // Tier 2
-  'chicagotribune': 2, 'usatoday': 2, 'nydailynews': 2, 'nypost': 2,
-  'thewrap': 2, 'ew': 2, 'indiewire': 2, 'deadline': 2, 'slantmagazine': 2,
-  'dailybeast': 2, 'observer': 2, 'nyt-theater': 2, 'nytg': 2, 'nysr': 2,
-  'theatermania': 2, 'theatrely': 2, 'newsday': 2, 'time': 2, 'rollingstone': 2,
-  'newyorker': 2, 'telegraph': 2, 'forward': 2,
-  // Tier 3 (default)
-};
+// Outlet tier lookup — reads from outlet-registry.json (source of truth)
+const { getTier } = require('./lib/outlet-tiers');
 
 /**
  * Extract base domain from URL, handling subdomains and archive.org
@@ -665,7 +653,7 @@ async function runAudit() {
   // Stratify by tier
   const reviewsByTier = { 1: [], 2: [], 3: [] };
   for (const review of allReviews) {
-    const tier = OUTLET_TIERS[review.outletId] || 3;
+    const tier = getTier(review.outletId);
     reviewsByTier[tier].push(review);
   }
 
@@ -728,7 +716,7 @@ async function runAudit() {
 
     sampleResults.details.push({
       file: `${review._showDir}/${review._file}`,
-      tier: OUTLET_TIERS[review.outletId] || 3,
+      tier: getTier(review.outletId),
       passed,
       checks,
     });
