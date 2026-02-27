@@ -1478,11 +1478,11 @@ function validateReviewTextDuplicates() {
   } else if (crossShowDupesNonAgg > 240) {
     warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~211)`);
   }
-  // ~537 per-show outlet+critic dupes are baseline (variant outlet IDs like bloomberg vs bloomberg-news).
-  if (dupeGroups > 650) {
-    error(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~537, spike suggests normalizer bug)`);
-  } else if (dupeGroups > 590) {
-    warn(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~537)`);
+  // Baseline ~0 after consolidation (Feb 2026). New dupes come from collection scripts using non-canonical outlet IDs.
+  if (dupeGroups > 50) {
+    error(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~0, spike suggests normalizer bug)`);
+  } else if (dupeGroups > 20) {
+    warn(`${dupeGroups} per-show outlet+critic duplicate groups (baseline ~0)`);
   }
 
   ok(`Review-text duplicates: ${filesScanned} files, ${dupeGroups} intra-show dupe groups, ${crossShowDupesNonAgg} non-agg cross-show URL dupes (${crossShowDupesAgg} aggregator)`);

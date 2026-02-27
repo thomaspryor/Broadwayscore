@@ -46,6 +46,7 @@ const CONFIG = {
 const args = process.argv.slice(2);
 const CLI = {
   dryRun: args.includes('--dry-run'),
+  backfillRatings: args.includes('--backfill-ratings'),
   limit: (() => {
     const limitArg = args.find(a => a.startsWith('--limit='));
     return limitArg ? parseInt(limitArg.split('=')[1]) : 0;
@@ -89,7 +90,7 @@ async function fetchArticleFromAPI(articleId) {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams({
       'api-key': CONFIG.apiKey,
-      'show-fields': 'body,bodyText,headline,byline,standfirst',
+      'show-fields': 'body,bodyText,headline,byline,standfirst,starRating',
     });
 
     const url = `${CONFIG.baseUrl}/${articleId}?${params}`;
@@ -124,6 +125,7 @@ async function fetchArticleFromAPI(articleId) {
               headline: fields.headline || content.webTitle,
               byline: fields.byline,
               standfirst: fields.standfirst,
+              starRating: fields.starRating != null ? parseInt(fields.starRating) : null,
               webUrl: content.webUrl,
               apiUrl: content.apiUrl,
             });
@@ -201,7 +203,7 @@ function findGuardianReviews() {
 
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
     const files = fs.readdirSync(showDir)
-      .filter(f => f.startsWith('guardian') && f.endsWith('.json'));
+      .filter(f => (f.startsWith('guardian') || f.startsWith('the-guardian')) && f.endsWith('.json'));
 
     for (const file of files) {
       const filePath = path.join(showDir, file);
@@ -209,8 +211,15 @@ function findGuardianReviews() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Skip if already has fullText
-        if (data.fullText && data.fullText.length > CONFIG.minTextLength) {
+        // In backfill-ratings mode, also process reviews that have fullText but no originalScore
+        const hasFullText = data.fullText && data.fullText.length > CONFIG.minTextLength;
+        const needsRating = !data.originalScore;
+
+        if (hasFullText && !CLI.backfillRatings) {
+          stats.skipped++;
+          continue;
+        }
+        if (hasFullText && CLI.backfillRatings && !needsRating) {
           stats.skipped++;
           continue;
         }
@@ -252,8 +261,11 @@ function findGuardianReviews() {
 function updateReviewFile(review, apiResult) {
   const data = review.existingData;
 
-  data.fullText = apiResult.text;
-  data.isFullReview = apiResult.text.length > 1500;
+  // Only update fullText if we don't already have it
+  if (!data.fullText || data.fullText.length < CONFIG.minTextLength) {
+    data.fullText = apiResult.text;
+  }
+  data.isFullReview = (data.fullText || apiResult.text).length > 1500;
   data.textWordCount = apiResult.text.split(/\s+/).filter(w => w.length > 0).length;
   data.textFetchedAt = new Date().toISOString();
   data.fetchMethod = 'guardian-api';
@@ -262,11 +274,21 @@ function updateReviewFile(review, apiResult) {
   data.textStatus = 'complete';
   data.sourceMethod = 'guardian-api';
 
+  // Extract star rating from API (Guardian uses 1-5 stars)
+  if (apiResult.starRating && !data.originalScore) {
+    data.originalScore = `${apiResult.starRating}/5 stars`;
+    data.originalScoreNormalized = Math.round((apiResult.starRating / 5) * 100);
+    data.scoreSource = 'guardian-api';
+    data.scoreExtractedFrom = 'api-metadata';
+    console.log(`  ★ Star rating: ${apiResult.starRating}/5 → ${data.originalScoreNormalized}/100`);
+  }
+
   // Store API metadata
   data.guardianApi = {
     headline: apiResult.headline,
     byline: apiResult.byline,
     standfirst: apiResult.standfirst,
+    starRating: apiResult.starRating,
     webUrl: apiResult.webUrl,
     fetchedAt: new Date().toISOString(),
   };

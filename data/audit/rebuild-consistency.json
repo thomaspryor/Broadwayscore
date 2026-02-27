@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-26T21:23:52.185Z",
+  "generatedAt": "2026-02-27T04:23:02.676Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -28,10 +28,26 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "back-to-the-future-west-end-2021",
+      "outlet": "london-theatre",
+      "critic": "Marianka Swain",
+      "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "collected-stories-2010",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
       "detail": "originalRating \"D\" (=35) vs score 78 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "dracula-west-end-2025",
+      "outlet": "london-theatre",
+      "critic": "Olivia Rook",
+      "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -87,7 +103,15 @@
       "showId": "matilda-the-musical-west-end-2021",
       "outlet": "london-theatre",
       "critic": "Peter Brown",
-      "detail": "originalRating \"5/5\" (=100) vs score 78 (source: llmScore-lowconf)"
+      "detail": "originalRating \"5/5\" (=100) vs score 78 (source: assignedScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -128,6 +152,22 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 84 (source: llmScore-thumb-boosted)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "showstopper-the-improvised-musical-west-end-2023",
+      "outlet": "standard",
+      "critic": "Fiona Mountford",
+      "detail": "originalRating \"4/5\" (=80) vs score 50 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -196,6 +236,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "titanique-west-end-2024",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"5/5\" (=100) vs score 25 (source: assignedScore)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "venus-in-fur-2011",
       "outlet": "timeout",
       "critic": "David Cote",
@@ -231,7 +279,7 @@
       "showId": "wicked-2003",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: llmScore-thumb-boosted)"
+      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-thumb-boosted)"
     },
     {
       "type": "rating-score-mismatch",
@@ -240,6 +288,14 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 75 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "woman-in-mind-west-end-2025",
+      "outlet": "independent",
+      "critic": "Alice Saville",
+      "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
     },
     {
       "type": "human-override-vs-explicit-grade",
