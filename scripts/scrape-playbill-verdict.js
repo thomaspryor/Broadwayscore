@@ -325,9 +325,12 @@ function extractReviewLinksFromArticle(html, showId) {
       critic = parenMatch[1];
     }
 
+    // Strip parenthetical critic name from link text (e.g., "The Times (Nancy Durrant)" → "The Times")
+    const cleanOutlet = (linkText || outlet).replace(/\s*\([^)]+\)\s*$/, '');
+
     reviews.push({
       url: href,
-      outlet: linkText || outlet,
+      outlet: cleanOutlet,
       outletDomain: outlet,
       critic,
       showId,
