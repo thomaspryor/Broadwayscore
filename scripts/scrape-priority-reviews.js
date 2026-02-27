@@ -110,7 +110,7 @@ const PAYWALLED_WITH_CREDENTIALS = new Set([
 const PAYWALLED_NO_CREDENTIALS = new Set([
   'ew', 'nypost', 'guardian', 'timeout', 'time', 'theatermania',
   'telegraph', 'broadwaynews', 'usatoday', 'backstage', 'nydailynews',
-  'slantmagazine',
+  'slantmagazine', 'financialtimes', 'times-uk',
 ]);
 
 // ============================================
