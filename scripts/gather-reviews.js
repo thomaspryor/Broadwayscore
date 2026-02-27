@@ -40,6 +40,7 @@ const {
   normalizeCritic,
   normalizePublishDate,
   generateReviewFilename,
+  findExistingReviewFile,
   generateReviewKey,
   getOutletDisplayName,
   mergeReviews,
@@ -2371,8 +2372,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         const filename = generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
         const filePath = path.join(showDir, filename);
 
-        // Don't overwrite existing files (could exist from a different source)
-        if (!fs.existsSync(filePath)) {
+        // Don't overwrite existing files (could exist from a different source or variant outlet ID)
+        const existingFile = findExistingReviewFile(showDir, bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
+        if (!existingFile && !fs.existsSync(filePath)) {
           const stub = {
             showId,
             outletId: outletNorm,
