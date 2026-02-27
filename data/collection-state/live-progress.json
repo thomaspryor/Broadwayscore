@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T20:37:52.152Z",
+  "updatedAt": "2026-02-27T20:49:45.076Z",
   "processed": 9,
-  "failed": 171,
-  "successRate": "5.0%",
+  "failed": 181,
+  "successRate": "4.7%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 2,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 57,
+    "archiveToday": 61,
     "archive": 2
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-02-27T18:41:13.491Z",
@@ -75,6 +75,12 @@
       "t": "2026-02-27T20:09:54.381Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T20:43:34.786Z",
+      "event": "bb-session",
+      "session": "6b6cc802",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-Roundup-YOU-GOT-OLDER-at-St"
     }
   ]
 }
