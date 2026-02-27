@@ -1452,7 +1452,7 @@ function validateReviewTextDuplicates(shows) {
             data.isCombinedReview || data.duplicateOf || data.fabricatedEntry) continue;
         if (!data.url) continue;
         // URL normalization: strip protocol, www, trailing slash, query/fragment, lowercase
-        const normUrl = data.url.trim().replace(/\/$/, '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').toLowerCase();
+        const normUrl = data.url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
         if (!normUrl) continue;
         // Check if all sources are aggregator-based
         const allSources = new Set();
