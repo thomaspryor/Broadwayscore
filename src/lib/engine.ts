@@ -411,11 +411,6 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     };
   });
 
-  // Calculate scores
-  // Simple average of all review scores
-  const simpleSum = computedReviews.reduce((sum, r) => sum + r.reviewScore, 0);
-  const simpleScore = Math.round((simpleSum / computedReviews.length) * 100) / 100;
-
   // Weighted average using tier weights
   const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
   const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight * r.confidenceWeight, 0);
@@ -432,7 +427,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     tier1Count,
     tier2Count,
     tier3Count,
-    label: getCriticLabel(weightedScore),
+    label: getCriticLabel(Math.round(weightedScore)),
     reviews: computedReviews.sort((a, b) => b.reviewScore - a.reviewScore),
   };
 }
