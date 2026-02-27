@@ -1862,6 +1862,7 @@ function validateReviewTextQuality(shows) {
     for (const [id, info] of Object.entries(reg.outlets)) {
       knownOutletNames.add(id.toLowerCase());
       if (info.name) knownOutletNames.add(info.name.toLowerCase());
+      if (info.displayName) knownOutletNames.add(info.displayName.toLowerCase());
       if (info.aliases) info.aliases.forEach(a => knownOutletNames.add(a.toLowerCase()));
     }
   }
@@ -1932,7 +1933,7 @@ function validateReviewTextQuality(shows) {
 
       // CHECK 2: Outlet name is a sentence fragment (too long, contains verbs/articles)
       // Skip for known outlets in the registry (e.g., "A Younger Theatre" starts with "A " but is legitimate)
-      const isKnownOutlet = knownOutletNames.has(outlet.toLowerCase()) || knownOutletNames.has(file.split('--')[0]);
+      const isKnownOutlet = knownOutletNames.has(outlet.toLowerCase());
       if (!isKnownOutlet && outlet.length > 60) {
         error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars) — likely a headline or sentence fragment`);
         garbageOutlets++;
