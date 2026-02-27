@@ -1,0 +1,75 @@
+name: Drain Not-Attempted Backlog
+
+# Weekly drain of review-text files that have URLs but were never scraped.
+# Dispatches the standard collector with reason_filter=not_attempted.
+# Uses the same pipeline, same quality gates, same push logic.
+
+on:
+  schedule:
+    # Weekly: Sunday 11 PM UTC (after daily collection + rebuild settle)
+    - cron: '0 23 * * 0'
+  workflow_dispatch:
+    inputs:
+      max_reviews:
+        description: 'Max reviews per batch (default 300)'
+        required: false
+        default: '300'
+      remaining_batches:
+        description: 'Number of chained batches (default 3 = ~900 reviews/week)'
+        required: false
+        default: '3'
+      include_paywalls:
+        description: 'Include paywall domains (requires fresh cookies in CI)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  PAYWALL_DOMAINS: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout (for gh CLI)
+        uses: actions/checkout@v4
+
+      - name: Dispatch collection with not_attempted filter
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MAX="${{ inputs.max_reviews || '300' }}"
+          BATCHES="${{ inputs.remaining_batches || '3' }}"
+          INCLUDE_PW="${{ inputs.include_paywalls }}"
+
+          EXCLUDE=""
+          if [ "$INCLUDE_PW" != "true" ]; then
+            EXCLUDE="$PAYWALL_DOMAINS"
+          fi
+
+          echo "=== Drain Not-Attempted Backlog ==="
+          echo "  Max reviews per batch: $MAX"
+          echo "  Chained batches: $BATCHES"
+          echo "  Exclude paywalls: $([ -n "$EXCLUDE" ] && echo 'yes' || echo 'no')"
+
+          gh workflow run "Collect Review Texts" \
+            -f reason_filter=not_attempted \
+            -f max_reviews="$MAX" \
+            -f chain=true \
+            -f remaining_batches="$BATCHES" \
+            -f archive_first=true \
+            -f browserbase_enabled=true \
+            -f browserbase_max_sessions=10 \
+            -f exclude_domains="$EXCLUDE" \
+            -f retry_failed=false
+
+          echo "Collection dispatched successfully."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Drain Not-Attempted Backlog Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
