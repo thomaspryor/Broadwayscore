@@ -141,18 +141,6 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
 };
 
 // ===========================================
-// DUAL-MARKET OUTLETS
-// ===========================================
-// These outlets legitimately cover both Broadway and West End.
-// They should NOT be filtered by the cross-market guard in rebuild.
-// Registry outlet IDs (lowercase).
-export const DUAL_MARKET_OUTLETS = new Set([
-  'guardian',         // The Guardian — UK paper with dedicated NYC theater coverage
-  'financialtimes',   // Financial Times — covers both markets
-  'variety',          // Variety — covers all English-language theater
-  'stage-uk',         // The Stage — UK trade paper, occasionally covers Broadway
-]);
-
 // ===========================================
 // DESIGNATION BUMPS (added to base score)
 // ===========================================
