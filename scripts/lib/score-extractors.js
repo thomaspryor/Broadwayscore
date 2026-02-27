@@ -279,6 +279,112 @@ function extractCultureSauceScore(html, text) {
 }
 
 /**
+ * Extract star rating from UK outlets that use /5 star systems.
+ * Checks JSON-LD ratingValue, CSS star classes, and text patterns.
+ * Used by: WhatsOnStage, The Stage, Telegraph, Evening Standard,
+ *          The Independent, The Times, Financial Times, Daily Mail, The Arts Desk,
+ *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
+ */
+function extractUKStarRating(html, text) {
+  // 1. JSON-LD structured data (most reliable)
+  const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/);
+  if (jsonLdMatch) {
+    const rating = parseFloat(jsonLdMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'json-ld'
+      };
+    }
+  }
+
+  // 2. CSS star rating classes (common in UK review sites)
+  const starClassMatch = html.match(/(?:rating|stars?|score)[\s-]*(\d)/i) ||
+                         html.match(/class="[^"]*(?:rating|stars?)[\s-]*(\d)[^"]*"/i);
+  if (starClassMatch) {
+    const rating = parseInt(starClassMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'star-class'
+      };
+    }
+  }
+
+  // 3. Unicode stars in text or HTML
+  const unicodeMatch = text.match(/([★☆]{1,5})/) || html.match(/([★☆]{1,5})/);
+  if (unicodeMatch) {
+    const stars = unicodeMatch[1];
+    const filled = (stars.match(/★/g) || []).length;
+    const total = stars.length;
+    if (total >= 2 && total <= 5) {
+      return {
+        originalScore: `${filled}/${total} stars`,
+        normalizedScore: starsToNumeric(filled, total),
+        source: 'unicode-stars'
+      };
+    }
+  }
+
+  // 4. Text patterns: "X/5", "X out of 5", "X stars"
+  const textPatterns = [
+    /(\d(?:\.\d)?)\s*\/\s*5/,
+    /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
+    /(\d(?:\.\d)?)\s*stars?\b/i
+  ];
+  for (const pattern of textPatterns) {
+    const match = text.match(pattern);
+    if (match) {
+      const rating = parseFloat(match[1]);
+      if (rating >= 0 && rating <= 5) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'text-pattern'
+        };
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Extract letter grade (A+/A/A-/B+/.../F) from USA Today and similar outlets.
+ * USA Today uses a numeric 0-100 scale internally, but some reviews show letter grades.
+ */
+function extractUSATodayScore(html, text) {
+  // USA Today sometimes embeds the score in structured data
+  const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/);
+  if (jsonLdMatch) {
+    const rating = parseFloat(jsonLdMatch[1]);
+    // USA Today uses 0-100 scale
+    if (rating >= 0 && rating <= 100) {
+      return {
+        originalScore: `${rating}/100`,
+        normalizedScore: Math.round(rating),
+        source: 'json-ld'
+      };
+    }
+  }
+
+  // Try star ratings (USA Today sometimes uses stars)
+  const starMatch = text.match(/(\d(?:\.\d)?)\s*(?:out\s+of\s+)?4\s*stars?/i);
+  if (starMatch) {
+    const rating = parseFloat(starMatch[1]);
+    return {
+      originalScore: `${rating}/4 stars`,
+      normalizedScore: starsToNumeric(rating, 4),
+      source: 'numeric-stars'
+    };
+  }
+
+  return null;
+}
+
+/**
  * Generic star rating extractor for any outlet
  * Handles common patterns: "X/5", "X stars", "X out of 5"
  */
@@ -382,6 +488,49 @@ const OUTLET_EXTRACTORS = {
   'nydailynews': extractGenericLetterGrade,
   'ny-daily-news': extractGenericLetterGrade,
   'nydn': extractGenericLetterGrade,
+
+  // USA Today
+  'usatoday': extractUSATodayScore,
+  'usa-today': extractUSATodayScore,
+
+  // UK outlets with star rating systems (/5 stars)
+  'whatsonstage': extractUKStarRating,
+  'whats-on-stage': extractUKStarRating,
+  'thestage': extractUKStarRating,
+  'the-stage': extractUKStarRating,
+  'the-stage-uk': extractUKStarRating,
+  'stage-uk': extractUKStarRating,
+  'telegraph': extractUKStarRating,
+  'the-telegraph': extractUKStarRating,
+  'the-telegraph-uk': extractUKStarRating,
+  'evening-standard': extractUKStarRating,
+  'the-independent': extractUKStarRating,
+  'the-independent-uk': extractUKStarRating,
+  'independent': extractUKStarRating,
+  'the-times': extractUKStarRating,
+  'the-times-uk': extractUKStarRating,
+  'times-uk': extractUKStarRating,
+  'the-times-clive-davis': extractUKStarRating,
+  'financial-times': extractUKStarRating,
+  'financial-times-uk': extractUKStarRating,
+  'financialtimes': extractUKStarRating,
+  'daily-mail': extractUKStarRating,
+  'dailymail': extractUKStarRating,
+  'the-arts-desk': extractUKStarRating,
+  'artsdesk': extractUKStarRating,
+  'musical-theatre-review': extractUKStarRating,
+  'london-theatre': extractUKStarRating,
+  'all-that-dazzles-uk': extractUKStarRating,
+  'everything-theatre': extractUKStarRating,
+  'everything-theatre-uk': extractUKStarRating,
+  'theatre-weekly': extractUKStarRating,
+  'theatre-bee-uk': extractUKStarRating,
+  'timeout-london': extractUKStarRating,
+  'i-newspaper': extractUKStarRating,
+  'cityam': extractUKStarRating,
+  'the-recs': extractUKStarRating,
+  'lost-in-theatreland': extractUKStarRating,
+  'digital-journal': extractUKStarRating,
 
   // Outlets WITHOUT explicit scores - return null to prevent false positives
   'variety': noScoreExtractor,
@@ -541,6 +690,8 @@ module.exports = {
   extractCultureSauceScore,
   extractGenericStarRating,
   extractGenericLetterGrade,
+  extractUKStarRating,
+  extractUSATodayScore,
   extractNYTCriticsPick,
   extractTheaterManiaMustSee,
   LETTER_GRADES,
