@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T01:41:19.935Z",
-  "processed": 0,
-  "failed": 80,
-  "successRate": "0%",
+  "updatedAt": "2026-02-27T01:50:41.915Z",
+  "processed": 1,
+  "failed": 89,
+  "successRate": "1.1%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 2,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 2,
+    "directCookies": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 24,
+    "archiveToday": 26,
     "archive": 1
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -86,6 +86,28 @@
       "t": "2026-02-27T01:23:14.849Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-27T01:44:51.443Z",
+      "event": "bb-session",
+      "session": "509e87fc",
+      "url": "http://www.usatoday.com/story/life/theater/2015/08/06/hamilton-win-hearts-and-mi"
+    },
+    {
+      "t": "2026-02-27T01:44:52.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-27T01:46:20.354Z",
+      "event": "bb-session",
+      "session": "487fc83f",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/21/hells-kitchen-br"
+    },
+    {
+      "t": "2026-02-27T01:46:21.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
