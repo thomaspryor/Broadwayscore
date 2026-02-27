@@ -14,7 +14,16 @@
     "mother-russia-2026/one-minute-critic--unknown.json",
     "antigone-this-play-i-read-in-high-school-2026/nyt-theater--unknown.json",
     "moulin-rouge-2019/nytimes--ben-brantley.json",
-    "an-ark-2026/nytg--kyle-turner.json"
+    "an-ark-2026/nytg--kyle-turner.json",
+    "antigone-this-play-i-read-in-high-school-2026/nytg--unknown.json",
+    "burnout-paradise-2026/nytg--amelia-merrill.json",
+    "chinese-republicans-2026/nyt-theater--unknown.json",
+    "chinese-republicans-2026/nytg--unknown.json",
+    "data-2026/nyt-theater--jonathan-mandell.json",
+    "data-2026/nytg--allison-considine.json",
+    "data-2026/nytimes--tim-teeman.json",
+    "dirty-books-2025/nyt-theater--jonathan-mandell.json",
+    "dirty-books-2025/nytg--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -301,7 +310,8 @@
     "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
     "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
     "you-got-older-2026/chicagotribune--unknown.json",
-    "11-to-midnight-2026/nytg--austin-fimmano.json"
+    "11-to-midnight-2026/nytg--austin-fimmano.json",
+    "cold-war-choir-practice-2026/nyt-theater--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -315,7 +325,15 @@
       "los-soles-truncos-2025/broadwaynews--unknown.json",
       "silver-manhattan-2026/broadwaynews--unknown.json",
       "mother-russia-2026/one-minute-critic--unknown.json",
-      "an-ark-2026/nytg--kyle-turner.json"
+      "an-ark-2026/nytg--kyle-turner.json",
+      "11-to-midnight-2026/nytg--austin-fimmano.json",
+      "antigone-this-play-i-read-in-high-school-2026/nytg--unknown.json",
+      "burnout-paradise-2026/nytg--amelia-merrill.json",
+      "chinese-republicans-2026/nyt-theater--unknown.json",
+      "chinese-republicans-2026/nytg--unknown.json",
+      "data-2026/nyt-theater--jonathan-mandell.json",
+      "data-2026/nytg--allison-considine.json",
+      "dirty-books-2025/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -326,7 +344,8 @@
     "directCookies": [],
     "scrapingbee": [
       "perfect-crime-1987/nytimes--jason-zinoman.json",
-      "chinese-republicans-2026/nbcnews--unknown.json"
+      "chinese-republicans-2026/nbcnews--unknown.json",
+      "data-2026/nytimes--tim-teeman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -426,16 +445,18 @@
       "data/review-texts/wicked-west-end-2021/billboard--unknown.json",
       "data/review-texts/wicked-west-end-2021/talkinbroadway--unknown.json",
       "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
-      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json"
+      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+      "data/review-texts/you-got-older-2026/chicagotribune--unknown.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
       "antigone-this-play-i-read-in-high-school-2026/nyt-theater--unknown.json",
-      "moulin-rouge-2019/nytimes--ben-brantley.json"
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "dirty-books-2025/nytg--unknown.json"
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "an-ark-2026/nytg--kyle-turner.json",
+  "lastProcessed": "dirty-books-2025/nytg--unknown.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -574,6 +595,17 @@
       "t": "2026-02-27T22:25:45.262Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-27T22:53:37.234Z",
+      "event": "bb-session",
+      "session": "805bf39b",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-02-27T22:53:38.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
