@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T11:39:59.168Z",
-  "processed": 288,
-  "failed": 422,
-  "successRate": "40.6%",
+  "updatedAt": "2026-02-27T11:42:41.883Z",
+  "processed": 296,
+  "failed": 424,
+  "successRate": "41.1%",
   "tierBreakdown": {
-    "playwright": 214,
+    "playwright": 219,
     "amp": 28,
     "browserbase": 0,
-    "directCookies": 22,
-    "scrapingbee": 3,
+    "directCookies": 24,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 137,
+    "archiveToday": 138,
     "archive": 100
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-27T11:31:04.518Z",
@@ -25,6 +25,17 @@
       "t": "2026-02-27T11:31:05.595Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-27T11:41:26.766Z",
+      "event": "bb-session",
+      "session": "f77646db",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/spread"
+    },
+    {
+      "t": "2026-02-27T11:41:27.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
