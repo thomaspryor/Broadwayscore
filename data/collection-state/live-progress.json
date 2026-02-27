@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-02-27T23:24:52.152Z",
+  "updatedAt": "2026-02-27T23:42:43.583Z",
   "processed": 33,
-  "failed": 317,
-  "successRate": "9.4%",
+  "failed": 327,
+  "successRate": "9.2%",
   "tierBreakdown": {
     "playwright": 21,
-    "amp": 11,
+    "amp": 15,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 103,
+    "archiveToday": 106,
     "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-02-27T16:11:35.688Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-02-27T16:13:56.861Z",
-      "event": "bb-session",
-      "session": "8aabaf2e",
-      "url": "https://www.theatermania.com/tags/silver-manhattan/"
-    },
-    {
-      "t": "2026-02-27T16:13:58.019Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-02-27T16:16:36.314Z",
-      "event": "bb-session",
-      "session": "c75ecb9c",
-      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
-    },
     {
       "t": "2026-02-27T16:16:37.560Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-02-27T23:20:14.286Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-27T23:31:39.811Z",
+      "event": "bb-session",
+      "session": "ded5a570",
+      "url": "https://www.hollywoodreporter.com/news/eclipsed-theater-review-1058128/"
+    },
+    {
+      "t": "2026-02-27T23:31:41.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-02-27T23:35:46.914Z",
+      "event": "bb-session",
+      "session": "b3d4cd0d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/funny-girl-broadway-review-bean"
+    },
+    {
+      "t": "2026-02-27T23:35:48.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
