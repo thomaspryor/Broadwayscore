@@ -1,70 +1,163 @@
 name: Drain Not-Attempted Backlog
 
-# Weekly drain of review-text files that have URLs but were never scraped.
-# Dispatches the standard collector with reason_filter=not_attempted.
-# Uses the same pipeline, same quality gates, same push logic.
+# Daily drain of review-text files that have URLs but were never scraped.
+# Uses recover-wayback-reviews.js (archive.org CDX + archive.today) instead of
+# the full collector — 100x faster, $0 cost, with domain circuit breaker.
 
 on:
   schedule:
-    # Weekly: Sunday 11 PM UTC (after daily collection + rebuild settle)
-    - cron: '0 23 * * 0'
+    # Daily at 11 PM UTC (after daily collection + rebuild settle)
+    - cron: '0 23 * * *'
   workflow_dispatch:
     inputs:
-      max_reviews:
-        description: 'Max reviews per batch (default 300)'
+      max_urls:
+        description: 'Max URLs to process (default 500)'
         required: false
-        default: '300'
-      remaining_batches:
-        description: 'Number of chained batches (default 3 = ~900 reviews/week)'
+        default: '500'
+      domain_filter:
+        description: 'Only process specific domains (comma-separated)'
         required: false
-        default: '3'
-      include_paywalls:
-        description: 'Include paywall domains (requires fresh cookies in CI)'
+        default: ''
+      tier_filter:
+        description: 'Only process specific tier (1, 2, or 3)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'CDX discovery only, no file writes'
         required: false
         type: boolean
         default: false
 
-env:
-  PAYWALL_DOMAINS: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk'
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: drain-not-attempted
+  cancel-in-progress: false
 
 jobs:
-  dispatch:
+  drain:
+    name: Drain not-attempted via Wayback Machine
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout (for gh CLI)
-        uses: actions/checkout@v4
+    timeout-minutes: 60
 
-      - name: Dispatch collection with not_attempted filter
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run Wayback recovery (not_attempted mode)
+        env:
+          SOURCE_MODE: not_attempted
+          MAX_URLS: ${{ inputs.max_urls || '500' }}
+          DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          TIER_FILTER: ${{ inputs.tier_filter }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node scripts/recover-wayback-reviews.js
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Drain not-attempted backlog via Wayback recovery"
+
+      - name: Final commit and push (audit data)
+        if: always()
+        run: |
+          git add data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
+
+          git commit -m "feat: Drain not-attempted backlog — $RECOVERED reviews recovered via Wayback
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Trigger rebuild if recoveries
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MAX="${{ inputs.max_reviews || '300' }}"
-          BATCHES="${{ inputs.remaining_batches || '3' }}"
-          INCLUDE_PW="${{ inputs.include_paywalls }}"
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
 
-          EXCLUDE=""
-          if [ "$INCLUDE_PW" != "true" ]; then
-            EXCLUDE="$PAYWALL_DOMAINS"
+          if [ "$RECOVERED" -gt "0" ]; then
+            echo "Triggering rebuild for $RECOVERED recovered reviews..."
+            gh workflow run "Rebuild Reviews Data" \
+              -f reason="Post not-attempted drain ($RECOVERED reviews recovered)"
+          else
+            echo "No recoveries, skipping rebuild."
           fi
 
-          echo "=== Drain Not-Attempted Backlog ==="
-          echo "  Max reviews per batch: $MAX"
-          echo "  Chained batches: $BATCHES"
-          echo "  Exclude paywalls: $([ -n "$EXCLUDE" ] && echo 'yes' || echo 'no')"
-
-          gh workflow run "Collect Review Texts" \
-            -f reason_filter=not_attempted \
-            -f max_reviews="$MAX" \
-            -f chain=true \
-            -f remaining_batches="$BATCHES" \
-            -f archive_first=true \
-            -f browserbase_enabled=true \
-            -f browserbase_max_sessions=10 \
-            -f exclude_domains="$EXCLUDE" \
-            -f retry_failed=false
-
-          echo "Collection dispatched successfully."
+      - name: Summary
+        if: always()
+        run: |
+          node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              const lines = [
+                '## Not-Attempted Drain Summary',
+                '',
+                '| Metric | Count |',
+                '|--------|-------|',
+                '| Candidates | ' + (r.totalCandidates || 0) + ' |',
+                '| CDX snapshots found | ' + (r.cdxFound || 0) + ' |',
+                '| **Recovered** | **' + (r.recovered || 0) + '** |',
+                '|   via archive.today | ' + (r.archiveTodayRecovered || 0) + ' |',
+                '| Not in archive | ' + (r.notInArchive || 0) + ' |',
+                '| Domain-skipped | ' + (r.domainSkipped || 0) + ' |',
+                '| Errors | ' + (r.errors || 0) + ' |',
+              ];
+              if (r.circuitBrokenDomains && r.circuitBrokenDomains.length > 0) {
+                lines.push('', '### Circuit-broken domains', r.circuitBrokenDomains.join(', '));
+              }
+              console.log(lines.join('\n'));
+            } catch(e) {
+              console.log('No report generated: ' + e.message);
+            }
+          " >> $GITHUB_STEP_SUMMARY
 
       - name: Notify on failure
         if: failure()

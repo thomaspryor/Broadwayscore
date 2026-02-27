@@ -17,6 +17,7 @@
  *   TIER_FILTER=1       Only process Tier 1 outlets (1, 2, 3, or empty)
  *   DOMAIN_FILTER=x,y   Only process specific domains (comma-separated)
  *   SOURCE_MODE=reviews-json  Process reviews from reviews.json that have URLs but no review-text files
+ *   SOURCE_MODE=not_attempted Process review files with incompleteReason='not_attempted' (URLs never scraped)
  */
 
 const fs = require('fs');
@@ -718,6 +719,142 @@ function loadReviewsJsonCandidates() {
 }
 
 // ============================================================================
+// Load not-attempted candidates (for SOURCE_MODE=not_attempted)
+// Scans review-texts/ for files with incompleteReason='not_attempted' (URLs never scraped)
+// ============================================================================
+
+function loadNotAttemptedCandidates() {
+  console.log('Loading not-attempted review candidates...\n');
+
+  let shows = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+    for (const s of (showsData.shows || showsData)) {
+      shows[s.id || s.slug] = s;
+    }
+  } catch {}
+
+  // Load exhausted URLs — skip ALL entries (not just non-retryable) for not_attempted mode
+  // because no_archive_coverage entries are written with retryable: false
+  let skipSet = new Set();
+  try {
+    const exhaustedData = JSON.parse(fs.readFileSync(CONFIG.skipListPath, 'utf8'));
+    const entries = exhaustedData.urls || {};
+    for (const [url] of Object.entries(entries)) {
+      skipSet.add(url);
+    }
+    console.log(`  Loaded exhausted list: ${Object.keys(entries).length} URLs (all skipped in not_attempted mode)\n`);
+  } catch {}
+
+  // Also load incomplete-reason classifier for files without incompleteReason set
+  let classifyIncompleteReason;
+  try {
+    classifyIncompleteReason = require('./lib/incomplete-reason').classifyIncompleteReason;
+  } catch {}
+
+  const candidates = [];
+  let skippedComplete = 0, skippedNoUrl = 0, skippedAlreadyArchived = 0, skippedFlagged = 0;
+  let skippedBySkipList = 0, skippedInvalidUrl = 0, totalScanned = 0;
+
+  const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory()).map(d => d.name);
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(CONFIG.reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      totalScanned++;
+      const filePath = path.join(showPath, file);
+      const reviewId = `${showDir}/${file}`;
+
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+        // Check incompleteReason — either explicitly set or classify on-the-fly
+        let reason = data.incompleteReason;
+        if (!reason && classifyIncompleteReason) {
+          try { reason = classifyIncompleteReason(data, null); } catch {}
+        }
+        if (reason !== 'not_attempted') continue;
+
+        // Skip already complete
+        if (data.contentTier === 'complete') { skippedComplete++; continue; }
+        if (data.wrongShow || data.wrongProduction) { skippedFlagged++; continue; }
+
+        const url = data.url;
+        if (!url) { skippedNoUrl++; continue; }
+
+        // Skip non-HTTP URLs
+        if (!url.startsWith('http://') && !url.startsWith('https://')) { skippedInvalidUrl++; continue; }
+
+        // Skip already recovered via archive
+        if (data.archiveOrgUrl) { skippedAlreadyArchived++; continue; }
+        if (skipSet.has(url)) { skippedBySkipList++; continue; }
+
+        const tier = getTierForUrl(url);
+        const domain = (() => {
+          try { return new URL(url).hostname.replace(/^www\./, ''); }
+          catch { return 'unknown'; }
+        })();
+
+        if (CONFIG.tierFilter && tier !== parseInt(CONFIG.tierFilter)) continue;
+        if (CONFIG.domainFilter.length > 0 && !CONFIG.domainFilter.includes(domain)) continue;
+
+        const show = shows[data.showId] || {};
+        const openingDate = show.openingDate || '2000-01-01';
+
+        candidates.push({
+          reviewId,
+          filePath,
+          url,
+          showId: data.showId,
+          outlet: data.outlet || 'unknown',
+          outletId: data.outletId || 'unknown',
+          criticName: data.criticName || 'unknown',
+          tier,
+          domain,
+          openingDate,
+          existingTextLength: (data.fullText || '').length,
+        });
+      } catch {}
+    }
+  }
+
+  // Sort: Tier 1 first, then 2, then 3. Within tier, newest shows first.
+  candidates.sort((a, b) => {
+    if (a.tier !== b.tier) return a.tier - b.tier;
+    return b.openingDate.localeCompare(a.openingDate);
+  });
+
+  const limited = candidates.slice(0, CONFIG.maxUrls);
+
+  console.log(`  Total review files scanned: ${totalScanned}`);
+  console.log(`  Skipped (complete): ${skippedComplete}`);
+  console.log(`  Skipped (no URL): ${skippedNoUrl}`);
+  console.log(`  Skipped (invalid URL): ${skippedInvalidUrl}`);
+  console.log(`  Skipped (already archived): ${skippedAlreadyArchived}`);
+  console.log(`  Skipped (flagged wrong): ${skippedFlagged}`);
+  console.log(`  Skipped (exhausted list): ${skippedBySkipList}`);
+  console.log(`  Candidates after filters: ${limited.length}${CONFIG.maxUrls < Infinity ? ` (limited from ${candidates.length})` : ''}`);
+
+  const tierCounts = { 1: 0, 2: 0, 3: 0 };
+  for (const c of limited) tierCounts[c.tier]++;
+  console.log(`  Tier 1: ${tierCounts[1]}, Tier 2: ${tierCounts[2]}, Tier 3: ${tierCounts[3]}`);
+
+  const domainCounts = {};
+  for (const c of limited) domainCounts[c.domain] = (domainCounts[c.domain] || 0) + 1;
+  const topDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  console.log(`  Top domains: ${topDomains.map(([d, c]) => `${d}(${c})`).join(', ')}`);
+
+  if (candidates.length > 500 && CONFIG.maxUrls === Infinity) {
+    console.log(`\n  WARNING: ${candidates.length} candidates found. Consider using DOMAIN_FILTER or MAX_URLS to limit scope.`);
+  }
+
+  return limited;
+}
+
+// ============================================================================
 // Checkpointing (CI only)
 // ============================================================================
 
@@ -778,6 +915,8 @@ async function main() {
     ? loadIncompleteCandidates()
     : CONFIG.sourceMode === 'reviews-json'
     ? loadReviewsJsonCandidates()
+    : CONFIG.sourceMode === 'not_attempted'
+    ? loadNotAttemptedCandidates()
     : loadCandidates();
   if (candidates.length === 0) {
     console.log('\nNo candidates to process.');
@@ -804,6 +943,11 @@ async function main() {
   const recoveredReviewIds = []; // Track for batch cleanup of failed-fetches.json
   const exhaustedUrls = {}; // Track per-URL failure reasons for wayback-exhausted.json
 
+  // Domain circuit breaker — skip domains with too many consecutive failures
+  const domainFailures = {};  // { 'cititour.com': 5, ... }
+  const skippedDomains = new Set();
+  let domainSkipCount = 0;
+
   console.log(`\n${'='.repeat(60)}`);
   console.log('Phase 1: CDX Discovery + Fetch\n');
 
@@ -814,7 +958,14 @@ async function main() {
     console.log(`${progress} T${c.tier} ${c.domain} — ${c.showId} (${c.criticName})`);
     console.log(`  URL: ${c.url}`);
 
-    // Circuit breaker
+    // Domain circuit breaker — skip domains with 5+ consecutive failures
+    if (skippedDomains.has(c.domain)) {
+      console.log(`  → Skipped (domain ${c.domain} circuit-broken)`);
+      domainSkipCount++;
+      continue;
+    }
+
+    // Global circuit breaker
     if (consecutiveFailures >= CONFIG.maxConsecutiveFailures) {
       console.log(`\n  ⚠ Circuit breaker: ${consecutiveFailures} consecutive failures. Pausing ${CONFIG.cooldownAfterFailures / 1000}s...`);
       await sleep(CONFIG.cooldownAfterFailures);
@@ -854,6 +1005,7 @@ async function main() {
             stats.recoveredByTier[c.tier]++;
             stats.recoveredByDomain[c.domain] = (stats.recoveredByDomain[c.domain] || 0) + 1;
             recoveredReviewIds.push(c.reviewId);
+            domainFailures[c.domain] = 0; // Reset domain circuit breaker on success
             console.log(`  ✓ RECOVERED via archive.today (${atResult.text.length} chars)`);
 
             if (stats.recovered % CONFIG.checkpointInterval === 0) {
@@ -866,8 +1018,14 @@ async function main() {
       }
 
       stats.notInArchive++;
-      // Track but don't skip — CDX may return empty under rate limiting (false negative)
-      exhaustedUrls[c.url] = { reason: 'no_archive_coverage', lastAttempt: new Date().toISOString(), retryable: true };
+      exhaustedUrls[c.url] = { reason: 'no_archive_coverage', lastAttempt: new Date().toISOString(), retryable: false };
+
+      // Domain failure tracking
+      domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
+      if (domainFailures[c.domain] >= 5) {
+        skippedDomains.add(c.domain);
+        console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
+      }
       continue;
     }
 
@@ -912,6 +1070,7 @@ async function main() {
           stats.recoveredByTier[c.tier]++;
           stats.recoveredByDomain[c.domain] = (stats.recoveredByDomain[c.domain] || 0) + 1;
           recoveredReviewIds.push(c.reviewId);
+          domainFailures[c.domain] = 0; // Reset domain circuit breaker on success
           console.log(`  ✓ RECOVERED (${text.length} chars, snapshot ${snapshot.timestamp})`);
           recovered = true;
 
@@ -948,6 +1107,7 @@ async function main() {
           stats.recoveredByTier[c.tier]++;
           stats.recoveredByDomain[c.domain] = (stats.recoveredByDomain[c.domain] || 0) + 1;
           recoveredReviewIds.push(c.reviewId);
+          domainFailures[c.domain] = 0; // Reset domain circuit breaker on success
           console.log(`  ✓ RECOVERED via archive.today (${atResult.text.length} chars)`);
 
           if (stats.recovered % CONFIG.checkpointInterval === 0) {
@@ -956,9 +1116,19 @@ async function main() {
           }
         } else {
           exhaustedUrls[c.url] = { reason: 'content_quality_failed', lastAttempt: new Date().toISOString(), retryable: false };
+          domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
+          if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+            skippedDomains.add(c.domain);
+            console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
+          }
         }
       } else {
         exhaustedUrls[c.url] = { reason: 'snapshots_paywalled', lastAttempt: new Date().toISOString(), retryable: false };
+        domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
+        if (domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
+          skippedDomains.add(c.domain);
+          console.log(`  ⚠ Domain ${c.domain} circuit-broken after ${domainFailures[c.domain]} consecutive failures`);
+        }
       }
     }
 
@@ -1018,6 +1188,10 @@ async function main() {
     }
   }
 
+  // Add domain circuit breaker stats
+  stats.domainSkipped = domainSkipCount;
+  stats.circuitBrokenDomains = Array.from(skippedDomains);
+
   // Write report
   console.log('\nWriting report...');
   const reportDir = path.dirname(CONFIG.reportPath);
@@ -1046,6 +1220,10 @@ async function main() {
   console.log(`║ Garbage:           ${String(stats.garbage).padStart(34)} ║`);
   console.log(`║ Wrong show:        ${String(stats.wrongShow).padStart(34)} ║`);
   console.log(`║ Errors:            ${String(stats.errors).padStart(34)} ║`);
+  if (domainSkipCount > 0) {
+    console.log(`║ Domain-skipped:    ${String(domainSkipCount).padStart(34)} ║`);
+    console.log(`║ Broken domains:    ${String(skippedDomains.size).padStart(34)} ║`);
+  }
   console.log('╚══════════════════════════════════════════════════════╝');
 
   if (Object.keys(stats.recoveredByDomain).length > 0) {
@@ -1124,6 +1302,10 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   data.textWordCount = countWords(cleanedText);
   data.textFetchedAt = new Date().toISOString();
   data.fetchMethod = 'wayback-recovery';
+
+  // Clear incomplete status — prevents re-processing before next rebuild
+  delete data.incompleteReason;
+  delete data.incompleteDetail;
 
   if (archiveData.source === 'archive.org') {
     data.archiveOrgTimestamp = archiveData.timestamp;
