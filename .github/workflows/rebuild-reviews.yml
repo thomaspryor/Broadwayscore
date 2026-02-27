@@ -227,6 +227,7 @@ jobs:
           gh workflow run "Deploy to Vercel" || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Auto-trigger LLM scoring if needed
+        id: scoring-trigger
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -271,10 +272,12 @@ jobs:
           ')
 
           echo "Reviews needing LLM scoring: $UNSCORED"
+          echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
 
           THRESHOLD=5
           if [ "$UNSCORED" -lt "$THRESHOLD" ]; then
             echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
+            echo "scoring_triggered=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -302,6 +305,41 @@ jobs:
             -f remaining_batches=5
 
           echo "LLM scoring auto-triggered successfully."
+          echo "scoring_triggered=true" >> $GITHUB_OUTPUT
+
+      - name: Auto-trigger consensus update if needed
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Skip if scoring was triggered — scoring chain dispatches consensus when done
+          if [ "${{ steps.scoring-trigger.outputs.scoring_triggered }}" = "true" ]; then
+            echo "Scoring was triggered — consensus will fire from scoring chain. Skipping."
+            exit 0
+          fi
+
+          # Dedup: skip if consensus ran within the last hour
+          RECENT=$(gh run list --workflow="Update Critics' Take" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          if [ -n "$RECENT" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -jf "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+            if [ "$DIFF" -lt 3600 ]; then
+              echo "Consensus ran ${DIFF}s ago (< 1 hour). Skipping."
+              exit 0
+            fi
+          fi
+
+          # Check if consensus is already running or queued
+          RUNNING=$(gh run list --workflow="Update Critics' Take" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="Update Critics' Take" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+            echo "Consensus already active. Skipping."
+            exit 0
+          fi
+
+          echo "Dispatching consensus update (reviews changed, no scoring needed)..."
+          gh workflow run "Update Critics' Take"
 
       - name: Notify on failure
         if: failure()

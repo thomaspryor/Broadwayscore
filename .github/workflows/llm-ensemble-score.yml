@@ -510,10 +510,9 @@ jobs:
             gh workflow run "Rebuild Reviews Data" -f reason="Post LLM ensemble scoring chain"
             echo "Rebuild dispatched."
           fi
-          # Consensus needs the rebuild to finish first, so add a delay
-          sleep 10
-          gh workflow run "Update Critics' Take"
-          echo "Consensus dispatched."
+          # Consensus is now auto-triggered by rebuild workflow when it detects changes.
+          # Previously dispatched here with a race condition (consensus started before rebuild finished).
+          echo "Consensus will be triggered by rebuild when it completes."
 
       - name: Trigger pull quote extraction (chain complete)
         if: >-
