@@ -1384,7 +1384,7 @@ function validateReviewOutletTiers() {
  *
  * Skips flagged files (wrongProduction, wrongShow, isRoundupArticle, etc.) for URL checks.
  */
-function validateReviewTextDuplicates() {
+function validateReviewTextDuplicates(shows) {
   info('Checking for duplicate review-text files...');
 
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -1405,6 +1405,14 @@ function validateReviewTextDuplicates() {
 
   const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory() && !d.name.startsWith('.'));
+
+  // Detect non-canonical directories (slug-named dirs that should have been merged into ID dirs)
+  const slugOnlyDirs = showDirs.filter(d => {
+    return shows.some(s => s.slug === d.name && s.id !== d.name);
+  });
+  if (slugOnlyDirs.length > 0) {
+    warn(`${slugOnlyDirs.length} non-canonical (slug-named) review-text directories found: ${slugOnlyDirs.slice(0, 5).map(d => d.name).join(', ')}. Run: node scripts/merge-slug-directories.js`);
+  }
 
   for (const dir of showDirs) {
     const showDir = path.join(reviewTextsDir, dir.name);
@@ -1470,13 +1478,12 @@ function validateReviewTextDuplicates() {
   }
 
   // Thresholds — non-aggregator cross-show dupes are the real concern.
-  // Aggregator dupes are expected (roundup pages cover multiple shows).
-  // ~211 non-agg cross-show dupes are baseline (197 same-show-different-year + 14 truly different).
-  // A spike above baseline indicates a normalizer bug creating mass duplicates.
-  if (crossShowDupesNonAgg > 275) {
-    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~211, spike suggests data issue)`);
-  } else if (crossShowDupesNonAgg > 240) {
-    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~211)`);
+  // Baseline ~0 after slug directory merge + combined review flagging (Feb 2026).
+  // New dupes indicate collection scripts creating slug directories or missed combined reviews.
+  if (crossShowDupesNonAgg > 50) {
+    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~0, spike suggests data issue)`);
+  } else if (crossShowDupesNonAgg > 20) {
+    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~0)`);
   }
   // Baseline ~0 after consolidation (Feb 2026). New dupes come from collection scripts using non-canonical outlet IDs.
   if (dupeGroups > 50) {
@@ -2855,7 +2862,7 @@ function runValidation() {
   console.log('');
   validateReviewOutletTiers();
   console.log('');
-  validateReviewTextDuplicates();
+  validateReviewTextDuplicates(shows);
 
   // Summary
   console.log('');
