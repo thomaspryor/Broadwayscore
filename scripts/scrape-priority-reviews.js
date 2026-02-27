@@ -20,6 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 // ============================================
 // CONFIGURATION
@@ -65,125 +66,51 @@ const CONFIG = {
 // OUTLET TIERS (from scoring.ts)
 // ============================================
 
-// Tier 1: Major national publications & top culture sites
+// Tier 1: Major national publications & top culture sites (canonical IDs from outlet-registry)
 const TIER_1_OUTLETS = new Set([
-  'nytimes', 'nyt', 'new york times', 'the new york times',
-  'variety',
-  'vulture', 'ny mag', 'new york magazine',
-  'hollywood-reporter', 'thr', 'hollywoodreporter', 'the hollywood reporter',
-  'deadline',
-  'guardian', 'the guardian',
-  'newyorker', 'the new yorker', 'new yorker',
-  'time', 'time magazine',
-  'washpost', 'washington post', 'the washington post', 'wapo',
-  'wsj', 'wall street journal', 'the wall street journal',
-  'latimes', 'los angeles times', 'la times',
-  'ap', 'associated press',
-  'timeout', 'time out', 'time out new york',
-  'broadwaynews', 'broadway news',
+  'nytimes', 'variety', 'vulture', 'hollywood-reporter', 'deadline',
+  'guardian', 'newyorker', 'time', 'washpost', 'wsj',
+  'latimes', 'ap', 'timeout', 'broadwaynews',
 ]);
 
-// Tier 2: Regional papers, trades, theatre-specific outlets
+// Tier 2: Regional papers, trades, theatre-specific outlets (canonical IDs)
 const TIER_2_OUTLETS = new Set([
-  'theatermania', 'theatremania',
-  'nypost', 'new york post', 'ny post',
-  'nydailynews', 'new york daily news', 'ny daily news', 'nydn',
-  'ew', 'entertainment weekly',
-  'usatoday', 'usa today',
-  'observer', 'the observer', 'ny observer',
-  'indiewire', 'indie wire',
-  'thewrap', 'the wrap', 'wrap',
-  'dailybeast', 'the daily beast', 'daily beast', 'tdb',
-  'telegraph', 'the telegraph',
-  'broadwayworld', 'bww', 'broadway world',
-  'chicagotribune', 'chicago tribune',
-  'newsday',
-  'rollingstone', 'rolling stone',
-  'bloomberg',
-  'vox',
-  'slate',
-  'people',
-  'billboard',
-  'huffpost', 'huffington post',
-  'backstage',
-  'nysr', 'new york stage review',
-  'nytg', 'new york theatre guide',
-  'nyt-theater', 'new york theater',
-  'theatrely', 'thly',
-  'slantmagazine', 'slant magazine', 'slant',
+  'theatermania', 'nypost', 'nydailynews', 'ew', 'usatoday',
+  'observer', 'indiewire', 'thewrap', 'dailybeast', 'telegraph',
+  'broadwayworld', 'chicagotribune', 'newsday', 'rollingstone',
+  'bloomberg', 'vox', 'slate', 'people', 'billboard', 'huffpost',
+  'backstage', 'nysr', 'nytg', 'nyt-theater', 'theatrely', 'slantmagazine',
 ]);
 
 // ============================================
 // PAYWALL STATUS
 // ============================================
 
-// FREE: No paywall, should scrape directly
+// FREE: No paywall, should scrape directly (canonical IDs)
 const FREE_OUTLETS = new Set([
-  'stageandcinema', 'stage and cinema',
-  'theatrely', 'thly',
-  'cititour',
-  'nyt-theater', 'new york theater',
-  'culturesauce', 'culture sauce',
-  'frontmezzjunkies', 'front mezz junkies',
-  'talkinbroadway', "talkin' broadway",
-  'broadwayworld', 'bww', 'broadway world',
-  'nysr', 'new york stage review',
-  'nytg', 'new york theatre guide',
-  'amny', 'amnewyork',
-  'playbill',
-  'dctheatrescene', 'dc theatre scene',
-  'artsfuse', 'the arts fuse',
-  'towleroad',
-  'queerty',
-  'medium',
-  'buzzfeed',
-  'huffpost', 'huffington post',
+  'stageandcinema', 'theatrely', 'cititour', 'nyt-theater', 'culturesauce',
+  'frontmezzjunkies', 'talkinbroadway', 'broadwayworld', 'nysr', 'nytg',
+  'amny', 'playbill', 'dctheatrescene', 'artsfuse', 'towleroad',
+  'queerty', 'medium', 'buzzfeed', 'huffpost',
 ]);
 
-// METERED: Some articles free, some paywalled - try Archive.org first
+// METERED: Some articles free, some paywalled - try Archive.org first (canonical IDs)
 const METERED_OUTLETS = new Set([
-  'variety',
-  'hollywood-reporter', 'thr', 'hollywoodreporter', 'the hollywood reporter',
-  'deadline',
-  'indiewire', 'indie wire',
-  'thewrap', 'the wrap', 'wrap',
-  'billboard',
-  'rollingstone', 'rolling stone',
-  'observer', 'the observer',
-  'dailybeast', 'the daily beast', 'daily beast', 'tdb',
-  'chicagotribune', 'chicago tribune',
-  'latimes', 'los angeles times', 'la times',
-  'newsday',
-  'ap', 'associated press',
-  'bloomberg',
-  'vox',
-  'slate',
-  'people',
+  'variety', 'hollywood-reporter', 'deadline', 'indiewire', 'thewrap',
+  'billboard', 'rollingstone', 'observer', 'dailybeast', 'chicagotribune',
+  'latimes', 'newsday', 'ap', 'bloomberg', 'vox', 'slate', 'people',
 ]);
 
-// PAYWALLED with credentials (user has subscriptions)
+// PAYWALLED with credentials (user has subscriptions) (canonical IDs)
 const PAYWALLED_WITH_CREDENTIALS = new Set([
-  'nytimes', 'nyt', 'new york times', 'the new york times',
-  'vulture', 'ny mag', 'new york magazine',
-  'newyorker', 'the new yorker', 'new yorker',
-  'washpost', 'washington post', 'the washington post', 'wapo',
-  'wsj', 'wall street journal', 'the wall street journal',
+  'nytimes', 'vulture', 'newyorker', 'washpost', 'wsj',
 ]);
 
-// PAYWALLED without credentials - Archive.org only
+// PAYWALLED without credentials - Archive.org only (canonical IDs)
 const PAYWALLED_NO_CREDENTIALS = new Set([
-  'ew', 'entertainment weekly',
-  'nypost', 'new york post', 'ny post',
-  'guardian', 'the guardian',
-  'timeout', 'time out', 'time out new york',
-  'time', 'time magazine',
-  'theatermania', 'theatremania',
-  'telegraph', 'the telegraph',
-  'broadwaynews', 'broadway news',
-  'usatoday', 'usa today',
-  'backstage',
-  'nydailynews', 'new york daily news', 'ny daily news', 'nydn',
-  'slantmagazine', 'slant magazine', 'slant',
+  'ew', 'nypost', 'guardian', 'timeout', 'time', 'theatermania',
+  'telegraph', 'broadwaynews', 'usatoday', 'backstage', 'nydailynews',
+  'slantmagazine',
 ]);
 
 // ============================================
@@ -191,94 +118,30 @@ const PAYWALLED_NO_CREDENTIALS = new Set([
 // ============================================
 
 /**
- * Normalize outlet name for comparison
- */
-function normalizeOutletName(name) {
-  if (!name) return '';
-  return name.toLowerCase()
-    .replace(/^the\s+/, '')
-    .replace(/['']/g, '')
-    .replace(/\s+/g, '-')
-    .trim();
-}
-
-/**
  * Determine outlet tier (1, 2, or 3)
  */
-function getOutletTier(outlet) {
-  const normalized = normalizeOutletName(outlet);
-  const outletLower = outlet?.toLowerCase() || '';
-
-  // Check Tier 1
-  for (const t1 of TIER_1_OUTLETS) {
-    if (normalized === t1 || outletLower.includes(t1) || t1.includes(normalized)) {
-      return 1;
-    }
-  }
-
-  // Check Tier 2
-  for (const t2 of TIER_2_OUTLETS) {
-    if (normalized === t2 || outletLower.includes(t2) || t2.includes(normalized)) {
-      return 2;
-    }
-  }
-
-  // Default to Tier 3
+function getOutletTier(canonicalId) {
+  if (TIER_1_OUTLETS.has(canonicalId)) return 1;
+  if (TIER_2_OUTLETS.has(canonicalId)) return 2;
   return 3;
 }
 
 /**
  * Determine paywall status
  */
-function getPaywallStatus(outlet) {
-  const normalized = normalizeOutletName(outlet);
-  const outletLower = outlet?.toLowerCase() || '';
-
-  // Check free
-  for (const f of FREE_OUTLETS) {
-    if (normalized === f || outletLower.includes(f) || f.includes(normalized)) {
-      return 'free';
-    }
-  }
-
-  // Check metered
-  for (const m of METERED_OUTLETS) {
-    if (normalized === m || outletLower.includes(m) || m.includes(normalized)) {
-      return 'metered';
-    }
-  }
-
-  // Check paywalled with credentials
-  for (const p of PAYWALLED_WITH_CREDENTIALS) {
-    if (normalized === p || outletLower.includes(p) || p.includes(normalized)) {
-      return 'paywalled';
-    }
-  }
-
-  // Check paywalled without credentials
-  for (const p of PAYWALLED_NO_CREDENTIALS) {
-    if (normalized === p || outletLower.includes(p) || p.includes(normalized)) {
-      return 'paywalled';
-    }
-  }
-
-  // Unknown - assume free
-  return 'free';
+function getPaywallStatus(canonicalId) {
+  if (FREE_OUTLETS.has(canonicalId)) return 'free';
+  if (METERED_OUTLETS.has(canonicalId)) return 'metered';
+  if (PAYWALLED_WITH_CREDENTIALS.has(canonicalId)) return 'paywalled';
+  if (PAYWALLED_NO_CREDENTIALS.has(canonicalId)) return 'paywalled';
+  return 'free'; // Unknown - assume free
 }
 
 /**
  * Check if user has credentials for outlet
  */
-function hasCredentials(outlet) {
-  const normalized = normalizeOutletName(outlet);
-  const outletLower = outlet?.toLowerCase() || '';
-
-  for (const p of PAYWALLED_WITH_CREDENTIALS) {
-    if (normalized === p || outletLower.includes(p) || p.includes(normalized)) {
-      return true;
-    }
-  }
-  return false;
+function hasCredentials(canonicalId) {
+  return PAYWALLED_WITH_CREDENTIALS.has(canonicalId);
 }
 
 /**
@@ -510,16 +373,17 @@ async function main() {
         excerptOnlyReviews++;
 
         const outlet = reviewData.outlet || reviewData.outletId || 'unknown';
-        const tier = getOutletTier(outlet);
-        const paywallStatus = getPaywallStatus(outlet);
-        const credentials = hasCredentials(outlet);
+        const canonicalId = normalizeOutlet(reviewData.outletId || reviewData.outlet || 'unknown');
+        const tier = getOutletTier(canonicalId);
+        const paywallStatus = getPaywallStatus(canonicalId);
+        const credentials = hasCredentials(canonicalId);
         const failedEntry = failedFetches[relativePath] || failedFetches[filePath];
         const methodsTried = getMethodsTried(reviewData, failedEntry);
         const recommendedMethod = getRecommendedMethod(paywallStatus, credentials, methodsTried);
         const priority = calculatePriority(tier, paywallStatus, credentials, methodsTried);
 
         // Track outlet stats
-        const outletKey = normalizeOutletName(outlet) || 'unknown';
+        const outletKey = canonicalId || 'unknown';
         if (!outletStats[outletKey]) {
           outletStats[outletKey] = {
             name: outlet,
