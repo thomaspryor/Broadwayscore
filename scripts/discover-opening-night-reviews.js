@@ -54,30 +54,38 @@ const { OUTLET_DOMAINS } = (() => {
   return { OUTLET_DOMAINS: {} };
 })();
 
-// Tier 1 outlet IDs (from scoring.ts) — Broadway
-const TIER1_OUTLETS_BW = [
-  'nytimes', 'washpost', 'latimes', 'wsj', 'ap', 'variety',
-  'hollywood-reporter', 'vulture', 'guardian', 'timeout', 'broadway-news', 'newyorker',
-];
-
-// Tier 2 outlet IDs — Broadway
-const TIER2_OUTLETS_BW = [
-  'chicagotribune', 'usatoday', 'nydailynews', 'nypost', 'thewrap',
-  'ew', 'indiewire', 'deadline', 'slantmagazine', 'dailybeast',
-  'observer', 'newyorktheatreguide', 'nystagereview', 'theatermania',
-  'theatrely', 'newsday', 'rollingstone', 'financial-times-uk',
-];
-
-// Tier 1 outlet IDs — West End (keys match OUTLET_DOMAINS in url-discovery.js)
-const TIER1_OUTLETS_WE = [
-  'times-uk', 'the-telegraph-uk', 'evening-standard', 'guardian', 'dailymail',
-];
-
-// Tier 2 outlet IDs — West End
-const TIER2_OUTLETS_WE = [
-  'the-stage-uk', 'whatsonstage', 'timeout-london', 'the-independent-uk',
-  'financial-times-uk', 'london-theatre', 'variety',
-];
+// Tier 1/2 outlet lists — derived from outlet-registry.json (single source of truth).
+// Includes canonical IDs + aliases so OUTLET_DOMAINS lookup works with either form.
+// BW: non-London outlets (or dual-market). WE: London outlets (or dual-market).
+const _reg = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8')); }
+  catch { return { outlets: {} }; }
+})();
+const TIER1_OUTLETS_BW = [];
+const TIER2_OUTLETS_BW = [];
+const TIER1_OUTLETS_WE = [];
+const TIER2_OUTLETS_WE = [];
+for (const [id, info] of Object.entries(_reg.outlets || {})) {
+  if (info.tier !== 1 && info.tier !== 2) continue;
+  const ids = [id, ...(info.aliases || []).map(a => a.toLowerCase())];
+  const isLondon = info.region === 'london';
+  const isDual = info.isDualMarket || false;
+  // BW: include if not London-only (non-London or dual-market)
+  if (!isLondon || isDual) {
+    if (info.tier === 1) TIER1_OUTLETS_BW.push(...ids);
+    else TIER2_OUTLETS_BW.push(...ids);
+  }
+  // WE: include if London or dual-market, plus any alias containing "london"
+  if (isLondon || isDual) {
+    if (info.tier === 1) TIER1_OUTLETS_WE.push(...ids);
+    else TIER2_OUTLETS_WE.push(...ids);
+  } else if (ids.some(i => i.includes('london'))) {
+    // Catch London-specific aliases of non-London outlets (e.g., timeout-london)
+    const londonIds = ids.filter(i => i.includes('london'));
+    if (info.tier === 1) TIER1_OUTLETS_WE.push(...londonIds);
+    else TIER2_OUTLETS_WE.push(...londonIds);
+  }
+}
 
 // Aggregator domains to exclude from News results
 const AGGREGATOR_DOMAINS = [

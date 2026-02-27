@@ -2803,6 +2803,42 @@ function validateNonTheaterContent(shows) {
   else console.log(`  ⚠️  ${flagged} show(s) flagged for review`);
 }
 
+// Lint guard: detect hardcoded outlet ID lists in scripts that should use outlet-registry.json
+function validateNoHardcodedOutletLists() {
+  console.log('--- Hardcoded Outlet List Check ---');
+  const SCRIPTS_DIR = path.join(__dirname);
+  // Sentinel outlet IDs — if a Set/Array literal contains 3+ of these, it's likely a hardcoded outlet list
+  const SENTINEL_IDS = ['nytimes', 'variety', 'vulture', 'guardian', 'timeout', 'newyorker', 'washpost', 'wsj', 'hollywood-reporter', 'theatermania'];
+  // Files that are allowed to have outlet IDs (the registry itself, this validator, normalization lib)
+  const ALLOWLIST = ['validate-data.js', 'review-normalization.js', 'outlet-tiers.js', 'outlet-id-mapper.ts'];
+
+  let flagged = 0;
+  let files;
+  try {
+    files = fs.readdirSync(SCRIPTS_DIR).filter(f => f.endsWith('.js') && !ALLOWLIST.includes(f));
+  } catch { ok('Skipped hardcoded outlet list check (scripts dir unreadable)'); return; }
+
+  for (const file of files) {
+    try {
+      const content = fs.readFileSync(path.join(SCRIPTS_DIR, file), 'utf8');
+      // Find Set/Array literals that span multiple lines with outlet-like IDs
+      const blocks = content.match(/new Set\(\[[\s\S]{10,500}?\]\)/g) || [];
+      const arrayBlocks = content.match(/const \w+(?:_OUTLETS|_OUTLET_IDS|OUTLETS_\w+)\s*=\s*\[[\s\S]{10,500}?\]/g) || [];
+      for (const block of [...blocks, ...arrayBlocks]) {
+        const hits = SENTINEL_IDS.filter(id => block.includes(`'${id}'`) || block.includes(`"${id}"`));
+        if (hits.length >= 3) {
+          // Check if there's a comment indicating it's registry-derived
+          if (/outlet-registry|registry.*source of truth|derived from/i.test(block)) continue;
+          warn(`Hardcoded outlet list in ${file} (contains ${hits.length} sentinel IDs: ${hits.slice(0, 4).join(', ')}...) — consider deriving from outlet-registry.json`);
+          flagged++;
+        }
+      }
+    } catch { /* skip unreadable files */ }
+  }
+  if (flagged === 0) ok('No hardcoded outlet lists detected in scripts');
+  else console.log(`  ⚠️  ${flagged} hardcoded outlet list(s) found — consider migrating to outlet-registry.json`);
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -2890,6 +2926,8 @@ function runValidation() {
   validateReviewOutletTiers();
   console.log('');
   validateReviewTextDuplicates(shows);
+  console.log('');
+  validateNoHardcodedOutletLists();
 
   // Summary
   console.log('');
