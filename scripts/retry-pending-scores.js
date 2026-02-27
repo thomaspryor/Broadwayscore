@@ -1,0 +1,113 @@
+#!/usr/bin/env node
+/**
+ * Phase 3b: Retry score extraction for reviews with scoreExtractionPending: true
+ *
+ * Finds review files where:
+ *   - scoreExtractionPending is true
+ *   - originalScore is not set
+ *   - fullText exists (>200 chars)
+ *
+ * Runs them through extractExplicitScore() and clears the pending flag.
+ *
+ * Usage:
+ *   node scripts/retry-pending-scores.js --dry-run     # Preview what would be retried
+ *   node scripts/retry-pending-scores.js               # Run retries
+ *   node scripts/retry-pending-scores.js --limit=50    # Limit to first 50
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { extractExplicitScore } = require('./lib/llm-score-extractor');
+
+const DRY_RUN = process.argv.includes('--dry-run');
+const VERBOSE = process.argv.includes('--verbose');
+const limitArg = process.argv.find(a => a.startsWith('--limit='));
+const LIMIT = limitArg ? parseInt(limitArg.split('=')[1]) : Infinity;
+
+const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+
+function walkDir(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkDir(fullPath));
+    } else if (entry.name.endsWith('.json')) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+async function main() {
+  const allFiles = walkDir(reviewTextsDir);
+  console.log(`Scanning ${allFiles.length} review files for pending score extraction...\n`);
+
+  const pending = [];
+  for (const filePath of allFiles) {
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.scoreExtractionPending && !data.originalScore && data.fullText && data.fullText.length > 200) {
+        pending.push({ filePath, data });
+      }
+    } catch (e) { /* skip unreadable */ }
+  }
+
+  console.log(`Found ${pending.length} pending files`);
+  if (DRY_RUN) {
+    for (const { filePath } of pending.slice(0, 20)) {
+      console.log(`  Would retry: ${path.relative(reviewTextsDir, filePath)}`);
+    }
+    if (pending.length > 20) console.log(`  ... and ${pending.length - 20} more`);
+    return;
+  }
+
+  const toProcess = pending.slice(0, LIMIT);
+  let found = 0;
+  let notFound = 0;
+  let errors = 0;
+
+  for (let i = 0; i < toProcess.length; i++) {
+    const { filePath, data } = toProcess[i];
+    const rel = path.relative(reviewTextsDir, filePath);
+
+    try {
+      const result = await extractExplicitScore({
+        text: data.fullText,
+        outletId: data.outletId || '',
+        verbose: VERBOSE
+      });
+
+      if (result) {
+        data.originalScore = result.originalScore;
+        data.originalScoreNormalized = result.normalizedScore;
+        data.originalScoreSource = result.source;
+        delete data.scoreExtractionPending;
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        found++;
+        console.log(`  [${i + 1}/${toProcess.length}] ✓ ${rel}: ${result.originalScore} (${result.normalizedScore})`);
+      } else {
+        delete data.scoreExtractionPending; // Clear flag even if no score found
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        notFound++;
+        if (VERBOSE) console.log(`  [${i + 1}/${toProcess.length}] - ${rel}: no score found`);
+      }
+
+      // Rate limit: 0.5s between Gemini calls
+      await new Promise(r => setTimeout(r, 500));
+
+    } catch (e) {
+      errors++;
+      console.error(`  [${i + 1}/${toProcess.length}] ✗ ${rel}: ${e.message}`);
+    }
+  }
+
+  console.log(`\n=== Retry Complete ===`);
+  console.log(`  Processed: ${toProcess.length}`);
+  console.log(`  Scores found: ${found}`);
+  console.log(`  No score: ${notFound}`);
+  console.log(`  Errors: ${errors}`);
+}
+
+main().catch(e => { console.error(e); process.exit(1); });
