@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-27T00:36:04.127Z",
+  "updatedAt": "2026-02-27T00:55:28.592Z",
   "processed": 0,
-  "failed": 20,
+  "failed": 30,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-02-27T00:17:25.689Z",
@@ -47,6 +47,17 @@
       "t": "2026-02-27T00:34:06.310Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-27T00:55:03.094Z",
+      "event": "bb-session",
+      "session": "231a70e3",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-27T00:55:04.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
