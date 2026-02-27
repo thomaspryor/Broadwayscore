@@ -21,6 +21,10 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'guardian': 'GUARDIAN',
   'timeout': 'TIMEOUTNY',
   'broadwaynews': 'BWAYNEWS',
+  'newyorker': 'NEWYORKER',
+  'telegraph': 'TELEGRAPH',
+  'standard': 'STANDARD',
+  'times-uk': 'TIMES-UK',
 
   // Tier 2 outlets
   'chicagotribune': 'CHTRIB',
@@ -51,6 +55,12 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'huffpost': 'HUFFPOST',
   'backstage': 'BACKSTAGE',
   'village-voice': 'VILLAGEVOICE',
+  'financialtimes': 'FT',
+  'thestage': 'STAGE-UK',
+  'whatsonstage': 'WHATSONSTAGE',
+  'london-theatre': 'LONDONTHEATRE',
+  'independent': 'INDEPENDENT',
+  'i-paper': 'I-PAPER',
 
   // Tier 2 outlets — promoted from T3 (Feb 27 tier audit)
   'amny': 'AMNY',
@@ -81,130 +91,93 @@ export const REGISTRY_TO_SCORING: Record<string, string> = {
   'philadelphia-inquirer': 'PHILINQ',
   'chicago-sun-times': 'CHISUNTIMES',
   'new-york-sun': 'NYSUN',
+  'forward': 'FORWARD',
+  'fort-worth-star-telegram': 'FORTWORTHST',
+  'new-jersey-newsroom': 'NJNEWSROOM',
+  'theater-news-online': 'THEATERNEWS',
 };
 
-// Additional alias mappings for common variations found in review data
-// These map alternative registry IDs to their scoring equivalents
-export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
-  // Common variations
-  'new-york-times': 'NYT',
-  'washington-post': 'WASHPOST',
-  'los-angeles-times': 'LATIMES',
-  'wall-street-journal': 'WSJ',
-  'associated-press': 'AP',
-  'hollywood-reporter': 'THR',
-  'time-out-new-york': 'TIMEOUTNY',
-  'broadway-news': 'BWAYNEWS',
-  'chicago-tribune': 'CHTRIB',
-  'usa-today': 'USATODAY',
-  'new-york-daily-news': 'NYDN',
-  'ny-post': 'NYP',
-  'the-wrap': 'WRAP',
-  'entertainment-weekly': 'EW',
-  'slant-magazine': 'SLANT',
-  'the-daily-beast': 'TDB',
-  'new-york-theater': 'NYTHTR',
-  'new-york-theatre-guide': 'NYTG',
-  'new-york-stage-review': 'NYSR',
-  'theater-mania': 'TMAN',
-  'rolling-stone': 'ROLLSTONE',
-  'the-village-voice': 'VILLAGEVOICE',
-  'am-new-york': 'AMNY',
-  'culture-sauce': 'CSCE',
-  'front-mezz-junkies': 'FRONTMEZZ',
-  'broadway-world': 'BWW',
-  'stage-and-cinema': 'STGCNMA',
-  'talkin-broadway': 'TALKINBWAY',
-  'curtain-up': 'CURTAINUP',
-  'theater-scene': 'THEATERSCENE',
-  'nj-com': 'NJCOM',
-  'stage-zine': 'STAGEZINE',
-  'exeunt': 'EXEUNT',
-  'north-jersey': 'NORTHJERSEY',
-  'nbc-new-york': 'NBC',
-  'newyorker': 'NEWYORKER',
-
-  // Duplicate outlet ID aliases (found by tier audit)
-  'bloomberg-news': 'BLOOMBERG',
-  'newyorkmagazine': 'VULT',
-  'vulturecom': 'VULT',
-  'the-guardian-uk': 'GUARDIAN',
-  'broadwayworldcom': 'BWW',
-  'theaterscenecom': 'THEATERSCENE',
-  'new-york-1': 'NY1',
-  'observer-david-cote': 'OBSERVER',
-  'chicago-tribute': 'CHTRIB',       // typo variant
-  'ny-newsday': 'NEWSDAY',
-  'associated-press-mark-kennedy': 'AP',
-  'amny-matt-windman': 'AMNY',
-  'amnycom': 'AMNY',
-  'am-ny-matt-windman': 'AMNY',
-  '1minutecritic': 'OMC',
-  'oneminutecritic': 'OMC',
+// Auto-generated alias mappings from outlet-registry.json aliases field.
+// Built lazily on first access. For each outlet in REGISTRY_TO_SCORING,
+// all its registry aliases are normalized (lowercase, spaces→hyphens) and
+// mapped to the same scoring ID. Eliminates manual maintenance.
+//
+// Manual overrides for aliases NOT in the registry (typos, critic-specific IDs):
+const MANUAL_ALIAS_OVERRIDES: Record<string, string> = {
   '1-minute-critic-matthew-wexler': 'OMC',
-
-  // Financial Times (new Tier 2 outlet)
-  'financialtimes': 'FT',
-  'financial-times-uk': 'FT',
-  'financial-times': 'FT',
-
-  // Additional aliases (Feb 2026 audit)
-  'newyorktheater': 'NYTHTR',
-  'new-york-theatre': 'NYTG',
-  'new-york-theatre-guide-gillian-russo': 'NYTG',
-  'the-star-ledger': 'NJCOM',
-  'the-stage-uk': 'STAGE-UK',
-  'the-telegraph-uk': 'TELEGRAPH',
-  'northjereycom': 'NORTHJERSEY',
-  'shelby-star-patrick-ryan': 'USATODAY',
-  'forward-samuel-eli-shepherd': 'FORWARD',
-  'the-record': 'BERGENRECORD',
-  'the-record-bergen': 'BERGENRECORD',
-  'fort-worth-star-telgram': 'FORTWORTHST',
-  'new-york': 'VULT',                     // New York Magazine (nymag.com)
-
-  // West End outlet aliases (Feb 2026 audit — these were all defaulting to Tier 3)
-  // Tier 1 UK nationals
-  'thestage': 'STAGE-UK',
-  'evening-standard': 'STANDARD',
-  'standard': 'STANDARD',
-  'the-times-uk': 'TIMES-UK',
-  'the-times': 'TIMES-UK',
-  'times-uk': 'TIMES-UK',
-  'telegraph': 'TELEGRAPH',
-  // Tier 2 UK trade/specialist
-  'whatsonstage': 'WHATSONSTAGE',
-  'whats-on-stage': 'WHATSONSTAGE',
-  'timeout-london': 'TIMEOUT-LONDON',
-  'time-out-london': 'TIMEOUT-LONDON',
-  'london-theatre': 'LONDONTHEATRE',
-  'londontheatre': 'LONDONTHEATRE',
   'london-theatre-direct': 'LONDONTHEATRE',
-  'the-independent-uk': 'INDEPENDENT',
-  'independent': 'INDEPENDENT',
-  'the-independent': 'INDEPENDENT',
-  'the-stage': 'STAGE-UK',
-  'stage-uk': 'STAGE-UK',
-  'i-paper': 'I-PAPER',
-  'the-i': 'I-PAPER',
-  'i-newspaper': 'I-PAPER',
-
-  // Duplicate outlet aliases (Feb 2026 normalization audit)
-  'wnbc': 'NBC',
+  'new-york': 'VULT',  // New York Magazine (nymag.com) — too generic for registry
+  'shelby-star-patrick-ryan': 'USATODAY',  // critic-specific alias
   'nbc-news': 'NBC',
-  'citiour': 'CITI',
-  'huffpo': 'HUFFPOST',
-  'bloombergcom': 'BLOOMBERG',
-  'northjersycom': 'NORTHJERSEY',
-  'north-jerseycom': 'NORTHJERSEY',
-  'exeunt-nyc': 'EXEUNT',
-  'uk-daily-telegraph': 'TELEGRAPH',
-  'jewish-daily-forward': 'FORWARD',
-  'njnewsroom': 'NJNEWSROOM',
-  'ny-1-time-out-magazine': 'NY1',
-  'ny1-on-stage': 'NY1',
-  'theater-new-online': 'THEATERNEWS',
+  'timeout-london': 'TIMEOUT-LONDON',  // separate from Time Out NY
+  'time-out-london': 'TIMEOUT-LONDON',
 };
+
+let _aliasCache: Record<string, string> | null = null;
+
+function _buildAliasMap(): Record<string, string> {
+  if (_aliasCache) return _aliasCache;
+  _aliasCache = {};
+
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const registryPath = path.join(process.cwd(), 'data', 'outlet-registry.json');
+    if (fs.existsSync(registryPath)) {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+      const outlets = registry.outlets || registry;
+
+      // Build reverse map: for each registry ID in REGISTRY_TO_SCORING,
+      // map all its aliases to the scoring ID
+      for (const [registryId, scoringId] of Object.entries(REGISTRY_TO_SCORING)) {
+        const outletData = outlets[registryId];
+        if (!outletData?.aliases) continue;
+
+        for (const alias of outletData.aliases as string[]) {
+          const normalized = alias.toLowerCase().trim()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
+          if (!normalized || normalized === registryId) continue;
+          // Skip if it's already a primary mapping
+          if (REGISTRY_TO_SCORING[normalized]) continue;
+          // First match wins — don't overwrite existing aliases
+          if (!_aliasCache[normalized]) {
+            _aliasCache[normalized] = scoringId;
+          }
+        }
+      }
+    }
+  } catch {
+    // Registry not available — return empty (manual overrides still work)
+  }
+
+  // Apply manual overrides (these always win)
+  Object.assign(_aliasCache, MANUAL_ALIAS_OVERRIDES);
+  return _aliasCache;
+}
+
+// Lazy-loaded alias map — auto-generated from registry + manual overrides
+export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = new Proxy(
+  {} as Record<string, string>,
+  {
+    get(_target, prop: string) {
+      return _buildAliasMap()[prop];
+    },
+    has(_target, prop: string) {
+      return prop in _buildAliasMap();
+    },
+    ownKeys() {
+      return Object.keys(_buildAliasMap());
+    },
+    getOwnPropertyDescriptor(_target, prop: string) {
+      const map = _buildAliasMap();
+      if (prop in map) {
+        return { value: map[prop], writable: false, enumerable: true, configurable: true };
+      }
+      return undefined;
+    },
+  }
+);
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)
 export const SCORING_TO_REGISTRY: Record<string, string> =
