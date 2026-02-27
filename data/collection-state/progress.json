@@ -23,7 +23,15 @@
     "data-2026/nytg--allison-considine.json",
     "data-2026/nytimes--tim-teeman.json",
     "dirty-books-2025/nyt-theater--jonathan-mandell.json",
-    "dirty-books-2025/nytg--unknown.json"
+    "dirty-books-2025/nytg--unknown.json",
+    "drunk-romeo-and-juliet-2025/nytg--unknown.json",
+    "eva-luna-2022/nytg--unknown.json",
+    "giant-2026/nytimes--houman-barekat.json",
+    "hamilton-west-end-2021/nyt-theater--unknown.json",
+    "hamlet-2026/nytg--amelia-merrill.json",
+    "heathers-the-musical-2025/nyt-theater--jonathan-mandell.json",
+    "heathers-the-musical-2025/nytg--caroline-cao.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -311,7 +319,9 @@
     "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
     "you-got-older-2026/chicagotribune--unknown.json",
     "11-to-midnight-2026/nytg--austin-fimmano.json",
-    "cold-war-choir-practice-2026/nyt-theater--unknown.json"
+    "cold-war-choir-practice-2026/nyt-theater--unknown.json",
+    "hadestown-2019/newyorker--hilton-als.json",
+    "heathers-the-musical-2025/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -333,14 +343,24 @@
       "chinese-republicans-2026/nytg--unknown.json",
       "data-2026/nyt-theater--jonathan-mandell.json",
       "data-2026/nytg--allison-considine.json",
-      "dirty-books-2025/nyt-theater--jonathan-mandell.json"
+      "dirty-books-2025/nyt-theater--jonathan-mandell.json",
+      "hamilton-west-end-2021/nyt-theater--unknown.json",
+      "heathers-the-musical-2025/nyt-theater--jonathan-mandell.json",
+      "heathers-the-musical-2025/nytg--caroline-cao.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
       "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json",
-      "data/review-texts/bigfoot-2026/deadline--unknown.json"
+      "data/review-texts/bigfoot-2026/deadline--unknown.json",
+      "data/review-texts/heathers-the-musical-2025/vulture--jackson-mchenry.json",
+      "data/review-texts/hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+      "heathers-the-musical-2025/vulture--jackson-mchenry.json",
+      "hells-kitchen-2024/hollywood-reporter--david-rooney.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/giant-2026/nytimes--houman-barekat.json",
+      "giant-2026/nytimes--houman-barekat.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "perfect-crime-1987/nytimes--jason-zinoman.json",
@@ -452,11 +472,14 @@
       "kinky-boots-2026/rollingstone--unknown.json",
       "antigone-this-play-i-read-in-high-school-2026/nyt-theater--unknown.json",
       "moulin-rouge-2019/nytimes--ben-brantley.json",
-      "dirty-books-2025/nytg--unknown.json"
+      "dirty-books-2025/nytg--unknown.json",
+      "drunk-romeo-and-juliet-2025/nytg--unknown.json",
+      "eva-luna-2022/nytg--unknown.json",
+      "hamlet-2026/nytg--amelia-merrill.json"
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "dirty-books-2025/nytg--unknown.json",
+  "lastProcessed": "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -604,6 +627,17 @@
     },
     {
       "t": "2026-02-27T22:53:38.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T22:55:16.129Z",
+      "event": "bb-session",
+      "session": "3bec9c9c",
+      "url": "https://www.nytimes.com/2025/09/16/theater/lithgow-giant-dahl-broadway.html"
+    },
+    {
+      "t": "2026-02-27T22:55:17.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

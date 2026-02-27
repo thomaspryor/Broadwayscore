@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-27T22:54:18.056Z",
-  "processed": 24,
-  "failed": 286,
-  "successRate": "7.7%",
+  "updatedAt": "2026-02-27T22:59:29.859Z",
+  "processed": 32,
+  "failed": 288,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 18,
-    "amp": 3,
-    "browserbase": 0,
+    "playwright": 21,
+    "amp": 7,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 98,
-    "archive": 4
+    "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-02-27T16:04:37.793Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-27T16:09:00.004Z",
-      "event": "bb-session",
-      "session": "34550790",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
     {
       "t": "2026-02-27T16:09:01.315Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-27T22:53:38.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-27T22:55:16.129Z",
+      "event": "bb-session",
+      "session": "3bec9c9c",
+      "url": "https://www.nytimes.com/2025/09/16/theater/lithgow-giant-dahl-broadway.html"
+    },
+    {
+      "t": "2026-02-27T22:55:17.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
