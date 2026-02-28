@@ -1007,17 +1007,27 @@ function buildDomainToOutletIndex() {
 
   if (registry && registry.outlets) {
     for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      const entry = { outletId, displayName: outletData.displayName };
+
       if (outletData.domain) {
         // Strip www. prefix and convert to lowercase
         const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
         // Extract domain base (without TLD): "nytimes.com" -> "nytimes"
         const domainBase = fullHost.split('.')[0];
 
-        const entry = { outletId, displayName: outletData.displayName };
-
         // Map both full hostname and domain base
         _domainToOutletCache.set(fullHost, entry);
         _domainToOutletCache.set(domainBase, entry);
+      }
+
+      // Also index domainAliases (alternate/historical domains for the same outlet)
+      if (outletData.domainAliases) {
+        for (const alias of outletData.domainAliases) {
+          const aliasHost = alias.replace(/^www\./, '').toLowerCase();
+          const aliasBase = aliasHost.split('.')[0];
+          _domainToOutletCache.set(aliasHost, entry);
+          _domainToOutletCache.set(aliasBase, entry);
+        }
       }
     }
   }
