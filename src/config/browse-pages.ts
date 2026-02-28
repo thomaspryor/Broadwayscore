@@ -318,7 +318,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return tags.includes('lottery');
     },
     sort: 'score',
-    relatedPages: ['broadway-rush-tickets', 'broadway-shows-for-tourists', 'first-time-broadway'],
+    relatedPages: ['broadway-ticket-prices', 'broadway-rush-tickets', 'broadway-shows-for-tourists'],
   },
 
   'broadway-rush-tickets': {
@@ -381,7 +381,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return tags.includes('tony-winner');
     },
     sort: 'score',
-    relatedPages: ['best-broadway-revivals', 'broadway-shows-for-tourists', 'best-broadway-show-right-now'],
+    relatedPages: ['best-broadway-soundtracks', 'best-broadway-revivals', 'broadway-shows-for-tourists'],
   },
 
   'tony-nominated-2025': {
@@ -492,7 +492,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'These shows have earned their place in Broadway history through thousands of performances and years of entertaining audiences. From beloved classics to modern phenomena, these productions represent the staying power of great theater. Their longevity is a testament to timeless storytelling, memorable music, and the countless talented performers who have graced their stages night after night.',
     filter: (show) => show.status === 'open',
     sort: 'performances',
-    relatedPages: ['tony-winners-on-broadway', 'broadway-shows-for-tourists', 'best-broadway-musicals'],
+    relatedPages: ['biggest-broadway-flops', 'tony-winners-on-broadway', 'broadway-shows-for-tourists'],
   },
 
   'upcoming-broadway-shows': {
@@ -556,7 +556,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return tags.includes('film-adaptation');
     },
     sort: 'score',
-    relatedPages: ['jukebox-musicals-on-broadway', 'broadway-shows-for-kids', 'best-broadway-musicals'],
+    relatedPages: ['broadway-shows-based-on-books', 'broadway-shows-based-on-true-stories', 'jukebox-musicals-on-broadway'],
   },
 
   'new-broadway-shows-2026': {
