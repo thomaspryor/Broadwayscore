@@ -8,6 +8,7 @@ on:
       - 'tests/**'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
+      - 'scripts/validate-market-expansion.js'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
@@ -135,6 +136,10 @@ jobs:
 
       - name: Run data validation
         run: node scripts/validate-data.js
+
+      - name: Validate market expansion
+        run: node scripts/validate-market-expansion.js
+        # Catches slug, threshold, display, and copy issues for WE/OB markets
 
       - name: Validate archive productions
         run: node scripts/validate-archive-productions.js
