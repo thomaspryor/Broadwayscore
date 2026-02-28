@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-27T23:14:44.652Z",
+  "generatedAt": "2026-02-28T00:34:09.776Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -200,6 +200,14 @@
       "outlet": "times-uk",
       "critic": "Clive Davis",
       "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "the-dinosaurs-2026",
+      "outlet": "nytimes",
+      "critic": "Elisabeth Vincentelli",
+      "detail": "Critics_Pick but score=45 (source: llmScore-single-model)"
     },
     {
       "type": "rating-score-mismatch",
