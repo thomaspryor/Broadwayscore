@@ -427,21 +427,21 @@ export function getOutletsByTier(tier: 1 | 2 | 3): OutletConfig[] {
 // RATING CONVERSION MAPS
 // ===========================================
 
-// Letter grades → 0-100
+// Letter grades → 0-100 (canonical — must match src/config/scoring.ts and scripts/lib/score-extractors.js)
 export const LETTER_GRADE_MAP: Record<string, number> = {
-  'A+': 98,
-  'A': 95,
-  'A-': 91,
-  'B+': 87,
-  'B': 83,
-  'B-': 79,
-  'C+': 75,
-  'C': 71,
-  'C-': 67,
-  'D+': 63,
-  'D': 59,
-  'D-': 55,
-  'F': 40,
+  'A+': 95,
+  'A': 90,
+  'A-': 85,
+  'B+': 80,
+  'B': 76,
+  'B-': 72,
+  'C+': 67,
+  'C': 62,
+  'C-': 57,
+  'D+': 42,
+  'D': 35,
+  'D-': 30,
+  'F': 20,
 };
 
 // Text bucket descriptions → 0-100 (used for text-based reviews)
