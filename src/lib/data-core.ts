@@ -13,7 +13,10 @@ import {
 
 import type { Director, Theater, TheaterStructuredTips, BestOfCategory, BestOfList, BrowseList } from './data-types';
 import { getShowGrosses } from './data-grosses';
-import { BROWSE_PAGES, BrowsePageConfig, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+import { getAudienceBuzz } from './data-audience';
+import { getShowCommercial } from './data-commercial';
+import { getShowAwards } from './data-awards';
+import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
 import reviewsData from '../../data/reviews.json';
@@ -468,9 +471,18 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const allShows = config.source === 'west-end' ? getWestEndShows()
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : getBroadwayShows();
-  let filteredShows = allShows.filter(config.filter);
 
-  if (config.sort === 'score') {
+  // Context for data-dependent filters and custom sorts
+  const ctx: BrowseFilterContext = { getAudienceBuzz, getShowCommercial, getShowAwards, getShowGrosses };
+
+  let filteredShows = config.dataFilter
+    ? allShows.filter(show => config.dataFilter!(show, ctx))
+    : allShows.filter(config.filter);
+
+  // customSort and sort are mutually exclusive — customSort skips the sort switch
+  if (config.customSort) {
+    filteredShows = config.customSort(filteredShows, ctx);
+  } else if (config.sort === 'score') {
     filteredShows = filteredShows.sort((a, b) => {
       const aScore = a.criticScore?.score;
       const bScore = b.criticScore?.score;
