@@ -455,24 +455,32 @@ function extractUSATodayScore(html, text) {
 /**
  * Generic star rating extractor for any outlet
  * Handles common patterns: "X/5", "X stars", "X out of 5"
+ *
+ * The X/5 pattern requires context validation to avoid false positives:
+ * - Dates like "4/5/04" or "3/5/10" match the regex but aren't ratings
+ * - Forum metadata like "Joined: 4/5/04" matches but isn't a rating
+ * - Incidental fractions like "2/5 of the cast" aren't ratings
+ *
+ * Validation: X/5 must appear near rating-related context, near
+ * the start/end of the text, or NOT be followed by date/prose patterns.
  */
 function extractGenericStarRating(html, text) {
-  const patterns = [
-    // "4/5" or "4.5/5"
-    /(\d(?:\.\d)?)\s*\/\s*5/,
-    // "4 stars" or "4.5 stars"
-    /(\d(?:\.\d)?)\s*stars?(?:\s*(?:out\s+of|\/)\s*5)?/i,
-    // "4 out of 5"
+  // "X stars" and "X out of 5" are unambiguous — try them first
+  const unambiguousPatterns = [
+    // "4/5 stars" or "4.0/5.0 stars" — X/Y stars format, unambiguous with "stars" keyword
+    /(\d(?:\.\d)?)\s*\/\s*\d(?:\.\d)?\s*stars?/i,
+    // "4 stars" or "4.5 stars" — reject if preceded by "/" (part of "X/5 stars" already handled above)
+    /(?<!\d\s*\/\s*)(\d(?:\.\d)?)\s*stars?(?:\s*(?:out\s+of|\/)\s*5)?/i,
+    // "4 out of 5" — explicit wording, safe
     /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
-    // Unicode stars
+    // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];
 
-  for (const pattern of patterns) {
+  for (const pattern of unambiguousPatterns) {
     const match = text.match(pattern) || html.match(pattern);
     if (match) {
       if (match[1].includes('★') || match[1].includes('☆')) {
-        // Unicode stars
         const filled = (match[1].match(/★/g) || []).length;
         const total = match[1].length;
         return {
@@ -491,6 +499,35 @@ function extractGenericStarRating(html, text) {
         }
       }
     }
+  }
+
+  // "X/5" is ambiguous — could be a date (4/5/04), fraction (2/5 of the cast),
+  // or forum metadata (Joined: 4/5/14). Apply targeted rejection rules.
+  const xOf5Regex = /(\d(?:\.\d)?)\s*\/\s*5/g;
+  let xOf5Match;
+  while ((xOf5Match = xOf5Regex.exec(text)) !== null) {
+    const rating = parseFloat(xOf5Match[1]);
+    if (rating < 1 || rating > 5) continue;
+
+    const pos = xOf5Match.index;
+    const matchEnd = xOf5Match.index + xOf5Match[0].length;
+    const afterMatch = text.slice(matchEnd, matchEnd + 20);
+    const beforeMatch = text.slice(Math.max(0, pos - 40), pos);
+
+    // REJECT: followed by /YY or /YYYY — it's a date like "4/5/04" or "3/5/2010"
+    if (/^\s*\/\s*\d{2,4}\b/.test(afterMatch)) continue;
+
+    // REJECT: followed by "of the/those/these/all/his/her/them" — prose fraction
+    if (/^\s+of\s+(?:the|those|these|all|his|her|them|its)\b/i.test(afterMatch)) continue;
+
+    // REJECT: preceded by forum/metadata patterns — "Joined: X/5" or "Member since X/5"
+    if (/\b(?:joined|member\s+since|registered|posted|replied)\s*:?\s*\d{0,2}\s*\/?\s*$/i.test(beforeMatch)) continue;
+
+    return {
+      originalScore: `${rating}/5`,
+      normalizedScore: starsToNumeric(rating, 5),
+      source: 'numeric-stars'
+    };
   }
 
   return null;
