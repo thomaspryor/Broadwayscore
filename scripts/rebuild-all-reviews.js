@@ -1188,9 +1188,17 @@ const multiProdYearGuard = {};
       const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
         : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
       if (!showYear) continue;
-      // Only compare to siblings in the SAME market (category)
-      // A West End review should never be reassigned to a Broadway production (or vice versa)
-      const siblings = prods.filter(p => p.id !== show.id && p.category === show.category).map(p => ({
+      // Compare to siblings in the same market. Broadway and off-broadway are treated
+      // as the same NYC market (e.g., Kinky Boots 2013 broadway vs 2026 off-broadway).
+      // West End is a separate market — never cross-compare with Broadway/OB.
+      const showCat = show.category || 'broadway';
+      const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
+      const siblings = prods.filter(p => {
+        if (p.id === show.id) return false;
+        const pCat = p.category || 'broadway';
+        if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
+        return pCat === showCat;
+      }).map(p => ({
         id: p.id,
         year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null
       })).filter(p => p.year);
@@ -1277,6 +1285,43 @@ try {
   console.log(`Loaded ${failedFetchMap.size} failed-fetch entries for incompleteReason classification`);
 } catch (e) {
   console.log(`Warning: Could not load failed-fetches.json: ${e.message}`);
+}
+
+// Cross-show URL dedup: detect when the same review URL exists in multiple show directories.
+// When a URL appears in two shows, the show whose opening year is closest to the review's
+// publish date (or URL year) gets priority. The other is flagged wrongProduction.
+const crossShowUrlIndex = new Map();
+{
+  function normalizeUrlForDedup(url) {
+    if (!url) return null;
+    return url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
+  }
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    const showYear = showDateMap[sid] ? showDateMap[sid].getFullYear() : null;
+    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        if (d.wrongProduction || d.wrongShow) continue;
+        const norm = normalizeUrlForDedup(d.url);
+        if (!norm) continue;
+        const existing = crossShowUrlIndex.get(norm);
+        if (existing && existing.showId !== sid) {
+          if (!existing.conflicts) existing.conflicts = [];
+          existing.conflicts.push({ showId: sid, file: f, showYear });
+        } else if (!existing) {
+          crossShowUrlIndex.set(norm, { showId: sid, file: f, showYear, conflicts: [] });
+        }
+      } catch { /* skip unreadable files */ }
+    }
+  }
+  let conflictCount = 0;
+  for (const [, entry] of crossShowUrlIndex) {
+    if (entry.conflicts.length > 0) conflictCount++;
+  }
+  if (conflictCount > 0) {
+    console.log(`Cross-show URL dedup: found ${conflictCount} URLs shared across multiple shows`);
+  }
 }
 
 // Cross-show fullText fingerprint map: detect when the same scraped text appears under different shows
@@ -1463,6 +1508,43 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Cross-show URL dedup: if this URL also exists in another show's directory,
+      // flag the copy that's farther from its show's opening year as wrongProduction.
+      // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
+      // on a 2026 Off-Broadway page with the same title).
+      if (data.url && !data.wrongProduction) {
+        const norm = data.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
+        const entry = crossShowUrlIndex.get(norm);
+        if (entry && entry.conflicts.length > 0) {
+          const allCopies = [{ showId: entry.showId, showYear: entry.showYear },
+            ...entry.conflicts.map(c => ({ showId: c.showId, showYear: c.showYear }))];
+          const myYear = showDateMap[showId] ? showDateMap[showId].getFullYear() : null;
+          let reviewYear = null;
+          if (data.publishDate) {
+            const m = data.publishDate.match(/\b((?:19|20)\d\d)\b/);
+            if (m) reviewYear = parseInt(m[1]);
+          }
+          if (!reviewYear && data.url) {
+            const m = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/);
+            if (m) reviewYear = parseInt(m[1]);
+          }
+          if (reviewYear && myYear) {
+            const myDist = Math.abs(myYear - reviewYear);
+            for (const other of allCopies) {
+              if (other.showId === showId || !other.showYear) continue;
+              if (Math.abs(other.showYear - reviewYear) < myDist) {
+                console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
+                stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
+                data.wrongProduction = true;
+                data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
+                fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+                return;
+              }
+            }
+          }
+        }
+      }
+
       // Cross-market guard: skip reviews where outlet market doesn't match show market
       // e.g., US-only outlets (Fayetteville Flyer) should not score West End shows
       const showCategory = showCategoryMap[showId] || 'broadway';
@@ -1506,15 +1588,17 @@ showDirs.forEach(showId => {
       }
 
       // Skip pre-opening reviews (published before show opened — wrong production)
-      // Allows 14-day grace period for preview coverage
-      // Reviews with allowEarlyDate: true bypass this (e.g., off-Broadway → Broadway transfers)
-      // Off-Broadway and West End shows are exempt: they commonly transfer from fringe/regional theaters,
-      // so date mismatches are expected and wrongProduction flags are almost always false positives
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && showCategory !== 'off-broadway' && showCategory !== 'west-end') {
+      // Broadway: 14-day grace period (preview coverage).
+      // Off-Broadway/West End: 5-year (1825-day) grace period — they commonly transfer from
+      // fringe/regional theaters, but a 13-year gap (e.g., 2013→2026) is clearly wrong.
+      // Reviews with allowEarlyDate: true bypass all date checks.
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
-        if (daysBefore > 14) {
+        const isFlexCategory = showCategory === 'off-broadway' || showCategory === 'west-end';
+        const threshold = isFlexCategory ? 1825 : 14;
+        if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
@@ -2427,6 +2511,7 @@ const output = {
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       skippedFabricated: stats.skippedFabricated || 0,
+      skippedCrossShowUrl: stats.skippedCrossShowUrl || 0,
       skippedCrossMarket: stats.skippedCrossMarket || 0,
       skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
@@ -2550,6 +2635,7 @@ console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletD
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (fabricated entry): ${stats.skippedFabricated || 0}`);
+console.log(`  Skipped (cross-show URL dedup): ${stats.skippedCrossShowUrl || 0}`);
 console.log(`  Skipped (cross-market outlet): ${stats.skippedCrossMarket || 0}`);
 if (stats.showScoreDowngradedFallback > 0) {
   console.log(`  ShowScore downgraded to fallback (WE): ${stats.showScoreDowngradedFallback}`);
