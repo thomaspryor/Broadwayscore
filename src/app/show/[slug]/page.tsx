@@ -289,13 +289,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
             {/* Right side: Title, Meta, Score Box, and Breakdown */}
             <div className="flex-1 min-w-0">
-              {/* Pills row */}
-              <div className="flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
+              {/* Pills row — desktop only (mobile pills moved below poster) */}
+              <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
                 <CategoryBadge category={show.category} />
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
-                <span className="hidden sm:inline-flex"><StatusBadge status={show.status} /></span>
+                <StatusBadge status={show.status} />
               </div>
 
               {/* Title */}
@@ -437,6 +437,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 );
               })()}
             </div>
+          </div>
+
+          {/* Pills row — mobile only, full-width below poster row to avoid cramped wrapping */}
+          <div className="flex sm:hidden flex-wrap items-center gap-1.5 mt-3" data-testid="show-pills-row-mobile">
+            <CategoryBadge category={show.category} />
+            <FormatPill type={show.type} />
+            <ProductionPill isRevival={show.isRevival === true} />
+            {show.limitedRun && <LimitedRunBadge />}
           </div>
 
           {/* Critics' Take - inline below the poster/score row */}
