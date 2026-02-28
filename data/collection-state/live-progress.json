@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-28T05:29:01.690Z",
+  "updatedAt": "2026-02-28T05:36:37.209Z",
   "processed": 202,
-  "failed": 718,
-  "successRate": "22.0%",
+  "failed": 728,
+  "successRate": "21.7%",
   "tierBreakdown": {
     "playwright": 125,
     "amp": 81,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 9,
     "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 167,
     "archive": 44
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-28T01:31:15.910Z",
-      "event": "bb-session",
-      "session": "fa30c176",
-      "url": "http://deadline.com/2016/10/falsettos-review-andrew-rannells-christian-borle-120"
-    },
-    {
-      "t": "2026-02-28T01:31:17.368Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-02-28T04:32:03.687Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-02-28T05:24:28.523Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T05:36:08.337Z",
+      "event": "bb-session",
+      "session": "ff76df7e",
+      "url": "https://deadline.com/2015/09/spring-awakening-broadway-review-1201546791/"
+    },
+    {
+      "t": "2026-02-28T05:36:10.751Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

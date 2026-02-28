@@ -921,7 +921,17 @@
     "something-rotten-2015/new-jersey-newsroom--michael-sommers.json",
     "something-rotten-2015/nydailynews--joe-dziemianowicz.json",
     "something-rotten-2015/timeout--adam-feldman.json",
-    "something-rotten-2015/timeout--david-cote.json"
+    "something-rotten-2015/timeout--david-cote.json",
+    "sondheim-on-sondheim-2010/ew--unknown.json",
+    "sondheim-on-sondheim-2010/timeout--adam-feldman.json",
+    "south-pacific-2008/nypost--clive-barnes.json",
+    "south-pacific-2008/timeout--adam-feldman.json",
+    "spring-awakening-2015/deadline--jeremy-gerard.json",
+    "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
+    "stephen-sondheims-old-friends-2025/new-york-sun--elysa-gardner.json",
+    "stephen-sondheims-old-friends-2025/nypost--johnny-oleksinski.json",
+    "stephen-sondheims-old-friends-2025/theatermania--sandy-macdonald.json",
+    "stephen-sondheims-old-friends-2025/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1146,7 +1156,9 @@
       "data/review-texts/a-bronx-tale-2007/deadline--jeremy-gerard.json",
       "data/review-texts/falsettos-2016/deadline--jeremy-gerard.json",
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
-      "data/review-texts/romeo-juliet-2024/nypost--johnny-oleksinski.json"
+      "data/review-texts/romeo-juliet-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/spring-awakening-2015/deadline--jeremy-gerard.json",
+      "spring-awakening-2015/deadline--jeremy-gerard.json"
     ],
     "directCookies": [
       "a-view-from-the-bridge-2010/timeout--andrzej-lukowski.json",
@@ -1397,7 +1409,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "something-rotten-2015/timeout--david-cote.json",
+  "lastProcessed": "stephen-sondheims-old-friends-2025/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -1767,6 +1779,17 @@
       "t": "2026-02-28T05:24:28.523Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T05:36:08.337Z",
+      "event": "bb-session",
+      "session": "ff76df7e",
+      "url": "https://deadline.com/2015/09/spring-awakening-broadway-review-1201546791/"
+    },
+    {
+      "t": "2026-02-28T05:36:10.751Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
