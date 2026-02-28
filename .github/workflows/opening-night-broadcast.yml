@@ -50,6 +50,7 @@ jobs:
 
             const opened = shows.filter(s => {
               if (s.status !== 'open' || !s.openingDate) return false;
+              if (s.category && s.category !== 'broadway') return false;
               const d = new Date(s.openingDate);
               d.setHours(0,0,0,0);
               return d >= cutoff && d <= now;
