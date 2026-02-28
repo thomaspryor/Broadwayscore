@@ -896,7 +896,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   <Link key={prod.id} href={`/show/${prod.slug}`} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group">
                     <span className="text-sm text-white group-hover:text-brand transition-colors">{prod.title}{year ? ` (${year})` : ''}</span>
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${prod.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' : prod.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-amber-500/20 text-amber-400'}`}>{market}</span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${prod.status === 'open' ? 'bg-green-500/20 text-green-400' : prod.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' : prod.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>{statusLabel}</span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${prod.status === 'open' ? 'bg-emerald-500/20 text-emerald-400' : prod.status === 'previews' ? 'bg-purple-500/20 text-purple-400' : prod.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>{statusLabel}</span>
                   </Link>
                 );
               })}
