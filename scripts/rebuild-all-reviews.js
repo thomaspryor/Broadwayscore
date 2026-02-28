@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -2271,7 +2271,17 @@ showDirs.forEach(showId => {
 
       // Build review object — normalize outletId to canonical form
       // ALWAYS use directory showId — file's showId field is unreliable (can be stale from cross-production flagging)
-      const canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
+      let canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
+
+      // Resolve "unknown" outlets from URL (ShowScore files often have valid URLs but missing outlet names)
+      if ((!canonicalOutletId || canonicalOutletId === 'unknown') && data.url) {
+        const resolved = resolveOutletFromUrl(data.url);
+        if (resolved) {
+          canonicalOutletId = resolved;
+          stats.unknownOutletsResolved = (stats.unknownOutletsResolved || 0) + 1;
+        }
+      }
+
       const review = {
         showId,
         outletId: canonicalOutletId,
@@ -2965,6 +2975,10 @@ if (stats.excerptMismatches > 0) {
       console.log(`    ...and ${stats.excerptMismatchDetails.length - 10} more`);
     }
   }
+}
+
+if (stats.unknownOutletsResolved > 0) {
+  console.log(`  Unknown outlets resolved from URL: ${stats.unknownOutletsResolved}`);
 }
 
 // Explicit rating summary
