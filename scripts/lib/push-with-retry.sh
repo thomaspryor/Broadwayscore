@@ -21,6 +21,14 @@ set -euo pipefail
 MAX_RETRIES=${1:-5}
 BRANCH=${2:-main}
 
+# BRANCH may be a refspec like "HEAD:main" (for push) or a plain branch
+# name like "main". Pull commands need the remote branch name only.
+if [[ "$BRANCH" == *:* ]]; then
+  PULL_BRANCH="${BRANCH##*:}"
+else
+  PULL_BRANCH="$BRANCH"
+fi
+
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
   if git push origin "$BRANCH"; then
@@ -31,7 +39,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   echo "Push failed (attempt $i/$MAX_RETRIES), pulling and rebasing..."
   git checkout -- . 2>/dev/null || true
   git clean -fd 2>/dev/null || true
-  if git pull --rebase -X theirs origin "$BRANCH"; then
+  if git pull --rebase -X theirs origin "$PULL_BRANCH"; then
     echo "Rebase succeeded, retrying push..."
   else
     echo "Rebase failed, trying merge fallback..."
@@ -40,7 +48,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # Uses -X ours (= keep our branch) which matches the semantic intent of
     # rebase -X theirs (= keep our commits). The flags differ because git
     # reverses ours/theirs semantics between rebase and merge.
-    if git pull --no-rebase -X ours origin "$BRANCH"; then
+    if git pull --no-rebase -X ours origin "$PULL_BRANCH"; then
       echo "Merge succeeded, retrying push..."
     else
       echo "Merge also failed, will retry..."
