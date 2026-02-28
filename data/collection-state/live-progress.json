@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-28T08:15:46.051Z",
+  "updatedAt": "2026-02-28T08:22:31.010Z",
   "processed": 10,
-  "failed": 30,
-  "successRate": "25.0%",
+  "failed": 40,
+  "successRate": "20.0%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
+    "archiveToday": 14,
     "archive": 4
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-02-28T08:02:13.416Z",
@@ -62,6 +62,39 @@
     },
     {
       "t": "2026-02-28T08:12:44.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-28T08:16:03.561Z",
+      "event": "bb-session",
+      "session": "e493e33d",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/something-rotten-on-b"
+    },
+    {
+      "t": "2026-02-28T08:16:04.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-28T08:17:00.736Z",
+      "event": "bb-session",
+      "session": "2de89a27",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-david-mamets-t"
+    },
+    {
+      "t": "2026-02-28T08:17:02.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-28T08:17:43.470Z",
+      "event": "bb-session",
+      "session": "01ed2931",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/181787171_Theater_review_"
+    },
+    {
+      "t": "2026-02-28T08:17:44.613Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
