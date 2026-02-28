@@ -60,8 +60,13 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 // Determine which sort options make sense for this page
-function getAvailableSorts(config: { sort?: string; slug: string }): Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances'> {
-  const sorts: Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances'> = [];
+function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: string }): Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom'> {
+  const sorts: Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom'> = [];
+
+  // Pages with customSort preserve server ordering as default
+  if (config.customSort) {
+    sorts.push('custom');
+  }
 
   // Always offer score sort
   sorts.push('score');
@@ -232,7 +237,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           showRanks={config.limit !== 1}
           isMixedType={isMixedType}
           isMixedStatus={isMixedStatus}
-          defaultSort={config.sort || 'score'}
+          defaultSort={config.customSort ? 'custom' : (config.sort || 'score')}
           hasPerformanceData={hasPerformanceData}
           availableSorts={availableSorts}
           showTypeFilter={showTypeFilter}
