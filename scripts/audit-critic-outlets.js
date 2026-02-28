@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_OUTPUT = path.join(__dirname, '..', 'data', 'critic-registry.json');
@@ -99,7 +100,7 @@ function scanReviewTexts() {
           critics[criticSlug].displayName = criticName;
         }
 
-        const normalizedOutlet = outletId.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const normalizedOutlet = normalizeOutlet(outletId);
         critics[criticSlug].outletCounts[normalizedOutlet] = (critics[criticSlug].outletCounts[normalizedOutlet] || 0) + 1;
         critics[criticSlug].totalReviews++;
         critics[criticSlug].reviews.push({

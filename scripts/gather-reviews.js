@@ -102,6 +102,8 @@ function getDtliSlugMap() {
 // Global URL index for cross-production duplicate prevention
 // Maps URL → { showId, file } for all existing review files
 let _globalUrlIndex = null;
+// Lazy-loaded outlet registry cache for domain validation in saveReview()
+let _outletRegistryCache = null;
 function getGlobalUrlIndex() {
   if (_globalUrlIndex) return _globalUrlIndex;
   _globalUrlIndex = new Map();
@@ -1987,6 +1989,36 @@ function createReviewFile(showId, reviewData, options = {}) {
         }
       }
     } catch (e) {}
+  }
+
+  // URL/DOMAIN VALIDATION: Reject reviews where URL domain doesn't match the attributed outlet.
+  // This catches aggregator scraping errors where a URL from outlet-A gets attributed to outlet-B.
+  // Only check --unknown files (named critics are more likely to freelance across domains).
+  // Exemptions: wire services (AP content on abc-news.com), shared-domain outlets (timeout/timeout-london).
+  if (review.url && normalizedCriticName === 'unknown') {
+    const WIRE_SERVICES = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
+    if (!WIRE_SERVICES.has(normalizedOutletId)) {
+      try {
+        const resolved = resolveOutletFromUrl(review.url);
+        if (resolved && resolved.outletId !== normalizedOutletId) {
+          // Allow if both outlets share the same registry domain (e.g., timeout / timeout-london)
+          const reg = _outletRegistryCache || (() => {
+            try {
+              const r = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+              _outletRegistryCache = r.outlets || {};
+              return _outletRegistryCache;
+            } catch (e) { return {}; }
+          })();
+          const attrDomain = reg[normalizedOutletId]?.domain?.replace(/^www\./, '').toLowerCase();
+          const resolvedDomain = reg[resolved.outletId]?.domain?.replace(/^www\./, '').toLowerCase();
+          const sharedDomain = attrDomain && resolvedDomain && attrDomain === resolvedDomain;
+          if (!sharedDomain) {
+            console.log(`    ✗ Skipping ${filename}: URL domain resolves to "${resolved.outletId}" but attributed to "${normalizedOutletId}"`);
+            return 'domainMismatch';
+          }
+        }
+      } catch (e) { /* URL parse error — proceed */ }
+    }
   }
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
