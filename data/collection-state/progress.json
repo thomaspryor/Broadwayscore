@@ -1,6 +1,7 @@
 {
   "processed": [
-    "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
+    "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+    "the-play-that-goes-wrong-off-broadway-2019/this-week-in-new-york--mark-rifkin.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -41,12 +42,22 @@
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
     "the-great-gatsby-2024/wsj--charles-isherwood.json",
-    "the-lion-king-west-end-2021/nbcnews--unknown.json"
+    "the-lion-king-west-end-2021/nbcnews--unknown.json",
+    "the-monsters-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "the-phantom-of-the-opera-west-end-1986/nbcnews--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/nydailynews--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+    "the-playboy-of-the-western-world-west-end-2025/nbcnews--unknown.json",
+    "ulysses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--unknown.json",
+    "wicked-2003/theatermania--barbara-siegel.json",
+    "wicked-west-end-2021/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
+      "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+      "the-play-that-goes-wrong-off-broadway-2019/this-week-in-new-york--mark-rifkin.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -75,12 +86,14 @@
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/broadwaynews--unknown.json",
       "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
       "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
-      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json"
+      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/nbcnews--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/nydailynews--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "the-lion-king-west-end-2021/nbcnews--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/ew--unknown.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -147,6 +160,17 @@
       "t": "2026-02-28T19:08:15.843Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T19:19:36.245Z",
+      "event": "bb-session",
+      "session": "32ddc544",
+      "url": "http://www.theatermania.com/new-york-city-theater/news/11-2003/defying-gravity_4"
+    },
+    {
+      "t": "2026-02-28T19:19:37.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
