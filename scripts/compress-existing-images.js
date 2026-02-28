@@ -32,7 +32,7 @@ async function main() {
 
   for (const showId of showDirs) {
     const showDir = path.join(IMAGES_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => /\.(jpg|jpeg|png)$/i.test(f));
+    const files = fs.readdirSync(showDir).filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f));
 
     for (const file of files) {
       const filePath = path.join(showDir, file);

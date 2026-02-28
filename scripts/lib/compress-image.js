@@ -40,7 +40,7 @@ async function compressImage(buffer, type = 'thumbnail') {
   try {
     const compressed = await sharp(buffer)
       .resize({ width: limits.maxWidth, withoutEnlargement: true })
-      .jpeg({ quality: limits.quality, mozjpeg: true })
+      .webp({ quality: limits.quality })
       .toBuffer();
 
     // Only use compressed if it's actually smaller
