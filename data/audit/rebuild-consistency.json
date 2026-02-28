@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T00:36:22.176Z",
+  "generatedAt": "2026-02-28T01:27:08.867Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -16,6 +16,14 @@
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "originalRating \"D\" (=35) vs score 82 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "all-my-sons-west-end-2025",
+      "outlet": "artsdesk",
+      "critic": "Matt Wolf",
+      "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -207,7 +215,7 @@
       "showId": "the-dinosaurs-2026",
       "outlet": "nytimes",
       "critic": "Elisabeth Vincentelli",
-      "detail": "Critics_Pick but score=45 (source: llmScore-single-model)"
+      "detail": "Critics_Pick but score=42 (source: llmScore-single-model)"
     },
     {
       "type": "rating-score-mismatch",
@@ -319,7 +327,7 @@
       "showId": "wicked-2003",
       "outlet": "timeout",
       "critic": "David Cote",
-      "detail": "originalRating \"1/5\" (=20) vs score 79 (source: llmScore-thumb-boosted)"
+      "detail": "originalRating \"1/5\" (=20) vs score 88 (source: llmScore-thumb-boosted)"
     },
     {
       "type": "rating-score-mismatch",
