@@ -108,6 +108,10 @@ function showCategory(show) {
 async function refreshTodayTixDates(data, updates) {
   console.log('\n--- TodayTix Date Refresh ---');
 
+  // Track IDs of shows reopened by TodayTix so the main closing loop
+  // doesn't immediately re-close them in the same run
+  const reopenedIds = new Set();
+
   const locations = [
     { id: 2, label: 'London (West End)', categories: new Set(['west-end']) },
     { id: 1, label: 'NYC (Broadway/OB)', categories: new Set(['broadway', 'off-broadway']) },
@@ -176,7 +180,14 @@ async function refreshTodayTixDates(data, updates) {
           for (const cat of loc.categories) {
             const closedMatch = (closedByTtId[cat] || {})[ttShow.id];
             if (closedMatch) {
-              // Same todaytixId — TodayTix still lists this exact show!
+              // Verify title similarity to guard against TodayTix ID recycling
+              // (MEMORY.md: "TodayTix recycles numeric IDs")
+              const closedNorm = (closedMatch.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+              if (closedNorm && normTtTitle && closedNorm !== normTtTitle && !closedNorm.includes(normTtTitle) && !normTtTitle.includes(closedNorm)) {
+                console.log(`  ⚠️  TodayTix ID ${ttShow.id} recycled: our "${closedMatch.title}" vs TT "${ttShow.displayName || ttShow.name}" — skipping`);
+                break;
+              }
+              // Same todaytixId AND similar title — TodayTix still lists this exact show!
               const oldClosingDate = closedMatch.closingDate;
               console.log(`  🔄 ${closedMatch.title}: TodayTix (id=${ttShow.id}) still lists this show — reopening (was closed with closingDate=${oldClosingDate})`);
               if (!dryRun) {
@@ -184,6 +195,7 @@ async function refreshTodayTixDates(data, updates) {
                 if (ttEndDate) closedMatch.closingDate = ttEndDate;
                 else delete closedMatch.closingDate;
               }
+              reopenedIds.add(closedMatch.id);
               updates.push({
                 id: closedMatch.id,
                 title: closedMatch.title,
@@ -251,7 +263,7 @@ async function refreshTodayTixDates(data, updates) {
   if (newTtIds > 0) console.log(`  TodayTix IDs saved: ${newTtIds} (future matches use ID instead of title)`);
   if (reopened > 0) console.log(`  Wrongly-closed shows reopened: ${reopened}`);
   console.log(`  TodayTix date updates: ${dateUpdates}`);
-  return dateUpdates + reopened;
+  return { count: dateUpdates + reopened, reopenedIds };
 }
 
 async function updateShowStatuses() {
@@ -266,14 +278,16 @@ async function updateShowStatuses() {
 
   // Refresh closing dates from TodayTix BEFORE status checks
   // so extensions are detected before the closing-grace-period logic runs
-  await refreshTodayTixDates(data, updates);
+  const { reopenedIds } = await refreshTodayTixDates(data, updates);
 
   for (const show of data.shows) {
     const changes = {};
 
     // Check 1: Close shows whose closing date has passed (with grace period)
+    // Skip shows just reopened by TodayTix — they were wrongly closed and TodayTix
+    // confirms they're still running (even if the endDate is technically past)
     // Grace period gives check-closing-dates.js time to catch extensions
-    if (show.status === 'open' && show.closingDate && isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS)) {
+    if (show.status === 'open' && show.closingDate && isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS) && !reopenedIds.has(show.id)) {
       changes.status = { from: 'open', to: 'closed' };
       changes.note = `Closing date ${show.closingDate} passed ${CLOSING_GRACE_PERIOD_DAYS}+ days ago`;
       if (!dryRun) {
