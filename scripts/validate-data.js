@@ -122,6 +122,20 @@ function validateNoDuplicates(shows) {
     ok('No duplicate slugs');
   }
 
+  // Market-specific slug validation
+  const weShowsMissing = shows.filter(s => s.category === 'west-end' && !s.slug.includes('west-end'));
+  const obShowsMissing = shows.filter(s => s.category === 'off-broadway' && !s.slug.includes('off-broadway'));
+  if (weShowsMissing.length > 0) {
+    warn(`${weShowsMissing.length} West End shows missing "west-end" in slug: ${weShowsMissing.slice(0, 3).map(s => s.slug).join(', ')}${weShowsMissing.length > 3 ? '...' : ''}`);
+  } else {
+    ok('All West End slugs contain "west-end"');
+  }
+  if (obShowsMissing.length > 0) {
+    warn(`${obShowsMissing.length} Off-Broadway shows missing "off-broadway" in slug: ${obShowsMissing.slice(0, 3).map(s => s.slug).join(', ')}${obShowsMissing.length > 3 ? '...' : ''}`);
+  } else {
+    ok('All Off-Broadway slugs contain "off-broadway"');
+  }
+
   // Use deduplication module for comprehensive title matching
   if (checkForDuplicate) {
     info('Running comprehensive duplicate detection...');

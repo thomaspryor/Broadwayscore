@@ -733,12 +733,15 @@ async function discoverShows() {
 
     // Use opening year for ID if available, otherwise current year
     const idYear = openingDate ? openingDate.split('-')[0] : new Date().getFullYear();
-    const slug = slugify(show.title);
+    const baseSlug = slugify(show.title);
 
-    // West End shows get a "-west-end-YEAR" suffix to distinguish from Broadway productions
-    const showId = show.category === 'west-end'
-      ? `${slug}-west-end-${idYear}`
-      : `${slug}-${idYear}`;
+    // Market-aware slug and ID generation
+    const slug = show.category === 'west-end' ? `${baseSlug}-west-end`
+               : show.category === 'off-broadway' ? `${baseSlug}-off-broadway`
+               : baseSlug;
+    const showId = show.category === 'west-end' ? `${baseSlug}-west-end-${idYear}`
+                 : show.category === 'off-broadway' ? `${baseSlug}-off-broadway-${idYear}`
+                 : `${baseSlug}-${idYear}`;
 
     // Guard: skip if generated ID or slug collides with existing DB or batch
     if (existingIds.has(showId)) {
