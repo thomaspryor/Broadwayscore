@@ -21,7 +21,7 @@ export interface BrowsePageConfig {
   metaTitle: string; // Under 60 chars
   metaDescription: string; // 150-160 chars
   intro: string; // 100-200 words intro paragraph
-  filter: (show: ComputedShow) => boolean;
+  filter?: (show: ComputedShow) => boolean; // Simple filter (no data deps)
   dataFilter?: (show: ComputedShow, ctx: BrowseFilterContext) => boolean; // Data-dependent filter (used instead of filter when defined)
   customSort?: (shows: ComputedShow[], ctx: BrowseFilterContext) => ComputedShow[]; // Mutually exclusive with sort
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
@@ -615,6 +615,133 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'score',
     source: 'west-end',
     relatedPages: ['best-broadway-musicals', 'best-broadway-dramas'],
+  },
+
+  // === SEO Content Pages ===
+
+  'best-broadway-shows-all-time': {
+    slug: 'best-broadway-shows-all-time',
+    title: 'Best Broadway Shows of All Time',
+    h1: 'Best Broadway Shows of All Time',
+    metaTitle: 'Best Broadway Shows of All Time — Ranked by Critics',
+    metaDescription: 'Every scored Broadway show ranked by aggregated CriticScore. The definitive all-time ranking of Broadway musicals, plays, and revivals.',
+    intro: 'Every Broadway show we\'ve scored, ranked by aggregated CriticScore ratings from dozens of professional critics and publications. This isn\'t a popularity contest or a list of personal favorites — it\'s a data-driven ranking based on the collective judgment of theater critics across The New York Times, Variety, Vulture, and dozens more. From recent hits to classic revivals, these rankings span decades of Broadway history. Whether you\'re settling a debate or discovering your next obsession, this is the most comprehensive critical ranking of Broadway shows available anywhere.',
+    filter: (show) => (show.criticScore?.score ?? 0) > 0,
+    sort: 'score',
+    relatedPages: ['best-broadway-shows-1990s', 'best-broadway-shows-2000s', 'best-broadway-musicals', 'best-broadway-plays'],
+  },
+
+  'most-divisive-broadway-shows': {
+    slug: 'most-divisive-broadway-shows',
+    title: 'Most Divisive Broadway Shows',
+    h1: 'Most Divisive Broadway Shows — Critics vs. Audiences',
+    metaTitle: 'Most Divisive Broadway Shows — Critics vs. Audiences',
+    metaDescription: 'Broadway shows where critics and audiences disagree most. The biggest gaps between CriticScore and audience ratings, ranked by controversy.',
+    intro: 'These are the Broadway shows where critics and audiences see things very differently. We measure the gap between our aggregated CriticScore (from professional reviews) and audience ratings (from ShowScore, Mezzanine, and Reddit). A large gap means one group loved a show the other didn\'t — whether it\'s a crowd-pleaser critics panned or a critical darling audiences shrugged at. Sorted by the size of the disagreement, these shows spark the most heated debates about what makes great theater.',
+    dataFilter: (show, ctx) => {
+      if ((show.criticScore?.score ?? 0) === 0) return false;
+      const buzz = ctx.getAudienceBuzz(show.id);
+      if (!buzz?.combinedScore) return false;
+      const gap = Math.abs(show.criticScore!.score - buzz.combinedScore);
+      return gap >= 15;
+    },
+    customSort: (shows, ctx) => {
+      return shows.sort((a, b) => {
+        const aBuzz = ctx.getAudienceBuzz(a.id);
+        const bBuzz = ctx.getAudienceBuzz(b.id);
+        const aGap = Math.abs((a.criticScore?.score ?? 0) - (aBuzz?.combinedScore ?? 0));
+        const bGap = Math.abs((b.criticScore?.score ?? 0) - (bBuzz?.combinedScore ?? 0));
+        return bGap - aGap;
+      });
+    },
+    relatedPages: ['best-broadway-shows-all-time', 'best-broadway-musicals', 'best-broadway-plays'],
+  },
+
+  'broadway-ticket-prices': {
+    slug: 'broadway-ticket-prices',
+    title: 'Broadway Ticket Prices',
+    h1: 'Broadway Ticket Prices — Average Cost per Show',
+    metaTitle: 'Broadway Ticket Prices — Average Cost per Show (2026)',
+    metaDescription: 'Current average ticket prices for every Broadway show. Compare costs across musicals and plays to find the best value for your budget.',
+    intro: 'How much does a Broadway ticket actually cost? This page shows the current average ticket price (ATP) for every open Broadway show, pulled from weekly box office grosses data. ATP is calculated by dividing total gross revenue by tickets sold, giving you a real-world average that includes premium, regular, and discounted seats. Use this to compare costs and find shows that fit your budget — or discover which productions command the highest prices.',
+    dataFilter: (show, ctx) => {
+      if (show.status !== 'open') return false;
+      const grosses = ctx.getShowGrosses(show.slug);
+      return (grosses?.thisWeek?.atp ?? 0) > 0;
+    },
+    customSort: (shows, ctx) => {
+      return shows.sort((a, b) => {
+        const aAtp = ctx.getShowGrosses(a.slug)?.thisWeek?.atp ?? 0;
+        const bAtp = ctx.getShowGrosses(b.slug)?.thisWeek?.atp ?? 0;
+        return bAtp - aAtp;
+      });
+    },
+    relatedPages: ['broadway-lottery-shows', 'broadway-rush-tickets', 'best-broadway-show-right-now'],
+  },
+
+  'broadway-shows-based-on-books': {
+    slug: 'broadway-shows-based-on-books',
+    title: 'Broadway Shows Based on Books',
+    h1: 'Broadway Shows Based on Books',
+    metaTitle: 'Broadway Musicals & Plays Based on Books (2026)',
+    metaDescription: 'Broadway shows adapted from novels and books. See beloved literary works brought to life on stage with music, drama, and spectacle.',
+    intro: 'From beloved novels to unexpected page-to-stage adaptations, these Broadway shows bring literary works to life with the unique magic of live theater. Books have always been a rich source of Broadway material — their deep characters, complex plots, and built-in audiences make them ideal for theatrical adaptation. Whether you read the book first or discover the story through the show, these productions prove that great literature makes for great theater.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('based-on-book');
+    },
+    sort: 'score',
+    relatedPages: ['broadway-shows-based-on-true-stories', 'broadway-shows-based-on-movies', 'best-broadway-musicals'],
+  },
+
+  'broadway-shows-based-on-true-stories': {
+    slug: 'broadway-shows-based-on-true-stories',
+    title: 'Broadway Shows Based on True Stories',
+    h1: 'Broadway Shows Based on True Stories',
+    metaTitle: 'Broadway Shows Based on True Stories (2026)',
+    metaDescription: 'Broadway musicals and plays inspired by real events and people. True stories brought to life on stage with unforgettable performances.',
+    intro: 'The best stories are often true. These Broadway shows draw from real events, real people, and real history to create theatrical experiences that are both entertaining and enlightening. From biographical musicals about legendary figures to plays that dramatize pivotal moments in history, these productions prove that truth really can be stranger — and more compelling — than fiction. Each show takes creative liberties, but the emotional core comes from events that actually happened.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('based-on-true-story');
+    },
+    sort: 'score',
+    relatedPages: ['broadway-shows-based-on-books', 'broadway-shows-based-on-movies', 'best-broadway-dramas'],
+  },
+
+  'biggest-broadway-flops': {
+    slug: 'biggest-broadway-flops',
+    title: 'Biggest Broadway Flops',
+    h1: 'Biggest Broadway Flops',
+    metaTitle: 'Biggest Broadway Flops — Commercial Failures Ranked',
+    metaDescription: 'Broadway\'s biggest commercial failures. Shows designated as Flops and Fizzles based on capitalization, run length, and recoupment data.',
+    intro: 'Not every Broadway show is a hit. These productions were designated as commercial failures — either "Flops" (significant financial losses) or "Fizzles" (underperformers that failed to recoup their investment). Our designations are based on capitalization costs, run length, box office performance, and whether the show recouped its investment. Some of these shows were critical darlings that couldn\'t find an audience; others were panned by critics and audiences alike. Together, they tell the story of Broadway\'s high-risk economics, where even the most ambitious productions can fall short.',
+    dataFilter: (show, ctx) => {
+      const commercial = ctx.getShowCommercial(show.slug);
+      if (!commercial) return false;
+      return commercial.designation === 'Flop' || commercial.designation === 'Fizzle';
+    },
+    sort: 'opening-date',
+    relatedPages: ['best-broadway-shows-all-time', 'broadway-ticket-prices', 'longest-running-broadway-shows'],
+  },
+
+  'best-broadway-soundtracks': {
+    slug: 'best-broadway-soundtracks',
+    title: 'Best Broadway Soundtracks',
+    h1: 'Best Broadway Soundtracks — Tony Score Nominees',
+    metaTitle: 'Best Broadway Soundtracks — Tony Best Score Nominees',
+    metaDescription: 'Broadway shows nominated for Tony Award for Best Original Score. The best original music written for the stage, ranked by CriticScore.',
+    intro: 'The Tony Award for Best Original Score recognizes the finest original music written for Broadway. These shows were nominated for — or won — this prestigious award, meaning their music was deemed among the best of its season by Tony voters. From sweeping orchestral scores to contemporary pop-influenced soundtracks, these productions represent the gold standard of Broadway music. Ranked by our aggregated CriticScore, which reflects the overall quality of the production, not just its music.',
+    dataFilter: (show, ctx) => {
+      const awards = ctx.getShowAwards(show.id);
+      if (!awards?.tony) return false;
+      const all = [...(awards.tony.nominatedFor || []), ...(awards.tony.wins || [])];
+      return all.some(c => c.includes('Best Original Score'));
+    },
+    sort: 'score',
+    relatedPages: ['best-broadway-shows-all-time', 'tony-winners-on-broadway', 'best-broadway-musicals'],
   },
 
   // Decade browse pages (1990s, 2000s — 2010s/2020s covered by guide pages)

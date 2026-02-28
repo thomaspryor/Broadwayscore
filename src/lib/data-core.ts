@@ -477,7 +477,9 @@ export function getBrowseList(slug: string): BrowseList | undefined {
 
   let filteredShows = config.dataFilter
     ? allShows.filter(show => config.dataFilter!(show, ctx))
-    : allShows.filter(config.filter);
+    : config.filter
+    ? allShows.filter(config.filter)
+    : allShows;
 
   // customSort and sort are mutually exclusive — customSort skips the sort switch
   if (config.customSort) {
