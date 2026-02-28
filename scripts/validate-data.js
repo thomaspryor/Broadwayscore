@@ -1367,19 +1367,19 @@ function validateReviewOutletTiers() {
 
   const reviews = data.reviews || [];
 
-  // Load outlet-id-mapper mappings by parsing the TS source
-  const mapperFile = path.join(__dirname, '..', 'src', 'lib', 'outlet-id-mapper.ts');
-  if (!fs.existsSync(mapperFile)) {
-    info('outlet-id-mapper.ts not found, skipping');
+  // Read OUTLET_TIERS keys directly from scoring.ts (now lowercase registry IDs)
+  const scoringFile = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
+  if (!fs.existsSync(scoringFile)) {
+    info('scoring.ts not found, skipping');
     return;
   }
 
-  const mapperSrc = fs.readFileSync(mapperFile, 'utf8');
-  const registryToScoring = {};
-  const mapperPattern = /['"]([^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g;
+  const scoringSrc = fs.readFileSync(scoringFile, 'utf8');
+  const tierKeys = new Set();
+  const tierPattern = /['"]([\w-]+)['"]\s*:\s*\{\s*tier:\s*\d/g;
   let match;
-  while ((match = mapperPattern.exec(mapperSrc)) !== null) {
-    registryToScoring[match[1].toLowerCase()] = match[2];
+  while ((match = tierPattern.exec(scoringSrc)) !== null) {
+    tierKeys.add(match[1].toLowerCase());
   }
 
   // Count reviews per outlet and check tier resolution
@@ -1394,8 +1394,7 @@ function validateReviewOutletTiers() {
   const lowCount = [];
 
   for (const [oid, count] of Object.entries(outletCounts)) {
-    // Check if outlet resolves to a known scoring ID
-    if (!registryToScoring[oid] && !registryToScoring[oid.toUpperCase()]) {
+    if (!tierKeys.has(oid)) {
       unresolvable.push({ oid, count });
     }
     // Flag outlets with very few reviews as potential typos
