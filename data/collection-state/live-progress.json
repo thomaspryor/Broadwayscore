@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-02-28T01:26:45.008Z",
-  "processed": 83,
-  "failed": 467,
-  "successRate": "15.1%",
+  "updatedAt": "2026-02-28T01:31:25.034Z",
+  "processed": 86,
+  "failed": 474,
+  "successRate": "15.4%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 56,
     "amp": 42,
     "browserbase": 8,
     "directCookies": 1,
@@ -13,19 +13,8 @@
     "archiveToday": 131,
     "archive": 19
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-27T22:55:16.129Z",
-      "event": "bb-session",
-      "session": "3bec9c9c",
-      "url": "https://www.nytimes.com/2025/09/16/theater/lithgow-giant-dahl-broadway.html"
-    },
-    {
-      "t": "2026-02-27T22:55:17.546Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-27T23:20:12.852Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-02-28T00:38:56.690Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T01:31:15.910Z",
+      "event": "bb-session",
+      "session": "fa30c176",
+      "url": "http://deadline.com/2016/10/falsettos-review-andrew-rannells-christian-borle-120"
+    },
+    {
+      "t": "2026-02-28T01:31:17.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
