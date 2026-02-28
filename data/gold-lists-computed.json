@@ -114,26 +114,10 @@
           "isRevival": false
         },
         {
-          "showId": "marjorie-prime-2025",
-          "title": "Marjorie Prime",
-          "slug": "marjorie-prime",
-          "rank": 4,
-          "value": 80.4,
-          "displayValue": "80.4",
-          "season": "2025-2026",
-          "venue": "Helen Hayes Theater",
-          "type": "play",
-          "thumbnail": "/images/shows/marjorie-prime-2025/thumbnail.webp",
-          "openingDate": "2025-12-08",
-          "closingDate": "2026-02-15",
-          "status": "closed",
-          "isRevival": true
-        },
-        {
           "showId": "oedipus-2025",
           "title": "Oedipus",
           "slug": "oedipus",
-          "rank": 5,
+          "rank": 4,
           "value": 79.3,
           "displayValue": "79.3",
           "season": "2025-2026",
@@ -146,12 +130,28 @@
           "isRevival": false
         },
         {
+          "showId": "marjorie-prime-2025",
+          "title": "Marjorie Prime",
+          "slug": "marjorie-prime",
+          "rank": 5,
+          "value": 79,
+          "displayValue": "79.0",
+          "season": "2025-2026",
+          "venue": "Helen Hayes Theater",
+          "type": "play",
+          "thumbnail": "/images/shows/marjorie-prime-2025/thumbnail.webp",
+          "openingDate": "2025-12-08",
+          "closingDate": "2026-02-15",
+          "status": "closed",
+          "isRevival": true
+        },
+        {
           "showId": "two-strangers-bway-2025",
           "title": "Two Strangers (Carry a Cake Across New York)",
           "slug": "two-strangers",
           "rank": 6,
-          "value": 75.5,
-          "displayValue": "75.5",
+          "value": 75.9,
+          "displayValue": "75.9",
           "season": "2025-2026",
           "venue": "Longacre Theatre",
           "type": "musical",
@@ -216,8 +216,8 @@
           "title": "Oh, Mary!",
           "slug": "oh-mary",
           "rank": 2,
-          "value": 82.9,
-          "displayValue": "82.9",
+          "value": 83,
+          "displayValue": "83.0",
           "season": "2024-2025",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -292,10 +292,26 @@
           "isRevival": false
         },
         {
+          "showId": "death-becomes-her-2024",
+          "title": "Death Becomes Her",
+          "slug": "death-becomes-her",
+          "rank": 7,
+          "value": 77.9,
+          "displayValue": "77.9",
+          "season": "2024-2025",
+          "venue": "Lunt-Fontanne Theatre",
+          "type": "musical",
+          "thumbnail": "/images/shows/death-becomes-her-2024/thumbnail.webp",
+          "openingDate": "2024-11-21",
+          "closingDate": null,
+          "status": "open",
+          "isRevival": false
+        },
+        {
           "showId": "sunset-boulevard-2024",
           "title": "Sunset Boulevard",
           "slug": "sunset-boulevard-2024",
-          "rank": 7,
+          "rank": 8,
           "value": 77.9,
           "displayValue": "77.9",
           "season": "2024-2025",
@@ -306,22 +322,6 @@
           "closingDate": "2025-07-20",
           "status": "closed",
           "isRevival": true
-        },
-        {
-          "showId": "death-becomes-her-2024",
-          "title": "Death Becomes Her",
-          "slug": "death-becomes-her",
-          "rank": 8,
-          "value": 77.8,
-          "displayValue": "77.8",
-          "season": "2024-2025",
-          "venue": "Lunt-Fontanne Theatre",
-          "type": "musical",
-          "thumbnail": "/images/shows/death-becomes-her-2024/thumbnail.webp",
-          "openingDate": "2024-11-21",
-          "closingDate": null,
-          "status": "open",
-          "isRevival": false
         },
         {
           "showId": "purpose-2025",
@@ -1400,8 +1400,8 @@
           "title": "Hamilton",
           "slug": "hamilton",
           "rank": 1,
-          "value": 90.5,
-          "displayValue": "90.5",
+          "value": 90.7,
+          "displayValue": "90.7",
           "season": "2015-2016",
           "venue": "Richard Rodgers Theatre",
           "type": "musical",
@@ -2918,8 +2918,8 @@
           "title": "Hamilton",
           "slug": "hamilton",
           "rank": 1,
-          "value": 90.5,
-          "displayValue": "90.5",
+          "value": 90.7,
+          "displayValue": "90.7",
           "season": "2015-2016",
           "venue": "Richard Rodgers Theatre",
           "type": "musical",
@@ -3454,8 +3454,8 @@
           "title": "Operation Mincemeat",
           "slug": "operation-mincemeat-west-end-2024",
           "rank": 2,
-          "value": 84.4,
-          "displayValue": "84.4",
+          "value": 84.5,
+          "displayValue": "84.5",
           "season": "2023-2024",
           "venue": "Fortune Theatre",
           "type": "musical",
@@ -3814,8 +3814,8 @@
           "title": "Operation Mincemeat",
           "slug": "operation-mincemeat-west-end-2024",
           "rank": 9,
-          "value": 84.4,
-          "displayValue": "84.4",
+          "value": 84.5,
+          "displayValue": "84.5",
           "season": "2023-2024",
           "venue": "Fortune Theatre",
           "type": "musical",
@@ -19467,33 +19467,11 @@
         "rank": 7
       }
     ],
-    "marjorie-prime-2025": [
-      {
-        "listType": "critical-gold",
-        "season": "2025-2026",
-        "rank": 4
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2025-2026",
-        "rank": 10
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "2025-2026",
-        "rank": 5
-      },
-      {
-        "listType": "hot-ticket-gold",
-        "season": "all-time",
-        "rank": 11
-      }
-    ],
     "oedipus-2025": [
       {
         "listType": "critical-gold",
         "season": "2025-2026",
-        "rank": 5
+        "rank": 4
       },
       {
         "listType": "audience-gold",
@@ -19514,6 +19492,28 @@
         "listType": "hot-ticket-gold",
         "season": "all-time",
         "rank": 9
+      }
+    ],
+    "marjorie-prime-2025": [
+      {
+        "listType": "critical-gold",
+        "season": "2025-2026",
+        "rank": 5
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2025-2026",
+        "rank": 10
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "2025-2026",
+        "rank": 5
+      },
+      {
+        "listType": "hot-ticket-gold",
+        "season": "all-time",
+        "rank": 11
       }
     ],
     "two-strangers-bway-2025": [
@@ -19654,23 +19654,11 @@
         "rank": 1
       }
     ],
-    "sunset-boulevard-2024": [
-      {
-        "listType": "critical-gold",
-        "season": "2024-2025",
-        "rank": 7
-      },
-      {
-        "listType": "audience-gold",
-        "season": "2024-2025",
-        "rank": 8
-      }
-    ],
     "death-becomes-her-2024": [
       {
         "listType": "critical-gold",
         "season": "2024-2025",
-        "rank": 8
+        "rank": 7
       },
       {
         "listType": "audience-gold",
@@ -19690,6 +19678,18 @@
       {
         "listType": "hot-ticket-gold",
         "season": "all-time",
+        "rank": 8
+      }
+    ],
+    "sunset-boulevard-2024": [
+      {
+        "listType": "critical-gold",
+        "season": "2024-2025",
+        "rank": 8
+      },
+      {
+        "listType": "audience-gold",
+        "season": "2024-2025",
         "rank": 8
       }
     ],

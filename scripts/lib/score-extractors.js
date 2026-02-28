@@ -636,6 +636,8 @@ const OUTLET_EXTRACTORS = {
   'new-jersey-newsroom': noScoreExtractor,  // Extracted "D" from page template
   'new-jersey-news-room': noScoreExtractor,
   'cititour': noScoreExtractor,             // 0/5 from empty star widget
+  'slantmagazine': noScoreExtractor,        // Theater reviews have no star ratings; film uses stars but theater doesn't
+  'slant-magazine': noScoreExtractor,
 };
 
 /**
