@@ -588,7 +588,7 @@ async function checkCoreWebVitals() {
           ? crux.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100
           : null,
         inp: crux.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
-        performanceScore: data.lighthouseResult?.categories?.performance?.score
+        performanceScore: data.lighthouseResult?.categories?.performance?.score != null
           ? Math.round(data.lighthouseResult.categories.performance.score * 100)
           : null,
         lcpLab: lighthouse['largest-contentful-paint']?.numericValue
@@ -694,7 +694,7 @@ function detectCWVAnomalies(currentCWV, history) {
     if (current.inp && current.inp > CWV_ABSOLUTE.inp) {
       issues.push({ type: 'cwv_inp_absolute', severity: 'warning', message: `INP exceeds Good threshold on ${shortUrl}: ${current.inp}ms (limit: ${CWV_ABSOLUTE.inp}ms)` });
     }
-    if (current.performanceScore && current.performanceScore < CWV_ABSOLUTE.lighthouseMin) {
+    if (current.performanceScore != null && current.performanceScore < CWV_ABSOLUTE.lighthouseMin) {
       issues.push({ type: 'cwv_lighthouse_low', severity: 'error', message: `Lighthouse score below ${CWV_ABSOLUTE.lighthouseMin} on ${shortUrl}: ${current.performanceScore}/100` });
     }
   }
@@ -715,7 +715,7 @@ function detectCWVAnomalies(currentCWV, history) {
     if (current.cls != null && prior.cls != null && current.cls - prior.cls > 0.05) {
       issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `CLS regressed on ${shortUrl}: ${current.cls} (was ${prior.cls})` });
     }
-    if (current.performanceScore && prior.performanceScore && prior.performanceScore - current.performanceScore > 10) {
+    if (current.performanceScore != null && prior.performanceScore != null && prior.performanceScore - current.performanceScore > 10) {
       issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `Lighthouse score dropped on ${shortUrl}: ${current.performanceScore} (was ${prior.performanceScore})` });
     }
   }
