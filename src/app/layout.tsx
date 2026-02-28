@@ -95,6 +95,15 @@ export default function RootLayout({
           rel="dns-prefetch"
           href="https://images.ctfassets.net"
         />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://res.cloudinary.com"
+        />
       </head>
       <body className="min-h-screen font-sans pt-16">
         {/* Site-wide structured data */}
