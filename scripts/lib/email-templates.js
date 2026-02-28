@@ -80,11 +80,14 @@ function buildUnsubscribeUrl(email, market) {
   return market === 'west-end' ? `${base}&market=west-end` : base;
 }
 
-function buildFooterHtml(showTitle, showId, email) {
+function buildFooterHtml(showTitle, showId, email, market) {
   const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
+  const isWE = market === 'west-end';
+  const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
+  const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
-      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="https://broadwayscorecard.com" style="color:#d4a574;">Broadway Scorecard</a>.<br>
+      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
       <a href="${escapeHtml(unfollowUrl)}" style="color:rgba(255,255,255,0.35);">Unfollow this show</a>
     </p>
   </td></tr>`;
@@ -103,7 +106,10 @@ function buildBroadcastFooterHtml(email, market) {
   </td></tr>`;
 }
 
-function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
+function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
+  market = market || 'broadway';
+  const isWE = market === 'west-end';
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const changesHtml = changes.map(c => {
     const anchor = getChangeAnchor(c.type);
     const linkUrl = `${showUrl}${anchor}`;
@@ -117,7 +123,7 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
@@ -134,13 +140,16 @@ function buildEmailHtml(showTitle, changes, showUrl, showId, email) {
   <tr><td style="padding:8px 0 32px;" align="center">
     <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
   </td></tr>
-  ${buildFooterHtml(showTitle, showId, email)}
+  ${buildFooterHtml(showTitle, showId, email, market)}
 </table>
 </td></tr></table>
 </body></html>`;
 }
 
-function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl) {
+function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl, market) {
+  market = market || 'broadway';
+  const isWE = market === 'west-end';
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
   const sc = getScoreColor(openingChange.score);
   const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
   const reviewCount = openingChange.reviewCount || 0;
@@ -230,7 +239,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Critic Reviews Are In${openingChange.score != null ? ` \u2014 Critic Score: ${Math.round(openingChange.score)}` : ''}</h1>
@@ -266,7 +275,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   <tr><td style="padding:8px 0 32px;" align="center">
     <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
   </td></tr>
-  ${buildFooterHtml(showTitle, showId, email)}
+  ${buildFooterHtml(showTitle, showId, email, market)}
 </table>
 </td></tr></table>
 </body></html>`;

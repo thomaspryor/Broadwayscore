@@ -94,7 +94,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
       if (res.ok) {
         setStatus('success');
         try {
-          localStorage.setItem(SUBSCRIBED_KEY, 'true');
+          localStorage.setItem(SUBSCRIBED_KEY_PREFIX + market, 'true');
           window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
         setIsSubscribed(true);
