@@ -285,12 +285,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   }
                 />
               </div>
-              {/* Pills under poster — mobile only */}
-              <div className="flex sm:hidden flex-wrap justify-center gap-1 scale-[0.85] origin-top" data-testid="show-pills-poster">
-                <CategoryBadge category={show.category} />
-                <FormatPill type={show.type} />
-                <ProductionPill isRevival={show.isRevival === true} />
-                {show.limitedRun && <LimitedRunBadge />}
+              {/* Compact pill labels under poster — mobile only */}
+              <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
+                {show.category && show.category !== 'broadway' && (
+                  <span className={show.category === 'west-end' ? 'text-teal-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : 'Off-Bway'}</span>
+                )}
+                <span className={show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
+                <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
+                {show.limitedRun && <span className="text-red-400">Limited</span>}
               </div>
             </div>
 
@@ -410,36 +412,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
 
-                    {/* Breakdown bar */}
-                    {total > 0 && (
-                      <div className="space-y-1.5">
-                        <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
-                          {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
-                          {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
-                          {negativePct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negativePct}%` }} />}
-                        </div>
-                        <div className="flex items-center gap-3 text-[10px] sm:text-xs">
-                          {positive > 0 && (
-                            <div className="flex items-center gap-1">
-                              <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
-                              <span className="text-gray-400">{positive} Positive</span>
-                            </div>
-                          )}
-                          {mixed > 0 && (
-                            <div className="flex items-center gap-1">
-                              <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
-                              <span className="text-gray-400">{mixed} Mixed</span>
-                            </div>
-                          )}
-                          {negative > 0 && (
-                            <div className="flex items-center gap-1">
-                              <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
-                              <span className="text-gray-400">{negative} Negative</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    {/* Breakdown bar moved to Critic Reviews section */}
                   </div>
                 );
               })()}
@@ -624,6 +597,33 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
+
+            {/* Review breakdown bar */}
+            {(() => {
+              const revs = show.criticScore?.reviews || [];
+              const pos = revs.filter(r => r.reviewScore >= 65).length;
+              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+              const neg = revs.filter(r => r.reviewScore < 55).length;
+              const tot = revs.length;
+              if (tot === 0) return null;
+              const posPct = Math.round((pos / tot) * 100);
+              const mixPct = Math.round((mix / tot) * 100);
+              const negPct = Math.round((neg / tot) * 100);
+              return (
+                <div className="space-y-1.5 mb-3">
+                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
+                    {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
+                    {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
+                    {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px] sm:text-xs">
+                    {pos > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-great" /><span className="text-gray-400">{pos} Positive</span></div>}
+                    {mix > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" /><span className="text-gray-400">{mix} Mixed</span></div>}
+                    {neg > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-skip" /><span className="text-gray-400">{neg} Negative</span></div>}
+                  </div>
+                </div>
+              );
+            })()}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
