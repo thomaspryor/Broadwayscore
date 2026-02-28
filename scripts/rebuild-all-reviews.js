@@ -1175,6 +1175,14 @@ for (const s of showsData.shows) {
   }
 }
 
+// Build title index for wrongShow contamination check
+// Maps lowercase title (5+ chars) -> showId, used to detect excerpts about different shows
+const titleToShowId = {};
+for (const s of showsData.shows) {
+  const t = (s.title || '').toLowerCase();
+  if (t.length >= 5) titleToShowId[t] = s.id;
+}
+
 // Build URL-year cross-production guard for multi-production shows
 // Pattern: review URL contains a year clearly closer to a sibling production = wrong directory
 const multiProdYearGuard = {};
@@ -1526,6 +1534,29 @@ showDirs.forEach(showId => {
         }
         const hasExcerpt = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt);
         if (hasExcerpt && data.assignedScore) {
+          // Contamination check: if excerpt quotes a DIFFERENT show's title but doesn't
+          // mention THIS show's title, the aggregator page was contaminated
+          const excerpt = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
+          const myTitle = (showTitleMap[showId] || '').toLowerCase();
+          const myTitleWords = myTitle.split(/\s+/).filter(w => w.length >= 4 && !['the','and','for','with','from','that','this','show','musical','play'].includes(w));
+          const myTitleInExcerpt = myTitleWords.length > 0 && myTitleWords.some(w => excerpt.includes(w));
+          let excerptNamesOtherShow = false;
+          for (const [otherTitle, otherId] of Object.entries(titleToShowId)) {
+            if (otherId === showId || otherTitle.length < 6) continue;
+            // Check if excerpt contains quoted title of a different show
+            if (excerpt.includes(`"${otherTitle}"`) || excerpt.includes(`'${otherTitle}'`) || excerpt.includes(`\u201c${otherTitle}\u201d`)) {
+              if (!myTitleInExcerpt) {
+                excerptNamesOtherShow = true;
+                stats.wrongShowContaminationBlocked = (stats.wrongShowContaminationBlocked || 0) + 1;
+                break;
+              }
+            }
+          }
+          if (excerptNamesOtherShow) {
+            // Contaminated excerpt — don't recover
+            stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+            return;
+          }
           // Double signal: aggregator matched show + aggregator-derived score
           delete data.wrongShow;
           data.wrongShowAutoRecovered = `rebuild: has aggregator excerpt + assignedScore ${data.assignedScore} (no wrongShowReason recorded)`;
@@ -2911,6 +2942,9 @@ if (stats.nonReviewAutoRecovered > 0) {
 }
 if (stats.wrongShowAutoRecovered > 0) {
   console.log(`  Auto-recovered wrongShow (excerpt+assignedScore, no reason): ${stats.wrongShowAutoRecovered}`);
+}
+if (stats.wrongShowContaminationBlocked > 0) {
+  console.log(`  Blocked wrongShow recovery (excerpt names different show): ${stats.wrongShowContaminationBlocked}`);
 }
 if (stats.wrongShowNeedsReview && stats.wrongShowNeedsReview.length > 0) {
   console.log(`  wrongShow needs manual review (excerpt but no assignedScore): ${stats.wrongShowNeedsReview.length}`);
