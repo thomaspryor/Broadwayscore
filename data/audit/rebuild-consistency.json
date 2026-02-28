@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T09:34:31.926Z",
+  "generatedAt": "2026-02-28T09:38:42.591Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -576,6 +576,24 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "doubt-a-parable",
+      "detail": "10/13 reviews (77%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "purpose",
+      "detail": "17/20 reviews (85%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "tammy-faye",
+      "detail": "9/16 reviews (56%) scored exactly 35"
     }
   ]
 }
