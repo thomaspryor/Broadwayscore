@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-28T18:56:08.799Z",
+  "updatedAt": "2026-02-28T19:10:05.422Z",
   "processed": 1,
-  "failed": 29,
-  "successRate": "3.3%",
+  "failed": 39,
+  "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 4,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 15,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -45,6 +45,39 @@
     },
     {
       "t": "2026-02-28T18:55:55.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T19:02:37.722Z",
+      "event": "bb-session",
+      "session": "ad88cb21",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-28T19:02:39.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T19:06:23.863Z",
+      "event": "bb-session",
+      "session": "68edb006",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-28T19:06:25.185Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T19:08:14.379Z",
+      "event": "bb-session",
+      "session": "b5afc55b",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-02-28T19:08:15.843Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

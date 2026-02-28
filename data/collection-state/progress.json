@@ -31,7 +31,17 @@
     "kinky-boots-off-broadway-2026/wsj--unknown.json",
     "la-ternura-off-broadway-2025/broadwaynews--unknown.json",
     "mamma-mia-west-end-2021/nypost--unknown.json",
-    "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json"
+    "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "murder-she-didnt-write-west-end-2025/broadwaynews--unknown.json",
+    "my-joy-is-heavy-off-broadway-2025/broadwaynews--unknown.json",
+    "my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "perfect-crime-off-broadway-1987/broadwaynews--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-lion-king-west-end-2021/nbcnews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -57,12 +67,20 @@
       "data/review-texts/singfeld-a-musical-about-nothing-off-broadway-2023/nyt-theater--unknown.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/broadwaynews--unknown.json",
-      "data/review-texts/jerome-off-broadway-2025/wsj--unknown.json"
+      "data/review-texts/jerome-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/kinky-boots-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/la-ternura-off-broadway-2025/broadwaynews--unknown.json",
+      "data/review-texts/murder-she-didnt-write-west-end-2025/broadwaynews--unknown.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/broadwaynews--unknown.json",
+      "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
+      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
+  "lastProcessed": "the-lion-king-west-end-2021/nbcnews--unknown.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -94,6 +112,39 @@
     },
     {
       "t": "2026-02-28T18:55:55.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T19:02:37.722Z",
+      "event": "bb-session",
+      "session": "ad88cb21",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-02-28T19:02:39.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T19:06:23.863Z",
+      "event": "bb-session",
+      "session": "68edb006",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-02-28T19:06:25.185Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T19:08:14.379Z",
+      "event": "bb-session",
+      "session": "b5afc55b",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-02-28T19:08:15.843Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
