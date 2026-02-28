@@ -52,12 +52,22 @@ const TARGET_KEYWORDS = [
   'broadway shows for tourists',
 ];
 
-// Key pages to check Core Web Vitals for
+// Key pages to check Core Web Vitals for (covers main page types)
 const CWV_PAGES = [
   `${SITE_HOST}/`,
   `${SITE_HOST}/browse/best-broadway-musicals`,
   `${SITE_HOST}/show/hamilton`,
+  `${SITE_HOST}/west-end`,
+  `${SITE_HOST}/off-broadway`,
 ];
+
+// Google's "Good" CWV absolute thresholds
+const CWV_ABSOLUTE = {
+  lcp: 2500,     // ms — Largest Contentful Paint (Good < 2.5s)
+  cls: 0.1,      // Cumulative Layout Shift (Good < 0.1)
+  inp: 200,      // ms — Interaction to Next Paint (Good < 200ms)
+  lighthouseMin: 70,  // Lighthouse performance score floor
+};
 
 // Parse args
 const args = process.argv.slice(2);
@@ -670,8 +680,27 @@ function detectAnomalies(currentMetrics, history) {
 
 function detectCWVAnomalies(currentCWV, history) {
   const issues = [];
-  if (!currentCWV || currentCWV.length === 0 || history.length < 2) return issues;
+  if (!currentCWV || currentCWV.length === 0) return issues;
 
+  // Absolute threshold checks (always run, even without history)
+  for (const current of currentCWV) {
+    const shortUrl = current.url.replace(SITE_HOST, '');
+    if (current.lcp && current.lcp > CWV_ABSOLUTE.lcp) {
+      issues.push({ type: 'cwv_lcp_absolute', severity: 'warning', message: `LCP exceeds Good threshold on ${shortUrl}: ${current.lcp}ms (limit: ${CWV_ABSOLUTE.lcp}ms)` });
+    }
+    if (current.cls != null && current.cls > CWV_ABSOLUTE.cls) {
+      issues.push({ type: 'cwv_cls_absolute', severity: 'warning', message: `CLS exceeds Good threshold on ${shortUrl}: ${current.cls} (limit: ${CWV_ABSOLUTE.cls})` });
+    }
+    if (current.inp && current.inp > CWV_ABSOLUTE.inp) {
+      issues.push({ type: 'cwv_inp_absolute', severity: 'warning', message: `INP exceeds Good threshold on ${shortUrl}: ${current.inp}ms (limit: ${CWV_ABSOLUTE.inp}ms)` });
+    }
+    if (current.performanceScore && current.performanceScore < CWV_ABSOLUTE.lighthouseMin) {
+      issues.push({ type: 'cwv_lighthouse_low', severity: 'error', message: `Lighthouse score below ${CWV_ABSOLUTE.lighthouseMin} on ${shortUrl}: ${current.performanceScore}/100` });
+    }
+  }
+
+  // Relative regression checks (need history)
+  if (history.length < 2) return issues;
   const priorWeek = history[history.length - 1];
   if (!priorWeek.coreWebVitals || priorWeek.coreWebVitals.length === 0) return issues;
 
@@ -679,14 +708,15 @@ function detectCWVAnomalies(currentCWV, history) {
     const prior = priorWeek.coreWebVitals.find(p => p.url === current.url);
     if (!prior) continue;
 
+    const shortUrl = current.url.replace(SITE_HOST, '');
     if (current.lcp && prior.lcp && current.lcp - prior.lcp > 500) {
-      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', message: `LCP regressed on ${current.url}: ${current.lcp}ms (was ${prior.lcp}ms)` });
+      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', message: `LCP regressed on ${shortUrl}: ${current.lcp}ms (was ${prior.lcp}ms)` });
     }
     if (current.cls != null && prior.cls != null && current.cls - prior.cls > 0.05) {
-      issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `CLS regressed on ${current.url}: ${current.cls} (was ${prior.cls})` });
+      issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `CLS regressed on ${shortUrl}: ${current.cls} (was ${prior.cls})` });
     }
     if (current.performanceScore && prior.performanceScore && prior.performanceScore - current.performanceScore > 10) {
-      issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `Lighthouse score dropped on ${current.url}: ${current.performanceScore} (was ${prior.performanceScore})` });
+      issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `Lighthouse score dropped on ${shortUrl}: ${current.performanceScore} (was ${prior.performanceScore})` });
     }
   }
 

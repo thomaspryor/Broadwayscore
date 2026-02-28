@@ -33,6 +33,21 @@ Run all of these simultaneously via Bash:
 - Build failure → P0 blocker, must fix
 - Data validation issues → only a blocker if your changes caused them
 
+### Phase 2b: Bundle size check (if `src/` files changed)
+
+After the build succeeds, check bundle sizes against baseline:
+```
+node scripts/check-bundle-size.js
+```
+
+**Evaluation:**
+- Any page exceeding 200kB absolute cap → P0 blocker
+- Shared JS grew >5kB → P1, investigate what was added
+- Any page grew >10kB → P1, investigate (did you add a heavy dependency? inline data that should be loaded client-side?)
+- If regressions are justified (new feature adds necessary weight), update baseline: `node scripts/check-bundle-size.js --update-baseline`
+
+**NOTE:** The build in Phase 2 step 4 already ran — the bundle size script will re-run it. To avoid double-building, you can skip the Phase 2 build and let this step handle it, or run both checks from the same build output.
+
 ### Phase 3: Functional verification (based on what changed)
 
 **If `src/` files changed (frontend):**
