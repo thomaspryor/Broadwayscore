@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-28T00:22:12.296Z",
-  "processed": 40,
-  "failed": 350,
-  "successRate": "10.3%",
+  "updatedAt": "2026-02-28T00:26:50.373Z",
+  "processed": 43,
+  "failed": 357,
+  "successRate": "10.8%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 28,
     "amp": 31,
-    "browserbase": 5,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 110,
     "archive": 9
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-02-27T22:25:44.133Z",
-      "event": "bb-session",
-      "session": "1b221d84",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-02-27T22:25:45.262Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-02-27T22:53:37.234Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-02-28T00:22:08.110Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T00:25:40.741Z",
+      "event": "bb-session",
+      "session": "92430735",
+      "url": "http://deadline.com/2016/12/a-bronx-tale-robert-de-niro-review-1201863369/"
+    },
+    {
+      "t": "2026-02-28T00:25:41.988Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
