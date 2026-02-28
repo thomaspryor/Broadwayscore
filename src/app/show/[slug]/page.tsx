@@ -276,6 +276,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   height={264}
                   decoding="async"
                   priority
+                  sizes="(min-width: 1024px) 160px, (min-width: 640px) 144px, 112px"
                   className="w-full h-full object-cover"
                   fallback={
                     <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
@@ -294,7 +295,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
-                <StatusBadge status={show.status} />
+                <span className="hidden sm:inline-flex"><StatusBadge status={show.status} /></span>
               </div>
 
               {/* Title */}
@@ -612,7 +613,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
