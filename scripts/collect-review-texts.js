@@ -4538,6 +4538,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongShow = true;
+      data.wrongShowReason = `Collector LLM: wrong article (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
       data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
       console.log(`    ✗ LLM: Wrong article (${contentVerification.confidence}) — fullText nulled`);
     }
@@ -4563,6 +4564,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.wrongFullText = data.fullText;
       data.fullText = null;
       data.wrongShow = true;
+      data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
       data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
       console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
     }
