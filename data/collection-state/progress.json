@@ -195,7 +195,9 @@
     "private-lives-2011/ew--unknown.json",
     "rent-1996/nydailynews--unknown.json",
     "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
-    "saint-joan-2018/theater-news-online--robert-cashill.json"
+    "saint-joan-2018/theater-news-online--robert-cashill.json",
+    "sea-wall-a-life-2019/ew--kerenssa-cadenas.json",
+    "significant-other-2017/new-jersey-newsroom--michael-sommers.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -901,7 +903,15 @@
     "romeo-and-juliet-2013/theatermania--adam-feldman.json",
     "romeo-juliet-2024/nypost--johnny-oleksinski.json",
     "romeo-juliet-2024/observer--david-cote.json",
-    "saint-joan-2018/broadwaynews--charles-isherwood.json"
+    "saint-joan-2018/broadwaynews--charles-isherwood.json",
+    "seminar-2011/ew--lisa-schwarzbaum.json",
+    "she-loves-me-2016/review--robin-riegelhaupt.json",
+    "she-loves-me-2016/reviewing-the-drama--robin-riegelhaupt.json",
+    "shucked-2023/observer--david-cote.json",
+    "shucked-2023/theatre-reviews-limited--joseph-verlezza.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+    "side-show-2014/theatermania--david-gordon.json",
+    "side-show-2014/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1025,7 +1035,8 @@
       "the-other-place-2026/stageandcinema--unknown.json",
       "the-porch-on-windy-hill-2026/chicagotribune--unknown.json",
       "rent-1996/nydailynews--unknown.json",
-      "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json"
+      "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
+      "sea-wall-a-life-2019/ew--kerenssa-cadenas.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -1319,7 +1330,9 @@
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
       "data/review-texts/prince-of-broadway-2017/broadwaynews--charles-isherwood.json",
       "data/review-texts/race-2009/timeout--adam-feldman.json",
-      "data/review-texts/saint-joan-2018/broadwaynews--charles-isherwood.json"
+      "data/review-texts/saint-joan-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json",
+      "data/review-texts/side-show-2014/theatermania--david-gordon.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -1364,11 +1377,12 @@
       "lost-in-del-valle-2026/rollingstone--unknown.json",
       "the-play-that-goes-wrong-west-end-2021/nysr--unknown.json",
       "wicked-west-end-2021/rollingstone--unknown.json",
-      "private-lives-2011/ew--unknown.json"
+      "private-lives-2011/ew--unknown.json",
+      "significant-other-2017/new-jersey-newsroom--michael-sommers.json"
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "saint-joan-2018/theater-news-online--robert-cashill.json",
+  "lastProcessed": "significant-other-2017/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -1727,6 +1741,17 @@
       "t": "2026-02-28T05:21:22.996Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-02-28T05:24:27.288Z",
+      "event": "bb-session",
+      "session": "b87e258f",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
+    },
+    {
+      "t": "2026-02-28T05:24:28.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
