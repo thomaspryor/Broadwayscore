@@ -314,12 +314,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-              score >= 83 ? 'score-must-see' :
-              score >= 75 ? 'score-great' :
-              score >= 65 ? 'score-good' :
-              score >= 55 ? 'score-tepid' :
-              'score-skip'
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score)
             }`}>
               {score !== undefined && score !== null ? Math.round(score) : '—'}
             </div>

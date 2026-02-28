@@ -36,7 +36,7 @@ import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
@@ -170,12 +170,11 @@ function LimitedRunBadge() {
 }
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
-  const roundedScore = Math.round(score);
-  if (roundedScore >= 83) return { label: 'Critical Gold', colorClass: 'text-score-must-see' };
-  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-great' };
-  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-good' };
-  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-score-tepid' };
-  return { label: 'Stay Away', colorClass: 'text-score-skip' };
+  const tier = getScoreTier(score);
+  return {
+    label: tier?.label ?? 'Stay Away',
+    colorClass: getScoreTextColorClass(score),
+  };
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -354,14 +353,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 const mixedPct = total > 0 ? Math.round((mixed / total) * 100) : 0;
                 const negativePct = total > 0 ? Math.round((negative / total) * 100) : 0;
 
-                let scoreColorClass = 'bg-surface-overlay text-gray-400 border border-white/10';
-                if (!showTBD && roundedScore !== null) {
-                  if (roundedScore >= 83) scoreColorClass = 'score-must-see';
-                  else if (roundedScore >= 75) scoreColorClass = 'score-great';
-                  else if (roundedScore >= 65) scoreColorClass = 'score-good';
-                  else if (roundedScore >= 55) scoreColorClass = 'score-tepid';
-                  else scoreColorClass = 'score-skip';
-                }
+                const scoreColorClass = (!showTBD && roundedScore !== null)
+                  ? getScoreColorClass(roundedScore)
+                  : 'bg-surface-overlay text-gray-400 border border-white/10';
 
                 const scoreBox = (
                   <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
