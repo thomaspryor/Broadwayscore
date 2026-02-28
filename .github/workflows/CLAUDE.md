@@ -286,10 +286,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Parallel-safe:** Only commits `review-texts/`, uses push retry loop
 
 ## `update-critic-consensus.yml`
-- **Runs:** Every Sunday at 2 AM UTC
-- **Does:** Generates "Critics' Take" editorial summaries (1-2 sentences, max 280 chars) via Claude API, only regenerates shows with 3+ new reviews
-- **Script:** `scripts/generate-critic-consensus.js`
-- **Data:** `data/critic-consensus.json`
+- **Runs:** Every Sunday at 2 AM UTC, auto-triggered by rebuild (when scoring not needed), or manually
+- **Does:** Generates "Critics' Take" editorial summaries (1-2 sentences, max 280 chars) via Claude Sonnet. Smart regeneration: only processes shows where data changed meaningfully.
+- **Triggers for regeneration (any one):** 3+ new reviews, 3+ full-text upgrades, 2+ reviews removed, or 8+ pt mean score drift. Fingerprints (`reviewCount`, `fullTextCount`, `meanScore`) tracked per show.
+- **Options:** `force` (regenerate all), `max_shows` (default 200, cost control)
+- **Concurrency:** `update-critic-consensus` group (queued, not cancelled)
+- **Script:** `scripts/generate-critic-consensus.js` (`--show=X` for single-show, `--max-shows=N` cap, `--force`, `--cleanup-orphans`)
+- **Data:** `data/critic-consensus.json` (gitignored, synced via push-core-data to private repo)
+- **Requires:** ANTHROPIC_API_KEY, REVIEW_TEXTS_TOKEN
+- **Chain:** scoring → rebuild → consensus (rebuild dispatches consensus when scoring doesn't fire)
 
 ## `process-feedback.yml`
 - **Runs:** Every Monday at 9 AM UTC
