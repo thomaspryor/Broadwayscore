@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-02-28T08:22:31.010Z",
-  "processed": 10,
-  "failed": 40,
-  "successRate": "20.0%",
+  "updatedAt": "2026-02-28T08:33:36.472Z",
+  "processed": 15,
+  "failed": 45,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 6,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 7,
+    "amp": 4,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 14,
     "archive": 4
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-02-28T08:02:13.416Z",
@@ -97,6 +97,28 @@
       "t": "2026-02-28T08:17:44.613Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-28T08:23:42.852Z",
+      "event": "bb-session",
+      "session": "87a42e59",
+      "url": "http://www.nytimes.com/2014/08/19/theater/mamma-mia-no-longer-inspires-dancing-i"
+    },
+    {
+      "t": "2026-02-28T08:23:44.028Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-28T08:24:43.245Z",
+      "event": "bb-session",
+      "session": "f6885470",
+      "url": "http://www.nytimes.com/2001/10/19/movies/theater-review-mom-had-a-trio-and-a-ban"
+    },
+    {
+      "t": "2026-02-28T08:24:44.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -9,7 +9,12 @@
     "mj-2022/exeunt-magazine--juliet-hindell.json",
     "mj-2022/theater-life--patrick-christiano.json",
     "mj-2022/theater-scene--joel-benjamin.json",
-    "mamma-mia-2025/slantmagazine--unknown.json"
+    "mamma-mia-2025/slantmagazine--unknown.json",
+    "the-little-foxes-2017/times-square-chronicles--suzanna-bowling.json",
+    "mamma-mia-2025/nytimes--anita-gates.json",
+    "mamma-mia-2025/nytimes--ben-brantley.json",
+    "mamma-mia-2025/vulture--john-simon.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--elizabeth-vincentelli.json"
   ],
   "failed": [
     "and-juliet-2022/broadway-blog--joey-sims.json",
@@ -51,7 +56,12 @@
     "the-big-knife-2013/ap--mark-kennedy.json",
     "the-big-knife-2013/stageandcinema--joel-benjamin.json",
     "the-little-foxes-2017/film-festival-traveler--kevin-filipski.json",
-    "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json"
+    "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-little-foxes-2017/our-theater-blog--tamara-beck.json",
+    "the-little-foxes-2017/pop-dust--thomas-burns-scully.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "mamma-mia-2025/variety--charles-isherwood.json",
+    "something-rotten-2015/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -61,12 +71,24 @@
       "mj-2022/exeunt-magazine--juliet-hindell.json",
       "mj-2022/theater-life--patrick-christiano.json",
       "mj-2022/theater-scene--joel-benjamin.json",
-      "mamma-mia-2025/slantmagazine--unknown.json"
+      "mamma-mia-2025/slantmagazine--unknown.json",
+      "the-little-foxes-2017/times-square-chronicles--suzanna-bowling.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/mamma-mia-2025/variety--charles-isherwood.json",
+      "mamma-mia-2025/variety--charles-isherwood.json",
+      "data/review-texts/mamma-mia-2025/vulture--john-simon.json",
+      "mamma-mia-2025/vulture--john-simon.json"
+    ],
+    "browserbase": [
+      "data/review-texts/mamma-mia-2025/nytimes--anita-gates.json",
+      "mamma-mia-2025/nytimes--anita-gates.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "mamma-mia-2025/nytimes--ben-brantley.json",
+      "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--elizabeth-vincentelli.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/jerome-2025/talkinbroadway--unknown.json",
@@ -92,7 +114,7 @@
     ]
   },
   "startTime": "2026-02-28T07:57:55.860Z",
-  "lastProcessed": "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+  "lastProcessed": "something-rotten-2015/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-02-28T08:02:13.416Z",
@@ -176,6 +198,28 @@
       "t": "2026-02-28T08:17:44.613Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-28T08:23:42.852Z",
+      "event": "bb-session",
+      "session": "87a42e59",
+      "url": "http://www.nytimes.com/2014/08/19/theater/mamma-mia-no-longer-inspires-dancing-i"
+    },
+    {
+      "t": "2026-02-28T08:23:44.028Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-28T08:24:43.245Z",
+      "event": "bb-session",
+      "session": "f6885470",
+      "url": "http://www.nytimes.com/2001/10/19/movies/theater-review-mom-had-a-trio-and-a-ban"
+    },
+    {
+      "t": "2026-02-28T08:24:44.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
