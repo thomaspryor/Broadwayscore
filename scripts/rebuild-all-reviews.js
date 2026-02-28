@@ -1829,9 +1829,37 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
+      // Auto-clear stale not_a_review/garbage_text rejections when fullText is present and passes quality gate
       if (data.rejectionReason) {
-        stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
-        return;
+        const clearableRejections = ['not_a_review', 'garbage_text'];
+        if (clearableRejections.includes(data.rejectionReason) && data.fullText && data.fullText.length > 300) {
+          // Re-validate content quality — length alone doesn't prove it's not boilerplate
+          const recomputedTier = classifyContentTier(data.fullText, data);
+          if (recomputedTier === 'complete' || recomputedTier === 'truncated' || recomputedTier === 'excerpt') {
+            const savedReason = data.rejectionReason;
+            delete data.rejectionReason;
+            delete data.rejectedAt;
+            delete data.rejectedBy;
+            delete data.rejectionReasoning;
+            delete data.promptVersion;
+            // Clear stale contentTier set by the rejection
+            if ((savedReason === 'not_a_review' && data.contentTier === 'invalid') ||
+                (savedReason === 'garbage_text' && data.contentTier === 'needs-rescrape')) {
+              data.contentTier = recomputedTier;
+            }
+            data.rejectionAutoCleared = `rebuild: had ${recomputedTier} fullText (${data.fullText.length} chars) with stale ${savedReason} rejection`;
+            data.rejectionAutoClearedAt = new Date().toISOString().split('T')[0];
+            stats.rejectionAutoCleared = (stats.rejectionAutoCleared || 0) + 1;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            // Fall through — don't skip, let scoring pick up the file
+          } else {
+            stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
+            return;
+          }
+        } else {
+          stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
+          return;
+        }
       }
 
       // Skip roundup articles (multi-show reviews that aren't about this specific show)
@@ -2542,6 +2570,7 @@ const output = {
       skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
+      outOfRangeScoresRejected: stats.outOfRangeScores || 0,
       scoreSources: stats.scoreSources
     }
   },
@@ -2778,6 +2807,9 @@ if (stats.showNotMentionedWithExcerpts > 0) {
 }
 if (stats.wrongProdWEOBAutoCleared > 0) {
   console.log(`  Auto-cleared wrongProduction (WE/OB URL-year exempt): ${stats.wrongProdWEOBAutoCleared}`);
+}
+if (stats.rejectionAutoCleared > 0) {
+  console.log(`  Auto-cleared stale rejections (content-quality gate): ${stats.rejectionAutoCleared}`);
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
