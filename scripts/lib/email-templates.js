@@ -75,8 +75,9 @@ function buildUnfollowUrl(showId, showTitle, email) {
   return `https://broadwayscorecard.com/unfollow?email=${encodeURIComponent(email)}&show=${encodeURIComponent(showId)}&title=${encodeURIComponent(showTitle)}`;
 }
 
-function buildUnsubscribeUrl(email) {
-  return `https://broadwayscorecard.com/unsubscribe?email=${encodeURIComponent(email)}`;
+function buildUnsubscribeUrl(email, market) {
+  const base = `https://broadwayscorecard.com/unsubscribe?email=${encodeURIComponent(email)}`;
+  return market === 'west-end' ? `${base}&market=west-end` : base;
 }
 
 function buildFooterHtml(showTitle, showId, email) {
@@ -89,11 +90,14 @@ function buildFooterHtml(showTitle, showId, email) {
   </td></tr>`;
 }
 
-function buildBroadcastFooterHtml(email) {
-  const unsubscribeUrl = buildUnsubscribeUrl(email);
+function buildBroadcastFooterHtml(email, market) {
+  const unsubscribeUrl = buildUnsubscribeUrl(email, market);
+  const isWE = market === 'west-end';
+  const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
+  const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
-      You're receiving this because you subscribed to <a href="https://broadwayscorecard.com" style="color:#d4a574;">Broadway Scorecard</a>.<br>
+      You're receiving this because you subscribed to <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
       <a href="${escapeHtml(unsubscribeUrl)}" style="color:rgba(255,255,255,0.35);">Unsubscribe from opening night alerts</a>
     </p>
   </td></tr>`;
@@ -274,9 +278,14 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
  *
  * @param {Array<{showTitle, score, reviewCount, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
  * @param {string} email - Subscriber email (for unsubscribe link)
+ * @param {string} [market='broadway'] - 'broadway' or 'west-end'
  * @returns {string} HTML email
  */
-function buildBroadcastOpeningNightHtml(shows, email) {
+function buildBroadcastOpeningNightHtml(shows, email, market) {
+  market = market || 'broadway';
+  const isWE = market === 'west-end';
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const browseUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   // Build a score card for each show
   const showCards = shows.map(show => {
     const sc = getScoreColor(show.score);
@@ -385,16 +394,16 @@ function buildBroadcastOpeningNightHtml(shows, email) {
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:#d4a574;letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${h1}</h1>
   </td></tr>
   ${showCards.join('')}
   <tr><td style="padding:8px 0 32px;" align="center">
-    <a href="https://broadwayscorecard.com" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">Browse All Shows</a>
+    <a href="${browseUrl}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">Browse All Shows</a>
   </td></tr>
-  ${buildBroadcastFooterHtml(email)}
+  ${buildBroadcastFooterHtml(email, market)}
 </table>
 </td></tr></table>
 </body></html>`;

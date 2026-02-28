@@ -10,7 +10,7 @@
  *
  * Multiple shows opening the same night are coalesced into a single email.
  *
- * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS]
+ * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--budget=N]
  *
  * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
  */
@@ -25,18 +25,23 @@ const {
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
 const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 2;
+const MARKET_ARG = process.argv.find(a => a.startsWith('--market='));
+const MARKET = MARKET_ARG ? MARKET_ARG.split('=')[1] : 'broadway'; // 'broadway' or 'west-end'
+const BUDGET_ARG = process.argv.find(a => a.startsWith('--budget='));
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
-const SUBSCRIBERS_PATH = path.join(DATA_DIR, 'subscribers.json');
+const SUBSCRIBERS_PATH = path.join(DATA_DIR, MARKET === 'west-end' ? 'subscribers-westend.json' : 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
+const SITE_NAME = MARKET === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
 const MIN_REVIEWS = 8;
-const BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Resend 100/day)
+const DEFAULT_BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Resend 100/day)
+const BUDGET_CAP = BUDGET_ARG ? parseInt(BUDGET_ARG.split('=')[1], 10) : DEFAULT_BUDGET_CAP;
 
 // Tier weights — must match src/config/scoring.ts
 const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
@@ -64,8 +69,13 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 
   return shows.filter(s => {
     if (s.status !== 'open' || !s.openingDate) return false;
-    // Opening night broadcasts are Broadway-only (no OB or WE yet)
-    if (s.category === 'off-broadway' || s.category === 'west-end') return false;
+    // Filter by market
+    if (MARKET === 'west-end') {
+      if (s.category !== 'west-end') return false;
+    } else {
+      // Broadway: exclude off-broadway and west-end
+      if (s.category === 'off-broadway' || s.category === 'west-end') return false;
+    }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);
     return d >= cutoff && d <= now;
@@ -101,9 +111,10 @@ async function main() {
     process.exit(0);
   }
 
-  console.log('Opening Night Broadcast');
+  console.log(`Opening Night Broadcast (${MARKET})`);
   console.log('=======================\n');
   if (DRY_RUN) console.log('** DRY RUN — no emails will be sent **\n');
+  console.log(`Market: ${MARKET}, Budget: ${BUDGET_CAP}, Subscribers file: ${path.basename(SUBSCRIBERS_PATH)}`);
 
   // Load data
   const showsData = loadJSON(SHOWS_PATH);
@@ -243,7 +254,7 @@ async function main() {
   }
 
   // Determine how many to send (resume from previous partial send)
-  const broadcastKey = showsForEmail.map(s => s.showId).sort().join('+');
+  const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
   const previousSent = sentData.shows[broadcastKey];
   const alreadySentCount = previousSent?.sentCount || 0;
 
@@ -266,7 +277,7 @@ async function main() {
   // Build subject line
   const subject = showsForEmail.length === 1
     ? `${showsForEmail[0].showTitle} is now open, and the critic reviews are in`
-    : `${showsForEmail.length} shows opened tonight — the reviews are in`;
+    : `${showsForEmail.length} shows opened ${MARKET === 'west-end' ? 'in the West End' : 'on Broadway'} — the reviews are in`;
 
   console.log(`\nSubject: ${subject}`);
   console.log(`Sending to ${toSend.length} subscribers (offset ${alreadySentCount})...`);
@@ -279,7 +290,7 @@ async function main() {
     if (toSend.length > 10) console.log(`  ... and ${toSend.length - 10} more`);
 
     // Show HTML preview
-    const html = buildBroadcastOpeningNightHtml(showsForEmail, 'preview@test.com');
+    const html = buildBroadcastOpeningNightHtml(showsForEmail, 'preview@test.com', MARKET);
     console.log(`\nEmail HTML length: ${html.length} chars`);
     console.log('Has unsubscribe link:', html.includes('/unsubscribe'));
     console.log('Has score card:', html.includes('font-size:32px'));
@@ -291,11 +302,11 @@ async function main() {
   let consecutiveErrors = 0;
 
   for (const email of toSend) {
-    const html = buildBroadcastOpeningNightHtml(showsForEmail, email);
+    const html = buildBroadcastOpeningNightHtml(showsForEmail, email, MARKET);
 
     try {
       await postJSON('https://api.resend.com/emails', {
-        from: `Broadway Scorecard <${FROM_EMAIL}>`,
+        from: `${SITE_NAME} <${FROM_EMAIL}>`,
         to: [email],
         subject,
         html,
@@ -332,7 +343,7 @@ async function main() {
         await sleep(60000);
         try {
           await postJSON('https://api.resend.com/emails', {
-            from: `Broadway Scorecard <${FROM_EMAIL}>`,
+            from: `${SITE_NAME} <${FROM_EMAIL}>`,
             to: [email],
             subject,
             html,
@@ -344,6 +355,11 @@ async function main() {
           console.log(`  Retry successful for ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
         } catch (retryErr) {
           console.error(`  Retry also failed: ${retryErr.message}`);
+          // Exit non-zero on persistent rate limit so notify-failure triggers
+          if (retryErr.message.includes('429')) {
+            console.error('Resend rate limit exhausted — exiting with error');
+            process.exitCode = 1;
+          }
         }
       }
 
