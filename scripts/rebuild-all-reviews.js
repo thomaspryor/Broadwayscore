@@ -1513,10 +1513,37 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip wrong-show reviews (review content is for a different show)
+      // Wrong-show recovery for files without documented reason
+      // Files WITH wrongShowReason have evidence — keep excluded.
+      // Files WITHOUT reason predate reason-recording. Recovery requires double signal:
+      //   aggregator excerpt (show matched by aggregator's editorial process) +
+      //   assignedScore (P0-level score from aggregator star ratings, not LLM)
       if (data.wrongShow === true) {
-        stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-        return;
+        if (data.wrongShowReason) {
+          // Documented evidence — keep excluded
+          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+          return;
+        }
+        const hasExcerpt = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt);
+        if (hasExcerpt && data.assignedScore) {
+          // Double signal: aggregator matched show + aggregator-derived score
+          delete data.wrongShow;
+          data.wrongShowAutoRecovered = `rebuild: has aggregator excerpt + assignedScore ${data.assignedScore} (no wrongShowReason recorded)`;
+          data.wrongShowAutoRecoveredAt = new Date().toISOString().split('T')[0];
+          stats.wrongShowAutoRecovered = (stats.wrongShowAutoRecovered || 0) + 1;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          // Fall through — don't skip
+        } else if (hasExcerpt && !data.assignedScore) {
+          // Single signal — not strong enough, log for manual review
+          if (!stats.wrongShowNeedsReview) stats.wrongShowNeedsReview = [];
+          stats.wrongShowNeedsReview.push({ showId, file, hasLlmScore: !!data.llmScore });
+          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+          return;
+        } else {
+          // No excerpts, no recovery signal — keep excluded
+          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+          return;
+        }
       }
 
       // Skip fabricated entries (URLs fabricated by web-search LLM, confirmed dead via HTTP check)
@@ -2881,6 +2908,12 @@ if (stats.rejectionAutoCleared > 0) {
 }
 if (stats.nonReviewAutoRecovered > 0) {
   console.log(`  Auto-recovered nonReview false positives (signal-based): ${stats.nonReviewAutoRecovered}`);
+}
+if (stats.wrongShowAutoRecovered > 0) {
+  console.log(`  Auto-recovered wrongShow (excerpt+assignedScore, no reason): ${stats.wrongShowAutoRecovered}`);
+}
+if (stats.wrongShowNeedsReview && stats.wrongShowNeedsReview.length > 0) {
+  console.log(`  wrongShow needs manual review (excerpt but no assignedScore): ${stats.wrongShowNeedsReview.length}`);
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
