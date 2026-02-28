@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-02-28T13:40:56.254Z",
-  "processed": 505,
-  "failed": 1245,
-  "successRate": "28.9%",
+  "updatedAt": "2026-02-28T13:44:24.266Z",
+  "processed": 368,
+  "failed": 1042,
+  "successRate": "26.1%",
   "tierBreakdown": {
-    "playwright": 325,
-    "amp": 93,
-    "browserbase": 13,
-    "directCookies": 21,
-    "scrapingbee": 76,
+    "playwright": 216,
+    "amp": 108,
+    "browserbase": 15,
+    "directCookies": 20,
+    "scrapingbee": 36,
     "brightdata": 0,
-    "archiveToday": 353,
-    "archive": 93
+    "archiveToday": 259,
+    "archive": 100
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-02-28T04:32:03.687Z",
-      "event": "bb-session",
-      "session": "bbb10305",
-      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
-    },
-    {
-      "t": "2026-02-28T04:32:05.146Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-28T04:33:23.264Z",
-      "event": "bb-session",
-      "session": "443e354c",
-      "url": "https://www.usatoday.com/story/entertainment/arts/2016/08/08/theater-apt-arcadia"
-    },
-    {
-      "t": "2026-02-28T04:33:24.523Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-28T04:38:09.325Z",
-      "event": "bb-session",
-      "session": "29fe722c",
-      "url": "https://www.usatoday.com/story/entertainment/arts/2016/12/02/mamma-mia-farewell-"
-    },
-    {
-      "t": "2026-02-28T04:38:10.539Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-02-28T04:42:22.597Z",
-      "event": "bb-session",
-      "session": "b793e582",
-      "url": "https://www.usatoday.com/story/entertainment/2024/09/07/sparkling-moulin-rouge-t"
-    },
-    {
-      "t": "2026-02-28T04:42:23.820Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
     {
       "t": "2026-02-28T04:46:40.438Z",
       "event": "bb-session",
@@ -124,6 +80,50 @@
       "t": "2026-02-28T05:36:10.751Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T13:20:32.083Z",
+      "event": "bb-session",
+      "session": "6227e2fd",
+      "url": "https://www.wsj.com/articles/david-kirby-reviews-say-no-to-the-devil-the-life-an"
+    },
+    {
+      "t": "2026-02-28T13:20:33.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T13:26:09.447Z",
+      "event": "bb-session",
+      "session": "ff7f310f",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2016/04/26/theater-reviews-pho"
+    },
+    {
+      "t": "2026-02-28T13:26:12.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-28T13:41:23.963Z",
+      "event": "bb-session",
+      "session": "dcb6d3ab",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-02-28T13:41:25.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-28T13:43:46.046Z",
+      "event": "bb-session",
+      "session": "3563c941",
+      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
+    },
+    {
+      "t": "2026-02-28T13:43:47.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
