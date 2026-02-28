@@ -5,10 +5,20 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
 export default function UnsubscribeClient() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || '';
+  const market = searchParams.get('market') === 'west-end' ? 'west-end' : 'broadway';
+
+  const isWestEnd = market === 'west-end';
+  const siteName = isWestEnd ? 'West End Scorecard' : 'Broadway Scorecard';
+  const homeLink = isWestEnd ? '/west-end' : '/';
+  // Fall back to Broadway form if WE form not configured
+  const formId = isWestEnd && FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID
+    ? FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID
+    : FORMSPREE_SUBSCRIBER_FORM_ID;
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
@@ -17,8 +27,8 @@ export default function UnsubscribeClient() {
       <div className="text-center">
         <h1 className="text-2xl font-bold text-white mb-4">Invalid Unsubscribe Link</h1>
         <p className="text-gray-400 mb-6">This link appears to be incomplete.</p>
-        <Link href="/" className="text-brand hover:text-brand-hover transition-colors">
-          Back to Broadway Scorecard
+        <Link href={homeLink} className="text-brand hover:text-brand-hover transition-colors">
+          Back to {siteName}
         </Link>
       </div>
     );
@@ -27,7 +37,7 @@ export default function UnsubscribeClient() {
   const handleUnsubscribe = async () => {
     setStatus('submitting');
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_SUBSCRIBER_FORM_ID}`, {
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -57,8 +67,8 @@ export default function UnsubscribeClient() {
         <p className="text-gray-400 mb-8">
           You&apos;ve been unsubscribed from opening night email alerts.
         </p>
-        <Link href="/" className="text-brand hover:text-brand-hover transition-colors">
-          Back to Broadway Scorecard
+        <Link href={homeLink} className="text-brand hover:text-brand-hover transition-colors">
+          Back to {siteName}
         </Link>
       </div>
     );
@@ -68,7 +78,7 @@ export default function UnsubscribeClient() {
     <div className="text-center">
       <h1 className="text-2xl font-bold text-white mb-3">Unsubscribe?</h1>
       <p className="text-gray-400 mb-2">
-        You&apos;ll stop receiving opening night email alerts from Broadway Scorecard.
+        You&apos;ll stop receiving opening night email alerts from {siteName}.
       </p>
       <p className="text-gray-500 text-sm mb-8">
         {email}
@@ -82,7 +92,7 @@ export default function UnsubscribeClient() {
           {status === 'submitting' ? 'Unsubscribing...' : 'Yes, Unsubscribe'}
         </button>
         <Link
-          href="/"
+          href={homeLink}
           className="px-6 py-3 bg-surface-raised hover:bg-surface-overlay text-gray-300 font-semibold rounded-lg transition-colors border border-white/10"
         >
           Cancel
