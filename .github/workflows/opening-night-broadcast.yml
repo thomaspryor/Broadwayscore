@@ -67,6 +67,22 @@ jobs:
             echo "Recently opened shows: $SHOWS"
             echo "has_shows=true" >> $GITHUB_OUTPUT
             echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+
+            # Split shows by market for broadcast step
+            node -e "
+              const shows = require('./data/shows.json').shows;
+              const ids = '$SHOWS'.split(',');
+              const broadway = [], westend = [];
+              for (const id of ids) {
+                const s = shows.find(x => x.id === id);
+                if (s && s.category === 'west-end') westend.push(id);
+                else if (!s || !s.category || s.category === 'broadway') broadway.push(id);
+              }
+              if (broadway.length) console.log('broadway=' + broadway.join(','));
+              if (westend.length) console.log('westend=' + westend.join(','));
+            " | while IFS= read -r line; do
+              echo "$line" >> $GITHUB_OUTPUT
+            done
           fi
 
       - name: Check already broadcast
@@ -115,6 +131,8 @@ jobs:
           FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
           FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
           FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
         run: node scripts/sync-followers.js
 
       - name: Discover reviews from outlets (SERP)
@@ -184,7 +202,22 @@ jobs:
         if: always() && steps.check.outputs.pending_shows != ''
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: node scripts/send-opening-night-broadcast.js
+        run: |
+          # Broadway broadcast (skip if no Broadway shows)
+          if [ -n "${{ steps.find.outputs.broadway }}" ]; then
+            echo "--- Broadway broadcast ---"
+            node scripts/send-opening-night-broadcast.js --market=broadway --budget=60
+          else
+            echo "No Broadway shows to broadcast"
+          fi
+
+          # West End broadcast (skip if no WE shows)
+          if [ -n "${{ steps.find.outputs.westend }}" ]; then
+            echo "--- West End broadcast ---"
+            node scripts/send-opening-night-broadcast.js --market=west-end --budget=35
+          else
+            echo "No West End shows to broadcast"
+          fi
 
 
       - name: Push review-texts to private repo
@@ -199,6 +232,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Core data files pushed to private repo by push-core-data action
+          # Subscriber files are ephemeral (recreated from Formspree each run)
           git add --force data/opening-night-sent.json 2>/dev/null || true
           bash scripts/lib/push-with-retry.sh
 
