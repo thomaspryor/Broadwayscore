@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed } from '@/lib/data-core';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz, getShowScoreUrl } from '@/lib/data-audience';
@@ -230,6 +230,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const blogReview = getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
   const relatedShowsClosed = getRelatedShowsClosed(show);
+  const otherProductions = getOtherProductions(show);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -884,6 +885,29 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             )}
           </dl>
         </div>
+
+        {/* Other Productions of the same show */}
+        {otherProductions.length > 0 && (
+          <div className="mt-6 bg-surface-raised border border-white/10 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3">
+              Other Productions of {show.title}
+            </h3>
+            <div className="space-y-2">
+              {otherProductions.map(prod => {
+                const market = prod.category === 'west-end' ? 'West End' : prod.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway';
+                const year = prod.openingDate ? new Date(prod.openingDate).getFullYear() : null;
+                const statusLabel = prod.status === 'open' ? 'Now Playing' : prod.status === 'previews' ? 'In Previews' : prod.status === 'upcoming' ? 'Upcoming' : 'Closed';
+                return (
+                  <Link key={prod.id} href={`/show/${prod.slug}`} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group">
+                    <span className="text-sm text-white group-hover:text-brand transition-colors">{prod.title}{year ? ` (${year})` : ''}</span>
+                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${prod.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' : prod.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-amber-500/20 text-amber-400'}`}>{market}</span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${prod.status === 'open' ? 'bg-green-500/20 text-green-400' : prod.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' : prod.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>{statusLabel}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Related Shows */}
         <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
