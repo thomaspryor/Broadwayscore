@@ -700,7 +700,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
             {bestNewMusicals.map((show, index) => (
-              <MiniShowCard key={show.id} show={show} priority={index < 2} />
+              <MiniShowCard key={show.id} show={show} priority={index < 4} />
             ))}
           </div>
         </section>

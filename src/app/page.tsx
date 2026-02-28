@@ -4,6 +4,7 @@ import { getBroadwayShows, getOffBroadwayShows, getDataStats, getUpcomingShows }
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow } from '@/components/HomePageClient';
 
@@ -64,8 +65,24 @@ export default function HomePage() {
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
   );
 
+  // Precompute featured poster URLs for LCP preloading (mirrors client-side bestNewMusicals)
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+  const featuredPosterUrls = allShows
+    .filter(s => s.type === 'musical' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .slice(0, 4)
+    .map(s => {
+      const img = s.images?.poster || s.images?.thumbnail;
+      return img ? getOptimizedImageUrl(img, 'card') : null;
+    })
+    .filter((u): u is string => !!u);
+
   return (
     <>
+      {featuredPosterUrls.map((url, i) => (
+        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority={i === 0 ? 'high' : undefined} />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema(stats)) }}
