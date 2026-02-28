@@ -164,8 +164,10 @@ const hasReviewTexts = fs.existsSync(reviewTextsDir);
 if (hasReviewTexts && registryData) {
   const outlets = registryData.outlets || {};
   const outletDomains = {};
+  const outletDomainAliases = {};
   for (const [id, outlet] of Object.entries(outlets)) {
     if (outlet.domain) outletDomains[id] = outlet.domain.toLowerCase();
+    if (outlet.domainAliases) outletDomainAliases[id] = outlet.domainAliases.map(d => d.toLowerCase());
   }
 
   for (const market of marketsToCheck) {
@@ -194,7 +196,10 @@ if (hasReviewTexts && registryData) {
           if (review.url && outletDomains[outletId]) {
             const urlDomain = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
             const expected = outletDomains[outletId].replace(/^www\./, '');
-            if (!urlDomain.includes(expected) && !expected.includes(urlDomain)) {
+            const aliases = outletDomainAliases[outletId] || [];
+            const domainMatches = urlDomain.includes(expected) || expected.includes(urlDomain)
+              || aliases.some(a => urlDomain.includes(a.replace(/^www\./, '')) || a.replace(/^www\./, '').includes(urlDomain));
+            if (!domainMatches) {
               urlMismatches++;
             }
           }
