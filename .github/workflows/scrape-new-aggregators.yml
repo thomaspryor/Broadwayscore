@@ -14,6 +14,7 @@ on:
           - all
           - playbill-verdict
           - nyc-theatre
+          - outlet-serp
       shows:
         description: 'Comma-separated show IDs to target (empty = all shows)'
         required: false
@@ -194,10 +195,62 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
+  # Discover reviews from configured outlets via site-scoped Google SERP
+  discover-outlet-serp:
+    needs: [scrape-nyc-theatre]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'outlet-serp') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Discover outlet reviews via SERP
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          echo "Discovering reviews from configured outlets via SERP..."
+          node scripts/discover-outlet-reviews-serp.js --all
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Outlet SERP review discovery"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Outlet SERP Discovery Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
   # Rebuild reviews.json after aggregator data is committed
   rebuild:
-    needs: [scrape-playbill-verdict, scrape-nyc-theatre]
-    if: always() && (needs.scrape-playbill-verdict.result == 'success' || needs.scrape-nyc-theatre.result == 'success')
+    needs: [scrape-playbill-verdict, scrape-nyc-theatre, discover-outlet-serp]
+    if: always() && (needs.scrape-playbill-verdict.result == 'success' || needs.scrape-nyc-theatre.result == 'success' || needs.discover-outlet-serp.result == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
