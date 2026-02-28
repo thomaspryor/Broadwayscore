@@ -64,15 +64,9 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - Import from `@/components/show-cards`. Add new components to barrel, never inline.
 
 ### 8a. Visual QA (MANDATORY for UI Changes)
-**Never deploy UI changes without visual verification.** User is non-technical — broken deploys waste their time.
-1. Dev server: `PORT=3456 npm run dev > /tmp/dev-server.log 2>&1 &` (~2s startup)
-2. Screenshot with Playwright at 375px (mobile) and 1280px (desktop) for affected pages
-3. Check: score badge position, card spacing, overflow, text wrapping, toggle states
-4. For multi-file changes: screenshot production BEFORE changes for comparison
-5. Only after visual confirmation → commit, push, deploy. Kill server: `kill $(lsof -ti:3456)`
+**Never deploy UI changes without visual verification.** Dev server → Playwright screenshots at 390px + 1440px → confirm before commit. Kill server after: `kill $(lsof -ti:3456)`.
 - **Score badges are sacred** — never change size/position/shape. Score column: `w-20 sm:w-24`.
 - **Card layout: `[Thumbnail] [Info] [Score]`** — three flex children. Test with real data edge cases.
-- **Padding changes cascade** — changing `p-4` to `p-3` affects every card.
 
 ### 9. Roadmap Discipline
 Read roadmap: `gh issue view 50 --repo thomaspryor/Broadwayscore`
@@ -94,16 +88,21 @@ Aggregators first, web search second. See `memory/expansion-playbook.md` for the
 ### 13. Always Recommend Next Steps
 When wrapping up a task, recommend the best next task or follow-up. Don't just say "done" — tell the user what you'd prioritize next and why.
 
-### 14. Fix Systematically, Not One-Off
-When fixing an issue, fix it at the **pipeline/automation level** so it never recurs. One-off fixes are wasted work. Ask: "How do I prevent this class of problem permanently?"
+### 14. Fix Systematically, Not One-Off (MANDATORY)
+**Every fix MUST include prevention.** When fixing any bug: (1) fix the instance, (2) fix the class of problem so it can't recur. One-off fixes are wasted work — this system is automated and set-and-forget. Ask: "How do I prevent this permanently?" Add types, helpers, tests, or lint rules. Run `/test` after every fix.
 
-### 15. Test Before Committing (MANDATORY for logic changes)
-**Never commit script/logic changes without testing against real data.** Write a test script that covers: (1) correct matches (varied samples), (2) expected rejections/edge cases, (3) mass validation against archive/production data when available. Use `skipLlm` for fast bulk tests, then spot-check LLM paths. Fix failures before committing.
-- **Scoring verification: use the engine, not manual scripts.** Never reimplement tier-weighted averaging to verify scores. Instead: `npm run build` → extract `CriticScore` from `out/show/*.html`, or run dev server and screenshot. The engine (`engine.ts`) is the source of truth — manual scripts miss top-critic promotions, designation bumps, floor rules, and registry fallbacks.
+### 15. Test Before Committing (MANDATORY)
+**Never commit code changes without passing the test gate.** Before EVERY commit touching `src/`, `scripts/`, or config:
+1. `npx tsc --noEmit` — zero errors in changed files (pre-existing errors in other files OK)
+2. `npx next lint` — no new warnings in changed files
+3. `npm run build` — must succeed (catches SSG errors, missing imports, runtime crashes)
+4. For scripts: test with real data (`node script.js --dry-run` or inline verification)
+5. For UI: visual verification per §8a
+**If any check fails, fix before committing.** Run `/test` to execute all checks. Never push broken code — the user is non-technical and can't fix failed deploys.
+- **Scoring verification: use the engine, not manual scripts.** `engine.ts` is source of truth.
 
 ### 16. Prompt Changes Require A/B Distribution Check (MANDATORY)
-**NEVER rescore >100 reviews without the built-in A/B check.** The scoring pipeline (`--outdated`/`--rescore` with >100 files) auto-runs a 50-review sample comparison. If any bucket shifts >5% or mean drift >5pts, it aborts. Override with `--force-full-run` only after investigating.
-- Lesson learned: v5.3 prompt cost $420 to rescore 20k reviews, made scores worse, had to revert. Side effects of prompt changes are invisible without distribution testing.
+**NEVER rescore >100 reviews without the built-in A/B check.** Pipeline auto-runs 50-review comparison; aborts if bucket shift >5% or mean drift >5pts. Override with `--force-full-run` only after investigating. (v5.3 lesson: $420 rescore made scores worse.)
 
 ---
 
