@@ -287,6 +287,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                     width={112}
                     height={112}
                     decoding="async"
+                    sizes="(min-width: 640px) 112px, 96px"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
                     fallback={
                       <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">

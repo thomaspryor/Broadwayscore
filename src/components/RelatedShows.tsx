@@ -26,6 +26,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                 ]}
                 alt={`${show.title} Broadway ${show.type}`}
                 loading="lazy"
+                sizes="(min-width: 640px) 128px, 112px"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 fallback={
                   <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">

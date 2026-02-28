@@ -144,6 +144,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           width={112}
           height={112}
           decoding="async"
+          sizes="(min-width: 640px) 112px, 96px"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           fallback={
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
@@ -296,6 +297,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
             alt={`${show.title} Broadway ${show.type}`}
             priority={priority}
             loading={priority ? "eager" : "lazy"}
+            sizes="(min-width: 640px) 128px, 112px"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             fallback={
               <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
