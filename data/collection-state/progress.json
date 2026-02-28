@@ -373,7 +373,17 @@
     "not-nobody-2026/nytg--unknown.json",
     "oh-mary-2024/hollywood-reporter--david-rooney.json",
     "oh-mary-2024/nytimes--erik-piepenburg.json",
-    "oliver-west-end-2024/variety--unknown.json"
+    "oliver-west-end-2024/variety--unknown.json",
+    "perfect-crime-1987/nytimes--unknown.json",
+    "perfect-crime-1987/vulture--unknown.json",
+    "pied-a-terre-2026/nytg--unknown.json",
+    "stranger-things-2024/nytimes--houman-barekat.json",
+    "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
+    "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
+    "the-dinosaurs-2026/nytg--caroline-cao.json",
+    "the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "the-infinite-wrench-2025/nytg--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -1642,7 +1652,9 @@
       "mexodus-2026/nytg--austin-fimmano.json",
       "mother-russia-2026/nyt-theater--jonathan-mandell.json",
       "mother-russia-2026/nytg--amelia-merrill.json",
-      "my-joy-is-heavy-2025/nyt-theater--unknown.json"
+      "my-joy-is-heavy-2025/nyt-theater--unknown.json",
+      "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
+      "the-dinosaurs-2026/nytg--caroline-cao.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -1769,7 +1781,9 @@
       "data/review-texts/spring-awakening-2015/deadline--jeremy-gerard.json",
       "spring-awakening-2015/deadline--jeremy-gerard.json",
       "data/review-texts/mother-russia-2026/nytimes--elisabeth-vincentelli.json",
-      "mother-russia-2026/nytimes--elisabeth-vincentelli.json"
+      "mother-russia-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "directCookies": [
       "a-view-from-the-bridge-2010/timeout--andrzej-lukowski.json",
@@ -1829,7 +1843,11 @@
       "a-dolls-house-part-2-2017/unknown--brian-scott-lipton.json",
       "a-gentlemans-guide-to-love-and-murder-2013/unknown--brian-scott-lipton.json",
       "kinky-boots-2026/ap--mark-kennedy.json",
-      "kinky-boots-2026/latimes--los-angeles.json"
+      "kinky-boots-2026/latimes--los-angeles.json",
+      "perfect-crime-1987/nyt-theater--unknown.json",
+      "the-25th-annual-putnam-county-spelling-bee-2025/nytimes--elisabeth-vincentelli.json",
+      "the-dinosaurs-2026/nytimes--elisabeth-vincentelli.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2198,11 +2216,16 @@
       "not-nobody-2026/nytg--unknown.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/nytimes--erik-piepenburg.json",
-      "oliver-west-end-2024/variety--unknown.json"
+      "oliver-west-end-2024/variety--unknown.json",
+      "perfect-crime-1987/nytimes--unknown.json",
+      "perfect-crime-1987/vulture--unknown.json",
+      "pied-a-terre-2026/nytg--unknown.json",
+      "stranger-things-2024/nytimes--houman-barekat.json",
+      "the-infinite-wrench-2025/nytg--unknown.json"
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "perfect-crime-1987/nyt-theater--unknown.json",
+  "lastProcessed": "the-infinite-wrench-2025/nytg--unknown.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -2625,6 +2648,50 @@
     },
     {
       "t": "2026-02-28T13:43:47.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-28T13:51:52.079Z",
+      "event": "bb-session",
+      "session": "76a7e7b4",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-02-28T13:51:53.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-02-28T13:52:58.465Z",
+      "event": "bb-session",
+      "session": "6aeabdc8",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-02-28T13:52:59.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-28T13:54:55.433Z",
+      "event": "bb-session",
+      "session": "cf77b52b",
+      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
+    },
+    {
+      "t": "2026-02-28T13:54:56.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-28T13:57:04.449Z",
+      "event": "bb-session",
+      "session": "bd5684ea",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-02-28T13:57:05.719Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
