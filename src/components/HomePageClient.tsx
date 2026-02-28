@@ -7,7 +7,7 @@ import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -677,7 +677,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Hero - Large heading on desktop only */}
       <div className="mb-4 sm:mb-8">
-        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">

@@ -59,9 +59,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isOffBroadwayMeta = show.category === 'off-broadway';
   const siteName = isWestEndMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
   const marketLabel = isWestEndMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
+  const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
   const description = score
-    ? `${show.title} has a CriticScore of ${roundedScore}/100 based on ${reviewCount} reviews. ${synopsisSnippet}`
-    : `Reviews and scores for ${show.title} ${marketLabel}. ${synopsisSnippet}`;
+    ? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`.trim().slice(0, 160)
+    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`.trim().slice(0, 160);
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -74,8 +75,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   return {
     title: roundedScore
-      ? `${show.title} Reviews — ${siteName} | CriticScore: ${roundedScore} | ${reviewCount} Reviews`
-      : `${show.title} Reviews — ${siteName}`,
+      ? `${show.title} Reviews (${roundedScore}/100) — ${reviewCount} Critic Reviews Aggregated`
+      : `${show.title} Reviews ${marketLabel} — ${siteName}`,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -559,7 +560,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5">
                     {isHistoricalBanner
-                      ? 'Broadway Scorecard\'s critic review coverage begins in 2005. Cast, creative team, and production details are available for this historical production.'
+                      ? `${isWestEnd ? 'West End Scorecard' : isOffBroadway ? 'Off-Broadway Scorecard' : 'Broadway Scorecard'}'s critic review coverage begins in ${isWestEnd ? '2020' : '2005'}. Cast, creative team, and production details are available for this historical production.`
                       : 'This show page is currently being built and will be complete in a couple of days. Reviews and scores are on the way.'}
                   </p>
                 </div>
@@ -917,8 +918,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <HowThisWorks heading="How This Score Works" className="mt-6">
           <p>
             The CriticScore is a weighted average of professional critic reviews.
-            Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.
-            Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
+            {isWestEnd
+              ? ' Top-tier outlets (The Guardian, The Times, The Telegraph) carry more weight than smaller publications.'
+              : ' Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.'}
+            {' '}Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
           </p>
         </HowThisWorks>
       </div>

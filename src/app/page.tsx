@@ -1,9 +1,33 @@
 // Server component — loads data at build time, passes serialized props to client
+import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { BASE_URL } from '@/lib/seo';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow } from '@/components/HomePageClient';
+
+const homeOgImageUrl = `${BASE_URL}/og/home.png`;
+
+export const metadata: Metadata = {
+  title: 'Broadway Scorecard — Best Broadway Shows 2026 | Aggregated Critic Reviews & Ratings',
+  description: 'Find the best Broadway shows with scores aggregated from every major critic. Compare ratings from The New York Times, Vulture, Variety, and 400+ outlets. Updated daily.',
+  alternates: {
+    canonical: BASE_URL,
+  },
+  openGraph: {
+    title: 'Broadway Scorecard — Best Broadway Shows 2026',
+    description: 'Find the best Broadway shows with scores aggregated from every major critic. Compare ratings from The New York Times, Vulture, Variety, and 400+ outlets.',
+    url: BASE_URL,
+    images: [{ url: homeOgImageUrl, width: 1200, height: 630, alt: 'Broadway Scorecard — Aggregated Critic Scores for Every Broadway Show' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Scorecard — Best Broadway Shows 2026',
+    description: 'Aggregated critic scores for every Broadway show. Compare ratings from 400+ outlets.',
+    images: [{ url: homeOgImageUrl, width: 1200, height: 630, alt: 'Broadway Scorecard — Aggregated Critic Scores for Every Broadway Show' }],
+  },
+};
 
 function serializeShow(show: ComputedShow): HomepageShow {
   const buzz = getAudienceBuzz(show.id);
