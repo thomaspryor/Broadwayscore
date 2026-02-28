@@ -34,8 +34,11 @@ const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extr
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
-// Load outlet registry for cross-market guard
+// Load outlet registry for cross-market guard + nonReview recovery
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+// Load critic registry for nonReview recovery (known critics are more likely real reviews)
+const criticRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'critic-registry.json'), 'utf8'));
+const knownCriticKeys = new Set(Object.keys(criticRegistry.critics || {}));
 const outletRegionMap = {};  // outletId -> region (e.g., 'london')
 for (const [id, info] of Object.entries(outletRegistry.outlets)) {
   if (info.region) outletRegionMap[id] = info.region;
@@ -1625,8 +1628,72 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Skip non-reviews (profiles, interviews, previews, features, news articles)
-      if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
+      // Signal-based auto-recovery for nonReview false positives
+      // Many files flagged isNonReview/nonReviewFlag/nonReviewContent are actually real reviews
+      // that the LLM classifier misidentified. Use multiple independent signals to recover.
+      // Flag precedence: if also wrongShow, don't recover (wrongShow is more restrictive)
+      if ((data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true)
+          && !data.wrongShow) {
+        let recoverySignals = 0;
+        const signalReasons = [];
+
+        // +3: LLM ensemble scored with high or medium confidence
+        const conf = (data.llmScore?.confidence || '').toLowerCase();
+        if (conf === 'high' || conf === 'medium') {
+          recoverySignals += 3;
+          signalReasons.push(`ensemble ${conf} confidence`);
+        }
+
+        // +2: T1/T2 outlet (major outlets rarely publish non-reviews in review slots)
+        const outId = (data.outletId || data.outlet || '').toLowerCase();
+        const outInfo = outletRegistry.outlets[outId];
+        if (outInfo && (outInfo.tier === 1 || outInfo.tier === 2)) {
+          recoverySignals += 2;
+          signalReasons.push(`T${outInfo.tier} outlet`);
+        }
+
+        // +2: URL contains /review/ (strong structural signal)
+        if (data.url && /\/review[s]?\//i.test(data.url)) {
+          recoverySignals += 2;
+          signalReasons.push('URL contains /review/');
+        }
+
+        // +2: has assignedScore or originalScore (aggregator-derived, validates review identity)
+        if (data.assignedScore || data.originalScore) {
+          recoverySignals += 2;
+          signalReasons.push('has assignedScore');
+        }
+
+        // +1: known critic in registry
+        const criticKey = (data.criticName || '').toLowerCase().replace(/\s+/g, '-');
+        if (criticKey && knownCriticKeys.has(criticKey)) {
+          recoverySignals += 1;
+          signalReasons.push('known critic');
+        }
+
+        // -1: type that's usually genuinely not a review
+        const nrType = (data.nonReviewType || '').toLowerCase();
+        if (['interview', 'obituary', 'profile'].includes(nrType)) {
+          recoverySignals -= 1;
+          signalReasons.push(`${nrType} type penalty`);
+        }
+
+        if (recoverySignals >= 4) {
+          // Recover: clear nonReview flags
+          delete data.isNonReview;
+          delete data.nonReviewFlag;
+          delete data.nonReviewContent;
+          data.nonReviewAutoRecovered = `rebuild: signal score ${recoverySignals} (${signalReasons.join(', ')})`;
+          data.nonReviewAutoRecoveredAt = new Date().toISOString().split('T')[0];
+          stats.nonReviewAutoRecovered = (stats.nonReviewAutoRecovered || 0) + 1;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          // Fall through — don't skip
+        } else {
+          stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
+          return;
+        }
+      } else if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
+        // Has wrongShow — skip without recovery attempt (flag precedence)
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
@@ -2811,6 +2878,9 @@ if (stats.wrongProdWEOBAutoCleared > 0) {
 }
 if (stats.rejectionAutoCleared > 0) {
   console.log(`  Auto-cleared stale rejections (content-quality gate): ${stats.rejectionAutoCleared}`);
+}
+if (stats.nonReviewAutoRecovered > 0) {
+  console.log(`  Auto-recovered nonReview false positives (signal-based): ${stats.nonReviewAutoRecovered}`);
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
