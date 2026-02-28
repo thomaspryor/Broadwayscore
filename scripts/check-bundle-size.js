@@ -70,7 +70,12 @@ function parseBuildOutput() {
 
 function loadBaseline() {
   try {
-    return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+    if (!data || typeof data.pages !== 'object') {
+      console.warn('Baseline file is malformed (missing pages). Will create a new one.');
+      return null;
+    }
+    return data;
   } catch {
     return null;
   }
@@ -115,7 +120,7 @@ function compare(current, baseline) {
   const failures = [];
 
   // Check shared JS
-  if (baseline.sharedJS && current.sharedJS) {
+  if (baseline.sharedJS != null && current.sharedJS != null) {
     const delta = current.sharedJS - baseline.sharedJS;
     if (delta > SHARED_JS_WARN_DELTA) {
       warnings.push(`Shared JS grew by ${delta.toFixed(1)}kB (${baseline.sharedJS}kB → ${current.sharedJS}kB)`);
@@ -219,7 +224,9 @@ async function main() {
   }
 
   // Summary
-  console.log(`\nShared JS delta: ${(current.sharedJS - baseline.sharedJS).toFixed(1)}kB`);
+  if (current.sharedJS != null && baseline.sharedJS != null) {
+    console.log(`\nShared JS delta: ${(current.sharedJS - baseline.sharedJS).toFixed(1)}kB`);
+  }
 
   if (CI_MODE && failures.length > 0) {
     console.error('\nBundle size check FAILED in CI mode.');
