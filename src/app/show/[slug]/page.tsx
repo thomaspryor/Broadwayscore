@@ -410,9 +410,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
 
-                    {/* Breakdown bar — desktop only (mobile version in reviews section) */}
+                    {/* Breakdown bar */}
                     {total > 0 && (
-                      <div className="hidden sm:block space-y-1.5">
+                      <div className="space-y-1.5">
                         <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
                           {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
                           {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
@@ -624,33 +624,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
-
-            {/* Breakdown bar — mobile only (desktop version in hero card) */}
-            {(() => {
-              const reviews = show.criticScore?.reviews || [];
-              const positive = reviews.filter(r => r.reviewScore >= 65).length;
-              const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
-              const negative = reviews.filter(r => r.reviewScore < 55).length;
-              const total = reviews.length;
-              if (total === 0) return null;
-              const positivePct = Math.round((positive / total) * 100);
-              const mixedPct = Math.round((mixed / total) * 100);
-              const negativePct = Math.round((negative / total) * 100);
-              return (
-                <div className="sm:hidden space-y-1.5 mb-3">
-                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
-                    {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
-                    {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
-                    {negativePct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negativePct}%` }} />}
-                  </div>
-                  <div className="flex items-center gap-3 text-[10px]">
-                    {positive > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-great" /><span className="text-gray-400">{positive} Positive</span></div>}
-                    {mixed > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" /><span className="text-gray-400">{mixed} Mixed</span></div>}
-                    {negative > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-skip" /><span className="text-gray-400">{negative} Negative</span></div>}
-                  </div>
-                </div>
-              );
-            })()}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
