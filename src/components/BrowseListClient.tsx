@@ -214,7 +214,7 @@ const ShowCard = memo(function ShowCard({
                   {tier.label}
                 </span>
               ) : null}
-              <ScoreBadge score={displayScore} size="md" showCrown reviewCount={show.criticScore?.reviewCount} category={show.category} />
+              <ScoreBadge score={displayScore} size="md" showCrown reviewCount={show.criticScore?.reviewCount} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} />
               {show.criticScore?.reviewCount && show.criticScore.reviewCount <= 2 ? (
                 <span className="text-[9px] text-gray-500 whitespace-nowrap">
                   {show.criticScore.reviewCount} review{show.criticScore.reviewCount > 1 ? 's' : ''}

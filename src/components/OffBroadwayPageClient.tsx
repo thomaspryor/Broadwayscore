@@ -51,9 +51,6 @@ const DEFAULT_SORT: SortParam = 'score_desc';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
-// Min reviews for Off-Broadway shows
-const MIN_REVIEWS_OB = 3;
-
 function obHasEnoughReviews(show: OffBroadwayShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
@@ -79,14 +76,6 @@ function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  );
-}
-
-function ChevronRightIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
     </svg>
   );
 }
@@ -250,6 +239,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               status={show.status}
               showCrown
               category="off-broadway"
+              tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
             />
             {audienceGrade && (
               <div className="mt-1">
@@ -454,7 +444,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
         if (show.status !== 'open' || !show.closingDate) return false;
         const closing = new Date(show.closingDate);
         const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays > 0 && diffDays <= 90;
+        return diffDays > 0 && diffDays <= 90 && obHasEnoughReviews(show);
       })
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
   }, [shows]);

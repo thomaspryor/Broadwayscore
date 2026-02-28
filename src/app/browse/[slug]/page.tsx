@@ -115,6 +115,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       description: show.synopsis,
       status: show.status,
       ticketLinks: show.ticketLinks,
+      category: show.category,
     })),
     config.title
   );
@@ -129,6 +130,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       status: show.status,
       closingDate: show.closingDate,
       type: show.type,
+      category: show.category,
     })),
   );
 
@@ -159,6 +161,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       status: show.status,
       type: show.type,
       isRevival: show.isRevival ?? undefined,
+      category: show.category,
       runtime: show.runtime ?? undefined,
       images: show.images,
       criticScore: show.criticScore
