@@ -3,7 +3,8 @@
  * Weekly SEO Health Check
  *
  * Checks index coverage, search performance, sitemap status,
- * new page indexing, and stale page detection via Google Search Console APIs.
+ * new page indexing, stale page detection, target keyword rankings,
+ * and Core Web Vitals via Google Search Console & PageSpeed APIs.
  *
  * Usage:
  *   node scripts/check-seo-health.js              # Full health check
@@ -26,6 +27,37 @@ const {
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
+
+// Target keywords to track weekly positions for
+const TARGET_KEYWORDS = [
+  'broadway show reviews',
+  'best broadway shows',
+  'best broadway shows 2026',
+  'broadway ratings',
+  'broadway show ratings',
+  'broadway scorecard',
+  'broadway musicals ranked',
+  'best broadway musicals',
+  'best broadway musicals 2026',
+  'broadway shows closing soon',
+  'new broadway shows',
+  'new broadway shows 2026',
+  'upcoming broadway shows',
+  'broadway lottery shows',
+  'broadway rush tickets',
+  'broadway box office grosses',
+  'best broadway plays',
+  'broadway shows for kids',
+  'hamilton vs wicked',
+  'broadway shows for tourists',
+];
+
+// Key pages to check Core Web Vitals for
+const CWV_PAGES = [
+  `${SITE_HOST}/`,
+  `${SITE_HOST}/browse/best-broadway-musicals`,
+  `${SITE_HOST}/show/hamilton`,
+];
 
 // Parse args
 const args = process.argv.slice(2);
@@ -258,7 +290,7 @@ async function checkSitemapStatus(token) {
   };
 }
 
-// --- Check: New Page Indexing (Feature 3) ---
+// --- Check: New Page Indexing ---
 
 async function checkNewPages(token) {
   console.log('\n--- New Page Indexing ---');
@@ -279,7 +311,7 @@ async function checkNewPages(token) {
   const newShows = shows.filter(s => {
     if (!s.openingDate) return false;
     const d = new Date(s.openingDate);
-    return d >= sevenDaysAgo && d <= twoDaysAgo; // opened 2-7 days ago
+    return d >= sevenDaysAgo && d <= twoDaysAgo;
   });
 
   if (newShows.length === 0) {
@@ -310,10 +342,10 @@ async function checkNewPages(token) {
       const verdict = data.inspectionResult?.indexStatusResult?.verdict;
 
       if (verdict === 'PASS') {
-        console.log(`  ✓ ${show.title} — indexed`);
+        console.log(`  OK ${show.title} — indexed`);
         indexed++;
       } else {
-        console.log(`  ✗ ${show.title} — not indexed (${verdict}), requesting crawl...`);
+        console.log(`  MISS ${show.title} — not indexed (${verdict}), requesting crawl...`);
         if (!dryRun) {
           const remaining = getQuotaRemaining();
           if (remaining > 0) {
@@ -342,7 +374,7 @@ async function checkNewPages(token) {
   return { checked: newShows.length, indexed, resubmitted };
 }
 
-// --- Check: Stale Pages (Feature 5) ---
+// --- Check: Stale Pages ---
 
 async function checkStalePages(token) {
   console.log('\n--- Stale Page Detection ---');
@@ -356,7 +388,6 @@ async function checkStalePages(token) {
     return { sampled: 0, stale: 0, resubmitted: 0 };
   }
 
-  // Build URL pool: active shows + key pages
   const activeShows = shows.filter(s => s.status === 'open' || s.status === 'previews');
   const urls = activeShows.map(s => `${SITE_HOST}/show/${s.slug}`);
   urls.push(
@@ -364,7 +395,6 @@ async function checkStalePages(token) {
     `${SITE_HOST}/lotteries`, `${SITE_HOST}/box-office`, `${SITE_HOST}/biz`,
   );
 
-  // Random sample of 100 (or fewer)
   const sampleSize = Math.min(100, urls.length);
   const shuffled = urls.sort(() => Math.random() - 0.5);
   const sample = shuffled.slice(0, sampleSize);
@@ -406,10 +436,9 @@ async function checkStalePages(token) {
 
   console.log(`  ${stale} stale pages found (last crawled >30 days ago)`);
 
-  // Re-submit stale pages via Indexing API
   if (staleUrls.length > 0 && !dryRun) {
     const remaining = getQuotaRemaining();
-    const budget = Math.min(staleUrls.length, remaining, 50); // max 50/week for stale
+    const budget = Math.min(staleUrls.length, remaining, 50);
     if (budget > 0) {
       console.log(`  Re-submitting ${budget} stale pages (${remaining} quota remaining)...`);
       try {
@@ -440,7 +469,144 @@ async function checkStalePages(token) {
   return { sampled: sample.length, stale, resubmitted };
 }
 
-// --- Anomaly Detection (Feature 4) ---
+// --- Check: Target Keyword Rankings ---
+
+async function checkTargetKeywords(token) {
+  console.log('\n--- Target Keyword Rankings ---');
+  const siteUrl = encodeURIComponent(SITE_URL_GSC);
+
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() - 3);
+  const startDate = new Date(endDate);
+  startDate.setDate(startDate.getDate() - 7);
+  const fmt = d => d.toISOString().slice(0, 10);
+
+  const rankings = [];
+
+  try {
+    const data = await gscFetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/searchAnalytics/query`,
+      token,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          startDate: fmt(startDate),
+          endDate: fmt(endDate),
+          dimensions: ['query'],
+          dimensionFilterGroups: [{
+            filters: TARGET_KEYWORDS.map(kw => ({
+              dimension: 'query',
+              operator: 'equals',
+              expression: kw,
+            })),
+            groupType: 'or',
+          }],
+          rowLimit: TARGET_KEYWORDS.length,
+        }),
+      }
+    );
+
+    const rows = data.rows || [];
+    const foundKeywords = new Set();
+
+    for (const row of rows) {
+      const keyword = row.keys[0];
+      foundKeywords.add(keyword);
+      rankings.push({
+        keyword,
+        position: Math.round(row.position * 10) / 10,
+        clicks: row.clicks,
+        impressions: row.impressions,
+        ctr: Math.round(row.ctr * 10000) / 10000,
+      });
+    }
+
+    for (const kw of TARGET_KEYWORDS) {
+      if (!foundKeywords.has(kw)) {
+        rankings.push({ keyword: kw, position: null, clicks: 0, impressions: 0, ctr: 0 });
+      }
+    }
+
+    rankings.sort((a, b) => {
+      if (a.position === null && b.position === null) return 0;
+      if (a.position === null) return 1;
+      if (b.position === null) return -1;
+      return a.position - b.position;
+    });
+
+    const ranked = rankings.filter(r => r.position !== null);
+    console.log(`  ${ranked.length}/${TARGET_KEYWORDS.length} keywords ranking`);
+    for (const r of ranked.slice(0, 10)) {
+      console.log(`  ${r.keyword}: pos ${r.position} (${r.clicks} clicks, ${r.impressions} imp)`);
+    }
+  } catch (err) {
+    console.log(`  Error fetching keyword rankings: ${err.message}`);
+  }
+
+  return rankings;
+}
+
+// --- Check: Core Web Vitals (via PageSpeed Insights API) ---
+
+async function checkCoreWebVitals() {
+  console.log('\n--- Core Web Vitals ---');
+  const results = [];
+
+  for (const url of CWV_PAGES) {
+    try {
+      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE`;
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          console.log(`  Rate limited on PageSpeed API. Stopping CWV check.`);
+          break;
+        }
+        console.log(`  Failed for ${url}: ${response.status}`);
+        continue;
+      }
+
+      const data = await response.json();
+      const crux = data.loadingExperience?.metrics || {};
+      const lighthouse = data.lighthouseResult?.audits || {};
+
+      const cwv = {
+        url,
+        lcp: crux.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
+        fid: crux.FIRST_INPUT_DELAY_MS?.percentile ?? null,
+        cls: crux.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile != null
+          ? crux.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100
+          : null,
+        inp: crux.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
+        performanceScore: data.lighthouseResult?.categories?.performance?.score
+          ? Math.round(data.lighthouseResult.categories.performance.score * 100)
+          : null,
+        lcpLab: lighthouse['largest-contentful-paint']?.numericValue
+          ? Math.round(lighthouse['largest-contentful-paint'].numericValue)
+          : null,
+        clsLab: lighthouse['cumulative-layout-shift']?.numericValue ?? null,
+        tbt: lighthouse['total-blocking-time']?.numericValue
+          ? Math.round(lighthouse['total-blocking-time'].numericValue)
+          : null,
+      };
+
+      results.push(cwv);
+      console.log(`  ${url}:`);
+      if (cwv.performanceScore !== null) console.log(`    Lighthouse Score: ${cwv.performanceScore}/100`);
+      if (cwv.lcp !== null) console.log(`    LCP (field): ${cwv.lcp}ms`);
+      if (cwv.inp !== null) console.log(`    INP (field): ${cwv.inp}ms`);
+      if (cwv.cls !== null) console.log(`    CLS (field): ${cwv.cls}`);
+      if (cwv.lcpLab !== null) console.log(`    LCP (lab): ${cwv.lcpLab}ms`);
+      if (cwv.tbt !== null) console.log(`    TBT (lab): ${cwv.tbt}ms`);
+    } catch (err) {
+      console.log(`  Error for ${url}: ${err.message}`);
+    }
+  }
+
+  return results;
+}
+
+// --- Anomaly Detection ---
 
 function detectAnomalies(currentMetrics, history) {
   const issues = [];
@@ -452,7 +618,6 @@ function detectAnomalies(currentMetrics, history) {
 
   console.log('\n--- Anomaly Detection ---');
 
-  // 4-week rolling average
   const recent4 = history.slice(-4);
   const avgClicks = recent4.reduce((s, w) => s + w.clicks, 0) / 4;
   const avgImpressions = recent4.reduce((s, w) => s + w.impressions, 0) / 4;
@@ -462,7 +627,6 @@ function detectAnomalies(currentMetrics, history) {
   const impressionsDrop = avgImpressions > 0 ? (avgImpressions - currentMetrics.impressions) / avgImpressions : 0;
   const positionIncrease = currentMetrics.position - avgPosition;
 
-  // Seasonality guard: if 50+ weeks, compare to same-week-last-year
   let seasonallyExpected = false;
   if (history.length >= 52) {
     const lastYear = history[history.length - 52];
@@ -504,6 +668,31 @@ function detectAnomalies(currentMetrics, history) {
   return issues;
 }
 
+function detectCWVAnomalies(currentCWV, history) {
+  const issues = [];
+  if (!currentCWV || currentCWV.length === 0 || history.length < 2) return issues;
+
+  const priorWeek = history[history.length - 1];
+  if (!priorWeek.coreWebVitals || priorWeek.coreWebVitals.length === 0) return issues;
+
+  for (const current of currentCWV) {
+    const prior = priorWeek.coreWebVitals.find(p => p.url === current.url);
+    if (!prior) continue;
+
+    if (current.lcp && prior.lcp && current.lcp - prior.lcp > 500) {
+      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', message: `LCP regressed on ${current.url}: ${current.lcp}ms (was ${prior.lcp}ms)` });
+    }
+    if (current.cls != null && prior.cls != null && current.cls - prior.cls > 0.05) {
+      issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `CLS regressed on ${current.url}: ${current.cls} (was ${prior.cls})` });
+    }
+    if (current.performanceScore && prior.performanceScore && prior.performanceScore - current.performanceScore > 10) {
+      issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `Lighthouse score dropped on ${current.url}: ${current.performanceScore} (was ${prior.performanceScore})` });
+    }
+  }
+
+  return issues;
+}
+
 // --- Persistence ---
 
 function loadHistory() {
@@ -518,11 +707,9 @@ function saveSnapshot(healthData, performanceData) {
   const dir = path.dirname(HEALTH_PATH);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-  // Save latest health snapshot
   fs.writeFileSync(HEALTH_PATH, JSON.stringify(healthData, null, 2) + '\n');
   console.log(`\nSaved health snapshot to ${HEALTH_PATH}`);
 
-  // Append to history, truncate to 52 weeks
   const history = loadHistory();
   history.push({
     date: healthData.lastChecked,
@@ -532,8 +719,9 @@ function saveSnapshot(healthData, performanceData) {
     position: performanceData.position,
     topQueries: performanceData.topQueries.slice(0, 10),
     topPages: performanceData.topPages.slice(0, 10),
+    targetKeywords: healthData.targetKeywords || [],
+    coreWebVitals: healthData.coreWebVitals || [],
   });
-  // Truncate to 52 entries
   while (history.length > 52) history.shift();
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
   console.log(`Saved performance history (${history.length} weeks) to ${HISTORY_PATH}`);
@@ -559,7 +747,6 @@ async function sendAlerts(healthData, anomalies) {
       inline: false,
     }));
 
-    // Add context fields
     if (healthData.indexCoverage) {
       fields.push({ name: 'Index Coverage', value: `${healthData.indexCoverage.rate}% (${healthData.indexCoverage.indexed}/${healthData.indexCoverage.total})`, inline: true });
     }
@@ -585,13 +772,11 @@ async function main() {
 
   const serviceAccount = loadServiceAccount();
 
-  // --test-auth mode
   if (testAuthOnly) {
     const ok = await testAuth(serviceAccount);
     process.exit(ok ? 0 : 1);
   }
 
-  // Fail-fast auth check
   let wmToken;
   try {
     wmToken = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS);
@@ -602,7 +787,6 @@ async function main() {
     process.exit(1);
   }
 
-  // Verify API access works (fail-fast on 403)
   try {
     const siteUrl = encodeURIComponent(SITE_URL_GSC);
     const testRes = await fetch(
@@ -625,13 +809,11 @@ async function main() {
   const performance = await checkSearchPerformance(wmToken);
   const sitemapStatus = await checkSitemapStatus(wmToken);
 
-  // Build sample URLs for index coverage check
   let sampleUrls;
   try {
     const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
     const shows = data.shows || data;
     const showUrls = shows.map(s => `${SITE_HOST}/show/${s.slug}`);
-    // Random sample of 50
     const shuffled = showUrls.sort(() => Math.random() - 0.5);
     sampleUrls = shuffled.slice(0, 50);
   } catch {
@@ -641,10 +823,15 @@ async function main() {
   const indexCoverage = await checkIndexCoverage(wmToken, sampleUrls);
   const newPages = await checkNewPages(wmToken);
   const stalePages = await checkStalePages(wmToken);
+  const targetKeywords = await checkTargetKeywords(wmToken);
+  const coreWebVitals = await checkCoreWebVitals();
 
-  // Load history for anomaly detection
+  // Anomaly detection
   const history = loadHistory();
-  const anomalies = detectAnomalies(performance, history);
+  const anomalies = [
+    ...detectAnomalies(performance, history),
+    ...detectCWVAnomalies(coreWebVitals, history),
+  ];
 
   // Build health snapshot
   const healthData = {
@@ -661,11 +848,12 @@ async function main() {
     sitemapStatus,
     newPages,
     stalePages,
+    targetKeywords: targetKeywords.filter(r => r.position !== null).slice(0, 20),
+    coreWebVitals,
     anomalies,
     quotaUsedToday: readQuotaLedger().used,
   };
 
-  // Save & alert
   if (!dryRun) {
     saveSnapshot(healthData, performance);
   } else {
@@ -681,6 +869,8 @@ async function main() {
   console.log(`  Sitemaps: ${sitemapStatus.count}`);
   console.log(`  New Pages: ${newPages.checked} checked, ${newPages.indexed} indexed`);
   console.log(`  Stale Pages: ${stalePages.stale}/${stalePages.sampled} stale, ${stalePages.resubmitted} resubmitted`);
+  console.log(`  Target Keywords: ${targetKeywords.filter(r => r.position !== null).length}/${TARGET_KEYWORDS.length} ranking`);
+  console.log(`  Core Web Vitals: ${coreWebVitals.length} pages checked`);
   console.log(`  Anomalies: ${anomalies.length}`);
   console.log(`  Indexing Quota Used: ${readQuotaLedger().used}/200`);
 
