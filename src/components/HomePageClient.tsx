@@ -670,9 +670,9 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
-      {/* Hero - Large heading on desktop only */}
+      {/* Hero - Large heading visible on desktop, sr-only on mobile (Google still reads it) */}
       <div className="mb-4 sm:mb-8">
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+        <h1 className="sr-only sm:not-sr-only sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
