@@ -2276,8 +2276,8 @@ showDirs.forEach(showId => {
       // Resolve "unknown" outlets from URL (ShowScore files often have valid URLs but missing outlet names)
       if ((!canonicalOutletId || canonicalOutletId === 'unknown') && data.url) {
         const resolved = resolveOutletFromUrl(data.url);
-        if (resolved) {
-          canonicalOutletId = resolved;
+        if (resolved && resolved.outletId) {
+          canonicalOutletId = resolved.outletId;
           stats.unknownOutletsResolved = (stats.unknownOutletsResolved || 0) + 1;
         }
       }

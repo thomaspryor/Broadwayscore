@@ -4473,10 +4473,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // 1B-iv. OUTLET ENRICHMENT — resolve "unknown" outlets from URL domain
   if ((!data.outletId || data.outletId === 'unknown') && data.url) {
     const resolved = resolveOutletFromUrl(data.url);
-    if (resolved) {
-      console.log(`    → Outlet enriched: "unknown" → "${resolved}" (${getOutletDisplayName(resolved)})`);
-      data.outletId = resolved;
-      data.outlet = getOutletDisplayName(resolved);
+    if (resolved && resolved.outletId) {
+      console.log(`    → Outlet enriched: "unknown" → "${resolved.outletId}" (${resolved.displayName || resolved.outletId})`);
+      data.outletId = resolved.outletId;
+      data.outlet = resolved.displayName || getOutletDisplayName(resolved.outletId) || resolved.outletId;
       data.outletEnrichedFrom = 'url-resolution';
     }
   }
