@@ -51,7 +51,17 @@
     "ulysses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
     "what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--unknown.json",
     "wicked-2003/theatermania--barbara-siegel.json",
-    "wicked-west-end-2021/ew--unknown.json"
+    "wicked-west-end-2021/ew--unknown.json",
+    "wicked-west-end-2021/nydailynews--unknown.json",
+    "you-got-older-off-broadway-2026/broadwaynews--unknown.json",
+    "zack-off-broadway-2026/wsj--unknown.json",
+    "bloodlove-off-broadway-2026/theatrely--unknown.json",
+    "book-of-mormon-2011/cititour--lesley-alexander.json",
+    "hadestown-west-end-2024/theatrely--unknown.json",
+    "hamilton-west-end-2021/cititour--unknown.json",
+    "oh-mary-west-end-2025/theatrely--unknown.json",
+    "zack-off-broadway-2026/theatrely--unknown.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -65,7 +75,9 @@
       "data/review-texts/kinky-boots-off-broadway-2026/deadline--unknown.json",
       "data/review-texts/kinky-boots-off-broadway-2026/thewrap--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/wicked-2003/theatermania--barbara-siegel.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-reservoir-off-broadway-2026/nytg--unknown.json"
@@ -88,12 +100,16 @@
       "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
       "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json",
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/nbcnews--unknown.json",
-      "data/review-texts/the-phantom-of-the-opera-west-end-1986/nydailynews--unknown.json"
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/nydailynews--unknown.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--unknown.json",
+      "data/review-texts/zack-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/cititour--unknown.json",
+      "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "wicked-west-end-2021/ew--unknown.json",
+  "lastProcessed": "aladdin-2014/broadway-voice--kristen-balzano.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -171,6 +187,17 @@
       "t": "2026-02-28T19:19:37.446Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T19:20:47.661Z",
+      "event": "bb-session",
+      "session": "8bbe93a4",
+      "url": "https://www.wsj.com/articles/david-kirby-reviews-say-no-to-the-devil-the-life-an"
+    },
+    {
+      "t": "2026-02-28T19:20:48.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
