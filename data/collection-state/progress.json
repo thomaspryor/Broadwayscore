@@ -54,7 +54,8 @@
     "all-the-way-2014/guardian--jesse-green.json",
     "allegiance-2015/theatermania--rob-stevens.json",
     "almost-famous-2022/theatermania--kenji-fujishima.json",
-    "amazing-grace-2015/chicago-theatre-review--colin-douglas.json"
+    "amazing-grace-2015/chicago-theatre-review--colin-douglas.json",
+    "american-psycho-2016/observer--rex-reed.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -431,7 +432,16 @@
     "all-the-way-2014/observer--rex-reed.json",
     "almost-famous-2022/timeout--adam-feldman.json",
     "amazing-grace-2015/chicago-land-theater-reviews--dan-zeff.json",
-    "amazing-grace-2015/new-jersey-newsroom--michael-sommers.json"
+    "amazing-grace-2015/new-jersey-newsroom--michael-sommers.json",
+    "amazing-grace-2015/rye-the-news-guy--rye-my.json",
+    "amelie-a-new-musical-2017/ew--marc-snetiker.json",
+    "amelie-a-new-musical-2017/timeout--adam-feldman.json",
+    "american-buffalo-2008/theatermania--andy-propst.json",
+    "american-buffalo-2022/observer--jesse-green.json",
+    "american-buffalo-2022/theatermania--jesse-green.json",
+    "american-psycho-2016/nydailynews--joe-dziemianowicz.json",
+    "american-son-2018/broadwaynews--charles-isherwood.json",
+    "an-act-of-god-2016/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -472,7 +482,8 @@
       "all-the-way-2014/guardian--jesse-green.json",
       "allegiance-2015/theatermania--rob-stevens.json",
       "almost-famous-2022/theatermania--kenji-fujishima.json",
-      "amazing-grace-2015/chicago-theatre-review--colin-douglas.json"
+      "amazing-grace-2015/chicago-theatre-review--colin-douglas.json",
+      "american-psycho-2016/observer--rex-reed.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -641,7 +652,10 @@
       "data/review-texts/a-tale-of-two-cities-2008/newsday--unknown.json",
       "data/review-texts/a-tale-of-two-cities-2008/theatermania--unknown.json",
       "data/review-texts/all-my-sons-2008/theater-reviews-from-my-seat--joe-lombardi.json",
-      "data/review-texts/amazing-grace-2015/chicago-land-theater-reviews--dan-zeff.json"
+      "data/review-texts/amazing-grace-2015/chicago-land-theater-reviews--dan-zeff.json",
+      "data/review-texts/amazing-grace-2015/rye-the-news-guy--rye-my.json",
+      "data/review-texts/american-buffalo-2008/theatermania--andy-propst.json",
+      "data/review-texts/american-son-2018/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -653,11 +667,12 @@
       "hamlet-2026/nytg--amelia-merrill.json",
       "hadestown-west-end-2024/billboard--unknown.json",
       "back-to-the-future-2023/variety--charles-isherwood.json",
-      "a-view-from-the-bridge-2015/newsday--linda-winer.json"
+      "a-view-from-the-bridge-2015/newsday--linda-winer.json",
+      "amazing-grace-2015/new-jersey-newsroom--michael-sommers.json"
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "amazing-grace-2015/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "an-act-of-god-2016/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -906,6 +921,17 @@
       "t": "2026-02-28T00:25:41.988Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T00:38:55.323Z",
+      "event": "bb-session",
+      "session": "e54219bf",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.h"
+    },
+    {
+      "t": "2026-02-28T00:38:56.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
