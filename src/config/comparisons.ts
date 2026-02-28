@@ -153,3 +153,13 @@ export function isValidComparison(showA: string, showB: string): boolean {
     ([a, b]) => (a === showA && b === showB) || (a === showB && b === showA)
   );
 }
+
+// Get all comparison pages featuring a specific show (for internal linking)
+export function getComparisonsForShow(showSlug: string): { slug: string; otherSlug: string }[] {
+  return COMPARISON_PAIRS
+    .filter(([a, b]) => a === showSlug || b === showSlug)
+    .map(([a, b]) => ({
+      slug: `${a}-vs-${b}`,
+      otherSlug: a === showSlug ? b : a,
+    }));
+}

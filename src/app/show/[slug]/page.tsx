@@ -40,6 +40,7 @@ import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorCl
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
+import { getComparisonsForShow } from '@/config/comparisons';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -231,6 +232,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const relatedShowsOpen = getRelatedShowsOpen(show);
   const relatedShowsClosed = getRelatedShowsClosed(show);
   const otherProductions = getOtherProductions(show);
+  const comparisons = getComparisonsForShow(show.slug);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -269,7 +271,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                     show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
-                  alt={show.title}
+                  alt={`${show.title} ${isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type} poster`}
                   width={176}
                   height={264}
                   decoding="async"
@@ -907,6 +909,26 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Related Shows */}
         <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
         <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
+
+        {/* Compare This Show */}
+        {comparisons.length > 0 && (
+          <div className="mt-6 bg-surface-raised border border-white/10 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3">
+              Compare {show.title}
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {comparisons.slice(0, 6).map(comp => (
+                <Link
+                  key={comp.slug}
+                  href={`/compare/${comp.slug}`}
+                  className="px-3 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* How Scores Work */}
         <HowThisWorks heading="How This Score Works" className="mt-6">
