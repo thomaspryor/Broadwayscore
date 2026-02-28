@@ -36,16 +36,16 @@ const config: Config = {
           good: '#14b8a6',
           'good-bg': 'rgba(20, 184, 166, 0.15)',
           // Tepid (55-64) - Amber
-          tepid: '#f59e0b',
-          'tepid-bg': 'rgba(245, 158, 11, 0.15)',
+          tepid: '#d97706',
+          'tepid-bg': 'rgba(217, 119, 6, 0.15)',
           // Skip (0-54) - Red
           skip: '#ef4444',
           'skip-bg': 'rgba(239, 68, 68, 0.15)',
           // Legacy aliases for compatibility
           high: '#22c55e',
           'high-bg': 'rgba(34, 197, 94, 0.15)',
-          medium: '#f59e0b',
-          'medium-bg': 'rgba(245, 158, 11, 0.15)',
+          medium: '#d97706',
+          'medium-bg': 'rgba(217, 119, 6, 0.15)',
           low: '#ef4444',
           'low-bg': 'rgba(239, 68, 68, 0.15)',
           none: '#6b7280',

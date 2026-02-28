@@ -9,7 +9,7 @@ const SCORE_COLORS = {
   great: { bg: '#22c55e', text: '#ffffff' },
   good: { bg: '#14b8a6', text: '#ffffff' },
   tepid: { bg: '#d97706', text: '#1a1a1a' },
-  skip: { bg: '#f97316', text: '#ffffff' },
+  skip: { bg: '#ef4444', text: '#ffffff' },
   tbd: { bg: '#2a2a2a', text: '#9ca3af' },
 };
 
