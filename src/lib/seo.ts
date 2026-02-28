@@ -262,7 +262,7 @@ export function generateItemListSchema(items: {
       // Organizer
       event.organizer = {
         '@type': 'Organization',
-        name: 'Broadway Scorecard',
+        name: item.category === 'west-end' ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
         url: BASE_URL,
       };
 

@@ -8,6 +8,7 @@ import {
   getDataFreshness,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
+import { getAllActorSlugs } from '@/lib/data-actors';
 import { getCreativeSlugs, getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
@@ -297,6 +298,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
         })),
       ];
     }),
+    // Cast/Actor pages - individual performer profiles
+    ...(featureFlags.castPages ? [
+      {
+        url: `${BASE_URL}/cast`,
+        lastModified: showsDate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      },
+      ...getAllActorSlugs().map(slug => ({
+        url: `${BASE_URL}/cast/${slug}`,
+        lastModified: showsDate,
+        changeFrequency: 'monthly' as const,
+        priority: 0.65,
+      })),
+    ] : []),
+    // Reviews index page
+    {
+      url: `${BASE_URL}/reviews`,
+      lastModified: reviewsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
+    },
+    // About page
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: showsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
+    },
     // Compare pages - programmatic SEO goldmine
     {
       url: `${BASE_URL}/compare`,
