@@ -74,6 +74,31 @@ export function getContentfulSrcSet(url: string | undefined, sizes: number[]): s
 }
 
 /**
+ * Generate a srcset string from a pre-optimized CDN URL.
+ * Works with both Contentful and Cloudinary. Returns '' for local/unknown URLs.
+ */
+export function getCdnSrcSet(optimizedUrl: string | undefined, widths: number[] = [100, 200, 400, 800]): string {
+  if (!optimizedUrl) return '';
+
+  // Contentful: replace w=NNN in query params
+  if (optimizedUrl.includes('images.ctfassets.net')) {
+    const baseUrl = optimizedUrl.split('?')[0];
+    return widths
+      .map(w => `${baseUrl}?w=${w}&fm=webp&q=80&fit=pad&bg=rgb:121212 ${w}w`)
+      .join(', ');
+  }
+
+  // Cloudinary: replace w_NNN in path segment
+  if (optimizedUrl.includes('res.cloudinary.com')) {
+    return widths
+      .map(w => `${optimizedUrl.replace(/w_\d+/, `w_${w}`)} ${w}w`)
+      .join(', ');
+  }
+
+  return '';
+}
+
+/**
  * Check if an image URL is from an optimizable CDN
  */
 export function isOptimizableCDN(url: string | undefined): boolean {
