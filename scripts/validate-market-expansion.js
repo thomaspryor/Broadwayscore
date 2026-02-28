@@ -194,11 +194,14 @@ if (hasReviewTexts && registryData) {
 
           // URL/domain check
           if (review.url && outletDomains[outletId]) {
-            const urlDomain = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
+            let urlDomain;
+            try { urlDomain = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase(); } catch(e) { continue; }
             const expected = outletDomains[outletId].replace(/^www\./, '');
             const aliases = outletDomainAliases[outletId] || [];
-            const domainMatches = urlDomain.includes(expected) || expected.includes(urlDomain)
-              || aliases.some(a => urlDomain.includes(a.replace(/^www\./, '')) || a.replace(/^www\./, '').includes(urlDomain));
+            // Exact domain or subdomain match (e.g. m.nytimes.com matches nytimes.com)
+            const domainOrSub = (a, b) => a === b || a.endsWith('.' + b) || b.endsWith('.' + a);
+            const domainMatches = domainOrSub(urlDomain, expected)
+              || aliases.some(a => domainOrSub(urlDomain, a.replace(/^www\./, '')));
             if (!domainMatches) {
               urlMismatches++;
             }
