@@ -16,6 +16,7 @@ interface Show {
     thumbnail?: string;
   };
   hasScore?: boolean;
+  category?: string;
 }
 
 export default function HeaderSearch() {
@@ -244,6 +245,12 @@ export default function HeaderSearch() {
                        show.status === 'previews' ? 'In Previews' :
                        show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                     </span>
+                    {show.category === 'west-end' && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-500/20 text-teal-400">West End</span>
+                    )}
+                    {show.category === 'off-broadway' && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
+                    )}
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>
                 </div>
@@ -344,6 +351,12 @@ export default function HeaderSearch() {
                              show.status === 'previews' ? 'In Previews' :
                              show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
                           </span>
+                          {show.category === 'west-end' && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-teal-500/20 text-teal-400">West End</span>
+                          )}
+                          {show.category === 'off-broadway' && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
+                          )}
                           {show.venue && <span className="truncate">{show.venue}</span>}
                         </div>
                       </div>

@@ -64,6 +64,10 @@ const searchShows = visibleShows.map(show => {
     entry.hasScore = true;
   }
 
+  if (show.category && show.category !== 'broadway') {
+    entry.category = show.category;
+  }
+
   return entry;
 });
 
