@@ -794,7 +794,7 @@ async function main(): Promise<void> {
     const before = filesToProcess.length;
     filesToProcess = filesToProcess.filter(f => {
       const meta = (f.data as any).llmMetadata;
-      if (!meta || !meta.promptVersion) return true; // include unversioned
+      if (!meta || !meta.promptVersion) return false; // exclude unversioned
       return compareSemver(meta.promptVersion, options.maxPromptVersion!) <= 0;
     });
     console.log(`Filtering to promptVersion <= ${options.maxPromptVersion}: ${filesToProcess.length} reviews (from ${before})\n`);
