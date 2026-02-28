@@ -2,13 +2,16 @@
 # Push to remote with retry, rebase, and merge fallback on conflict.
 #
 # Usage:
-#   bash scripts/lib/push-with-retry.sh [max_retries] [branch] [strategy]
+#   bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 #
-# Defaults: 5 retries, main branch, theirs strategy.
-# strategy: "theirs" (default) = remote wins on conflict,
-#           "ours" = local wins on conflict (use for workflows adding
-#           non-overlapping data like image paths).
+# Defaults: 5 retries, main branch.
 # Exits 0 on success, 1 on failure (all retries exhausted).
+#
+# Conflict resolution: rebase with -X theirs (= keep our commits' changes).
+# If rebase fails entirely (binary files, structural JSON diffs), falls back
+# to merge with -X ours (= keep our branch's changes). Both mean "preserve
+# the local workflow's data" — the semantics are inverted between rebase and
+# merge, so the flags intentionally differ.
 #
 # Before calling: git add + git commit must already be done.
 # After calling: downstream if: always() steps still run on failure.
@@ -17,7 +20,6 @@ set -euo pipefail
 
 MAX_RETRIES=${1:-5}
 BRANCH=${2:-main}
-STRATEGY=${3:-theirs}
 
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
@@ -29,13 +31,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   echo "Push failed (attempt $i/$MAX_RETRIES), pulling and rebasing..."
   git checkout -- . 2>/dev/null || true
   git clean -fd 2>/dev/null || true
-  if git pull --rebase -X "$STRATEGY" origin "$BRANCH"; then
+  if git pull --rebase -X theirs origin "$BRANCH"; then
     echo "Rebase succeeded, retrying push..."
   else
     echo "Rebase failed, trying merge fallback..."
     git rebase --abort 2>/dev/null || true
-    # Merge fallback: more robust than rebase for binary files and complex JSON diffs
-    if git pull --no-rebase -X "$STRATEGY" origin "$BRANCH"; then
+    # Merge fallback: more robust than rebase for binary files and complex JSON diffs.
+    # Uses -X ours (= keep our branch) which matches the semantic intent of
+    # rebase -X theirs (= keep our commits). The flags differ because git
+    # reverses ours/theirs semantics between rebase and merge.
+    if git pull --no-rebase -X ours origin "$BRANCH"; then
       echo "Merge succeeded, retrying push..."
     else
       echo "Merge also failed, will retry..."
