@@ -66,6 +66,38 @@ function getShowSeason(show: ComputedShow): string | null {
   return month >= 6 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
 }
 
+// Generate browse page configs for decades (skip 2010s/2020s — covered by guide pages)
+function generateDecadeBrowsePages(): Record<string, BrowsePageConfig> {
+  const decades = [
+    { start: 1990, end: 1999, label: '1990s' },
+    { start: 2000, end: 2009, label: '2000s' },
+  ];
+
+  const pages: Record<string, BrowsePageConfig> = {};
+  for (const { start, end, label } of decades) {
+    const slug = `best-broadway-shows-${label.toLowerCase()}`;
+    pages[slug] = {
+      slug,
+      title: `Best Broadway Shows of the ${label}`,
+      h1: `Best Broadway Shows of the ${label}`,
+      metaTitle: `Best Broadway Shows of the ${label} — Ranked by Critics`,
+      metaDescription: `Every Broadway show from the ${label} ranked by aggregated CriticScore. The best musicals, plays, and revivals from ${start} to ${end}.`,
+      intro: `Every Broadway show that opened during the ${label} (${start}–${end}), ranked by aggregated CriticScore ratings from dozens of professional critics. This decade saw some of Broadway's most celebrated productions — from groundbreaking musicals to powerful dramas and revivals that redefined what theater could be. Whether you lived through this era or are discovering it for the first time, these rankings reveal which shows stood the test of critical scrutiny.`,
+      filter: (show) => {
+        if (!show.openingDate) return false;
+        const year = new Date(show.openingDate).getFullYear();
+        return year >= start && year <= end && (show.criticScore?.score ?? 0) > 0;
+      },
+      sort: 'score',
+      relatedPages: decades
+        .filter(d => d.label !== label)
+        .map(d => `best-broadway-shows-${d.label.toLowerCase()}`)
+        .concat(['best-broadway-musicals', 'best-broadway-plays']),
+    };
+  }
+  return pages;
+}
+
 // Generate browse page configs for all Broadway seasons from 2006-2007 to present
 // (2005-2006 excluded — too patchy in review coverage)
 function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
@@ -584,6 +616,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     source: 'west-end',
     relatedPages: ['best-broadway-musicals', 'best-broadway-dramas'],
   },
+
+  // Decade browse pages (1990s, 2000s — 2010s/2020s covered by guide pages)
+  ...generateDecadeBrowsePages(),
 
   // Season browse pages (generated programmatically)
   ...generateSeasonBrowsePages(),
