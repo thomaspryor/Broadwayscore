@@ -20,7 +20,7 @@
  */
 
 const https = require('https');
-const { LETTER_GRADES } = require('./score-extractors');
+const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
 
 // ============================================================
 // LLM Prompt — battle-tested against 450+ reviews
@@ -411,55 +411,9 @@ async function crossVerify(result, userPrompt, primaryProvider) {
   }
 }
 
-// ============================================================
-// Score normalization — output human-readable originalScore
-// ============================================================
+// Score normalization — imported from shared score-parsers.js
 function normalizeScore(result) {
-  if (!result) return null;
-  const { value, scale, type, raw } = result;
-
-  // Reject impossible values (LLM miscounted asterisks)
-  if (value > scale) return null;
-
-  if (type === 'letter') {
-    const gradeMatch = raw.match(/([A-D][+\-–—]?|F)/i);
-    if (gradeMatch) {
-      const grade = gradeMatch[1].toUpperCase().replace(/[–—]/g, '-');
-      if (LETTER_GRADES[grade]) {
-        return {
-          originalScore: grade,
-          normalizedScore: LETTER_GRADES[grade],
-          type: 'letter',
-          raw
-        };
-      }
-    }
-    if (scale === 100) {
-      return { originalScore: raw, normalizedScore: Math.round(value), type: 'letter', raw };
-    }
-  }
-
-  if (type === 'stars') {
-    const normalizedScore = Math.round((value / scale) * 100);
-    return {
-      originalScore: `${value}/${scale} stars`,
-      normalizedScore,
-      type: 'stars',
-      raw
-    };
-  }
-
-  if (type === 'numeric') {
-    const normalizedScore = scale === 100 ? Math.round(value) : Math.round((value / scale) * 100);
-    return {
-      originalScore: `${value}/${scale}`,
-      normalizedScore,
-      type: 'numeric',
-      raw
-    };
-  }
-
-  return null;
+  return sharedNormalizeLlmResult(result);
 }
 
 // ============================================================

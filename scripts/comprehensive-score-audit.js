@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseStarRating, parseLetterGrade, LETTER_GRADES } = require('./lib/score-parsers');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 const OUTPUT_FILE = 'data/audit/comprehensive-score-audit.json';
@@ -27,20 +28,17 @@ const SUMMARY_FILE = 'data/audit/comprehensive-score-audit-summary.md';
 // We only look for star ratings in excerpts since letter grades cause
 // false positives (e.g., "Jonathan A. Abrams" matching "A" as a grade).
 
-// Normalization table - document explicitly for verification
+// NORMALIZATION_TABLE — generated from canonical LETTER_GRADES + computed star ratings.
+// Previously had divergent letter grade values (e.g. F=50 vs canonical F=20).
 const NORMALIZATION_TABLE = {
-  // Star ratings (out of 5)
+  // Star ratings (out of 5) — computed: Math.round((value/5)*100)
   '5/5': 100, '4.5/5': 90, '4/5': 80, '3.5/5': 70, '3/5': 60,
   '2.5/5': 50, '2/5': 40, '1.5/5': 30, '1/5': 20, '0.5/5': 10, '0/5': 0,
-  // Star ratings (out of 4)
+  // Star ratings (out of 4) — computed: Math.round((value/4)*100)
   '4/4': 100, '3.5/4': 88, '3/4': 75, '2.5/4': 63, '2/4': 50,
   '1.5/4': 38, '1/4': 25, '0.5/4': 13, '0/4': 0,
-  // Letter grades
-  'A+': 98, 'A': 95, 'A-': 92,
-  'B+': 88, 'B': 85, 'B-': 82,
-  'C+': 78, 'C': 75, 'C-': 72,
-  'D+': 68, 'D': 65, 'D-': 62,
-  'F': 50,
+  // Letter grades — from canonical LETTER_GRADES (score-extractors.js / scoring.ts)
+  ...LETTER_GRADES,
 };
 
 function loadAllReviews() {
@@ -119,47 +117,28 @@ function extractScoreFromText(text, options = {}) {
   return null;
 }
 
+// normalizeScore — uses shared parsers from score-parsers.js.
+// Unlike parseOriginalScore, this accepts letter grades from ANY outlet
+// since the audit needs to normalize all scores regardless of source.
 function normalizeScore(rawScore) {
   if (!rawScore) return null;
+  const raw = rawScore.toString().trim();
 
-  const raw = rawScore.toLowerCase().trim();
+  // Star ratings first (most specific)
+  const starScore = parseStarRating(raw);
+  if (starScore !== null) return starScore;
 
-  // 1. Parse star ratings with denominator FIRST (most specific)
-  // e.g., "3/4", "4 out of 5", "4.5/5"
-  const starMatch = raw.match(/(\d(?:\.\d)?)\s*(?:\/|out of)\s*(\d)/);
-  if (starMatch) {
-    const score = parseFloat(starMatch[1]);
-    const max = parseFloat(starMatch[2]);
-    return Math.round((score / max) * 100);
-  }
+  // Letter grades (no outlet gating — this is an audit tool)
+  const letterScore = parseLetterGrade(raw);
+  if (letterScore !== null) return letterScore;
 
-  // 2. Parse star ratings without denominator (e.g., "2 stars", "3.5 stars")
-  // MUST check before letter grades to avoid "2 stars" matching 'a' in 'stars'
-  const starsOnlyMatch = raw.match(/^(\d(?:\.\d)?)\s*stars?$/);
-  if (starsOnlyMatch) {
-    const score = parseFloat(starsOnlyMatch[1]);
-    // Determine max: if score is 5, assume out of 5. If has .5, assume out of 5.
-    // Otherwise (1-4 whole numbers), assume out of 4.
-    const max = (score === 5 || score % 1 !== 0) ? 5 : 4;
-    return Math.round((score / max) * 100);
-  }
-
-  // 3. Direct lookup for EXACT star rating matches in our table (e.g., "4/5", "3.5/4")
-  // Only check keys that look like ratings, not single letters
+  // Direct NORMALIZATION_TABLE lookup for star rating strings (e.g., "4/5", "3.5/4")
+  const rawLower = raw.toLowerCase();
   for (const [key, value] of Object.entries(NORMALIZATION_TABLE)) {
     const keyLower = key.toLowerCase();
-    // Only match if key is a star rating (contains /) not a single letter
-    if (keyLower.includes('/') && raw.includes(keyLower)) {
+    if (keyLower.includes('/') && rawLower.includes(keyLower)) {
       return value;
     }
-  }
-
-  // 4. Parse letter grades - STRICT: must be standalone grade
-  // e.g., "B+", "Grade: A-" but NOT "stars" (which has 'a' in it)
-  const gradeMatch = raw.match(/^([a-f][+-]?)$|grade[:\s]+([a-f][+-]?)/i);
-  if (gradeMatch) {
-    const grade = (gradeMatch[1] || gradeMatch[2]).toUpperCase();
-    return NORMALIZATION_TABLE[grade] || null;
   }
 
   return null;
