@@ -30,7 +30,7 @@ export interface BrowseShow {
 }
 
 type ScoreMode = 'critics' | 'audience';
-type SortOption = 'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom';
+type SortOption = 'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom';
 
 interface BrowseListClientProps {
   shows: BrowseShow[];
@@ -65,6 +65,7 @@ const SORT_LABELS: Record<SortOption, string> = {
   score: 'Critics',
   alpha: 'A-Z',
   newest: 'Newest',
+  oldest: 'Oldest',
   closing: 'Closing',
   performances: 'Longest',
   custom: 'Default',
@@ -250,7 +251,7 @@ export default function BrowseListClient({
     defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
     defaultSort === 'closing-date' ? 'closing' :
-    defaultSort === 'opening-date-asc' ? 'newest' :
+    defaultSort === 'opening-date-asc' ? 'oldest' :
     defaultSort === 'opening-date' ? 'newest' :
     'score'
   );
@@ -289,6 +290,8 @@ export default function BrowseListClient({
           return a.title.localeCompare(b.title);
         case 'newest':
           return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+        case 'oldest':
+          return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
         case 'closing':
           // Shows with closing dates first (sorted by soonest), then others
           if (a.closingDate && b.closingDate) {

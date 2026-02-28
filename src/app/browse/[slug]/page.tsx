@@ -60,8 +60,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 // Determine which sort options make sense for this page
-function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: string }): Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom'> {
-  const sorts: Array<'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom'> = [];
+function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: string }): Array<'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom'> {
+  const sorts: Array<'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom'> = [];
 
   // Pages with customSort preserve server ordering as default
   if (config.customSort) {
@@ -78,7 +78,11 @@ function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: 
   if (config.slug === 'broadway-shows-closing-soon') {
     sorts.push('closing');
   }
-  if (config.slug.includes('new-') || config.slug.includes('upcoming-') || config.slug.includes('-season')) {
+  // opening-date-asc pages get oldest sort (default) + newest toggle
+  if (config.sort === 'opening-date-asc') {
+    sorts.push('oldest');
+    sorts.push('newest');
+  } else if (config.slug.includes('new-') || config.slug.includes('-season')) {
     sorts.push('newest');
   }
 
