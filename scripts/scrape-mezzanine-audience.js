@@ -39,10 +39,10 @@ const MEZZANINE_OVERRIDES = {
   'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'Harry Potter and the Cursed Child',
   'six-the-musical-west-end-2021': 'Six',
   // OB shows where our title appends "the Musical" but Mezzanine uses short title
-  'heathers-the-musical-2025': 'Heathers',
-  'little-women-the-musical-2026': 'Little Women',
-  'the-little-mermaid-the-musical-2026': 'The Little Mermaid',
-  'friends-the-musical-parody-2022': 'Friends! The Musical Parody',
+  'heathers-the-musical-off-broadway-2025': 'Heathers',
+  'little-women-the-musical-off-broadway-2026': 'Little Women',
+  'the-little-mermaid-the-musical-off-broadway-2026': 'The Little Mermaid',
+  'friends-the-musical-parody-off-broadway-2022': 'Friends! The Musical Parody',
 };
 
 // Paths
