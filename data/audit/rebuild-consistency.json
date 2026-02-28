@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T05:08:59.681Z",
+  "generatedAt": "2026-02-28T15:44:20.434Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -12,10 +12,26 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "a-gentlemans-guide-to-love-and-murder-2013",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "originalRating \"D\" (=35) vs score 88 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "a-life-in-the-theatre-2010",
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "originalRating \"D\" (=35) vs score 82 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "all-in-comedy-about-love-2024",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "originalRating \"4 stars\" (=80) vs score 25 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -372,10 +388,26 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "a-gentlemans-guide-to-love-and-murder-2013",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "humanReviewScore 88 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "a-life-in-the-theatre-2010",
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "all-in-comedy-about-love-2024",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "humanReviewScore 25 (negative) overrides explicit \"4 stars\" (=80, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
