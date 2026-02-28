@@ -193,7 +193,9 @@
     "grease-2007/nydailynews--joe-dziemianowicz.json",
     "prince-of-broadway-2017/theater-news-online--david-cote.json",
     "private-lives-2011/ew--unknown.json",
-    "rent-1996/nydailynews--unknown.json"
+    "rent-1996/nydailynews--unknown.json",
+    "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
+    "saint-joan-2018/theater-news-online--robert-cashill.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -891,7 +893,15 @@
     "red-2010/observer--rex-reed.json",
     "red-2010/theatermania--david-finkle.json",
     "redwood-2025/theatre-reviews-limited--joseph-verlezza.json",
-    "rent-1996/nbcnews--unknown.json"
+    "rent-1996/nbcnews--unknown.json",
+    "rock-of-ages-2009/nypost--elisabeth-vincentelli.json",
+    "rock-of-ages-2009/theatermania--david-rooney.json",
+    "rodgers-hammersteins-cinderella-2013/ew--jessica-shaw.json",
+    "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
+    "romeo-and-juliet-2013/theatermania--adam-feldman.json",
+    "romeo-juliet-2024/nypost--johnny-oleksinski.json",
+    "romeo-juliet-2024/observer--david-cote.json",
+    "saint-joan-2018/broadwaynews--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1014,7 +1024,8 @@
       "the-other-place-2026/chicagotribune--unknown.json",
       "the-other-place-2026/stageandcinema--unknown.json",
       "the-porch-on-windy-hill-2026/chicagotribune--unknown.json",
-      "rent-1996/nydailynews--unknown.json"
+      "rent-1996/nydailynews--unknown.json",
+      "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -1109,7 +1120,8 @@
       "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
       "data/review-texts/a-bronx-tale-2007/deadline--jeremy-gerard.json",
       "data/review-texts/falsettos-2016/deadline--jeremy-gerard.json",
-      "data/review-texts/purpose-2025/deadline--greg-evans.json"
+      "data/review-texts/purpose-2025/deadline--greg-evans.json",
+      "data/review-texts/romeo-juliet-2024/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [
       "a-view-from-the-bridge-2010/timeout--andrzej-lukowski.json",
@@ -1139,7 +1151,8 @@
       "oleanna-2009/broadwaynews--unknown.json",
       "pass-over-2021/guardian--jesse-green.json",
       "mamma-mia-west-end-2021/billboard--unknown.json",
-      "prince-of-broadway-2017/theater-news-online--david-cote.json"
+      "prince-of-broadway-2017/theater-news-online--david-cote.json",
+      "saint-joan-2018/theater-news-online--robert-cashill.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1305,7 +1318,8 @@
       "data/review-texts/pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
       "data/review-texts/prince-of-broadway-2017/broadwaynews--charles-isherwood.json",
-      "data/review-texts/race-2009/timeout--adam-feldman.json"
+      "data/review-texts/race-2009/timeout--adam-feldman.json",
+      "data/review-texts/saint-joan-2018/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -1354,7 +1368,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "rent-1996/nydailynews--unknown.json",
+  "lastProcessed": "saint-joan-2018/theater-news-online--robert-cashill.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -1702,6 +1716,17 @@
       "t": "2026-02-28T05:16:24.445Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T05:21:21.578Z",
+      "event": "bb-session",
+      "session": "6c82e961",
+      "url": "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shine"
+    },
+    {
+      "t": "2026-02-28T05:21:22.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
