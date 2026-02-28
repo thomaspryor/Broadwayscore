@@ -7,10 +7,11 @@ export default function HeaderSubscribeButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
-  const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture({
+  const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'header',
   });
+  const marketLabel = market === 'west-end' ? 'West End' : 'Broadway';
 
   // Auto-close on success
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function HeaderSubscribeButton() {
           onClick={handleBackdropClick}
           role="dialog"
           aria-modal="true"
-          aria-label="Subscribe to Broadway Scorecard"
+          aria-label={`Subscribe to ${marketLabel} Scorecard`}
         >
           <div ref={modalRef} className="relative w-full max-w-sm bg-surface-raised border border-white/10 rounded-2xl p-6 shadow-2xl">
             {/* Close button */}
@@ -104,11 +105,11 @@ export default function HeaderSubscribeButton() {
                   </svg>
                 </div>
                 <p className="text-white font-semibold">You&apos;re in!</p>
-                <p className="text-sm text-gray-400 mt-1">We&apos;ll email you whenever a new show opens on Broadway with its CriticScore.</p>
+                <p className="text-sm text-gray-400 mt-1">We&apos;ll email you whenever a new show opens on {marketLabel} with its CriticScore.</p>
               </div>
             ) : (
               <>
-                <h2 className="text-lg font-bold text-white">Never Miss a New Broadway Show</h2>
+                <h2 className="text-lg font-bold text-white">Never Miss a New {marketLabel} Show</h2>
                 <p className="text-sm text-gray-400 mt-1 mb-4">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
 
                 <form onSubmit={handleSubmit}>
