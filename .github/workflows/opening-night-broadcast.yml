@@ -1,11 +1,10 @@
 name: Opening Night Broadcast
 
 on:
-  schedule:
-    # 4 AM UTC = ~11 PM ET (prime time — most reviews published by now)
-    - cron: '0 4 * * *'
-    # 5 AM UTC = ~midnight ET (retry — catches late reviews)
-    - cron: '0 5 * * *'
+  # schedule disabled until broadcast pipeline is validated end-to-end
+  # schedule:
+  #   - cron: '0 4 * * *'  # 4 AM UTC = ~11 PM ET
+  #   - cron: '0 5 * * *'  # 5 AM UTC = ~midnight ET
   workflow_dispatch:
     inputs:
       lookback_days:
