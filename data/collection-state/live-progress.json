@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-02-28T00:36:53.898Z",
-  "processed": 55,
-  "failed": 375,
-  "successRate": "12.8%",
+  "updatedAt": "2026-02-28T00:41:08.658Z",
+  "processed": 56,
+  "failed": 384,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 38,
     "amp": 31,
     "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 114,
-    "archive": 10
+    "archiveToday": 117,
+    "archive": 11
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-02-27T22:53:37.234Z",
-      "event": "bb-session",
-      "session": "805bf39b",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
-    },
-    {
-      "t": "2026-02-27T22:53:38.468Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-02-27T22:55:16.129Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-02-28T00:25:41.988Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T00:38:55.323Z",
+      "event": "bb-session",
+      "session": "e54219bf",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.h"
+    },
+    {
+      "t": "2026-02-28T00:38:56.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
