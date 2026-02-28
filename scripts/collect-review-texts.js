@@ -89,7 +89,8 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml } = require('./lib/content-quality');
+const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
@@ -4452,6 +4453,31 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.misattributedFullText;
       delete data.extractedByline;
       delete data.expectedCritic;
+    }
+  }
+
+  // 1B-iii. AUTHOR ENRICHMENT — resolve "Unknown" critics from HTML metadata
+  if ((!data.criticName || data.criticName === 'Unknown') && html) {
+    const extractedAuthor = extractAuthorFromHtml(html, cleanedText, { excludeNames: bylineExcludeNames });
+    if (extractedAuthor) {
+      console.log(`    → Author enriched: "Unknown" → "${extractedAuthor}"`);
+      data.criticName = extractedAuthor;
+      data.criticEnrichedFrom = 'html-extraction';
+      // Clear stale byline mismatch flag (it was "mismatched" against "Unknown")
+      delete data.misattributedFullText;
+      delete data.extractedByline;
+      delete data.expectedCritic;
+    }
+  }
+
+  // 1B-iv. OUTLET ENRICHMENT — resolve "unknown" outlets from URL domain
+  if ((!data.outletId || data.outletId === 'unknown') && data.url) {
+    const resolved = resolveOutletFromUrl(data.url);
+    if (resolved) {
+      console.log(`    → Outlet enriched: "unknown" → "${resolved}" (${getOutletDisplayName(resolved)})`);
+      data.outletId = resolved;
+      data.outlet = getOutletDisplayName(resolved);
+      data.outletEnrichedFrom = 'url-resolution';
     }
   }
 

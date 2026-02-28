@@ -1804,6 +1804,94 @@ function verifyFullTextContent(fullText, showMetadata) {
   };
 }
 
+// ========================================
+// AUTHOR EXTRACTION FROM HTML (1B-iii)
+// ========================================
+// Multi-strategy author extraction: meta tags → JSON-LD → byline CSS → text byline.
+
+function isValidAuthorName(name) {
+  if (!name) return false;
+  const trimmed = name.trim();
+  if (trimmed.length < 3 || trimmed.length > 60) return false;
+  if (trimmed.includes('<') || trimmed.includes('>')) return false;
+  if (trimmed.includes('http') || trimmed.includes('www')) return false;
+  const words = trimmed.split(/\s+/);
+  if (words.length < 2 || words.length > 5) return false;
+  const skipNames = ['the new', 'associated press', 'nbc', 'abc', 'cbs', 'fox', 'bloomberg',
+                     'entertainment weekly', 'time out', 'daily news', 'new york',
+                     'los angeles', 'chicago tribune', 'washington post', 'staff writer',
+                     'staff reporter', 'theater critic', 'drama critic', 'theatre critic',
+                     'arts editor', 'culture editor', 'guest writer', 'special to',
+                     'tribune news', 'news service', 'wire service'];
+  if (skipNames.some(s => trimmed.toLowerCase().includes(s))) return false;
+  return true;
+}
+
+function cleanAuthorName(name) {
+  let cleaned = name.trim();
+  cleaned = cleaned.replace(/^By\s+/i, '');
+  cleaned = cleaned.replace(/[,;|]+$/, '').trim();
+  cleaned = cleaned.split(/\s+/).map(w => {
+    if (w.length <= 2) return w;
+    return w[0].toUpperCase() + w.slice(1);
+  }).join(' ');
+  return cleaned;
+}
+
+/**
+ * Extract author name from HTML using multiple strategies.
+ * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
+ */
+function extractAuthorFromHtml(html, text, options = {}) {
+  if (!html) return null;
+
+  const metaPatterns = [
+    /<meta\s+name="author"\s+content="([^"]+)"/i,
+    /<meta\s+content="([^"]+)"\s+name="author"/i,
+    /<meta\s+property="article:author"\s+content="([^"]+)"/i,
+    /<meta\s+content="([^"]+)"\s+property="article:author"/i,
+    /<meta\s+property="mrf:authors"\s+content="([^"]+)"/i,
+    /<meta\s+name="parsely-author"\s+content="([^"]+)"/i,
+    /<meta\s+content="([^"]+)"\s+name="parsely-author"/i,
+  ];
+  for (const pattern of metaPatterns) {
+    const match = html.match(pattern);
+    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
+  }
+
+  const jsonLdPatterns = [
+    /"author"\s*:\s*\[\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
+    /"author"\s*:\s*\{\s*"@type"\s*:\s*"Person"[^}]*"name"\s*:\s*"([^"]+)"/i,
+    /"author"\s*:\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
+    /"author"\s*:\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"/,
+    /"author"\s*:\s*\[\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"\s*\]/,
+  ];
+  for (const pattern of jsonLdPatterns) {
+    const match = html.match(pattern);
+    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
+  }
+
+  const bylinePatterns = [
+    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /rel="author"[^>]*>([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+  ];
+  for (const pattern of bylinePatterns) {
+    const match = html.match(pattern);
+    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
+  }
+
+  if (text) {
+    const bylineResult = extractByline(text, options);
+    if (bylineResult.found && isValidAuthorName(bylineResult.name)) {
+      return cleanAuthorName(bylineResult.name);
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -1834,6 +1922,10 @@ module.exports = {
   detectNavigationJunk,
   detectWrongArticle,
   detectHorrorFilmContent,
+  // Author extraction from HTML
+  extractAuthorFromHtml,
+  isValidAuthorName,
+  cleanAuthorName,
   // Export constants for reference
   THEATER_KEYWORDS,
   CURRENT_BROADWAY_SHOWS,

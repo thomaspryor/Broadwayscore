@@ -2282,6 +2282,12 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Resolve "Unknown" critics using extractedByline (set by collector byline cross-check)
+      if ((!data.criticName || data.criticName === 'Unknown') && data.extractedByline) {
+        data.criticName = data.extractedByline;
+        stats.unknownCriticsResolved = (stats.unknownCriticsResolved || 0) + 1;
+      }
+
       const review = {
         showId,
         outletId: canonicalOutletId,
@@ -2979,6 +2985,9 @@ if (stats.excerptMismatches > 0) {
 
 if (stats.unknownOutletsResolved > 0) {
   console.log(`  Unknown outlets resolved from URL: ${stats.unknownOutletsResolved}`);
+}
+if (stats.unknownCriticsResolved > 0) {
+  console.log(`  Unknown critics resolved from extractedByline: ${stats.unknownCriticsResolved}`);
 }
 
 // Explicit rating summary
