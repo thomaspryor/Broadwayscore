@@ -1,10 +1,14 @@
-// Audience Buzz data module
-// Imports: audience-buzz.json (~210 KB) + shows.json (~1.3 MB for slug→id lookup)
+// Audience Buzz data module — imports ~4.4MB of JSON.
+// WARNING: Client components ('use client') must NEVER import from this file.
+// Use '@/lib/audience-grade-utils' for pure grade/score functions instead.
 
 import type { AudienceBuzzDesignation, AudienceBuzzData } from './data-types';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import showsData from '../../data/shows.json';
 import showScoreUrlsData from '../../data/show-score-urls.json';
+
+// Re-export pure functions from lightweight module for backward compat
+export { getAudienceGrade, getAudienceGradeClasses, getTotalAudienceReviews, hasEnoughAudienceReviews, MIN_AUDIENCE_REVIEWS } from './audience-grade-utils';
 
 interface AudienceBuzzFile {
   _meta: {
@@ -49,71 +53,6 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
   return results
     .sort((a, b) => b.data.combinedScore - a.data.combinedScore)
     .slice(0, limit);
-}
-
-/**
- * Minimum total audience reviews required to display a grade.
- * Shows with fewer reviews get no grade (too unreliable).
- */
-const MIN_AUDIENCE_REVIEWS = 15;
-
-/**
- * Get total audience review count across all sources.
- */
-export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
-  return (buzz.sources?.showScore?.reviewCount ?? 0)
-    + (buzz.sources?.mezzanine?.reviewCount ?? 0)
-    + (buzz.sources?.reddit?.reviewCount ?? 0);
-}
-
-/**
- * Check if a show has enough audience reviews to display a grade.
- */
-export function hasEnoughAudienceReviews(buzz: AudienceBuzzData): boolean {
-  return getTotalAudienceReviews(buzz) >= MIN_AUDIENCE_REVIEWS;
-}
-
-/**
- * Compute audience letter grade from combinedScore.
- * Grade scale shifted down 2 points from standard academic.
- * Colors use solid fills matching the critic score badge style.
- */
-export function getAudienceGrade(score: number | null | undefined): {
-  grade: string;
-  label: string;
-  color: string;
-  textColor: string;
-  tooltip: string;
-} {
-  if (score == null) return { grade: '—', label: 'No Data', color: '#6b7280', textColor: '#ffffff', tooltip: 'No audience data available' };
-  if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
-  if (score >= 88) return { grade: 'A', label: 'Loving It', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
-  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };
-  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#ffffff', tooltip: 'Solid audience reception' };
-  if (score >= 73) return { grade: 'B', label: 'Shrugging', color: '#f59e0b', textColor: '#1a1a1a', tooltip: 'Mixed-positive reception' };
-  if (score >= 68) return { grade: 'B-', label: 'Shrugging', color: '#f97316', textColor: '#1a1a1a', tooltip: 'Mixed audience reception' };
-  if (score >= 63) return { grade: 'C+', label: 'Disliking It', color: '#ef4444', textColor: '#ffffff', tooltip: 'Below-average reception' };
-  if (score >= 58) return { grade: 'C', label: 'Disliking It', color: '#dc2626', textColor: '#ffffff', tooltip: 'Weak audience reception' };
-  if (score >= 53) return { grade: 'C-', label: 'Disliking It', color: '#b91c1c', textColor: '#ffffff', tooltip: 'Poor audience reception' };
-  if (score >= 48) return { grade: 'D', label: 'Loathing It', color: '#991b1b', textColor: '#ffffff', tooltip: 'Very poor reception' };
-  return { grade: 'F', label: 'Loathing It', color: '#6b7280', textColor: '#ffffff', tooltip: 'Audiences dislike it' };
-}
-
-/**
- * Get Tailwind classes for an audience grade badge (used in AudienceBuzzCard).
- */
-export function getAudienceGradeClasses(score: number | null | undefined): {
-  bgClass: string;
-  textClass: string;
-  borderClass: string;
-} {
-  const { grade } = getAudienceGrade(score);
-  if (grade.startsWith('A')) return { bgClass: 'bg-green-500/15', textClass: 'text-green-400', borderClass: 'border-green-500/25' };
-  if (grade === 'B+') return { bgClass: 'bg-sky-500/15', textClass: 'text-sky-400', borderClass: 'border-sky-500/25' };
-  if (grade === 'B') return { bgClass: 'bg-amber-500/15', textClass: 'text-amber-400', borderClass: 'border-amber-500/25' };
-  if (grade === 'B-') return { bgClass: 'bg-orange-500/15', textClass: 'text-orange-400', borderClass: 'border-orange-500/25' };
-  if (grade.startsWith('C')) return { bgClass: 'bg-red-500/15', textClass: 'text-red-400', borderClass: 'border-red-500/25' };
-  return { bgClass: 'bg-gray-500/15', textClass: 'text-gray-400', borderClass: 'border-gray-500/25' };
 }
 
 /**

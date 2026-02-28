@@ -3,7 +3,7 @@
 import {
   getAudienceGrade,
   getAudienceGradeClasses,
-} from '@/lib/data-audience';
+} from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
 
 interface AudienceBuzzCardProps {
