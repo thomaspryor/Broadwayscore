@@ -174,6 +174,21 @@ function checkCorruption(text) {
 function stripTrailingJunk(text) {
   if (!text) return text;
 
+  // High-confidence anchors — definitively junk, NEVER legitimate review content.
+  // Bypass the back-half guard (these patterns are specific enough to avoid false positives).
+  // Still respect a lower min-remaining guard to avoid destroying very short texts.
+  const highConfidenceAnchors = [
+    // nyt-theater WordPress sidebar
+    /\n\s*Most Popular Posts/i,
+    /\n\s*New York Theater Archives/i,
+    // nytg ticket/FAQ pages (no newlines in scraped ticket pages)
+    /Frequently asked questions/i,
+    /Get directions\s*(?:\||View map)/i,
+    // Generic WordPress sidebar widgets
+    /\n\s*CategoriesCategories\n/i,
+    /\n\s*Theater blogroll\n/i,
+  ];
+
   // Anchor patterns match the START of trailing junk sections (no greedy tails).
   // We find where junk begins, then truncate from that position.
   // Guards prevent false positives when keywords appear in review body.
@@ -200,7 +215,20 @@ function stripTrailingJunk(text) {
   let cleaned = text;
   const originalLength = text.length;
   const minRemaining = Math.max(200, originalLength * 0.15);
+  // Lower threshold for high-confidence patterns (handles cases where junk is 80%+ of text)
+  const minRemainingHighConf = Math.max(100, originalLength * 0.10);
 
+  // Pass 1: High-confidence anchors — no back-half guard, lower min-remaining
+  for (const pattern of highConfidenceAnchors) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+
+    if (match.index < minRemainingHighConf) continue;
+
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  // Pass 2: Regular anchors — with back-half guard and standard min-remaining
   for (const pattern of junkAnchors) {
     const match = cleaned.match(pattern);
     if (!match) continue;
