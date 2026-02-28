@@ -1834,7 +1834,8 @@ showDirs.forEach(showId => {
         const clearableRejections = ['not_a_review', 'garbage_text'];
         if (clearableRejections.includes(data.rejectionReason) && data.fullText && data.fullText.length > 300) {
           // Re-validate content quality — length alone doesn't prove it's not boilerplate
-          const recomputedTier = classifyContentTier(data.fullText, data);
+          const recomputedTierResult = classifyContentTier(data);
+          const recomputedTier = recomputedTierResult.contentTier || recomputedTierResult;
           if (recomputedTier === 'complete' || recomputedTier === 'truncated' || recomputedTier === 'excerpt') {
             const savedReason = data.rejectionReason;
             delete data.rejectionReason;
