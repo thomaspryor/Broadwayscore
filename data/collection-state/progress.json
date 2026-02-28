@@ -162,7 +162,10 @@
     "the-mousetrap-west-end-2021/broadwaynews--unknown.json",
     "the-mousetrap-west-end-2021/nydailynews--unknown.json",
     "the-play-that-goes-wrong-2019/guardian--unknown.json",
-    "the-reservoir-2026/guardian--unknown.json"
+    "the-reservoir-2026/guardian--unknown.json",
+    "all-my-sons-west-end-2025/thestage--naveen-kumar.json",
+    "amaze-magic-2025/artsfuse--unknown.json",
+    "arcadia-west-end-2026/usatoday--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -811,7 +814,14 @@
     "oh-mary-west-end-2025/theatrely--unknown.json",
     "zack-2026/theatrely--unknown.json",
     "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "all-my-sons-west-end-2025/standard--nick-curtis.json"
+    "all-my-sons-west-end-2025/standard--nick-curtis.json",
+    "an-ark-2026/usatoday--elysa-gardner.json",
+    "and-juliet-2022/broadway-blog--joey-sims.json",
+    "and-juliet-2022/theater-life--samuel-l-leiter.json",
+    "and-juliet-2022/theater-pizzazz--carole-di-tosti.json",
+    "and-juliet-2022/theater-scene--victor-gluck.json",
+    "arcadia-west-end-2026/talkinbroadway--unknown.json",
+    "beautiful-little-fool-west-end-2026/one-minute-critic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -917,7 +927,8 @@
       "the-devil-wears-prada-west-end-2024/ew--unknown.json",
       "the-mousetrap-west-end-2021/broadwaynews--unknown.json",
       "the-mousetrap-west-end-2021/nydailynews--unknown.json",
-      "the-play-that-goes-wrong-2019/guardian--unknown.json"
+      "the-play-that-goes-wrong-2019/guardian--unknown.json",
+      "all-my-sons-west-end-2025/thestage--naveen-kumar.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -1014,7 +1025,8 @@
       "a-view-from-the-bridge-2010/timeout--andrzej-lukowski.json",
       "finding-neverland-2015/deadline--jeremy-gerard.json",
       "kinky-boots-2013/theatermania--zachary-stewart.json",
-      "long-days-journey-into-night-2016/timeout--adam-feldman.json"
+      "long-days-journey-into-night-2016/timeout--adam-feldman.json",
+      "arcadia-west-end-2026/usatoday--unknown.json"
     ],
     "scrapingbee": [
       "perfect-crime-1987/nytimes--jason-zinoman.json",
@@ -1033,7 +1045,8 @@
       "hadestown-west-end-2024/nyt-theater--unknown.json",
       "perfect-crime-1987/nyt-theater--unknown.json",
       "spread-2026/guardian--unknown.json",
-      "the-reservoir-2026/guardian--unknown.json"
+      "the-reservoir-2026/guardian--unknown.json",
+      "amaze-magic-2025/artsfuse--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1193,7 +1206,10 @@
       "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
       "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json",
       "data/review-texts/hamilton-west-end-2021/cititour--unknown.json",
-      "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json"
+      "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json",
+      "data/review-texts/an-ark-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/arcadia-west-end-2026/talkinbroadway--unknown.json",
+      "data/review-texts/beautiful-little-fool-west-end-2026/one-minute-critic--unknown.json"
     ],
     "archive": [
       "kinky-boots-2026/rollingstone--unknown.json",
@@ -1237,7 +1253,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "all-my-sons-west-end-2025/standard--nick-curtis.json",
+  "lastProcessed": "beautiful-little-fool-west-end-2026/one-minute-critic--unknown.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -1552,6 +1568,28 @@
       "t": "2026-02-28T04:22:40.427Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T04:38:54.360Z",
+      "event": "bb-session",
+      "session": "f623c4e3",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-02-28T04:38:55.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-02-28T04:42:22.666Z",
+      "event": "bb-session",
+      "session": "b3bf6901",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2016/08/08/theater-apt-arcadia"
+    },
+    {
+      "t": "2026-02-28T04:42:23.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
