@@ -169,6 +169,8 @@ async function main() {
 
     const show = showsMap[showId];
     const showTitle = show?.title || showId;
+    const market = show?.category === 'west-end' ? 'west-end' : 'broadway';
+    const siteBase = market === 'west-end' ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
     const showUrl = `https://broadwayscorecard.com/show/${show?.slug || showId}`;
 
     // Route: opening-night → rich template, else → generic
@@ -180,12 +182,13 @@ async function main() {
     const imageUrl = imagePath ? `https://broadwayscorecard.com${imagePath}` : null;
 
     const html = openingNight
-      ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl)
-      : buildEmailHtml(showTitle, changes, showUrl, showId, email);
+      ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl, market)
+      : buildEmailHtml(showTitle, changes, showUrl, showId, email, market);
 
+    const siteName = market === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
     const subject = openingNight
       ? `${showTitle} is now open, and the critic reviews are in`
-      : `Updates for ${showTitle} on Broadway Scorecard`;
+      : `Updates for ${showTitle} on ${siteName}`;
 
     if (DRY_RUN) {
       console.log(`  [DRY] Would send to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle}`);
@@ -199,7 +202,7 @@ async function main() {
 
     try {
       await postJSON('https://api.resend.com/emails', {
-        from: `Broadway Scorecard <${FROM_EMAIL}>`,
+        from: `${siteName} <${FROM_EMAIL}>`,
         to: [email],
         subject,
         html,
