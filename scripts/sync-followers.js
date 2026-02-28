@@ -19,6 +19,7 @@ const https = require('https');
 
 const FOLLOWERS_PATH = path.join(__dirname, '..', 'data', 'followers.json');
 const SUBSCRIBERS_PATH = path.join(__dirname, '..', 'data', 'subscribers.json');
+const SUBSCRIBERS_WESTEND_PATH = path.join(__dirname, '..', 'data', 'subscribers-westend.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 function loadFollowers() {
@@ -256,6 +257,80 @@ async function main() {
     console.log(`Saved ${subscribersList.length} subscribers to ${SUBSCRIBERS_PATH}`);
   } else {
     console.log(`(Dry run — would save ${generalSubscribers.size} subscribers)`);
+  }
+
+  // --- 3. Fetch West End subscribers from WE Subscriber form ---
+  const weFormId = process.env.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID;
+  const weToken = process.env.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY || process.env.FORMSPREE_TOKEN;
+
+  if (weFormId && weToken) {
+    const weSubscribers = new Set();
+    try {
+      const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_WESTEND_PATH, 'utf8'));
+      if (existing.subscribers) {
+        for (const e of existing.subscribers) weSubscribers.add(e);
+      }
+    } catch { /* no existing file — start fresh */ }
+
+    let weAdded = 0;
+    let weRemoved = 0;
+
+    console.log(`\nSyncing West End subscribers from form ${weFormId}...`);
+
+    let weLastSynced = null;
+    try {
+      const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_WESTEND_PATH, 'utf8'));
+      weLastSynced = existing._meta?.lastSynced || null;
+    } catch { /* first run */ }
+
+    const weSubs = await fetchAllSubmissions(weFormId, weToken, weLastSynced);
+
+    if (weSubs === null) {
+      console.log('Could not fetch WE subscriber form. If this is the first run, this is normal.');
+    } else {
+      weSubs.reverse();
+      console.log(`WE subscriber submissions: ${weSubs.length}`);
+
+      for (const sub of weSubs) {
+        const email = (sub.email || sub._replyto || '').toLowerCase().trim();
+        const action = (sub.action || 'subscribe').toLowerCase();
+
+        if (!isValidEmail(email)) continue;
+
+        if (action === 'unsubscribe') {
+          if (weSubscribers.has(email)) {
+            weSubscribers.delete(email);
+            weRemoved++;
+            console.log(`  - WE subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} (unsubscribed)`);
+          }
+        } else {
+          if (!weSubscribers.has(email)) {
+            weSubscribers.add(email);
+            weAdded++;
+            console.log(`  + WE subscriber: ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+          }
+        }
+      }
+    }
+
+    console.log(`\nWE subscriber results: ${weAdded} subscribed, ${weRemoved} unsubscribed, ${weSubscribers.size} total`);
+
+    if (!DRY_RUN) {
+      const weList = Array.from(weSubscribers).sort();
+      const weData = {
+        _meta: {
+          lastSynced: new Date().toISOString(),
+          totalSubscribers: weList.length,
+        },
+        subscribers: weList,
+      };
+      fs.writeFileSync(SUBSCRIBERS_WESTEND_PATH, JSON.stringify(weData, null, 2));
+      console.log(`Saved ${weList.length} WE subscribers to ${SUBSCRIBERS_WESTEND_PATH}`);
+    } else {
+      console.log(`(Dry run — would save ${weSubscribers.size} WE subscribers)`);
+    }
+  } else {
+    console.log('\nSkipping West End subscriber sync (env vars not configured)');
   }
 }
 
