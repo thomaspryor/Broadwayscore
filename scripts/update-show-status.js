@@ -97,34 +97,60 @@ async function fetchAllTodayTixShows(location) {
   return allShows;
 }
 
+function showCategory(show) {
+  return show.category || 'broadway';
+}
+
 /**
- * Refresh closing dates for West End (and optionally Broadway/OB) shows
- * from TodayTix API. Detects extensions when TodayTix endDate > our closingDate.
+ * Refresh closing dates for all markets from TodayTix API.
+ * Also detects wrongly-closed shows that TodayTix still lists as active.
  */
 async function refreshTodayTixDates(data, updates) {
   console.log('\n--- TodayTix Date Refresh ---');
 
-  // Build a map of our open/previews shows by todaytixId and by normalized title
-  const activeShows = data.shows.filter(s =>
-    (s.status === 'open' || s.status === 'previews') &&
-    (s.category === 'west-end' || s.category === 'broadway' || s.category === 'off-broadway')
-  );
-
-  const byTodayTixId = {};
-  const byTitle = {};
-  for (const show of activeShows) {
-    if (show.todaytixId) byTodayTixId[show.todaytixId] = show;
-    const normTitle = (show.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (normTitle) byTitle[normTitle] = show;
-  }
-
-  // Fetch from TodayTix: location=2 (London) for WE, location=1 (NYC) for Broadway/OB
   const locations = [
     { id: 2, label: 'London (West End)', categories: new Set(['west-end']) },
     { id: 1, label: 'NYC (Broadway/OB)', categories: new Set(['broadway', 'off-broadway']) },
   ];
 
+  // Build per-category maps to prevent cross-market title collisions
+  // Key: category → { byTodayTixId, byTitle }
+  const catMaps = {};
+  for (const loc of locations) {
+    for (const cat of loc.categories) {
+      catMaps[cat] = { byTodayTixId: {}, byTitle: {} };
+    }
+  }
+
+  // Index active shows (open/previews) into per-category maps
+  const activeShows = data.shows.filter(s =>
+    s.status === 'open' || s.status === 'previews'
+  );
+  for (const show of activeShows) {
+    const cat = showCategory(show);
+    const map = catMaps[cat];
+    if (!map) continue; // unknown category
+    if (show.todaytixId) map.byTodayTixId[show.todaytixId] = show;
+    const normTitle = (show.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (normTitle) map.byTitle[normTitle] = show;
+  }
+
+  // Index closed shows with todaytixId for wrongly-closed detection.
+  // Only use todaytixId matches (NOT title) — title matches on closed shows
+  // are too risky due to revivals, transfers, and same-title different productions.
+  const closedByTtId = {};
+  for (const show of data.shows) {
+    if (show.status !== 'closed') continue;
+    if (!show.todaytixId) continue;
+    const cat = showCategory(show);
+    if (!catMaps[cat]) continue;
+    if (!closedByTtId[cat]) closedByTtId[cat] = {};
+    closedByTtId[cat][show.todaytixId] = show;
+  }
+
   let dateUpdates = 0;
+  let reopened = 0;
+  let newTtIds = 0;
 
   for (const loc of locations) {
     try {
@@ -133,13 +159,54 @@ async function refreshTodayTixDates(data, updates) {
 
       for (const ttShow of ttShows) {
         const ttEndDate = ttShow.endDate === 'null' ? null : ttShow.endDate || null;
-        if (!ttEndDate) continue; // Open-ended run, skip
-
-        // Match by todaytixId first, then by title
         const normTtTitle = (ttShow.displayName || ttShow.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const match = byTodayTixId[ttShow.id] || byTitle[normTtTitle];
-        if (!match) continue;
-        if (!loc.categories.has(match.category)) continue;
+
+        // Try to match within each category this location covers
+        let match = null;
+        for (const cat of loc.categories) {
+          const map = catMaps[cat];
+          match = map.byTodayTixId[ttShow.id] || map.byTitle[normTtTitle];
+          if (match) break;
+        }
+
+        // Check wrongly-closed shows if no active match found
+        // Only match by todaytixId (not title) to avoid false positives from
+        // revivals, transfers, and same-title different productions
+        if (!match) {
+          for (const cat of loc.categories) {
+            const closedMatch = (closedByTtId[cat] || {})[ttShow.id];
+            if (closedMatch) {
+              // Same todaytixId — TodayTix still lists this exact show!
+              const oldClosingDate = closedMatch.closingDate;
+              console.log(`  🔄 ${closedMatch.title}: TodayTix (id=${ttShow.id}) still lists this show — reopening (was closed with closingDate=${oldClosingDate})`);
+              if (!dryRun) {
+                closedMatch.status = 'open';
+                if (ttEndDate) closedMatch.closingDate = ttEndDate;
+                else delete closedMatch.closingDate;
+              }
+              updates.push({
+                id: closedMatch.id,
+                title: closedMatch.title,
+                changes: {
+                  status: { from: 'closed', to: 'open' },
+                  closingDate: { from: oldClosingDate || 'none', to: ttEndDate || 'none (open-ended)' },
+                  note: `Wrongly-closed show detected — TodayTix (${loc.label}) still lists it (todaytixId=${ttShow.id})`
+                }
+              });
+              reopened++;
+              break;
+            }
+          }
+          continue; // Already handled (or no match) — skip date update logic
+        }
+
+        // Save todaytixId if we matched by title but show doesn't have one
+        if (!match.todaytixId && ttShow.id) {
+          if (!dryRun) match.todaytixId = ttShow.id;
+          newTtIds++;
+        }
+
+        if (!ttEndDate) continue; // Open-ended run, skip date updates
 
         // Compare dates: only update if TodayTix date is LATER (extension)
         if (match.closingDate && ttEndDate > match.closingDate) {
@@ -181,8 +248,10 @@ async function refreshTodayTixDates(data, updates) {
     }
   }
 
+  if (newTtIds > 0) console.log(`  TodayTix IDs saved: ${newTtIds} (future matches use ID instead of title)`);
+  if (reopened > 0) console.log(`  Wrongly-closed shows reopened: ${reopened}`);
   console.log(`  TodayTix date updates: ${dateUpdates}`);
-  return dateUpdates;
+  return dateUpdates + reopened;
 }
 
 async function updateShowStatuses() {
