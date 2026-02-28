@@ -105,7 +105,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       titleCounts.set(r.showTitle, (titleCounts.get(r.showTitle) || 0) + 1);
     }
     const dupes = new Set<string>();
-    for (const [title, count] of titleCounts) {
+    for (const [title, count] of Array.from(titleCounts)) {
       if (count > 1) dupes.add(title);
     }
     return dupes;
