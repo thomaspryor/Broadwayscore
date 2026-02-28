@@ -262,8 +262,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Metacritic-style Header: Poster + Title/Score integrated */}
         <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
-            {/* Poster Card - fetchpriority high for LCP optimization */}
-            <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
+            {/* Poster Card + pills underneath on mobile */}
+            <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
                 <ShowImage
                   sources={[
@@ -284,6 +284,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     </div>
                   }
                 />
+              </div>
+              {/* Pills under poster — mobile only */}
+              <div className="flex sm:hidden flex-wrap justify-center gap-1 scale-[0.85] origin-top" data-testid="show-pills-poster">
+                <CategoryBadge category={show.category} />
+                <FormatPill type={show.type} />
+                <ProductionPill isRevival={show.isRevival === true} />
+                {show.limitedRun && <LimitedRunBadge />}
               </div>
             </div>
 
@@ -403,9 +410,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
 
-                    {/* Breakdown bar */}
+                    {/* Breakdown bar — desktop only (mobile version in reviews section) */}
                     {total > 0 && (
-                      <div className="space-y-1.5">
+                      <div className="hidden sm:block space-y-1.5">
                         <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
                           {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
                           {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
@@ -437,14 +444,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 );
               })()}
             </div>
-          </div>
-
-          {/* Pills row — mobile only, full-width below poster row to avoid cramped wrapping */}
-          <div className="flex sm:hidden flex-wrap items-center gap-1.5 mt-3" data-testid="show-pills-row-mobile">
-            <CategoryBadge category={show.category} />
-            <FormatPill type={show.type} />
-            <ProductionPill isRevival={show.isRevival === true} />
-            {show.limitedRun && <LimitedRunBadge />}
           </div>
 
           {/* Critics' Take - inline below the poster/score row */}
@@ -625,6 +624,33 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
+
+            {/* Breakdown bar — mobile only (desktop version in hero card) */}
+            {(() => {
+              const reviews = show.criticScore?.reviews || [];
+              const positive = reviews.filter(r => r.reviewScore >= 65).length;
+              const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+              const negative = reviews.filter(r => r.reviewScore < 55).length;
+              const total = reviews.length;
+              if (total === 0) return null;
+              const positivePct = Math.round((positive / total) * 100);
+              const mixedPct = Math.round((mixed / total) * 100);
+              const negativePct = Math.round((negative / total) * 100);
+              return (
+                <div className="sm:hidden space-y-1.5 mb-3">
+                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
+                    {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
+                    {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
+                    {negativePct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negativePct}%` }} />}
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px]">
+                    {positive > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-great" /><span className="text-gray-400">{positive} Positive</span></div>}
+                    {mixed > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" /><span className="text-gray-400">{mixed} Mixed</span></div>}
+                    {negative > 0 && <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-sm bg-score-skip" /><span className="text-gray-400">{negative} Negative</span></div>}
+                  </div>
+                </div>
+              );
+            })()}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,
