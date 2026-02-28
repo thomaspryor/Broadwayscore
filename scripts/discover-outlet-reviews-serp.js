@@ -109,6 +109,15 @@ function parseArgs() {
   return opts;
 }
 
+// Words too generic to count as meaningful overlap
+const GENERIC_WORDS = new Set([
+  'the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'for', 'to',
+  'is', 'it', 'my', 'all', 'be', 'or', 'no', 'so', 'do', 'we',
+  'up', 'if', 'me', 'us', 'by', 'with', 'from', 'new', 'out',
+  'how', 'now', 'not', 'but', 'one', 'two', 'has', 'had', 'was',
+  'review', 'broadway', 'musical', 'play', 'show',
+]);
+
 // Match a SERP result to a show
 function matchResultToShow(result, config, shows) {
   // Try extracting title from URL
@@ -122,7 +131,23 @@ function matchResultToShow(result, config, shows) {
 
   candidateTitle = cleanExternalTitle(candidateTitle);
   const matched = matchTitleToShow(candidateTitle, shows);
-  return matched?.show ? { id: matched.show.id, confidence: matched.confidence, candidateTitle } : null;
+  if (!matched?.show) return null;
+
+  // Guard against false matches where candidate and show share only one short word
+  // e.g., "life and trust" matching "Life of Pi" via the single word "life"
+  const stripPunct = w => w.replace(/[^a-z0-9]/g, '');
+  const candidateWords = candidateTitle.toLowerCase().split(/[\s,]+/)
+    .map(stripPunct).filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
+  const showWords = (matched.show.title || '').toLowerCase().split(/[\s,]+/)
+    .map(stripPunct).filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
+  if (candidateWords.length >= 2 && showWords.length >= 1) {
+    const overlap = candidateWords.filter(w => showWords.includes(w)).length;
+    if (overlap <= 1 && overlap < candidateWords.length) {
+      return null; // Too little overlap — likely false match
+    }
+  }
+
+  return { id: matched.show.id, confidence: matched.confidence, candidateTitle };
 }
 
 // Extract critic name from URL if possible
