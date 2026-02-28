@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Fuse from 'fuse.js';
+import type Fuse from 'fuse.js';
 
 interface Show {
   id: string;
@@ -23,6 +23,8 @@ export default function HeaderSearch() {
   const [shows, setShows] = useState<Show[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const fetchedRef = useRef(false);
+  const fuseRef = useRef<Fuse<Show> | null>(null);
+  const [dataReady, setDataReady] = useState(false);
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -31,16 +33,30 @@ export default function HeaderSearch() {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Fetch search data on first interaction
+  // Fetch search data + Fuse.js on first interaction (both lazy-loaded)
   const ensureData = useCallback(async () => {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
     setIsLoading(true);
     try {
-      const res = await fetch('/data/search-shows.json');
+      const [res, { default: FuseClass }] = await Promise.all([
+        fetch('/data/search-shows.json'),
+        import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
+      ]);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: Show[] = await res.json();
+      fuseRef.current = new FuseClass(data, {
+        keys: [
+          { name: 'title', weight: 0.6 },
+          { name: 'venue', weight: 0.2 },
+          { name: 'creativeTeamNames', weight: 0.2 },
+        ],
+        threshold: 0.35,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+      });
       setShows(data);
+      setDataReady(true);
     } catch {
       fetchedRef.current = false; // allow retry on next interaction
     } finally {
@@ -48,22 +64,10 @@ export default function HeaderSearch() {
     }
   }, []);
 
-  // Fuse.js instance for fuzzy search
-  const fuse = useMemo(() => new Fuse(shows, {
-    keys: [
-      { name: 'title', weight: 0.6 },
-      { name: 'venue', weight: 0.2 },
-      { name: 'creativeTeamNames', weight: 0.2 },
-    ],
-    threshold: 0.35,
-    ignoreLocation: true,
-    minMatchCharLength: 2,
-  }), [shows]);
-
   // Filter shows based on query — Fuse.js fuzzy search + substring match fallback
   const filteredShows = useMemo(() => {
-    if (query.length < 1) return [];
-    const fuseResults = fuse.search(query, { limit: 8 }).map(result => result.item);
+    if (query.length < 1 || !fuseRef.current) return [];
+    const fuseResults = fuseRef.current.search(query, { limit: 8 }).map(result => result.item);
 
     // Ensure exact substring matches in title always appear (Fuse can miss multi-word partials)
     // Only apply for 2+ char queries to match Fuse's minMatchCharLength
@@ -79,7 +83,7 @@ export default function HeaderSearch() {
     // Note: unscored closed shows are already excluded from search-shows.json at build time
     const merged = [...fuseResults, ...substringMatches];
     return merged.slice(0, 8);
-  }, [query, fuse, shows]);
+  }, [query, dataReady, shows]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
