@@ -868,11 +868,13 @@ function parseStarRating(rating) {
   if (!rating) return null;
   const r = rating.toString();
 
-  const starMatch = r.match(/^(\d(?:\.\d)?)\s*(?:\/\s*(\d)|out\s+of\s+(\d)|stars?)/i);
+  const starMatch = r.match(/^(\d(?:\.\d)?)\s*(?:\/\s*(\d+)|out\s+of\s+(\d+)|stars?)/i);
   if (starMatch) {
     const stars = parseFloat(starMatch[1]);
     const maxStars = parseInt(starMatch[2] || starMatch[3] || '5');
-    return Math.round((stars / maxStars) * 100);
+    if (maxStars > 0 && stars <= maxStars) {
+      return Math.round((stars / maxStars) * 100);
+    }
   }
 
   const starSymbols = (r.match(/★/g) || []).length;
@@ -2271,6 +2273,80 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.error(`\n❌ REGRESSION GUARD: ${regressions.length} shows lost reviews (threshold: ${REGRESSION_MAX_SHOWS} shows)`);
         console.error('This likely indicates data corruption. Review data/audit/rebuild-regression.json');
         console.error('Set ALLOW_REGRESSION=true to override.');
+        process.exit(1);
+      }
+    }
+    // ========================================
+    // 3B-iii: PER-SHOW AGGREGATE SCORE DRIFT GUARD
+    // ========================================
+    // Detects when a show's average review score shifts >5 points without new reviews.
+    // Catches tier weight changes, outlet remapping, duplicate detection shifts, and
+    // parsing bugs that affect composites but not individual review scores.
+    const SHOW_DRIFT_THRESHOLD = 5;     // points of mean score shift to flag
+    const SHOW_DRIFT_MAX_FLAGGED = 10;  // abort CI if this many shows drift
+
+    // Compute per-show mean score for old and new
+    const oldScoresByShow = new Map(); // showId → [scores]
+    for (const r of currentReviews) {
+      if (r.assignedScore == null) continue;
+      if (!oldScoresByShow.has(r.showId)) oldScoresByShow.set(r.showId, []);
+      oldScoresByShow.get(r.showId).push(r.assignedScore);
+    }
+    const newScoresByShow = new Map();
+    for (const r of allReviews) {
+      if (r.assignedScore == null) continue;
+      if (!newScoresByShow.has(r.showId)) newScoresByShow.set(r.showId, []);
+      newScoresByShow.get(r.showId).push(r.assignedScore);
+    }
+
+    const showDrifts = [];
+    for (const [showId, oldScores] of oldScoresByShow) {
+      const newScores = newScoresByShow.get(showId);
+      if (!newScores || newScores.length === 0) continue;
+
+      // Only flag shows where review count stayed the same or decreased
+      // (new reviews naturally shift averages — that's expected)
+      if (newScores.length > oldScores.length) continue;
+
+      const oldMean = oldScores.reduce((a, b) => a + b, 0) / oldScores.length;
+      const newMean = newScores.reduce((a, b) => a + b, 0) / newScores.length;
+      const delta = Math.abs(newMean - oldMean);
+
+      if (delta > SHOW_DRIFT_THRESHOLD) {
+        showDrifts.push({
+          showId,
+          oldMean: Math.round(oldMean * 10) / 10,
+          newMean: Math.round(newMean * 10) / 10,
+          delta: Math.round(delta * 10) / 10,
+          oldCount: oldScores.length,
+          newCount: newScores.length
+        });
+      }
+    }
+
+    if (showDrifts.length > 0) {
+      showDrifts.sort((a, b) => b.delta - a.delta);
+
+      const auditDir = path.join(__dirname, '../data/audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(auditDir, 'rebuild-show-drift.json'),
+        JSON.stringify({ timestamp: new Date().toISOString(), threshold: SHOW_DRIFT_THRESHOLD, shows: showDrifts }, null, 2) + '\n'
+      );
+
+      console.log(`\n⚠️  SHOW SCORE DRIFT: ${showDrifts.length} show(s) shifted >${SHOW_DRIFT_THRESHOLD}pts without new reviews`);
+      showDrifts.slice(0, 10).forEach(d => {
+        console.log(`  ${d.showId}: ${d.oldMean}→${d.newMean} (Δ${d.delta}, ${d.oldCount}→${d.newCount} reviews)`);
+      });
+      if (showDrifts.length > 10) {
+        console.log(`  ...and ${showDrifts.length - 10} more`);
+      }
+
+      if (showDrifts.length >= SHOW_DRIFT_MAX_FLAGGED && process.env.CI && !process.env.ALLOW_DRIFT) {
+        console.error(`\n❌ SHOW DRIFT GUARD: ${showDrifts.length} shows drifted (threshold: ${SHOW_DRIFT_MAX_FLAGGED})`);
+        console.error('This likely indicates a scoring logic or tier mapping change.');
+        console.error('Review data/audit/rebuild-show-drift.json');
+        console.error('Set ALLOW_DRIFT=true to override.');
         process.exit(1);
       }
     }
