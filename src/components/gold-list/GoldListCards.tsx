@@ -1,4 +1,4 @@
-import { getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceGrade } from '@/lib/audience-grade-utils';
 
 export function formatGoldListDate(dateStr: string): string {
   const date = new Date(dateStr);
