@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
+const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
+export type Market = 'broadway' | 'west-end';
 export type FormspreeStatus = 'idle' | 'submitting' | 'success' | 'error' | 'already_subscribed';
 
 interface FormspreeCaptureOptions {
@@ -14,6 +17,7 @@ interface FormspreeCaptureOptions {
   source: string;
   showId?: string;
   showTitle?: string;
+  market?: Market;  // Override auto-detection from pathname
 }
 
 interface FormspreeCaptureResult {
@@ -21,12 +25,17 @@ interface FormspreeCaptureResult {
   errorMessage: string;
   submit: (email: string, options?: { firstName?: string }) => Promise<boolean>;
   isSubscribed: boolean;
+  market: Market;
 }
 
 export function useFormspreeCapture(options: FormspreeCaptureOptions): FormspreeCaptureResult {
   const [status, setStatus] = useState<FormspreeStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const pathname = usePathname();
+
+  // Infer market from URL pathname, with optional override
+  const market: Market = options.market || (pathname?.startsWith('/west-end') ? 'west-end' : 'broadway');
 
   useEffect(() => {
     try {
@@ -47,8 +56,16 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
     setErrorMessage('');
 
     // Subscribers → dedicated subscriber form; show follows → follow form
+    // West End subscribers go to a separate form (with Broadway fallback)
     const isSubscriber = options.userGroup === 'main-site-subscriber';
-    const formId = isSubscriber ? FORMSPREE_SUBSCRIBER_FORM_ID : FORMSPREE_FOLLOW_FORM_ID;
+    let formId: string;
+    if (!isSubscriber) {
+      formId = FORMSPREE_FOLLOW_FORM_ID;
+    } else if (market === 'west-end' && FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID) {
+      formId = FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID;
+    } else {
+      formId = FORMSPREE_SUBSCRIBER_FORM_ID;
+    }
 
     if (!formId) {
       console.error(`useFormspreeCapture: Formspree ${isSubscriber ? 'subscriber' : 'follow'} form ID not configured.`);
@@ -81,7 +98,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
           window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
         setIsSubscribed(true);
-        track('email_captured', { source: options.source, userGroup: options.userGroup });
+        track('email_captured', { source: options.source, userGroup: options.userGroup, market });
         return true;
       } else {
         setStatus('error');
@@ -93,7 +110,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
       setErrorMessage('Network error. Please try again.');
       return false;
     }
-  }, [options.source, options.userGroup, options.showId, options.showTitle]);
+  }, [options.source, options.userGroup, options.showId, options.showTitle, market]);
 
-  return { status, errorMessage, submit, isSubscribed };
+  return { status, errorMessage, submit, isSubscribed, market };
 }
