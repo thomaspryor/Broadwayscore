@@ -56,7 +56,27 @@ const OUTLET_CONFIGS = {
     // Known critics for this outlet (for URL matching only)
     knownCritics: { 'dan-rubins': 'Dan Rubins' },
   },
-  // Add more outlets here as needed
+  // TheaterScene.net: NOT included — poor Google indexing, SERP returns mostly
+  // category/author pages instead of individual reviews. 348 reviews already
+  // discovered via aggregator pipeline. If indexing improves, add config here.
+  'stagebuddy': {
+    domain: 'stagebuddy.com',
+    siteScope: 'stagebuddy.com/theater/theater-review/',
+    queries: [
+      'site:stagebuddy.com/theater/theater-review/ broadway',
+      'site:stagebuddy.com/theater/theater-review/',
+    ],
+    outletName: 'Stage Buddy',
+    // URL: /theater/theater-review/{show-slug} (some have "review-" prefix)
+    extractTitleFromUrl: (url) => {
+      const m = url.match(/\/theater-review\/([^/?#]+)/);
+      if (!m) return null;
+      let slug = m[1].replace(/^review-/, '');
+      return slug.replace(/-/g, ' ').trim();
+    },
+    defaultCritic: 'Unknown',
+    knownCritics: {},
+  },
 };
 
 function sleep(ms) {
@@ -140,10 +160,19 @@ function matchResultToShow(result, config, shows) {
     .map(stripPunct).filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
   const showWords = (matched.show.title || '').toLowerCase().split(/[\s,]+/)
     .map(stripPunct).filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
-  if (candidateWords.length >= 2 && showWords.length >= 1) {
-    const overlap = candidateWords.filter(w => showWords.includes(w)).length;
-    if (overlap <= 1 && overlap < candidateWords.length) {
-      return null; // Too little overlap — likely false match
+  if (candidateWords.length >= 2) {
+    if (showWords.length >= 1) {
+      const overlap = candidateWords.filter(w => showWords.includes(w)).length;
+      if (overlap <= 1 && overlap < candidateWords.length) {
+        return null; // Too little overlap — likely false match
+      }
+    } else {
+      // Show has 0 meaningful words (e.g., "The New One", "Play On!")
+      // Check if raw show title appears in candidate as a safety net
+      const rawShow = (matched.show.title || '').toLowerCase().replace(/[!?.,]/g, '').trim();
+      if (!candidateTitle.toLowerCase().includes(rawShow)) {
+        return null; // Candidate doesn't contain the show title at all
+      }
     }
   }
 
@@ -152,13 +181,15 @@ function matchResultToShow(result, config, shows) {
 
 // Extract critic name from URL if possible
 function extractCriticFromUrl(url, config) {
-  // Check known critics map
+  // Check known critics map first
   for (const [slug, name] of Object.entries(config.knownCritics || {})) {
     if (url.includes(slug)) return name;
   }
-  // Don't guess critic from URL — subtitle after "review-" is unreliable
-  // (e.g., "-darren-criss" is an actor, not the critic)
-  // Critic will be extracted during text collection
+  // Try outlet-specific extractor (e.g., TheaterScene has critic in URL path)
+  if (config.extractCriticFromUrl) {
+    const critic = config.extractCriticFromUrl(url);
+    if (critic) return critic;
+  }
   return config.defaultCritic || 'Unknown';
 }
 
