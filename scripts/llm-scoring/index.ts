@@ -493,6 +493,7 @@ function parseArgs(): ScoringPipelineOptions & {
   shard?: number;
   totalShards?: number;
   scoreRange?: [number, number];
+  maxPromptVersion?: string;
 } {
   const args = process.argv.slice(2);
 
@@ -528,6 +529,9 @@ function parseArgs(): ScoringPipelineOptions & {
   const scoreRangeArg = args.find(a => a.startsWith('--score-range='));
   const scoreRange = scoreRangeArg ? scoreRangeArg.split('=')[1].split('-').map(Number) as [number, number] : undefined;
 
+  const maxPromptVersionArg = args.find(a => a.startsWith('--max-prompt-version='));
+  const maxPromptVersion = maxPromptVersionArg ? maxPromptVersionArg.split('=')[1] : undefined;
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource,
@@ -551,7 +555,8 @@ function parseArgs(): ScoringPipelineOptions & {
     checkpointInterval,
     shard,
     totalShards,
-    scoreRange
+    scoreRange,
+    maxPromptVersion
   };
 }
 
@@ -782,6 +787,17 @@ async function main(): Promise<void> {
       return score != null && score >= minScore && score <= maxScore;
     });
     console.log(`Filtering to score range ${minScore}-${maxScore}: ${filesToProcess.length} reviews (from ${before})\n`);
+  }
+
+  // Additional filter: max prompt version (only process reviews scored with version <= this)
+  if (options.maxPromptVersion) {
+    const before = filesToProcess.length;
+    filesToProcess = filesToProcess.filter(f => {
+      const meta = (f.data as any).llmMetadata;
+      if (!meta || !meta.promptVersion) return true; // include unversioned
+      return compareSemver(meta.promptVersion, options.maxPromptVersion!) <= 0;
+    });
+    console.log(`Filtering to promptVersion <= ${options.maxPromptVersion}: ${filesToProcess.length} reviews (from ${before})\n`);
   }
 
   // Track garbage skips for logging
