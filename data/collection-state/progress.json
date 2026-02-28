@@ -10,25 +10,66 @@
     "maybe-happy-ending-2024/hollywood-reporter--angie-han.json",
     "maybe-happy-ending-2024/nytg--unknown.json",
     "pen-pals-off-broadway-2025/nyt-theater--unknown.json",
-    "seagull-true-story-off-broadway-2026/nytimes--jesse-green.json"
+    "seagull-true-story-off-broadway-2026/nytimes--jesse-green.json",
+    "singfeld-a-musical-about-nothing-off-broadway-2023/nyt-theater--unknown.json",
+    "six-the-musical-west-end-2021/nytimes--jesse-green.json",
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-reservoir-off-broadway-2026/nytg--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+    "bigfoot-off-broadway-2026/deadline--unknown.json",
+    "black-is-the-color-of-my-voice-west-end-2026/broadwaynews--unknown.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "jerome-off-broadway-2025/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [
-      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json"
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-reservoir-off-broadway-2026/nytg--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
-      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json"
+      "data/review-texts/hells-kitchen-2024/nytg--david-gordon.json",
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/singfeld-a-musical-about-nothing-off-broadway-2023/nyt-theater--unknown.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/broadwaynews--unknown.json",
+      "data/review-texts/jerome-off-broadway-2025/wsj--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "seagull-true-story-off-broadway-2026/nytimes--jesse-green.json",
-  "log": []
+  "lastProcessed": "jerome-off-broadway-2025/wsj--unknown.json",
+  "log": [
+    {
+      "t": "2026-02-28T18:35:40.677Z",
+      "event": "bb-session",
+      "session": "f327c0a6",
+      "url": "https://www.wsj.com/arts-culture/theater?gaa_at=eafs&gaa_n=AWEtsqeNv_SSZ2SnWJOry"
+    },
+    {
+      "t": "2026-02-28T18:35:42.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T18:41:17.035Z",
+      "event": "bb-session",
+      "session": "8cfcf5ab",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-28T18:41:18.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

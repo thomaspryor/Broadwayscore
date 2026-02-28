@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-02-28T18:24:18.885Z",
+  "updatedAt": "2026-02-28T18:41:56.742Z",
   "processed": 0,
-  "failed": 10,
+  "failed": 20,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
-    "amp": 1,
+    "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-28T18:35:40.677Z",
+      "event": "bb-session",
+      "session": "f327c0a6",
+      "url": "https://www.wsj.com/arts-culture/theater?gaa_at=eafs&gaa_n=AWEtsqeNv_SSZ2SnWJOry"
+    },
+    {
+      "t": "2026-02-28T18:35:42.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-28T18:41:17.035Z",
+      "event": "bb-session",
+      "session": "8cfcf5ab",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-02-28T18:41:18.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
