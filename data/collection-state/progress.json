@@ -82,7 +82,10 @@
     "collected-stories-2010/newsday--linda-winer.json",
     "cyrano-de-bergerac-2012/newsday--unknown.json",
     "dead-outlaw-2025/theatermania--unknown.json",
-    "doctor-zhivago-2015/nypost--elisabeth-vincentelli.json"
+    "doctor-zhivago-2015/nypost--elisabeth-vincentelli.json",
+    "escape-to-margaritaville-2018/nydailynews--joe-dziemianowicz.json",
+    "evita-2012/observer--rex-reed.json",
+    "faith-healer-2006/theatermania--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -551,7 +554,14 @@
     "enron-2010/observer--rex-reed.json",
     "equus-2008/nypost--elisabeth-vincentelli.json",
     "equus-2008/theatermania--brian-scott-lipton.json",
-    "escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json"
+    "escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json",
+    "escape-to-margaritaville-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
+    "everyday-rapture-2010/newsday--unknown.json",
+    "evita-2012/ew--thom-geier.json",
+    "falsettos-2016/deadline--jeremy-gerard.json",
+    "falsettos-2016/observer--rex-reed.json",
+    "falsettos-2016/review--robin-riegelhaupt.json",
+    "falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -608,7 +618,10 @@
       "chicago-1975/theatermania--andy-propst.json",
       "clybourne-park-2012/nydailynews--joe-dziemianowicz.json",
       "cyrano-de-bergerac-2012/newsday--unknown.json",
-      "dead-outlaw-2025/theatermania--unknown.json"
+      "dead-outlaw-2025/theatermania--unknown.json",
+      "escape-to-margaritaville-2018/nydailynews--joe-dziemianowicz.json",
+      "evita-2012/observer--rex-reed.json",
+      "faith-healer-2006/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -831,7 +844,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "escape-to-margaritaville-2018/broadwaynews--elizabeth-bradley.json",
+  "lastProcessed": "falsettos-2016/reviewing-the-drama--robin-riegelhaupt.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -1091,6 +1104,17 @@
       "t": "2026-02-28T00:38:56.690Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-02-28T01:31:15.910Z",
+      "event": "bb-session",
+      "session": "fa30c176",
+      "url": "http://deadline.com/2016/10/falsettos-review-andrew-rannells-christian-borle-120"
+    },
+    {
+      "t": "2026-02-28T01:31:17.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
