@@ -912,21 +912,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Compare This Show */}
         {comparisons.length > 0 && (
-          <div className="mt-6 bg-surface-raised border border-white/10 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3">
-              Compare {show.title}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {comparisons.slice(0, 6).map(comp => (
-                <Link
-                  key={comp.slug}
-                  href={`/compare/${comp.slug}`}
-                  className="px-3 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
-                >
+          <div className="mt-4 text-sm text-gray-400">
+            <span className="text-gray-500">Compare: </span>
+            {comparisons.slice(0, 6).map((comp, i) => (
+              <span key={comp.slug}>
+                {i > 0 && <span className="text-gray-600"> · </span>}
+                <Link href={`/compare/${comp.slug}`} className="text-gray-400 hover:text-white transition-colors">
                   vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                 </Link>
-              ))}
-            </div>
+              </span>
+            ))}
           </div>
         )}
 
