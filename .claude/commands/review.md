@@ -173,10 +173,32 @@ Present findings in a structured report:
 
 **Summary line:** "Ready to ship" / "Fix N P0 issues first" / "Fix N P0 + recommend fixing N P1 issues"
 
-### Phase 7: Clean up
+### Phase 7: Systematic fix analysis
+
+**For every P0 and P1 issue found, answer TWO questions:**
+
+1. **How do we fix this instance?** (the immediate fix)
+2. **How do we prevent this CLASS of problem from ever recurring?** (the systematic fix)
+
+This is critical — the user is non-technical and this system must be automated and set-and-forget. One-off fixes are wasted work if the same bug can happen again next time.
+
+**Examples of systematic fixes:**
+- Bug: undefined constant referenced → **Systematic:** Add `npx tsc --noEmit` to pre-commit checks, or add a test script that exercises all code paths
+- Bug: function signature changed but callers not updated → **Systematic:** Add a grep-based check in `/test` that verifies all callers match expected signatures
+- Bug: market-unaware code → **Systematic:** Add a code comment or TypeScript type that forces market to be passed, so forgetting it is a compile error not a runtime bug
+- Bug: hardcoded "Broadway" in template → **Systematic:** Create a `getSiteName(market)` helper so branding is centralized, not scattered across files
+- Bug: localStorage key collision → **Systematic:** Use TypeScript const enum or branded types for storage keys
+
+**In the report, for each P0/P1, include:**
+- **Fix:** [what to change]
+- **Prevent:** [what to add/change so this can't happen again]
+
+If the prevention requires a new test, script, or type — include it in the fix plan. Don't just note it for later.
+
+### Phase 8: Clean up
 
 Kill the dev server if you started one: `kill $(lsof -ti:3456) 2>/dev/null`
 
-### Phase 8: Ask the user
+### Phase 9: Ask the user
 
-Present the report and ask: "Ready to ship as-is, or should I fix the P0/P1 issues first?"
+Present the report and ask: "Ready to ship as-is, or should I fix the P0/P1 issues first? (Fixes will include systematic prevention.)"
