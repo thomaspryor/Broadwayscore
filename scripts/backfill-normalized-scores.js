@@ -14,49 +14,34 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseStarRating, parseLetterGrade, parseNumericRating } = require('./lib/score-parsers');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const WRITE = process.argv.includes('--write');
 
-// Canonical mapping from src/config/scoring.ts
-const LETTER_GRADES = {
-  'A+': 95, 'A': 90, 'A-': 85,
-  'B+': 80, 'B': 76, 'B-': 72,
-  'C+': 67, 'C': 62, 'C-': 57,
-  'D+': 42, 'D': 35, 'D-': 30,
-  'F': 20
-};
-
-function starsToNumeric(filled, total = 5) {
-  return Math.round((filled / total) * 100);
-}
-
+// normalizeScore — uses shared parsers. Accepts letter grades from any outlet
+// since this is a backfill tool, not a scoring filter.
 function normalizeScore(originalScore) {
   if (!originalScore) return null;
   const s = String(originalScore).trim();
 
-  // Letter grade
-  const upper = s.toUpperCase();
-  if (LETTER_GRADES[upper] !== undefined) return LETTER_GRADES[upper];
+  // Letter grade first (direct match)
+  const letterScore = parseLetterGrade(s);
+  if (letterScore !== null) return letterScore;
 
-  // Fraction patterns: "4/5", "3.5/5", "5/5 stars"
-  const fractionMatch = s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+)/);
-  if (fractionMatch) {
-    return Math.round((parseFloat(fractionMatch[1]) / parseFloat(fractionMatch[2])) * 100);
-  }
+  // Star ratings: "4/5", "3.5/5", "3 stars", "4 out of 5"
+  const starScore = parseStarRating(s);
+  if (starScore !== null) return starScore;
 
-  // "X stars" or "X out of 5"
-  const starMatch = s.match(/^(\d+(?:\.\d+)?)\s*(?:stars?|out\s+of\s+5)/i);
-  if (starMatch) {
-    return starsToNumeric(parseFloat(starMatch[1]));
-  }
+  // Numeric: plain number 0-100
+  const numScore = parseNumericRating(s);
+  if (numScore !== null) return numScore;
 
-  // Numeric (only plain number, not fractions)
+  // Legacy: bare number ≤10 treated as X/10
   const numMatch = s.match(/^(\d+(?:\.\d+)?)$/);
   if (numMatch) {
     const num = parseFloat(numMatch[1]);
     if (num <= 10) return Math.round((num / 10) * 100);
-    if (num <= 100) return Math.round(num);
   }
 
   return null;

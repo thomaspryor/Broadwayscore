@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -41,14 +42,8 @@ const PROVIDER = (args.find(a => a.startsWith('--provider=')) || '').split('=')[
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const CHECKPOINT_INTERVAL = 50;
 
-// --- Letter grade map (must match scoring.ts) ---
-const LETTER_GRADE_MAP = {
-  'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 78,
-  'C+': 72, 'C': 65, 'C-': 58,
-  'D+': 40, 'D': 35, 'D-': 30,
-  'F': 20
-};
+// Letter grade map — imported from shared score-parsers.js (canonical, matches scoring.ts)
+const LETTER_GRADE_MAP = LETTER_GRADES;
 
 // --- Stats ---
 const stats = {
@@ -477,55 +472,8 @@ function postValidate(result) {
   return result;
 }
 
-function normalizeScore(result) {
-  if (!result) return null;
-  const { value, scale, type, raw } = result;
-
-  // Letter grades: use our canonical map
-  if (type === 'letter') {
-    // Try to find the grade in the raw text — handle en-dash/em-dash for minus
-    const gradeMatch = raw.match(/([A-D][+\-–—]?|F)/i);
-    if (gradeMatch) {
-      const grade = gradeMatch[1].toUpperCase().replace(/[–—]/g, '-');
-      if (LETTER_GRADE_MAP[grade]) {
-        return {
-          originalScore: grade,
-          normalized: LETTER_GRADE_MAP[grade],
-          type: 'letter',
-          raw
-        };
-      }
-    }
-    // Fallback: use the numeric value from LLM
-    if (scale === 100) {
-      return { originalScore: raw, normalized: Math.round(value), type: 'letter', raw };
-    }
-  }
-
-  // Star ratings
-  if (type === 'stars') {
-    const normalized = Math.round((value / scale) * 100);
-    return {
-      originalScore: `${value}/${scale} stars`,
-      normalized,
-      type: 'stars',
-      raw
-    };
-  }
-
-  // Numeric scores
-  if (type === 'numeric') {
-    const normalized = scale === 100 ? Math.round(value) : Math.round((value / scale) * 100);
-    return {
-      originalScore: `${value}/${scale}`,
-      normalized,
-      type: 'numeric',
-      raw
-    };
-  }
-
-  return null;
-}
+// normalizeScore — removed, was dead code. Normalization now handled by
+// normalizeLlmResult in scripts/lib/score-parsers.js (used by llm-score-extractor.js).
 
 // ============================================================
 // File scanning

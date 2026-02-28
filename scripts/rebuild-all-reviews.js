@@ -31,6 +31,7 @@ const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
+const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 
 // Load outlet registry for cross-market guard
@@ -115,10 +116,9 @@ function flagForHumanReview(data, reason, detail) {
   });
 }
 
-// Score mappings — imported from shared source of truth (scripts/lib/score-extractors.js)
+// Score mappings — imported from shared source of truth
 const THUMB_TO_SCORE = THUMB_SCORES;
 const BUCKET_TO_SCORE = BUCKET_SCORES;
-const LETTER_TO_SCORE = LETTER_GRADES;
 
 // EXPLICIT RATING EXTRACTION removed — now handled at collection time
 // by LLM extraction (scripts/lib/llm-score-extractor.js).
@@ -864,68 +864,7 @@ const stats = {
 
 const skippedReviews = [];
 
-function parseStarRating(rating) {
-  if (!rating) return null;
-  const r = rating.toString();
-
-  const starMatch = r.match(/^(\d(?:\.\d)?)\s*(?:\/\s*(\d+)|out\s+of\s+(\d+)|stars?)/i);
-  if (starMatch) {
-    const stars = parseFloat(starMatch[1]);
-    const maxStars = parseInt(starMatch[2] || starMatch[3] || '5');
-    if (maxStars > 0 && stars <= maxStars) {
-      return Math.round((stars / maxStars) * 100);
-    }
-  }
-
-  const starSymbols = (r.match(/★/g) || []).length;
-  const emptyStars = (r.match(/☆/g) || []).length;
-  if (starSymbols > 0) {
-    const total = starSymbols + emptyStars || 5;
-    return Math.round((starSymbols / total) * 100);
-  }
-
-  return null;
-}
-
-function parseLetterGrade(rating) {
-  if (!rating) return null;
-  const r = rating.toString().trim().toUpperCase();
-
-  const letterMatch = r.match(/^([A-D][+-]?|F)$/i);
-  if (letterMatch) {
-    return LETTER_TO_SCORE[letterMatch[1].toUpperCase()] || null;
-  }
-
-  return null;
-}
-
-// Outlets that use letter grade scoring (from src/config/scoring.ts scoreFormat: 'letter').
-// Letter grades from other outlets are rejected to prevent cross-contamination.
-const LETTER_GRADE_OUTLETS = new Set(['ew']);
-
-function parseOriginalScore(rating, outletId) {
-  if (!rating) return null;
-
-  const starScore = parseStarRating(rating);
-  if (starScore !== null) return starScore;
-
-  const letterScore = parseLetterGrade(rating);
-  if (letterScore !== null) {
-    // Only accept letter grades from outlets that actually use them
-    if (outletId && !LETTER_GRADE_OUTLETS.has(outletId)) {
-      return null;
-    }
-    return letterScore;
-  }
-
-  const numMatch = rating.toString().match(/^(\d+)\s*(?:\/\s*100)?$/);
-  if (numMatch) {
-    const num = parseInt(numMatch[1]);
-    if (num >= 0 && num <= 100) return num;
-  }
-
-  return null;
-}
+// parseStarRating, parseLetterGrade, parseOriginalScore — imported from scripts/lib/score-parsers.js
 
 function getBestScore(data) {
   // Skip if explicitly marked as TO_BE_CALCULATED
