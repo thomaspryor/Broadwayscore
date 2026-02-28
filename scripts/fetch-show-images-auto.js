@@ -24,6 +24,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { compressImage } = require('./lib/compress-image');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -1306,16 +1307,17 @@ async function fetchFromGoogleImages(show) {
   }
 
   // Save thumbnail (prefer square, fall back to poster)
-  const finalThumbnailBuffer = thumbnailBuffer || posterBuffer;
+  const finalThumbnailBuffer = await compressImage(thumbnailBuffer || posterBuffer, 'thumbnail');
   const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
   fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
   console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
 
   // Save poster if we have one distinct from thumbnail
   let posterPath = null;
-  if (posterBuffer && posterBuffer !== finalThumbnailBuffer) {
+  if (posterBuffer && posterBuffer !== (thumbnailBuffer || posterBuffer)) {
+    const compressedPoster = await compressImage(posterBuffer, 'poster');
     posterPath = path.join(showDir, 'poster.jpg');
-    fs.writeFileSync(posterPath, posterBuffer);
+    fs.writeFileSync(posterPath, compressedPoster);
     console.log(`   ✓ Saved poster`);
   }
 
@@ -1348,8 +1350,9 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const showDir = path.join(outputBase, show.id);
       fs.mkdirSync(showDir, { recursive: true });
+      const compressed = await compressImage(buffer, 'thumbnail');
       const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-      fs.writeFileSync(thumbnailPath, buffer);
+      fs.writeFileSync(thumbnailPath, compressed);
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
       return {
