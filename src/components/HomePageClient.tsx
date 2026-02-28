@@ -41,6 +41,8 @@ interface HomePageClientProps {
   offBroadwayShows?: HomepageShow[];
   totalShows: number;
   totalReviews: number;
+  skipHero?: boolean;
+  skipFirstMusicals?: boolean;
 }
 
 // URL parameter values
@@ -368,7 +370,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows, totalReviews }: HomePageClientProps) {
+function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -671,22 +673,24 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
+    <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${skipHero ? 'pb-5 sm:pb-12' : 'py-5 sm:py-12'}`}>
       {/* Hero - Large heading visible on desktop, sr-only on mobile (Google still reads it) */}
-      <div className="mb-4 sm:mb-8">
-        <h1 className="sr-only sm:not-sr-only sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
-        </h1>
-        <p className="text-gray-400 text-lg sm:text-xl">
-          Every show. Every review. One score.
-        </p>
-        <p className="text-gray-500 text-sm sm:text-base mt-1">
-          {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
-        </p>
-      </div>
+      {!skipHero && (
+        <div className="mb-4 sm:mb-8">
+          <h1 className="sr-only sm:not-sr-only sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+            Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+          </h1>
+          <p className="text-gray-400 text-lg sm:text-xl">
+            Every show. Every review. One score.
+          </p>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">
+            {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+          </p>
+        </div>
+      )}
 
       {/* Best Recent Musicals - Featured Shelf */}
-      {bestNewMusicals.length > 0 && (
+      {!skipFirstMusicals && bestNewMusicals.length > 0 && (
         <section className="mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-white">Best Recent Musicals</h2>
@@ -940,15 +944,17 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
 export default function HomePageClient(props: HomePageClientProps) {
   return (
     <Suspense fallback={
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="mb-8 sm:mb-10">
-          <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${props.skipHero ? 'pb-8 sm:pb-12' : 'py-8 sm:py-12'}`}>
+        {!props.skipHero && (
+          <div className="mb-8 sm:mb-10">
+            <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
+              Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+            </div>
+            <p className="text-gray-400 text-lg sm:text-xl">
+              Every show. Every review. One score.
+            </p>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl">
-            Every show. Every review. One score.
-          </p>
-        </div>
+        )}
         <div className="animate-pulse space-y-4">
           <div className="h-12 bg-surface-overlay rounded-xl"></div>
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>
