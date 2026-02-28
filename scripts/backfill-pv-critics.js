@@ -23,6 +23,7 @@ const outletFilter = outletArg ? outletArg.split('=')[1] : null;
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
+const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 
 // --- Collect PV unknown-critic reviews ---
 function collectUnknowns() {
@@ -74,98 +75,7 @@ function extractCriticFromUrl(url) {
   return null;
 }
 
-// --- HTML author extraction ---
-function extractAuthorFromHtml(html) {
-  if (!html) return null;
-
-  // Priority 1: Standard meta tags
-  const metaPatterns = [
-    /<meta\s+name="author"\s+content="([^"]+)"/i,
-    /<meta\s+content="([^"]+)"\s+name="author"/i,
-    /<meta\s+property="article:author"\s+content="([^"]+)"/i,
-    /<meta\s+content="([^"]+)"\s+property="article:author"/i,
-    /<meta\s+property="mrf:authors"\s+content="([^"]+)"/i,
-    /<meta\s+name="parsely-author"\s+content="([^"]+)"/i,
-    /<meta\s+content="([^"]+)"\s+name="parsely-author"/i,
-    /<meta\s+property=article:author\s+content="([^"]+)"/i,
-  ];
-
-  for (const pattern of metaPatterns) {
-    const match = html.match(pattern);
-    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
-  }
-
-  // Priority 2: JSON-LD structured data
-  const jsonLdPatterns = [
-    // "author":[{"@type":"Person","name":"X"}]
-    /"author"\s*:\s*\[\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
-    // "author":{"@type":"Person","name":"X"}
-    /"author"\s*:\s*\{\s*"@type"\s*:\s*"Person"[^}]*"name"\s*:\s*"([^"]+)"/i,
-    // "author":{"name":"X"}
-    /"author"\s*:\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
-    // "author":"X" (string, not a number)
-    /"author"\s*:\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"/,
-    // "author":["X"] (array of strings)
-    /"author"\s*:\s*\[\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"\s*\]/,
-  ];
-
-  for (const pattern of jsonLdPatterns) {
-    const match = html.match(pattern);
-    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
-  }
-
-  // Priority 3: Byline elements
-  const bylinePatterns = [
-    // <... class="byline">By Name</...>
-    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    // <h4 class="article-byline">By Name</h4>
-    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    // itemprop="author"
-    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    // rel="author"
-    /rel="author"[^>]*>([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-  ];
-
-  for (const pattern of bylinePatterns) {
-    const match = html.match(pattern);
-    if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
-  }
-
-  return null;
-}
-
-function isValidAuthorName(name) {
-  if (!name) return false;
-  const trimmed = name.trim();
-  // Must look like a person name: 2-4 words, reasonable length
-  if (trimmed.length < 3 || trimmed.length > 60) return false;
-  if (trimmed.includes('<') || trimmed.includes('>')) return false;
-  if (trimmed.includes('http') || trimmed.includes('www')) return false;
-  // Must have at least 2 words
-  const words = trimmed.split(/\s+/);
-  if (words.length < 2 || words.length > 5) return false;
-  // Should not be a publication name
-  const skipNames = ['the new', 'associated press', 'nbc', 'abc', 'cbs', 'fox', 'bloomberg',
-                     'entertainment weekly', 'time out', 'daily news', 'new york',
-                     'los angeles', 'chicago tribune', 'washington post', 'staff writer',
-                     'staff reporter', 'theater critic', 'drama critic'];
-  if (skipNames.some(s => trimmed.toLowerCase().includes(s))) return false;
-  return true;
-}
-
-function cleanAuthorName(name) {
-  let cleaned = name.trim();
-  // Remove "By " prefix
-  cleaned = cleaned.replace(/^By\s+/i, '');
-  // Remove trailing punctuation
-  cleaned = cleaned.replace(/[,;|]+$/, '').trim();
-  // Title case
-  cleaned = cleaned.split(/\s+/).map(w => {
-    if (w.length <= 2) return w; // Don't touch short words like "de", "Le"
-    return w[0].toUpperCase() + w.slice(1);
-  }).join(' ');
-  return cleaned;
-}
+// extractAuthorFromHtml, isValidAuthorName, cleanAuthorName imported from shared lib (content-quality.js)
 
 // --- HTTP fetch with timeout ---
 async function fetchWithTimeout(url, timeoutMs = 8000) {
