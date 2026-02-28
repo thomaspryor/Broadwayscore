@@ -2,6 +2,17 @@
 // Defines all 17+ browse/landing pages for SEO
 
 import { ComputedShow } from '@/lib/engine';
+import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '@/lib/data-types';
+
+// Context object passed to dataFilter/customSort — avoids importing heavy data modules here
+export interface BrowseFilterContext {
+  // getAudienceBuzz(showId) / getShowAwards(showId) — take show ID
+  // getShowCommercial(slug) / getShowGrosses(slug) — take show slug
+  getAudienceBuzz: (showId: string) => AudienceBuzzData | undefined;
+  getShowCommercial: (slug: string) => ShowCommercial | undefined;
+  getShowAwards: (showId: string) => ShowAwards | undefined;
+  getShowGrosses: (slug: string) => ShowGrosses | undefined;
+}
 
 export interface BrowsePageConfig {
   slug: string;
@@ -11,6 +22,8 @@ export interface BrowsePageConfig {
   metaDescription: string; // 150-160 chars
   intro: string; // 100-200 words intro paragraph
   filter: (show: ComputedShow) => boolean;
+  dataFilter?: (show: ComputedShow, ctx: BrowseFilterContext) => boolean; // Data-dependent filter (used instead of filter when defined)
+  customSort?: (shows: ComputedShow[], ctx: BrowseFilterContext) => ComputedShow[]; // Mutually exclusive with sort
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
