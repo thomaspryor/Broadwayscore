@@ -30,7 +30,6 @@ export const COMPARISON_PAIRS: [string, string][] = [
 
   // === FAMILY SHOWS ===
   ['the-lion-king', 'harry-potter'],
-  ['aladdin', 'the-lion-king'],
   ['aladdin', 'harry-potter'],
   ['wicked', 'harry-potter'],
   ['the-lion-king', 'mj'],
@@ -74,6 +73,64 @@ export const COMPARISON_PAIRS: [string, string][] = [
   ['mean-girls-2018', 'six'],
   ['frozen-2018', 'aladdin'],
   ['beetlejuice-2019', 'mean-girls-2018'],
+
+  // === EXPANDED: 2025-2026 NEW SHOWS ===
+  ['dog-day-afternoon', 'oh-mary'],
+  ['dog-day-afternoon', 'the-outsiders'],
+  ['beaches', 'death-becomes-her'],
+  ['the-lost-boys', 'beetlejuice-2019'],
+  ['the-lost-boys', 'stranger-things'],
+  ['the-balusters', 'stereophonic'],
+  ['hells-kitchen', 'mj'],
+  ['hells-kitchen', 'six'],
+  ['death-becomes-her', 'beetlejuice-2019'],
+  ['maybe-happy-ending', 'hadestown'],
+  ['the-great-gatsby', 'death-becomes-her'],
+  ['sunset-boulevard-2024', 'the-great-gatsby'],
+  ['oh-mary', 'stereophonic'],
+  ['cabaret-2024', 'hadestown'],
+  ['water-for-elephants', 'moulin-rouge'],
+
+  // === EXPANDED: CROSS-GENRE POPULAR MATCHUPS ===
+  ['wicked', 'moulin-rouge'],
+  ['hamilton', 'six'],
+  ['hamilton', 'cabaret-2024'],
+  ['book-of-mormon', 'six'],
+  ['book-of-mormon', 'moulin-rouge'],
+  ['hadestown', 'the-outsiders'],
+  ['six', 'wicked'],
+  ['wicked', 'beetlejuice-2019'],
+  ['mj', 'hamilton'],
+  ['the-lion-king', 'six'],
+  ['the-lion-king', 'hadestown'],
+
+  // === EXPANDED: BEST-OF-ERA DEBATES ===
+  ['dear-evan-hansen-2016', 'hadestown'],
+  ['come-from-away-2017', 'hadestown'],
+  ['come-from-away-2017', 'hamilton'],
+  ['the-band-s-visit-2017', 'hadestown'],
+  ['the-band-s-visit-2017', 'come-from-away-2017'],
+  ['sweeney-todd-2023', 'cabaret-2024'],
+  ['stereophonic', 'the-outsiders'],
+  ['hells-kitchen', 'maybe-happy-ending'],
+  ['the-notebook', 'water-for-elephants'],
+  ['rent-1996', 'hamilton'],
+  ['the-phantom-of-the-opera-1988', 'wicked'],
+  ['les-miserables-2014', 'hamilton'],
+
+  // === EXPANDED: SHOW TYPE COMPARISONS ===
+  ['and-juliet', 'beetlejuice-2019'],
+  ['beetlejuice-2019', 'hadestown'],
+  ['mj', 'the-outsiders'],
+  ['mean-girls-2018', 'and-juliet'],
+  ['jersey-boys-2005', 'and-juliet'],
+  ['jersey-boys-2005', 'six'],
+
+  // === EXPANDED: FAMILY SHOW COMPARISONS ===
+  ['aladdin', 'six'],
+  ['the-lion-king', 'beetlejuice-2019'],
+  ['aladdin', 'beetlejuice-2019'],
+  ['aladdin', 'mean-girls-2018'],
 ];
 
 // Generate all comparison slugs for static generation

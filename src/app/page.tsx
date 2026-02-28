@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { BASE_URL } from '@/lib/seo';
+import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow } from '@/components/HomePageClient';
 
@@ -65,12 +65,18 @@ export default function HomePage() {
   );
 
   return (
-    <HomePageClient
-      shows={allShows.map(serializeShow)}
-      upcomingShows={upcomingShows.map(serializeShow)}
-      offBroadwayShows={obShows.map(serializeShow)}
-      totalShows={stats.totalShows}
-      totalReviews={stats.totalReviews}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema(stats)) }}
+      />
+      <HomePageClient
+        shows={allShows.map(serializeShow)}
+        upcomingShows={upcomingShows.map(serializeShow)}
+        offBroadwayShows={obShows.map(serializeShow)}
+        totalShows={stats.totalShows}
+        totalReviews={stats.totalReviews}
+      />
+    </>
   );
 }

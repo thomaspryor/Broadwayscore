@@ -951,6 +951,38 @@ export function generateActorFAQSchema(profile: {
   };
 }
 
+// FAQPage Schema - For homepage
+export function generateHomepageFAQSchema(stats: { totalShows: number; totalReviews: number }) {
+  const faqs = [
+    {
+      question: 'What is Broadway Scorecard?',
+      answer: `Broadway Scorecard aggregates critic reviews from over 400 outlets to create a single CriticScore (0-100) for every Broadway show. We currently track ${stats.totalShows.toLocaleString()} shows and ${stats.totalReviews.toLocaleString()} reviews.`,
+    },
+    {
+      question: 'How are Broadway show scores calculated?',
+      answer: 'Each show gets a CriticScore from 0-100 based on a tier-weighted average of professional reviews. Tier 1 outlets (The New York Times, Vulture, Variety) carry full weight. Tier 2 outlets (NY Post, TheaterMania) carry 75% weight. Tier 3 outlets carry 45% weight. Shows need a minimum number of reviews to display a score.',
+    },
+    {
+      question: 'What are the best Broadway shows right now?',
+      answer: 'Visit our Best Broadway Shows page or browse by category (musicals, plays, comedies, revivals) to see the highest-rated shows currently playing. Scores update daily as new reviews are published.',
+    },
+    {
+      question: 'How is Broadway Scorecard different from other review sites?',
+      answer: 'Unlike sites that show individual reviews, Broadway Scorecard aggregates scores from every major critic into one transparent number. We weight reviews by outlet tier and show you exactly how the score is calculated, including individual critic scores from The New York Times, Vulture, Variety, and hundreds more.',
+    },
+  ];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);
