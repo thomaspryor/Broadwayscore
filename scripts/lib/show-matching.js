@@ -614,6 +614,17 @@ const TITLE_GENERIC_WORDS = new Set([
  * @param {string} candidateText - Text to check (article title, URL slug, page body)
  * @returns {boolean} Whether the candidate matches the show title
  */
+/**
+ * Check if a word appears as a whole word in text (not as a substring of another word).
+ * Uses the same boundary character set as the single-word path (line 643 originally).
+ * Prevents false matches like "man" inside "dutchman" or "dance" inside "sundance".
+ */
+function matchesAsWholeWord(word, text) {
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${escaped}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
+  return re.test(text) || re.test(text.replace(/-/g, ' '));
+}
+
 function titleWordsMatch(showTitle, candidateText) {
   // First try the pre-colon part (e.g., "All Out" from "All Out: Comedy About Ambition")
   const showTitleLower = showTitle.toLowerCase()
@@ -629,23 +640,25 @@ function titleWordsMatch(showTitle, candidateText) {
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
   }
 
+  // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
+  showSlugWords = [...new Set(showSlugWords)];
+
   const candidateLower = candidateText.toLowerCase();
 
   if (showSlugWords.length === 0) {
-    // Fallback: raw first word substring check
+    // Fallback: raw first word with word-boundary check (not substring)
     const rawTitle = showTitleLower.split(/[\s,]+/)[0];
-    return rawTitle && rawTitle.length >= 3 && candidateLower.includes(rawTitle);
+    return rawTitle && rawTitle.length >= 3 && matchesAsWholeWord(rawTitle, candidateLower);
   }
 
   if (showSlugWords.length === 1) {
     // Single-word: word-boundary match to prevent partial matches
-    const word = showSlugWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${word}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
-    return wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
+    return matchesAsWholeWord(showSlugWords[0], candidateLower);
   }
 
   // Multi-word: require ≥50% of meaningful words, minimum 2
-  const matchCount = showSlugWords.filter(w => candidateLower.includes(w)).length;
+  // Use word-boundary matching for ALL words to prevent "man" matching inside "dutchman"
+  const matchCount = showSlugWords.filter(w => matchesAsWholeWord(w, candidateLower)).length;
   const threshold = Math.max(2, Math.ceil(showSlugWords.length * 0.5));
   return matchCount >= threshold;
 }
@@ -675,25 +688,27 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
   }
 
+  // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
+  words = [...new Set(words)];
+
   const candidateLower = candidateText.toLowerCase();
 
   // Zero meaningful words — very low confidence
   if (words.length === 0) {
     const rawTitle = showTitleLower.split(/[\s,]+/)[0];
-    const matched = rawTitle && rawTitle.length >= 3 && candidateLower.includes(rawTitle);
+    const matched = rawTitle && rawTitle.length >= 3 && matchesAsWholeWord(rawTitle, candidateLower);
     return { matched, confidence: matched ? 0.3 : 0, matchCount: matched ? 1 : 0, threshold: 1, words: rawTitle ? [rawTitle] : [] };
   }
 
   // Single meaningful word — moderate confidence at best
   if (words.length === 1) {
-    const word = words[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const wordBoundary = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${word}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
-    const matched = wordBoundary.test(candidateLower) || wordBoundary.test(candidateLower.replace(/-/g, ' '));
+    const matched = matchesAsWholeWord(words[0], candidateLower);
     return { matched, confidence: matched ? 0.6 : 0, matchCount: matched ? 1 : 0, threshold: 1, words };
   }
 
   // Multi-word: ≥50% of meaningful words, minimum 2
-  const matchCount = words.filter(w => candidateLower.includes(w)).length;
+  // Use word-boundary matching for ALL words to prevent substring false positives
+  const matchCount = words.filter(w => matchesAsWholeWord(w, candidateLower)).length;
   const threshold = Math.max(2, Math.ceil(words.length * 0.5));
   const matched = matchCount >= threshold;
   const confidence = matched ? matchCount / words.length : 0;
