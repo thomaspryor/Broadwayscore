@@ -30,7 +30,7 @@ export interface BrowseShow {
 }
 
 type ScoreMode = 'critics' | 'audience';
-type SortOption = 'score' | 'alpha' | 'newest' | 'closing' | 'performances';
+type SortOption = 'score' | 'alpha' | 'newest' | 'closing' | 'performances' | 'custom';
 
 interface BrowseListClientProps {
   shows: BrowseShow[];
@@ -67,6 +67,7 @@ const SORT_LABELS: Record<SortOption, string> = {
   newest: 'Newest',
   closing: 'Closing',
   performances: 'Longest',
+  custom: 'Default',
 };
 
 const ShowCard = memo(function ShowCard({
@@ -246,6 +247,7 @@ export default function BrowseListClient({
 }: BrowseListClientProps) {
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
   const [sort, setSort] = useState<SortOption>(
+    defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
     defaultSort === 'closing-date' ? 'closing' :
     defaultSort === 'opening-date-asc' ? 'newest' :
