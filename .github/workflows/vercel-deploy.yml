@@ -91,9 +91,15 @@ jobs:
             nextjs-cache-${{ runner.os }}-
 
       - name: Build
+        id: build
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel build --prod --token=$VERCEL_TOKEN
+        run: |
+          BUILD_START=$(date +%s)
+          vercel build --prod --token=$VERCEL_TOKEN
+          BUILD_SECS=$(( $(date +%s) - BUILD_START ))
+          echo "build_seconds=$BUILD_SECS" >> "$GITHUB_OUTPUT"
+          echo "Build completed in ${BUILD_SECS}s"
 
       - name: Deploy to Production
         env:
@@ -101,6 +107,21 @@ jobs:
         run: |
           URL=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
+
+      - name: Check build duration
+        if: always() && steps.build.outputs.build_seconds
+        env:
+          BUILD_SECS: ${{ steps.build.outputs.build_seconds }}
+        run: |
+          echo "Build took ${BUILD_SECS}s"
+          # Warn if build exceeds 15 minutes (900s) — typical is ~7-8 min
+          if [ "$BUILD_SECS" -gt 900 ]; then
+            echo "::warning::Build took ${BUILD_SECS}s (>15 min) — investigate for regressions"
+          fi
+          # Fail-loud if build exceeds 25 minutes — something is very wrong
+          if [ "$BUILD_SECS" -gt 1500 ]; then
+            echo "::error::Build took ${BUILD_SECS}s (>25 min) — likely regression in build pipeline"
+          fi
 
       - name: Smoke test production
         run: |
