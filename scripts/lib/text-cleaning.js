@@ -199,6 +199,27 @@ const TRAILING_JUNK_PATTERNS = [
   // === Generic: trailing paywall/subscription junk ===
   /\s*(?:Subscribe|Sign up)\s+(?:now|today)\s+(?:to|for)\s+(?:continue|read|access|unlock).*$/is,
   /\s*(?:Already a (?:member|subscriber)\?|Become a (?:member|subscriber)).*$/is,
+
+  // === nyt-theater WordPress sidebar ===
+  /\s*Most Popular Posts[\s\S]*$/is,
+  /\s*New York Theater Archives[\s\S]*$/is,
+
+  // === nytg (New York Theatre Guide) ticket page boilerplate ===
+  /\s*Frequently asked questions\s*Where is[\s\S]*$/is,
+];
+
+// High-confidence patterns — definitively junk, bypass back-half guard.
+// These use [\s\S]*$ to consume everything after the anchor.
+const HIGH_CONFIDENCE_JUNK_PATTERNS = [
+  // nyt-theater WordPress sidebar
+  /\s*Most Popular Posts[\s\S]*$/is,
+  /\s*New York Theater Archives[\s\S]*$/is,
+  // nytg ticket/FAQ pages
+  /\s*Frequently asked questions\s*Where is[\s\S]*$/is,
+  /\s*Get directions\s*(?:\||View map)[\s\S]*$/is,
+  // Generic WordPress sidebar widgets
+  /\s*CategoriesCategories[\s\S]*$/is,
+  /\s*Theater blogroll[\s\S]*$/is,
 ];
 
 /**
@@ -209,6 +230,7 @@ const TRAILING_JUNK_PATTERNS = [
  * Guards (ported from text-quality.js) prevent catastrophic text destruction:
  *   - Back-half guard: only strip if match is in the last 40% of current text
  *   - Minimum-remaining guard: at least 200 chars (or 15% of original) must survive
+ *   - High-confidence patterns bypass back-half guard (lower min-remaining threshold)
  *
  * @param {string} text - Review text to clean
  * @returns {string} Cleaned text
@@ -218,7 +240,20 @@ function stripTrailingJunk(text) {
   let cleaned = text;
   const originalLength = text.length;
   const minRemaining = Math.max(200, originalLength * 0.15);
+  const minRemainingHighConf = Math.max(100, originalLength * 0.10);
 
+  // Pass 1: High-confidence patterns — no back-half guard, lower min-remaining
+  for (const pattern of HIGH_CONFIDENCE_JUNK_PATTERNS) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+    if (match.index < minRemainingHighConf) continue;
+
+    const before = cleaned;
+    cleaned = cleaned.replace(pattern, '').trim();
+    if (cleaned !== before) break; // Re-evaluate from shorter text
+  }
+
+  // Pass 2: Regular patterns — with back-half guard and standard min-remaining
   let changed = true;
   while (changed) {
     changed = false;

@@ -300,6 +300,7 @@ export class OpenAIReviewScorer {
     let lastError: string = '';
     let inputTokens = 0;
     let outputTokens = 0;
+    let parseFailureCount = 0;
 
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
       try {
@@ -373,9 +374,12 @@ export class OpenAIReviewScorer {
         const result = this.parseV5Response(content);
         if (!result) {
           lastError = 'Failed to parse V5 response JSON';
+          parseFailureCount++;
           if (this.options.verbose) {
-            console.log(`  Parse error. Response: ${content.substring(0, 200)}...`);
+            console.log(`  Parse error (${parseFailureCount}x). Response: ${content.substring(0, 200)}...`);
           }
+          // Same input produces same unparseable output — don't waste more API calls
+          if (parseFailureCount >= 2) break;
           continue;
         }
 
