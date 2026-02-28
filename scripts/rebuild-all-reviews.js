@@ -1490,6 +1490,20 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
+      // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
+      if (data.wrongProduction === true && data.wrongProductionNote
+          && data.wrongProductionNote.includes('URL contains year')
+          && (showCat === 'west-end' || showCat === 'off-broadway')) {
+        data.wrongProduction = false;
+        data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
+        data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+        delete data.wrongProductionNote;
+        stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
+        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        // Fall through — don't skip
+      }
+
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
@@ -1767,7 +1781,9 @@ showDirs.forEach(showId => {
       // These reviews typically have NO publishDate. The URL often contains the actual review year.
       // If URL year is >2 years from show opening, flag as wrongProduction.
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
-      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction) {
+      // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
+      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
+          && showCat !== 'west-end' && showCat !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
         const yearMatches = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/g);
@@ -2080,7 +2096,17 @@ showDirs.forEach(showId => {
         return;
       }
 
-      const { score, source } = scoreResult;
+      let { score, source } = scoreResult;
+
+      // DEFENSE-IN-DEPTH: reject scores outside 0-100
+      // Catches parsing bugs (e.g., 600/900 scores from unclamped star ratings)
+      if (!Number.isFinite(score) || score < 0 || score > 100) {
+        console.error(`  [SCORE OUT OF RANGE] ${showId}/${file}: score=${score} source=${source} — SKIPPING`);
+        stats.outOfRangeScores = (stats.outOfRangeScores || 0) + 1;
+        stats.skippedNoScore++;
+        return;
+      }
+
       stats.scoreSources[source]++;
 
       // Warn if file's showId disagrees with directory (data integrity issue)
@@ -2522,6 +2548,77 @@ const output = {
   reviews: allReviews
 };
 
+// ========================================
+// 3D: VALIDATION GATE (hard-fail before write)
+// ========================================
+// Catches data integrity violations that should NEVER reach production.
+// Unlike drift/regression guards (CI-only, threshold-based), these are
+// absolute invariants that abort locally AND in CI.
+{
+  const errors = [];
+
+  // 1. Score range: every review must have assignedScore in 0-100
+  const outOfRange = allReviews.filter(r =>
+    r.assignedScore == null || r.assignedScore < 0 || r.assignedScore > 100 ||
+    !Number.isFinite(r.assignedScore)
+  );
+  if (outOfRange.length > 0) {
+    errors.push(`${outOfRange.length} review(s) have assignedScore outside 0-100:`);
+    outOfRange.slice(0, 10).forEach(r => {
+      errors.push(`  ${r.showId}/${r.outletId} (${r.criticName}): ${r.assignedScore} [source: ${r.scoreSource}]`);
+    });
+  }
+
+  // 2. Required fields: every review must have showId, outletId, scoreSource
+  const missingFields = allReviews.filter(r => !r.showId || !r.outletId || !r.scoreSource);
+  if (missingFields.length > 0) {
+    errors.push(`${missingFields.length} review(s) missing required fields (showId, outletId, scoreSource):`);
+    missingFields.slice(0, 5).forEach(r => {
+      const missing = [!r.showId && 'showId', !r.outletId && 'outletId', !r.scoreSource && 'scoreSource'].filter(Boolean);
+      errors.push(`  ${r.showId || '?'}/${r.outletId || '?'}: missing ${missing.join(', ')}`);
+    });
+  }
+
+  // 3. Total review count: shouldn't drop >15% vs previous file
+  if (fs.existsSync(reviewsJsonPath)) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
+      const prevCount = (prev.reviews || []).length;
+      if (prevCount > 0) {
+        const dropPct = ((prevCount - allReviews.length) / prevCount) * 100;
+        if (dropPct > 15) {
+          errors.push(`Total review count dropped ${dropPct.toFixed(1)}%: ${prevCount} → ${allReviews.length}`);
+        }
+      }
+    } catch (e) { /* can't read previous — skip */ }
+  }
+
+  // 4. Score distribution: mean should be 40-90 (catches systematic bias)
+  if (allReviews.length > 100) {
+    const mean = allReviews.reduce((sum, r) => sum + r.assignedScore, 0) / allReviews.length;
+    if (mean < 40 || mean > 90) {
+      errors.push(`Mean score ${mean.toFixed(1)} is outside sane range [40-90] — likely systematic scoring bug`);
+    }
+  }
+
+  // 5. Zero reviews = something is very wrong
+  if (allReviews.length === 0) {
+    errors.push('Zero reviews produced — rebuild generated empty output');
+  }
+
+  if (errors.length > 0) {
+    console.error('\n❌ VALIDATION GATE FAILED — reviews.json NOT written');
+    errors.forEach(e => console.error(`  ${e}`));
+    console.error('\nFix the underlying data issue. Set SKIP_VALIDATION_GATE=true to override (NOT recommended).');
+    if (!process.env.SKIP_VALIDATION_GATE) {
+      process.exit(1);
+    }
+    console.warn('⚠️  SKIP_VALIDATION_GATE=true — writing despite validation failures');
+  } else {
+    console.log('\n✅ VALIDATION GATE: all checks passed');
+  }
+}
+
 // Write output
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
 
@@ -2678,6 +2775,9 @@ if (stats.showNotMentionedAutoCleared > 0) {
 }
 if (stats.showNotMentionedWithExcerpts > 0) {
   console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
+}
+if (stats.wrongProdWEOBAutoCleared > 0) {
+  console.log(`  Auto-cleared wrongProduction (WE/OB URL-year exempt): ${stats.wrongProdWEOBAutoCleared}`);
 }
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
