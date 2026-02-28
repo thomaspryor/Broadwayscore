@@ -1,0 +1,80 @@
+name: Check Performance Budget
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.*'
+      - 'tailwind.config.*'
+  workflow_dispatch:
+    inputs:
+      update_baseline:
+        description: 'Update the bundle size baseline'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: check-performance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and check bundle sizes
+        id: check
+        run: |
+          if [ "${{ inputs.update_baseline }}" = "true" ]; then
+            node scripts/check-bundle-size.js --update-baseline 2>&1 | tee /tmp/bundle-report.txt
+          else
+            node scripts/check-bundle-size.js --ci 2>&1 | tee /tmp/bundle-report.txt
+          fi
+
+      - name: Commit updated baseline
+        if: inputs.update_baseline == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/bundle-size-baseline.json data/audit/bundle-size-history.json
+          git diff --cached --quiet || git commit -m "perf: Update bundle size baseline [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit size history
+        if: always() && inputs.update_baseline != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/bundle-size-history.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "perf: Record bundle size snapshot [skip ci]"
+          bash scripts/lib/push-with-retry.sh || true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Performance Budget Exceeded'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
