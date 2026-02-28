@@ -120,7 +120,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          bash scripts/lib/push-with-retry.sh 5 HEAD:$BRANCH
+          bash scripts/lib/push-with-retry.sh 5 HEAD:$BRANCH ours
 
       - name: Notify on failure
         if: failure()
