@@ -41,7 +41,17 @@
     "something-rotten-2015/simon-parris-man-in-chair--simon-parris.json",
     "something-rotten-2015/towleroad--naveen-kumar.json",
     "something-rotten-2015/unknown--brian-scott-lipton.json",
-    "something-rotten-2015/unknown--diane-snyder.json"
+    "something-rotten-2015/unknown--diane-snyder.json",
+    "something-rotten-2015/washpost--peter-marks.json",
+    "something-rotten-2015/zeal-nyc--brian-scott-lipton.json",
+    "the-anarchist-2012/amny--matt-windman.json",
+    "the-anarchist-2012/ap--mark-kennedy.json",
+    "the-anarchist-2012/northjerseycom--robert-feldberg.json",
+    "the-anarchist-2012/village-voice--michael-musto.json",
+    "the-big-knife-2013/ap--mark-kennedy.json",
+    "the-big-knife-2013/stageandcinema--joel-benjamin.json",
+    "the-little-foxes-2017/film-festival-traveler--kevin-filipski.json",
+    "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -67,7 +77,12 @@
       "data/review-texts/the-merchant-of-venice-2010/wsj--terry-teachout.json",
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/theatrely--juan-a-ramirez.json",
       "data/review-texts/something-rotten-2015/northjerseycom--robert-feldberg.json",
-      "data/review-texts/something-rotten-2015/off-script-with-dan-dwyer--dan-dwyer.json"
+      "data/review-texts/something-rotten-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/something-rotten-2015/washpost--peter-marks.json",
+      "data/review-texts/the-anarchist-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-anarchist-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-little-foxes-2017/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "archive": [
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
@@ -77,7 +92,7 @@
     ]
   },
   "startTime": "2026-02-28T07:57:55.860Z",
-  "lastProcessed": "something-rotten-2015/unknown--diane-snyder.json",
+  "lastProcessed": "the-little-foxes-2017/off-script-with-dan-dwyer--dan-dwyer.json",
   "log": [
     {
       "t": "2026-02-28T08:02:13.416Z",
@@ -126,6 +141,39 @@
     },
     {
       "t": "2026-02-28T08:12:44.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-02-28T08:16:03.561Z",
+      "event": "bb-session",
+      "session": "e493e33d",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/something-rotten-on-b"
+    },
+    {
+      "t": "2026-02-28T08:16:04.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-28T08:17:00.736Z",
+      "event": "bb-session",
+      "session": "2de89a27",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-david-mamets-t"
+    },
+    {
+      "t": "2026-02-28T08:17:02.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-28T08:17:43.470Z",
+      "event": "bb-session",
+      "session": "01ed2931",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/181787171_Theater_review_"
+    },
+    {
+      "t": "2026-02-28T08:17:44.613Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
