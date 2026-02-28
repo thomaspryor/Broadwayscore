@@ -78,7 +78,7 @@ function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: 
   if (config.slug === 'broadway-shows-closing-soon') {
     sorts.push('closing');
   }
-  if (config.slug.includes('new-broadway') || config.slug === 'upcoming-broadway-shows' || config.slug.includes('-season')) {
+  if (config.slug.includes('new-') || config.slug.includes('upcoming-') || config.slug.includes('-season')) {
     sorts.push('newest');
   }
 

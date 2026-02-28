@@ -614,7 +614,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => show.category === 'west-end',
     sort: 'score',
     source: 'west-end',
-    relatedPages: ['best-broadway-musicals', 'best-broadway-dramas'],
+    relatedPages: ['best-west-end-musicals', 'best-west-end-plays', 'upcoming-west-end-shows', 'west-end-shows-for-kids'],
   },
 
   // === SEO Content Pages ===
@@ -746,6 +746,166 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   // Decade browse pages (1990s, 2000s — 2010s/2020s covered by guide pages)
   ...generateDecadeBrowsePages(),
+
+  // === West End Browse Pages ===
+
+  'best-west-end-musicals': {
+    slug: 'best-west-end-musicals',
+    title: 'Best West End Musicals',
+    h1: 'Best West End Musicals — London Theatre Rankings',
+    metaTitle: 'Best West End Musicals (2026) — Ranked by Critics',
+    metaDescription: 'The best West End musicals in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    intro: 'Every currently running West End musical in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s leading theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, The Stage, and more — and combine them into a single weighted score. Whether you\'re a London local choosing your next night out or a tourist planning a theatre trip, this is the definitive ranked list of West End musicals playing right now.',
+    filter: (show) => show.status === 'open' && show.type === 'musical',
+    sort: 'score',
+    source: 'west-end',
+    relatedPages: ['best-west-end-plays', 'west-end-shows', 'west-end-shows-for-kids', 'best-broadway-musicals'],
+  },
+
+  'best-west-end-plays': {
+    slug: 'best-west-end-plays',
+    title: 'Best West End Plays',
+    h1: 'Best West End Plays — London Theatre Rankings',
+    metaTitle: 'Best West End Plays (2026) — Ranked by Critics',
+    metaDescription: 'The best West End plays in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    intro: 'Every currently running West End play in London, ranked by aggregated CriticScore ratings. From gripping dramas to sharp comedies, these plays represent the finest non-musical theatre London has to offer. Our scores aggregate reviews from the UK\'s top theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage — into a single weighted score that reflects the critical consensus.',
+    filter: (show) => show.status === 'open' && show.type === 'play',
+    sort: 'score',
+    source: 'west-end',
+    relatedPages: ['best-west-end-musicals', 'west-end-shows', 'longest-running-west-end-shows', 'best-broadway-plays'],
+  },
+
+  'upcoming-west-end-shows': {
+    slug: 'upcoming-west-end-shows',
+    title: 'Upcoming West End Shows',
+    h1: 'Upcoming West End Shows — What\'s Coming to London',
+    metaTitle: 'Upcoming West End Shows (2026)',
+    metaDescription: 'All upcoming West End shows opening in London. New musicals, plays, and transfers coming to the West End, sorted by opening date.',
+    intro: 'Every West End show announced for London\'s theatre district, sorted by opening date. From highly anticipated transfers to world premieres, these are the productions headed to the West End. Bookmark this page to stay up to date on what\'s coming to London theatre — we update it as new shows are announced and opening dates are confirmed.',
+    filter: (show) => show.status === 'upcoming' || show.status === 'previews',
+    sort: 'opening-date-asc',
+    source: 'west-end',
+    relatedPages: ['new-west-end-shows-2026', 'west-end-shows', 'best-west-end-musicals', 'upcoming-broadway-shows'],
+  },
+
+  'west-end-shows-for-kids': {
+    slug: 'west-end-shows-for-kids',
+    title: 'West End Shows for Kids',
+    h1: 'Best West End Shows for Kids — Family-Friendly London Theatre',
+    metaTitle: 'Best West End Shows for Kids (2026)',
+    metaDescription: 'The best family-friendly West End shows in London for children. Age-appropriate musicals and plays perfect for young theatregoers.',
+    intro: 'Planning a family theatre trip to London? These West End shows are recommended for children, with age recommendations ranging from 5 to 8 years old. From spectacular musicals to imaginative adaptations, these productions offer the perfect introduction to live theatre for young audiences. Each show has been vetted for age-appropriate content, and many offer family-friendly matinee performances and group pricing.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const ageRec = show.ageRecommendation?.toLowerCase() || '';
+      return ageRec.includes('ages 5') ||
+             ageRec.includes('ages 6') ||
+             ageRec.includes('ages 7') ||
+             ageRec.includes('ages 8') ||
+             ageRec.includes('all ages');
+    },
+    sort: 'score',
+    source: 'west-end',
+    relatedPages: ['west-end-shows', 'best-west-end-musicals', 'broadway-shows-for-kids'],
+  },
+
+  'longest-running-west-end-shows': {
+    slug: 'longest-running-west-end-shows',
+    title: 'Longest-Running West End Shows',
+    h1: 'Longest-Running West End Shows in London',
+    metaTitle: 'Longest-Running West End Shows (2026)',
+    metaDescription: 'The longest-running West End shows currently playing in London, sorted by opening date. From The Mousetrap to modern classics.',
+    intro: 'London\'s West End is home to some of the longest-running shows in theatrical history. This list shows all currently running West End productions sorted by how long they\'ve been open — from The Mousetrap (running since 1952) to the newest arrivals. Note: opening dates reflect the current production run, so shows that closed and reopened (like Les Misérables) show their most recent opening. For total historical performance counts, these numbers may understate a show\'s true longevity.',
+    filter: (show) => show.status === 'open',
+    sort: 'opening-date-asc',
+    source: 'west-end',
+    relatedPages: ['west-end-shows', 'best-west-end-musicals', 'best-west-end-plays', 'longest-running-broadway-shows'],
+  },
+
+  'new-west-end-shows-2026': {
+    slug: 'new-west-end-shows-2026',
+    title: 'New West End Shows in 2026',
+    h1: 'New West End Shows in 2026',
+    metaTitle: 'New West End Shows Opening in 2026',
+    metaDescription: 'All the new West End shows opening in London in 2026. Fresh productions, transfers, and world premieres hitting the West End this year.',
+    intro: 'Discover all the new productions that have opened on the West End in 2026. From world premieres to highly anticipated transfers, these shows are bringing fresh stories and experiences to London\'s theatre district. Whether you\'re looking for the next big musical or an acclaimed new play, this is where you\'ll find the West End\'s newest offerings for the year.',
+    filter: (show) => {
+      return show.status === 'open' && openedInYear(show, 2026);
+    },
+    sort: 'opening-date',
+    source: 'west-end',
+    relatedPages: ['upcoming-west-end-shows', 'west-end-shows', 'new-broadway-shows-2026'],
+  },
+
+  // === Off-Broadway Browse Pages ===
+
+  'off-broadway-shows': {
+    slug: 'off-broadway-shows',
+    title: 'Off-Broadway Shows',
+    h1: 'Off-Broadway Shows Playing Now — Ranked & Rated',
+    metaTitle: 'Off-Broadway Shows Playing Now (2026)',
+    metaDescription: 'Every Off-Broadway show currently playing in NYC, ranked by CriticScore. Aggregated reviews from top critics for musicals, plays, and more.',
+    intro: 'Every Off-Broadway show currently playing or in previews in New York City, ranked by aggregated CriticScore ratings. Off-Broadway is where NYC\'s most adventurous, innovative, and intimate theatre happens — from boundary-pushing new works to acclaimed revivals in smaller venues. We collect reviews from dozens of professional critics and combine them into a single weighted score. Whether you\'re a devoted Off-Broadway fan or looking beyond the bright lights of Times Square, find your next show here.',
+    filter: (show) => show.status === 'open' || show.status === 'previews',
+    sort: 'score',
+    source: 'off-broadway',
+    relatedPages: ['best-off-broadway-shows', 'best-off-broadway-musicals', 'best-off-broadway-plays', 'upcoming-off-broadway-shows'],
+  },
+
+  'best-off-broadway-shows': {
+    slug: 'best-off-broadway-shows',
+    title: 'Best Off-Broadway Shows',
+    h1: 'Best Off-Broadway Shows — Top-Rated in NYC',
+    metaTitle: 'Best Off-Broadway Shows (2026) — Ranked by Critics',
+    metaDescription: 'The best Off-Broadway shows in NYC right now, ranked by aggregated CriticScore. Only shows with 3+ professional reviews qualify.',
+    intro: 'The highest-rated Off-Broadway shows currently playing in New York City, ranked by aggregated CriticScore. Only shows with at least three professional reviews qualify for this list, ensuring every ranking reflects a meaningful critical consensus. Off-Broadway consistently produces some of NYC\'s most acclaimed theatre — intimate venues, bold storytelling, and performances that rival anything on the Great White Way. These are the Off-Broadway shows critics are raving about right now.',
+    filter: (show) => {
+      if (show.status !== 'open' && show.status !== 'previews') return false;
+      return (show.criticScore?.reviewCount ?? 0) >= 3;
+    },
+    sort: 'score',
+    source: 'off-broadway',
+    relatedPages: ['off-broadway-shows', 'best-off-broadway-musicals', 'best-off-broadway-plays', 'best-broadway-shows'],
+  },
+
+  'best-off-broadway-musicals': {
+    slug: 'best-off-broadway-musicals',
+    title: 'Best Off-Broadway Musicals',
+    h1: 'Best Off-Broadway Musicals in NYC',
+    metaTitle: 'Best Off-Broadway Musicals (2026) — Ranked',
+    metaDescription: 'The best Off-Broadway musicals in NYC right now, ranked by CriticScore. Intimate, inventive musicals beyond the Great White Way.',
+    intro: 'Off-Broadway is where some of the most inventive, daring, and intimate musicals in New York City come to life. From breakout hits that go on to transfer to Broadway to hidden gems that thrive in smaller venues, these productions showcase the incredible range of musical theatre beyond Times Square. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway musicals worth seeing right now.',
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical',
+    sort: 'score',
+    source: 'off-broadway',
+    relatedPages: ['best-off-broadway-plays', 'off-broadway-shows', 'best-off-broadway-shows', 'best-broadway-musicals'],
+  },
+
+  'best-off-broadway-plays': {
+    slug: 'best-off-broadway-plays',
+    title: 'Best Off-Broadway Plays',
+    h1: 'Best Off-Broadway Plays in NYC',
+    metaTitle: 'Best Off-Broadway Plays (2026) — Ranked',
+    metaDescription: 'The best Off-Broadway plays in NYC right now, ranked by CriticScore. Dramas, comedies, and experimental works in intimate venues.',
+    intro: 'Off-Broadway is the beating heart of New York\'s dramatic theatre scene. These plays — from searing dramas to sharp comedies to genre-defying experimental works — represent the full spectrum of what Off-Broadway does best: intimate storytelling in venues where you\'re close enough to see every expression on an actor\'s face. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway plays getting the best reviews right now.',
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play',
+    sort: 'score',
+    source: 'off-broadway',
+    relatedPages: ['best-off-broadway-musicals', 'off-broadway-shows', 'best-off-broadway-shows', 'best-broadway-plays'],
+  },
+
+  'upcoming-off-broadway-shows': {
+    slug: 'upcoming-off-broadway-shows',
+    title: 'Upcoming Off-Broadway Shows',
+    h1: 'Upcoming Off-Broadway Shows in NYC',
+    metaTitle: 'Upcoming Off-Broadway Shows (2026)',
+    metaDescription: 'All upcoming Off-Broadway shows opening in NYC. New plays, musicals, and revivals coming to Off-Broadway venues, sorted by opening date.',
+    intro: 'Every Off-Broadway show announced for New York City venues, sorted by opening date. Off-Broadway is where tomorrow\'s Broadway hits get their start and where the most exciting new voices in theatre debut their work. From world premieres at iconic venues like Playwrights Horizons and MCC Theater to transfers from regional theatres, these are the Off-Broadway productions on the horizon.',
+    filter: (show) => show.status === 'previews' || show.status === 'upcoming',
+    sort: 'opening-date-asc',
+    source: 'off-broadway',
+    relatedPages: ['off-broadway-shows', 'best-off-broadway-shows', 'upcoming-broadway-shows'],
+  },
 
   // Season browse pages (generated programmatically)
   ...generateSeasonBrowsePages(),
