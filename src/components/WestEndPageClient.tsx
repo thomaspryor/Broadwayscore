@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Fuse from 'fuse.js';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
-import { SCORE_TIERS, getScoreTier, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -289,12 +289,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-              score >= 83 ? 'score-must-see' :
-              score >= 75 ? 'score-great' :
-              score >= 65 ? 'score-good' :
-              score >= 55 ? 'score-tepid' :
-              'score-skip'
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score)
             }`}>
               {score !== undefined && score !== null ? Math.round(score) : '—'}
             </div>

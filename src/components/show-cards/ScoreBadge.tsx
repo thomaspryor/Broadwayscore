@@ -4,7 +4,7 @@ export const SCORE_TIERS = {
     label: 'Critical Gold',
     tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
     range: '83-100',
-    color: '#DAA520',
+    color: '#FFD700',
     glow: true,
   },
   recommended: {
@@ -47,6 +47,32 @@ export function getScoreTier(score: number | null | undefined): ScoreTier | null
   if (rounded >= 65) return SCORE_TIERS.worthSeeing;
   if (rounded >= 55) return SCORE_TIERS.skippable;
   return SCORE_TIERS.stayAway;
+}
+
+const TIER_COLOR_CLASS: Record<string, string> = {
+  'Critical Gold': 'score-must-see',
+  'Recommended': 'score-great',
+  'Worth Seeing': 'score-good',
+  'Skippable': 'score-tepid',
+  'Stay Away': 'score-skip',
+};
+
+const TIER_TEXT_CLASS: Record<string, string> = {
+  'Critical Gold': 'text-score-must-see',
+  'Recommended': 'text-score-great',
+  'Worth Seeing': 'text-score-good',
+  'Skippable': 'text-score-tepid',
+  'Stay Away': 'text-score-skip',
+};
+
+export function getScoreColorClass(score: number): string {
+  const tier = getScoreTier(score);
+  return tier ? TIER_COLOR_CLASS[tier.label] ?? 'score-skip' : 'score-skip';
+}
+
+export function getScoreTextColorClass(score: number): string {
+  const tier = getScoreTier(score);
+  return tier ? TIER_TEXT_CLASS[tier.label] ?? 'text-score-skip' : 'text-score-skip';
 }
 
 function MustSeeCrown({ size }: { size: 'sm' | 'md' | 'lg' | 'mini' }) {
@@ -112,25 +138,9 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   }
 
   const roundedScore = Math.round(score);
-  let colorClass: string;
-  let label: string;
-
-  if (roundedScore >= 83) {
-    colorClass = 'score-must-see';
-    label = 'Critical Gold';
-  } else if (roundedScore >= 75) {
-    colorClass = 'score-great';
-    label = 'Recommended';
-  } else if (roundedScore >= 65) {
-    colorClass = 'score-good';
-    label = 'Worth Seeing';
-  } else if (roundedScore >= 55) {
-    colorClass = 'score-tepid';
-    label = 'Mixed';
-  } else {
-    colorClass = 'score-skip';
-    label = 'Skip';
-  }
+  const colorClass = getScoreColorClass(roundedScore);
+  const tier = getScoreTier(roundedScore);
+  const label = tier?.label ?? 'Stay Away';
 
   const badge = (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>

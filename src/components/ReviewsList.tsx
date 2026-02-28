@@ -4,6 +4,7 @@ import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
+import { getScoreColorClass } from '@/components/show-cards';
 
 interface Review {
   showId: string;
@@ -63,13 +64,6 @@ function formatDate(dateStr: string | null | undefined): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
-function getScoreClasses(score: number): string {
-  if (score >= 83) return 'score-must-see';
-  if (score >= 75) return 'score-great';
-  if (score >= 65) return 'score-good';
-  if (score >= 55) return 'score-tepid';
-  return 'score-skip';
-}
 
 function OutletLogo({ outlet }: { outlet: string }) {
   const [imageError, setImageError] = useState(false);
@@ -158,7 +152,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
       {/* Header: Score + Logo + Outlet + Date — all vertically centered */}
       <div className="flex items-center gap-2.5 mb-1.5">
         <div
-          className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreClasses(review.reviewScore)}`}
+          className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
           role="meter"
           aria-valuenow={review.reviewScore}
           aria-valuemin={0}

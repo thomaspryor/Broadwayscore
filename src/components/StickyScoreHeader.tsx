@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { getScoreColorClass, getScoreTier } from '@/components/show-cards';
 
 interface StickyScoreHeaderProps {
   title: string;
@@ -36,30 +37,11 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
   if (!isVisible) return null;
 
   const roundedScore = score ? Math.round(score) : null;
-  let scoreColorClass: string;
-  let scoreTextClass = 'text-white';
-  let scoreLabel = '';
-
-  if (roundedScore === null) {
-    scoreColorClass = 'bg-gray-600';
-  } else if (roundedScore >= 83) {
-    scoreColorClass = 'score-must-see';
-    scoreTextClass = 'text-gray-900';
-    scoreLabel = 'Critical Gold';
-  } else if (roundedScore >= 75) {
-    scoreColorClass = 'score-great';
-    scoreLabel = 'Recommended';
-  } else if (roundedScore >= 65) {
-    scoreColorClass = 'score-good';
-    scoreLabel = 'Worth Seeing';
-  } else if (roundedScore >= 55) {
-    scoreColorClass = 'score-tepid';
-    scoreTextClass = 'text-gray-900';
-    scoreLabel = 'Skippable';
-  } else {
-    scoreColorClass = 'score-skip';
-    scoreLabel = 'Stay Away';
-  }
+  const scoreColorClass = roundedScore !== null ? getScoreColorClass(roundedScore) : 'bg-gray-600';
+  const tier = roundedScore !== null ? getScoreTier(roundedScore) : null;
+  const scoreLabel = tier?.label ?? '';
+  // Dark text on bright backgrounds (gold, amber), white on everything else
+  const scoreTextClass = (roundedScore !== null && (roundedScore >= 83 || (roundedScore >= 55 && roundedScore < 65))) ? 'text-gray-900' : 'text-white';
 
   return (
     <div

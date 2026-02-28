@@ -1,6 +1,8 @@
 // Shared utilities for critic & outlet page client components
 // Pure functions + small UI components — no server-only imports
 
+import { getScoreColorClass as _getScoreColorClass, getScoreTier } from '@/components/show-cards';
+
 export function toSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
@@ -12,21 +14,11 @@ export function ordinalSuffix(n: number): string {
 }
 
 export function getScoreClass(score: number): string {
-  const r = Math.round(score);
-  if (r >= 83) return 'score-must-see';
-  if (r >= 75) return 'score-great';
-  if (r >= 65) return 'score-good';
-  if (r >= 55) return 'score-tepid';
-  return 'score-skip';
+  return _getScoreColorClass(score);
 }
 
 export function getScoreTextColor(score: number): string {
-  const r = Math.round(score);
-  if (r >= 83) return '#FFD700';
-  if (r >= 75) return '#22c55e';
-  if (r >= 65) return '#14b8a6';
-  if (r >= 55) return '#d97706';
-  return '#ef4444';
+  return getScoreTier(score)?.color ?? '#ef4444';
 }
 
 export function formatDate(parsedDate: number | null): string {
