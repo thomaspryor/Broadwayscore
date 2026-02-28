@@ -585,6 +585,23 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
 }
 
 /**
+ * Find other productions of the same show across markets/years
+ */
+export function getOtherProductions(show: ComputedShow): ComputedShow[] {
+  const normalize = (t: string) => t.toLowerCase().replace(/[\u2018\u2019\u2032'']/g, "'").replace(/[^\w\s']/g, '').trim();
+  const baseTitle = normalize(show.title);
+  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-broadway': 2 };
+  return getAllShows()
+    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle)
+    .sort((a, b) => {
+      const catA = marketOrder[(a.category || 'broadway')] ?? 3;
+      const catB = marketOrder[(b.category || 'broadway')] ?? 3;
+      if (catA !== catB) return catA - catB;
+      return (b.openingDate || '').localeCompare(a.openingDate || '');
+    });
+}
+
+/**
  * Algorithmic fallback for shows not in the LLM-generated JSON
  */
 function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow[] {
