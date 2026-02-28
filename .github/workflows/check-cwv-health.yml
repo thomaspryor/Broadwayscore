@@ -1,0 +1,194 @@
+name: Check Core Web Vitals
+
+on:
+  schedule:
+    - cron: '0 9 * * 0'  # Sunday 9 AM UTC (after SEO check at 8 AM)
+  workflow_dispatch: {}
+
+concurrency:
+  group: cwv-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      - name: Run Lighthouse audits
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          SITE_URL="https://broadwayscorecard.com"
+          RESULTS_FILE="data/audit/cwv-results.json"
+          mkdir -p data/audit
+
+          # Run 3 passes each for mobile and desktop, collect median
+          run_lighthouse() {
+            local FORM_FACTOR="$1"
+            local PRESET=""
+            if [ "$FORM_FACTOR" = "desktop" ]; then
+              PRESET="--preset=desktop"
+            fi
+
+            local LCP_VALUES=()
+            local CLS_VALUES=()
+            local TBT_VALUES=()
+            local FCP_VALUES=()
+            local SI_VALUES=()
+
+            for i in 1 2 3; do
+              echo "  Pass $i/3 ($FORM_FACTOR)..."
+              RESULT=$(lhci collect --url="$SITE_URL" $PRESET --numberOfRuns=1 2>&1 || true)
+
+              # Find the latest report
+              REPORT=$(ls -t .lighthouseci/lhr-*.json 2>/dev/null | head -1)
+              if [ -z "$REPORT" ]; then
+                echo "  Warning: No report generated for pass $i"
+                continue
+              fi
+
+              LCP_VALUES+=($(node -e "const r=require('./$REPORT'); console.log(r.audits['largest-contentful-paint'].numericValue || 0)"))
+              CLS_VALUES+=($(node -e "const r=require('./$REPORT'); console.log(r.audits['cumulative-layout-shift'].numericValue || 0)"))
+              TBT_VALUES+=($(node -e "const r=require('./$REPORT'); console.log(r.audits['total-blocking-time'].numericValue || 0)"))
+              FCP_VALUES+=($(node -e "const r=require('./$REPORT'); console.log(r.audits['first-contentful-paint'].numericValue || 0)"))
+              SI_VALUES+=($(node -e "const r=require('./$REPORT'); console.log(r.audits['speed-index'].numericValue || 0)"))
+
+              # Clean up reports between passes
+              rm -f .lighthouseci/lhr-*.json
+            done
+
+            # Get median (sort, take middle value)
+            get_median() {
+              local arr=("$@")
+              local sorted=($(printf '%s\n' "${arr[@]}" | sort -n))
+              local len=${#sorted[@]}
+              if [ "$len" -eq 0 ]; then echo "0"; return; fi
+              local mid=$((len / 2))
+              echo "${sorted[$mid]}"
+            }
+
+            local LCP_MEDIAN=$(get_median "${LCP_VALUES[@]}")
+            local CLS_MEDIAN=$(get_median "${CLS_VALUES[@]}")
+            local TBT_MEDIAN=$(get_median "${TBT_VALUES[@]}")
+            local FCP_MEDIAN=$(get_median "${FCP_VALUES[@]}")
+            local SI_MEDIAN=$(get_median "${SI_VALUES[@]}")
+
+            echo "$LCP_MEDIAN $CLS_MEDIAN $TBT_MEDIAN $FCP_MEDIAN $SI_MEDIAN"
+          }
+
+          echo "Running mobile audits..."
+          MOBILE_RESULTS=$(run_lighthouse mobile)
+          read MOBILE_LCP MOBILE_CLS MOBILE_TBT MOBILE_FCP MOBILE_SI <<< "$MOBILE_RESULTS"
+
+          echo "Running desktop audits..."
+          DESKTOP_RESULTS=$(run_lighthouse desktop)
+          read DESKTOP_LCP DESKTOP_CLS DESKTOP_TBT DESKTOP_FCP DESKTOP_SI <<< "$DESKTOP_RESULTS"
+
+          # Write results JSON
+          node -e "
+            const fs = require('fs');
+            const now = new Date().toISOString();
+            const results = {
+              timestamp: now,
+              url: '$SITE_URL',
+              mobile: {
+                lcp: parseFloat('$MOBILE_LCP'),
+                cls: parseFloat('$MOBILE_CLS'),
+                tbt: parseFloat('$MOBILE_TBT'),
+                fcp: parseFloat('$MOBILE_FCP'),
+                speedIndex: parseFloat('$MOBILE_SI'),
+              },
+              desktop: {
+                lcp: parseFloat('$DESKTOP_LCP'),
+                cls: parseFloat('$DESKTOP_CLS'),
+                tbt: parseFloat('$DESKTOP_TBT'),
+                fcp: parseFloat('$DESKTOP_FCP'),
+                speedIndex: parseFloat('$DESKTOP_SI'),
+              },
+            };
+
+            // Load history
+            const file = '$RESULTS_FILE';
+            let history = { runs: [] };
+            try { history = JSON.parse(fs.readFileSync(file, 'utf8')); } catch {}
+            history.runs.push(results);
+            // Keep last 26 weeks (6 months)
+            if (history.runs.length > 26) history.runs = history.runs.slice(-26);
+            history.latest = results;
+            fs.writeFileSync(file, JSON.stringify(history, null, 2));
+
+            // Check thresholds and alert
+            const alerts = [];
+            const m = results.mobile;
+            const d = results.desktop;
+            if (m.lcp > 4000) alerts.push('Mobile LCP: ' + (m.lcp/1000).toFixed(1) + 's (threshold: 4s)');
+            if (m.cls > 0.1) alerts.push('Mobile CLS: ' + m.cls.toFixed(3) + ' (threshold: 0.1)');
+            if (m.tbt > 600) alerts.push('Mobile TBT: ' + m.tbt.toFixed(0) + 'ms (threshold: 600ms)');
+            if (d.lcp > 2500) alerts.push('Desktop LCP: ' + (d.lcp/1000).toFixed(1) + 's (threshold: 2.5s)');
+            if (d.cls > 0.1) alerts.push('Desktop CLS: ' + d.cls.toFixed(3) + ' (threshold: 0.1)');
+            if (d.tbt > 300) alerts.push('Desktop TBT: ' + d.tbt.toFixed(0) + 'ms (threshold: 300ms)');
+
+            // Print summary
+            console.log('=== Core Web Vitals Summary ===');
+            console.log('Mobile:  LCP=' + (m.lcp/1000).toFixed(1) + 's  CLS=' + m.cls.toFixed(3) + '  TBT=' + m.tbt.toFixed(0) + 'ms  FCP=' + (m.fcp/1000).toFixed(1) + 's  SI=' + (m.speedIndex/1000).toFixed(1) + 's');
+            console.log('Desktop: LCP=' + (d.lcp/1000).toFixed(1) + 's  CLS=' + d.cls.toFixed(3) + '  TBT=' + d.tbt.toFixed(0) + 'ms  FCP=' + (d.fcp/1000).toFixed(1) + 's  SI=' + (d.speedIndex/1000).toFixed(1) + 's');
+
+            if (alerts.length > 0) {
+              console.log('\\n⚠️ THRESHOLD VIOLATIONS:');
+              alerts.forEach(a => console.log('  - ' + a));
+
+              // Send Discord alert
+              const webhook = process.env.DISCORD_WEBHOOK_ALERTS;
+              if (webhook) {
+                const body = JSON.stringify({
+                  content: '⚠️ **Core Web Vitals Alert**\\n' + alerts.map(a => '• ' + a).join('\\n') + '\\n\\nMobile: LCP=' + (m.lcp/1000).toFixed(1) + 's CLS=' + m.cls.toFixed(3) + ' TBT=' + m.tbt.toFixed(0) + 'ms\\nDesktop: LCP=' + (d.lcp/1000).toFixed(1) + 's CLS=' + d.cls.toFixed(3) + ' TBT=' + d.tbt.toFixed(0) + 'ms',
+                });
+                const { execSync } = require('child_process');
+                try {
+                  execSync('curl -s -H \"Content-Type: application/json\" -d ' + JSON.stringify(body).replace(/'/g, \"'\") + ' ' + webhook, { stdio: 'pipe' });
+                  console.log('Discord alert sent');
+                } catch (e) {
+                  console.log('Failed to send Discord alert: ' + e.message);
+                }
+              }
+            } else {
+              console.log('\\n✅ All metrics within thresholds');
+            }
+          "
+
+          # Clean up Lighthouse CI artifacts
+          rm -rf .lighthouseci
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --force data/audit/cwv-results.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No audit data changes to commit"
+          else
+            git commit -m "chore: Update Core Web Vitals audit data [skip ci]"
+          fi
+
+      - name: Push audit data
+        if: always()
+        run: |
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Core Web Vitals Check Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
