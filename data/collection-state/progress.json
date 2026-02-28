@@ -39,7 +39,10 @@
     "waiting-for-godot-2013/nyt-theater--jonathan-mandell.json",
     "waitress-2021/act-three-the-reviews--doug-marino.json",
     "young-frankenstein-2007/variety--unknown.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
+    "a-bronx-tale-2007/observer--rex-reed.json",
+    "a-christmas-carol-2001/nydailynews--chris-jones.json",
+    "a-christmas-carol-2019/observer--rex-reed.json"
   ],
   "failed": [
     "age-is-a-feeling-2024/nyt-theater--unknown.json",
@@ -391,7 +394,14 @@
     "wolf-hall-parts-one-and-two-2015/nyt-theater--jonathan-mandell.json",
     "wolf-hall-parts-one-and-two-2015/variety--marilyn-stasio.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
-    "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json"
+    "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json",
+    "a-behanding-in-spokane-2010/timeout--bill-cain.json",
+    "a-bronx-tale-2007/deadline--jeremy-gerard.json",
+    "a-bronx-tale-2007/theatre-reviews-limited--david-roberts.json",
+    "a-bronx-tale-the-musical-2016/nydailynews--unknown.json",
+    "a-dolls-house-part-2-2017/ew--maya-stanton.json",
+    "a-dolls-house-part-2-2017/observer--rex-reed.json",
+    "a-dolls-house-part-2-2017/review--robin-riegelhaupt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -420,7 +430,10 @@
       "the-thanksgiving-play-2023/nytg--amelia-merrill.json",
       "waiting-for-godot-2013/nyt-theater--jonathan-mandell.json",
       "waitress-2021/act-three-the-reviews--doug-marino.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json"
+      "a-beautiful-noise-the-neil-diamond-musical-2022/observer--david-cote.json",
+      "a-bronx-tale-2007/observer--rex-reed.json",
+      "a-christmas-carol-2001/nydailynews--chris-jones.json",
+      "a-christmas-carol-2019/observer--rex-reed.json"
     ],
     "amp": [
       "data/review-texts/kinky-boots-2026/thewrap--unknown.json",
@@ -460,7 +473,10 @@
       "giant-2026/nytimes--houman-barekat.json",
       "data/review-texts/hangmen-2022/hollywood-reporter--david-rooney.json",
       "data/review-texts/therese-raquin-2015/variety--marilyn-stasio.json",
-      "therese-raquin-2015/variety--marilyn-stasio.json"
+      "therese-raquin-2015/variety--marilyn-stasio.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+      "data/review-texts/a-bronx-tale-2007/deadline--jeremy-gerard.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -594,7 +610,7 @@
     ]
   },
   "startTime": "2026-02-27T15:41:04.680Z",
-  "lastProcessed": "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json",
+  "lastProcessed": "a-dolls-house-part-2-2017/review--robin-riegelhaupt.json",
   "log": [
     {
       "t": "2026-02-27T15:46:53.219Z",
@@ -830,6 +846,17 @@
     },
     {
       "t": "2026-02-28T00:22:08.110Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-02-28T00:25:40.741Z",
+      "event": "bb-session",
+      "session": "92430735",
+      "url": "http://deadline.com/2016/12/a-bronx-tale-robert-de-niro-review-1201863369/"
+    },
+    {
+      "t": "2026-02-28T00:25:41.988Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
