@@ -1,6 +1,8 @@
 name: Collect Outlet Reviews (SERP)
 
 on:
+  schedule:
+    - cron: '0 14 * * 1'  # Weekly Monday 2 PM UTC (9 AM EST)
   workflow_dispatch:
     inputs:
       market:
@@ -43,7 +45,7 @@ on:
         type: boolean
 
 concurrency:
-  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market }}
+  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market || 'weekly-cron' }}
   cancel-in-progress: false
 
 jobs:
@@ -73,31 +75,40 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
-          # Prefer --shows over --show_filter over --market
-          if [ -n "${{ github.event.inputs.shows }}" ]; then
-            ARGS="--shows ${{ github.event.inputs.shows }}"
-          elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
-            ARGS="--shows ${{ github.event.inputs.show_filter }}"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Weekly cron: search open shows across all markets
+            echo "=== Weekly cron: searching open shows across all markets ==="
+            for MARKET in broadway west-end off-broadway; do
+              echo "--- Market: $MARKET ---"
+              node scripts/collect-outlet-reviews.js --market "$MARKET" --open-only --max-tier 2 --max-searches 150
+            done
           else
-            ARGS="--market ${{ github.event.inputs.market }}"
+            # Manual dispatch: use provided inputs
+            if [ -n "${{ github.event.inputs.shows }}" ]; then
+              ARGS="--shows ${{ github.event.inputs.shows }}"
+            elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
+              ARGS="--shows ${{ github.event.inputs.show_filter }}"
+            else
+              ARGS="--market ${{ github.event.inputs.market }}"
+            fi
+            ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
+            if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+              ARGS="$ARGS --dry-run"
+            fi
+            echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
+            node scripts/collect-outlet-reviews.js $ARGS
           fi
-          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            ARGS="$ARGS --dry-run"
-          fi
-          echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
-          node scripts/collect-outlet-reviews.js $ARGS
 
       - name: Push review texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "feat: Collect ${{ github.event.inputs.market }} outlet reviews via SERP [T1-${{ github.event.inputs.max_tier }}]"
+          message: "feat: Collect outlet reviews via SERP (${{ github.event_name }})"
       - name: Trigger rebuild
         if: success() && github.event.inputs.dry_run != 'true'
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection"
+          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection (${{ github.event_name }})"
         env:
           GH_TOKEN: ${{ github.token }}
 

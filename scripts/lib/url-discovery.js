@@ -346,12 +346,14 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
  * @param {string} [options.brightDataKey] - Bright Data API token (fallback provider)
  * @param {Function} [options.log] - Logging function (default: console.log)
  * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range for Google's tbs filter
- * @returns {string|null|'__SERP_UNAVAILABLE__'} - Discovered URL, null if not found, or sentinel if all providers down
+ * @param {boolean} [options.returnMetadata] - If true, return { url, serpTitle } instead of just url
+ * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const log = options.log || console.log;
   const brightDataKey = options.brightDataKey || '';
   const dateRange = options.dateRange || null;
+  const returnMetadata = options.returnMetadata || false;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -479,7 +481,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
 
     log(`    ✓ Found via ${provider}: ${url}`);
-    return url;
+    return returnMetadata ? { url, serpTitle: result.title || '' } : url;
   }
 
   log('    ✗ No matching URL found in search results');
