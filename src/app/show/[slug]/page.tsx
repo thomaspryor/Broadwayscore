@@ -353,7 +353,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score) : null;
-                const tier3Count = show.criticScore?.tier3Count || 0;
 
                 const scoreColorClass = (!showTBD && roundedScore !== null)
                   ? getScoreColorClass(roundedScore)
@@ -598,7 +597,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               if (tot === 0) return null;
               const posPct = Math.round((pos / tot) * 100);
               const mixPct = Math.round((mix / tot) * 100);
-              const negPct = Math.round((neg / tot) * 100);
+              const negPct = 100 - posPct - mixPct;
               return (
                 <div className="space-y-1.5 mb-3">
                   <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
