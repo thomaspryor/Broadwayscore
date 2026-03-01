@@ -176,7 +176,7 @@ function getExistingOutlets(showId, registry) {
   for (const f of files) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-      if (data.fabricatedEntry) continue;
+      if (data.fabricatedEntry || data.wrongProduction) continue;
       const oid = (data.outletId || data.outlet || '').toLowerCase();
       existing.add(oid);
       // Also add aliases
@@ -254,10 +254,15 @@ function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
   const fileName = generateReviewFilename(outletId, 'unknown');
 
   // Check for existing file (handles variant filenames)
+  // findExistingReviewFile returns { path, filename, data } or null
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
   if (existing) {
-    console.log(`    SKIP (file exists): ${existing}`);
-    return false;
+    if (existing.data && existing.data.wrongProduction) {
+      console.log(`    EXISTING is wrongProduction (${existing.filename}), writing new stub`);
+    } else {
+      console.log(`    SKIP (file exists): ${existing.filename}`);
+      return false;
+    }
   }
 
   const filePath = path.join(showDir, fileName);
