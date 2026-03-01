@@ -11,7 +11,7 @@ export type ImageSize = 'thumbnail' | 'card' | 'poster' | 'hero';
 const SIZE_PRESETS: Record<ImageSize, { width: number; quality: number }> = {
   thumbnail: { width: 200, quality: 80 },   // 200px for retina-sharp list view thumbnails
   card: { width: 200, quality: 80 },       // ~200px cards in featured rows
-  poster: { width: 400, quality: 85 },     // ~400px posters on show pages
+  poster: { width: 300, quality: 85 },     // ~300px posters (largest display: 160px × 2x retina)
   hero: { width: 800, quality: 85 },       // Hero images (not currently used)
 };
 

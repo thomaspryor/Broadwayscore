@@ -4,7 +4,7 @@
  *
  * Size targets:
  *   thumbnail: 400px wide, ≤50KB
- *   poster:    600px wide, ≤150KB
+ *   poster:    300px wide, ≤60KB  (largest display: 160px CSS × 2x retina = 320px)
  *   hero:      1200px wide, ≤300KB
  */
 
@@ -17,7 +17,7 @@ try {
 
 const SIZE_LIMITS = {
   thumbnail: { maxWidth: 400, maxBytes: 50 * 1024, quality: 80 },
-  poster:    { maxWidth: 600, maxBytes: 150 * 1024, quality: 82 },
+  poster:    { maxWidth: 300, maxBytes: 60 * 1024, quality: 82 },
   hero:      { maxWidth: 1200, maxBytes: 300 * 1024, quality: 85 },
 };
 
