@@ -914,7 +914,7 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
     ]);
 
     // Date-aware validation: check if review dates match this production
-    // Uses median review date — if >3 years from opening, it's likely a different production
+    // Uses median review date — if >2 years from opening, it's likely a different production
     if (openingDate && reviews.length >= 3) {
       const showYear = new Date(openingDate).getFullYear();
       const datedReviews = reviews
@@ -929,8 +929,8 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
       if (datedReviews.length >= 3) {
         datedReviews.sort((a, b) => a - b);
         const median = datedReviews[Math.floor(datedReviews.length / 2)];
-        if (Math.abs(median.getFullYear() - showYear) > 3) {
-          console.log(`    [DATE MISMATCH] Median review date ${median.toISOString().split('T')[0]} is >3 years from opening ${openingDate} for ${showId || 'unknown'}`);
+        if (Math.abs(median.getFullYear() - showYear) > 2) {
+          console.log(`    [DATE MISMATCH] Median review date ${median.toISOString().split('T')[0]} is >2 years from opening ${openingDate} for ${showId || 'unknown'}`);
           console.log(`    This Show Score page likely belongs to a different production — skipping`);
           await browser.close();
           return null;
