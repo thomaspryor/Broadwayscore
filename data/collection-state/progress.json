@@ -49,7 +49,17 @@
     "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
     "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
     "marcel-on-the-train-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json"
+    "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+    "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+    "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
+    "mexodus-off-broadway-2026/nytimes--brittani-samuel.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -631,7 +641,10 @@
       "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
       "little-shop-of-horrors-off-broadway-2019/nyt-theater--erin-conley.json",
       "marcel-on-the-train-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json"
+      "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+      "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
+      "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -668,7 +681,8 @@
       "data-off-broadway-2026/nytimes--tim-teeman.json"
     ],
     "directCookies": [
-      "no-mans-land-2013/thewrap--robert-hofler.json"
+      "no-mans-land-2013/thewrap--robert-hofler.json",
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "the-reservoir-off-broadway-2026/nytg--unknown.json",
@@ -879,11 +893,17 @@
       "la-ternura-off-broadway-2025/nytg--unknown.json",
       "little-shop-of-horrors-off-broadway-2019/vulture--helen-shaw.json",
       "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
-      "magic-mike-live-west-end-2021/nyt-theater--unknown.json"
+      "magic-mike-live-west-end-2021/nyt-theater--unknown.json",
+      "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "mexodus-off-broadway-2026/nytimes--brittani-samuel.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
+  "lastProcessed": "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -928,6 +948,17 @@
       "t": "2026-03-01T04:35:28.202Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T04:53:16.442Z",
+      "event": "bb-session",
+      "session": "0900d739",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-03-01T04:53:17.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
