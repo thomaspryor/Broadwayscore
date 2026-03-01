@@ -357,7 +357,13 @@ jobs:
           BATCHES_LEFT="${{ inputs.remaining_batches }}"
           if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
             if [ "${{ github.event_name }}" == "schedule" ]; then
-              BATCHES_LEFT=2
+              # Weekly backlog sweep (Sunday) gets more chains to clear the backlog faster
+              REASON="${{ steps.sched.outputs.reason_filter }}"
+              if [ -n "$REASON" ]; then
+                BATCHES_LEFT=8
+              else
+                BATCHES_LEFT=2
+              fi
             else
               echo "No remaining batches. Chain complete."
               exit 0
@@ -569,7 +575,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
-          INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
