@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T21:05:18.809Z",
-  "processed": 35,
-  "failed": 35,
-  "successRate": "50.0%",
+  "updatedAt": "2026-03-01T21:10:37.541Z",
+  "processed": 39,
+  "failed": 41,
+  "successRate": "48.8%",
   "tierBreakdown": {
-    "playwright": 21,
-    "amp": 24,
+    "playwright": 23,
+    "amp": 31,
     "browserbase": 13,
     "directCookies": 5,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 9,
     "archive": 12
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-01T20:02:04.099Z",
-      "event": "bb-session",
-      "session": "aedfc0c3",
-      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
-    },
-    {
-      "t": "2026-03-01T20:02:05.304Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-01T20:08:10.243Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T20:56:04.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T21:07:36.490Z",
+      "event": "bb-session",
+      "session": "4894a74e",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-01T21:07:37.875Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

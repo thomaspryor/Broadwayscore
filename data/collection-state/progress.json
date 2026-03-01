@@ -34,7 +34,11 @@
     "death-becomes-her-2024/broadwaynews--brittani-samuel.json",
     "death-becomes-her-2024/nydailynews--chris-jones.json",
     "dracula-west-end-2025/new-york-sun--elysa-gardner.json",
-    "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json"
+    "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
+    "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+    "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "into-the-woods-west-end-2025/nypost--johnny-oleksinski.json",
+    "kinky-boots-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -71,7 +75,13 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
     "deep-azure-globe-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "hamilton-west-end-2021/deadline--jeremy-gerard.json",
-    "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json"
+    "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json",
+    "into-the-woods-west-end-2025/timeout--adam-feldman.json",
+    "just-in-time-2025/wsj--unknown.json",
+    "kinky-boots-off-broadway-2026/newsday--linda-winer.json",
+    "maggots-west-end-2026/ew--chris-nashawaty.json",
+    "maggots-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "maggots-west-end-2026/newsday--neil-best.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -96,7 +106,9 @@
       "chess-2025/broadwaynews--michael-abourizk.json",
       "death-becomes-her-2024/broadwaynews--brittani-samuel.json",
       "death-becomes-her-2024/nydailynews--chris-jones.json",
-      "dracula-west-end-2025/new-york-sun--elysa-gardner.json"
+      "dracula-west-end-2025/new-york-sun--elysa-gardner.json",
+      "heathers-the-musical-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "hercules-west-end-2025/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -122,7 +134,14 @@
       "data/review-texts/buena-vista-social-club-2025/deadline--greg-evans.json",
       "buena-vista-social-club-2025/deadline--greg-evans.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+      "data/review-texts/hamilton-west-end-2021/deadline--jeremy-gerard.json",
+      "data/review-texts/hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json",
+      "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/into-the-woods-west-end-2025/nypost--johnny-oleksinski.json",
+      "into-the-woods-west-end-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/kinky-boots-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "kinky-boots-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -156,7 +175,10 @@
       "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
       "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json",
       "data/review-texts/an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
-      "data/review-texts/arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json"
+      "data/review-texts/arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
+      "data/review-texts/just-in-time-2025/wsj--unknown.json",
+      "data/review-texts/maggots-west-end-2026/new-jersey-newsroom--michael-sommers.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
@@ -174,7 +196,7 @@
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "maggots-west-end-2026/newsday--neil-best.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -316,6 +338,17 @@
     },
     {
       "t": "2026-03-01T20:56:04.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T21:07:36.490Z",
+      "event": "bb-session",
+      "session": "4894a74e",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-01T21:07:37.875Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
