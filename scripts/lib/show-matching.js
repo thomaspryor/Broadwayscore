@@ -619,10 +619,22 @@ const TITLE_GENERIC_WORDS = new Set([
  * Uses the same boundary character set as the single-word path (line 643 originally).
  * Prevents false matches like "man" inside "dutchman" or "dance" inside "sundance".
  */
+/**
+ * Normalize text for matching: strip diacritics, unify quotes/apostrophes to straight form.
+ * Prevents false negatives when shows.json has "Misérables" but text has "Miserables",
+ * or title has curly ' but text has straight '.
+ */
+function normalizeForMatching(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // strip diacritics
+    .replace(/[\u2018\u2019\u201A\u2032]/g, "'")             // curly single → straight
+    .replace(/[\u201C\u201D\u201E\u2033]/g, '"');             // curly double → straight
+}
+
 function matchesAsWholeWord(word, text) {
-  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escaped = normalizeForMatching(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const normalizedText = normalizeForMatching(text);
   const re = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${escaped}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
-  return re.test(text) || re.test(text.replace(/-/g, ' '));
+  return re.test(normalizedText) || re.test(normalizedText.replace(/-/g, ' '));
 }
 
 function titleWordsMatch(showTitle, candidateText) {
