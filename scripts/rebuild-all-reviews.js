@@ -1986,7 +1986,7 @@ showDirs.forEach(showId => {
             .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
           if (titleWords.length >= 2) {  // Skip single-word/generic titles
             const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '');
-            if (text.length >= 500 && !titleWordsMatch(showTitle, text)) {
+            if (text.length > 500 && !titleWordsMatch(showTitle, text)) {
               console.log(`  [TITLE-MENTION] ${showId}/${file}: text (${text.length} chars) does not mention "${showTitle}"`);
               stats.titleMentionFlagged = (stats.titleMentionFlagged || 0) + 1;
               // LOG ONLY — enable writes after manual review of flagged list
