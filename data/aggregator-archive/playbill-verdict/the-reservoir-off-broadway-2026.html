@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+				
+
+<html class="h-full" lang="en" x-data x-bind:class="{
+                    &#039;is-expanded&#039;: $store.site.isMenuOpen,
+                    &#039;is-scrolled&#039;: $store.site.isScrolled,
+                }"
+>
+    <head>
+                <script>
+            window.entryId = 22234494;
+        </script>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+            <!--esi:include src="/deco/esi/baseAssetLoads" time="7" age="239885"-->
+
+<style>
+        @layer theme, base, vendor, legacy, components, utilities;
+</style>
+
+<script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
+<script type="module" src="/assets/deco/dist/main-DeNPT7zH.js" crossorigin onload="e=new CustomEvent(&#039;vite-script-loaded&#039;, {detail:{path: &#039;html/resources/deco/js/main.js&#039;}});document.dispatchEvent(e);"></script>
+<link href="/assets/deco/dist/vendor-CcXNC_Gu.js" rel="modulepreload" crossorigin>
+<link href="/assets/deco/dist/main-CQprTGL5.css" rel="stylesheet">
+<link href="/assets/deco/dist/vendor-styles-DdIscxXd.css" rel="stylesheet">
+
+<link rel="preload" href="/assets/fonts/roboto/roboto-v47-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-v47-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-serif-v16-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-serif-v16-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="/assets/fonts/roboto/roboto-condensed-v30-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+<!--/esi:include-->
+
+            <!--esi:include src="/deco/esi/baseHeadCode?&isMobile=" time="7" age="428386"-->
+
+        <script async src="https://scripts.webcontentassessor.com/scripts/03e3a887451cfb9ae4e4b0aedb8e6558aacdcbb24e2c3ce8a1228d88fce78a07"></script>
+        <!--- Add Ad Targeting for Sites --->
+<script type="text/javascript">
+    function getAdTarget() {
+        const parts = new URL(window.location.href).hostname.split('.');
+        if ((parts.length === 4 && parts[1] === "demo") ||
+                (parts.length === 3 && parts[0] !== "www")) {
+            return parts[0];
+        } else if (parts.length === 2 || (parts.length === 3 && parts[0] === "www")) {
+            return "production";
+        }
+        return "none";
+    }
+    var adSite = getAdTarget();
+    var articleCat = '';
+</script>
+
+
+<!--- Add Content Title Variable for Ad Targeting --->
+<script>
+    var wholeContentTitle = window.parent.location.pathname.split("/");
+    var contentTitle = wholeContentTitle[wholeContentTitle.length-1].substring(0,40).split("-").join(" ");
+    if (contentTitle === "") { contentTitle = "Home_Page" };
+</script>
+
+
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || { cmd: [] };
+</script>
+
+
+    
+<script>
+  googletag.cmd.push(function () {
+
+    // Masthead mapping
+    // Desktop: 970x250, 728x90
+    // Tablet: 728x90
+    // Mobile: 300x100
+    var mastheadMapping = googletag.sizeMapping()
+      .addSize([1024, 0], [[970, 250]])
+      .addSize([768, 0],  [[728, 90]])
+      .addSize([0, 0],    [[300, 100]])
+      .build();
+
+    // Leaderboard mapping
+    // Large: 970x250, 970x90, 728x90
+    // Tablet: 728x90
+    // Mobile: 300x250
+    var leaderboardMapping = googletag.sizeMapping()
+      .addSize([1024, 0], [[970, 250], [970, 90], [728, 90]])
+      .addSize([768, 0],  [[728, 90]])
+      .addSize([0, 0],    [[300, 250]])
+      .build();
+
+    // Footer mapping
+    // Large: 970x90, 728x90
+    // Tablet: 728x90
+    // Mobile: 300x100
+    var footerMapping = googletag.sizeMapping()
+      .addSize([1024, 0], [[970, 90], [728, 90]])
+      .addSize([768, 0],  [[728, 90]])
+      .addSize([0, 0],    [[300, 100], [320, 50]])
+      .build();
+
+    // Parallaxer mapping
+    // Desktop: 728x90, 300x250, 300x550, 300x600, 600x300
+    // Mobile: 300x250, 300x550, 300x600
+    var parallaxerMapping = googletag.sizeMapping()
+      .addSize([768, 0],  [[728, 90], [300, 250], [300, 550], [300, 600], [600, 300]])
+      .addSize([0, 0], [[300, 250], [300, 550], [300, 600]])
+      .build();
+
+    // Expose mappings if needed by later slot definitions
+    window.gptSizeMappings = {
+      masthead: mastheadMapping,
+      leaderboard: leaderboardMapping,
+      footer: footerMapping,
+      parallaxer: parallaxerMapping
+    };
+  });
+</script>
+
+    
+<!-- Chartbeat 1-->
+<script type="text/javascript">
+    var _sf_async_config = _sf_async_config || {};
+    /** CONFIGURATION START **/
+    _sf_async_config.uid = 60176; // ACCOUNT NUMBER
+    _sf_async_config.domain = 'playbill.com'; // DOMAIN
+    _sf_async_config.flickerControl = false;
+    _sf_async_config.useCanonical = true;
+    /** CONFIGURATION END **/
+    var _sf_startpt = (new Date()).getTime();
+</script>
+<script async src="//static.chartbeat.com/js/chartbeat_mab.js"></script>
+
+<!-- Begin Comscore Tag -->
+<script>
+	var _comscore = _comscore || [];
+	_comscore.push({ c1: "2", c2: "33044428" });
+	
+	(function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = "https://sb.scorecardresearch.com/beacon.js";
+		el.parentNode.insertBefore(s, el);
+    })();
+</script>
+<noscript>
+	<img src="https://sb.scorecardresearch.com/p?c1=2&c2=33044428&cv=3.1&cj=1">
+</noscript>
+<!-- End Comscore Tag -->
+
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '925349244281937');
+    fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id=925349244281937&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
+    
+<style>
+  /* Your reserved container */
+  #div-gpt-ad-masthead {
+    height: 260px !important;
+    min-height: 260px !important;
+
+    display: flex !important;
+    align-items: center !important;      /* vertical center */
+    justify-content: center !important;  /* horizontal center */
+  }
+
+  /* GPT commonly injects 1–3 wrapper divs. Make them fill + center too. */
+  #div-gpt-ad-masthead > div,
+  #div-gpt-ad-masthead > div > div,
+  #div-gpt-ad-masthead > div > div > div {
+    height: 100% !important;
+    width: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Ensure the iframe itself can be centered */
+  #div-gpt-ad-masthead iframe {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+</style>
+
+<script>
+  googletag.cmd.push(function () {
+    googletag.defineSlot(
+      "/21727259002/2026_Masthead_Unit",
+      [[970, 250], [728, 90], [300, 100]],
+      "div-gpt-ad-masthead"
+    )
+    .defineSizeMapping(window.gptSizeMappings.masthead)
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+  });
+</script>
+
+    
+<!-- DESKTOP HEAD REPLACEMENT -->
+<style>
+  /* Outer fixed container: controls motion only */
+  .sticky-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 2147483000;
+
+    transform: translateY(110%);
+    transition: transform 1s ease;
+
+    pointer-events: none;
+
+    /* Prevent the close button from peeking before slide-in */
+    overflow: hidden;
+  }
+
+  /* Visible state */
+  .sticky-footer.is-visible {
+    transform: translateY(0);
+    pointer-events: auto;
+
+    /* Allow close button to sit outside the tray when visible */
+    overflow: visible;
+  }
+
+  /* Inner tray */
+  .sticky-footer__inner {
+    position: relative;
+    margin: 0 auto;
+
+    width: max-content;
+    max-width: calc(100% - 60px);
+
+    background: rgba(221, 221, 221, 0.9);
+    border-radius: 14px;
+
+    /* Requested padding */
+    padding: 10px 30px;
+
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+  }
+
+  /* Ad container */
+  .sticky-footer__ad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Close button — OUTSIDE the ad, top-right of tray */
+  .sticky-footer__close {
+    position: absolute;
+
+    /* Pull it slightly outside the tray */
+    top: -12px;
+    right: -12px;
+
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    background: rgba(200, 200, 200, 0.95);
+    color: #333;
+
+    font-size: 18px;
+    line-height: 28px;
+    text-align: center;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .sticky-footer__close:hover {
+    background: rgba(180, 180, 180, 1);
+  }
+
+  /* Accessibility: reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-footer {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  googletag.cmd.push(function () {
+    googletag.defineSlot(
+      "/21727259002/2026_sticky_footer",
+      [[970, 90], [728, 90], [300, 100]],
+      "div-gpt-ad-sticky-footer"
+    )
+    .defineSizeMapping(window.gptSizeMappings.footer)
+    .setTargeting("content_title", contentTitle)
+    .setTargeting("adSite", adSite)
+    .setTargeting("c.cat", articleCat)
+    .setTargeting("entryId", String(window.entryId))
+    .addService(googletag.pubads());
+  });
+</script>
+
+    
+<script>
+  googletag.cmd.push(function () {
+    googletag.defineOutOfPageSlot(
+      "/21727259002/2026_Welcome_Mat_Floater_Desktop",
+      "div-gpt-ad-welcome-mat-floater"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+  });
+</script>
+
+    
+<!-- Popupsmart Embed Code -->
+<script src="https://cdn.popupsmart.com/bundle.js" data-id="983230" async defer></script>
+
+    
+<script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=dec18f9e"></script>
+<!--/esi:include-->
+
+            <!--esi:include src="/deco/esi/navHeadContent?isArticle=1&isMobile=" time="8" age="158228"-->
+        
+                        <!--/esi:include-->
+
+                
+            
+    <script>
+  googletag.cmd.push(function () {
+
+    // Leaderboard 1 - Parallaxer
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_1",
+      [[728, 90]],
+      "div-gpt-ad-leaderboard-1"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+    // Leaderboard 2 Bottom Ad
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_2",
+      [[970, 250], [970, 90], [728, 90], [300, 250]],
+      "div-gpt-ad-leaderboard-2"
+    )
+    .defineSizeMapping(window.gptSizeMappings.leaderboard)
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+
+    // Leaderboard 3 - Rail
+    googletag.defineSlot(
+      "/21727259002/2026_Leaderboard_3",
+      [[300, 600], [300, 250]],
+      "div-gpt-ad-leaderboard-3"
+    )
+    .setTargeting('content_title', contentTitle)
+    .setTargeting('adSite', adSite)
+    .setTargeting('c.cat', articleCat)
+    .setTargeting('entryId', String(window.entryId))
+    .addService(googletag.pubads());
+  });
+
+</script>
+
+
+        <title>Reviewers Sound Off on The Reservoir Off-Broadway | Playbill</title>
+<script>dataLayer = [];
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N2QMGG6');
+</script><meta name="generator" content="SEOmatic">
+<meta name="description" content="Noah Galvin, Caroline Aaron, Chip Zien, and more co-star in the Jake Brasch play at Atlantic Theater Company.">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="robots" content="all">
+<meta content="playbill" property="fb:profile_id">
+<meta content="en_US" property="og:locale">
+<meta content="Playbill" property="og:site_name">
+<meta content="website" property="og:type">
+<meta content="https://playbill.com/article/reviewers-sound-off-on-the-reservoir-off-broadway" property="og:url">
+<meta content="Reviewers Sound Off on The Reservoir Off-Broadway" property="og:title">
+<meta content="Noah Galvin, Caroline Aaron, Chip Zien, and more co-star in the Jake Brasch play at Atlantic Theater Company." property="og:description">
+<meta content="https://assets.playbill.com/editorial/_facebookOpenGraph/ReservoirDress-2793-2.jpg" property="og:image">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@playbill">
+<meta name="twitter:creator" content="@playbill">
+<meta name="twitter:title" content="Reviewers Sound Off on The Reservoir Off-Broadway">
+<meta name="twitter:description" content="Noah Galvin, Caroline Aaron, Chip Zien, and more co-star in the Jake Brasch play at Atlantic Theater Company.">
+<meta name="twitter:image" content="https://assets.playbill.com/editorial/_twitterShareSize/ReservoirDress-2793-2.jpg">
+<link href="https://playbill.com/article/reviewers-sound-off-on-the-reservoir-off-broadway" rel="canonical">
+<link href="https://playbill.com" rel="home">
+<link type="text/plain" href="https://playbill.com/humans.txt" rel="author">
+<style>				:root { --admin-bar-z-index: 10 }
+			</style>
+
+                    <!--esi:include src="/deco/esi/baseHeadGamEnableCode" time="7" age="418416"-->
+
+<script>
+  googletag.cmd.push(function () {
+    googletag.pubads().setCentering(true);
+    googletag.pubads().collapseEmptyDivs(false);
+
+    googletag.pubads().enableLazyLoad({
+      fetchMarginPercent: 100,
+      renderMarginPercent: 50,
+      mobileScaling: 2.0
+    });
+
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<!--/esi:include-->
+    </head>
+
+    
+                
+    <body id="pb-deco" class="antialiased h-full group/site" data-dl-action="initialize_dataLayer" data-dl-data="{&quot;page_category&quot;:&quot;Articles&quot;,&quot;show_name&quot;:null,&quot;venue_type&quot;:null,&quot;article_title&quot;:&quot;Reviewers Sound Off on The Reservoir Off-Broadway&quot;,&quot;author&quot;:&quot;Logan Culwell-Block&quot;,&quot;author_list&quot;:[&quot;Logan Culwell-Block&quot;],&quot;publish_date&quot;:&quot;2026-02-25&quot;,&quot;primary_article_category&quot;:&quot;The Verdict&quot;,&quot;article_category&quot;:[&quot;The Verdict&quot;,&quot;Off-Broadway News&quot;],&quot;craft_id&quot;:22234494,&quot;crosslinker&quot;:null}">
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N2QMGG6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+
+        		    <!--esi:include src="/deco/esi/baseBodyCode?&isMobile=" time="7" age="417823"-->
+
+        <!--- Change Homepage Headers --->
+<script type='text/javascript'>
+    var pageAddress = location.pathname;
+</script>
+
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+    var _qevents = _qevents || [];
+
+    (function() {
+        var elem = document.createElement('script');
+        elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+        elem.async = true;
+        elem.type = "text/javascript";
+        var scpt = document.getElementsByTagName('script')[0];
+        scpt.parentNode.insertBefore(elem, scpt);
+    })();
+
+    _qevents.push({
+        qacct:"p-d4EOGSLZ4snXA"
+    });
+</script>
+
+<noscript>
+    <div style="display:none;">
+        <img src="//pixel.quantserve.com/pixel/p-d4EOGSLZ4snXA.gif" border="0" height="1" width="1" alt="Quantcast"/>
+    </div>
+</noscript>
+<!-- End Quantcast tag -->
+
+<!-- Chartbeat 2 -->
+
+<script type='text/javascript'>
+    var _sf_async_config = _sf_async_config || {};
+    /** CONFIGURATION START **/
+
+    cats = "";
+    sections = "";
+    var authors = document.querySelectorAll(".bsp-meta-author a");
+    var pagePath = location.pathname;
+    var catsExist = Boolean(typeof articleCat !== 'undefined' || typeof galleryCat !== 'undefined' || typeof videoCat !== 'undefined');
+    var authorList = "";
+    var i;
+    var pathSection = pagePath.split( '/' );
+
+    if (catsExist) {
+        if (typeof articleCat !== 'undefined') { cats = articleCat.toString().toLowerCase() + ",article,bigboard";
+        } else if (typeof galleryCat !== 'undefined') { cats = galleryCat.toString().toLowerCase() + ",gallery";
+        } else if (typeof videoCat !== 'undefined') { cats = videoCat.toString().toLowerCase() + ",video"; }
+    }
+
+    if ( authors.length > 1 ) {
+        for (i = 0; i < authors.length; i++) {
+            authorList = authorList + authors[i].innerText + ",";
+        }
+    } else if (authors.length == 1) {
+        authorList = authors[0].innerText;
+    } else {
+        authorList = "None";
+    }
+
+    if (pagePath == "/") {
+        sections = "Home Page,Landing Page";
+    } else if (pagePath == "/news") {
+        sections = "News Landing Page,Landing Page";
+    } else if (pagePath == "/features") {
+        sections = "Features Landing Page,Landing Page";
+    } else if (pagePath == "/photos") {
+        sections = "Photos Landing Page,bigboard,Landing Page";
+    } else if (pagePath == "/videos") {
+        sections = "Video Landing Page,bigboard,Landing Page";
+    } else if (pagePath == "/universe") {
+        sections = "Universe Landing Page,Landing Page";
+    } else if (catsExist) {
+        sections = cats;
+    } else {
+        sections = pathSection[1];
+    }
+
+
+    _sf_async_config.sections = sections;
+    _sf_async_config.authors = authorList;
+
+    let metaTitle = document.querySelector("meta[property='og:title']").getAttribute("content");
+    let cbTitle = (metaTitle) ? metaTitle : document.title;
+    if (cbTitle.length > 97) { cbTitle = cbTitle.substring(0,97) + "..."; }
+    _sf_async_config.title = cbTitle;
+
+    if (window && window.entryId) {
+       var _cbq = window._cbq = (window._cbq || []);
+       _cbq.push(['_entryId', String(window.entryId)]);
+    }
+
+
+    /** CONFIGURATION END **/
+    function loadChartbeat() {
+        var e = document.createElement('script');
+        var n = document.getElementsByTagName('script')[0];
+        e.type = 'text/javascript';
+        e.async = true;
+        e.src = '//static.chartbeat.com/js/chartbeat.js';
+        n.parentNode.insertBefore(e, n);
+    }
+    loadChartbeat();
+</script>
+
+<!--- Override for CMS Edit Links to change z-index --->
+<script type="text/javascript">
+    (function () {
+        window.onload = function () {
+            var css = document.createElement('style');
+            css.type = 'text/css';
+            var styles = '.bsp-inlineEditorMain { z-index: 7000001 !important }';
+            css.appendChild(document.createTextNode(styles));
+            document.getElementsByTagName('body')[0].appendChild(css);
+        }
+    })();
+</script>
+
+        <!-- Sticky Footer Ad Slot -->
+<div id="sticky-footer" class="sticky-footer" aria-hidden="true">
+  <div class="sticky-footer__inner" role="region" aria-label="Advertisement">
+
+    <button
+      type="button"
+      class="sticky-footer__close"
+      aria-label="Dismiss ad"
+      id="sticky-footer-close"
+    >
+      ×
+    </button>
+
+    <div class="sticky-footer__ad">
+      <div id="div-gpt-ad-sticky-footer"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    const container = document.getElementById("sticky-footer");
+    const closeBtn = document.getElementById("sticky-footer-close");
+    const slotDivId = "div-gpt-ad-sticky-footer";
+
+    if (!container || !closeBtn) return;
+
+    let hasShown = false;
+
+    function show() {
+      if (hasShown) return;
+      hasShown = true;
+      container.classList.add("is-visible");
+      container.setAttribute("aria-hidden", "false");
+    }
+
+    function hide() {
+      container.classList.remove("is-visible");
+      container.setAttribute("aria-hidden", "true");
+    }
+
+    closeBtn.addEventListener("click", hide);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") hide();
+    });
+
+    // Listen for render, then show; also trigger the ad request via display()
+    window.googletag = window.googletag || { cmd: [] };
+    googletag.cmd.push(function () {
+      googletag.pubads().addEventListener("slotRenderEnded", function (e) {
+        if (e.slot.getSlotElementId() === slotDivId && !e.isEmpty) {
+          show();
+        }
+      });
+
+      // This actually loads/renders the ad into the slot div
+      googletag.display(slotDivId);
+    });
+  })();
+</script>
+        <div id="div-gpt-ad-welcome-mat-floater" style="height:0; width:0; overflow:hidden;"></div>
+<script>
+  googletag.cmd.push(function () {
+    googletag.display("div-gpt-ad-welcome-mat-floater");
+  });
+</script>
+<!--/esi:include-->
+
+        										
+		
+        <div
+            x-data
+            class="group/nav"
+            :class="{
+                'is-expanded': $store.site.isMenuOpen,
+                'is-scrolled': $store.site.isScrolled,
+            }"
+        >
+                <!--esi:include src="/deco/esi/navigation?isArticle=1&isMobile=" time="8" age="176757"-->
+                                
+        
+<script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
+<script type="module" src="/assets/deco/dist/main-DeNPT7zH.js" crossorigin onload="e=new CustomEvent(&#039;vite-script-loaded&#039;, {detail:{path: &#039;html/resources/deco/js/main.js&#039;}});document.dispatchEvent(e);"></script>
+<link href="/assets/deco/dist/vendor-CcXNC_Gu.js" rel="modulepreload" crossorigin>
+<link href="/assets/deco/dist/main-CQprTGL5.css" rel="stylesheet">
+<link href="/assets/deco/dist/vendor-styles-DdIscxXd.css" rel="stylesheet">
+
+
+
+
+
+
+                            
+<div id="pushdown-ad" class="flex flex-wrap w-full justify-center z-[1000]">
+                    <div
+  id="div-gpt-ad-masthead"
+  style="
+    min-height: 260px;
+    margin: 5px auto;
+    text-align: center;
+  ">
+</div>
+<script>
+  googletag.cmd.push(function () {
+    googletag.display("div-gpt-ad-masthead");
+  });
+</script>
+            </div>
+<div
+    class="deco-site-header__wrapper"
+     style="--ui-masthead-background-color: #fde300; --ui-masthead-text-color: #000000; --ui-masthead-scrolled-background-color: #fde300; --ui-masthead-scrolled-text-color: #000000; --ui-expanded-background-color: #000000; --ui-expanded-text-color: #ffffff; --ui-tagline-text-color: ;"
+>
+    <div
+        class="deco-site-header"
+        
+    >
+        
+<header
+    class="deco-site-masthead"
+>
+    <div class="deco-site-masthead__wrapper">
+        <div class="deco-site-masthead__burger">
+            <button
+                    type="button"
+                    class="deco-site-masthead__button"
+                    x-data
+                    :aria-label="$store.site.isMenuOpen ? 'Close menu' : 'Open menu'"
+                    @click="$store.site.toggleMenu()"
+                                >
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="currentColor" d="M3 18h18v-2H3v2Zm0-5h18v-2H3v2Zm0-7v2h18V6H3Z"/>
+</svg>
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" fill="currentColor"/>
+</svg>
+
+            </button>
+        </div>
+        <a href="/" class="deco-site-masthead__logo" aria-label="Back to home">
+            <div class="deco-site-masthead__logo--large">
+                                                            <img
+                            src="//assets.playbill.com/site/main-logo-trimmed_2023-03-27.png"
+                            alt="Main logo trimmed (copy)"
+                        />
+                                                </div>
+
+            <div class="deco-site-masthead__logo--small">
+                                                            <img
+                            src="//assets.playbill.com/site/main-logo-trimmed_2023-03-27.png"
+                            alt="Main logo trimmed (copy)"
+                        />
+                                                </div>
+                            <span class="deco-site-masthead__tagline">
+                    A TRUSTED THEATRE RESOURCE SINCE 1884
+                </span>
+                    </a>
+        <div class="deco-site-masthead__subnav">
+            
+<nav>
+    <ul class="deco-site-nav-secondary">
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://playbill.com/shows/broadway" title="Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Broadway Shows</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://playbill.com/news" title="News" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;News&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>News</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://playbill.com/jobs" title="Jobs" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Jobs&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Jobs</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://www.playbillder.com/" title="Build-Your-Own Playbill" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Build-Your-Own Playbill&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Build-Your-Own Playbill</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://playbill.com/clubseats" title="Win Free Tickets" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Win Free Tickets&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Win Free Tickets</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a href="https://playbillstore.com/" title="Playbill Store" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Store&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Playbill Store</span></a>            </li>
+            </ul>
+</nav>        </div>
+        <div class="deco-site-masthead__actions">
+            <button
+                type="button"
+                class="deco-site-masthead__button"
+                aria-label="Search"
+                @click="$store.site.toggleSearch()"
+                            >
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--search" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25" aria-hidden="true">
+  <path fill="currentColor" d="M15.755 14.755h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99 1.49-1.49-4.99-5Zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5Z"/>
+</svg>
+
+            </button>
+        </div>
+    </div>
+</header>
+            
+    </div>
+    
+    
+<div
+    x-data
+    x-cloak
+    x-show="$store.site.isMenuOpen"
+    x-trap.noscroll="$store.site.isMenuOpen"
+    class="deco-site-header-expanded"
+>
+    <div
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="dialog-title"
+        class="deco-site-header-expanded__dialog"
+        x-on:click.outside="$store.site.isMenuOpen = false"
+        x-on:keyup.escape.window="$store.site.isMenuOpen = false"
+    >
+        <div class="sr-only" aria-hidden="true">
+            <h2 id="dialog-title">Site Navigation</h2>
+        </div>
+        
+<header
+    class="deco-site-masthead"
+>
+    <div class="deco-site-masthead__wrapper">
+        <div class="deco-site-masthead__burger">
+            <button
+                    type="button"
+                    class="deco-site-masthead__button"
+                    x-data
+                    :aria-label="$store.site.isMenuOpen ? 'Close menu' : 'Open menu'"
+                    @click="$store.site.toggleMenu()"
+                                >
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="currentColor" d="M3 18h18v-2H3v2Zm0-5h18v-2H3v2Zm0-7v2h18V6H3Z"/>
+</svg>
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" fill="currentColor"/>
+</svg>
+
+            </button>
+        </div>
+        <a href="/" class="deco-site-masthead__logo" aria-label="Back to home">
+            <div class="deco-site-masthead__logo--large">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 112 14">
+  <path fill="currentColor" d="m105.631 1.872 2.622-1.748-.02-.062h-8.098l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063H112V8.175l-.062-.02-2.581 4.035h-3.726V1.872Zm-14.617 0L93.638.124l-.02-.062H85.52l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063h11.865V8.175l-.062-.02-2.582 4.035h-3.725V1.872ZM74.633 0l-.02.062 2.31 1.769v10.026l-2.31 2.018.02.063h7.993l.042-.063-2.54-1.851V1.83L82.772.062V0h-8.139ZM67.33 13.938c2.145 0 4.164-1.27 4.164-3.911 0-1.498-.937-3.058-3.122-3.453V6.47c1.603-.167 2.477-1.81 2.477-3.183 0-1.935-1.561-3.266-4.33-3.266h-8.097v.042l2.602 1.747v10.36l-2.54 1.726.021.042h8.826ZM64.439 1.914l.041-.042c.479-.062.479-.041 1.27-.041 1.374 0 1.915.665 1.915 1.976 0 .999-.479 1.789-1.915 1.789-.791 0-.791 0-1.27-.062l-.041-.042V1.914Zm0 5.804.041-.042c.541-.083.541-.062 1.416-.062 1.52 0 2.185.915 2.185 2.247 0 1.144-.624 2.059-2.165 2.059-.895 0-.895-.02-1.436-.083l-.041-.042V7.718Zm-9.867-5.846L57.07.062l-.042-.041h-6.66l-.022.042 1.811 1.497-1.956 4.556h-.042l-1.873-4.66 1.79-1.393-.042-.042h-7.306l-.021.042 2.498 1.81 2.956 6.552v3.432l-2.31 2.018.04.063h7.994l.02-.063-2.539-1.851V8.82l3.206-6.948ZM28.887 13.938h6.703l.02-.063-2.102-1.706.396-1.726h3.268l.541 1.872-1.707 1.56.042.063h6.848l.021-.063-2.269-1.83L37.942 1.56 40.065.062 40.045 0h-8.098l-.02.062 2.081 1.415-2.81 10.568-2.352 1.83.041.063Zm5.517-5.513 1.248-4.223h.063l.957 4.223-.041.062h-2.165l-.063-.062ZM20.6 1.872 23.221.124l-.02-.062h-8.098l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063H26.97V8.175l-.062-.02-2.582 4.035H20.6V1.872ZM8.326 13.938l.021-.042-2.498-1.768V8.612s.916.042 1.436.042c4.372 0 5.496-1.83 5.496-4.181C12.78.853 10.22.02 8.097.02H.021L0 .063 2.623 1.81v10.36l-2.54 1.726.021.042h8.222ZM5.85 1.914l.042-.042c.479-.062.666-.041 1.436-.041 1.29 0 2.186.5 2.186 2.496 0 1.81-.687 2.35-2.165 2.35-.791 0-.978-.02-1.478-.062l-.02-.041v-4.66ZM111.005.073a.994.994 0 1 0-.002 1.988.994.994 0 0 0 .002-1.988Zm0 1.864a.87.87 0 1 1 0-1.74c.478 0 .871.392.871.87 0 .482-.393.87-.871.87Zm.435-1.025a.345.345 0 0 0-.342-.342h-.28a.186.186 0 0 0-.186.186v.746c0 .035.027.062.062.062a.064.064 0 0 0 .062-.062v-.248h.334l.171.283c.012.02.032.027.055.027.008 0 .019 0 .031-.007a.061.061 0 0 0 .019-.086l-.143-.24a.344.344 0 0 0 .217-.32Zm-.342.217h-.342V.756c0-.03.027-.062.062-.062h.28c.117 0 .218.101.218.218a.22.22 0 0 1-.218.217Z"/>
+</svg>
+
+                            </div>
+
+            <div class="deco-site-masthead__logo--small">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 112 14">
+  <path fill="currentColor" d="m105.631 1.872 2.622-1.748-.02-.062h-8.098l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063H112V8.175l-.062-.02-2.581 4.035h-3.726V1.872Zm-14.617 0L93.638.124l-.02-.062H85.52l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063h11.865V8.175l-.062-.02-2.582 4.035h-3.725V1.872ZM74.633 0l-.02.062 2.31 1.769v10.026l-2.31 2.018.02.063h7.993l.042-.063-2.54-1.851V1.83L82.772.062V0h-8.139ZM67.33 13.938c2.145 0 4.164-1.27 4.164-3.911 0-1.498-.937-3.058-3.122-3.453V6.47c1.603-.167 2.477-1.81 2.477-3.183 0-1.935-1.561-3.266-4.33-3.266h-8.097v.042l2.602 1.747v10.36l-2.54 1.726.021.042h8.826ZM64.439 1.914l.041-.042c.479-.062.479-.041 1.27-.041 1.374 0 1.915.665 1.915 1.976 0 .999-.479 1.789-1.915 1.789-.791 0-.791 0-1.27-.062l-.041-.042V1.914Zm0 5.804.041-.042c.541-.083.541-.062 1.416-.062 1.52 0 2.185.915 2.185 2.247 0 1.144-.624 2.059-2.165 2.059-.895 0-.895-.02-1.436-.083l-.041-.042V7.718Zm-9.867-5.846L57.07.062l-.042-.041h-6.66l-.022.042 1.811 1.497-1.956 4.556h-.042l-1.873-4.66 1.79-1.393-.042-.042h-7.306l-.021.042 2.498 1.81 2.956 6.552v3.432l-2.31 2.018.04.063h7.994l.02-.063-2.539-1.851V8.82l3.206-6.948ZM28.887 13.938h6.703l.02-.063-2.102-1.706.396-1.726h3.268l.541 1.872-1.707 1.56.042.063h6.848l.021-.063-2.269-1.83L37.942 1.56 40.065.062 40.045 0h-8.098l-.02.062 2.081 1.415-2.81 10.568-2.352 1.83.041.063Zm5.517-5.513 1.248-4.223h.063l.957 4.223-.041.062h-2.165l-.063-.062ZM20.6 1.872 23.221.124l-.02-.062h-8.098l-.02.062 2.31 1.748v10.047l-2.331 2.018.041.063H26.97V8.175l-.062-.02-2.582 4.035H20.6V1.872ZM8.326 13.938l.021-.042-2.498-1.768V8.612s.916.042 1.436.042c4.372 0 5.496-1.83 5.496-4.181C12.78.853 10.22.02 8.097.02H.021L0 .063 2.623 1.81v10.36l-2.54 1.726.021.042h8.222ZM5.85 1.914l.042-.042c.479-.062.666-.041 1.436-.041 1.29 0 2.186.5 2.186 2.496 0 1.81-.687 2.35-2.165 2.35-.791 0-.978-.02-1.478-.062l-.02-.041v-4.66ZM111.005.073a.994.994 0 1 0-.002 1.988.994.994 0 0 0 .002-1.988Zm0 1.864a.87.87 0 1 1 0-1.74c.478 0 .871.392.871.87 0 .482-.393.87-.871.87Zm.435-1.025a.345.345 0 0 0-.342-.342h-.28a.186.186 0 0 0-.186.186v.746c0 .035.027.062.062.062a.064.064 0 0 0 .062-.062v-.248h.334l.171.283c.012.02.032.027.055.027.008 0 .019 0 .031-.007a.061.061 0 0 0 .019-.086l-.143-.24a.344.344 0 0 0 .217-.32Zm-.342.217h-.342V.756c0-.03.027-.062.062-.062h.28c.117 0 .218.101.218.218a.22.22 0 0 1-.218.217Z"/>
+</svg>
+
+                            </div>
+                    </a>
+        <div class="deco-site-masthead__subnav">
+            
+<nav>
+    <ul class="deco-site-nav-secondary">
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/shows/broadway" title="Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Broadway Shows</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/news" title="News" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;News&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>News</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/jobs" title="Jobs" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Jobs&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Jobs</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://www.playbillder.com/" title="Build-Your-Own Playbill" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Build-Your-Own Playbill&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Build-Your-Own Playbill</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/clubseats" title="Win Free Tickets" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Win Free Tickets&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Win Free Tickets</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbillstore.com/" title="Playbill Store" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Store&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Playbill Store</span></a>            </li>
+            </ul>
+</nav>        </div>
+        <div class="deco-site-masthead__actions">
+            <button
+                type="button"
+                class="deco-site-masthead__button"
+                aria-label="Search"
+                @click="$store.site.toggleSearch()"
+                            >
+                <svg class="deco-site-masthead__icon deco-site-masthead__icon--search" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25" aria-hidden="true">
+  <path fill="currentColor" d="M15.755 14.755h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99 1.49-1.49-4.99-5Zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5Z"/>
+</svg>
+
+            </button>
+        </div>
+    </div>
+</header>
+        <div class="deco-site-header-expanded__nav">
+            <nav class="deco-site-nav-primary">
+        <section>
+        <div class="deco-site-nav-primary__section">
+            <h2 class="deco-site-nav-primary__title">What’s Playing on Broadway and Beyond</h2>
+            <ul class="contents">
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/shows/broadway" title="Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Broadway Shows</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/shows/offbroadway" title="Off-Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Off-Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Off-Broadway Shows</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/article/weekly-schedule-of-current-broadway-shows" title="Broadway Weekly Schedule" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Weekly Schedule&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Broadway Weekly Schedule</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003" title="Broadway Rush, Lotto, SRO Policies" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Rush, Lotto, SRO Policies&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Broadway Rush, Lotto, SRO Policies</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows" title="Upcoming Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Upcoming Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Upcoming Broadway Shows</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/discount" title="Playbill Ticket Discounts" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Ticket Discounts&quot;,&quot;main_nav_element&quot;:&quot;What\u2019s Playing on Broadway and Beyond&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Ticket Discounts</span></a>                </li>
+                            </ul>
+        </div>
+    </section>
+        <section>
+        <div class="deco-site-nav-primary__section">
+            <h2 class="deco-site-nav-primary__title">Playbill Editorial</h2>
+            <ul class="contents">
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/news" title="News — Broadway, Off-Broadway, and Beyond" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;News \u2014 Broadway, Off-Broadway, and Beyond&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>News — Broadway, Off-Broadway, and Beyond</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/category/special-features" title="Special Features" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Special Features&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Special Features</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/category/photos" title="Photo Galleries" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Photo Galleries&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Photo Galleries</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/category/video" title="Videos - My Life in the Theatre, Getting Ready, More" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Videos - My Life in the Theatre, Getting Ready, More&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Videos - My Life in the Theatre, Getting Ready, More</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/category/seth-rudetsky" title="Seth Rudetsky’s Column" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Seth Rudetsky\u2019s Column&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Seth Rudetsky’s Column</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/classicarts" title="Classic Arts" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Classic Arts&quot;,&quot;main_nav_element&quot;:&quot;Playbill Editorial&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Classic Arts</span></a>                </li>
+                            </ul>
+        </div>
+    </section>
+        <section>
+        <div class="deco-site-nav-primary__section">
+            <h2 class="deco-site-nav-primary__title">Industry Resources</h2>
+            <ul class="contents">
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/jobs" title="Jobs" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Jobs&quot;,&quot;main_nav_element&quot;:&quot;Industry Resources&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Jobs</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/grosses" title="Broadway Grosses" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Grosses&quot;,&quot;main_nav_element&quot;:&quot;Industry Resources&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Broadway Grosses</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/vault" title="Playbill Vault - Shows, Actors, and More" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Vault - Shows, Actors, and More&quot;,&quot;main_nav_element&quot;:&quot;Industry Resources&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Vault - Shows, Actors, and More</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/article/broadway-real-estate" title="Current and Future Broadway Theatre Bookings" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Current and Future Broadway Theatre Bookings&quot;,&quot;main_nav_element&quot;:&quot;Industry Resources&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Current and Future Broadway Theatre Bookings</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/article/upcoming-cast-recordings-com-171219" title="Upcoming Cast Recordings" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Upcoming Cast Recordings&quot;,&quot;main_nav_element&quot;:&quot;Industry Resources&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Upcoming Cast Recordings</span></a>                </li>
+                            </ul>
+        </div>
+    </section>
+        <section>
+        <div class="deco-site-nav-primary__section">
+            <h2 class="deco-site-nav-primary__title">More from Playbill</h2>
+            <ul class="contents">
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbillder.com/" title="Build-Your-Own Playbill" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Build-Your-Own Playbill&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Build-Your-Own Playbill</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/email-signup/playbill-discounts" title="Playbill Emails" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Emails&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Emails</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbillstore.com/" title="Playbill Store" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Store&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Store</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbilltravel.com/" title="Playbill Travel &amp; Cruises" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Travel &amp; Cruises&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Travel &amp; Cruises</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/playbill-podcast" title="Playbill Podcast" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Podcast&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Playbill Podcast</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/games" title="Games" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Games&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Games</span></a>                </li>
+                                <li>
+                                        
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--primary" href="https://playbill.com/ads" title="Advertise with Us" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Advertise with Us&quot;,&quot;main_nav_element&quot;:&quot;More from Playbill&quot;,&quot;nav_type&quot;:&quot;Burger&quot;}"><span>Advertise with Us</span></a>                </li>
+                            </ul>
+        </div>
+    </section>
+    </nav>
+        </div>
+    </div>
+    <div class="deco-site-header-expanded__backdrop"></div>
+</div></div>
+
+<div
+    x-intersect:leave.full="$store.site.isScrolled = true"
+    x-intersect:enter.full="$store.site.isScrolled = false"
+    class="deco-site-subheader"
+>
+    <div class="gutter-5 md:gutter-16">
+        
+<nav>
+    <ul class="deco-site-nav-secondary">
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/shows/broadway" title="Broadway Shows" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Broadway Shows&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Broadway Shows</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/news" title="News" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;News&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>News</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/jobs" title="Jobs" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Jobs&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Jobs</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://www.playbillder.com/" title="Build-Your-Own Playbill" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Build-Your-Own Playbill&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Build-Your-Own Playbill</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbill.com/clubseats" title="Win Free Tickets" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Win Free Tickets&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Win Free Tickets</span></a>            </li>
+                    <li>
+                                    
+    
+    
+        
+        
+        
+        
+            
+        
+        
+    <a class="deco-site-nav__node deco-site-nav__node--secondary" href="https://playbillstore.com/" title="Playbill Store" target="" data-dl-action="nav_click" data-dl-on="click" data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Store&quot;,&quot;main_nav_element&quot;:&quot;&quot;,&quot;nav_type&quot;:&quot;Horizontal&quot;}"><span>Playbill Store</span></a>            </li>
+            </ul>
+</nav>    </div>
+</div>
+
+<template x-teleport="body">
+    <div
+        x-show="$store.site.isSearchOpen"
+        x-trap.noscroll="$store.site.isSearchOpen"
+        x-cloak
+        class="deco-site-search"
+    >
+        <div id="search-popup" class="deco-site-search__popup" x-on:keyup.escape.window="$store.site.toggleSearch(false)">
+            <div id="search-popup-inner" class="deco-site-search__popup-inner">
+                <div id="search-container">
+                    <div id="search-input-container" class="deco-site-search__input-container">
+                        <div id="autocomplete" class="deco-site-search__autocomplete"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="search-close-container">
+                <div onclick="closeSearch()">
+                </div>
+            </div>
+        </div>
+        <div class="deco-site-search__overlay" x-on:click="$store.site.toggleSearch(false)"></div>
+    </div>
+</template>
+
+<!--/esi:include-->
+
+                <main id="content">
+            <div class="gutter-default">
+                    
+        <div class="py-5 md:pt-10 md:pb-20">
+            <a href="https://playbill.com/news" class="link-small">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.705 16.59 11.125 12l4.58-4.59L14.295 6l-6 6 6 6 1.41-1.41Z" fill="currentColor"/>
+</svg>
+
+                News
+            </a>
+        </div>
+        <div class="grid grid-cols-1 py-5 gap-8 items-center md:grid-cols-[2fr_3fr] md:gap-16 md:pt-0 md:pb-20">
+            <div class="flex flex-col gap-8 items-center text-center">
+                                    <a href="https://playbill.com/category/the-verdict" class="type-label-1 font-normal hover:text-gray-400">
+                        The Verdict
+                    </a>
+                                <h1 class="type-headline-1 font-semibold">Reviewers Sound Off on <em>The Reservoir</em> Off-Broadway</h1>
+                                    <div class="type-body-1 text-gray-400"><p>Noah Galvin, Caroline Aaron, Chip Zien, and more co-star in the Jake Brasch play at Atlantic Theater Company.</p></div>
+                                                    <p class="type-label-2 font-semibold">
+                                                    <span>February 25, 2026</span>
+                                                                            <span class="mx-2 inline-block align-middle size-1 rounded-full bg-black"></span>
+                                                                            <span>By Logan Culwell-Block</span>
+                                            </p>
+                            </div>
+                            <figure class="space-y-4 max-md:-mx-5 md:space-y-5">
+                    <img src="//assets.playbill.com/editorial/_decoArticleLeadImage/ReservoirDress-2793-2.jpg" width="970" height="693">
+                    <figcaption class="type-body-4 text-gray-300 max-md:px-5">
+                        Caroline Aaron and Noah Galvin in <em>The Reservoir</em>
+                        (Ahron R. Foster)
+                    </figcaption>
+                </figure>
+                    </div>
+
+        <hr class="border-gray-200 max-md:hidden"/>
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(768px,2fr)_1fr] py-5 md:py-20 justify-around">
+            <div class="@container w-full max-w-prose mx-auto space-y-10 md:space-y-16">
+                <div class="prose">
+    <p>Jake Brasch's&nbsp;<em><a data-crosslink href="https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026">The Reservoir</a></em> officially opened Off-Broadway via Atlantic Theater Company February 24, and the reviews are in. See what critics had to say about the production, set to continue through March 15, below.</p>
+<p>The cast features Noah Galvin (<em>The Good Doctor</em>) as Josh, Caroline Aaron (<em>The Marvelous Mrs. Maisel</em>) as Beverly, Heidi Armbruster (<em>Disgraced</em>) as Patricia, Peter Maloney (<em>The Thing</em>) as Hank, Mary Beth Peil (<em>Anastasia</em>) as Irene, Matthew Saldivar (<em>Grease</em>) as Hugo, and Chip Zien (<em>Harmony</em>) as Shrimpy. Casting is by The Telsey Office's Will Cantler and Destiny Lily.<br></p>
+<p>The work centers on Josh, who moves home to Denver to get sober while suffering from memory loss, confusion, and shame—predicaments that place him oddly in sync with his aging grandparents. Shelley Butler, who helmed the California bow, is also directing the Off-Broadway iteration. The play made its world premiere&nbsp;at Los Angeles' Geffen Playhouse.</p>
+<p><strong>Read the reviews below.</strong></p>
+<p><a href="https://1minutecritic.com/the-reservoir-review-noah-galvin-atlantic-theater-company/" target="_blank">1 Minute Critic (Matthew Wexler)</a></p>
+<p><a href="https://cititour.com/NYC_Broadway/The-Reservoir-Rises-to-Comedic-Heights/1355" target="_blank">CitiTour NYC (Brian Scott Lipton)</a></p>
+<p><a href="https://www.vulture.com/article/theater-review-bratsch-reservoir-barron-you-got-older.html" target="_blank">New York Magazine/Vulture (Jackson McHenry)</a>*</p>
+<p><a href="https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/" target="_blank">New York Stage Review (Frank Scheck)</a></p>
+<p><a href="https://www.nysun.com/article/a-giddy-spirit-makes-the-reservoir-worth-diving-in" target="_blank">New York Sun (Elysa Gardner)</a>*</p>
+<p><a href="https://newyorktheater.me/2026/02/24/the-reservoir-review/" target="_blank">New York Theater (Jonathan Mandell)</a></p>
+<p><a href="https://www.newyorktheatreguide.com/reviews/the-reservoir-off-broadway-review" target="_blank">New York Theatre Guide (Gillian Russo)</a></p>
+<p><a href="https://www.talkinbroadway.com/page/ob/02_24_26b.html" target="_blank">Talkin' Broadway (Howard Miller)</a></p>
+<p><a href="https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/" target="_blank">TheaterMania (Zachary Stewart)</a></p>
+<p><a href="https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/" target="_blank">The Wrap (Robert Hofler)</a>*</p>
+<p>*This review may require creating a free account or paid subscription.</p>
+<p><strong>Playbill will continue to update this list as reviews come in.</strong></p>
+<p>The production features scenic design by Takeshi Kata, costume design by Sara Ryung Clement, lighting design by Jiyoung Chang, and sound design and original music by Kate Marvin.<br></p>
+<p>Michelle Bosch serves as production stage manager.</p>
+<p>Visit <a href="https://atlantictheater.org/production/the-reservoir/#book" target="_blank">AtlanticTheater.org</a>.</p>
+</div>
+
+
+        <div>
+        
+
+<div
+    class="border-y border-gray-200 py-5 space-y-5 lg:py-10 lg:space-y-8"
+    x-data="{
+        isOpen: false,
+        previousSlide: 0,
+        totalSlides: 10,
+        dataLayerBase: {
+            gallery_name: 'Photo\u003A\u0020The\u0020Reservoir\u0020at\u0020Atlantic\u0020Theater\u0020Company',
+            gallery_type: 'Embedded',
+            advertising: 'no'
+        },
+        close() {
+            this.isOpen = false;
+        },
+        openTo(slide) {
+            const swiper = this.$refs.main?.swiper;
+            const didSlideChange = swiper && swiper.activeIndex !== slide;
+
+            if (swiper) {
+                swiper.slideTo(slide);
+            }
+
+            if (!didSlideChange) {
+                // Only push this event on initial open
+                this.pushGalleryEvent(swiper);
+            }
+
+            if (this.$refs.thumbs) {
+                this.$nextTick(() => this.$refs.thumbs.swiper.update());
+            }
+            this.isOpen = true;
+        },
+        pushGalleryEvent(swiper) {
+            const currentSlide = swiper.activeIndex;
+            const direction = currentSlide > this.previousSlide ? 'left' : 'right';
+
+            const dataLayerEventObject = {
+                ...this.dataLayerBase,
+                total_slides: this.totalSlides || swiper.slides.length,
+                slide_result_number: currentSlide + 1,
+                click_direction: direction
+            };
+
+            if (window.DataLayerEvent) {
+                new window.DataLayerEvent('editorial_gallery_click', dataLayerEventObject);
+            }
+
+            this.previousSlide = currentSlide;
+        }
+    }"
+>
+    <h2 class="type-body-1 font-normal">
+        Photo: <em>The Reservoir</em> at Atlantic Theater Company
+    </h2>
+    <div class="grid grid-cols-3 gap-1 sm:grid-cols-4 [&_img]:size-full [&_img]:object-cover">
+                    <button
+                type="button"
+                class="cursor-pointer col-span-full sm:col-span-3 sm:row-span-3 bg-gray-100"
+                x-on:click="openTo(0)"
+            >
+                <img src="//assets.playbill.com/editorial/_articleLeadImage/ReservoirDress.0523.2.jpg" width="970" height="546" loading="lazy">
+            </button>
+                            <button type="button" class="cursor-pointer relative bg-gray-100" x-on:click="openTo(1)">
+                <img src="//assets.playbill.com/editorial/_articleLeadImage/ReservoirDress.0205.2.jpg" width="970" height="546" loading="lazy">
+                            </button>
+                    <button type="button" class="cursor-pointer relative bg-gray-100" x-on:click="openTo(2)">
+                <img src="//assets.playbill.com/editorial/_articleLeadImage/ReservoirDress.0588.2.jpg" width="970" height="546" loading="lazy">
+                            </button>
+                    <button type="button" class="cursor-pointer relative bg-gray-100" x-on:click="openTo(0)">
+                <img src="//assets.playbill.com/editorial/_articleLeadImage/ReservoirDress.1545.2.jpg" width="970" height="546" loading="lazy">
+                                    <span class="flex flex-col p-2 gap-1 items-center justify-center absolute inset-0 bg-white/85 text-black hover:text-gray-400">
+                        <span class="flex items-center gap-2">
+                            <svg class="size-5 sm:size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 98.27">
+	<path fill="currentColor" d="M4.84 27.31h85.92a4.77 4.77 0 0 1 3.4 1.41 4.84 4.84 0 0 1 1.41 3.4v61.35a4.75 4.75 0 0 1-1.41 3.39 1.36 1.36 0 0 1-.25.22 4.67 4.67 0 0 1-3.18 1.19H4.81A4.81 4.81 0 0 1 0 93.47V32.12a4.77 4.77 0 0 1 1.41-3.4 4.83 4.83 0 0 1 3.4-1.41ZM32.15 0h85.92a4.77 4.77 0 0 1 3.4 1.41 4.84 4.84 0 0 1 1.41 3.4v61.35a4.75 4.75 0 0 1-1.41 3.39 1.09 1.09 0 0 1-.25.22A4.67 4.67 0 0 1 118 71h-5.38v-5.78h4.51V5.71H33.06v4.2h-5.75v-5.1a4.77 4.77 0 0 1 1.41-3.4A4.84 4.84 0 0 1 32.12 0ZM18.5 13.66h85.92a4.75 4.75 0 0 1 3.39 1.41 4.8 4.8 0 0 1 1.41 3.39v61.35a4.77 4.77 0 0 1-1.41 3.4 1.4 1.4 0 0 1-.25.22 4.67 4.67 0 0 1-3.18 1.19H99v-5.74h4.51V19.37H19.4v4.2h-5.75v-5.11a4.81 4.81 0 0 1 4.81-4.8ZM24.68 44a6.9 6.9 0 1 1-6.89 6.89A6.89 6.89 0 0 1 24.68 44Zm29 29.59 13.81-23.88 14.65 37.06H13.77v-4.59l5.74-.29 5.75-14.08 2.87 10.06h8.62l7.47-19.25 9.48 14.94ZM89.86 33H5.75v59.53h84.11V33Z" />
+</svg>
+
+                            <span class="font-semibold">11</span>
+                        </span>
+                        <span class="w-full uppercase font-sans-condensed text-sm leading-none">View All</span>
+                    </span>
+                            </button>
+            </div>
+    
+    <template x-teleport="body">
+        <div
+            class="fixed inset-0 size-full z-50 overflow-y-auto overscroll-contain pb-[50px] md:pb-[90px] touch-none"
+            x-show="isOpen"
+            x-cloak
+            @keydown.esc.window="close()"
+        >
+            <div class="fixed inset-0 bg-black/90" x-on:touchmove="$event.preventDefault()" x-on:click="close()"></div>
+            <button type="button" x-on:click="close()" class="p-4 fixed top-0 right-0 z-10 text-white cursor-pointer">
+                <svg class="size-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" fill="currentColor"/>
+</svg>
+
+                <span class="sr-only">Close</span>
+            </button>
+            <div class="relative flex flex-col grow gap-5 lg:gap-12 max-w-5xl mx-auto h-full p-5 lg:py-8">
+                <h2 class="type-body-1 font-normal text-white" aria-hidden="true">
+                    <span class="size-6 float-right ml-2 mb-2"></span>
+                    Photo: <em>The Reservoir</em> at Atlantic Theater Company
+                </h2>
+
+                <div class="relative grow swiper-container min-h-0">
+                    <div
+                        class="swiper h-full lg:[--swiper-navigation-sides-offset:--spacing(-12)]"
+                        x-ref="main"
+                        x-on:gallery-slide-change="pushGalleryEvent($event.detail)"
+                        x-swiper="{
+                            zoom: true,
+                            spaceBetween: 20,
+                            breakpoints: {
+                                640: {
+                                    zoom: false,
+                                    navigation: {
+                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.swiper-button-prev',
+                                    },
+                                },
+                            },
+                            on: {
+                                slideChange: (swiper) => {
+                                    swiper.el.dispatchEvent(new CustomEvent('gallery-slide-change', { detail: swiper, bubbles: true }));
+                                }
+                            }
+                        }"
+                    >
+                        <div class="swiper-wrapper">
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.0523.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Mary Beth Peil, Caroline Aaron, Noah Galvin, Chip Zien, and Peter Maloney in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.0205.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Heidi Armbruster and Noah Galvin in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.0588.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Peter Maloney, Mary Beth Peil, and Noah Galvin in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.1545.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Mary Beth Peil, Noah Galvin, Heidi Armbruster, Caroline Aaron, Peter<br />Maloney, and Chip Zien in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.1745.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Noah Galvin and Chip Zien in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.2793.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Caroline Aaron and Noah Galvin in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.3004.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Noah Galvin and Matthew Saldívar in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.4390.2.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Heidi Armbruster, Peter Maloney, Chip Zien, Caroline Aaron, and Noah Galvin in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.4948.1.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Noah Galvin in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                            <figure
+                                    class="swiper-slide flex flex-col gap-3"
+                                    x-data="{
+                                        expanded: false,
+                                        truncated: false,
+                                        clip: 0,
+                                        init() {
+                                            this.refreshClip()
+                                            this.refreshTruncated()
+                                            this.$watch('expanded', () => this.refreshClip())
+                                        },
+                                        refreshTruncated() {
+                                            this.expanded = false
+                                            this.truncated = this.$refs.caption?.scrollHeight > this.$refs.caption?.clientHeight
+                                        },
+                                        async refreshClip() {
+                                            await this.$nextTick()
+                                            if (this.$refs.caption && this.$refs.image) {
+                                                const bottomOfImage = this.$refs.image.getBoundingClientRect().bottom
+                                                const topOfCaption = this.$refs.caption.getBoundingClientRect().top
+
+                                                this.clip = bottomOfImage - (topOfCaption - 12)
+                                            }
+                                        }
+                                    }"
+                                    x-intersect:enter.once="refreshTruncated()"
+                                    x-on:resize.window="refreshTruncated()"
+                                >
+                                    <div x-ref="image" x-bind:style="`clip-path: inset(0 0 ${clip}px 0)`" class="grow min-h-0">
+                                        <div class="swiper-zoom-container h-full">
+                                            <img class="aspect-landscape-tall size-full object-contain" src="//assets.playbill.com/editorial/_imagePreview/ReservoirDress.5005.1.jpg" width="900" height="600" loading="lazy">
+                                        </div>
+                                    </div>
+                                                                            <figcaption class="space-y-1">
+                                                                                            <div class="relative h-10">
+                                                    <div x-ref="caption" class="absolute bottom-0 inset-x-0 text-white type-body-5 leading-tight" x-bind:class="{ 'line-clamp-2': !expanded }"><p>Peter Maloney, Mary Beth Peil, Noah Galvin, Caroline Aaron, and Chip Zien in <em>The Reservoir</em></p></div>
+                                                    <button
+                                                        type="button"
+                                                        x-on:click="expanded = !expanded"
+                                                        x-bind:aria-expanded="expanded"
+                                                        x-show="truncated"
+                                                        class="absolute flex items-center justify-center size-4 bg-white text-black rounded-full top-full right-0 aria-expanded:rotate-180"
+                                                        x-cloak
+                                                    >
+                                                        <svg class="-rotate-90 size-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                                                    </button>
+                                                </div>
+                                                                                                                                        <p class="text-gray-300 max-sm:text-sm type-body-5 leading-tight pr-6">By: Ahron R. Foster</p>
+                                                                                    </figcaption>
+                                                                    </figure>
+                                                    </div>
+                    </div>
+
+                    <div class="max-sm:hidden absolute top-0 left-0 w-full h-full">
+                        <button class="swiper-button-next xl:translate-x-[calc(100%+var(--swiper-navigation-sides-offset)+27px)]"></button>
+                        <button class="swiper-button-prev xl:-translate-x-[calc(100%+var(--swiper-navigation-sides-offset)+27px)]"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+    </div>
+
+                                    <div
+                        x-cloak
+                        x-init="
+                            const $block = $el.firstElementChild
+                            const $target = $el.parentElement.querySelector('.prose p:nth-of-type(2)')
+                            if ($block && $target) {
+                                $target.insertAdjacentElement('afterend', $block)
+                            }
+                        "
+                    >
+                        
+    
+    <aside class="border-y border-gray-200 max-md:-mx-5 max-md:px-5 my-10!">
+        
+
+
+<div class="flex flex-wrap gap-8 py-5 lg:py-16 lg:gap-16">
+            <a href="https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026" class="relative z-10 group self-start flex-1 min-w-72">
+                        <figure class="aspect-horizontal z-10">
+                <img  src="//assets.playbill.com/playbill-covers/_decoArticleLeadImage/Atlantic-Theater-Company-Logo.jpg" alt="Atlantic Theater Company Logo">
+            </figure>
+            <div class="absolute inset-0 z-20 bg-gradient-to-b from-black/0 from-50% to-black/50 pointer-events-none"></div>
+        </a>
+        <div class="flex flex-col justify-between gap-8 flex-1 min-w-72">
+        <div class="space-y-4">
+            <h3 class="type-headline-3">                <a href="https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026">Get Tickets for The Reservoir</a>
+            </h3>
+            <div class="type-body-2 text-black text-pretty">
+                
+            </div>
+        </div>
+        <div class="flex flex-wrap justify-start items-center gap-4">
+                            <a href="https://atlantictheater.org/production/the-reservoir/"
+                    class="button-filled max-sm:order-last"
+                    data-dl-action="article_cta_click"
+                    data-dl-on="click"
+                    data-dl-data="{&quot;event&quot;:&quot;article_cta_click&quot;,&quot;click_text&quot;:&quot;Buy Tickets&quot;,&quot;click_url&quot;:&quot;https:\/\/atlantictheater.org\/production\/the-reservoir\/&quot;,&quot;show_name&quot;:&quot;The Reservoir&quot;,&quot;click_type&quot;:&quot;buy_tickets_click&quot;}"
+                >Buy Tickets</a>
+                        <a href="https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026"
+                class="button-outline"
+                data-dl-action="article_cta_click"
+                data-dl-on="click"
+                data-dl-data="{&quot;event&quot;:&quot;article_cta_click&quot;,&quot;click_text&quot;:&quot;View Details&quot;,&quot;click_url&quot;:&quot;https:\/\/playbill.com\/production\/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026&quot;,&quot;show_name&quot;:&quot;The Reservoir&quot;,&quot;click_type&quot;:&quot;view_details_click&quot;}"
+            >View Details</a>
+        </div>
+    </div>
+</div>
+    </aside>
+
+                    </div>
+                            </div>
+            <div class="max-xl:hidden max-w-88">
+                    <!--esi:include src="/deco/esi/articleRightRail.twig" time="13" age="841"-->
+    <h2 class="type-headline-3 leading-none mb-8">Trending Articles</h2>
+    <ul class="border-t border-gray-200 divide-y divide-gray-200">
+                    <li
+                class="py-8"
+                x-data="{
+                    get visible() {
+                        const pageTitle = document.querySelector('h1').innerHTML.trim()
+                        const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                        return articleTitle !== pageTitle
+                    },
+                }"
+                x-show="visible"
+            >
+                
+
+<article class="relative flex gap-5">
+            <img
+            src="//assets.playbill.com/playbill-covers/_verticalListLarge/Upcoming-Broadway.jpg"
+            alt=""
+            class="w-[140px] h-auto aspect-[16/9] object-cover self-start"
+        />
+    
+                <h3 class="grow type-cta-2 leading-[1.2] font-semibold">
+                            <a href="/article/schedule-of-upcoming-and-announced-broadway-shows" class="hover:text-gray-400 before:absolute before:inset-0"><p>Schedule of Upcoming and Announced Broadway Shows</p></a>
+                    </h3>
+    </article>
+            </li>
+                    <li
+                class="py-8"
+                x-data="{
+                    get visible() {
+                        const pageTitle = document.querySelector('h1').innerHTML.trim()
+                        const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                        return articleTitle !== pageTitle
+                    },
+                }"
+                x-show="visible"
+            >
+                
+
+<article class="relative flex gap-5">
+            <img
+            src="//assets.playbill.com/editorial/_verticalListLarge/Rush-Lottery-Standing-Room-Bway_2025-10-07-154521_yiee.jpg"
+            alt=""
+            class="w-[140px] h-auto aspect-[16/9] object-cover self-start"
+        />
+    
+                <h3 class="grow type-cta-2 leading-[1.2] font-semibold">
+                            <a href="/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003" class="hover:text-gray-400 before:absolute before:inset-0"><p>Broadway Rush, Lottery, and Standing Room Only Policies</p></a>
+                    </h3>
+    </article>
+            </li>
+                    <li
+                class="py-8"
+                x-data="{
+                    get visible() {
+                        const pageTitle = document.querySelector('h1').innerHTML.trim()
+                        const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                        return articleTitle !== pageTitle
+                    },
+                }"
+                x-show="visible"
+            >
+                
+
+<article class="relative flex gap-5">
+            <img
+            src="//assets.playbill.com/editorial/_verticalListLarge/John-Andrew-Morrison-and-John-Cameron-Mitchell-in-OH-MARY-on-Broadway-photo-credit-Emilio-Madrid.jpg"
+            alt=""
+            class="w-[140px] h-auto aspect-[16/9] object-cover self-start"
+        />
+    
+                <h3 class="grow type-cta-2 leading-[1.2] font-semibold">
+                            <a href="/article/oh-mary-on-broadway-is-celebrating-abe-lincoln-with-5-tickets" class="hover:text-gray-400 before:absolute before:inset-0"><p><em>Oh, Mary!</em> on Broadway Is Celebrating Abe Lincoln With $5 Tickets<br /></p></a>
+                    </h3>
+    </article>
+            </li>
+                    <li
+                class="py-8"
+                x-data="{
+                    get visible() {
+                        const pageTitle = document.querySelector('h1').innerHTML.trim()
+                        const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                        return articleTitle !== pageTitle
+                    },
+                }"
+                x-show="visible"
+            >
+                
+
+<article class="relative flex gap-5">
+            <img
+            src="//assets.playbill.com/editorial/_verticalListLarge/5ad93488560d6a9d3fa38edabf0fe233-liza-minnelli-hr.jpg"
+            alt=""
+            class="w-[140px] h-auto aspect-[16/9] object-cover self-start"
+        />
+    
+                <h3 class="grow type-cta-2 leading-[1.2] font-semibold">
+                            <a href="/article/transport-group-will-celebrate-liza-minnellis-80th-birthday-with-starry-carnegie-hall-concert" class="hover:text-gray-400 before:absolute before:inset-0"><p>Transport Group Will Celebrate Liza Minnelli's 80th Birthday With Starry Carnegie Hall Concert</p></a>
+                    </h3>
+    </article>
+            </li>
+            </ul>
+
+<!--/esi:include-->
+
+                            
+        
+    <!-- Tag ID: 2026 Leaderboard 3 -->
+<div style="width:100%; display:flex; justify-content:center; position: sticky; top: 140px;">
+  <div id="div-gpt-ad-leaderboard-3" style="min-height:250px;"></div>
+</div>
+<script>
+  googletag.cmd.push(function () { googletag.display("div-gpt-ad-leaderboard-3"); });
+</script>
+
+
+            </div>
+        </div>
+
+        
+                    <div class="py-5 lg:py-20 space-y-5 lg:space-y-10 max-w-5xl mx-auto">
+                <h2 class="type-cta-2">Read more stories about</h2>
+                <hr class="border-gray-200"/>
+                <ul class="flex flex-wrap gap-5">
+                                            <li><a href="https://playbill.com/searchpage/search?q=The+Reservoir" class="link-tag">The Reservoir</a></li>
+                                    </ul>
+            </div>
+            </div>
+
+                
+        
+    <script>
+  (function () {
+    const SLOT_ID = "div-gpt-ad-leaderboard-1";
+    const MAX_TRIES = 80;     // ~8s @ 100ms
+    const INTERVAL_MS = 100;
+
+    let tries = 0;
+    let lastPCount = 0;
+    let stableTicks = 0;
+
+    const timer = setInterval(() => {
+      tries++;
+
+      // If it already exists, we're done
+      if (document.getElementById(SLOT_ID)) {
+        clearInterval(timer);
+        return;
+      }
+
+      // Article column in Deco templates
+      const article = document.querySelector(".max-w-prose");
+      if (!article) {
+        if (tries >= MAX_TRIES) clearInterval(timer);
+        return;
+      }
+
+      // Paragraphs are inside .prose blocks on these pages
+      const paras = Array.from(article.querySelectorAll(".prose p"));
+      if (paras.length < 4) {
+        if (tries >= MAX_TRIES) clearInterval(timer);
+        return;
+      }
+
+      // Wait until paragraph count is stable for a couple ticks
+      // (helps ensure x-init enhancements have been moved into the prose)
+      if (paras.length === lastPCount) stableTicks++;
+      else stableTicks = 0;
+
+      lastPCount = paras.length;
+
+      if (stableTicks < 2 && tries < MAX_TRIES) return;
+
+      clearInterval(timer);
+
+      // Create centered wrapper (matches your LB markup)
+      const lbWrap = document.createElement("div");
+      lbWrap.style.width = "100%";
+      lbWrap.style.display = "flex";
+      lbWrap.style.justifyContent = "center";
+      lbWrap.style.marginBottom = "2rem";
+
+      // Create the GPT slot container + reserve height so you can see it
+      const lbDiv = document.createElement("div");
+      lbDiv.id = SLOT_ID;
+      lbDiv.style.minHeight = "90px"; // 728x90 slot; adjust if you want 250px
+
+      lbWrap.appendChild(lbDiv);
+
+      // Insert after paragraph 4 (index 3)
+      paras[3].insertAdjacentElement("afterend", lbWrap);
+
+      // Display after the div exists in the DOM
+      window.googletag = window.googletag || { cmd: [] };
+      googletag.cmd.push(function () {
+        googletag.display(SLOT_ID);
+      });
+    }, INTERVAL_MS);
+  })();
+</script>
+
+    <!-- Tag ID: 2026 Leaderboard 2 -->
+<div style="width:100%; display:flex; justify-content:center;">
+  <div id="div-gpt-ad-leaderboard-2"></div>
+</div>
+<script>
+  googletag.cmd.push(function () { googletag.display("div-gpt-ad-leaderboard-2"); });
+</script>
+
+
+
+    <div class="gutter-default">
+            <!--esi:include src="/deco/esi/articleFooter.twig" time="51" age="0"-->
+    <div class="pt-10 lg:pt-20">
+        <h2 class="type-headline-1 sm:type-headline-2">More latest news</h2>
+        <ul class="mt-10 grid grid-cols-2 sm:grid-cols-1 max-sm:-mx-5 sm:gap-5 lg:grid-cols-2 lg:gap-8 xl:gap-16 max-sm:border-t max-sm:border-gray-200 lg:mt-12">
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/londons-mj-the-musical-closes-february-28" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/MJ_TOUR_08_01_24_0525_PJZEDIT_v002.jpg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/londons-mj-the-musical-closes-february-28"><p>London's <em>MJ the Musical</em> Closes February 28</p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">London News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/jodi-benson-will-be-the-witch-in-florida-into-the-woods" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/JB-ITW-Full-Cropped-1.jpg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/jodi-benson-will-be-the-witch-in-florida-into-the-woods"><p>Jodi Benson Will Be the Witch in Florida <em>Into the Woods</em></p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">Regional News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/vampire-pop-opera-blood-love-extends-off-broadway" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/Carey-Renee-Sharpe-and-the-cast-of-Blood_Love.jpg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/vampire-pop-opera-blood-love-extends-off-broadway"><p>Vampire Pop Opera <em>Blood/Love </em>Extends Off-Broadway</p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">Off-Broadway News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/sexual-misconduct-of-the-middle-classes-starring-hugh-jackman-and-ella-beatty-to-return-off-broadway" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/Misconduct_Emilio-Madrid_5856_2025-12-22-163842_atdu.jpg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/sexual-misconduct-of-the-middle-classes-starring-hugh-jackman-and-ella-beatty-to-return-off-broadway"><p><em>Sexual Misconduct of the Middle Classes</em>, Starring Hugh Jackman and Ella Beatty, to Return Off-Broadway</p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">Off-Broadway News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/oh-mary-on-broadway-is-celebrating-abe-lincoln-with-5-tickets" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/John-Andrew-Morrison-and-John-Cameron-Mitchell-in-OH-MARY-on-Broadway-photo-credit-Emilio-Madrid.jpg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/oh-mary-on-broadway-is-celebrating-abe-lincoln-with-5-tickets"><p><em>Oh, Mary!</em> on Broadway Is Celebrating Abe Lincoln With $5 Tickets<br /></p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">Broadway News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                            <li
+                    class="@container border-b border-gray-200 max-sm:p-5 max-sm:odd:border-r sm:pb-5 lg:pb-8 xl:pb-16"
+                    x-data="{
+                        get visible() {
+                            const pageTitle = document.querySelector('h1').innerHTML.trim()
+                            const articleTitle = this.$el.querySelector('h3 a').innerHTML.trim()
+
+                            return articleTitle !== pageTitle
+                        },
+                    }"
+                    x-show="visible"
+                >
+                    
+
+
+
+<article class="flex @max-sm:flex-col gap-4 @sm:gap-8 lg:@2xl:gap-16">
+                                    <a href="/article/lehman-trilogy-playwright-stefano-massinis-next-target-donald-trump" class="flex-none @sm:w-1/3 @sm:max-w-52">
+                    <img
+                        src="//assets.playbill.com/editorial/_verticalListLarge/IMG_89877E2A7332-1.jpeg"
+                        alt=""
+                        class="w-full h-auto aspect-landscape object-cover"
+                    />
+                </a>
+                        <div class="space-y-4">
+                                                    <h3 class="type-headline-3 leading-[1.1]">
+                        <a href="/article/lehman-trilogy-playwright-stefano-massinis-next-target-donald-trump"><p><em>Lehman Trilogy</em> Playwright Stefano Massini's Next Target: Donald Trump</p></a>
+                    </h3>
+                
+                                    <div class="type-body-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <span class="@max-sm:w-full">International News</span>
+                        
+                        
+                                            </div>
+                            </div>
+            </article>
+                </li>
+                    </ul>
+
+        <div class="border-t border-gray-200 -mt-px py-6 lg:py-10 lg:text-right">
+            <a href="/news" class="link-large">
+                See All Latest News
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.333 5 20 12m0 0-6.667 7M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            </a>
+        </div>
+    </div>
+<!--/esi:include-->
+    </div>
+    </main>
+
+                <!--esi:include src="/deco/esi/footer?&isMobile=" time="15" age="249621"-->
+
+
+<script type="module">!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)if("LINK"===e.tagName&&"modulepreload"===e.rel)r(e);else if(e.querySelectorAll)for(const o of e.querySelectorAll("link[rel=modulepreload]"))r(o)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerpolicy&&(r.referrerPolicy=e.referrerpolicy),"use-credentials"===e.crossorigin?r.credentials="include":"anonymous"===e.crossorigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();</script>
+<script type="module" src="/assets/deco/dist/main-DeNPT7zH.js" crossorigin onload="e=new CustomEvent(&#039;vite-script-loaded&#039;, {detail:{path: &#039;html/resources/deco/js/main.js&#039;}});document.dispatchEvent(e);"></script>
+<link href="/assets/deco/dist/vendor-CcXNC_Gu.js" rel="modulepreload" crossorigin>
+<link href="/assets/deco/dist/main-CQprTGL5.css" rel="stylesheet">
+<link href="/assets/deco/dist/vendor-styles-DdIscxXd.css" rel="stylesheet">
+
+
+
+
+<footer class="deco-site-footer deco-site-footer__separator">
+    <div class="gutter-default">
+        <div class="deco-site-footer__primary deco-site-footer__separator">
+
+            <div class="deco-site-footer__contact deco-site-footer__separator">
+                  <section class="deco-site-footer__newsletter">
+                              <h2 class="deco-site-footer__newsletter-heading">
+                  DON'T THROW AWAY YOUR SHOT
+                </h2>
+              
+                              <div class="type-body-2">Sign up for announcements and exclusive discounts on tickets to your favorite shows!</div>
+              
+              <form class="new-newsletter-form" id="newsletterForm-footer">
+    <div class="bsp-row">
+        <div data-bsp-form-message="#email-news-footer" data-bsp-form-message-options='{
+                                                "messages": {
+                                                    "valueMissing": "Email required.",
+                                                    "typeMismatch": "Format required a@b.c"
+                                                }
+                                            }'>
+        </div>
+        <div class="bsp-form-input bsp-form-input-email">
+            <input name="email-news-footer" id="email-news-footer" placeholder="Email Address" type="email" required="true"/>
+        </div>
+    </div>
+    <div class="bsp-row">
+        <div class="bsp-column-half">
+            <div data-bsp-form-message="#zip-news-footer" data-bsp-form-message-options='{
+                                                "messages": {
+                                                        "valueMissing": "Zip code",
+                                                        "patternMismatch": "12345"
+                                                }
+                                                }'>
+            </div>
+            <div class="bsp-form-input bsp-form-input-text">
+                <input name="zip-news-ca1f2223-d003-4de2-82b1-995d4fe57527" pattern="^\d{5}(-\d{4})?$" id="zip-news-2b3fe92c-1292-46f9-b0fd-7961802a104c" placeholder="Zip Code" type="text" required="true"/>
+            </div>
+        </div>
+        <div class="bsp-column-half newsletter-submit">
+            <div class="bsp-form-input bsp-form-input-submit">
+                <input type="submit" value="Sign Up"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    // Assuming isBird and listId are available in the environment
+    var isBirdFooter = "true"
+    var listIdFooter = "";  // Example value for listId
+
+    // Event listener for form submission
+    // Replace {{ block.id }} with the actual block ID in your generated HTML
+    var formFooter = document.getElementById('newsletterForm-footer');
+
+    if (formFooter) {
+        formFooter.addEventListener('submit', function (event) {
+            // Prevent default form submission
+            event.preventDefault();
+
+            // Get form input values specific to this form
+            let emailFooter = formFooter.querySelector('input[name*=email]').value;
+            let zipFooter = formFooter.querySelector('input[name*=zip]').value;
+
+            // Prepare the form data including isBird and listId
+            let formDataFooter = {
+                'email': emailFooter,
+                'zip': zipFooter,
+                'isBird': isBirdFooter,   // Add isBird to the form data
+                'listId': listIdFooter    // Add listId to the form data
+            };
+
+            // Perform the AJAX request
+            let fxhr = new XMLHttpRequest();
+            fxhr.open('GET', '/ajax/subscribeNewsletter.jsp?' + (new URLSearchParams(formDataFooter)).toString(), true);
+            fxhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            fxhr.onreadystatechange = function () {
+                if (fxhr.readyState === 4 && fxhr.status === 200) {
+                    var response = JSON.parse(fxhr.responseText);
+                    console.log(response);
+
+                    // Replace the form with a success message
+                    var formParentFooter = formFooter.parentNode;
+                    formParentFooter.removeChild(formFooter);
+                    formParentFooter.innerHTML = "<p>Thank You!<br>You have now been added to the list.</p>";
+                }
+            };
+
+            // Send the form data as a query string
+            fxhr.send(null);
+        });
+    }
+
+</script>
+          </section>
+        
+                <section class="deco-site-footer__social">
+          <a href="https://www.facebook.com/playbill/" class="deco-site-footer__social-icon" aria-label="Follow us on Facebook">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="m11.008 9 .444-2.896H8.674V4.225c0-.792.388-1.564 1.632-1.564h1.263V.194S10.423 0 9.327 0C7.039 0 5.543 1.387 5.543 3.897v2.208H3V9h2.543v7h3.13V9h2.335Z" fill="currentColor"/>
+</svg>
+
+            </a>
+          <a href="https://www.instagram.com/playbill/" class="deco-site-footer__social-icon" aria-label="Follow us on Instagram">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.997 1.442c2.138 0 2.39.01 3.231.047.782.034 1.203.165 1.485.275.372.143.64.318.918.597.282.28.454.546.597.918.11.282.24.707.275 1.485.038.843.047 1.097.047 3.231 0 2.138-.01 2.39-.047 3.231-.034.781-.165 1.203-.275 1.485-.143.371-.318.64-.597.918a2.459 2.459 0 0 1-.918.597c-.282.11-.707.24-1.485.275-.843.038-1.097.047-3.23.047-2.138 0-2.392-.01-3.232-.047-.781-.034-1.203-.165-1.485-.275a2.472 2.472 0 0 1-.918-.597 2.46 2.46 0 0 1-.597-.918c-.11-.282-.24-.707-.275-1.485-.038-.844-.047-1.097-.047-3.231 0-2.138.01-2.39.047-3.231.034-.782.165-1.203.275-1.485.144-.372.319-.64.597-.918a2.46 2.46 0 0 1 .918-.597c.282-.11.707-.24 1.485-.275.84-.038 1.094-.047 3.231-.047Zm0-1.44C5.825.001 5.553.01 4.7.047 3.85.086 3.266.223 2.76.42a3.905 3.905 0 0 0-1.42.925 3.92 3.92 0 0 0-.924 1.416C.219 3.27.08 3.85.044 4.7.006 5.556-.003 5.828-.003 8c0 2.172.01 2.444.047 3.297.037.85.175 1.434.372 1.94.206.529.478.976.925 1.42.444.443.89.718 1.415.921.51.197 1.091.335 1.941.372.853.038 1.125.047 3.297.047s2.444-.01 3.297-.047c.85-.037 1.434-.175 1.94-.372a3.911 3.911 0 0 0 1.416-.921 3.91 3.91 0 0 0 .922-1.416c.197-.51.334-1.09.372-1.94.037-.854.047-1.126.047-3.298s-.01-2.443-.047-3.297c-.038-.85-.175-1.434-.372-1.94a3.746 3.746 0 0 0-.916-1.422 3.91 3.91 0 0 0-1.415-.922c-.51-.197-1.09-.334-1.94-.372-.857-.04-1.13-.05-3.3-.05Z" fill="currentColor"/>
+    <path d="M7.997 3.892a4.11 4.11 0 0 0 0 8.219 4.11 4.11 0 0 0 0-8.22Zm0 6.775a2.666 2.666 0 1 1 0-5.332 2.666 2.666 0 0 1 0 5.332Zm5.231-6.937a.96.96 0 1 1-1.919-.001.96.96 0 0 1 1.92 0Z" fill="currentColor"/>
+</svg>
+
+            </a>
+          <a href="https://www.youtube.com/playbillvideo" class="deco-site-footer__social-icon" aria-label="Follow us on YouTube">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.838 4.801s-.157-1.103-.638-1.587c-.61-.638-1.29-.641-1.603-.678C11.36 2.373 8 2.373 8 2.373h-.006s-3.36 0-5.597.163c-.312.037-.994.04-1.603.678C.313 3.698.16 4.8.16 4.8s-.163 1.297-.163 2.59v1.213c0 1.294.16 2.59.16 2.59s.156 1.104.634 1.588c.61.638 1.41.616 1.765.685 1.282.122 5.441.16 5.441.16s3.363-.007 5.6-.167c.313-.037.994-.04 1.603-.678.481-.484.638-1.587.638-1.587s.16-1.294.16-2.59V7.391c0-1.294-.16-2.59-.16-2.59Zm-9.494 5.275V5.58l4.322 2.257-4.322 2.24Z" fill="currentColor"/>
+</svg>
+
+            </a>
+          <a href="https://www.tiktok.com/@playbill" class="deco-site-footer__social-icon" aria-label="Follow us on TikTok">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M11.378.001H8.682V10.9c0 1.298-1.037 2.365-2.328 2.365-1.29 0-2.327-1.067-2.327-2.365 0-1.276 1.014-2.32 2.258-2.365V5.798C3.543 5.845 1.33 8.094 1.33 10.9c0 2.829 2.26 5.1 5.047 5.1 2.789 0 5.048-2.295 5.048-5.101V5.31a6.244 6.244 0 0 0 3.572 1.206V3.781c-2.028-.07-3.619-1.74-3.619-3.78Z" fill="currentColor"/>
+</svg>
+
+            </a>
+                  </section>
+      </div>
+
+            <section class="deco-site-footer__nav deco-site-footer__separator">
+                  <div class="deco-site-footer__nav-section">
+            <h2 class="deco-site-footer__nav-title">
+              Playbill Sites
+            </h2>
+
+            <nav class="deco-site-footer__nav-items">
+                              <a href="https://www.playbillstore.com/"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Store&quot;,&quot;main_nav_element&quot;:&quot;Playbill Sites&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Playbill Store
+                </a>
+                              <a href="https://playbill.com/classicarts"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Classic Arts&quot;,&quot;main_nav_element&quot;:&quot;Playbill Sites&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Classic Arts
+                </a>
+                              <a href="https://www.playbillder.com/"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;PLAYBILLDER&quot;,&quot;main_nav_element&quot;:&quot;Playbill Sites&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  PLAYBILLDER
+                </a>
+                              <a href="https://playbilltravel.com/"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Travel&quot;,&quot;main_nav_element&quot;:&quot;Playbill Sites&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Playbill Travel
+                </a>
+                          </nav>
+          </div>
+                  <div class="deco-site-footer__nav-section">
+            <h2 class="deco-site-footer__nav-title">
+              Contact Playbill
+            </h2>
+
+            <nav class="deco-site-footer__nav-items">
+                              <a href="https://playbill.com/ads"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Advertise with Playbill&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Advertise with Playbill
+                </a>
+                              <a href="https://playbill.com/email-signup/playbill-discounts"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Playbill Emails&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Playbill Emails
+                </a>
+                              <a href="https://playbill.com/magazine"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Magazine Subscription&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Magazine Subscription
+                </a>
+                              <a href="https://playbill.com/article/playbill-rss-feeds"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;RSS&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  RSS
+                </a>
+                              <a href="https://playbill.com/article/site-map"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Site Map&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Site Map
+                </a>
+                              <a href="https://playbill.com/article/privacy-policy"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Privacy Policy&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Privacy Policy
+                </a>
+                              <a href="https://playbill.com/careers"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Careers at Playbill&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Careers at Playbill
+                </a>
+                              <a href="https://playbill.com/article/contact-us"
+                  class="deco-site-footer__nav-node"
+                  data-dl-action="nav_click"
+                  data-dl-on="click"
+                  data-dl-data="{&quot;event&quot;:&quot;nav_click&quot;,&quot;click_text&quot;:&quot;Contact Us&quot;,&quot;main_nav_element&quot;:&quot;Contact Playbill&quot;,&quot;nav_type&quot;:&quot;Footer&quot;}"
+                >
+                  Contact Us
+                </a>
+                          </nav>
+          </div>
+              </section>
+    </div>
+  </div>
+
+    <section class="deco-site-footer__secondary deco-site-footer__separator">
+      <nav class="deco-site-footer__secondary-nav">
+              </nav>
+
+      <p class="deco-site-footer__copyright">
+        Copyright 1991–2026 &copy; Playbill Inc. All Rights Reserved.
+      </p>
+  </section>
+</footer>
+<!--/esi:include-->
+        </div>
+
+        
+        <script type="application/ld+json">{"@context":"http://schema.org","@graph":[{"@type":"WebPage","author":{"@id":"#identity"},"copyrightHolder":{"@id":"#identity"},"copyrightYear":"2026","creator":{"@id":"#creator"},"dateCreated":"2026-02-25T09:35:30-05:00","dateModified":"2026-02-25T14:10:13-05:00","datePublished":"2026-02-25T09:56:00-05:00","description":"Noah Galvin, Caroline Aaron, Chip Zien, and more co-star in the Jake Brasch play at Atlantic Theater Company.","headline":"Reviewers Sound Off on The Reservoir Off-Broadway","image":{"@type":"ImageObject","url":"https://assets.playbill.com/editorial/ReservoirDress-2793-2.jpg"},"inLanguage":"en-us","mainEntityOfPage":"https://playbill.com/article/reviewers-sound-off-on-the-reservoir-off-broadway","name":"Reviewers Sound Off on The Reservoir Off-Broadway","publisher":{"@id":"#creator"},"url":"https://playbill.com/article/reviewers-sound-off-on-the-reservoir-off-broadway"},{"@id":"#identity","@type":"Organization"},{"@id":"#creator","@type":"Organization"},{"@type":"BreadcrumbList","description":"Breadcrumbs list","itemListElement":[{"@type":"ListItem","item":"https://playbill.com","name":"Playbill Home (Deco)","position":1},{"@type":"ListItem","item":"https://playbill.com/article/reviewers-sound-off-on-the-reservoir-off-broadway","name":"Reviewers Sound Off on The Reservoir Off-Broadway","position":2}],"name":"Breadcrumbs"}]}</script><script>window.FALLBACK_IMAGES = {
+    artist: "//assets.playbill.com/site/pb.Listing.Placeholder.ARTIST.V4.jpg",
+    production: "//assets.playbill.com/site/pb.Listing.Placeholder.PRODUCTION.V4.jpg",
+    tour: "//assets.playbill.com/site/pb.Listing.Placeholder.TOURING.V4.jpg",
+};
+window.ALGOLIA_INDEX_NAME = 'playbillcraft-beta' || 'playbillcraft-beta';
+window.isMobile = false;</script>
+    <!-- esi:stats replaced="9" --><!-- esi:stats origin="13" transform="51" type="desktop" --><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v67327c56f0bb4ef8b305cae61679db8f1769101564043" integrity="sha512-rdcWY47ByXd76cbCFzznIcEaCN71jqkWBBqlwhF1SY7KubdLKZiEGeP7AyieKZlGP9hbY/MhGrwXzJC/HulNyg==" data-cf-beacon='{"version":"2024.11.0","token":"4d394ee03f804ec1b0350511fc3549b5","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
