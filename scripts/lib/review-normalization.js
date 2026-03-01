@@ -1315,6 +1315,8 @@ function isProfileUrl(url) {
   if (/\/(?:author|writers?|contributors?|staff|columnists?)\/[^/]+\/?$/.test(lower)) return true;
   // ShowScore /people/ without domain (stored as relative paths)
   if (/^\/people\/[A-Z]/i.test(url)) return true;
+  // TheaterMania /shows/ pages are listing pages, not reviews
+  if (/theatermania\.com\/shows\//.test(lower)) return true;
   return false;
 }
 

@@ -456,6 +456,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     try { if (new URL(url).pathname === '/') continue; } catch (e) {}
     if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
     if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
+    // TheaterMania /shows/ pages are listing pages, not reviews
+    if (urlLower.includes('theatermania.com/shows/')) continue;
 
     // Skip if same as the current URL
     if (url === review.url) continue;
