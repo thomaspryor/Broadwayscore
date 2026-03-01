@@ -91,7 +91,12 @@
     "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
     "zack-off-broadway-2026/nyt-theater--unknown.json",
     "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
-    "aladdin-2014/ew--thom-geier.json"
+    "aladdin-2014/ew--thom-geier.json",
+    "all-my-sons-west-end-2025/broadwaynews--chloe-rabinowitz.json",
+    "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+    "all-my-sons-west-end-2025/theatermania--alex-wood.json",
+    "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json",
+    "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -651,7 +656,12 @@
     "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json",
     "wicked-2003/variety--charles-isherwood.json",
     "wicked-west-end-2021/variety--david-benedict.json",
-    "you-got-older-off-broadway-2026/nytimes--helen-shaw.json"
+    "you-got-older-off-broadway-2026/nytimes--helen-shaw.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "all-my-sons-west-end-2025/nbcnews--unknown.json",
+    "amaze-magic-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -697,7 +707,9 @@
       "the-reservoir-off-broadway-2026/nytg--allison-considine.json",
       "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
-      "aladdin-2014/ew--thom-geier.json"
+      "aladdin-2014/ew--thom-geier.json",
+      "all-my-sons-west-end-2025/guardian--arifa-akbar.json",
+      "all-my-sons-west-end-2025/timeout--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -770,7 +782,9 @@
       "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
-      "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json"
+      "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json",
+      "you-got-older-off-broadway-2026/nytimes--helen-shaw.json",
+      "aladdin-2014/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -947,7 +961,8 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/broadway-voice--gregory-g-allen.json",
       "data/review-texts/wicked-west-end-2021/billboard--unknown.json",
       "data/review-texts/wicked-west-end-2021/talkinbroadway--unknown.json",
-      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json"
+      "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
+      "data/review-texts/all-my-sons-west-end-2025/nbcnews--unknown.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -977,11 +992,14 @@
       "perfect-crime-off-broadway-1987/nytimes--d-j-r-bruckner.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "the-lion-king-1997/vulture--john-simon.json",
-      "zack-off-broadway-2026/nyt-theater--unknown.json"
+      "zack-off-broadway-2026/nyt-theater--unknown.json",
+      "all-my-sons-west-end-2025/broadwaynews--chloe-rabinowitz.json",
+      "all-my-sons-west-end-2025/theatermania--alex-wood.json",
+      "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "aladdin-2014/ew--thom-geier.json",
+  "lastProcessed": "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1147,6 +1165,17 @@
       "t": "2026-03-01T05:26:02.471Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:28:08.648Z",
+      "event": "bb-session",
+      "session": "3ce592f1",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-01T05:28:09.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
