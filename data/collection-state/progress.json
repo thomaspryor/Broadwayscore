@@ -67,7 +67,15 @@
     "moulin-rouge-2019/vulture--sara-holdren.json",
     "moulin-rouge-the-musical-west-end-2021/variety--rebecca-rubin.json",
     "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
-    "oh-mary-2024/hollywood-reporter--david-rooney.json"
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "perfect-crime-off-broadway-1987/nytimes--d-j-r-bruckner.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+    "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
+    "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
+    "the-dinosaurs-off-broadway-2026/nytg--caroline-cao.json",
+    "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -621,7 +629,9 @@
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
     "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
     "moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json",
-    "not-nobody-off-broadway-2026/nytg--unknown.json"
+    "not-nobody-off-broadway-2026/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "stranger-things-2024/nytimes--houman-barekat.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -656,7 +666,10 @@
       "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
       "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
-      "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
+      "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
+      "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
+      "the-dinosaurs-off-broadway-2026/nytg--caroline-cao.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -686,7 +699,9 @@
       "data/review-texts/kinky-boots-off-broadway-2026/vulture--christopher-bonanos.json",
       "kinky-boots-off-broadway-2026/vulture--christopher-bonanos.json",
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json"
+      "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
@@ -701,7 +716,9 @@
       "la-ternura-off-broadway-2025/broadwaynews--aa-cristi.json",
       "kinky-boots-off-broadway-2026/rollingstone--jon-blistein.json",
       "my-joy-is-heavy-off-broadway-2025/stageandcinema--chloe-rabinowitz.json",
-      "sweat-2017/cititour--brian-scott-lipton.json"
+      "sweat-2017/cititour--brian-scott-lipton.json",
+      "stranger-things-2024/nytimes--houman-barekat.json",
+      "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "brightdata": [
       "arcadia-west-end-2026/talkinbroadway--unknown.json",
@@ -715,7 +732,8 @@
       "the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
       "the-reservoir-off-broadway-2026/talkinbroadway--unknown.json",
       "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -917,11 +935,14 @@
       "moulin-rouge-2019/nytimes--ben-brantley.json",
       "moulin-rouge-2019/vulture--sara-holdren.json",
       "moulin-rouge-the-musical-west-end-2021/variety--rebecca-rubin.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json",
+      "perfect-crime-off-broadway-1987/nytimes--d-j-r-bruckner.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "oh-mary-2024/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -986,6 +1007,39 @@
     },
     {
       "t": "2026-03-01T04:55:07.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:04:39.628Z",
+      "event": "bb-session",
+      "session": "1ad09775",
+      "url": "https://www.nytimes.com/2025/04/22/theater/stranger-things-first-shadow-review-b"
+    },
+    {
+      "t": "2026-03-01T05:04:40.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:05:09.667Z",
+      "event": "bb-session",
+      "session": "a55b7741",
+      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
+    },
+    {
+      "t": "2026-03-01T05:05:10.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:07:17.764Z",
+      "event": "bb-session",
+      "session": "31563a12",
+      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
+    },
+    {
+      "t": "2026-03-01T05:07:18.763Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
