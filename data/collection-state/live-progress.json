@@ -1,20 +1,58 @@
 {
-  "updatedAt": "2026-03-01T22:08:51.700Z",
-  "processed": 84,
-  "failed": 66,
-  "successRate": "56.0%",
+  "updatedAt": "2026-03-01T22:24:11.503Z",
+  "processed": 95,
+  "failed": 65,
+  "successRate": "59.4%",
   "tierBreakdown": {
-    "playwright": 57,
-    "amp": 39,
+    "playwright": 56,
+    "amp": 43,
     "browserbase": 13,
-    "directCookies": 9,
-    "scrapingbee": 7,
+    "directCookies": 8,
+    "scrapingbee": 9,
     "brightdata": 3,
-    "archiveToday": 19,
-    "archive": 15
+    "archiveToday": 14,
+    "archive": 27
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-03-01T20:08:24.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-01T20:14:35.235Z",
+      "event": "bb-session",
+      "session": "5d9f0d1c",
+      "url": "https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.h"
+    },
+    {
+      "t": "2026-03-01T20:14:36.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-01T20:17:35.221Z",
+      "event": "bb-session",
+      "session": "2ac43f10",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-01T20:17:36.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-01T20:20:53.301Z",
+      "event": "bb-session",
+      "session": "97360237",
+      "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-tran"
+    },
+    {
+      "t": "2026-03-01T20:20:54.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
     {
       "t": "2026-03-01T20:32:17.680Z",
       "event": "bb-session",
@@ -82,49 +120,10 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-03-01T21:37:46.967Z",
+      "t": "2026-03-01T22:16:00.506Z",
       "event": "bb-session",
-      "session": "db09ac5f",
-      "url": "http://www.thewrap.com/play-goes-wrong-broadway-review-jj-abrams-british-farce-h"
-    },
-    {
-      "t": "2026-03-01T21:37:48.134Z",
-      "event": "bb-cookie-inject",
-      "domain": "thewrap.com"
-    },
-    {
-      "t": "2026-03-01T21:39:32.494Z",
-      "event": "bb-session",
-      "session": "9ed2f80f",
-      "url": "https://www.wsj.com/articles/the-porch-on-windy-hill-review-folk-songs-and-burie"
-    },
-    {
-      "t": "2026-03-01T21:39:33.810Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-01T21:43:23.937Z",
-      "event": "bb-session",
-      "session": "e8ddce3a",
-      "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/"
-    },
-    {
-      "t": "2026-03-01T21:43:25.053Z",
-      "event": "bb-cookie-inject",
-      "domain": "thewrap.com"
-    },
-    {
-      "t": "2026-03-01T22:06:54.348Z",
-      "event": "bb-session",
-      "session": "d1c7731e",
-      "url": "https://theatre.reviews/reviews-roundup/beautiful-little-fool-southwark-reviews/"
-    },
-    {
-      "t": "2026-03-01T22:07:48.122Z",
-      "event": "bb-session",
-      "session": "e7a1d9ab",
-      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+      "session": "e8a0c043",
+      "url": "https://www.thedailybeast.com/eddie-redmayne-excels-as-the-emcee-in-a-boozy-broa"
     }
   ]
 }
