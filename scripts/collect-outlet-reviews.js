@@ -192,7 +192,7 @@ function getExistingOutlets(showId, registry) {
 
 // URL path patterns that are clearly NOT reviews
 const NON_REVIEW_URL_PATTERNS = [
-  /box-?office/i, /\/grosses?\b/i, /\/gross-?report/i,
+  /[/-]box-?office/i, /\/grosses?\b/i, /\/gross-?report/i,
   /\/gallery\b/i, /\/photos?\b/i, /\/pictures?\b/i, /\/slideshow/i,
   /\/video\b/i, /\/videos\b/i, /\/podcast/i,
   /\/contributor/i, /\/author\//i, /\/writers?\//i, /\/staff\//i,
@@ -205,8 +205,8 @@ const NON_REVIEW_URL_PATTERNS = [
   /\/award/i, /\/tony-?award/i, /\/nomination/i, /tony-nomin/i, /roundtable/i,
   /\/ticket/i, /\/deals?\b/i, /\/discount/i, /\/lottery\b/i, /\/rush\b/i,
   /\/cast-?announcement/i, /\/casting\b/i,
-  // Closing/ending articles in URL slugs (HR uses /lifestyle/arts/ for both reviews and closing notices)
-  /broadway.{0,30}clos(e|es|ing)|clos(e|es|ing).{0,30}broadway/i, /-to-end-(its|their)-broadway/i,
+  // Closing/ending articles — only match "closing"/"closes" (not "close" which is Glenn Close's name)
+  /broadway.{0,30}clos(es|ing)|clos(es|ing).{0,30}broadway/i, /-to-end-(its|their)-broadway/i,
   // Listing/show-info pages (TheaterMania, WhatsOnStage, LondonTheatre)
   /\/shows\/[^/]+\/(broadway|west-end)/i, /\/show\/\d+-.*-tickets/i,
   // Wrong-medium content sections
@@ -219,8 +219,6 @@ const NON_REVIEW_URL_PATTERNS = [
   /\/business\/business-news\//i,
   // Listicles (Variety /lists/, EW ranked lists, etc.)
   /\/lists\//i,
-  // Lifestyle/style sections (WSJ style, not reviews)
-  /\/style\//i,
 ];
 
 /**
@@ -230,16 +228,15 @@ const NON_REVIEW_URL_PATTERNS = [
  */
 function looksLikeReview(url, serpTitle) {
   const urlLower = url.toLowerCase();
+  const combined = `${urlLower} ${(serpTitle || '').toLowerCase()}`;
 
-  // Block obvious non-review URL patterns
+  // If title or URL contains strong review signals, rescue from blocklist
+  const hasReviewSignal = /\breview\b/.test(combined) || /\bcritic\b/.test(combined) || /\bverdict\b/.test(combined);
+  if (hasReviewSignal) return true;
+
+  // Block obvious non-review URL patterns (only if no review signal)
   for (const pattern of NON_REVIEW_URL_PATTERNS) {
     if (pattern.test(urlLower)) return false;
-  }
-
-  // If title or URL contains strong review signals, definitely include
-  const combined = `${urlLower} ${(serpTitle || '').toLowerCase()}`;
-  if (/\breview\b/.test(combined) || /\bcritic\b/.test(combined) || /\bverdict\b/.test(combined)) {
-    return true;
   }
 
   // Otherwise, pass through — downstream quality gates catch false positives
