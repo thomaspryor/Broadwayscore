@@ -108,7 +108,16 @@
     "beautiful-little-fool-west-end-2026/timeout--tim-bano.json",
     "bigfoot-off-broadway-2026/theatermania--unknown.json",
     "blackout-songs-off-broadway-2026/theatermania--pete-hempstead.json",
-    "book-of-mormon-2011/guardian--ben-brantley.json"
+    "book-of-mormon-2011/guardian--ben-brantley.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "bug-2026/theatre-reviews-limited--david-roberts.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "chinese-republicans-off-broadway-2026/nbcnews--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -681,7 +690,8 @@
     "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
-    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
+    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+    "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -737,7 +747,13 @@
       "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
       "beautiful-little-fool-west-end-2026/timeout--tim-bano.json",
       "blackout-songs-off-broadway-2026/theatermania--pete-hempstead.json",
-      "book-of-mormon-2011/guardian--ben-brantley.json"
+      "book-of-mormon-2011/guardian--ben-brantley.json",
+      "buena-vista-social-club-2025/timeout--adam-feldman.json",
+      "bug-2026/theatre-reviews-limited--david-roberts.json",
+      "bug-2026/timeout--adam-feldman.json",
+      "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "chess-2025/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -797,7 +813,9 @@
       "the-lion-king-1997/nytimes--ben-brantley.json",
       "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
       "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
-      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json"
+      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
+      "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
+      "chinese-republicans-off-broadway-2026/nbcnews--unknown.json"
     ],
     "brightdata": [
       "arcadia-west-end-2026/talkinbroadway--unknown.json",
@@ -820,7 +838,8 @@
       "amaze-magic-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+      "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "bug-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -1034,11 +1053,12 @@
       "amaze-magic-off-broadway-2025/theatermania--rosemary-maggiore.json",
       "anonymous-off-broadway-2026/theatermania--unknown.json",
       "beautiful-little-fool-west-end-2026/theatermania--tanyel-gumushan.json",
-      "bigfoot-off-broadway-2026/theatermania--unknown.json"
+      "bigfoot-off-broadway-2026/theatermania--unknown.json",
+      "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1224,6 +1244,17 @@
     },
     {
       "t": "2026-03-01T05:39:59.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T05:58:52.746Z",
+      "event": "bb-session",
+      "session": "085a91ac",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-01T05:58:53.766Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
