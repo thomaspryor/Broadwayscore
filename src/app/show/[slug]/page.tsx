@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
-import { getAudienceBuzz, getShowScoreUrl } from '@/lib/data-audience';
+import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -403,6 +403,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
                     {/* Breakdown bar moved to Critic Reviews section */}
                   </div>
+                );
+              })()}
+
+              {/* Audience grade chip — separate from critic score */}
+              {audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz) && (() => {
+                const grade = getAudienceGrade(audienceBuzz.combinedScore);
+                return (
+                  <a href="#audience" className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${grade.color}15`, color: grade.color }}>
+                    <span className="opacity-60">Audience:</span> {grade.grade} · {grade.label}
+                  </a>
                 );
               })()}
             </div>
