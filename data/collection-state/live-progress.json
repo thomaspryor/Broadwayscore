@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-01T04:34:16.804Z",
-  "processed": 28,
-  "failed": 542,
-  "successRate": "4.9%",
+  "updatedAt": "2026-03-01T04:36:59.181Z",
+  "processed": 36,
+  "failed": 544,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 20,
     "amp": 22,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 5,
     "brightdata": 11,
     "archiveToday": 175,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -47,6 +47,17 @@
       "t": "2026-02-28T18:55:55.740Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T04:35:27.127Z",
+      "event": "bb-session",
+      "session": "5b1e3313",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-03-01T04:35:28.202Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
