@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T10:17:25.597Z",
-  "processed": 129,
-  "failed": 611,
-  "successRate": "17.4%",
+  "updatedAt": "2026-03-01T10:23:40.154Z",
+  "processed": 130,
+  "failed": 620,
+  "successRate": "17.3%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 37,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 5,
     "scrapingbee": 16,
-    "brightdata": 25,
-    "archiveToday": 182,
+    "brightdata": 26,
+    "archiveToday": 183,
     "archive": 37
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:39:58.263Z",
-      "event": "bb-session",
-      "session": "5d1096ca",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-01T05:39:59.508Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-01T05:58:52.746Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-01T10:17:16.187Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T10:18:41.380Z",
+      "event": "bb-session",
+      "session": "98e6a611",
+      "url": "https://www.wsj.com/articles/david-kirby-reviews-say-no-to-the-devil-the-life-an"
+    },
+    {
+      "t": "2026-03-01T10:18:42.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
