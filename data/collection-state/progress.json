@@ -75,7 +75,16 @@
     "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
     "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
     "the-dinosaurs-off-broadway-2026/nytg--caroline-cao.json",
-    "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-monsters-off-broadway-2026/nytg--amelia-merrill.json",
+    "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
+    "the-other-place-off-broadway-2026/nytg--austin-fimmano.json",
+    "the-reservoir-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "the-reservoir-off-broadway-2026/nytg--allison-considine.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -631,7 +640,8 @@
     "moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json",
     "not-nobody-off-broadway-2026/nytg--unknown.json",
     "paddington-the-musical-west-end-2025/variety--david-benedict.json",
-    "stranger-things-2024/nytimes--houman-barekat.json"
+    "stranger-things-2024/nytimes--houman-barekat.json",
+    "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -669,7 +679,12 @@
       "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
       "the-book-of-mormon-west-end-2024/nyt-theater--jonathan-mandell.json",
       "the-book-of-mormon-west-end-2024/nyt-theater--unknown.json",
-      "the-dinosaurs-off-broadway-2026/nytg--caroline-cao.json"
+      "the-dinosaurs-off-broadway-2026/nytg--caroline-cao.json",
+      "the-infinite-wrench-off-broadway-2025/nytg--unknown.json",
+      "the-monsters-off-broadway-2026/nytg--amelia-merrill.json",
+      "the-other-place-off-broadway-2026/nytg--austin-fimmano.json",
+      "the-reservoir-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "the-reservoir-off-broadway-2026/nytg--allison-considine.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -718,7 +733,9 @@
       "my-joy-is-heavy-off-broadway-2025/stageandcinema--chloe-rabinowitz.json",
       "sweat-2017/cititour--brian-scott-lipton.json",
       "stranger-things-2024/nytimes--houman-barekat.json",
-      "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "the-lion-king-1997/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "arcadia-west-end-2026/talkinbroadway--unknown.json",
@@ -733,7 +750,8 @@
       "the-reservoir-off-broadway-2026/talkinbroadway--unknown.json",
       "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
       "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -938,11 +956,12 @@
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/nytimes--erik-piepenburg.json",
       "perfect-crime-off-broadway-1987/nytimes--d-j-r-bruckner.json",
-      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "the-lion-king-1997/vulture--john-simon.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+  "lastProcessed": "the-reservoir-off-broadway-2026/nytg--allison-considine.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1040,6 +1059,39 @@
     },
     {
       "t": "2026-03-01T05:07:18.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:08:38.301Z",
+      "event": "bb-session",
+      "session": "c709d06c",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-01T05:08:39.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:10:37.486Z",
+      "event": "bb-session",
+      "session": "d3a377e1",
+      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
+    },
+    {
+      "t": "2026-03-01T05:10:38.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:12:15.519Z",
+      "event": "bb-session",
+      "session": "f7dd45ae",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
+    },
+    {
+      "t": "2026-03-01T05:12:16.618Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
