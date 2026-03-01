@@ -58,7 +58,11 @@
     "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
     "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
     "the-lion-king-west-end-2021/timeout--andrzej-lukowski.json",
-    "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json"
+    "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json",
+    "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+    "the-play-that-goes-wrong-west-end-2021/nydailynews--joe-dziemianowicz.json",
+    "wicked-2003/theatermania--barbara-siegel.json",
+    "wicked-west-end-2021/nydailynews--joe-neumaier.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -111,7 +115,13 @@
     "operation-mincemeat-west-end-2024/thewrap--robert-hofler.json",
     "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
     "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
-    "sweetmeats-west-end-2026/timeout-london--unknown.json"
+    "sweetmeats-west-end-2026/timeout-london--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
+    "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json",
+    "the-play-that-goes-wrong-west-end-2021/newsday--linda-winer.json",
+    "the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
+    "titanique-west-end-2024/thewrap--robert-hofler.json",
+    "titanique-west-end-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -152,7 +162,11 @@
       "stranger-things-the-first-shadow-west-end-2023/bbc-news--neil-armstrong.json",
       "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
       "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
-      "the-book-of-mormon-west-end-2024/nydailynews--unknown.json"
+      "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
+      "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+      "the-play-that-goes-wrong-west-end-2021/nydailynews--joe-dziemianowicz.json",
+      "wicked-2003/theatermania--barbara-siegel.json",
+      "wicked-west-end-2021/nydailynews--joe-neumaier.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -217,7 +231,9 @@
       "mamma-mia-west-end-2021/vulture--jackson-mchenry.json",
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
       "mamma-mia-west-end-2021/timeout--adam-feldman.json",
-      "the-lion-king-west-end-2021/timeout--andrzej-lukowski.json"
+      "the-lion-king-west-end-2021/timeout--andrzej-lukowski.json",
+      "the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
+      "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json"
     ],
     "scrapingbee": [
       "bug-2026/cbsnews--shania-russell.json",
@@ -236,7 +252,8 @@
       "data/review-texts/maggots-west-end-2026/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/man-and-boy-west-end-2026/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
-      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json"
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+      "data/review-texts/the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
@@ -257,7 +274,7 @@
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json",
+  "lastProcessed": "wicked-west-end-2021/nydailynews--joe-neumaier.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -423,6 +440,39 @@
       "t": "2026-03-01T21:29:42.441Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T21:37:46.967Z",
+      "event": "bb-session",
+      "session": "db09ac5f",
+      "url": "http://www.thewrap.com/play-goes-wrong-broadway-review-jj-abrams-british-farce-h"
+    },
+    {
+      "t": "2026-03-01T21:37:48.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-03-01T21:39:32.494Z",
+      "event": "bb-session",
+      "session": "9ed2f80f",
+      "url": "https://www.wsj.com/articles/the-porch-on-windy-hill-review-folk-songs-and-burie"
+    },
+    {
+      "t": "2026-03-01T21:39:33.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T21:43:23.937Z",
+      "event": "bb-session",
+      "session": "e8ddce3a",
+      "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/"
+    },
+    {
+      "t": "2026-03-01T21:43:25.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
