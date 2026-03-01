@@ -28,7 +28,13 @@
     "bug-2026/broadwaynews--logan-culwell-block.json",
     "bug-2026/indiewire--ben-travers.json",
     "bug-2026/newsday--matthew-chayes.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--adam-feldman.json",
+    "chess-2025/broadwaynews--michael-abourizk.json",
+    "death-becomes-her-2024/broadwaynews--brittani-samuel.json",
+    "death-becomes-her-2024/nydailynews--chris-jones.json",
+    "dracula-west-end-2025/new-york-sun--elysa-gardner.json",
+    "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -61,7 +67,11 @@
     "arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json",
     "buena-vista-social-club-2025/deadline--greg-evans.json",
     "bug-2026/cbsnews--shania-russell.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
+    "deep-azure-globe-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "hamilton-west-end-2021/deadline--jeremy-gerard.json",
+    "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -81,7 +91,12 @@
       "book-of-mormon-2011/ew--thom-geier.json",
       "bug-2026/broadwaynews--logan-culwell-block.json",
       "bug-2026/newsday--matthew-chayes.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout--adam-feldman.json",
+      "chess-2025/broadwaynews--michael-abourizk.json",
+      "death-becomes-her-2024/broadwaynews--brittani-samuel.json",
+      "death-becomes-her-2024/nydailynews--chris-jones.json",
+      "dracula-west-end-2025/new-york-sun--elysa-gardner.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -105,7 +120,9 @@
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json",
       "the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json",
       "data/review-texts/buena-vista-social-club-2025/deadline--greg-evans.json",
-      "buena-vista-social-club-2025/deadline--greg-evans.json"
+      "buena-vista-social-club-2025/deadline--greg-evans.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -152,11 +169,12 @@
       "shadowlands-west-end-2026/nytimes--naveen-kumar.json",
       "stranger-things-the-first-shadow-west-end-2023/nytimes--houman-barekat.json",
       "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
-      "titanique-west-end-2024/nytimes--elisabeth-vincentelli.json"
+      "titanique-west-end-2024/nytimes--elisabeth-vincentelli.json",
+      "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json"
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+  "lastProcessed": "hamilton-west-end-2021/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -289,6 +307,17 @@
       "t": "2026-03-01T20:50:46.519Z",
       "event": "bb-cookie-inject",
       "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-03-01T20:56:03.749Z",
+      "event": "bb-session",
+      "session": "19068d43",
+      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
+    },
+    {
+      "t": "2026-03-01T20:56:04.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

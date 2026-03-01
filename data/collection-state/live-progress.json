@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T20:54:18.530Z",
-  "processed": 29,
-  "failed": 31,
-  "successRate": "48.3%",
+  "updatedAt": "2026-03-01T21:05:18.809Z",
+  "processed": 35,
+  "failed": 35,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 16,
-    "amp": 22,
+    "playwright": 21,
+    "amp": 24,
     "browserbase": 13,
     "directCookies": 5,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 6,
-    "archive": 11
+    "archive": 12
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-01T19:52:21.976Z",
-      "event": "bb-session",
-      "session": "d161d614",
-      "url": "http://www.vulture.com/2015/08/theater-review-hamilton.html"
-    },
-    {
-      "t": "2026-03-01T19:52:23.103Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
     {
       "t": "2026-03-01T20:02:04.099Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-01T20:50:46.519Z",
       "event": "bb-cookie-inject",
       "domain": "indiewire.com"
+    },
+    {
+      "t": "2026-03-01T20:56:03.749Z",
+      "event": "bb-session",
+      "session": "19068d43",
+      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
+    },
+    {
+      "t": "2026-03-01T20:56:04.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
