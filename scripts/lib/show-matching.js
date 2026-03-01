@@ -723,5 +723,6 @@ module.exports = {
   titleToSlug,
   titleWordsMatch,
   titleWordsMatchWithConfidence,
+  TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };

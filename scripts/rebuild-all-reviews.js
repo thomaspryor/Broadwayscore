@@ -33,6 +33,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { titleWordsMatch, TITLE_GENERIC_WORDS } = require('./lib/show-matching');
 
 // Load outlet registry for cross-market guard + nonReview recovery
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -1501,20 +1502,6 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
-      // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
-      if (data.wrongProduction === true && data.wrongProductionNote
-          && data.wrongProductionNote.includes('URL contains year')
-          && (showCat === 'west-end' || showCat === 'off-broadway')) {
-        data.wrongProduction = false;
-        data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
-        data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
-        delete data.wrongProductionNote;
-        stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
-        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-        // Fall through — don't skip
-      }
-
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
@@ -1529,6 +1516,11 @@ showDirs.forEach(showId => {
       if (data.wrongShow === true) {
         if (data.wrongShowReason) {
           // Documented evidence — keep excluded
+          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+          return;
+        }
+        // Block recovery when content verification confirmed wrong article
+        if (data.contentVerification?.wrongArticle === true) {
           stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
           return;
         }
@@ -1904,11 +1896,10 @@ showDirs.forEach(showId => {
       // When they scrape reviews for "Heathers" or "The Other Place", they may pull reviews from
       // prior productions (2014, 2013, etc.) and file them under the new show directory.
       // These reviews typically have NO publishDate. The URL often contains the actual review year.
-      // If URL year is >2 years from show opening, flag as wrongProduction.
+      // Category-aware tolerance: Broadway=2yr, OB/WE=5yr (transfers from fringe/regional are common).
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
-      // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
-      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
-          && showCat !== 'west-end' && showCat !== 'off-broadway') {
+      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction) {
+        const urlYearTolerance = (showCat === 'west-end' || showCat === 'off-broadway') ? 5 : 2;
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
         const yearMatches = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/g);
@@ -1919,13 +1910,37 @@ showDirs.forEach(showId => {
           if (urlYears.length > 0) {
             const closestYear = urlYears.reduce((best, y) =>
               Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
-            if (Math.abs(closestYear - showYear) > 2) {
-              console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} — likely wrong production`);
+            if (Math.abs(closestYear - showYear) > urlYearTolerance) {
+              console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} (tolerance=${urlYearTolerance}) — likely wrong production`);
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
               fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
               return;
+            }
+          }
+        }
+      }
+
+      // Title-mention guard: dateless SERP/aggregator reviews must mention the show title
+      // Only for multi-word titles (single-word/generic titles have too many false positives)
+      // LOG-ONLY on first run — review flagged list before enabling writes
+      if (!data.publishDate && !data.wrongShow && !data.wrongProduction
+          && ['serp-discovery', 'bww-roundup', 'dtli', 'playbill-verdict'].includes(data.source)) {
+        const showTitle = showTitleMap[showId];
+        if (showTitle) {
+          const titleWords = showTitle.toLowerCase().split(/[\s,]+/)
+            .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+          if (titleWords.length >= 2) {  // Skip single-word/generic titles
+            const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '');
+            if (text.length >= 500 && !titleWordsMatch(showTitle, text)) {
+              console.log(`  [TITLE-MENTION] ${showId}/${file}: text (${text.length} chars) does not mention "${showTitle}"`);
+              stats.titleMentionFlagged = (stats.titleMentionFlagged || 0) + 1;
+              // LOG ONLY — enable writes after manual review of flagged list
+              // data.wrongShow = true;
+              // data.wrongShowReason = `Title-mention guard: text does not mention show title`;
+              // fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              // return;
             }
           }
         }
