@@ -1,48 +1,47 @@
 {
   "processed": [
-    "deep-azure-globe-west-end-2026/british-theatre-guide--unknown.json",
-    "deep-azure-globe-west-end-2026/everything-theatre--unknown.json",
-    "deep-azure-globe-west-end-2026/london-theatre--unknown.json",
-    "deep-azure-globe-west-end-2026/the-reviews-hub--unknown.json",
-    "deep-azure-globe-west-end-2026/timeout-london--unknown.json",
-    "deep-azure-globe-west-end-2026/whatsonstage--unknown.json"
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "into-the-woods-west-end-2025/london-theatre--unknown.json",
+    "into-the-woods-west-end-2025/london-unattached--unknown.json",
+    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+    "into-the-woods-west-end-2025/standard--unknown.json",
+    "into-the-woods-west-end-2025/telegraph--unknown.json",
+    "into-the-woods-west-end-2025/thestage--unknown.json",
+    "into-the-woods-west-end-2025/timeout-london--unknown.json",
+    "into-the-woods-west-end-2025/whatsonstage--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
   ],
   "failed": [
-    "deep-azure-globe-west-end-2026/thestage--unknown.json"
+    "into-the-woods-west-end-2025/broadwayworld--unknown.json",
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "into-the-woods-west-end-2025/indiewire--ryan-lattanzio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "deep-azure-globe-west-end-2026/british-theatre-guide--unknown.json",
-      "deep-azure-globe-west-end-2026/everything-theatre--unknown.json",
-      "deep-azure-globe-west-end-2026/london-theatre--unknown.json",
-      "deep-azure-globe-west-end-2026/the-reviews-hub--unknown.json",
-      "deep-azure-globe-west-end-2026/timeout-london--unknown.json",
-      "deep-azure-globe-west-end-2026/whatsonstage--unknown.json"
+      "into-the-woods-west-end-2025/london-theatre--unknown.json",
+      "into-the-woods-west-end-2025/london-unattached--unknown.json",
+      "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+      "into-the-woods-west-end-2025/standard--unknown.json",
+      "into-the-woods-west-end-2025/telegraph--unknown.json",
+      "into-the-woods-west-end-2025/thestage--unknown.json",
+      "into-the-woods-west-end-2025/timeout-london--unknown.json",
+      "into-the-woods-west-end-2025/whatsonstage--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json"
+    "scrapingbee": [
+      "into-the-woods-west-end-2025/independent--unknown.json"
     ],
+    "brightdata": [
+      "into-the-woods-west-end-2025/broadwayworld--unknown.json"
+    ],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-03-01T15:55:23.747Z",
-  "lastProcessed": "deep-azure-globe-west-end-2026/whatsonstage--unknown.json",
-  "log": [
-    {
-      "t": "2026-03-01T15:56:41.438Z",
-      "event": "bb-session",
-      "session": "1ef71a4f",
-      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
-    },
-    {
-      "t": "2026-03-01T15:56:42.871Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    }
-  ]
+  "startTime": "2026-03-01T15:55:50.511Z",
+  "lastProcessed": "into-the-woods-west-end-2025/indiewire--ryan-lattanzio.json",
+  "log": []
 }
