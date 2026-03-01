@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T05:26:42.992Z",
-  "processed": 92,
-  "failed": 558,
-  "successRate": "14.2%",
+  "updatedAt": "2026-03-01T05:36:08.206Z",
+  "processed": 97,
+  "failed": 563,
+  "successRate": "14.7%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 44,
     "amp": 32,
     "browserbase": 2,
     "directCookies": 2,
     "scrapingbee": 12,
-    "brightdata": 15,
-    "archiveToday": 175,
-    "archive": 28
+    "brightdata": 17,
+    "archiveToday": 176,
+    "archive": 31
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-01T04:55:06.584Z",
-      "event": "bb-session",
-      "session": "2803f47e",
-      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
-    },
-    {
-      "t": "2026-03-01T04:55:07.742Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:04:39.628Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-01T05:26:02.471Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:28:08.648Z",
+      "event": "bb-session",
+      "session": "3ce592f1",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-03-01T05:28:09.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
