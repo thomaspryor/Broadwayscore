@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-01T17:32:20.261Z",
-    "totalFlagged": 81,
+    "generatedAt": "2026-03-01T18:27:44.522Z",
+    "totalFlagged": 88,
     "reasons": {
       "possible-tour-fulltext": 36,
-      "borderline-rave": 42,
-      "originalScore-llm-conflict": 2,
-      "both-thumbs-disagree-with-llm": 1
+      "borderline-rave": 46,
+      "originalScore-llm-conflict": 3,
+      "both-thumbs-disagree-with-llm": 3
     }
   },
   "reviews": [
@@ -22,7 +22,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:12.548Z"
+      "flaggedAt": "2026-03-01T18:26:41.825Z"
     },
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -36,7 +36,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:12.585Z"
+      "flaggedAt": "2026-03-01T18:26:41.895Z"
     },
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -50,7 +50,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:30:12.605Z"
+      "flaggedAt": "2026-03-01T18:26:41.923Z"
     },
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -64,7 +64,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:12.622Z"
+      "flaggedAt": "2026-03-01T18:26:41.948Z"
     },
     {
       "showId": "700-sundays-2013",
@@ -78,7 +78,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:12.856Z"
+      "flaggedAt": "2026-03-01T18:26:42.326Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -92,7 +92,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-01T17:30:14.972Z"
+      "flaggedAt": "2026-03-01T18:26:43.648Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -106,7 +106,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:23.035Z"
+      "flaggedAt": "2026-03-01T18:26:46.204Z"
     },
     {
       "showId": "be-more-chill-2019",
@@ -120,7 +120,21 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:30:29.609Z"
+      "flaggedAt": "2026-03-01T18:26:49.194Z"
+    },
+    {
+      "showId": "born-yesterday-2011",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "borderline-rave",
+      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 9,
+      "flaggedAt": "2026-03-01T18:26:50.734Z"
     },
     {
       "showId": "bright-star-2016",
@@ -134,7 +148,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-03-01T17:30:33.456Z"
+      "flaggedAt": "2026-03-01T18:26:50.973Z"
     },
     {
       "showId": "bright-star-2016",
@@ -148,7 +162,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-01T17:30:33.857Z"
+      "flaggedAt": "2026-03-01T18:26:51.066Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -162,7 +176,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:34.071Z"
+      "flaggedAt": "2026-03-01T18:26:51.100Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -176,7 +190,35 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:30:34.453Z"
+      "flaggedAt": "2026-03-01T18:26:51.236Z"
+    },
+    {
+      "showId": "carousel-2018",
+      "outletId": "variety",
+      "criticName": "Marilyn Stasio",
+      "reason": "borderline-rave",
+      "detail": "LLM=81 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 81,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 9,
+      "flaggedAt": "2026-03-01T18:26:52.540Z"
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "outletId": "ap",
+      "criticName": "Michael Kuchwara",
+      "reason": "borderline-rave",
+      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 9,
+      "flaggedAt": "2026-03-01T18:26:57.440Z"
     },
     {
       "showId": "follies-2011",
@@ -190,7 +232,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:30:52.264Z"
+      "flaggedAt": "2026-03-01T18:26:58.751Z"
     },
     {
       "showId": "follies-2011",
@@ -204,7 +246,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:30:52.264Z"
+      "flaggedAt": "2026-03-01T18:26:58.751Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -218,7 +260,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:30:53.289Z"
+      "flaggedAt": "2026-03-01T18:26:59.687Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -232,7 +274,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:30:58.592Z"
+      "flaggedAt": "2026-03-01T18:27:02.235Z"
     },
     {
       "showId": "illinoise-2024",
@@ -246,7 +288,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:08.423Z"
+      "flaggedAt": "2026-03-01T18:27:06.032Z"
     },
     {
       "showId": "indecent-2017",
@@ -260,7 +302,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:08.809Z"
+      "flaggedAt": "2026-03-01T18:27:06.560Z"
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "outletId": "timeout-london",
+      "criticName": "unknown",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"1/5 stars\" (=20, bucket=negative) vs LLM 93 (bucket=positive, conf=high)",
+      "llmScore": 93,
+      "llmBucket": "Rave",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-03-01T18:27:06.963Z"
     },
     {
       "showId": "jitney-2017",
@@ -274,7 +330,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 10,
-      "flaggedAt": "2026-03-01T17:31:09.678Z"
+      "flaggedAt": "2026-03-01T18:27:07.763Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -288,7 +344,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:09.975Z"
+      "flaggedAt": "2026-03-01T18:27:08.167Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -302,7 +358,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:12.923Z"
+      "flaggedAt": "2026-03-01T18:27:10.937Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -316,7 +372,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:15.243Z"
+      "flaggedAt": "2026-03-01T18:27:11.522Z"
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
@@ -330,7 +386,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:15.366Z"
+      "flaggedAt": "2026-03-01T18:27:11.575Z"
     },
     {
       "showId": "mamma-mia-2025",
@@ -344,7 +400,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:18.207Z"
+      "flaggedAt": "2026-03-01T18:27:12.858Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -358,7 +414,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:20.526Z"
+      "flaggedAt": "2026-03-01T18:27:13.479Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -372,7 +428,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:20.618Z"
+      "flaggedAt": "2026-03-01T18:27:13.498Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -386,7 +442,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:20.629Z"
+      "flaggedAt": "2026-03-01T18:27:13.506Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -400,7 +456,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:25.644Z"
+      "flaggedAt": "2026-03-01T18:27:15.497Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -414,7 +470,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:25.738Z"
+      "flaggedAt": "2026-03-01T18:27:15.511Z"
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
@@ -428,7 +484,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:26.399Z"
+      "flaggedAt": "2026-03-01T18:27:15.731Z"
     },
     {
       "showId": "mrs-warrens-profession-2010",
@@ -442,7 +498,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:26.572Z"
+      "flaggedAt": "2026-03-01T18:27:15.957Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -456,7 +512,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:26.658Z"
+      "flaggedAt": "2026-03-01T18:27:16.066Z"
     },
     {
       "showId": "noises-off-2016",
@@ -470,7 +526,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:27.402Z"
+      "flaggedAt": "2026-03-01T18:27:17.123Z"
     },
     {
       "showId": "once-upon-a-mattress-2024",
@@ -484,7 +540,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:28.771Z"
+      "flaggedAt": "2026-03-01T18:27:19.013Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -498,7 +554,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:29.028Z"
+      "flaggedAt": "2026-03-01T18:27:19.378Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -512,7 +568,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:33.833Z"
+      "flaggedAt": "2026-03-01T18:27:21.645Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -526,7 +582,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:34.696Z"
+      "flaggedAt": "2026-03-01T18:27:22.225Z"
     },
     {
       "showId": "ragtime-2009",
@@ -540,7 +596,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:35.269Z"
+      "flaggedAt": "2026-03-01T18:27:23.023Z"
     },
     {
       "showId": "ragtime-2025",
@@ -554,7 +610,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:35.377Z"
+      "flaggedAt": "2026-03-01T18:27:23.157Z"
     },
     {
       "showId": "she-loves-me-2016",
@@ -568,7 +624,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:36.664Z"
+      "flaggedAt": "2026-03-01T18:27:24.768Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -582,7 +638,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:36.863Z"
+      "flaggedAt": "2026-03-01T18:27:25.018Z"
     },
     {
       "showId": "smash-2025",
@@ -596,7 +652,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:38.979Z"
+      "flaggedAt": "2026-03-01T18:27:26.080Z"
     },
     {
       "showId": "spamalot-2023",
@@ -610,7 +666,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:41.844Z"
+      "flaggedAt": "2026-03-01T18:27:26.701Z"
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "outletId": "nytg",
+      "criticName": "Caroline Cao",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=65 (Mixed), thumbs=Up/Up",
+      "llmScore": 65,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-03-01T18:27:27.070Z"
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
@@ -624,7 +694,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:42.131Z"
+      "flaggedAt": "2026-03-01T18:27:27.088Z"
+    },
+    {
+      "showId": "sweat-2017",
+      "outletId": "ew",
+      "criticName": "Caitlin Brody",
+      "reason": "borderline-rave",
+      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 8,
+      "flaggedAt": "2026-03-01T18:27:28.311Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -638,7 +722,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:47.193Z"
+      "flaggedAt": "2026-03-01T18:27:28.874Z"
     },
     {
       "showId": "take-me-out-2022",
@@ -652,7 +736,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:47.239Z"
+      "flaggedAt": "2026-03-01T18:27:28.927Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -666,7 +750,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:31:48.390Z"
+      "flaggedAt": "2026-03-01T18:27:29.229Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -680,7 +764,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:48.399Z"
+      "flaggedAt": "2026-03-01T18:27:29.235Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -694,7 +778,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:31:51.866Z"
+      "flaggedAt": "2026-03-01T18:27:30.640Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -708,7 +792,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:31:56.700Z"
+      "flaggedAt": "2026-03-01T18:27:32.387Z"
     },
     {
       "showId": "the-new-one-2018",
@@ -722,7 +806,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:04.154Z"
+      "flaggedAt": "2026-03-01T18:27:35.726Z"
+    },
+    {
+      "showId": "the-thanksgiving-play-2023",
+      "outletId": "nytg",
+      "criticName": "Amelia Merrill",
+      "reason": "both-thumbs-disagree-with-llm",
+      "detail": "LLM=52 (Negative), thumbs=Up/Up",
+      "llmScore": 52,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": 8,
+      "flaggedAt": "2026-03-01T18:27:38.973Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -736,7 +834,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:14.302Z"
+      "flaggedAt": "2026-03-01T18:27:39.492Z"
     },
     {
       "showId": "three-tall-women-2018",
@@ -750,7 +848,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.253Z"
+      "flaggedAt": "2026-03-01T18:27:40.355Z"
     },
     {
       "showId": "time-stands-still-2010",
@@ -764,7 +862,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.461Z"
+      "flaggedAt": "2026-03-01T18:27:40.455Z"
     },
     {
       "showId": "time-stands-still-2010",
@@ -778,7 +876,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:17.469Z"
+      "flaggedAt": "2026-03-01T18:27:40.466Z"
     },
     {
       "showId": "titanique-off-broadway-2022",
@@ -792,7 +890,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.573Z"
+      "flaggedAt": "2026-03-01T18:27:40.609Z"
     },
     {
       "showId": "to-kill-a-mockingbird-2018",
@@ -806,7 +904,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:17.620Z"
+      "flaggedAt": "2026-03-01T18:27:40.673Z"
     },
     {
       "showId": "to-kill-a-mockingbird-2018",
@@ -820,7 +918,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:17.636Z"
+      "flaggedAt": "2026-03-01T18:27:40.697Z"
     },
     {
       "showId": "to-kill-a-mockingbird-2018",
@@ -834,7 +932,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.684Z"
+      "flaggedAt": "2026-03-01T18:27:40.762Z"
     },
     {
       "showId": "tootsie-2019",
@@ -848,7 +946,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.720Z"
+      "flaggedAt": "2026-03-01T18:27:40.817Z"
     },
     {
       "showId": "tootsie-2019",
@@ -862,7 +960,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.741Z"
+      "flaggedAt": "2026-03-01T18:27:40.846Z"
     },
     {
       "showId": "tootsie-2019",
@@ -876,7 +974,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:17.772Z"
+      "flaggedAt": "2026-03-01T18:27:40.897Z"
     },
     {
       "showId": "torch-song-2018",
@@ -890,7 +988,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:17.965Z"
+      "flaggedAt": "2026-03-01T18:27:41.218Z"
     },
     {
       "showId": "travesties-2018",
@@ -904,7 +1002,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:18.098Z"
+      "flaggedAt": "2026-03-01T18:27:41.402Z"
     },
     {
       "showId": "travesties-2018",
@@ -918,7 +1016,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:18.140Z"
+      "flaggedAt": "2026-03-01T18:27:41.463Z"
     },
     {
       "showId": "tuck-everlasting-2016",
@@ -932,7 +1030,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:18.320Z"
+      "flaggedAt": "2026-03-01T18:27:41.718Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -946,7 +1044,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:18.398Z"
+      "flaggedAt": "2026-03-01T18:27:41.815Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -960,7 +1058,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:18.430Z"
+      "flaggedAt": "2026-03-01T18:27:41.856Z"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -974,7 +1072,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:18.859Z"
+      "flaggedAt": "2026-03-01T18:27:42.439Z"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -988,7 +1086,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
       "bwwScore": 7,
-      "flaggedAt": "2026-03-01T17:32:18.863Z"
+      "flaggedAt": "2026-03-01T18:27:42.445Z"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -1002,7 +1100,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:18.866Z"
+      "flaggedAt": "2026-03-01T18:27:42.449Z"
     },
     {
       "showId": "water-for-elephants-2024",
@@ -1016,7 +1114,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:19.264Z"
+      "flaggedAt": "2026-03-01T18:27:43.031Z"
     },
     {
       "showId": "water-for-elephants-2024",
@@ -1030,7 +1128,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:19.278Z"
+      "flaggedAt": "2026-03-01T18:27:43.052Z"
     },
     {
       "showId": "water-for-elephants-2024",
@@ -1044,7 +1142,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:19.295Z"
+      "flaggedAt": "2026-03-01T18:27:43.078Z"
     },
     {
       "showId": "west-side-story-2020",
@@ -1058,7 +1156,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:19.419Z"
+      "flaggedAt": "2026-03-01T18:27:43.241Z"
     },
     {
       "showId": "wit-2012",
@@ -1072,7 +1170,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:19.778Z"
+      "flaggedAt": "2026-03-01T18:27:43.736Z"
     },
     {
       "showId": "yellow-face-2024",
@@ -1086,7 +1184,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:19.978Z"
+      "flaggedAt": "2026-03-01T18:27:44.017Z"
     },
     {
       "showId": "yellow-face-2024",
@@ -1100,7 +1198,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-01T17:32:19.982Z"
+      "flaggedAt": "2026-03-01T18:27:44.024Z"
     },
     {
       "showId": "yellow-face-2024",
@@ -1114,7 +1212,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:20.000Z"
+      "flaggedAt": "2026-03-01T18:27:44.050Z"
     },
     {
       "showId": "yellow-face-2024",
@@ -1128,7 +1226,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-03-01T17:32:20.005Z"
+      "flaggedAt": "2026-03-01T18:27:44.057Z"
     },
     {
       "showId": "yellow-face-2024",
@@ -1142,7 +1240,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-01T17:32:20.049Z"
+      "flaggedAt": "2026-03-01T18:27:44.120Z"
     }
   ]
 }
