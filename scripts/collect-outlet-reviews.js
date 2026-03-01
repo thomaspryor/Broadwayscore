@@ -192,7 +192,7 @@ function getExistingOutlets(showId, registry) {
 
 // URL path patterns that are clearly NOT reviews
 const NON_REVIEW_URL_PATTERNS = [
-  /\/box-?office/i, /\/grosses?\b/i, /\/gross-?report/i,
+  /box-?office/i, /\/grosses?\b/i, /\/gross-?report/i,
   /\/gallery\b/i, /\/photos?\b/i, /\/pictures?\b/i, /\/slideshow/i,
   /\/video\b/i, /\/videos\b/i, /\/podcast/i,
   /\/contributor/i, /\/author\//i, /\/writers?\//i, /\/staff\//i,
@@ -202,9 +202,25 @@ const NON_REVIEW_URL_PATTERNS = [
   /\/closing-?notice/i, /\/closing-?date/i, /\/closing-?announcement/i,
   /\/tv-review/i, /\/film-review/i, /\/movie-review/i, /\/book-review/i,
   /\/album-review/i, /\/concert-review/i, /\/music-review/i,
-  /\/award/i, /\/tony-?award/i, /\/nomination/i,
+  /\/award/i, /\/tony-?award/i, /\/nomination/i, /tony-nomine/i, /roundtable/i,
   /\/ticket/i, /\/deals?\b/i, /\/discount/i, /\/lottery\b/i, /\/rush\b/i,
   /\/cast-?announcement/i, /\/casting\b/i,
+  // Closing/ending articles in URL slugs (HR uses /lifestyle/arts/ for both reviews and closing notices)
+  /broadway.{0,30}clos(e|es|ing)|clos(e|es|ing).{0,30}broadway/i, /-to-end-(its|their)-broadway/i,
+  // Listing/show-info pages (TheaterMania, WhatsOnStage, LondonTheatre)
+  /\/shows\/[^/]+\/(broadway|west-end)/i, /\/show\/\d+-.*-tickets/i,
+  // Wrong-medium content sections
+  /\/tv\/tv-/i,
+  // Infrastructure pages
+  /\/sitemap/i,
+  // HR lifestyle-news (ticket guides, lifestyle features — not reviews)
+  /\/lifestyle\/lifestyle-news\//i,
+  // Business/business-news section (HR box office reports)
+  /\/business\/business-news\//i,
+  // Listicles (Variety /lists/, EW ranked lists, etc.)
+  /\/lists\//i,
+  // Lifestyle/style sections (WSJ style, not reviews)
+  /\/style\//i,
 ];
 
 /**
