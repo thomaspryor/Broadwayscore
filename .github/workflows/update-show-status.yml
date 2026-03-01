@@ -4,11 +4,18 @@ on:
   # Run daily at 8 AM UTC (3 AM EST) to catch new show openings quickly
   schedule:
     - cron: '0 8 * * *'
+    # Weekly ShowScore status refresh — Wednesdays 6 AM UTC
+    - cron: '0 6 * * 3'
   # Allow manual triggering
   workflow_dispatch:
     inputs:
       skip_discovery:
         description: 'Skip new show discovery'
+        required: false
+        default: 'false'
+        type: boolean
+      include_showscore:
+        description: 'Include ShowScore status refresh (auto-enabled on weekly schedule)'
         required: false
         default: 'false'
         type: boolean
@@ -21,7 +28,7 @@ permissions:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -52,12 +59,25 @@ jobs:
         run: npx playwright install chromium
 
       # Step 1: Update existing show statuses
+      # ShowScore refresh runs on weekly Wed schedule or manual include_showscore=true
       - name: Update show statuses
         id: status-update
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/update-show-status.js
+        run: |
+          SS_FLAG=""
+          # Auto-enable ShowScore on Wednesday schedule (cron index 1)
+          if [ "${{ github.event.schedule }}" = "0 6 * * 3" ]; then
+            SS_FLAG="--include-showscore"
+            echo "Weekly ShowScore refresh enabled (Wednesday schedule)"
+          fi
+          # Also enable via manual toggle
+          if [ "${{ inputs.include_showscore }}" = "true" ]; then
+            SS_FLAG="--include-showscore"
+            echo "ShowScore refresh enabled (manual toggle)"
+          fi
+          node scripts/update-show-status.js $SS_FLAG
 
       # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
       - name: Discover ShowScore URLs and candidates
