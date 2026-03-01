@@ -18,9 +18,13 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { extractStatusFromHtml } = require('./lib/show-score-status');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const URLS_FILE = path.join(__dirname, '..', 'data', 'show-score-urls.json');
+const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'show-score');
 const dryRun = process.argv.includes('--dry-run');
+const includeShowScore = process.argv.includes('--include-showscore');
 
 // Grace period in days - don't auto-close until this many days after closing date
 // This gives time for the check-closing-dates script to catch extensions
@@ -328,7 +332,203 @@ async function refreshTodayTixDates(data, updates) {
 
   if (autoCloseCount > 0) console.log(`  Stale-open auto-closes: ${autoCloseCount}`);
 
-  return { count: dateUpdates + reopened + autoCloseCount, reopenedIds };
+  // Build set of our show IDs that are confirmed active on TodayTix
+  const ttActiveShowIds = new Set();
+  for (const show of data.shows) {
+    if (!show.todaytixId) continue;
+    if (seenTtIds.has(String(show.todaytixId))) {
+      ttActiveShowIds.add(show.id);
+    }
+  }
+
+  return { count: dateUpdates + reopened + autoCloseCount, reopenedIds, ttActiveShowIds };
+}
+
+// ── ShowScore Status Refresh (weekly) ──
+
+/**
+ * Refresh show statuses from ShowScore pages for OB + WE shows.
+ * Uses archived HTML when fresh (<7 days), fetches live otherwise.
+ * Cross-validates with TodayTix: never closes a show ShowScore says closed
+ * if TodayTix still lists it (Hold On To Your Butts pattern).
+ *
+ * @param {object} data - shows.json data
+ * @param {Array} updates - updates array to push changes into
+ * @param {Set} ttActiveIds - set of show IDs confirmed active on TodayTix
+ */
+async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
+  console.log('\n--- ShowScore Status Refresh ---');
+
+  let urlsData;
+  try {
+    urlsData = JSON.parse(fs.readFileSync(URLS_FILE, 'utf8'));
+  } catch {
+    console.log('  ⚠️  show-score-urls.json not found, skipping ShowScore refresh');
+    return { count: 0 };
+  }
+  const ssUrls = urlsData.shows || {};
+
+  // Filter to active OB/WE/Broadway shows with ShowScore URLs
+  const targetShows = data.shows.filter(s =>
+    (s.status === 'open' || s.status === 'previews') &&
+    ssUrls[s.id]
+  );
+
+  console.log(`  Checking ${targetShows.length} active shows against ShowScore...`);
+
+  const MAX_SS_STATUS_CHANGES = 20; // Circuit breaker — higher than TodayTix (routine refresh)
+  let statusChanges = 0;
+  let dateUpdates = 0;
+  let fetchCount = 0;
+  let errors = 0;
+  const ARCHIVE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+  // Lazy-load scraper only when we need to fetch
+  let fetchPage = null;
+  let cleanupScraper = null;
+
+  for (const show of targetShows) {
+    if (statusChanges >= MAX_SS_STATUS_CHANGES) {
+      console.log(`  ⚠️  Circuit breaker: ${MAX_SS_STATUS_CHANGES} ShowScore status changes reached, skipping remaining`);
+      break;
+    }
+
+    const archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
+    let html = null;
+
+    // Try archive first, check freshness via mtime
+    if (fs.existsSync(archivePath)) {
+      const stat = fs.statSync(archivePath);
+      const ageMs = Date.now() - stat.mtimeMs;
+      if (ageMs < ARCHIVE_MAX_AGE_MS) {
+        html = fs.readFileSync(archivePath, 'utf8');
+      }
+    }
+
+    // Live fetch if no fresh archive
+    if (!html) {
+      try {
+        // Lazy-load scraper on first fetch
+        if (!fetchPage) {
+          const scraper = require('./lib/scraper');
+          fetchPage = scraper.fetchPage;
+          cleanupScraper = scraper.cleanup;
+        }
+        const url = ssUrls[show.id];
+        const result = await fetchPage(url);
+        if (result && result.content) {
+          html = result.content;
+          // Update archive
+          if (!fs.existsSync(ARCHIVE_DIR)) fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
+          const header = `<!--\n  Archived: ${new Date().toISOString()}\n  Source: ${url}\n  Status: 200\n-->\n`;
+          fs.writeFileSync(archivePath, header + html);
+        }
+        fetchCount++;
+        await new Promise(r => setTimeout(r, 800)); // Rate limit
+      } catch (e) {
+        console.log(`  ❌ ${show.id}: ShowScore fetch failed — ${e.message}`);
+        errors++;
+        continue;
+      }
+    }
+
+    if (!html) continue;
+
+    const ssData = extractStatusFromHtml(html);
+    if (!ssData || !ssData.ssStatus) continue;
+
+    const changes = [];
+    const cat = showCategory(show);
+    const ttActive = ttActiveIds.has(show.id);
+
+    // Cross-validation: ShowScore says closed
+    if (ssData.ssStatus === 'closed' && (show.status === 'open' || show.status === 'previews')) {
+      if (ttActive) {
+        // Hold On To Your Butts pattern — TodayTix still lists it, don't trust ShowScore
+        console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but TodayTix still active — NOT closing`);
+      } else {
+        changes.push({
+          field: 'status',
+          from: show.status,
+          to: 'closed',
+          note: `ShowScore says "${ssData.raw}", TodayTix not active`
+        });
+        if (!dryRun) show.status = 'closed';
+        statusChanges++;
+      }
+    }
+
+    // Status upgrade: previews → open
+    if (show.status === 'previews' && (ssData.ssStatus === 'open')) {
+      changes.push({
+        field: 'status',
+        from: 'previews',
+        to: 'open',
+        note: `ShowScore says "${ssData.raw}"`
+      });
+      if (!dryRun) show.status = 'open';
+      statusChanges++;
+    }
+
+    // Fill opening date gap
+    if (ssData.openingDate && !show.openingDate && show.status === 'previews') {
+      changes.push({
+        field: 'openingDate',
+        from: 'null',
+        to: ssData.openingDate,
+        note: `ShowScore "Opens" date`
+      });
+      if (!dryRun) show.openingDate = ssData.openingDate;
+      dateUpdates++;
+    }
+
+    // Fill closing date gap
+    if (ssData.closingDate && !show.closingDate) {
+      changes.push({
+        field: 'closingDate',
+        from: 'null',
+        to: ssData.closingDate,
+        note: `ShowScore "Ends" date`
+      });
+      if (!dryRun) show.closingDate = ssData.closingDate;
+      dateUpdates++;
+    }
+
+    // Fill venue gap
+    if (ssData.venue && (!show.venue || show.venue === 'TBA')) {
+      changes.push({
+        field: 'venue',
+        from: show.venue || 'null',
+        to: ssData.venue,
+        note: 'ShowScore venue'
+      });
+      if (!dryRun) show.venue = ssData.venue;
+    }
+
+    if (changes.length > 0) {
+      const changeDesc = changes.map(c => `${c.field}: ${c.from} → ${c.to}`).join(', ');
+      console.log(`  ✓ ${show.title} (${cat}): ${changeDesc} [SS: "${ssData.raw}"]`);
+      updates.push({
+        id: show.id,
+        title: show.title,
+        changes: Object.fromEntries(changes.map(c => [c.field, { from: c.from, to: c.to, note: c.note }]))
+      });
+    }
+  }
+
+  // Cleanup scraper if we used it
+  if (cleanupScraper) {
+    await cleanupScraper();
+  }
+
+  console.log(`  ShowScore: ${statusChanges} status changes, ${dateUpdates} date updates, ${fetchCount} live fetches, ${errors} errors`);
+
+  // GitHub Actions output
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `ss_updates_count=${statusChanges + dateUpdates}\n`);
+  }
+
+  return { count: statusChanges + dateUpdates };
 }
 
 async function updateShowStatuses() {
@@ -343,7 +543,14 @@ async function updateShowStatuses() {
 
   // Refresh closing dates from TodayTix BEFORE status checks
   // so extensions are detected before the closing-grace-period logic runs
-  const { reopenedIds } = await refreshTodayTixDates(data, updates);
+  const { reopenedIds, ttActiveShowIds } = await refreshTodayTixDates(data, updates);
+
+  // ShowScore cross-validation (weekly, gated by --include-showscore)
+  // Runs AFTER TodayTix so we can cross-validate: if TodayTix still lists a show,
+  // don't trust ShowScore's "Closed" status (Hold On To Your Butts pattern)
+  if (includeShowScore) {
+    await refreshShowScoreStatuses(data, updates, ttActiveShowIds);
+  }
 
   for (const show of data.shows) {
     const changes = {};

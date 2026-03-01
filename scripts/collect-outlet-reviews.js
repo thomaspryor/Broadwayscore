@@ -426,6 +426,7 @@ async function main() {
         const result = await discoverCorrectUrl(fakeReview, scrapingBeeKey, {
           brightDataKey,
           dateRange,
+          domainOverride: domain,  // Use registry domain for site: query
           returnMetadata: true,
           log: () => {},
         });

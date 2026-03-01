@@ -13,6 +13,7 @@ const path = require('path');
 const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
@@ -392,34 +393,6 @@ async function fetchShowScoreStatus(showScoreUrl) {
         const rtText = afterFirst.textContent.trim();
         if (/^\d+h\s*\d*m?$/.test(rtText)) runtime = rtText;
       }
-    }
-
-    const currentYear = new Date().getFullYear();
-    const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
-
-    function parseShortDate(text) {
-      // "Mar 08" or "May 2026"
-      const match = text.match(/([A-Za-z]+)\s+(\d+)/);
-      if (!match) return null;
-      const monthStr = match[1].toLowerCase().slice(0, 3);
-      const num = parseInt(match[2]);
-      const month = MONTHS[monthStr];
-      if (month === undefined) return null;
-      // If num > 31, it's a year like "May 2026"
-      if (num > 31) {
-        // Last day of month approximation
-        const lastDay = new Date(num, month + 1, 0).getDate();
-        return `${num}-${String(month + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-      }
-      // Otherwise it's a day in current year (or next year if month has passed)
-      let year = currentYear;
-      const now = new Date();
-      const candidate = new Date(year, month, num);
-      // If the date is more than 3 months in the past, it's probably next year
-      if (candidate < new Date(now.getFullYear(), now.getMonth() - 3, 1)) {
-        year++;
-      }
-      return `${year}-${String(month + 1).padStart(2, '0')}-${String(num).padStart(2, '0')}`;
     }
 
     let ssStatus = null;

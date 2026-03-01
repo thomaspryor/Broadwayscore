@@ -26,20 +26,16 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, resolveOutletFromUrl } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { titleWordsMatch, TITLE_GENERIC_WORDS } = require('./lib/show-matching');
 
-// Load outlet registry for cross-market guard + nonReview recovery
+// Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
-// Load critic registry for nonReview recovery (known critics are more likely real reviews)
-const criticRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'critic-registry.json'), 'utf8'));
-const knownCriticKeys = new Set(Object.keys(criticRegistry.critics || {}));
 const outletRegionMap = {};  // outletId -> region (e.g., 'london')
 for (const [id, info] of Object.entries(outletRegistry.outlets)) {
   if (info.region) outletRegionMap[id] = info.region;
@@ -1176,14 +1172,6 @@ for (const s of showsData.shows) {
   }
 }
 
-// Build title index for wrongShow contamination check
-// Maps lowercase title (5+ chars) -> showId, used to detect excerpts about different shows
-const titleToShowId = {};
-for (const s of showsData.shows) {
-  const t = (s.title || '').toLowerCase();
-  if (t.length >= 5) titleToShowId[t] = s.id;
-}
-
 // Build URL-year cross-production guard for multi-production shows
 // Pattern: review URL contains a year clearly closer to a sibling production = wrong directory
 const multiProdYearGuard = {};
@@ -1269,60 +1257,7 @@ const multiProdDirectorGuard = {};
   }
   const guardedShows = Object.keys(multiProdDirectorGuard).length;
   if (guardedShows > 0) {
-    console.log(`Director cross-check guard active for ${guardedShows} multi-production shows`);
-  }
-}
-
-// Build venue cross-check lookup for multi-production shows
-// For each show, collect sibling production venues so we can detect when a review
-// mentions a different production's theater (e.g., "Al Hirschfeld Theatre" in an OB review)
-const multiProdVenueGuard = {};
-{
-  const titleGroups = {};
-  for (const s of showsData.shows) {
-    const base = s.title.replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
-    if (!titleGroups[base]) titleGroups[base] = [];
-    titleGroups[base].push(s);
-  }
-  for (const [, prods] of Object.entries(titleGroups)) {
-    if (prods.length < 2) continue;
-    for (const show of prods) {
-      if (!show.venue) continue;
-      const showCat = show.category || 'broadway';
-      const thisVenue = show.venue.toLowerCase();
-      // Collect venues from ALL sibling productions (cross-market is fine for venues —
-      // a London venue in a NYC review is always wrong, unlike dates which need market context)
-      const siblingVenues = [];
-      for (const sib of prods) {
-        if (sib.id === show.id) continue;
-        if (!sib.venue) continue;
-        const sibVenue = sib.venue.toLowerCase();
-        if (sibVenue === thisVenue) continue; // Same venue, skip
-        // Extract venue keywords (3+ chars, not generic words)
-        const venueWords = sibVenue.split(/[\s,]+/).filter(w =>
-          w.length >= 3 && !['the', 'theatre', 'theater'].includes(w)
-        );
-        if (venueWords.length > 0) {
-          siblingVenues.push({
-            id: sib.id,
-            venue: sib.venue,
-            venueLower: sibVenue,
-            category: sib.category || 'broadway'
-          });
-        }
-      }
-      if (siblingVenues.length > 0) {
-        multiProdVenueGuard[show.id] = {
-          thisVenue: show.venue,
-          thisVenueLower: thisVenue,
-          siblings: siblingVenues
-        };
-      }
-    }
-  }
-  const venueGuardedShows = Object.keys(multiProdVenueGuard).length;
-  if (venueGuardedShows > 0) {
-    console.log(`Venue cross-check guard active for ${venueGuardedShows} multi-production shows\n`);
+    console.log(`Director cross-check guard active for ${guardedShows} multi-production shows\n`);
   }
 }
 
@@ -1367,7 +1302,7 @@ const crossShowUrlIndex = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow || d.isCombinedReview || d.isRoundupArticle) continue;
+        if (d.wrongProduction || d.wrongShow) continue;
         const norm = normalizeUrlForDedup(d.url);
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
@@ -1555,71 +1490,29 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
+      // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
+      if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
+          && (showCategory === 'west-end' || showCategory === 'off-broadway')) {
+        data.wrongProduction = false;
+        data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
+        data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+        delete data.wrongProductionNote;
+        stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
+        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        // Fall through — don't skip
+      }
+
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
         return;
       }
 
-      // Wrong-show recovery for files without documented reason
-      // Files WITH wrongShowReason have evidence — keep excluded.
-      // Files WITHOUT reason predate reason-recording. Recovery requires double signal:
-      //   aggregator excerpt (show matched by aggregator's editorial process) +
-      //   assignedScore (P0-level score from aggregator star ratings, not LLM)
+      // Skip wrong-show reviews (review content is for a different show)
       if (data.wrongShow === true) {
-        if (data.wrongShowReason) {
-          // Documented evidence — keep excluded
-          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-          return;
-        }
-        // Block recovery when content verification confirmed wrong article
-        if (data.contentVerification?.wrongArticle === true) {
-          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-          return;
-        }
-        const hasExcerpt = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt);
-        if (hasExcerpt && data.assignedScore) {
-          // Contamination check: if excerpt quotes a DIFFERENT show's title but doesn't
-          // mention THIS show's title, the aggregator page was contaminated
-          const excerpt = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
-          const myTitle = (showTitleMap[showId] || '').toLowerCase();
-          const myTitleWords = myTitle.split(/\s+/).filter(w => w.length >= 4 && !['the','and','for','with','from','that','this','show','musical','play'].includes(w));
-          const myTitleInExcerpt = myTitleWords.length > 0 && myTitleWords.some(w => excerpt.includes(w));
-          let excerptNamesOtherShow = false;
-          for (const [otherTitle, otherId] of Object.entries(titleToShowId)) {
-            if (otherId === showId || otherTitle.length < 6) continue;
-            // Check if excerpt contains quoted title of a different show
-            if (excerpt.includes(`"${otherTitle}"`) || excerpt.includes(`'${otherTitle}'`) || excerpt.includes(`\u201c${otherTitle}\u201d`)) {
-              if (!myTitleInExcerpt) {
-                excerptNamesOtherShow = true;
-                stats.wrongShowContaminationBlocked = (stats.wrongShowContaminationBlocked || 0) + 1;
-                break;
-              }
-            }
-          }
-          if (excerptNamesOtherShow) {
-            // Contaminated excerpt — don't recover
-            stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-            return;
-          }
-          // Double signal: aggregator matched show + aggregator-derived score
-          delete data.wrongShow;
-          data.wrongShowAutoRecovered = `rebuild: has aggregator excerpt + assignedScore ${data.assignedScore} (no wrongShowReason recorded)`;
-          data.wrongShowAutoRecoveredAt = new Date().toISOString().split('T')[0];
-          stats.wrongShowAutoRecovered = (stats.wrongShowAutoRecovered || 0) + 1;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-          // Fall through — don't skip
-        } else if (hasExcerpt && !data.assignedScore) {
-          // Single signal — not strong enough, log for manual review
-          if (!stats.wrongShowNeedsReview) stats.wrongShowNeedsReview = [];
-          stats.wrongShowNeedsReview.push({ showId, file, hasLlmScore: !!data.llmScore });
-          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-          return;
-        } else {
-          // No excerpts, no recovery signal — keep excluded
-          stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
-          return;
-        }
+        stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
       }
 
       // Skip fabricated entries (URLs fabricated by web-search LLM, confirmed dead via HTTP check)
@@ -1632,7 +1525,7 @@ showDirs.forEach(showId => {
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
-      if (data.url && !data.wrongProduction && !data.isCombinedReview) {
+      if (data.url && !data.wrongProduction) {
         const norm = data.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
         const entry = crossShowUrlIndex.get(norm);
         if (entry && entry.conflicts.length > 0) {
@@ -1709,18 +1602,15 @@ showDirs.forEach(showId => {
 
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Broadway: 14-day grace period (preview coverage).
-      // Off-Broadway: 730-day (2-year) grace period — transfers from fringe/regional are common
-      //   but >2yr gaps are almost always wrong productions (e.g., Eddie Izzard's 2024 Hamlet
-      //   reviews contaminating 2026 BAM Hamlet). Tightened from 5yr after March 2026 audit.
-      // West End: 1825-day (5-year) grace period — long-running shows get periodic re-reviews.
+      // Off-Broadway/West End: 5-year (1825-day) grace period — they commonly transfer from
+      // fringe/regional theaters, but a 13-year gap (e.g., 2013→2026) is clearly wrong.
       // Reviews with allowEarlyDate: true bypass all date checks.
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
-        const threshold = showCategory === 'off-broadway' ? 730
-          : showCategory === 'west-end' ? 1825
-          : 14;
+        const isFlexCategory = showCategory === 'off-broadway' || showCategory === 'west-end';
+        const threshold = isFlexCategory ? 1825 : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
@@ -1732,82 +1622,10 @@ showDirs.forEach(showId => {
           }
           return;
         }
-
-        // Soft monitoring: flag reviews 30-60 days before opening for human review.
-        // These pass the hard threshold but are suspicious — catches wrong-production
-        // reviews that slipped through (e.g., prior run at different venue).
-        if (daysBefore > 60 && (showCategory === 'off-broadway' || showCategory === 'west-end')) {
-          flagForHumanReview(data, 'pre-opening-review',
-            `Published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]}). May be from a different production.`);
-        }
       }
 
-      // Signal-based auto-recovery for nonReview false positives
-      // Many files flagged isNonReview/nonReviewFlag/nonReviewContent are actually real reviews
-      // that the LLM classifier misidentified. Use multiple independent signals to recover.
-      // Flag precedence: if also wrongShow, don't recover (wrongShow is more restrictive)
-      if ((data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true)
-          && !data.wrongShow) {
-        let recoverySignals = 0;
-        const signalReasons = [];
-
-        // +3: LLM ensemble scored with high or medium confidence
-        const conf = (data.llmScore?.confidence || '').toLowerCase();
-        if (conf === 'high' || conf === 'medium') {
-          recoverySignals += 3;
-          signalReasons.push(`ensemble ${conf} confidence`);
-        }
-
-        // +2: T1/T2 outlet (major outlets rarely publish non-reviews in review slots)
-        const outId = (data.outletId || data.outlet || '').toLowerCase();
-        const outInfo = outletRegistry.outlets[outId];
-        if (outInfo && (outInfo.tier === 1 || outInfo.tier === 2)) {
-          recoverySignals += 2;
-          signalReasons.push(`T${outInfo.tier} outlet`);
-        }
-
-        // +2: URL contains /review/ (strong structural signal)
-        if (data.url && /\/review[s]?\//i.test(data.url)) {
-          recoverySignals += 2;
-          signalReasons.push('URL contains /review/');
-        }
-
-        // +2: has assignedScore or originalScore (aggregator-derived, validates review identity)
-        if (data.assignedScore || data.originalScore) {
-          recoverySignals += 2;
-          signalReasons.push('has assignedScore');
-        }
-
-        // +1: known critic in registry
-        const criticKey = (data.criticName || '').toLowerCase().replace(/\s+/g, '-');
-        if (criticKey && knownCriticKeys.has(criticKey)) {
-          recoverySignals += 1;
-          signalReasons.push('known critic');
-        }
-
-        // -1: type that's usually genuinely not a review
-        const nrType = (data.nonReviewType || '').toLowerCase();
-        if (['interview', 'obituary', 'profile'].includes(nrType)) {
-          recoverySignals -= 1;
-          signalReasons.push(`${nrType} type penalty`);
-        }
-
-        if (recoverySignals >= 4) {
-          // Recover: clear nonReview flags
-          delete data.isNonReview;
-          delete data.nonReviewFlag;
-          delete data.nonReviewContent;
-          data.nonReviewAutoRecovered = `rebuild: signal score ${recoverySignals} (${signalReasons.join(', ')})`;
-          data.nonReviewAutoRecoveredAt = new Date().toISOString().split('T')[0];
-          stats.nonReviewAutoRecovered = (stats.nonReviewAutoRecovered || 0) + 1;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-          // Fall through — don't skip
-        } else {
-          stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
-          return;
-        }
-      } else if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
-        // Has wrongShow — skip without recovery attempt (flag precedence)
+      // Skip non-reviews (profiles, interviews, previews, features, news articles)
+      if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
@@ -1960,10 +1778,11 @@ showDirs.forEach(showId => {
       // When they scrape reviews for "Heathers" or "The Other Place", they may pull reviews from
       // prior productions (2014, 2013, etc.) and file them under the new show directory.
       // These reviews typically have NO publishDate. The URL often contains the actual review year.
-      // Category-aware tolerance: Broadway=2yr, OB/WE=5yr (transfers from fringe/regional are common).
+      // If URL year is >2 years from show opening, flag as wrongProduction.
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
-      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction) {
-        const urlYearTolerance = (showCat === 'west-end' || showCat === 'off-broadway') ? 5 : 2;
+      // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
+      if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
+          && showCategory !== 'west-end' && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
         const yearMatches = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/g);
@@ -1974,30 +1793,13 @@ showDirs.forEach(showId => {
           if (urlYears.length > 0) {
             const closestYear = urlYears.reduce((best, y) =>
               Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
-            if (Math.abs(closestYear - showYear) > urlYearTolerance) {
-              console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} (tolerance=${urlYearTolerance}) — likely wrong production`);
+            if (Math.abs(closestYear - showYear) > 2) {
+              console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} — likely wrong production`);
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
               fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
               return;
-            }
-          }
-        }
-      }
-
-      // Title-mention guard: monitor dateless reviews where text doesn't mention show title.
-      // Actual classification handled by classify-wrong-show.js (LLM) in rebuild workflow.
-      if (!data.publishDate && !data.wrongShow && !data.wrongProduction && !data.wsClassified
-          && ['serp-discovery', 'bww-roundup', 'dtli', 'playbill-verdict'].includes(data.source)) {
-        const showTitle = showTitleMap[showId];
-        if (showTitle) {
-          const titleWords = showTitle.toLowerCase().split(/[\s,]+/)
-            .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
-          if (titleWords.length >= 2) {
-            const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '');
-            if (text.length > 500 && !titleWordsMatch(showTitle, text)) {
-              stats.titleMentionFlagged = (stats.titleMentionFlagged || 0) + 1;
             }
           }
         }
@@ -2019,68 +1821,6 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Venue cross-check for multi-production shows
-      // If a dateless review mentions a SIBLING production's venue but NOT this show's venue,
-      // it's almost certainly about the wrong production (e.g., "Al Hirschfeld Theatre" in an OB review)
-      // Uses distinctive venue words (e.g., "Hirschfeld" from "Al Hirschfeld Theatre") for partial matching
-      if (!data.publishDate && !data.wrongProduction && multiProdVenueGuard[showId]) {
-        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
-        if (text.length >= 100) {
-          const guard = multiProdVenueGuard[showId];
-          // Check if text mentions own venue (using distinctive words)
-          // Filter out common names, generic words, and short words that cause false positives
-          const VENUE_GENERIC_WORDS = new Set([
-            'the', 'theatre', 'theater', 'center', 'centre', 'arts', 'performing',
-            'new', 'stage', 'studio', 'room', 'hall', 'house', 'square', 'park',
-            'james', 'john', 'walter', 'neil', 'harold', 'samuel', 'eugene', 'richard',
-            'bernard', 'david', 'stephen', 'gerald', 'august', 'marquis', 'palace',
-            'american', 'national', 'royal', 'london', 'york',
-          ]);
-          const filterVenueWords = (venue) => venue.split(/[\s,]+/).filter(w =>
-            w.length >= 5 && !VENUE_GENERIC_WORDS.has(w));
-          const ownVenueWords = filterVenueWords(guard.thisVenueLower);
-          const mentionsOwnVenue = ownVenueWords.length > 0 && ownVenueWords.some(w => text.includes(w));
-          for (const sib of guard.siblings) {
-            // Use distinctive words from sibling venue (e.g., "hirschfeld" from "al hirschfeld theatre")
-            const sibVenueWords = filterVenueWords(sib.venueLower);
-            const mentionsSibVenue = sibVenueWords.some(w => text.includes(w));
-            if (mentionsSibVenue && !mentionsOwnVenue) {
-              const matchedWord = sibVenueWords.find(w => text.includes(w));
-              console.log(`  [VENUE GUARD] ${showId}/${file}: mentions "${matchedWord}" from "${sib.venue}" (${sib.id}) but not "${guard.thisVenue}"`);
-              stats.skippedVenueMismatch = (stats.skippedVenueMismatch || 0) + 1;
-              data.wrongProduction = true;
-              data.wrongProductionNote = `Venue guard: review mentions "${sib.venue}" (${sib.id}) but not "${guard.thisVenue}"`;
-              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
-              return;
-            }
-          }
-        }
-      }
-
-      // URL-market guard for cross-market contamination
-      // NYC shows (Broadway/OB) should not have /london/ in URL, and vice versa
-      if (!data.publishDate && !data.wrongProduction && data.url) {
-        const isNyc = showCat === 'broadway' || showCat === 'off-broadway';
-        const isWe = showCat === 'west-end';
-        const urlLower = data.url.toLowerCase();
-        if (isNyc && (urlLower.includes('/london/') || urlLower.includes('/uk/'))) {
-          console.log(`  [URL-MARKET GUARD] ${showId}/${file}: NYC show but URL contains London/UK path`);
-          stats.skippedUrlMarket = (stats.skippedUrlMarket || 0) + 1;
-          data.wrongProduction = true;
-          data.wrongProductionNote = `URL-market guard: NYC show but URL points to London/UK content`;
-          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
-          return;
-        }
-        if (isWe && urlLower.includes('/nyc/')) {
-          console.log(`  [URL-MARKET GUARD] ${showId}/${file}: West End show but URL contains NYC path`);
-          stats.skippedUrlMarket = (stats.skippedUrlMarket || 0) + 1;
-          data.wrongProduction = true;
-          data.wrongProductionNote = `URL-market guard: West End show but URL points to NYC content`;
-          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
-          return;
-        }
-      }
-
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
       if (data.wrongAttribution === true) {
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
@@ -2088,38 +1828,9 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
-      // Auto-clear stale not_a_review/garbage_text rejections when fullText is present and passes quality gate
       if (data.rejectionReason) {
-        const clearableRejections = ['not_a_review', 'garbage_text'];
-        if (clearableRejections.includes(data.rejectionReason) && data.fullText && data.fullText.length > 300) {
-          // Re-validate content quality — length alone doesn't prove it's not boilerplate
-          const recomputedTierResult = classifyContentTier(data);
-          const recomputedTier = recomputedTierResult.contentTier || recomputedTierResult;
-          if (recomputedTier === 'complete' || recomputedTier === 'truncated' || recomputedTier === 'excerpt') {
-            const savedReason = data.rejectionReason;
-            delete data.rejectionReason;
-            delete data.rejectedAt;
-            delete data.rejectedBy;
-            delete data.rejectionReasoning;
-            delete data.promptVersion;
-            // Clear stale contentTier set by the rejection
-            if ((savedReason === 'not_a_review' && data.contentTier === 'invalid') ||
-                (savedReason === 'garbage_text' && data.contentTier === 'needs-rescrape')) {
-              data.contentTier = recomputedTier;
-            }
-            data.rejectionAutoCleared = `rebuild: had ${recomputedTier} fullText (${data.fullText.length} chars) with stale ${savedReason} rejection`;
-            data.rejectionAutoClearedAt = new Date().toISOString().split('T')[0];
-            stats.rejectionAutoCleared = (stats.rejectionAutoCleared || 0) + 1;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-            // Fall through — don't skip, let scoring pick up the file
-          } else {
-            stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
-            return;
-          }
-        } else {
-          stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
-          return;
-        }
+        stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
+        return;
       }
 
       // Skip roundup articles (multi-show reviews that aren't about this specific show)
@@ -2384,17 +2095,7 @@ showDirs.forEach(showId => {
         return;
       }
 
-      let { score, source } = scoreResult;
-
-      // DEFENSE-IN-DEPTH: reject scores outside 0-100
-      // Catches parsing bugs (e.g., 600/900 scores from unclamped star ratings)
-      if (!Number.isFinite(score) || score < 0 || score > 100) {
-        console.error(`  [SCORE OUT OF RANGE] ${showId}/${file}: score=${score} source=${source} — SKIPPING`);
-        stats.outOfRangeScores = (stats.outOfRangeScores || 0) + 1;
-        stats.skippedNoScore++;
-        return;
-      }
-
+      const { score, source } = scoreResult;
       stats.scoreSources[source]++;
 
       // Warn if file's showId disagrees with directory (data integrity issue)
@@ -2405,23 +2106,7 @@ showDirs.forEach(showId => {
 
       // Build review object — normalize outletId to canonical form
       // ALWAYS use directory showId — file's showId field is unreliable (can be stale from cross-production flagging)
-      let canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
-
-      // Resolve "unknown" outlets from URL (ShowScore files often have valid URLs but missing outlet names)
-      if ((!canonicalOutletId || canonicalOutletId === 'unknown') && data.url) {
-        const resolved = resolveOutletFromUrl(data.url);
-        if (resolved && resolved.outletId) {
-          canonicalOutletId = resolved.outletId;
-          stats.unknownOutletsResolved = (stats.unknownOutletsResolved || 0) + 1;
-        }
-      }
-
-      // Resolve "Unknown" critics using extractedByline (set by collector byline cross-check)
-      if ((!data.criticName || data.criticName === 'Unknown') && data.extractedByline) {
-        data.criticName = data.extractedByline;
-        stats.unknownCriticsResolved = (stats.unknownCriticsResolved || 0) + 1;
-      }
-
+      const canonicalOutletId = normalizeOutletCanonical(data.outletId || data.outlet);
       const review = {
         showId,
         outletId: canonicalOutletId,
@@ -2443,7 +2128,6 @@ showDirs.forEach(showId => {
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none',
-        ...(data.isCombinedReview ? { isCombinedReview: true } : {}),
         // Ensemble scoring metadata (for confidence analysis + auditing)
         ...(data.ensembleData ? {
           scoreDelta: data.ensembleData.scoreDelta || 0,
@@ -2847,83 +2531,11 @@ const output = {
       skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
-      outOfRangeScoresRejected: stats.outOfRangeScores || 0,
       scoreSources: stats.scoreSources
     }
   },
   reviews: allReviews
 };
-
-// ========================================
-// 3D: VALIDATION GATE (hard-fail before write)
-// ========================================
-// Catches data integrity violations that should NEVER reach production.
-// Unlike drift/regression guards (CI-only, threshold-based), these are
-// absolute invariants that abort locally AND in CI.
-{
-  const errors = [];
-
-  // 1. Score range: every review must have assignedScore in 0-100
-  const outOfRange = allReviews.filter(r =>
-    r.assignedScore == null || r.assignedScore < 0 || r.assignedScore > 100 ||
-    !Number.isFinite(r.assignedScore)
-  );
-  if (outOfRange.length > 0) {
-    errors.push(`${outOfRange.length} review(s) have assignedScore outside 0-100:`);
-    outOfRange.slice(0, 10).forEach(r => {
-      errors.push(`  ${r.showId}/${r.outletId} (${r.criticName}): ${r.assignedScore} [source: ${r.scoreSource}]`);
-    });
-  }
-
-  // 2. Required fields: every review must have showId, outletId, scoreSource
-  const missingFields = allReviews.filter(r => !r.showId || !r.outletId || !r.scoreSource);
-  if (missingFields.length > 0) {
-    errors.push(`${missingFields.length} review(s) missing required fields (showId, outletId, scoreSource):`);
-    missingFields.slice(0, 5).forEach(r => {
-      const missing = [!r.showId && 'showId', !r.outletId && 'outletId', !r.scoreSource && 'scoreSource'].filter(Boolean);
-      errors.push(`  ${r.showId || '?'}/${r.outletId || '?'}: missing ${missing.join(', ')}`);
-    });
-  }
-
-  // 3. Total review count: shouldn't drop >15% vs previous file
-  if (fs.existsSync(reviewsJsonPath)) {
-    try {
-      const prev = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
-      const prevCount = (prev.reviews || []).length;
-      if (prevCount > 0) {
-        const dropPct = ((prevCount - allReviews.length) / prevCount) * 100;
-        if (dropPct > 15) {
-          errors.push(`Total review count dropped ${dropPct.toFixed(1)}%: ${prevCount} → ${allReviews.length}`);
-        }
-      }
-    } catch (e) { /* can't read previous — skip */ }
-  }
-
-  // 4. Score distribution: mean should be 40-90 (catches systematic bias)
-  if (allReviews.length > 100) {
-    const mean = allReviews.reduce((sum, r) => sum + r.assignedScore, 0) / allReviews.length;
-    if (mean < 40 || mean > 90) {
-      errors.push(`Mean score ${mean.toFixed(1)} is outside sane range [40-90] — likely systematic scoring bug`);
-    }
-  }
-
-  // 5. Zero reviews = something is very wrong
-  if (allReviews.length === 0) {
-    errors.push('Zero reviews produced — rebuild generated empty output');
-  }
-
-  if (errors.length > 0) {
-    console.error('\n❌ VALIDATION GATE FAILED — reviews.json NOT written');
-    errors.forEach(e => console.error(`  ${e}`));
-    console.error('\nFix the underlying data issue. Set SKIP_VALIDATION_GATE=true to override (NOT recommended).');
-    if (!process.env.SKIP_VALIDATION_GATE) {
-      process.exit(1);
-    }
-    console.warn('⚠️  SKIP_VALIDATION_GATE=true — writing despite validation failures');
-  } else {
-    console.log('\n✅ VALIDATION GATE: all checks passed');
-  }
-}
 
 // Write output
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
@@ -3085,21 +2697,6 @@ if (stats.showNotMentionedWithExcerpts > 0) {
 if (stats.wrongProdWEOBAutoCleared > 0) {
   console.log(`  Auto-cleared wrongProduction (WE/OB URL-year exempt): ${stats.wrongProdWEOBAutoCleared}`);
 }
-if (stats.rejectionAutoCleared > 0) {
-  console.log(`  Auto-cleared stale rejections (content-quality gate): ${stats.rejectionAutoCleared}`);
-}
-if (stats.nonReviewAutoRecovered > 0) {
-  console.log(`  Auto-recovered nonReview false positives (signal-based): ${stats.nonReviewAutoRecovered}`);
-}
-if (stats.wrongShowAutoRecovered > 0) {
-  console.log(`  Auto-recovered wrongShow (excerpt+assignedScore, no reason): ${stats.wrongShowAutoRecovered}`);
-}
-if (stats.wrongShowContaminationBlocked > 0) {
-  console.log(`  Blocked wrongShow recovery (excerpt names different show): ${stats.wrongShowContaminationBlocked}`);
-}
-if (stats.wrongShowNeedsReview && stats.wrongShowNeedsReview.length > 0) {
-  console.log(`  wrongShow needs manual review (excerpt but no assignedScore): ${stats.wrongShowNeedsReview.length}`);
-}
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
 }
@@ -3116,13 +2713,6 @@ if (stats.excerptMismatches > 0) {
       console.log(`    ...and ${stats.excerptMismatchDetails.length - 10} more`);
     }
   }
-}
-
-if (stats.unknownOutletsResolved > 0) {
-  console.log(`  Unknown outlets resolved from URL: ${stats.unknownOutletsResolved}`);
-}
-if (stats.unknownCriticsResolved > 0) {
-  console.log(`  Unknown critics resolved from extractedByline: ${stats.unknownCriticsResolved}`);
 }
 
 // Explicit rating summary
