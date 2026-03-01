@@ -360,9 +360,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const showInfo = getShowInfo(review.showId);
   if (!showInfo.title) return null;
 
-  // Get domain for the outlet
+  // Get domain for the outlet (explicit override > OUTLET_DOMAINS map)
   const outletId = (review.outletId || '').toLowerCase();
-  const domain = OUTLET_DOMAINS[outletId];
+  const domain = options.domainOverride || OUTLET_DOMAINS[outletId];
 
   // Build search query — include year to disambiguate revivals
   // Include critic name as an unquoted boost when available and trustworthy.
