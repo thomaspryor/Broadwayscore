@@ -108,6 +108,15 @@ jobs:
         run: node scripts/classify-wrong-production.js --apply --resume --limit=200
         continue-on-error: true
 
+      - name: Backfill unknown outlets (local, free)
+        run: node scripts/backfill-unknown-critics.js --outlets-only
+        continue-on-error: true
+
+      - name: Backfill unknown critics (HTTP regex)
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=200
+        continue-on-error: true
+        timeout-minutes: 15
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}

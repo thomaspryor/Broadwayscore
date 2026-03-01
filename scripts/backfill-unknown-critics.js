@@ -262,6 +262,11 @@ async function phaseB(unknownCritics) {
       continue;
     }
 
+    // Store provenance
+    if (method === 'http-fetch') {
+      u.data.criticEnrichedFrom = 'html-extraction';
+    }
+
     // Update file
     const result = updateReviewFile(u.filePath, u.dir, u.file, null, critic, u.data);
 
