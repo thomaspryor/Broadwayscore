@@ -25,7 +25,6 @@ const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { buildDateTbs } = require('./lib/url-discovery');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -216,14 +215,9 @@ async function discoverForOutlet(outletId, config, shows, opts) {
   const stats = { searched: 0, results: 0, matched: 0, newFiles: 0, existing: 0 };
   const seenUrls = new Set();
 
-  // Floor date: only return results from the last 10 years to avoid cross-production contamination
-  const floorDate = new Date();
-  floorDate.setFullYear(floorDate.getFullYear() - 10);
-  const dateTbs = buildDateTbs({ dateMin: floorDate, dateMax: new Date() });
-
   for (const query of config.queries) {
     console.log(`\n  SERP: "${query}"`);
-    const results = await serpSearch(query, 30, dateTbs);
+    const results = await serpSearch(query, 30);
     stats.searched++;
     console.log(`  Found ${results.length} results`);
 
