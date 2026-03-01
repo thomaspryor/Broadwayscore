@@ -46,14 +46,16 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
           <div className="flex-1 min-w-0">
             {review.url ? (
               <a href={review.url} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-brand transition-colors truncate block">
-                {review.showTitle}{showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
+                {review.showTitle}
+                {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
                 <svg className="inline-block w-3 h-3 ml-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </a>
             ) : (
               <Link href={`/show/${review.showSlug}`} className="font-bold text-white hover:text-brand transition-colors truncate block">
-                {review.showTitle}{showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
+                {review.showTitle}
+                {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
               </Link>
             )}
             <p className="text-gray-400 text-sm truncate">
@@ -87,6 +89,19 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [showCount, setShowCount] = useState(INITIAL_REVIEWS);
 
+  // Detect show titles that appear multiple times (different productions)
+  const duplicateTitles = useMemo(() => {
+    const titleCounts = new Map<string, number>();
+    for (const r of critic.reviews) {
+      titleCounts.set(r.showTitle, (titleCounts.get(r.showTitle) || 0) + 1);
+    }
+    const dupes = new Set<string>();
+    for (const [title, count] of titleCounts) {
+      if (count > 1) dupes.add(title);
+    }
+    return dupes;
+  }, [critic.reviews]);
+
   const sortedReviews = useMemo(() => {
     const sorted = [...critic.reviews];
     if (sortMode === 'recent') {
@@ -98,18 +113,6 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
     }
     return sorted;
   }, [critic.reviews, sortMode]);
-
-  const duplicateTitles = useMemo(() => {
-    const titleCounts = new Map<string, number>();
-    for (const r of critic.reviews) {
-      titleCounts.set(r.showTitle, (titleCounts.get(r.showTitle) || 0) + 1);
-    }
-    const dupes = new Set<string>();
-    for (const [title, count] of Array.from(titleCounts)) {
-      if (count > 1) dupes.add(title);
-    }
-    return dupes;
-  }, [critic.reviews]);
 
   const visibleReviews = sortedReviews.slice(0, showCount);
   const remaining = sortedReviews.length - showCount;

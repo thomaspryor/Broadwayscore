@@ -12,69 +12,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { extractStatusFromHtml } = require('./lib/show-score-status');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'show-score');
 const dryRun = process.argv.includes('--dry-run');
-
-const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
-
-function parseShortDate(text) {
-  const match = text.match(/([A-Za-z]+)\s+(\d+)/);
-  if (!match) return null;
-  const monthStr = match[1].toLowerCase().slice(0, 3);
-  const num = parseInt(match[2]);
-  const month = MONTHS[monthStr];
-  if (month === undefined) return null;
-  const currentYear = new Date().getFullYear();
-  if (num > 31) {
-    const lastDay = new Date(num, month + 1, 0).getDate();
-    return `${num}-${String(month + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-  }
-  let year = currentYear;
-  const now = new Date();
-  const candidate = new Date(year, month, num);
-  if (candidate < new Date(now.getFullYear(), now.getMonth() - 3, 1)) {
-    year++;
-  }
-  return `${year}-${String(month + 1).padStart(2, '0')}-${String(num).padStart(2, '0')}`;
-}
-
-function extractStatusFromHtml(html) {
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-  const topLine = doc.querySelector('.show-page-v2__info-top-line');
-  if (!topLine) return null;
-
-  const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
-  if (!statusText) return null;
-
-  // Extract venue
-  const venueLink = topLine.querySelector('a');
-  const venueFull = venueLink?.textContent?.trim() || '';
-  const venue = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
-
-  let ssStatus = null;
-  let openingDate = null;
-  let closingDate = null;
-
-  if (statusText.startsWith('Opens ')) {
-    ssStatus = 'previews';
-    openingDate = parseShortDate(statusText.replace('Opens ', ''));
-  } else if (statusText === 'Open run') {
-    ssStatus = 'open';
-  } else if (statusText.startsWith('Ends ')) {
-    ssStatus = 'open';
-    closingDate = parseShortDate(statusText.replace('Ends ', ''));
-  } else if (statusText === 'Closed') {
-    ssStatus = 'closed';
-  }
-
-  return { ssStatus, openingDate, closingDate, venue, raw: statusText };
-}
 
 async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));

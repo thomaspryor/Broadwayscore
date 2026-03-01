@@ -360,9 +360,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const showInfo = getShowInfo(review.showId);
   if (!showInfo.title) return null;
 
-  // Get domain for the outlet
+  // Get domain for the outlet (explicit override > OUTLET_DOMAINS map)
   const outletId = (review.outletId || '').toLowerCase();
-  const domain = OUTLET_DOMAINS[outletId];
+  const domain = options.domainOverride || OUTLET_DOMAINS[outletId];
 
   // Build search query — include year to disambiguate revivals
   // Include critic name as an unquoted boost when available and trustworthy.
@@ -456,6 +456,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     try { if (new URL(url).pathname === '/') continue; } catch (e) {}
     if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
     if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
+    // TheaterMania /shows/ pages are listing pages, not reviews
+    if (urlLower.includes('theatermania.com/shows/')) continue;
 
     // Skip if same as the current URL
     if (url === review.url) continue;
