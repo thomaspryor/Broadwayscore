@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-01T10:07:38.145Z",
+  "updatedAt": "2026-03-01T10:17:25.597Z",
   "processed": 129,
-  "failed": 601,
-  "successRate": "17.7%",
+  "failed": 611,
+  "successRate": "17.4%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 37,
@@ -10,33 +10,11 @@
     "directCookies": 5,
     "scrapingbee": 16,
     "brightdata": 25,
-    "archiveToday": 180,
+    "archiveToday": 182,
     "archive": 37
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:26:01.382Z",
-      "event": "bb-session",
-      "session": "42db8e1c",
-      "url": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman"
-    },
-    {
-      "t": "2026-03-01T05:26:02.471Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-01T05:28:08.648Z",
-      "event": "bb-session",
-      "session": "3ce592f1",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-03-01T05:28:09.708Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-01T05:39:58.263Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-01T09:57:43.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T10:07:55.857Z",
+      "event": "bb-session",
+      "session": "6bcaeef5",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-03-01T10:07:57.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T10:17:14.843Z",
+      "event": "bb-session",
+      "session": "712fb4dc",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/11-2003/defying-gravity_"
+    },
+    {
+      "t": "2026-03-01T10:17:16.187Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }

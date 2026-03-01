@@ -731,7 +731,17 @@
     "starlight-express-west-end-2024/broadwaynews--aliya-al-hassan.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
     "the-book-of-mormon-west-end-2024/broadwaynews--robert-diamond.json",
-    "the-great-gatsby-2024/wsj--charles-isherwood.json"
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-lion-king-west-end-2021/nbcnews--unknown.json",
+    "the-monsters-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "the-phantom-of-the-opera-west-end-1986/nydailynews--contributors-to-wikimedia-projects.json",
+    "the-play-that-goes-wrong-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+    "the-playboy-of-the-western-world-west-end-2025/nbcnews--emily-herzlin.json",
+    "ulysses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--stephi-wild.json",
+    "wicked-2003/theatermania--barbara-siegel.json",
+    "wicked-west-end-2021/ew--declan-gallagher.json",
+    "wicked-west-end-2021/nydailynews--stanford-friedman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1077,7 +1087,9 @@
       "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
       "data/review-texts/hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
-      "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+      "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
+      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1120,7 +1132,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "the-great-gatsby-2024/wsj--charles-isherwood.json",
+  "lastProcessed": "wicked-west-end-2021/nydailynews--stanford-friedman.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1383,6 +1395,28 @@
     },
     {
       "t": "2026-03-01T09:57:43.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T10:07:55.857Z",
+      "event": "bb-session",
+      "session": "6bcaeef5",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-03-01T10:07:57.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T10:17:14.843Z",
+      "event": "bb-session",
+      "session": "712fb4dc",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/11-2003/defying-gravity_"
+    },
+    {
+      "t": "2026-03-01T10:17:16.187Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
