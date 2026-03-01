@@ -863,14 +863,21 @@ function assessTextQuality(text, showId, showTitle) {
   }
 
   // Check for concatenated articles (other reviews appended)
+  // Only check when the expected show isn't mentioned — if it IS mentioned,
+  // other show references are likely legitimate critic comparisons, not concatenation.
+  // The article-boundary sub-check (3+ "theater presents" patterns) always runs;
+  // the multi-show sub-check is what produces false positives on comparative reviews.
   const concatenatedCheck = detectConcatenatedArticles(text, showId);
   if (concatenatedCheck.detected) {
-    return {
-      quality: 'garbage',
-      confidence: 'high',
-      issues: [concatenatedCheck.reason],
-      truncateAt: concatenatedCheck.truncateAt
-    };
+    const isBoundaryDetection = concatenatedCheck.reason && concatenatedCheck.reason.includes('article boundaries');
+    if (isBoundaryDetection || !showMentionedEarly.valid) {
+      return {
+        quality: 'garbage',
+        confidence: 'high',
+        issues: [concatenatedCheck.reason],
+        truncateAt: concatenatedCheck.truncateAt
+      };
+    }
   }
 
   // Check for review content
