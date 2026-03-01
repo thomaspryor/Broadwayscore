@@ -751,7 +751,17 @@
     "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
     "zack-off-broadway-2026/theatrely--kobi-kassal.json",
     "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json"
+    "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+    "blackout-songs-off-broadway-2026/1-minute-critic--emily-chackerian.json",
+    "blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json",
+    "buena-vista-social-club-2025/amny--matt-windman.json",
+    "chinese-republicans-off-broadway-2026/nysr--steven-suskin.json",
+    "chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
+    "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -857,7 +867,8 @@
       "and-juliet-2022/thewrap--robert-hofler.json",
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
       "data/review-texts/book-of-mormon-2011/ew--thom-geier.json",
-      "data/review-texts/bigfoot-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/bigfoot-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
@@ -1145,7 +1156,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json",
+  "lastProcessed": "cold-war-choir-practice-off-broadway-2026/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1443,6 +1454,23 @@
       "t": "2026-03-01T10:18:42.940Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T10:27:23.277Z",
+      "event": "bb-session",
+      "session": "6d20e1a2",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+    },
+    {
+      "t": "2026-03-01T10:28:11.746Z",
+      "event": "bb-session",
+      "session": "3d2fe191",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-03-01T10:28:13.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
