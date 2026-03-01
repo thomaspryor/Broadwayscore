@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { domainMatchesExpected } = require('./scraper');
 
 // Outlet-to-domain mapping for URL discovery via Google SERP
 const OUTLET_DOMAINS = {
@@ -467,7 +468,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       urlDomain = new URL(url).hostname.replace(/^www\./, '');
     } catch (e) { continue; }
 
-    if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
+    if (targetDomain && !domainMatchesExpected(targetDomain.replace(/^www\./, ''), urlDomain)) continue;
 
     const title = (result.title || '').toLowerCase();
     const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
