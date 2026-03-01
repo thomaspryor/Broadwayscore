@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-01T17:26:14.473Z",
+  "generatedAt": "2026-03-01T17:32:20.217Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -88,6 +88,14 @@
       "outlet": "london-theatre",
       "critic": "Olivia Rook",
       "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "glengarry-glen-ross-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 48 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -272,6 +280,14 @@
       "outlet": "ew",
       "critic": "Jason Clark",
       "detail": "originalRating \"D\" (=35) vs score 75 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-heiress-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 82 (source: llmScore-thumb-boosted)"
     },
     {
       "type": "rating-score-mismatch",
