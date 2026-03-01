@@ -1709,15 +1709,18 @@ showDirs.forEach(showId => {
 
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Broadway: 14-day grace period (preview coverage).
-      // Off-Broadway/West End: 5-year (1825-day) grace period — they commonly transfer from
-      // fringe/regional theaters, but a 13-year gap (e.g., 2013→2026) is clearly wrong.
+      // Off-Broadway: 730-day (2-year) grace period — transfers from fringe/regional are common
+      //   but >2yr gaps are almost always wrong productions (e.g., Eddie Izzard's 2024 Hamlet
+      //   reviews contaminating 2026 BAM Hamlet). Tightened from 5yr after March 2026 audit.
+      // West End: 1825-day (5-year) grace period — long-running shows get periodic re-reviews.
       // Reviews with allowEarlyDate: true bypass all date checks.
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
-        const isFlexCategory = showCategory === 'off-broadway' || showCategory === 'west-end';
-        const threshold = isFlexCategory ? 1825 : 14;
+        const threshold = showCategory === 'off-broadway' ? 730
+          : showCategory === 'west-end' ? 1825
+          : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
@@ -1728,6 +1731,14 @@ showDirs.forEach(showId => {
             fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
           }
           return;
+        }
+
+        // Soft monitoring: flag reviews 30-60 days before opening for human review.
+        // These pass the hard threshold but are suspicious — catches wrong-production
+        // reviews that slipped through (e.g., prior run at different venue).
+        if (daysBefore > 60 && (showCategory === 'off-broadway' || showCategory === 'west-end')) {
+          flagForHumanReview(data, 'pre-opening-review',
+            `Published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]}). May be from a different production.`);
         }
       }
 

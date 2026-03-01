@@ -965,15 +965,25 @@ async function discoverShows() {
       let status;
 
       if (show.openingDate) {
-        // Show has an opening date (from IBDB or Broadway.org)
         openingDate = show.openingDate;
         const openingDateObj = new Date(openingDate);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // If opening date is in the future, mark as upcoming (not yet in previews)
-        // Shows get promoted to 'previews' when preview performances actually begin
-        status = openingDateObj > today ? 'upcoming' : 'open';
+        if (openingDateObj > today) {
+          status = 'upcoming';
+        } else if (show.category === 'off-broadway' && !show.ibdbUrl) {
+          // OB shows without IBDB-confirmed dates: TodayTix startDate is the first
+          // performance (previews), not press night. Default to 'previews' to avoid
+          // prematurely marking shows as 'open' and collecting wrong-production reviews.
+          // (Lesson from March 2026 audit: 10 OB shows had preview dates as opening dates.)
+          status = 'previews';
+          show.previewsStartDate = show.openingDate;
+          show.openingDate = null;
+          openingDate = null;
+        } else {
+          status = 'open';
+        }
       } else if (show.previewsStartDate) {
         // No opening date but have preview date - show is in previews
         openingDate = null;
