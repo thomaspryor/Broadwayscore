@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-03-01T10:23:40.154Z",
+  "updatedAt": "2026-03-01T10:32:43.548Z",
   "processed": 130,
-  "failed": 620,
-  "successRate": "17.3%",
+  "failed": 630,
+  "successRate": "17.1%",
   "tierBreakdown": {
     "playwright": 63,
-    "amp": 37,
+    "amp": 38,
     "browserbase": 5,
     "directCookies": 5,
     "scrapingbee": 16,
@@ -13,25 +13,8 @@
     "archiveToday": 183,
     "archive": 37
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:58:52.746Z",
-      "event": "bb-session",
-      "session": "085a91ac",
-      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
-    },
-    {
-      "t": "2026-03-01T05:58:53.766Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-01T06:13:40.338Z",
-      "event": "bb-session",
-      "session": "9da18d8a",
-      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
-    },
     {
       "t": "2026-03-01T06:13:41.538Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-03-01T10:18:42.940Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T10:27:23.277Z",
+      "event": "bb-session",
+      "session": "6d20e1a2",
+      "url": "https://www.thedailybeast.com/the-book-of-mormon-blessed-be-the-filthy/"
+    },
+    {
+      "t": "2026-03-01T10:28:11.746Z",
+      "event": "bb-session",
+      "session": "3d2fe191",
+      "url": "https://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.1"
+    },
+    {
+      "t": "2026-03-01T10:28:13.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
