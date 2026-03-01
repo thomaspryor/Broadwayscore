@@ -1876,6 +1876,13 @@ function extractAuthorFromHtml(html, text, options = {}) {
     /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
     /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
     /rel="author"[^>]*>([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // class="author" or class="foo author" — matches Theatrely, other CMS sites
+    // Does NOT match class="author-area" or class="authors-box" (hyphen/plural after "author")
+    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // class="author-name" — matches WhatsOnStage, DCTheatreScene
+    /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // WordPress author vcard microformat
+    /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
   ];
   for (const pattern of bylinePatterns) {
     const match = html.match(pattern);
