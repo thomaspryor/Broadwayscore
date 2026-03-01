@@ -53,7 +53,7 @@ function escapeHtml(str) {
 
 function getScoreColor(score) {
   if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
-  if (score >= 83) return { bg: '#FFD700', text: '#1a1a1a', label: 'Critical Gold' };
+  if (score >= 83) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
   if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
   if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
   if (score >= 55) return { bg: '#f59e0b', text: '#1a1a1a', label: 'Skippable' };
@@ -252,7 +252,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
               <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
@@ -370,7 +370,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
               <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
