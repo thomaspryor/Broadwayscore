@@ -23,6 +23,7 @@
  *   --no-skip-existing                       Search even if outlet already has a review
  *   --max-shows N                            Limit to N shows (for testing)
  *   --max-searches N                         Limit total SERP searches (for cost control)
+ *   --open-only                              Only search open/previews shows (for weekly cron)
  */
 
 const fs = require('fs');
@@ -73,6 +74,7 @@ function parseArgs() {
     skipExisting: true,
     maxShows: Infinity,
     maxSearches: Infinity,
+    openOnly: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -87,6 +89,7 @@ function parseArgs() {
       case '--no-skip-existing': opts.skipExisting = false; break;
       case '--max-shows': opts.maxShows = parseInt(args[++i]); break;
       case '--max-searches': opts.maxSearches = parseInt(args[++i]); break;
+      case '--open-only': opts.openOnly = true; break;
     }
   }
 
@@ -132,6 +135,46 @@ function getExistingOutlets(showId, registry) {
     } catch (e) {}
   }
   return existing;
+}
+
+// URL path patterns that are clearly NOT reviews
+const NON_REVIEW_URL_PATTERNS = [
+  /\/box-?office/i, /\/grosses?\b/i, /\/gross-?report/i,
+  /\/gallery\b/i, /\/photos?\b/i, /\/pictures?\b/i, /\/slideshow/i,
+  /\/video\b/i, /\/videos\b/i, /\/podcast/i,
+  /\/contributor/i, /\/author\//i, /\/writers?\//i, /\/staff\//i,
+  /\/listing\b/i, /\/listings\b/i, /\/events?\//i,
+  /\/first-look/i, /\/behind-the-scenes/i, /\/sneak-peek/i,
+  /\/best-of\b/i, /\/ranked\b/i, /\/ranking\b/i,
+  /\/closing-?notice/i, /\/closing-?date/i, /\/closing-?announcement/i,
+  /\/tv-review/i, /\/film-review/i, /\/movie-review/i, /\/book-review/i,
+  /\/album-review/i, /\/concert-review/i, /\/music-review/i,
+  /\/award/i, /\/tony-?award/i, /\/nomination/i,
+  /\/ticket/i, /\/deals?\b/i, /\/discount/i, /\/lottery\b/i, /\/rush\b/i,
+  /\/cast-?announcement/i, /\/casting\b/i,
+];
+
+/**
+ * Check if a SERP result looks like an actual theater review.
+ * Uses both URL path and SERP title. Errs on the side of inclusion
+ * (only blocks clear non-review patterns).
+ */
+function looksLikeReview(url, serpTitle) {
+  const urlLower = url.toLowerCase();
+
+  // Block obvious non-review URL patterns
+  for (const pattern of NON_REVIEW_URL_PATTERNS) {
+    if (pattern.test(urlLower)) return false;
+  }
+
+  // If title or URL contains strong review signals, definitely include
+  const combined = `${urlLower} ${(serpTitle || '').toLowerCase()}`;
+  if (/\breview\b/.test(combined) || /\bcritic\b/.test(combined) || /\bverdict\b/.test(combined)) {
+    return true;
+  }
+
+  // Otherwise, pass through — downstream quality gates catch false positives
+  return true;
 }
 
 function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
@@ -226,10 +269,16 @@ async function main() {
   } else {
     // --market mode: filter by category
     targetShows = shows.shows
-      .filter(s => s.category === opts.market)
+      .filter(s => opts.market === 'broadway' ? (!s.category || s.category === 'broadway') : s.category === opts.market)
       .filter(s => s.status !== 'previews')
       .filter(s => !opts.showIds || opts.showIds.includes(s.id));
   }
+
+  // --open-only: filter to open/previews shows (for weekly cron targeting current shows)
+  if (opts.openOnly) {
+    targetShows = targetShows.filter(s => s.status === 'open' || s.status === 'previews');
+  }
+
   targetShows = targetShows.slice(0, opts.maxShows);
 
   console.log(`=== Outlet-First SERP Review Collector ===`);
@@ -316,20 +365,35 @@ async function main() {
         const result = await discoverCorrectUrl(fakeReview, scrapingBeeKey, {
           brightDataKey,
           dateRange,
+          returnMetadata: true,
           log: () => {},
         });
 
-        if (result && result !== '__SERP_UNAVAILABLE__') {
-          console.log(`    FOUND: ${result}`);
-          totalFound++;
-          foundOutlets.add(outlet.id);
+        if (result && result !== '__SERP_UNAVAILABLE__' && typeof result === 'object') {
+          const { url: foundUrl, serpTitle } = result;
+          console.log(`    FOUND: ${foundUrl}`);
+          if (serpTitle) console.log(`    TITLE: ${serpTitle}`);
 
-          const valid = await validateUrl(result);
-          if (valid) {
-            const written = writeReviewFile(show.id, outlet.id, result, show.title, outletName, opts);
-            if (written) totalWritten++;
+          // Review-relevance filter: block obvious non-review URLs
+          if (!looksLikeReview(foundUrl, serpTitle)) {
+            console.log(`    SKIP (non-review URL pattern)`);
+            totalSkipped++;
           } else {
-            console.log(`    INVALID (HTTP error): ${result}`);
+            totalFound++;
+            foundOutlets.add(outlet.id);
+
+            // Skip URL validation for paywalled/metered outlets — they block HEAD requests
+            const accessModel = outletInfo ? outletInfo.accessModel : 'free';
+            const skipValidation = accessModel === 'paywalled' || accessModel === 'metered';
+
+            const valid = skipValidation || await validateUrl(foundUrl);
+            if (valid) {
+              if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
+              const written = writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
+              if (written) totalWritten++;
+            } else {
+              console.log(`    INVALID (HTTP error): ${foundUrl}`);
+            }
           }
         } else if (result === '__SERP_UNAVAILABLE__') {
           console.log(`    SERP UNAVAILABLE — stopping`);
@@ -390,7 +454,8 @@ async function main() {
   console.log(`Searches: ${totalSearches}`);
   console.log(`Found: ${totalFound}`);
   console.log(`Written: ${totalWritten}`);
-  console.log(`Skipped (no domain): ${totalSkipped}`);
+  console.log(`Skipped (no domain / non-review): ${totalSkipped}`);
+  console.log(`Open only: ${opts.openOnly}`);
   console.log(`Dry run: ${opts.dryRun}`);
 }
 
