@@ -192,9 +192,13 @@ function _recordSerpResult(success) {
 
 /**
  * Search via ScrapingBee SERP API (returns structured JSON).
+ * @param {string} query - Google search query
+ * @param {string} apiKey - ScrapingBee API key
+ * @param {Function} log - Logging function
+ * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
-async function _serpViaScrapingBee(query, apiKey, log) {
+async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
   if (_scrapingBeeSerpExhausted || !apiKey) return null;
 
   const axios = require('axios');
@@ -204,8 +208,13 @@ async function _serpViaScrapingBee(query, apiKey, log) {
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
+      const params = { api_key: apiKey, search: query };
+      if (dateRange) {
+        // Append Google date filter to the search query via extra_params
+        params.search += ` &tbs=${buildDateTbs(dateRange)}`;
+      }
       const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-        params: { api_key: apiKey, search: query },
+        params,
         timeout: 30000,
       });
       const data = response.data;
@@ -243,14 +252,21 @@ async function _serpViaScrapingBee(query, apiKey, log) {
  * Search via Bright Data Web Unlocker → Google HTML.
  * Parses organic results from Google's HTML response.
  * Ported from collect-review-texts.js _serpViaBrightData().
+ * @param {string} query - Google search query
+ * @param {string} apiKey - Bright Data API token
+ * @param {Function} log - Logging function
+ * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
-async function _serpViaBrightData(query, apiKey, log) {
+async function _serpViaBrightData(query, apiKey, log, dateRange) {
   if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
   const axios = require('axios');
   const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+  let googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
+  if (dateRange) {
+    googleUrl += `&tbs=${encodeURIComponent(buildDateTbs(dateRange))}`;
+  }
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
@@ -329,11 +345,13 @@ async function _serpViaBrightData(query, apiKey, log) {
  * @param {Object} [options] - Optional settings
  * @param {string} [options.brightDataKey] - Bright Data API token (fallback provider)
  * @param {Function} [options.log] - Logging function (default: console.log)
+ * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range for Google's tbs filter
  * @returns {string|null|'__SERP_UNAVAILABLE__'} - Discovered URL, null if not found, or sentinel if all providers down
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const log = options.log || console.log;
   const brightDataKey = options.brightDataKey || '';
+  const dateRange = options.dateRange || null;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -369,10 +387,10 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   // Provider chain: ScrapingBee → Bright Data
   // null = provider failure (down/exhausted), [] = searched but no results
-  let results = await _serpViaScrapingBee(query, scrapingBeeKey, log);
+  let results = await _serpViaScrapingBee(query, scrapingBeeKey, log, dateRange);
   let provider = 'scrapingbee';
   if (!results || results.length === 0) {
-    const bdResults = await _serpViaBrightData(query, brightDataKey, log);
+    const bdResults = await _serpViaBrightData(query, brightDataKey, log, dateRange);
     if (bdResults && bdResults.length > 0) {
       results = bdResults;
       provider = 'brightdata';
@@ -399,10 +417,10 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
-      results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log);
+      results = await _serpViaScrapingBee(fallbackQuery, scrapingBeeKey, log, dateRange);
       provider = 'scrapingbee-fallback';
       if (!results) {
-        results = await _serpViaBrightData(fallbackQuery, brightDataKey, log);
+        results = await _serpViaBrightData(fallbackQuery, brightDataKey, log, dateRange);
         provider = 'brightdata-fallback';
       }
       if (results === null) {
@@ -468,9 +486,55 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   return null;
 }
 
+/**
+ * Calculate a date window for SERP queries to avoid cross-production contamination.
+ * Returns { dateMin: Date, dateMax: Date } or null if no dates available.
+ */
+function calculateDateWindow(show) {
+  const opening = show.openingDate ? new Date(show.openingDate) : null;
+  const closing = show.closingDate ? new Date(show.closingDate) : null;
+  const previews = show.previewsStartDate ? new Date(show.previewsStartDate) : null;
+
+  if (!opening && !previews) return null;
+
+  const now = new Date();
+  const DAY = 86400000;
+
+  // Start: previewsStart - 7 days, or openingDate - 30 days
+  const dateMin = previews
+    ? new Date(previews.getTime() - 7 * DAY)
+    : new Date(opening.getTime() - 30 * DAY);
+
+  // End: earliest of (closingDate + 30, today + 30, openingDate + 180)
+  const candidates = [new Date(now.getTime() + 30 * DAY)];
+  if (closing) candidates.push(new Date(closing.getTime() + 30 * DAY));
+  if (opening) candidates.push(new Date(opening.getTime() + 180 * DAY));
+  const dateMax = new Date(Math.min(...candidates.map(d => d.getTime())));
+
+  return { dateMin, dateMax };
+}
+
+/**
+ * Format a Date as MM/DD/YYYY for Google's tbs parameter.
+ */
+function formatDateForGoogle(d) {
+  return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+}
+
+/**
+ * Build the Google tbs date-range parameter string.
+ * @param {{ dateMin: Date, dateMax: Date }} dateRange
+ * @returns {string} e.g. "cdr:1,cd_min:1/1/2024,cd_max:6/1/2024"
+ */
+function buildDateTbs(dateRange) {
+  return `cdr:1,cd_min:${formatDateForGoogle(dateRange.dateMin)},cd_max:${formatDateForGoogle(dateRange.dateMax)}`;
+}
+
 module.exports = {
   OUTLET_DOMAINS,
   DOMAIN_REDIRECTS,
   discoverCorrectUrl,
   getShowInfo,
+  calculateDateWindow,
+  buildDateTbs,
 };
