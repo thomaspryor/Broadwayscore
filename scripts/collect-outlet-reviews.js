@@ -251,15 +251,11 @@ function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
   const fileName = generateReviewFilename(outletId, 'unknown');
 
   // Check for existing file (handles variant filenames)
-  // findExistingReviewFile returns { path, filename, data } or null
+  // findExistingReviewFile skips wrongProduction files, so this only matches valid reviews
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
   if (existing) {
-    if (existing.data && existing.data.wrongProduction) {
-      console.log(`    EXISTING is wrongProduction (${existing.filename}), writing new stub`);
-    } else {
-      console.log(`    SKIP (file exists): ${existing.filename}`);
-      return false;
-    }
+    console.log(`    SKIP (file exists): ${existing.filename}`);
+    return false;
   }
 
   const filePath = path.join(showDir, fileName);
