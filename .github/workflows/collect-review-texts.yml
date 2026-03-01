@@ -9,6 +9,9 @@ on:
   schedule:
     # 3x daily: 2 AM, 10 AM, 6 PM UTC — shorter runs (150/batch) reduce push conflicts
     - cron: '0 2,10,18 * * *'
+    # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
+    # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
+    - cron: '0 0 * * 0'
   workflow_dispatch:
     inputs:
       batch_size:
@@ -148,9 +151,20 @@ jobs:
         id: sched
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "max_reviews=150" >> $GITHUB_OUTPUT
+            HOUR=$(date -u +%H)
+            DAY=$(date -u +%u)  # 7 = Sunday
+            # Sunday midnight UTC = weekly backlog sweep targeting not_attempted reviews
+            if [ "$DAY" = "7" ] && [ "$HOUR" = "00" ]; then
+              echo "max_reviews=150" >> $GITHUB_OUTPUT
+              echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
+              echo "Weekly backlog sweep: targeting not_attempted reviews"
+            else
+              echo "max_reviews=150" >> $GITHUB_OUTPUT
+              echo "reason_filter=" >> $GITHUB_OUTPUT
+            fi
           else
             echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
+            echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Run review collection
@@ -229,7 +243,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
-          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
@@ -392,7 +406,7 @@ jobs:
           STEALTH="${{ inputs.stealth_proxy }}"
           DOMAIN_FILTER="${{ inputs.domain_filter }}"
           EXCLUDE_DOMAINS="${{ inputs.exclude_domains }}"
-          REASON_FILTER="${{ inputs.reason_filter }}"
+          REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
 
           gh workflow run "Collect Review Texts" \
             -f max_reviews=${{ steps.sched.outputs.max_reviews || '150' }} \
@@ -555,7 +569,7 @@ jobs:
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
           DOMAIN_FILTER: ${{ inputs.domain_filter }}
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
-          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
