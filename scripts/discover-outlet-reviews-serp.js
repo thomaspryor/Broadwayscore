@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -138,6 +139,16 @@ const GENERIC_WORDS = new Set([
   'review', 'broadway', 'musical', 'play', 'show',
 ]);
 
+// Extract year from SERP result URL path or title
+// Returns null when no year found (expected for many outlets — harmless)
+function extractYearFromSerpResult(result) {
+  const urlMatch = (result.url || '').match(/\/((?:19|20)\d{2})\//);
+  if (urlMatch) return parseInt(urlMatch[1]);
+  const titleMatch = (result.title || '').match(/\b((?:19|20)\d{2})\b/);
+  if (titleMatch) return parseInt(titleMatch[1]);
+  return null;
+}
+
 // Match a SERP result to a show
 function matchResultToShow(result, config, shows) {
   // Try extracting title from URL
@@ -150,7 +161,8 @@ function matchResultToShow(result, config, shows) {
   if (!candidateTitle) return null;
 
   candidateTitle = cleanExternalTitle(candidateTitle);
-  const matched = matchTitleToShow(candidateTitle, shows);
+  const serpYear = extractYearFromSerpResult(result);
+  const matched = matchTitleToShow(candidateTitle, shows, serpYear ? { year: serpYear } : undefined);
   if (!matched?.show) return null;
 
   // Guard against false matches where candidate and show share only one short word
@@ -229,6 +241,18 @@ async function discoverForOutlet(outletId, config, shows, opts) {
         continue;
       }
 
+      // Reject results where URL year falls outside the show's production window
+      const matchedShow = shows.find(s => s.id === match.id);
+      if (matchedShow?.openingDate) {
+        const openYear = new Date(matchedShow.openingDate).getFullYear();
+        const closeYear = matchedShow.closingDate ? new Date(matchedShow.closingDate).getFullYear() : null;
+        if (isUrlYearOutsideWindow(result.url, openYear, closeYear)) {
+          stats.urlYearSkipped = (stats.urlYearSkipped || 0) + 1;
+          console.log(`    ⊘ URL year outside window for ${match.id} — skipping`);
+          continue;
+        }
+      }
+
       stats.matched++;
       const showId = match.id;
       const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -274,6 +298,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
   console.log(`    SERP searches: ${stats.searched}`);
   console.log(`    Results found: ${stats.results}`);
   console.log(`    Matched to shows: ${stats.matched}`);
+  if (stats.urlYearSkipped) console.log(`    URL-year skipped: ${stats.urlYearSkipped}`);
   console.log(`    New review stubs: ${stats.newFiles}`);
   console.log(`    Already existing: ${stats.existing}`);
 
