@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-01T05:07:49.098Z",
-  "processed": 76,
-  "failed": 554,
-  "successRate": "12.1%",
+  "updatedAt": "2026-03-01T05:16:33.354Z",
+  "processed": 85,
+  "failed": 555,
+  "successRate": "13.3%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 39,
     "amp": 30,
     "browserbase": 2,
     "directCookies": 2,
-    "scrapingbee": 7,
-    "brightdata": 13,
+    "scrapingbee": 9,
+    "brightdata": 14,
     "archiveToday": 175,
-    "archive": 26
+    "archive": 27
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-02-28T18:35:40.677Z",
-      "event": "bb-session",
-      "session": "f327c0a6",
-      "url": "https://www.wsj.com/arts-culture/theater?gaa_at=eafs&gaa_n=AWEtsqeNv_SSZ2SnWJOry"
-    },
-    {
-      "t": "2026-02-28T18:35:42.116Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-28T18:41:17.035Z",
-      "event": "bb-session",
-      "session": "8cfcf5ab",
-      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
-    },
-    {
-      "t": "2026-02-28T18:41:18.345Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-02-28T18:55:54.447Z",
       "event": "bb-session",
@@ -111,6 +89,39 @@
     },
     {
       "t": "2026-03-01T05:07:18.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:08:38.301Z",
+      "event": "bb-session",
+      "session": "c709d06c",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-03-01T05:08:39.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:10:37.486Z",
+      "event": "bb-session",
+      "session": "d3a377e1",
+      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
+    },
+    {
+      "t": "2026-03-01T05:10:38.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:12:15.519Z",
+      "event": "bb-session",
+      "session": "f7dd45ae",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
+    },
+    {
+      "t": "2026-03-01T05:12:16.618Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
