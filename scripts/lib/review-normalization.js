@@ -1296,6 +1296,28 @@ function normalizeOutletFull(outletName) {
   return { name, outletId };
 }
 
+/**
+ * Detect URLs that are critic/author profile pages rather than actual reviews.
+ * These get scraped from aggregator pages (ShowScore /people/, BWW /people/) but
+ * are not review content — they inflate review counts and cause cross-show dupes.
+ */
+function isProfileUrl(url) {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  // BWW critic profiles
+  if (/broadwayworld\.com\/people\//.test(lower)) return true;
+  // ShowScore critic profiles
+  if (/show-score\.com\/people\//.test(lower)) return true;
+  // Cititour critic profiles (e.g., /NYC_Broadway/critic/1234)
+  if (/cititour\.com\/.*\/\d+$/.test(lower) && !/review/i.test(lower)) return false; // cititour show pages have numeric IDs too
+  // Generic author/contributor pages — only match at end of URL path to avoid false positives
+  // e.g., /author/jane-doe/ but NOT /author-reviews-hamilton
+  if (/\/(?:author|writers?|contributors?|staff|columnists?)\/[^/]+\/?$/.test(lower)) return true;
+  // ShowScore /people/ without domain (stored as relative paths)
+  if (/^\/people\/[A-Z]/i.test(url)) return true;
+  return false;
+}
+
 module.exports = {
   normalizeOutlet,
   normalizeOutletFull,
@@ -1322,6 +1344,7 @@ module.exports = {
   resolveOutletFromUrl,
   clearDomainCache,
   getOutletAliases,
+  isProfileUrl,
   LEGACY_OUTLET_ALIASES,
   CRITIC_ALIASES,
 };

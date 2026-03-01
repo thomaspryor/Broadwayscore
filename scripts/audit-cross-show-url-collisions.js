@@ -55,17 +55,59 @@ for (const s of showsData.shows) {
   };
 }
 
+const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  const stat = fs.statSync(path.join(REVIEW_TEXTS_DIR, d));
+  return stat.isDirectory();
+});
+
+// --- Pre-pass: showId-vs-directory mismatch detection ---
+// BWW scraper placed files in wrong directories but set correct showId internally.
+// Flag any file where file.showId !== directory name (excluding OB/WE ID migrations).
+console.log('Pre-pass: checking showId-vs-directory mismatches...');
+let showIdMismatchFlagged = 0;
+let showIdMismatchSkipped = 0;
+
+function isIdMigration(dirId, fileId) {
+  // OB/WE ID migrations: directory was renamed but file showId wasn't updated
+  // e.g., dir="foo-off-broadway-2026" vs file="foo-2026"
+  const dirBase = dirId.replace(/-off-broadway(-\d{4})?$/, '$1').replace(/-west-end(-\d{4})?$/, '$1');
+  const fileBase = fileId.replace(/-off-broadway(-\d{4})?$/, '$1').replace(/-west-end(-\d{4})?$/, '$1');
+  return dirBase === fileBase;
+}
+
+for (const showId of showDirs) {
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+
+    if (!data.showId || data.showId === showId) continue;
+    if (data.wrongProduction || data.wrongShow) continue;
+    if (isIdMigration(showId, data.showId)) { showIdMismatchSkipped++; continue; }
+
+    if (APPLY) {
+      data.wrongProduction = true;
+      data.wrongProductionNote = `File showId "${data.showId}" doesn't match directory "${showId}" — placed in wrong production directory`;
+      atomicWriteJSON(filePath, data);
+      showIdMismatchFlagged++;
+      log(`  [SHOWID MISMATCH] ${showId}/${file}: showId=${data.showId}`);
+    } else {
+      showIdMismatchFlagged++;
+      log(`  [SHOWID MISMATCH] ${showId}/${file}: showId=${data.showId} (would flag)`);
+    }
+  }
+}
+console.log(`ShowId mismatches: ${showIdMismatchFlagged} flagged, ${showIdMismatchSkipped} ID-migration skipped\n`);
+
 // Build global URL → file map
 console.log('Scanning review-texts for cross-show URL collisions...\n');
 
 const urlMap = new Map(); // normalizedUrl → [{showId, file, filePath, publishDate, hasScore, hasFullText, ...}]
 let totalFiles = 0;
 let skippedFlagged = 0;
-
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-  const stat = fs.statSync(path.join(REVIEW_TEXTS_DIR, d));
-  return stat.isDirectory();
-});
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -734,13 +776,81 @@ if (APPLY) {
   }
   console.log(`Flagged ${multiRevivalNoSignalFlagged} files (multi-revival, no-signal candidates)`);
 
+  // --- Tier 14: Profile URL rejection ---
+  // URLs that are critic profile pages (ShowScore /people/, BWW /people/) rather than actual reviews.
+  // These appear in collisions because the same profile page is scraped for multiple shows.
+  console.log('\n=== TIER 14: PROFILE URL REJECTION ===');
+  const { isProfileUrl } = require('./lib/review-normalization');
+  let profileUrlFlagged = 0;
+  // Scan ALL entries in urlMap, not just collisions — profile URLs are wrong even in single shows
+  for (const [normUrl, entries] of urlMap) {
+    const originalUrl = entries[0]?.url;
+    if (!originalUrl || !isProfileUrl(originalUrl)) continue;
+    for (const entry of entries) {
+      try {
+        const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || !data.url) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = 'URL is a critic/author profile page, not a review';
+        data.url = null;
+        atomicWriteJSON(entry.filePath, data);
+        profileUrlFlagged++;
+        log(`  Profile URL flagged: ${entry.showId}/${entry.file}`);
+      } catch (e) {
+        console.error(`  Error: ${entry.filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${profileUrlFlagged} profile URL files as wrongShow`);
+
+  // --- Tier 15: Catch-all — remaining revival collisions, most recent production wins ---
+  // For revival pairs (same base slug) that fell through all prior tiers.
+  // Restricted to revivals only to avoid misattributing cross-show roundups.
+  console.log('\n=== TIER 15: CATCH-ALL REVIVAL (MOST RECENT WINS) ===');
+  let catchAllFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length < 2) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+    if (isSameDateDoubleBill(result)) continue;
+
+    // Only apply to revival groups (same base slug)
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue;
+
+    // Find most recent production with opening date
+    const sorted = [...result.candidates]
+      .filter(c => c.openingDate)
+      .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+    if (sorted.length < 2) continue;
+
+    const winner = sorted[0];
+    for (const candidate of result.candidates) {
+      if (candidate.showId === winner.showId) continue;
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction) continue;
+        data.wrongProduction = true;
+        data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;
+        atomicWriteJSON(filePath, data);
+        catchAllFlagged++;
+        log(`  Catch-all flagged: ${candidate.showId}/${candidate.file} → ${winner.showId}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${catchAllFlagged} files (catch-all revival, most recent wins)`);
+
   const totalFixed = genericUrlsNulled + highConfFlagged + revivalScoreFlagged +
     revivalFullTextFlagged + revivalNoSignalFlagged + multiCandidateNulled +
     nearRevivalFlagged + multiRevivalFlagged +
     bothScoredRevivalFlagged + nonRevivalOneScoredFlagged + nonRevivalBothScoredFlagged +
-    noSignalNonRevivalNulled + noSignalRevivalNulled + multiRevivalNoSignalFlagged;
+    noSignalNonRevivalNulled + noSignalRevivalNulled + multiRevivalNoSignalFlagged +
+    profileUrlFlagged + catchAllFlagged;
 
   console.log(`\n=== APPLY SUMMARY ===`);
+  console.log(`Pre-pass - ShowId mismatch:            ${showIdMismatchFlagged}`);
   console.log(`Tier 0 - Generic URLs nulled:         ${genericUrlsNulled}`);
   console.log(`Tier 1 - High-confidence wrongShow:   ${highConfFlagged}`);
   console.log(`Tier 2 - Revival score-based:         ${revivalScoreFlagged}`);
@@ -755,7 +865,9 @@ if (APPLY) {
   console.log(`Tier 11 - No-signal non-revival null:  ${noSignalNonRevivalNulled}`);
   console.log(`Tier 12 - No-signal revival null-date: ${noSignalRevivalNulled}`);
   console.log(`Tier 13 - Multi-revival no-signal:     ${multiRevivalNoSignalFlagged}`);
-  console.log(`Total files modified:                  ${totalFixed}`);
+  console.log(`Tier 14 - Profile URL rejection:       ${profileUrlFlagged}`);
+  console.log(`Tier 15 - Catch-all revival:           ${catchAllFlagged}`);
+  console.log(`Total files modified:                  ${totalFixed + showIdMismatchFlagged}`);
 } else {
   console.log(`\nRun with --apply to auto-fix collisions.`);
 }
