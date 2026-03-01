@@ -2063,6 +2063,17 @@ function createReviewFile(showId, reviewData, options = {}) {
     } catch (e) {}
   }
 
+  // NULL-URL GUARD: Reject --unknown reviews with no URL AND no aggregator excerpt.
+  // These are unfetchable and unverifiable — likely aggregator artifacts.
+  // Named critics may legitimately have no URL (from ShowScore excerpts).
+  if (!review.url && normalizedCriticName === 'unknown') {
+    const hasExcerpt = review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.playbillExcerpt;
+    if (!hasExcerpt) {
+      console.log(`    ✗ Skipping ${filename}: no URL and no excerpt — unfetchable/unverifiable`);
+      return 'nullUrl';
+    }
+  }
+
   // URL/DOMAIN VALIDATION: Reject reviews where URL domain doesn't match the attributed outlet.
   // This catches aggregator scraping errors where a URL from outlet-A gets attributed to outlet-B.
   // Only check --unknown files (named critics are more likely to freelance across domains).
