@@ -351,12 +351,108 @@ function searchTodayTixByTitle(title, location = 1) {
 }
 
 /**
+ * Fetch a ShowScore page and extract status/dates from the info-top-line element.
+ * Returns { ssStatus, openingDate, closingDate, venue, runtime } or null on failure.
+ *
+ * Status line formats:
+ *   "Opens Mar 08"    → previews, openingDate = current year Mar 08
+ *   "Open run"        → open
+ *   "Ends Mar 28"     → open, closingDate = current year Mar 28
+ *   "Ends May 2026"   → open, closingDate = 2026-05-31 (approx)
+ *   "Closed"          → closed
+ */
+async function fetchShowScoreStatus(showScoreUrl) {
+  try {
+    const result = await fetchPage(showScoreUrl);
+    if (!result || !result.content) return null;
+
+    const dom = new JSDOM(result.content);
+    const doc = dom.window.document;
+
+    // Extract info-top-line content
+    const topLine = doc.querySelector('.show-page-v2__info-top-line');
+    if (!topLine) return null;
+
+    // First text node contains the status
+    const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
+    if (!statusText) return null;
+
+    // Extract venue from the link in info-top-line
+    const venueLink = topLine.querySelector('a');
+    const venueFull = venueLink?.textContent?.trim() || '';
+    // Strip "NYC: " or "London: " prefix
+    const venue = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || 'TBA';
+
+    // Extract runtime from second segment (between delimiters)
+    const delimiters = topLine.querySelectorAll('.show-page-v2__info-top-line-delimiter');
+    let runtime = null;
+    if (delimiters.length >= 1) {
+      const afterFirst = delimiters[0].nextSibling;
+      if (afterFirst && afterFirst.nodeType === 3) { // text node
+        const rtText = afterFirst.textContent.trim();
+        if (/^\d+h\s*\d*m?$/.test(rtText)) runtime = rtText;
+      }
+    }
+
+    const currentYear = new Date().getFullYear();
+    const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+
+    function parseShortDate(text) {
+      // "Mar 08" or "May 2026"
+      const match = text.match(/([A-Za-z]+)\s+(\d+)/);
+      if (!match) return null;
+      const monthStr = match[1].toLowerCase().slice(0, 3);
+      const num = parseInt(match[2]);
+      const month = MONTHS[monthStr];
+      if (month === undefined) return null;
+      // If num > 31, it's a year like "May 2026"
+      if (num > 31) {
+        // Last day of month approximation
+        const lastDay = new Date(num, month + 1, 0).getDate();
+        return `${num}-${String(month + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      }
+      // Otherwise it's a day in current year (or next year if month has passed)
+      let year = currentYear;
+      const now = new Date();
+      const candidate = new Date(year, month, num);
+      // If the date is more than 3 months in the past, it's probably next year
+      if (candidate < new Date(now.getFullYear(), now.getMonth() - 3, 1)) {
+        year++;
+      }
+      return `${year}-${String(month + 1).padStart(2, '0')}-${String(num).padStart(2, '0')}`;
+    }
+
+    let ssStatus = null;
+    let openingDate = null;
+    let closingDate = null;
+
+    if (statusText.startsWith('Opens ')) {
+      ssStatus = 'previews';
+      openingDate = parseShortDate(statusText.replace('Opens ', ''));
+    } else if (statusText === 'Open run') {
+      ssStatus = 'open';
+    } else if (statusText.startsWith('Ends ')) {
+      ssStatus = 'open';
+      closingDate = parseShortDate(statusText.replace('Ends ', ''));
+    } else if (statusText === 'Closed') {
+      ssStatus = 'closed';
+    }
+
+    return { ssStatus, openingDate, closingDate, venue, runtime };
+  } catch (e) {
+    console.warn(`  [SS] Failed to fetch ShowScore status for ${showScoreUrl}: ${e.message}`);
+    return null;
+  }
+}
+
+/**
  * Load and validate ShowScore candidates, converting them into the same shape
  * as TodayTix-discovered shows for the dedup pipeline.
  *
  * Tiered validation:
  *   Tier 1: Found on TodayTix → full metadata + all filters
- *   Tier 2: Not on TodayTix → title-based non-theater filter only (OB/WE shows often missing from TT)
+ *   Tier 2: Not on TodayTix → ShowScore page scrape for status/dates
+ *   Tier 3: ShowScore fetch fails → title-based filter only, null dates
  */
 async function consumeShowScoreCandidatesFile() {
   let candidatesData;
@@ -473,22 +569,42 @@ async function consumeShowScoreCandidatesFile() {
       });
       console.log(`  [TT+SS] "${candidate.title}" → confirmed on TodayTix`);
     } else {
-      // Not on TodayTix — add with minimal metadata from ShowScore only.
+      // Not on TodayTix — scrape ShowScore page for status/dates.
       // ShowScore itself validates it's a real show (they curate listings).
       ttMissing++;
+
+      let ssData = null;
+      try {
+        ssData = await fetchShowScoreStatus(candidate.showScoreUrl);
+        await new Promise(r => setTimeout(r, 500)); // Rate limit
+      } catch { /* ShowScore fetch failed — proceed with nulls */ }
+
+      // Skip closed shows from ShowScore
+      if (ssData?.ssStatus === 'closed') {
+        if (verbose) console.log(`  [SKIP] "${candidate.title}" — ShowScore says Closed`);
+        continue;
+      }
+
+      const venue = ssData?.venue || 'TBA';
+      const openingDate = ssData?.openingDate || null;
+      const closingDate = ssData?.closingDate || null;
+      const source = ssData ? 'showScore+scraped' : 'showScore';
+
       validated.push({
         title: candidate.title,
-        venue: 'TBA',
+        venue,
         slug: candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: null,
-        closingDate: null,
+        openingDate,
+        closingDate,
         category: candidate.category,
         description: '',
         todayTixCategory: null,
         _showScoreUrl: candidate.showScoreUrl,
-        _source: 'showScore',
+        _showScoreStatus: ssData?.ssStatus || null,
+        _source: source,
       });
-      console.log(`  [SS] "${candidate.title}" → not on TodayTix, adding from ShowScore`);
+      const dateInfo = openingDate ? ` (opens ${openingDate})` : ssData?.ssStatus ? ` (${ssData.ssStatus})` : '';
+      console.log(`  [SS] "${candidate.title}" → not on TodayTix, adding from ShowScore${dateInfo}`);
     }
   }
 
@@ -964,7 +1080,21 @@ async function discoverShows() {
       let openingDate;
       let status;
 
-      if (show.openingDate) {
+      // ShowScore status is more reliable than TodayTix dates for OB/WE shows.
+      // "Opens Mar 08" = real opening date. "Open run" = confirmed open.
+      const ssStatus = show._showScoreStatus;
+
+      if (ssStatus === 'open' || ssStatus === 'previews') {
+        // ShowScore has authoritative status — use it directly
+        if (ssStatus === 'open') {
+          status = 'open';
+          openingDate = show.openingDate || null;
+        } else {
+          // "Opens Mar 08" — the date IS the opening date (not preview date)
+          status = 'previews';
+          openingDate = show.openingDate; // ShowScore "Opens" date = press night
+        }
+      } else if (show.openingDate) {
         openingDate = show.openingDate;
         const openingDateObj = new Date(openingDate);
         const today = new Date();
