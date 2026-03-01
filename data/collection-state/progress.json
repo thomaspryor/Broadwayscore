@@ -10,7 +10,13 @@
     "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
     "hercules-west-end-2025/nytimes--matt-wolf.json",
     "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
-    "operation-mincemeat-west-end-2024/nytg--caroline-cao.json"
+    "operation-mincemeat-west-end-2024/nytg--caroline-cao.json",
+    "operation-mincemeat-west-end-2024/vulture--sara-holdren.json",
+    "shadowlands-west-end-2026/nytimes--naveen-kumar.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--houman-barekat.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -31,7 +37,11 @@
     "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
     "man-and-boy-west-end-2026/nytimes--ben-brantley.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-    "oh-mary-west-end-2025/vulture--sara-holdren.json"
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
+    "the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,7 +49,9 @@
       "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/nytg--amelia-merrill.json",
       "dracula-west-end-2025/nytg--kyle-turner.json",
-      "operation-mincemeat-west-end-2024/nytg--caroline-cao.json"
+      "operation-mincemeat-west-end-2024/nytg--caroline-cao.json",
+      "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+      "the-outsiders-2024/hollywood-reporter--david-rooney.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -55,7 +67,11 @@
       "data/review-texts/kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
-      "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json"
+      "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
+      "stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
+      "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json",
+      "the-outsiders-2024/hollywood-reporter--angie-han.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -65,13 +81,16 @@
       "data/review-texts/maggots-west-end-2026/variety--marilyn-stasio.json",
       "maggots-west-end-2026/variety--marilyn-stasio.json",
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
+      "the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [
       "death-becomes-her-2024/newyorker--helen-shaw.json",
       "hamilton-west-end-2021/vulture--jesse-green.json",
       "just-in-time-2025/newyorker--unknown.json",
-      "mamma-mia-west-end-2021/vulture--jackson-mchenry.json"
+      "mamma-mia-west-end-2021/vulture--jackson-mchenry.json",
+      "oh-mary-west-end-2025/vulture--sara-holdren.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -87,11 +106,15 @@
       "chinese-republicans-off-broadway-2026/vulture--sara-holdren.json",
       "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
       "hercules-west-end-2025/nytimes--matt-wolf.json",
-      "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json"
+      "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
+      "operation-mincemeat-west-end-2024/vulture--sara-holdren.json",
+      "shadowlands-west-end-2026/nytimes--naveen-kumar.json",
+      "stranger-things-the-first-shadow-west-end-2023/nytimes--houman-barekat.json",
+      "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "operation-mincemeat-west-end-2024/nytg--caroline-cao.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -178,6 +201,28 @@
     },
     {
       "t": "2026-03-01T20:17:36.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-01T20:20:53.301Z",
+      "event": "bb-session",
+      "session": "97360237",
+      "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-tran"
+    },
+    {
+      "t": "2026-03-01T20:20:54.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-01T20:32:17.680Z",
+      "event": "bb-session",
+      "session": "9f7ff933",
+      "url": "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621"
+    },
+    {
+      "t": "2026-03-01T20:32:18.946Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
