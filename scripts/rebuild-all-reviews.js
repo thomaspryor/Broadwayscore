@@ -1855,15 +1855,27 @@ showDirs.forEach(showId => {
       // Skip reviews where show title was never mentioned AND there are no aggregator excerpts
       // Reviews with valid excerpts from DTLI/BWW/ShowScore are likely legitimate even without title match
       if (data.showNotMentioned === true) {
-        // Safety net: if fullText exists and mentions the show, clear the stale flag
-        // This catches cases where collect-review-texts.js fetched good content but didn't clear the flag
-        if (data.fullText && data.fullText.length > 300) {
-          const showTitle = (data.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+        // Safety net: if fullText (or wrongFullText from collect-review-texts nulling) mentions
+        // the show, clear the stale flag. collect-review-texts.js moves fullText → wrongFullText
+        // when it sets showNotMentioned, so we must check both fields.
+        const textToCheck = (data.fullText && data.fullText.length > 300) ? data.fullText
+          : (data.wrongFullText && data.wrongFullText.length > 300) ? data.wrongFullText
+          : null;
+        if (textToCheck) {
+          // Use real show title from shows.json if available (ID-derived titles miss hyphenated names like "Boeing-Boeing")
+          const realTitle = showTitleMap && showTitleMap[data.showId || showId];
+          const idTitle = (data.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+          const showTitle = realTitle ? realTitle.toLowerCase() : idTitle;
           const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
-          const textLower = data.fullText.substring(0, 5000).toLowerCase();
+          const textLower = textToCheck.substring(0, 5000).toLowerCase();
           if (textLower.includes(showTitle) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
+            // Restore fullText from wrongFullText if it was nulled out
+            if (!data.fullText && data.wrongFullText) {
+              data.fullText = data.wrongFullText;
+              delete data.wrongFullText;
+            }
             stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
             // Write fix back to source file
             try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
