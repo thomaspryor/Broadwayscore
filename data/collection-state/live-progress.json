@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T06:04:28.798Z",
-  "processed": 118,
-  "failed": 572,
-  "successRate": "17.1%",
+  "updatedAt": "2026-03-01T06:14:27.588Z",
+  "processed": 125,
+  "failed": 575,
+  "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 62,
     "amp": 34,
     "browserbase": 2,
     "directCookies": 4,
-    "scrapingbee": 14,
-    "brightdata": 22,
-    "archiveToday": 176,
-    "archive": 35
+    "scrapingbee": 16,
+    "brightdata": 23,
+    "archiveToday": 177,
+    "archive": 37
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:07:17.764Z",
-      "event": "bb-session",
-      "session": "31563a12",
-      "url": "https://www.nytimes.com/2026/02/17/theater/the-dinosaurs-review-chalfant-marvel-"
-    },
-    {
-      "t": "2026-03-01T05:07:18.763Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:08:38.301Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T05:58:53.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T06:13:40.338Z",
+      "event": "bb-session",
+      "session": "9da18d8a",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-03-01T06:13:41.538Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

@@ -117,7 +117,14 @@
     "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
     "chess-2025/timeout--adam-feldman.json",
     "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-    "chinese-republicans-off-broadway-2026/nbcnews--unknown.json"
+    "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
+    "chinese-republicans-off-broadway-2026/theatermania--unknown.json",
+    "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
+    "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
+    "data-off-broadway-2026/theatermania--zachary-stewart.json",
+    "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -691,7 +698,10 @@
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
     "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
-    "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json"
+    "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
+    "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+    "data-off-broadway-2026/broadwaynews--stephi-wild.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -753,7 +763,11 @@
       "bug-2026/timeout--adam-feldman.json",
       "burnout-paradise-off-broadway-2026/theatermania--zachary-stewart.json",
       "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
-      "chess-2025/timeout--adam-feldman.json"
+      "chess-2025/timeout--adam-feldman.json",
+      "chinese-republicans-off-broadway-2026/theatermania--unknown.json",
+      "data-off-broadway-2026/theatermania--zachary-stewart.json",
+      "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
+      "death-becomes-her-2024/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -815,7 +829,9 @@
       "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
       "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
       "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
-      "chinese-republicans-off-broadway-2026/nbcnews--unknown.json"
+      "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
+      "chinese-republicans-off-broadway-2026/thewrap--unknown.json",
+      "data-off-broadway-2026/broadwaynews--stephi-wild.json"
     ],
     "brightdata": [
       "arcadia-west-end-2026/talkinbroadway--unknown.json",
@@ -839,7 +855,8 @@
       "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "bug-2026/wsj--charles-isherwood.json"
+      "bug-2026/wsj--charles-isherwood.json",
+      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -1017,7 +1034,8 @@
       "data/review-texts/wicked-west-end-2021/billboard--unknown.json",
       "data/review-texts/wicked-west-end-2021/talkinbroadway--unknown.json",
       "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
-      "data/review-texts/all-my-sons-west-end-2025/nbcnews--unknown.json"
+      "data/review-texts/all-my-sons-west-end-2025/nbcnews--unknown.json",
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1054,11 +1072,13 @@
       "anonymous-off-broadway-2026/theatermania--unknown.json",
       "beautiful-little-fool-west-end-2026/theatermania--tanyel-gumushan.json",
       "bigfoot-off-broadway-2026/theatermania--unknown.json",
-      "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+      "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "cold-war-choir-practice-off-broadway-2026/theatermania--unknown.json",
+      "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
+  "lastProcessed": "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1255,6 +1275,17 @@
     },
     {
       "t": "2026-03-01T05:58:53.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T06:13:40.338Z",
+      "event": "bb-session",
+      "session": "9da18d8a",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-03-01T06:13:41.538Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
