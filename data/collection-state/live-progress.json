@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-01T20:20:49.673Z",
-  "processed": 11,
-  "failed": 19,
-  "successRate": "36.7%",
+  "updatedAt": "2026-03-01T20:35:18.385Z",
+  "processed": 17,
+  "failed": 23,
+  "successRate": "42.5%",
   "tierBreakdown": {
-    "playwright": 4,
-    "amp": 14,
-    "browserbase": 8,
-    "directCookies": 4,
+    "playwright": 6,
+    "amp": 18,
+    "browserbase": 10,
+    "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 4,
-    "archive": 6
+    "archive": 10
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -100,6 +100,28 @@
     },
     {
       "t": "2026-03-01T20:17:36.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-01T20:20:53.301Z",
+      "event": "bb-session",
+      "session": "97360237",
+      "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-tran"
+    },
+    {
+      "t": "2026-03-01T20:20:54.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-01T20:32:17.680Z",
+      "event": "bb-session",
+      "session": "9f7ff933",
+      "url": "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621"
+    },
+    {
+      "t": "2026-03-01T20:32:18.946Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
