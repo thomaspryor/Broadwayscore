@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-02-20T00:11:13.016Z",
+  "timestamp": "2026-03-01T05:00:06.267Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-03-01",
+    "totalReviews": 30248,
+    "unknownOutlets": 47,
+    "duplicates": 49,
+    "syncDelta": 12984
+  },
+  "previous": {
     "date": "2026-02-20",
     "totalReviews": 24156,
     "unknownOutlets": 32,
     "duplicates": 0,
     "syncDelta": 7677
   },
-  "previous": {
-    "date": "2026-02-19",
-    "totalReviews": 23923,
-    "unknownOutlets": 35,
-    "duplicates": 7,
-    "syncDelta": 7367
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "32 reviews have unknown outlets",
+      "message": "47 reviews have unknown outlets",
       "examples": [
         {
           "file": "data/review-texts/1984-2017/is-intense-in-a-way-ive-never-seen-on-broadway--duncan-macmillan.json",
@@ -27,19 +27,9 @@
           "outlet": "is-intense-in-a-way-ive-never-seen-on-broadway"
         },
         {
-          "file": "data/review-texts/a-chorus-line-2006/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/a-moon-for-the-misbegotten-2007/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
-        },
-        {
-          "file": "data/review-texts/a-night-with-janis-joplin-2013/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
+          "file": "data/review-texts/a-moon-for-the-misbegotten-2007/click-here--unknown.json",
+          "outletId": "click-here",
+          "outlet": "Click here"
         },
         {
           "file": "data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
@@ -52,9 +42,24 @@
           "outlet": "tackles-an-underexplored-dark-chapter-in-our-history"
         },
         {
+          "file": "data/review-texts/amazing-grace-2015/break-point--eric-metaxas.json",
+          "outletId": "break-point",
+          "outlet": "break-point"
+        },
+        {
+          "file": "data/review-texts/american-idiot-2010/splash-magazines--elaine-mura.json",
+          "outletId": "splash-magazine",
+          "outlet": "Splash Magazine"
+        },
+        {
           "file": "data/review-texts/back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
           "outletId": "and-daryl-tofa-back-to-the-future",
           "outlet": "and-daryl-tofa-back-to-the-future"
+        },
+        {
+          "file": "data/review-texts/be-more-chill-2019/los-angeles-time--charles-mcnulty.json",
+          "outletId": "los-angeles-time",
+          "outlet": "Los Angeles Time"
         },
         {
           "file": "data/review-texts/beautiful-the-carole-king-musical-2014/the-canadian-talent-who-first-rose-to-fame-ondegrassi--jake-epstein.json",
@@ -62,27 +67,79 @@
           "outlet": "the-canadian-talent-who-first-rose-to-fame-ondegrassi"
         },
         {
-          "file": "data/review-texts/bengal-tiger-at-the-baghdad-zoo-2011/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
+          "file": "data/review-texts/beetlejuice-2025/beetlejuice-beetlejuice--melissa-locker.json",
+          "outletId": "beetlejuice-beetlejuice",
+          "outlet": "Beetlejuice Beetlejuice"
+        }
+      ]
+    },
+    {
+      "type": "duplicates",
+      "severity": "critical",
+      "message": "49 duplicate reviews detected",
+      "examples": [
+        {
+          "file": "data/review-texts/1984-2017/nbcny--robert-kahn.json",
+          "key": "1984-2017|nbcny|robert kahn"
         },
         {
-          "file": "data/review-texts/clybourne-park-2012/unknown--unknown.json",
-          "outletId": "unknown",
-          "outlet": "unknown"
+          "file": "data/review-texts/a-dolls-house-part-2-2017/nbcny--robert-kahn.json",
+          "key": "a-dolls-house-part-2-2017|nbcny|robert kahn"
+        },
+        {
+          "file": "data/review-texts/anna-christie-1977/one-minute-critic--matthew-wexler.json",
+          "key": "anna-christie-1977|1-minute-critic|matthew wexler"
+        },
+        {
+          "file": "data/review-texts/be-more-chill-2019/theater-news-online--michael-appler.json",
+          "key": "be-more-chill-2019|the-theatre-times|michael appler"
+        },
+        {
+          "file": "data/review-texts/blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+          "key": "blackout-songs-off-broadway-2026|1-minute-critic|emily chackerian"
+        },
+        {
+          "file": "data/review-texts/call-me-izzy-2025/one-minute-critic--matthew-wexler.json",
+          "key": "call-me-izzy-2025|1-minute-critic|matthew wexler"
+        },
+        {
+          "file": "data/review-texts/chess-2025/one-minute-critic--matthew-wexler.json",
+          "key": "chess-2025|1-minute-critic|matthew wexler"
+        },
+        {
+          "file": "data/review-texts/come-from-away-2017/nbcny--robert-kahn.json",
+          "key": "come-from-away-2017|nbcny|robert kahn"
+        },
+        {
+          "file": "data/review-texts/come-from-away-2017/san-francisco-chronicle--lily-janiak.json",
+          "key": "come-from-away-2017|san-francisco-chronicle|lilly janiak"
+        },
+        {
+          "file": "data/review-texts/data-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
+          "key": "data-off-broadway-2026|1-minute-critic|lindsay b. davis"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (24156) and reviews.json (16479) are out of sync by 7677 reviews"
+      "message": "review-texts (30248) and reviews.json (17264) are out of sync by 12984 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 32 to 47"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 0 to 49"
     }
   ],
   "summary": {
-    "totalReviews": 24156,
-    "unknownOutlets": 32,
-    "duplicates": 0,
-    "syncDelta": 7677
+    "totalReviews": 30248,
+    "unknownOutlets": 47,
+    "duplicates": 49,
+    "syncDelta": 12984
   }
 }
