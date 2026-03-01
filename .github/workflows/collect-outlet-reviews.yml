@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       market:
-        description: 'Market to collect for'
-        required: true
-        default: 'west-end'
+        description: 'Market to collect for (ignored if shows is set)'
+        required: false
+        default: 'broadway'
         type: choice
         options:
-          - west-end
           - broadway
+          - west-end
+          - off-broadway
       max_tier:
         description: 'Maximum outlet tier to search'
         required: false
@@ -20,8 +21,13 @@ on:
           - '1'
           - '2'
           - '3'
+      shows:
+        description: 'Comma-separated show IDs (auto-detects market, overrides market input)'
+        required: false
+        default: ''
+        type: string
       show_filter:
-        description: 'Single show ID to collect (blank = all shows)'
+        description: 'Single show ID (legacy, prefer shows)'
         required: false
         default: ''
         type: string
@@ -37,7 +43,7 @@ on:
         type: boolean
 
 concurrency:
-  group: collect-outlet-reviews-${{ github.event.inputs.market }}
+  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market }}
   cancel-in-progress: false
 
 jobs:
@@ -65,12 +71,17 @@ jobs:
       - name: Run outlet-based SERP collector
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
-          ARGS="--market ${{ github.event.inputs.market }} --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
-          if [ -n "${{ github.event.inputs.show_filter }}" ]; then
-            ARGS="$ARGS --show ${{ github.event.inputs.show_filter }}"
+          # Prefer --shows over --show_filter over --market
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.shows }}"
+          elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.show_filter }}"
+          else
+            ARGS="--market ${{ github.event.inputs.market }}"
           fi
+          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -83,6 +94,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Collect ${{ github.event.inputs.market }} outlet reviews via SERP [T1-${{ github.event.inputs.max_tier }}]"
+      - name: Trigger rebuild
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
