@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
+const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -290,6 +291,14 @@ async function main() {
         // Skip non-review pages
         if (!isReviewUrl(url, result.title)) continue;
 
+        // Skip results where URL year falls outside the show's production window
+        const openYear = year && year.length === 4 ? parseInt(year) : null;
+        const closeYear = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
+        if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
+          console.log(`    [SKIP] URL year outside production window for ${showId}`);
+          continue;
+        }
+
         const criticName = extractCriticFromTitle(result.title || '');
         const discoveredOutletId = domainToOutletId(url) || outletId;
 
@@ -393,6 +402,14 @@ async function main() {
 
       // Skip non-reviews
       if (!isReviewUrl(url, result.title)) continue;
+
+      // Skip results where URL year falls outside the show's production window
+      const openYearNews = year && year.length === 4 ? parseInt(year) : null;
+      const closeYearNews = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
+      if (openYearNews && isUrlYearOutsideWindow(url, openYearNews, closeYearNews)) {
+        console.log(`    [SKIP] URL year outside production window for ${showId}`);
+        continue;
+      }
 
       const criticName = extractCriticFromTitle(result.title || '');
       const outletId = domainToOutletId(url) || 'unknown';
