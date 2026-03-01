@@ -13,6 +13,11 @@ on:
         required: false
         default: '1'
         type: string
+      max_tier:
+        description: 'Max outlet tier for SERP discovery (2=T1+T2, 3=include T3 for opening nights)'
+        required: false
+        default: '2'
+        type: string
 
 permissions:
   contents: write
@@ -116,11 +121,13 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
-          echo "Running outlet-first SERP discovery for: ${{ inputs.shows }}"
+          MAX_TIER="${{ inputs.max_tier }}"
+          MAX_TIER="${MAX_TIER:-2}"
+          echo "Running outlet-first SERP discovery for: ${{ inputs.shows }} (max tier: $MAX_TIER)"
           node scripts/collect-outlet-reviews.js \
             --shows "${{ inputs.shows }}" \
-            --max-tier 2 \
-            --max-searches 100
+            --max-tier "$MAX_TIER" \
+            --max-searches 200
 
       - name: Push review texts
         if: always()

@@ -23,6 +23,7 @@
  *   --no-skip-existing                       Search even if outlet already has a review
  *   --max-shows N                            Limit to N shows (for testing)
  *   --max-searches N                         Limit total SERP searches (for cost control)
+ *   --max-outlets N                           Max outlets per show (default: 60, T1/T2 first)
  *   --open-only                              Only search open/previews shows (for weekly cron)
  */
 
@@ -35,8 +36,8 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 
-// Market-specific outlet target lists (outlet IDs from registry)
-const MARKET_OUTLETS = {
+// Hardcoded fallback outlet lists (used only if registry has no outlets for a market)
+const MARKET_OUTLETS_FALLBACK = {
   'west-end': {
     tier1: ['guardian', 'telegraph', 'evening-standard', 'the-times-uk', 'dailymail'],
     tier2: ['stage-uk', 'whatsonstage', 'timeout-london', 'independent', 'financial-times-uk', 'london-theatre', 'inews'],
@@ -53,6 +54,8 @@ const MARKET_OUTLETS = {
     tier3: ['newyorktheater', 'talkinbroadway', 'stage-and-cinema', 'frontmezzjunkies', 'broadwayworld'],
   },
 };
+
+const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end'];
 
 // Domains to exclude from broad T3 search results (aggregators, not outlets)
 const AGGREGATOR_DOMAINS = new Set([
@@ -74,6 +77,7 @@ function parseArgs() {
     skipExisting: true,
     maxShows: Infinity,
     maxSearches: Infinity,
+    maxOutlets: 60,       // Cap outlets per show (T1/T2 first, T3 fills remainder)
     openOnly: false,
   };
 
@@ -89,29 +93,77 @@ function parseArgs() {
       case '--no-skip-existing': opts.skipExisting = false; break;
       case '--max-shows': opts.maxShows = parseInt(args[++i]); break;
       case '--max-searches': opts.maxSearches = parseInt(args[++i]); break;
+      case '--max-outlets': opts.maxOutlets = parseInt(args[++i]); break;
       case '--open-only': opts.openOnly = true; break;
     }
   }
 
   // --shows auto-detects market, --market required otherwise
-  if (!opts.showIds && (!opts.market || !MARKET_OUTLETS[opts.market])) {
+  if (!opts.showIds && (!opts.market || !VALID_MARKETS.includes(opts.market))) {
     console.error('Usage: node scripts/collect-outlet-reviews.js --market west-end|broadway|off-broadway [options]');
     console.error('   or: node scripts/collect-outlet-reviews.js --shows show-id-1,show-id-2');
-    console.error('Available markets:', Object.keys(MARKET_OUTLETS).join(', '));
+    console.error('Available markets:', VALID_MARKETS.join(', '));
     process.exit(1);
   }
 
   return opts;
 }
 
-function getTargetOutlets(market, minTier, maxTier) {
-  const config = MARKET_OUTLETS[market];
-  if (!config) return [];
+/**
+ * Build target outlet list from registry. Falls back to hardcoded list if registry
+ * yields no results for a market.
+ *
+ * Market filtering:
+ *   - west-end: region === 'london' OR isDualMarket
+ *   - broadway / off-broadway: region is undefined/null OR is a US city (NOT 'london') OR isDualMarket
+ *
+ * Sorted by tier (T1 first), then alphabetically within tier.
+ * Capped at maxOutlets.
+ */
+function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
   const outlets = [];
-  if (minTier <= 1 && maxTier >= 1) outlets.push(...config.tier1.map(id => ({ id, tier: 1 })));
-  if (minTier <= 2 && maxTier >= 2) outlets.push(...config.tier2.map(id => ({ id, tier: 2 })));
-  if (minTier <= 3 && maxTier >= 3) outlets.push(...(config.tier3 || []).map(id => ({ id, tier: 3 })));
-  return outlets;
+
+  for (const [id, info] of Object.entries(registry.outlets)) {
+    // Must have a domain to be SERP-searchable
+    if (!info.domain && !OUTLET_DOMAINS[id]) continue;
+
+    // Tier filter
+    const tier = info.tier || 3;
+    if (tier < minTier || tier > maxTier) continue;
+
+    // Market filter
+    const isLondon = info.region === 'london';
+    const isDual = info.isDualMarket === true;
+
+    if (market === 'west-end') {
+      // West End: London-based outlets + dual-market outlets
+      if (!isLondon && !isDual) continue;
+    } else {
+      // Broadway / Off-Broadway: non-London outlets + dual-market outlets
+      if (isLondon && !isDual) continue;
+    }
+
+    outlets.push({ id, tier });
+  }
+
+  // Sort: T1 first, then T2, then T3; alphabetical within tier
+  outlets.sort((a, b) => a.tier - b.tier || a.id.localeCompare(b.id));
+
+  // Cap at maxOutlets
+  const capped = maxOutlets ? outlets.slice(0, maxOutlets) : outlets;
+
+  // Fallback to hardcoded list if registry yielded nothing
+  if (capped.length === 0) {
+    const config = MARKET_OUTLETS_FALLBACK[market];
+    if (!config) return [];
+    const fallback = [];
+    if (minTier <= 1 && maxTier >= 1) fallback.push(...config.tier1.map(id => ({ id, tier: 1 })));
+    if (minTier <= 2 && maxTier >= 2) fallback.push(...config.tier2.map(id => ({ id, tier: 2 })));
+    if (minTier <= 3 && maxTier >= 3) fallback.push(...(config.tier3 || []).map(id => ({ id, tier: 3 })));
+    return fallback;
+  }
+
+  return capped;
 }
 
 function getExistingOutlets(showId, registry) {
@@ -281,10 +333,18 @@ async function main() {
 
   targetShows = targetShows.slice(0, opts.maxShows);
 
+  // Show outlet counts for first show to give a sense of registry coverage
+  const sampleMarket = targetShows.length > 0 ? (targetShows[0].category || opts.market || 'broadway') : (opts.market || 'broadway');
+  const sampleOutlets = getTargetOutlets(sampleMarket, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
+  const tierCounts = {};
+  sampleOutlets.forEach(o => { tierCounts[`T${o.tier}`] = (tierCounts[`T${o.tier}`] || 0) + 1; });
+
   console.log(`=== Outlet-First SERP Review Collector ===`);
   console.log(`Mode: ${opts.showIds ? `specific shows (${opts.showIds.length})` : `market: ${opts.market}`}`);
   console.log(`Shows: ${targetShows.length}`);
   console.log(`Tiers: ${opts.minTier}-${opts.maxTier}`);
+  console.log(`Outlets per show: ${sampleOutlets.length} (${Object.entries(tierCounts).map(([k, v]) => `${k}:${v}`).join(', ')})`);
+  console.log(`Max outlets: ${opts.maxOutlets}`);
   console.log(`Broad T3 search: ${opts.broadSearch}`);
   console.log(`Date filtering: enabled`);
   console.log(`Dry run: ${opts.dryRun}`);
@@ -299,7 +359,7 @@ async function main() {
   for (const show of targetShows) {
     // Determine market for this show (auto-detect from category)
     const market = show.category || opts.market || 'broadway';
-    const targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier);
+    const targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
 
     if (targetOutlets.length === 0) {
       console.log(`SKIP (no outlets for market ${market}): ${show.id}`);

@@ -336,10 +336,11 @@ jobs:
                 workflow_id: 'gather-reviews.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  max_tier: '3'
                 }
               });
-              console.log('Triggered gather-reviews workflow for opened shows');
+              console.log('Triggered gather-reviews workflow for opened shows (max_tier=3)');
             } catch (e) {
               // Workflow doesn't exist yet, that's okay
               console.log('gather-reviews workflow not found, skipping trigger');

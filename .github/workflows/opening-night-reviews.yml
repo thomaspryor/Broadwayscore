@@ -85,7 +85,8 @@ jobs:
           echo "Triggering gather-reviews for opening night: $SHOWS"
           gh workflow run "Gather Review Data" \
             -f shows="$SHOWS" \
-            -f parallel_jobs=1
+            -f parallel_jobs=1 \
+            -f max_tier=3
           echo "Gather reviews triggered for: $SHOWS"
 
       - name: Notify on failure
