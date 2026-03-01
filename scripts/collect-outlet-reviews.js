@@ -202,7 +202,7 @@ const NON_REVIEW_URL_PATTERNS = [
   /\/closing-?notice/i, /\/closing-?date/i, /\/closing-?announcement/i,
   /\/tv-review/i, /\/film-review/i, /\/movie-review/i, /\/book-review/i,
   /\/album-review/i, /\/concert-review/i, /\/music-review/i,
-  /\/award/i, /\/tony-?award/i, /\/nomination/i, /tony-nomine/i, /roundtable/i,
+  /\/award/i, /\/tony-?award/i, /\/nomination/i, /tony-nomin/i, /roundtable/i,
   /\/ticket/i, /\/deals?\b/i, /\/discount/i, /\/lottery\b/i, /\/rush\b/i,
   /\/cast-?announcement/i, /\/casting\b/i,
   // Closing/ending articles in URL slugs (HR uses /lifestyle/arts/ for both reviews and closing notices)
