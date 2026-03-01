@@ -31,6 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS, calculateDateWindow } = require('./lib/url-discovery');
 const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } = require('./lib/review-normalization');
+const { domainMatchesExpected } = require('./lib/scraper');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -433,6 +434,17 @@ async function main() {
           const { url: foundUrl, serpTitle } = result;
           console.log(`    FOUND: ${foundUrl}`);
           if (serpTitle) console.log(`    TITLE: ${serpTitle}`);
+
+          // Domain validation: SERP sometimes returns wrong-domain URLs even with site: query
+          try {
+            const foundHostname = new URL(foundUrl).hostname.replace(/^www\./, '');
+            if (domain && !domainMatchesExpected(domain, foundHostname)) {
+              console.log(`    SKIP (wrong domain: expected ${domain}, got ${foundHostname})`);
+              totalSkipped++;
+              await sleep(1500);
+              continue;
+            }
+          } catch (e) { /* invalid URL, let downstream handle it */ }
 
           // Review-relevance filter: block obvious non-review URLs
           if (!looksLikeReview(foundUrl, serpTitle)) {
