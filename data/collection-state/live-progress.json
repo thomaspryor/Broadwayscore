@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T06:14:31.201Z",
-  "processed": 125,
-  "failed": 575,
+  "updatedAt": "2026-03-01T09:37:29.708Z",
+  "processed": 127,
+  "failed": 583,
   "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 62,
-    "amp": 34,
-    "browserbase": 2,
+    "playwright": 63,
+    "amp": 35,
+    "browserbase": 4,
     "directCookies": 4,
     "scrapingbee": 16,
     "brightdata": 23,
     "archiveToday": 177,
     "archive": 37
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:08:38.301Z",
-      "event": "bb-session",
-      "session": "c709d06c",
-      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
-    },
-    {
-      "t": "2026-03-01T05:08:39.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:10:37.486Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T06:13:41.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:37:12.854Z",
+      "event": "bb-session",
+      "session": "652ec03c",
+      "url": "https://www.wsj.com/arts-culture/theater?gaa_at=eafs&gaa_n=AWEtsqeNv_SSZ2SnWJOry"
+    },
+    {
+      "t": "2026-03-01T09:37:14.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

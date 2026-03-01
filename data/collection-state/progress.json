@@ -124,7 +124,9 @@
     "data-off-broadway-2026/theatermania--zachary-stewart.json",
     "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
     "death-becomes-her-2024/timeout--adam-feldman.json",
-    "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json"
+    "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+    "all-my-sons-west-end-2025/i-paper--fiona-mountford.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -701,7 +703,15 @@
     "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
     "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
     "data-off-broadway-2026/broadwaynews--stephi-wild.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json"
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/newyorker--shauna-lyon.json",
+    "hells-kitchen-2024/nyt-theater--gillian-russo.json",
+    "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+    "pen-pals-off-broadway-2025/nyt-theater--chloe-rabinowitz.json",
+    "seagull-true-story-off-broadway-2026/nytimes--jesse-green.json",
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-phantom-of-the-opera-west-end-2021/nytg--diep-tran.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -767,7 +777,8 @@
       "chinese-republicans-off-broadway-2026/theatermania--unknown.json",
       "data-off-broadway-2026/theatermania--zachary-stewart.json",
       "death-becomes-her-2024/chelsea-community-news--michael-musto.json",
-      "death-becomes-her-2024/timeout--adam-feldman.json"
+      "death-becomes-her-2024/timeout--adam-feldman.json",
+      "all-my-sons-west-end-2025/i-paper--fiona-mountford.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -803,11 +814,14 @@
       "data/review-texts/wicked-2003/variety--charles-isherwood.json",
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
-      "data-off-broadway-2026/nytimes--tim-teeman.json"
+      "data-off-broadway-2026/nytimes--tim-teeman.json",
+      "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json"
     ],
     "directCookies": [
       "no-mans-land-2013/thewrap--robert-hofler.json",
@@ -1078,7 +1092,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
+  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1286,6 +1300,17 @@
     },
     {
       "t": "2026-03-01T06:13:41.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:37:12.854Z",
+      "event": "bb-session",
+      "session": "652ec03c",
+      "url": "https://www.wsj.com/arts-culture/theater?gaa_at=eafs&gaa_n=AWEtsqeNv_SSZ2SnWJOry"
+    },
+    {
+      "t": "2026-03-01T09:37:14.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
