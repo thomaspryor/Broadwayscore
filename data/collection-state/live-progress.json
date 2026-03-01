@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T20:43:07.422Z",
-  "processed": 22,
-  "failed": 28,
-  "successRate": "44.0%",
+  "updatedAt": "2026-03-01T20:54:18.530Z",
+  "processed": 29,
+  "failed": 31,
+  "successRate": "48.3%",
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 20,
-    "browserbase": 11,
+    "playwright": 16,
+    "amp": 22,
+    "browserbase": 13,
     "directCookies": 5,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 6,
     "archive": 11
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-01T19:45:26.639Z",
-      "event": "bb-session",
-      "session": "99fb4242",
-      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-b"
-    },
-    {
-      "t": "2026-03-01T19:45:28.024Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-01T19:52:21.976Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-01T20:38:33.557Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-01T20:50:45.466Z",
+      "event": "bb-session",
+      "session": "c9ba3fa7",
+      "url": "https://www.indiewire.com/lists/hbo-shows-2026-new-series-euphoria-the-pitt-game"
+    },
+    {
+      "t": "2026-03-01T20:50:46.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
     }
   ]
 }

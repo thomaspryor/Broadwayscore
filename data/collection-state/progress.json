@@ -21,7 +21,14 @@
     "titanique-west-end-2024/nytimes--elisabeth-vincentelli.json",
     "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
     "all-my-sons-west-end-2025/timeout--helen-shaw.json",
-    "and-juliet-2022/guardian--unknown.json"
+    "and-juliet-2022/guardian--unknown.json",
+    "arcadia-west-end-2026/newsday--linda-winer.json",
+    "beautiful-little-fool-west-end-2026/loureviews--louise-penn.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "bug-2026/broadwaynews--logan-culwell-block.json",
+    "bug-2026/indiewire--ben-travers.json",
+    "bug-2026/newsday--matthew-chayes.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -51,7 +58,10 @@
     "the-reservoir-off-broadway-2026/vulture--unknown.json",
     "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
     "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
-    "arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json"
+    "arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "buena-vista-social-club-2025/deadline--greg-evans.json",
+    "bug-2026/cbsnews--shania-russell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -65,7 +75,13 @@
       "titanique-west-end-2024/nytg--gillian-russo.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json",
       "all-my-sons-west-end-2025/timeout--helen-shaw.json",
-      "and-juliet-2022/guardian--unknown.json"
+      "and-juliet-2022/guardian--unknown.json",
+      "arcadia-west-end-2026/newsday--linda-winer.json",
+      "beautiful-little-fool-west-end-2026/loureviews--louise-penn.json",
+      "book-of-mormon-2011/ew--thom-geier.json",
+      "bug-2026/broadwaynews--logan-culwell-block.json",
+      "bug-2026/newsday--matthew-chayes.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/ew--emlyn-travis.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -87,7 +103,9 @@
       "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json",
       "the-outsiders-2024/hollywood-reporter--angie-han.json",
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json",
-      "the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json"
+      "the-play-that-goes-wrong-west-end-2021/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/buena-vista-social-club-2025/deadline--greg-evans.json",
+      "buena-vista-social-club-2025/deadline--greg-evans.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -100,7 +118,9 @@
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
       "the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json"
+      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
+      "data/review-texts/bug-2026/indiewire--ben-travers.json",
+      "bug-2026/indiewire--ben-travers.json"
     ],
     "directCookies": [
       "death-becomes-her-2024/newyorker--helen-shaw.json",
@@ -109,7 +129,9 @@
       "mamma-mia-west-end-2021/vulture--jackson-mchenry.json",
       "oh-mary-west-end-2025/vulture--sara-holdren.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bug-2026/cbsnews--shania-russell.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -134,7 +156,7 @@
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "arcadia-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -256,6 +278,17 @@
       "t": "2026-03-01T20:38:33.557Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-01T20:50:45.466Z",
+      "event": "bb-session",
+      "session": "c9ba3fa7",
+      "url": "https://www.indiewire.com/lists/hbo-shows-2026-new-series-euphoria-the-pitt-game"
+    },
+    {
+      "t": "2026-03-01T20:50:46.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "indiewire.com"
     }
   ]
 }
