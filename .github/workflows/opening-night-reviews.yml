@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       lookback_days:
-        description: 'How many days back to check for openings (default 2)'
+        description: 'How many days back to check for openings (default 14)'
         required: false
         type: number
-        default: 2
+        default: 14
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
       - name: Find recently opened shows
         id: find
         run: |
-          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          LOOKBACK=${{ inputs.lookback_days || 14 }}
           SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
             const now = new Date();
