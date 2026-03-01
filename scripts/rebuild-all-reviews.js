@@ -1367,7 +1367,7 @@ const crossShowUrlIndex = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow || d.isCombinedReview) continue;
+        if (d.wrongProduction || d.wrongShow || d.isCombinedReview || d.isRoundupArticle) continue;
         const norm = normalizeUrlForDedup(d.url);
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
