@@ -282,7 +282,7 @@ async function refreshTodayTixDates(data, updates) {
 
     if (seenTtIds.has(String(show.todaytixId))) {
       // Show seen on TodayTix — clear any staleness tracking
-      if (show._staleMissingSince) {
+      if (show._staleMissingSince && !dryRun) {
         delete show._staleMissingSince;
       }
       continue;
