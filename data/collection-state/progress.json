@@ -721,7 +721,17 @@
     "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
     "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
     "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
-    "masquerade-off-broadway-2025/observer--david-cote.json"
+    "masquerade-off-broadway-2025/observer--david-cote.json",
+    "my-joy-is-heavy-off-broadway-2025/broadwaynews--aa-cristi.json",
+    "my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+    "oliver-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "perfect-crime-off-broadway-1987/broadwaynews--bww-news-desk.json",
+    "shadowlands-west-end-2026/broadwaynews--stephi-wild.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "starlight-express-west-end-2024/broadwaynews--aliya-al-hassan.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/newsweek--lauren-giella.json",
+    "the-book-of-mormon-west-end-2024/broadwaynews--robert-diamond.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -884,7 +894,8 @@
       "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "bug-2026/wsj--charles-isherwood.json",
       "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "jerome-off-broadway-2025/wsj--joel-lobenthal.json"
+      "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
+      "my-joy-is-heavy-off-broadway-2025/broadwaynews--aa-cristi.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -1064,7 +1075,9 @@
       "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
       "data/review-texts/all-my-sons-west-end-2025/nbcnews--unknown.json",
       "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
-      "data/review-texts/hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json"
+      "data/review-texts/hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
+      "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1107,7 +1120,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "masquerade-off-broadway-2025/observer--david-cote.json",
+  "lastProcessed": "the-great-gatsby-2024/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1350,6 +1363,28 @@
       "t": "2026-03-01T09:46:37.726Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:50:59.800Z",
+      "event": "bb-session",
+      "session": "10c61f1c",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-03-01T09:51:01.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T09:57:42.311Z",
+      "event": "bb-session",
+      "session": "1c0f69e8",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-03-01T09:57:43.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }

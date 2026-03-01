@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-01T09:47:37.849Z",
+  "updatedAt": "2026-03-01T10:07:38.145Z",
   "processed": 129,
-  "failed": 591,
-  "successRate": "17.9%",
+  "failed": 601,
+  "successRate": "17.7%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 37,
     "browserbase": 4,
     "directCookies": 5,
     "scrapingbee": 16,
-    "brightdata": 24,
-    "archiveToday": 178,
+    "brightdata": 25,
+    "archiveToday": 180,
     "archive": 37
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:17:21.054Z",
-      "event": "bb-session",
-      "session": "191e7a60",
-      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
-    },
-    {
-      "t": "2026-03-01T05:17:22.039Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-01T05:18:43.617Z",
-      "event": "bb-session",
-      "session": "cab72198",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-    },
-    {
-      "t": "2026-03-01T05:18:44.668Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:26:01.382Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-01T09:46:37.726Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:50:59.800Z",
+      "event": "bb-session",
+      "session": "10c61f1c",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-03-01T09:51:01.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T09:57:42.311Z",
+      "event": "bb-session",
+      "session": "1c0f69e8",
+      "url": "https://www.theatermania.com/tags/silver-manhattan/"
+    },
+    {
+      "t": "2026-03-01T09:57:43.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
