@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-01T16:28:29.883Z",
+  "generatedAt": "2026-02-28T02:23:41.134Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -12,26 +12,10 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "a-gentlemans-guide-to-love-and-murder-2013",
-      "outlet": "ew",
-      "critic": "Thom Geier",
-      "detail": "originalRating \"D\" (=35) vs score 88 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "a-life-in-the-theatre-2010",
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "originalRating \"D\" (=35) vs score 82 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "all-in-comedy-about-love-2024",
-      "outlet": "nypost",
-      "critic": "Johnny Oleksinski",
-      "detail": "originalRating \"4 stars\" (=80) vs score 25 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -44,18 +28,10 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "an-ark-off-broadway-2026",
+      "showId": "an-ark-2026",
       "outlet": "nyt-theater",
       "critic": "Jonathan Mandell",
       "detail": "originalRating \"5/5\" (=100) vs score 78 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "arcadia-2011",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "originalRating \"D-\" (=30) vs score 90 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -64,14 +40,6 @@
       "outlet": "london-theatre",
       "critic": "Marianka Swain",
       "detail": "originalRating \"4/5\" (=80) vs score 45 (source: llmScore-lowconf)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "burn-the-floor-2009",
-      "outlet": "broadwayworld",
-      "critic": "Michael Dale",
-      "detail": "originalRating \"4/5\" (=80) vs score 44 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -88,6 +56,14 @@
       "outlet": "london-theatre",
       "critic": "Olivia Rook",
       "detail": "originalRating \"3/5\" (=60) vs score 25 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "glengarry-glen-ross-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 48 (source: llmScore-lowconf)"
     },
     {
       "type": "rating-score-mismatch",
@@ -228,22 +204,6 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
-      "showId": "summer-1976-2023",
-      "outlet": "theater-life",
-      "critic": "Samuel L. Leiter",
-      "detail": "originalRating \"5/5 stars\" (=100) vs score 78 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "the-book-of-mormon-west-end-2024",
-      "outlet": "telegraph",
-      "critic": "Charles Spencer",
-      "detail": "originalRating \"60/100\" (=60) vs score 38 (source: assignedScore)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
       "showId": "the-devil-wears-prada-west-end-2024",
       "outlet": "times-uk",
       "critic": "Clive Davis",
@@ -252,7 +212,7 @@
     {
       "type": "designation-score-mismatch",
       "severity": "medium",
-      "showId": "the-dinosaurs-off-broadway-2026",
+      "showId": "the-dinosaurs-2026",
       "outlet": "nytimes",
       "critic": "Elisabeth Vincentelli",
       "detail": "Critics_Pick but score=42 (source: llmScore-single-model)"
@@ -264,6 +224,14 @@
       "outlet": "ew",
       "critic": "Jason Clark",
       "detail": "originalRating \"D\" (=35) vs score 75 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-heiress-2012",
+      "outlet": "timeout",
+      "critic": "David Cote",
+      "detail": "originalRating \"1/5\" (=20) vs score 82 (source: llmScore-thumb-boosted)"
     },
     {
       "type": "rating-score-mismatch",
@@ -388,50 +356,10 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
-      "showId": "a-gentlemans-guide-to-love-and-murder-2013",
-      "outlet": "ew",
-      "critic": "Thom Geier",
-      "detail": "humanReviewScore 88 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
       "showId": "a-life-in-the-theatre-2010",
       "outlet": "ew",
       "critic": "Tanner Stransky",
       "detail": "humanReviewScore 82 (positive) overrides explicit \"D\" (=35, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "all-in-comedy-about-love-2024",
-      "outlet": "nypost",
-      "critic": "Johnny Oleksinski",
-      "detail": "humanReviewScore 25 (negative) overrides explicit \"4 stars\" (=80, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "arcadia-2011",
-      "outlet": "ew",
-      "critic": "Melissa Rose Bernardo",
-      "detail": "humanReviewScore 90 (positive) overrides explicit \"D-\" (=30, negative)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "burn-the-floor-2009",
-      "outlet": "broadwayworld",
-      "critic": "Michael Dale",
-      "detail": "humanReviewScore 44 (mixed) overrides explicit \"4/5\" (=80, positive)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
-      "showId": "cat-on-a-hot-tin-roof-2013",
-      "outlet": "nydailynews",
-      "critic": "Joe Dziemianowicz",
-      "detail": "humanReviewScore 42 (mixed) overrides explicit \"80\" (=80, positive)"
     },
     {
       "type": "human-override-vs-explicit-grade",
