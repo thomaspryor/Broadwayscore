@@ -1367,7 +1367,7 @@ const crossShowUrlIndex = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow) continue;
+        if (d.wrongProduction || d.wrongShow || d.isCombinedReview) continue;
         const norm = normalizeUrlForDedup(d.url);
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
@@ -1632,7 +1632,7 @@ showDirs.forEach(showId => {
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
-      if (data.url && !data.wrongProduction) {
+      if (data.url && !data.wrongProduction && !data.isCombinedReview) {
         const norm = data.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
         const entry = crossShowUrlIndex.get(norm);
         if (entry && entry.conflicts.length > 0) {
@@ -2439,6 +2439,7 @@ showDirs.forEach(showId => {
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none',
+        ...(data.isCombinedReview ? { isCombinedReview: true } : {}),
         // Ensemble scoring metadata (for confidence analysis + auditing)
         ...(data.ensembleData ? {
           scoreDelta: data.ensembleData.scoreDelta || 0,
