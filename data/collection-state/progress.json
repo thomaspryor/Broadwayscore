@@ -126,7 +126,9 @@
     "death-becomes-her-2024/timeout--adam-feldman.json",
     "dirty-books-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
     "all-my-sons-west-end-2025/i-paper--fiona-mountford.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+    "calf-scramble-off-broadway-2026/theatermania--unknown.json",
+    "jerome-off-broadway-2025/wsj--joel-lobenthal.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -711,7 +713,15 @@
     "seagull-true-story-off-broadway-2026/nytimes--jesse-green.json",
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "the-phantom-of-the-opera-west-end-2021/nytg--diep-tran.json"
+    "the-phantom-of-the-opera-west-end-2021/nytg--diep-tran.json",
+    "beautiful-little-fool-west-end-2026/broadwaynews--gillian-blum.json",
+    "bigfoot-off-broadway-2026/deadline--greg-evans.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
+    "kinky-boots-off-broadway-2026/newsday--matt-windman.json",
+    "marcel-on-the-train-off-broadway-2026/broadwaynews--unknown.json",
+    "masquerade-off-broadway-2025/observer--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -815,7 +825,9 @@
       "wicked-2003/variety--charles-isherwood.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
       "and-juliet-2022/thewrap--robert-hofler.json",
-      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/book-of-mormon-2011/ew--thom-geier.json",
+      "data/review-texts/bigfoot-off-broadway-2026/deadline--greg-evans.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
@@ -827,7 +839,8 @@
       "no-mans-land-2013/thewrap--robert-hofler.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
-      "bigfoot-off-broadway-2026/timeout--unknown.json"
+      "bigfoot-off-broadway-2026/timeout--unknown.json",
+      "calf-scramble-off-broadway-2026/theatermania--unknown.json"
     ],
     "scrapingbee": [
       "the-reservoir-off-broadway-2026/nytg--unknown.json",
@@ -870,7 +883,8 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "bug-2026/wsj--charles-isherwood.json",
-      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json"
+      "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
+      "jerome-off-broadway-2025/wsj--joel-lobenthal.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -1049,7 +1063,8 @@
       "data/review-texts/wicked-west-end-2021/talkinbroadway--unknown.json",
       "data/review-texts/woman-in-mind-west-end-2025/broadwayworld--unknown.json",
       "data/review-texts/all-my-sons-west-end-2025/nbcnews--unknown.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1092,7 +1107,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+  "lastProcessed": "masquerade-off-broadway-2025/observer--david-cote.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1311,6 +1326,28 @@
     },
     {
       "t": "2026-03-01T09:37:14.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:44:19.486Z",
+      "event": "bb-session",
+      "session": "2f5ac8b3",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/calf-scram"
+    },
+    {
+      "t": "2026-03-01T09:44:20.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T09:46:36.156Z",
+      "event": "bb-session",
+      "session": "41b55373",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-03-01T09:46:37.726Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

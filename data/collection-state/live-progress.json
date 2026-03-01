@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-01T09:37:29.708Z",
-  "processed": 127,
-  "failed": 583,
+  "updatedAt": "2026-03-01T09:47:37.849Z",
+  "processed": 129,
+  "failed": 591,
   "successRate": "17.9%",
   "tierBreakdown": {
     "playwright": 63,
-    "amp": 35,
+    "amp": 37,
     "browserbase": 4,
-    "directCookies": 4,
+    "directCookies": 5,
     "scrapingbee": 16,
-    "brightdata": 23,
-    "archiveToday": 177,
+    "brightdata": 24,
+    "archiveToday": 178,
     "archive": 37
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:10:37.486Z",
-      "event": "bb-session",
-      "session": "d3a377e1",
-      "url": "https://www.nytimes.com/1997/11/14/movies/theater-review-cub-comes-of-age-a-twic"
-    },
-    {
-      "t": "2026-03-01T05:10:38.635Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-01T05:12:15.519Z",
-      "event": "bb-session",
-      "session": "f7dd45ae",
-      "url": "https://www.nytimes.com/2026/02/12/theater/the-monsters-review.html"
-    },
-    {
-      "t": "2026-03-01T05:12:16.618Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:17:21.054Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-03-01T09:37:14.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T09:44:19.486Z",
+      "event": "bb-session",
+      "session": "2f5ac8b3",
+      "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/calf-scram"
+    },
+    {
+      "t": "2026-03-01T09:44:20.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T09:46:36.156Z",
+      "event": "bb-session",
+      "session": "41b55373",
+      "url": "https://www.wsj.com/articles/jerome-robbins-a-life-in-dance-review-between-two-t"
+    },
+    {
+      "t": "2026-03-01T09:46:37.726Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
