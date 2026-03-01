@@ -151,10 +151,10 @@ jobs:
         id: sched
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            HOUR=$(date -u +%H)
             DAY=$(date -u +%u)  # 7 = Sunday
-            # Sunday midnight UTC = weekly backlog sweep targeting not_attempted reviews
-            if [ "$DAY" = "7" ] && [ "$HOUR" = "00" ]; then
+            # Sunday = weekly backlog sweep targeting not_attempted reviews
+            # (no HOUR check — GHA cron can delay 30+ min past midnight)
+            if [ "$DAY" = "7" ]; then
               echo "max_reviews=150" >> $GITHUB_OUTPUT
               echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
               echo "Weekly backlog sweep: targeting not_attempted reviews"
