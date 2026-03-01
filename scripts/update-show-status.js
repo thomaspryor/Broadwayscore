@@ -155,6 +155,7 @@ async function refreshTodayTixDates(data, updates) {
   let dateUpdates = 0;
   let reopened = 0;
   let newTtIds = 0;
+  const seenTtIds = new Set(); // Track all TodayTix IDs seen across locations
 
   for (const loc of locations) {
     try {
@@ -162,6 +163,7 @@ async function refreshTodayTixDates(data, updates) {
       console.log(`  TodayTix ${loc.label}: ${ttShows.length} shows`);
 
       for (const ttShow of ttShows) {
+        seenTtIds.add(String(ttShow.id));
         const ttEndDate = ttShow.endDate === 'null' ? null : ttShow.endDate || null;
         const normTtTitle = (ttShow.displayName || ttShow.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -263,7 +265,70 @@ async function refreshTodayTixDates(data, updates) {
   if (newTtIds > 0) console.log(`  TodayTix IDs saved: ${newTtIds} (future matches use ID instead of title)`);
   if (reopened > 0) console.log(`  Wrongly-closed shows reopened: ${reopened}`);
   console.log(`  TodayTix date updates: ${dateUpdates}`);
-  return { count: dateUpdates + reopened, reopenedIds };
+
+  // Stale-open detection for OB/WE shows
+  // Shows with todaytixId that are open/previews but NOT seen on TodayTix
+  // may have closed without us detecting it. Use a 3-day grace period
+  // to avoid false positives from transient API issues.
+  const MAX_AUTO_CLOSE = 5; // Circuit breaker — mass disappearance = API problem
+  let autoCloseCount = 0;
+  const today = new Date().toISOString().split('T')[0];
+
+  for (const show of data.shows) {
+    if (show.status !== 'open' && show.status !== 'previews') continue;
+    if (!show.todaytixId) continue;
+    const cat = showCategory(show);
+    if (cat === 'broadway') continue; // Broadway has better closing date sources
+
+    if (seenTtIds.has(String(show.todaytixId))) {
+      // Show seen on TodayTix — clear any staleness tracking
+      if (show._staleMissingSince) {
+        delete show._staleMissingSince;
+      }
+      continue;
+    }
+
+    // Not seen on TodayTix
+    if (!show._staleMissingSince) {
+      if (!dryRun) show._staleMissingSince = today;
+      console.log(`  🔍 ${show.title} (${cat}): first miss from TodayTix (tracking started)`);
+      continue; // Don't close on first miss
+    }
+
+    // Check if missing for 3+ days
+    const missingSince = new Date(show._staleMissingSince);
+    const daysMissing = Math.floor((Date.now() - missingSince) / 86400000);
+    if (daysMissing < 3) {
+      console.log(`  🔍 ${show.title} (${cat}): missing ${daysMissing} days (need 3+)`);
+      continue;
+    }
+
+    // Circuit breaker
+    if (autoCloseCount >= MAX_AUTO_CLOSE) {
+      console.log(`  ⚠️ Circuit breaker: ${MAX_AUTO_CLOSE} auto-closes reached, skipping remaining`);
+      break;
+    }
+
+    console.log(`  📕 ${show.title} (${cat}): missing from TodayTix for ${daysMissing}+ days — auto-closing`);
+    if (!dryRun) {
+      show.status = 'closed';
+      delete show._staleMissingSince;
+      // Don't set closingDate — we don't know when it actually closed
+    }
+    autoCloseCount++;
+    updates.push({
+      id: show.id,
+      title: show.title,
+      changes: {
+        status: { from: 'open', to: 'closed' },
+        note: `Stale-open detection: missing from TodayTix for ${daysMissing}+ days`
+      }
+    });
+  }
+
+  if (autoCloseCount > 0) console.log(`  Stale-open auto-closes: ${autoCloseCount}`);
+
+  return { count: dateUpdates + reopened + autoCloseCount, reopenedIds };
 }
 
 async function updateShowStatuses() {
