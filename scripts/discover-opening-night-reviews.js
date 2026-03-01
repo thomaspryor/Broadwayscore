@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { buildDateTbs, OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -40,20 +41,7 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 
-// Import shared outlet domains from url-discovery
-const { OUTLET_DOMAINS } = (() => {
-  try {
-    // Read the module to get OUTLET_DOMAINS without importing axios dependency
-    const src = fs.readFileSync(path.join(__dirname, 'lib', 'url-discovery.js'), 'utf8');
-    const match = src.match(/const OUTLET_DOMAINS = \{[\s\S]*?\n\};/);
-    if (match) {
-      const mod = {};
-      eval(`mod.OUTLET_DOMAINS = ${match[0].replace('const OUTLET_DOMAINS = ', '')}`);
-      return mod;
-    }
-  } catch { /* fall through */ }
-  return { OUTLET_DOMAINS: {} };
-})();
+const OUTLET_DOMAINS = _OUTLET_DOMAINS;
 
 // Tier 1/2 outlet lists — derived from outlet-registry.json (single source of truth).
 // Includes canonical IDs + aliases so OUTLET_DOMAINS lookup works with either form.
@@ -110,9 +98,11 @@ function slugifyHostname(str) {
 
 /**
  * Search Google via ScrapingBee SERP API.
+ * @param {string} tbs - Optional Google tbs param for date filtering
  */
-async function searchGoogle(query, apiKey, nbResults = 5) {
-  const url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
+async function searchGoogle(query, apiKey, nbResults = 5, tbs = '') {
+  let url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
+  if (tbs) url += `&tbs=${encodeURIComponent(tbs)}`;
 
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
@@ -236,9 +226,20 @@ async function main() {
   const marketLabel = isWestEnd ? 'West End' : 'Broadway';
   const reviewKeyword = isWestEnd ? 'West End review' : 'Broadway review';
 
+  // Calculate tight opening-night date range for SERP filtering
+  const DAY = 86400000;
+  const opening = show.openingDate ? new Date(show.openingDate) : null;
+  let dateTbs = '';
+  if (opening) {
+    const dateMin = new Date(opening.getTime() - 7 * DAY);
+    const dateMax = new Date(opening.getTime() + 14 * DAY);
+    dateTbs = buildDateTbs({ dateMin, dateMax });
+  }
+
   console.log(`Show: ${showTitle} (${showId})`);
   console.log(`Market: ${marketLabel}`);
   console.log(`Year: ${year}`);
+  console.log(`Date filter: ${dateTbs ? `opening ±7/+14 days` : 'none (no opening date)'}`);
   console.log(`Tiers: ${TIERS.join(', ')}\n`);
 
   // Get existing URLs to dedup
@@ -275,7 +276,7 @@ async function main() {
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}`;
 
     try {
-      const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3);
+      const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3, dateTbs);
       searched++;
 
       for (const result of results) {
@@ -360,8 +361,9 @@ async function main() {
 
   const newsQuery = `"${showTitle}" ${reviewKeyword}`;
   try {
-    // Use tbs=qdr:d for past 24 hours
-    const newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
+    // Use date range filtering if available, otherwise fall back to recent news
+    let newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
+    if (dateTbs) newsUrl += `&tbs=${encodeURIComponent(dateTbs)}`;
 
     let results = [];
     for (let attempt = 0; attempt < 3; attempt++) {
