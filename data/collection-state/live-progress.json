@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T05:57:07.921Z",
-  "processed": 109,
-  "failed": 571,
-  "successRate": "16.0%",
+  "updatedAt": "2026-03-01T06:04:28.798Z",
+  "processed": 118,
+  "failed": 572,
+  "successRate": "17.1%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 58,
     "amp": 34,
     "browserbase": 2,
     "directCookies": 4,
-    "scrapingbee": 12,
-    "brightdata": 21,
+    "scrapingbee": 14,
+    "brightdata": 22,
     "archiveToday": 176,
-    "archive": 34
+    "archive": 35
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:05:09.667Z",
-      "event": "bb-session",
-      "session": "a55b7741",
-      "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-be"
-    },
-    {
-      "t": "2026-03-01T05:05:10.822Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:07:17.764Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T05:39:59.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T05:58:52.746Z",
+      "event": "bb-session",
+      "session": "085a91ac",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-03-01T05:58:53.766Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
