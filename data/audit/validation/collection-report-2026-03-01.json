@@ -1,82 +1,101 @@
 {
-  "runDate": "2026-03-01T16:02:56.621Z",
+  "runDate": "2026-03-01T16:06:16.485Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-tempest-globe-west-end-2026",
+    "showFilter": "into-the-woods-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 2,
+    "processed": 10,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "76.9%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 5,
+    "tier1Attempts": 13,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeeCreditsUsed": 10,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 31,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-tempest-globe-west-end-2026/british-theatre-guide--unknown.json",
-    "the-tempest-globe-west-end-2026/thestage--unknown.json",
-    "the-tempest-globe-west-end-2026/timeout-london--unknown.json",
-    "the-tempest-globe-west-end-2026/whatsonstage--unknown.json"
+    "into-the-woods-west-end-2025/independent--unknown.json",
+    "into-the-woods-west-end-2025/london-theatre--unknown.json",
+    "into-the-woods-west-end-2025/london-unattached--unknown.json",
+    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+    "into-the-woods-west-end-2025/standard--unknown.json",
+    "into-the-woods-west-end-2025/telegraph--unknown.json",
+    "into-the-woods-west-end-2025/thestage--unknown.json",
+    "into-the-woods-west-end-2025/timeout-london--unknown.json",
+    "into-the-woods-west-end-2025/whatsonstage--unknown.json",
+    "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
   ],
   "failed": [
-    "the-tempest-globe-west-end-2026/broadwayworld--unknown.json",
-    "the-tempest-globe-west-end-2026/london-unattached--unknown.json"
+    "into-the-woods-west-end-2025/broadwayworld--unknown.json",
+    "into-the-woods-west-end-2025/daily-mail--unknown.json",
+    "into-the-woods-west-end-2025/indiewire--ryan-lattanzio.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-tempest-globe-west-end-2026/british-theatre-guide--unknown.json",
-      "the-tempest-globe-west-end-2026/london-unattached--unknown.json",
-      "the-tempest-globe-west-end-2026/thestage--unknown.json",
-      "the-tempest-globe-west-end-2026/timeout-london--unknown.json",
-      "the-tempest-globe-west-end-2026/whatsonstage--unknown.json"
+      "into-the-woods-west-end-2025/london-theatre--unknown.json",
+      "into-the-woods-west-end-2025/london-unattached--unknown.json",
+      "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+      "into-the-woods-west-end-2025/standard--unknown.json",
+      "into-the-woods-west-end-2025/telegraph--unknown.json",
+      "into-the-woods-west-end-2025/thestage--unknown.json",
+      "into-the-woods-west-end-2025/timeout-london--unknown.json",
+      "into-the-woods-west-end-2025/whatsonstage--unknown.json",
+      "into-the-woods-west-end-2025/guardian--arifa-akbar.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "into-the-woods-west-end-2025/independent--unknown.json"
+    ],
     "brightdata": [
-      "the-tempest-globe-west-end-2026/broadwayworld--unknown.json"
+      "into-the-woods-west-end-2025/broadwayworld--unknown.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "into-the-woods-west-end-2025/indiewire--ryan-lattanzio.json",
+      "oldUrl": "https://www.indiewire.com/criticism/culture/into-the-woods-reviews-rob-marshall-directs-a-solid-satisfying-sondheim-fairytale-189661/",
+      "newUrl": "https://www.indiewire.com/features/general/handicapping-this-years-movie-musicals-from-jersey-boys-to-annie-to-into-the-woods-239857/"
+    }
+  ]
 }
