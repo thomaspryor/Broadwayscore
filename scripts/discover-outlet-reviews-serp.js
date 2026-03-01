@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 /**
- * Outlet Review Discovery via SERP
+ * @deprecated Use collect-outlet-reviews.js instead.
+ * This per-outlet sweep has been replaced by per-show targeted queries with
+ * date range filtering (calculateDateWindow + buildDateTbs). The new script
+ * prevents cross-production contamination at the SERP query level.
+ *
+ * Outlet Review Discovery via SERP (DEPRECATED)
  *
  * Discovers reviews from specific outlets that aggregators miss by doing
  * site-scoped Google searches. Creates review stub files for new reviews.
