@@ -1269,7 +1269,60 @@ const multiProdDirectorGuard = {};
   }
   const guardedShows = Object.keys(multiProdDirectorGuard).length;
   if (guardedShows > 0) {
-    console.log(`Director cross-check guard active for ${guardedShows} multi-production shows\n`);
+    console.log(`Director cross-check guard active for ${guardedShows} multi-production shows`);
+  }
+}
+
+// Build venue cross-check lookup for multi-production shows
+// For each show, collect sibling production venues so we can detect when a review
+// mentions a different production's theater (e.g., "Al Hirschfeld Theatre" in an OB review)
+const multiProdVenueGuard = {};
+{
+  const titleGroups = {};
+  for (const s of showsData.shows) {
+    const base = s.title.replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
+    if (!titleGroups[base]) titleGroups[base] = [];
+    titleGroups[base].push(s);
+  }
+  for (const [, prods] of Object.entries(titleGroups)) {
+    if (prods.length < 2) continue;
+    for (const show of prods) {
+      if (!show.venue) continue;
+      const showCat = show.category || 'broadway';
+      const thisVenue = show.venue.toLowerCase();
+      // Collect venues from ALL sibling productions (cross-market is fine for venues —
+      // a London venue in a NYC review is always wrong, unlike dates which need market context)
+      const siblingVenues = [];
+      for (const sib of prods) {
+        if (sib.id === show.id) continue;
+        if (!sib.venue) continue;
+        const sibVenue = sib.venue.toLowerCase();
+        if (sibVenue === thisVenue) continue; // Same venue, skip
+        // Extract venue keywords (3+ chars, not generic words)
+        const venueWords = sibVenue.split(/[\s,]+/).filter(w =>
+          w.length >= 3 && !['the', 'theatre', 'theater'].includes(w)
+        );
+        if (venueWords.length > 0) {
+          siblingVenues.push({
+            id: sib.id,
+            venue: sib.venue,
+            venueLower: sibVenue,
+            category: sib.category || 'broadway'
+          });
+        }
+      }
+      if (siblingVenues.length > 0) {
+        multiProdVenueGuard[show.id] = {
+          thisVenue: show.venue,
+          thisVenueLower: thisVenue,
+          siblings: siblingVenues
+        };
+      }
+    }
+  }
+  const venueGuardedShows = Object.keys(multiProdVenueGuard).length;
+  if (venueGuardedShows > 0) {
+    console.log(`Venue cross-check guard active for ${venueGuardedShows} multi-production shows\n`);
   }
 }
 
@@ -1959,6 +2012,68 @@ showDirs.forEach(showId => {
               return;
             }
           }
+        }
+      }
+
+      // Venue cross-check for multi-production shows
+      // If a dateless review mentions a SIBLING production's venue but NOT this show's venue,
+      // it's almost certainly about the wrong production (e.g., "Al Hirschfeld Theatre" in an OB review)
+      // Uses distinctive venue words (e.g., "Hirschfeld" from "Al Hirschfeld Theatre") for partial matching
+      if (!data.publishDate && !data.wrongProduction && multiProdVenueGuard[showId]) {
+        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
+        if (text.length >= 100) {
+          const guard = multiProdVenueGuard[showId];
+          // Check if text mentions own venue (using distinctive words)
+          // Filter out common names, generic words, and short words that cause false positives
+          const VENUE_GENERIC_WORDS = new Set([
+            'the', 'theatre', 'theater', 'center', 'centre', 'arts', 'performing',
+            'new', 'stage', 'studio', 'room', 'hall', 'house', 'square', 'park',
+            'james', 'john', 'walter', 'neil', 'harold', 'samuel', 'eugene', 'richard',
+            'bernard', 'david', 'stephen', 'gerald', 'august', 'marquis', 'palace',
+            'american', 'national', 'royal', 'london', 'york',
+          ]);
+          const filterVenueWords = (venue) => venue.split(/[\s,]+/).filter(w =>
+            w.length >= 5 && !VENUE_GENERIC_WORDS.has(w));
+          const ownVenueWords = filterVenueWords(guard.thisVenueLower);
+          const mentionsOwnVenue = ownVenueWords.length > 0 && ownVenueWords.some(w => text.includes(w));
+          for (const sib of guard.siblings) {
+            // Use distinctive words from sibling venue (e.g., "hirschfeld" from "al hirschfeld theatre")
+            const sibVenueWords = filterVenueWords(sib.venueLower);
+            const mentionsSibVenue = sibVenueWords.some(w => text.includes(w));
+            if (mentionsSibVenue && !mentionsOwnVenue) {
+              const matchedWord = sibVenueWords.find(w => text.includes(w));
+              console.log(`  [VENUE GUARD] ${showId}/${file}: mentions "${matchedWord}" from "${sib.venue}" (${sib.id}) but not "${guard.thisVenue}"`);
+              stats.skippedVenueMismatch = (stats.skippedVenueMismatch || 0) + 1;
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Venue guard: review mentions "${sib.venue}" (${sib.id}) but not "${guard.thisVenue}"`;
+              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              return;
+            }
+          }
+        }
+      }
+
+      // URL-market guard for cross-market contamination
+      // NYC shows (Broadway/OB) should not have /london/ in URL, and vice versa
+      if (!data.publishDate && !data.wrongProduction && data.url) {
+        const isNyc = showCat === 'broadway' || showCat === 'off-broadway';
+        const isWe = showCat === 'west-end';
+        const urlLower = data.url.toLowerCase();
+        if (isNyc && (urlLower.includes('/london/') || urlLower.includes('/uk/'))) {
+          console.log(`  [URL-MARKET GUARD] ${showId}/${file}: NYC show but URL contains London/UK path`);
+          stats.skippedUrlMarket = (stats.skippedUrlMarket || 0) + 1;
+          data.wrongProduction = true;
+          data.wrongProductionNote = `URL-market guard: NYC show but URL points to London/UK content`;
+          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+          return;
+        }
+        if (isWe && urlLower.includes('/nyc/')) {
+          console.log(`  [URL-MARKET GUARD] ${showId}/${file}: West End show but URL contains NYC path`);
+          stats.skippedUrlMarket = (stats.skippedUrlMarket || 0) + 1;
+          data.wrongProduction = true;
+          data.wrongProductionNote = `URL-market guard: West End show but URL points to NYC content`;
+          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+          return;
         }
       }
 

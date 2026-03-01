@@ -47,6 +47,7 @@ const {
   validateCriticOutlet,
   resolveOutletFromUrl,
   isJunkOutlet,
+  isProfileUrl,
   normalizeUrl,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
@@ -97,6 +98,25 @@ function getDtliSlugMap() {
     _dtliSlugMap = {};
   }
   return _dtliSlugMap;
+}
+
+// Global show year map for cross-production year comparison
+// Maps showId → opening year (number)
+let _showYearMap = null;
+function getShowYearMap() {
+  if (_showYearMap) return _showYearMap;
+  _showYearMap = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    for (const s of shows) {
+      if (s.openingDate) {
+        const d = new Date(s.openingDate);
+        if (!isNaN(d.getTime())) _showYearMap[s.id] = d.getFullYear();
+      }
+    }
+  } catch {}
+  return _showYearMap;
 }
 
 // Global URL index for cross-production duplicate prevention
@@ -1836,6 +1856,12 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // PROFILE URL REJECTION: critic profile pages are not reviews
+  if (reviewData.url && isProfileUrl(reviewData.url)) {
+    console.log(`    ✗ Skipping ${filename}: profile URL "${reviewData.url}"`);
+    return 'profileUrl';
+  }
+
   // CROSS-PRODUCTION URL CHECK: prevent same URL in sibling production directories
   // Exceptions: roundup articles and combined reviews legitimately cover multiple shows
   if (reviewData.url) {
@@ -1851,8 +1877,54 @@ function createReviewFile(showId, reviewData, options = {}) {
       } catch (e) { /* file unreadable, treat as non-exception */ }
 
       if (!allowCrossShow) {
-        console.log(`    ✗ Skipping ${filename}: URL already exists in ${existing.showId}/${existing.file}`);
-        return 'crossShow';
+        // Instead of first-writer-wins, compare which production is correct.
+        // Use review year proximity, falling back to most-recent-production-wins.
+        const yearMap = getShowYearMap();
+        const myYear = yearMap[showId];
+        const existingYear = yearMap[existing.showId];
+
+        // Extract review year from publish date or URL
+        let reviewYear = null;
+        if (reviewData.publishDate) {
+          const m = String(reviewData.publishDate).match(/\b((?:19|20)\d\d)\b/);
+          if (m) reviewYear = parseInt(m[1]);
+        }
+        if (!reviewYear && reviewData.url) {
+          const m = reviewData.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/);
+          if (m) reviewYear = parseInt(m[1]);
+        }
+
+        let thisShowIsCorrect = false;
+        if (reviewYear && myYear && existingYear) {
+          const myDist = Math.abs(myYear - reviewYear);
+          const existingDist = Math.abs(existingYear - reviewYear);
+          // This show wins if strictly closer, or same distance but more recent
+          thisShowIsCorrect = myDist < existingDist || (myDist === existingDist && myYear > existingYear);
+        } else if (!reviewYear && myYear && existingYear) {
+          // No review year — more recent production wins
+          thisShowIsCorrect = myYear > existingYear;
+        }
+        // else: no year info — fall through to first-writer-wins (skip)
+
+        if (thisShowIsCorrect) {
+          // Flag the existing file as wrong production and save this one
+          try {
+            const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
+            const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+            existingData.wrongProduction = true;
+            existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
+            fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
+            console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
+            // Update the URL index to point to this show
+            urlIndex.set(normalizeUrl(reviewData.url), { showId, file: filename });
+          } catch (e) {
+            console.log(`    ⚠ Could not flag ${existing.showId}/${existing.file}: ${e.message}`);
+          }
+          // Fall through to save this review
+        } else {
+          console.log(`    ✗ Skipping ${filename}: URL already exists in ${existing.showId}/${existing.file}`);
+          return 'crossShow';
+        }
       }
       // Roundup/combined review — allow saving in this show's directory too
     }
