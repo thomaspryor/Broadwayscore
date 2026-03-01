@@ -84,7 +84,14 @@
     "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
     "the-other-place-off-broadway-2026/nytg--austin-fimmano.json",
     "the-reservoir-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "the-reservoir-off-broadway-2026/nytg--allison-considine.json"
+    "the-reservoir-off-broadway-2026/nytg--allison-considine.json",
+    "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
+    "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+    "zack-off-broadway-2026/nyt-theater--unknown.json",
+    "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json",
+    "aladdin-2014/ew--thom-geier.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -641,7 +648,10 @@
     "not-nobody-off-broadway-2026/nytg--unknown.json",
     "paddington-the-musical-west-end-2025/variety--david-benedict.json",
     "stranger-things-2024/nytimes--houman-barekat.json",
-    "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json"
+    "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-west-end-2021/variety--david-benedict.json",
+    "you-got-older-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,7 +694,10 @@
       "the-monsters-off-broadway-2026/nytg--amelia-merrill.json",
       "the-other-place-off-broadway-2026/nytg--austin-fimmano.json",
       "the-reservoir-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "the-reservoir-off-broadway-2026/nytg--allison-considine.json"
+      "the-reservoir-off-broadway-2026/nytg--allison-considine.json",
+      "the-unknown-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/nytg--gillian-russo.json",
+      "aladdin-2014/ew--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -716,7 +729,9 @@
       "data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
-      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ],
     "browserbase": [
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
@@ -735,7 +750,10 @@
       "stranger-things-2024/nytimes--houman-barekat.json",
       "the-dinosaurs-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "the-lion-king-1997/nytimes--ben-brantley.json"
+      "the-lion-king-1997/nytimes--ben-brantley.json",
+      "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-unknown-off-broadway-2026/nytimes--helen-shaw.json",
+      "age-is-a-feeling-off-broadway-2024/guardian--mark-fisher.json"
     ],
     "brightdata": [
       "arcadia-west-end-2026/talkinbroadway--unknown.json",
@@ -751,7 +769,8 @@
       "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
       "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
-      "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json"
+      "the-monsters-off-broadway-2026/nytimes--brittani-samuel.json",
+      "the-office-a-musical-parody-off-broadway-2018/nyt-theater--stephi-wild.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -957,11 +976,12 @@
       "oh-mary-2024/nytimes--erik-piepenburg.json",
       "perfect-crime-off-broadway-1987/nytimes--d-j-r-bruckner.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
-      "the-lion-king-1997/vulture--john-simon.json"
+      "the-lion-king-1997/vulture--john-simon.json",
+      "zack-off-broadway-2026/nyt-theater--unknown.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "the-reservoir-off-broadway-2026/nytg--allison-considine.json",
+  "lastProcessed": "aladdin-2014/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1092,6 +1112,39 @@
     },
     {
       "t": "2026-03-01T05:12:16.618Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:17:21.054Z",
+      "event": "bb-session",
+      "session": "191e7a60",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-03-01T05:17:22.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:18:43.617Z",
+      "event": "bb-session",
+      "session": "cab72198",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-01T05:18:44.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:26:01.382Z",
+      "event": "bb-session",
+      "session": "42db8e1c",
+      "url": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman"
+    },
+    {
+      "t": "2026-03-01T05:26:02.471Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

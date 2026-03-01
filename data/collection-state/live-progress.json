@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-01T05:16:33.354Z",
-  "processed": 85,
-  "failed": 555,
-  "successRate": "13.3%",
+  "updatedAt": "2026-03-01T05:26:42.992Z",
+  "processed": 92,
+  "failed": 558,
+  "successRate": "14.2%",
   "tierBreakdown": {
-    "playwright": 39,
-    "amp": 30,
+    "playwright": 42,
+    "amp": 32,
     "browserbase": 2,
     "directCookies": 2,
-    "scrapingbee": 9,
-    "brightdata": 14,
+    "scrapingbee": 12,
+    "brightdata": 15,
     "archiveToday": 175,
-    "archive": 27
+    "archive": 28
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-02-28T18:55:54.447Z",
-      "event": "bb-session",
-      "session": "f5e26e14",
-      "url": "https://blogs.wsj.com/metropolis/2013/04/03/photos-a-nightly-transformation-for-"
-    },
-    {
-      "t": "2026-02-28T18:55:55.740Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-01T04:35:27.127Z",
-      "event": "bb-session",
-      "session": "5b1e3313",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
-    },
-    {
-      "t": "2026-03-01T04:35:28.202Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-01T04:53:16.442Z",
-      "event": "bb-session",
-      "session": "0900d739",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-03-01T04:53:17.572Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-01T04:55:06.584Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-03-01T05:12:16.618Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:17:21.054Z",
+      "event": "bb-session",
+      "session": "191e7a60",
+      "url": "https://www.nytimes.com/2026/02/16/theater/the-tragedy-of-coriolanus-review.html"
+    },
+    {
+      "t": "2026-03-01T05:17:22.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:18:43.617Z",
+      "event": "bb-session",
+      "session": "cab72198",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-01T05:18:44.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-01T05:26:01.382Z",
+      "event": "bb-session",
+      "session": "42db8e1c",
+      "url": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman"
+    },
+    {
+      "t": "2026-03-01T05:26:02.471Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
