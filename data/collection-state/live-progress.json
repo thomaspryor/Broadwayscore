@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T21:24:23.185Z",
-  "processed": 52,
-  "failed": 48,
-  "successRate": "52.0%",
+  "updatedAt": "2026-03-01T21:31:19.852Z",
+  "processed": 59,
+  "failed": 51,
+  "successRate": "53.6%",
   "tierBreakdown": {
-    "playwright": 32,
-    "amp": 37,
+    "playwright": 37,
+    "amp": 39,
     "browserbase": 13,
-    "directCookies": 6,
+    "directCookies": 7,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 14
+    "archiveToday": 12,
+    "archive": 15
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-03-01T20:08:10.243Z",
-      "event": "bb-session",
-      "session": "c8d201a9",
-      "url": "http://www.hollywoodreporter.com/review/magic-bird-theater-review-lakers-311084"
-    },
-    {
-      "t": "2026-03-01T20:08:11.351Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-01T20:08:23.601Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T21:07:37.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T21:29:41.374Z",
+      "event": "bb-session",
+      "session": "1ee2ffc6",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
+    },
+    {
+      "t": "2026-03-01T21:29:42.441Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
