@@ -105,12 +105,31 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Collect outlet reviews via SERP (${{ github.event_name }})"
+
       - name: Trigger rebuild
         if: success() && github.event.inputs.dry_run != 'true'
         run: |
           gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection (${{ github.event_name }})"
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Discord summary (cron runs)
+        if: always() && github.event_name == 'schedule'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          STATUS="${{ job.status }}"
+          if [ "$STATUS" = "success" ]; then
+            COLOR=3066993
+            EMOJI="✅"
+          else
+            COLOR=15158332
+            EMOJI="❌"
+          fi
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"embeds\":[{\"title\":\"${EMOJI} Weekly Outlet SERP Collection\",\"description\":\"Status: ${STATUS}\\n[View logs](${RUN_URL})\",\"color\":${COLOR}}]}"
 
       - name: Notify on failure
         if: failure()
