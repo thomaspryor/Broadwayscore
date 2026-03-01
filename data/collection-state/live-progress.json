@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-01T05:36:08.206Z",
-  "processed": 97,
-  "failed": 563,
-  "successRate": "14.7%",
+  "updatedAt": "2026-03-01T05:48:08.856Z",
+  "processed": 103,
+  "failed": 567,
+  "successRate": "15.4%",
   "tierBreakdown": {
-    "playwright": 44,
-    "amp": 32,
+    "playwright": 48,
+    "amp": 34,
     "browserbase": 2,
-    "directCookies": 2,
+    "directCookies": 3,
     "scrapingbee": 12,
-    "brightdata": 17,
+    "brightdata": 19,
     "archiveToday": 176,
-    "archive": 31
+    "archive": 32
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-01T05:04:39.628Z",
-      "event": "bb-session",
-      "session": "1ad09775",
-      "url": "https://www.nytimes.com/2025/04/22/theater/stranger-things-first-shadow-review-b"
-    },
-    {
-      "t": "2026-03-01T05:04:40.786Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-01T05:05:09.667Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-01T05:28:09.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-01T05:39:58.263Z",
+      "event": "bb-session",
+      "session": "5d1096ca",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-01T05:39:59.508Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
