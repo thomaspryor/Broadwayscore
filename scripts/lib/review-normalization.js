@@ -1229,6 +1229,9 @@ function findExistingReviewFile(showDir, outletName, criticName) {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        // Skip wrongProduction files — they're from a different production
+        // and should not block discovery of reviews for the current production
+        if (data && data.wrongProduction) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
