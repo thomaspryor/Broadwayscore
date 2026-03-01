@@ -250,6 +250,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway revivals bring beloved classics back to life with fresh perspectives, new stars, and reimagined staging. These productions honor the original material while offering something new - whether it\'s an innovative concept, a diverse cast, or simply the chance to experience a legendary show in person. From Tony-winning productions to intimate reimaginings, these revivals prove that great theater is timeless.',
     filter: (show) => {
       if (show.status !== 'open') return false;
+      if ((show.criticScore?.reviewCount ?? 0) < 3) return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       return tags.includes('revival') || show.isRevival === true;
     },
@@ -424,7 +425,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      return show.type === 'musical';
+      return show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3;
     },
     sort: 'score',
     relatedPages: ['best-recent-musicals', 'jukebox-musicals-on-broadway', 'best-broadway-revivals'],
@@ -440,6 +441,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (show.type !== 'musical') return false;
+      if ((show.criticScore?.reviewCount ?? 0) < 3) return false;
       const twelveMonthsAgo = new Date();
       twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
       const openDate = new Date(show.openingDate);
@@ -459,6 +461,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (show.type !== 'play') return false;
+      if ((show.criticScore?.reviewCount ?? 0) < 3) return false;
       const twelveMonthsAgo = new Date();
       twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
       const openDate = new Date(show.openingDate);
@@ -477,7 +480,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway plays offer some of the most powerful and intimate theatrical experiences available. Without the spectacle of big musical numbers, plays rely on exceptional writing, direction, and performances to captivate audiences. These are the highest-rated plays currently on Broadway, ranging from gripping dramas to sharp comedies. If you\'re looking for theater that challenges, moves, and stays with you, these productions deliver.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      return show.type === 'play';
+      return show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3;
     },
     sort: 'score',
     relatedPages: ['best-broadway-dramas', 'best-broadway-comedies', 'tony-winners-on-broadway'],
