@@ -326,6 +326,13 @@ const CONFIG = {
   },
 };
 
+// Print-only outlets: no online content available, skip SERP discovery and collection
+const PRINT_ONLY_OUTLETS = new Set([
+  'lighting-and-sound-america',
+  'lighting and sound america',
+  'lsa',
+]);
+
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected } = require('./lib/scraper');
 
@@ -2955,6 +2962,8 @@ async function discoverCorrectUrl(review) {
   if (!axios) return null;
   // Need at least one SERP provider
   if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) return null;
+  // Skip print-only outlets — no online content to discover
+  if (PRINT_ONLY_OUTLETS.has((review.outletId || '').toLowerCase())) return null;
 
   // Per-run cap to prevent runaway SERP API costs
   if (stats.urlDiscoveryAttempts >= URL_DISCOVERY_MAX_PER_RUN) {
@@ -5056,6 +5065,9 @@ function findReviewsToProcess() {
 
         // Skip if no URL (unless explicitly targeting no_url reviews for SERP discovery)
         if (!data.url && !CONFIG.incompleteReasonFilter.includes('no_url')) continue;
+
+        // Skip print-only outlets — no online content exists, SERP discovery wastes API credits
+        if (PRINT_ONLY_OUTLETS.has((data.outletId || '').toLowerCase())) continue;
 
         // Determine outlet tier
         const outletId = (data.outletId || '').toLowerCase();
