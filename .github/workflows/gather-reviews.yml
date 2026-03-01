@@ -86,9 +86,53 @@ jobs:
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
           echo "job_count=$JOBS" >> $GITHUB_OUTPUT
 
+  # Step 1b: Outlet-first SERP discovery (runs before aggregator gathering)
+  outlet-serp:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Outlet-first SERP discovery
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          echo "Running outlet-first SERP discovery for: ${{ inputs.shows }}"
+          node scripts/collect-outlet-reviews.js \
+            --shows "${{ inputs.shows }}" \
+            --max-tier 2 \
+            --max-searches 100
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Outlet-first SERP discovery for ${{ inputs.shows }}"
+
   # Step 2: Gather reviews in parallel batches
   gather-reviews:
-    needs: prepare
+    needs: [prepare, outlet-serp]
+    if: always() && needs.outlet-serp.result != 'cancelled'
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
