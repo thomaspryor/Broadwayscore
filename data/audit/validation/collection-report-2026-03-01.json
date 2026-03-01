@@ -1,82 +1,80 @@
 {
-  "runDate": "2026-03-01T15:57:52.201Z",
+  "runDate": "2026-03-01T16:02:56.621Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "deep-azure-globe-west-end-2026",
+    "showFilter": "the-tempest-globe-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 1,
+    "processed": 4,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 1,
+    "brightdata": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 6,
+    "tier1Attempts": 6,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 0,
     "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "deep-azure-globe-west-end-2026/british-theatre-guide--unknown.json",
-    "deep-azure-globe-west-end-2026/everything-theatre--unknown.json",
-    "deep-azure-globe-west-end-2026/london-theatre--unknown.json",
-    "deep-azure-globe-west-end-2026/the-reviews-hub--unknown.json",
-    "deep-azure-globe-west-end-2026/timeout-london--unknown.json",
-    "deep-azure-globe-west-end-2026/whatsonstage--unknown.json"
+    "the-tempest-globe-west-end-2026/british-theatre-guide--unknown.json",
+    "the-tempest-globe-west-end-2026/thestage--unknown.json",
+    "the-tempest-globe-west-end-2026/timeout-london--unknown.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
-    "deep-azure-globe-west-end-2026/thestage--unknown.json"
+    "the-tempest-globe-west-end-2026/broadwayworld--unknown.json",
+    "the-tempest-globe-west-end-2026/london-unattached--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "deep-azure-globe-west-end-2026/british-theatre-guide--unknown.json",
-      "deep-azure-globe-west-end-2026/everything-theatre--unknown.json",
-      "deep-azure-globe-west-end-2026/london-theatre--unknown.json",
-      "deep-azure-globe-west-end-2026/the-reviews-hub--unknown.json",
-      "deep-azure-globe-west-end-2026/timeout-london--unknown.json",
-      "deep-azure-globe-west-end-2026/whatsonstage--unknown.json"
+      "the-tempest-globe-west-end-2026/british-theatre-guide--unknown.json",
+      "the-tempest-globe-west-end-2026/london-unattached--unknown.json",
+      "the-tempest-globe-west-end-2026/thestage--unknown.json",
+      "the-tempest-globe-west-end-2026/timeout-london--unknown.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/deep-azure-globe-west-end-2026/thestage--unknown.json"
+    "brightdata": [
+      "the-tempest-globe-west-end-2026/broadwayworld--unknown.json"
     ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
