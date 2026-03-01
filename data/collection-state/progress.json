@@ -8,7 +8,9 @@
     "death-becomes-her-2024/newyorker--helen-shaw.json",
     "dracula-west-end-2025/nytg--kyle-turner.json",
     "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
-    "hercules-west-end-2025/nytimes--matt-wolf.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json",
+    "operation-mincemeat-west-end-2024/nytg--caroline-cao.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -21,14 +23,23 @@
     "hercules-west-end-2025/variety--david-benedict.json",
     "im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json",
     "just-in-time-2025/newyorker--unknown.json",
-    "kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    "kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "maggots-west-end-2026/hollywood-reporter--david-rooney.json",
+    "maggots-west-end-2026/variety--marilyn-stasio.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "mamma-mia-west-end-2021/vulture--jackson-mchenry.json",
+    "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
+    "man-and-boy-west-end-2026/nytimes--ben-brantley.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/nytg--amelia-merrill.json",
-      "dracula-west-end-2025/nytg--kyle-turner.json"
+      "dracula-west-end-2025/nytg--kyle-turner.json",
+      "operation-mincemeat-west-end-2024/nytg--caroline-cao.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -40,32 +51,47 @@
       "data/review-texts/hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
       "hamilton-west-end-2021/hollywood-reporter--frank-scheck.json",
       "data/review-texts/hercules-west-end-2025/variety--david-benedict.json",
-      "hercules-west-end-2025/variety--david-benedict.json"
+      "hercules-west-end-2025/variety--david-benedict.json",
+      "data/review-texts/kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json",
+      "man-and-boy-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
-      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "data/review-texts/maggots-west-end-2026/hollywood-reporter--david-rooney.json",
+      "maggots-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/maggots-west-end-2026/variety--marilyn-stasio.json",
+      "maggots-west-end-2026/variety--marilyn-stasio.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "death-becomes-her-2024/newyorker--helen-shaw.json",
-      "hamilton-west-end-2021/vulture--jesse-green.json"
+      "hamilton-west-end-2021/vulture--jesse-green.json",
+      "just-in-time-2025/newyorker--unknown.json",
+      "mamma-mia-west-end-2021/vulture--jackson-mchenry.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
-      "data/review-texts/im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json"
+      "data/review-texts/im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json",
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
       "chess-2025/newyorker--michael-schulman.json",
       "chinese-republicans-off-broadway-2026/vulture--sara-holdren.json",
       "dracula-west-end-2025/nytimes--elisabeth-vincentelli.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "mamma-mia-west-end-2021/nytimes--elisabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-01T19:28:40.290Z",
-  "lastProcessed": "kinky-boots-off-broadway-2026/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "operation-mincemeat-west-end-2024/nytg--caroline-cao.json",
   "log": [
     {
       "t": "2026-03-01T19:42:26.803Z",
@@ -99,6 +125,61 @@
       "t": "2026-03-01T19:52:23.103Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-01T20:02:04.099Z",
+      "event": "bb-session",
+      "session": "aedfc0c3",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
+    },
+    {
+      "t": "2026-03-01T20:02:05.304Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-01T20:08:10.243Z",
+      "event": "bb-session",
+      "session": "c8d201a9",
+      "url": "http://www.hollywoodreporter.com/review/magic-bird-theater-review-lakers-311084"
+    },
+    {
+      "t": "2026-03-01T20:08:11.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-01T20:08:23.601Z",
+      "event": "bb-session",
+      "session": "261f9687",
+      "url": "http://www.variety.com/review/VE1117947374"
+    },
+    {
+      "t": "2026-03-01T20:08:24.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-01T20:14:35.235Z",
+      "event": "bb-session",
+      "session": "5d9f0d1c",
+      "url": "https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.h"
+    },
+    {
+      "t": "2026-03-01T20:14:36.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-01T20:17:35.221Z",
+      "event": "bb-session",
+      "session": "2ac43f10",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-esc"
+    },
+    {
+      "t": "2026-03-01T20:17:36.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
