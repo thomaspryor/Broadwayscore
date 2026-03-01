@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-01T04:54:05.572Z",
-  "processed": 60,
-  "failed": 550,
-  "successRate": "9.8%",
+  "updatedAt": "2026-03-01T04:57:50.878Z",
+  "processed": 68,
+  "failed": 552,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 31,
     "amp": 28,
     "browserbase": 2,
     "directCookies": 2,
     "scrapingbee": 5,
-    "brightdata": 11,
+    "brightdata": 12,
     "archiveToday": 175,
-    "archive": 18
+    "archive": 23
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -69,6 +69,17 @@
       "t": "2026-03-01T04:53:17.572Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-01T04:55:06.584Z",
+      "event": "bb-session",
+      "session": "2803f47e",
+      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
+    },
+    {
+      "t": "2026-03-01T04:55:07.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

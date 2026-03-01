@@ -59,7 +59,15 @@
     "mexodus-off-broadway-2026/nytimes--brittani-samuel.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "mj-2022/vulture--helen-shaw.json",
-    "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+    "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "mother-russia-off-broadway-2026/vulture--sara-holdren.json",
+    "moulin-rouge-2019/nytimes--ben-brantley.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "moulin-rouge-the-musical-west-end-2021/variety--rebecca-rubin.json",
+    "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -611,7 +619,9 @@
     "kinky-boots-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
     "kinky-boots-off-broadway-2026/vulture--christopher-bonanos.json",
     "little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
-    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json"
+    "little-shop-of-horrors-off-broadway-2019/nytg--gillian-russo.json",
+    "moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json",
+    "not-nobody-off-broadway-2026/nytg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -644,7 +654,9 @@
       "marcel-on-the-train-off-broadway-2026/nytg--joe-dziemianowicz.json",
       "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
       "mexodus-off-broadway-2026/nytg--austin-fimmano.json",
-      "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+      "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "mother-russia-off-broadway-2026/nytg--amelia-merrill.json",
+      "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -702,7 +714,8 @@
       "the-monsters-off-broadway-2026/talkinbroadway--james-wilson.json",
       "the-mousetrap-west-end-2021/talkinbroadway--unknown.json",
       "the-reservoir-off-broadway-2026/talkinbroadway--unknown.json",
-      "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json"
+      "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "mother-russia-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -899,11 +912,16 @@
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
       "mexodus-off-broadway-2026/nytimes--brittani-samuel.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/vulture--helen-shaw.json"
+      "mj-2022/vulture--helen-shaw.json",
+      "mother-russia-off-broadway-2026/vulture--sara-holdren.json",
+      "moulin-rouge-2019/nytimes--ben-brantley.json",
+      "moulin-rouge-2019/vulture--sara-holdren.json",
+      "moulin-rouge-the-musical-west-end-2021/variety--rebecca-rubin.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "oh-mary-2024/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -959,6 +977,17 @@
       "t": "2026-03-01T04:53:17.572Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-01T04:55:06.584Z",
+      "event": "bb-session",
+      "session": "2803f47e",
+      "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html"
+    },
+    {
+      "t": "2026-03-01T04:55:07.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
