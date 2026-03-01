@@ -128,7 +128,8 @@
     "all-my-sons-west-end-2025/i-paper--fiona-mountford.json",
     "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
     "calf-scramble-off-broadway-2026/theatermania--unknown.json",
-    "jerome-off-broadway-2025/wsj--joel-lobenthal.json"
+    "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
+    "zack-off-broadway-2026/wsj--david-kirby.json"
   ],
   "failed": [
     "age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -741,7 +742,16 @@
     "what-we-did-before-our-moth-days-off-broadway-2026/broadwaynews--stephi-wild.json",
     "wicked-2003/theatermania--barbara-siegel.json",
     "wicked-west-end-2021/ew--declan-gallagher.json",
-    "wicked-west-end-2021/nydailynews--stanford-friedman.json"
+    "wicked-west-end-2021/nydailynews--stanford-friedman.json",
+    "you-got-older-off-broadway-2026/broadwaynews--unknown.json",
+    "bloodlove-off-broadway-2026/theatrely--kobi-kassal.json",
+    "book-of-mormon-2011/cititour--lesley-alexander.json",
+    "hadestown-west-end-2024/theatrely--emily-wyrwa.json",
+    "hamilton-west-end-2021/cititour--unknown.json",
+    "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
+    "zack-off-broadway-2026/theatrely--kobi-kassal.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -853,7 +863,8 @@
       "data/review-texts/data-off-broadway-2026/nytimes--tim-teeman.json",
       "data-off-broadway-2026/nytimes--tim-teeman.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/wicked-2003/theatermania--barbara-siegel.json"
     ],
     "directCookies": [
       "no-mans-land-2013/thewrap--robert-hofler.json",
@@ -905,7 +916,8 @@
       "bug-2026/wsj--charles-isherwood.json",
       "cold-war-choir-practice-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
       "jerome-off-broadway-2025/wsj--joel-lobenthal.json",
-      "my-joy-is-heavy-off-broadway-2025/broadwaynews--aa-cristi.json"
+      "my-joy-is-heavy-off-broadway-2025/broadwaynews--aa-cristi.json",
+      "zack-off-broadway-2026/wsj--david-kirby.json"
     ],
     "archiveToday": [
       "data/review-texts/age-is-a-feeling-off-broadway-2024/nyt-theater--unknown.json",
@@ -1089,7 +1101,8 @@
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/theatermania--unknown.json",
       "data/review-texts/silver-manhattan-off-broadway-2026/theatermania--unknown.json",
       "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
-      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json"
+      "data/review-texts/the-lion-king-west-end-2021/nbcnews--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/cititour--unknown.json"
     ],
     "archive": [
       "kinky-boots-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1132,7 +1145,7 @@
     ]
   },
   "startTime": "2026-02-28T18:14:57.765Z",
-  "lastProcessed": "wicked-west-end-2021/nydailynews--stanford-friedman.json",
+  "lastProcessed": "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json",
   "log": [
     {
       "t": "2026-02-28T18:35:40.677Z",
@@ -1419,6 +1432,17 @@
       "t": "2026-03-01T10:17:16.187Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-01T10:18:41.380Z",
+      "event": "bb-session",
+      "session": "98e6a611",
+      "url": "https://www.wsj.com/articles/david-kirby-reviews-say-no-to-the-devil-the-life-an"
+    },
+    {
+      "t": "2026-03-01T10:18:42.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
