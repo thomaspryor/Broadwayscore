@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-01T15:38:37.894Z",
+    "description": "LLM-classified wrong-show results from title-mention guard candidates",
+    "total": 34,
+    "classified": 34,
+    "wrongShow": 4,
+    "correct": 29,
+    "uncertain": 1,
+    "errors": 0,
+    "applied": 4
+  },
+  "results": [
+    {
+      "showId": "fish-in-the-dark-2015",
+      "showTitle": "Fish in the Dark",
+      "file": "newsday--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Larry David, who starred in Fish in the Dark, and discusses the show's comedic style and themes."
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "showTitle": "Fiddler on the Roof",
+      "file": "financialtimes--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses Tevye, his wife, the matchmaker, and Lazar Wolf, all characters in Fiddler on the Roof. It also mentions previous actors who played Tevye."
+    },
+    {
+      "showId": "hedwig-and-the-angry-inch-2014",
+      "showTitle": "Hedwig and the Angry Inch",
+      "file": "financialtimes--financial-times.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions John Cameron Mitchell and Stephen Trask, who wrote the book and music/lyrics for Hedwig. It also mentions the themes and star of the show."
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "showTitle": "Head Over Heels",
+      "file": "towleroad--naveen-kumar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the show's campy nature, music, and overall tone, which aligns with the description of \"Head Over Heels\" as a jukebox musical featuring the Go-Go's."
+    },
+    {
+      "showId": "fool-for-love-2015",
+      "showTitle": "Fool for Love",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions actors Nina Arianda and Sam Rockwell, who starred in the 2015 Broadway revival of Fool for Love. It also discusses the character May, who is a central figure in the play."
+    },
+    {
+      "showId": "living-on-love-2015",
+      "showTitle": "Living on Love",
+      "file": "ap--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Fleming, Douglas Sills), and director (Kathleen Marshall) of \"Living on Love.\""
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
+      "showTitle": "Les Liaisons Dangereuses",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Valmont, Christopher Hampton's adaptation, and the plot of the novel, all of which are associated with \"Les Liaisons Dangereuses.\""
+    },
+    {
+      "showId": "lobby-hero-2018",
+      "showTitle": "Lobby Hero",
+      "file": "broadwaynews--elizabeth-bradley.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the cast (Henry, Evans), director (Cullman), and themes of the play, all of which align with \"Lobby Hero\"."
+    },
+    {
+      "showId": "hello-dolly-2017",
+      "showTitle": "Hello, Dolly!",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions cast members like Donna Murphy, David Hyde Pierce, Gavin Creel, and Kate Baldwin, as well as characters like Dolly Gallagher Levi and Horace Vandergelder, all of whom are associated with the 2017 production of Hello, Dolly!."
+    },
+    {
+      "showId": "legally-blonde-2007",
+      "showTitle": "Legally Blonde",
+      "file": "i-paper--sam-marlowe.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the plot, characters (Elle Woods, Warner, Emmett), and creative team (Lucy Moss, Laurence O'Keefe, Nell Benjamin, Heather Hach) of 'Legally Blonde', confirming it's about the correct show."
+    },
+    {
+      "showId": "old-times-2015",
+      "showTitle": "Old Times",
+      "file": "abc-news--unknown.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The review is explicitly about 'Spring Awakening' and its revival, not 'Old Times'."
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "showTitle": "Man and Boy",
+      "file": "chicagotribune--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the playwright Terence Rattigan, the plot elements, and the lead actor Ben Daniels, all associated with the show \"Man and Boy.\""
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "showTitle": "On the Twentieth Century",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"On The 20th Century\" and discusses the plot, cast (Peter Gallagher, Kristin Chenoweth), and creative team (Comden & Green)."
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "showTitle": "Moulin Rouge! The Musical",
+      "file": "edmonton-journal--liane-faulder.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Christian, Satine, Harold Zidler), and setting (Moulin Rouge in Paris) of the musical, along with mentioning the original movie and director Alex Timbers."
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "showTitle": "Moulin Rouge! The Musical",
+      "file": "the-city-journals--peri-kinder.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Christian, Satine, Harold Zidler), and setting (Moulin Rouge in Paris) of the musical, along with mentioning the original movie and its director, Baz Luhrmann. It also mentions the Broadway debut and West End production."
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "showTitle": "On Your Feet!",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast members (Ana Villafañe, Josh Segarra), and plot points related to the show 'On Your Feet!'."
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "showTitle": "On Your Feet!",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"On Your Feet\" and discusses the plot, music, and creative team (Emilio and Gloria Estefan, Sergio Trujillo, Alexander Dinelaris) of the show."
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "showTitle": "Sea Wall / A Life",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Sturridge and Gyllenhaal, who starred in 'Sea Wall / A Life', and Carrie Cracknell, the director. It also discusses the play's themes and structure, indicating it's a review of the correct show."
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "showTitle": "Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "This is a site index/directory page for NYC events, not a review of the show. It includes basic information like the venue and dates, but no critical assessment."
+    },
+    {
+      "showId": "pictures-from-home-2023",
+      "showTitle": "Pictures From Home",
+      "file": "thestage--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the play based on Larry Sultan's photo memoir, mentioning the cast (Nathan Lane, Zoë Wanamaker, Danny Burstein), the director (Bartlett Sher), and the plot involving Larry's photography project with his parents. These details align with the show 'Pictures From Home'."
+    },
+    {
+      "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+      "showTitle": "Shuffle Along, Or The Making of the Musical Sensation of 1921 and All That Followed",
+      "file": "deadline--jeremy-gerard.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review refers to 'Shuffle Along' and discusses the themes, cast (Audra McDonald), and historical context of the show."
+    },
+    {
+      "showId": "the-color-purple-2015",
+      "showTitle": "The Color Purple",
+      "file": "ap--unknown.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The text indicates that the page is unavailable and provides options to navigate back to the homepage or search the site. This is not a review of the show."
+    },
+    {
+      "showId": "six-degrees-of-separation-2017",
+      "showTitle": "Six Degrees of Separation",
+      "file": "timeout--david-cote.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the playwright John Guare, the characters Ouisa and Flan Kittredge, and the actor Corey Hawkins, all associated with the 2017 production of \"Six Degrees of Separation.\""
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "showTitle": "Sunset Boulevard",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Sunset Blvd.\" and discusses the plot, cast (Nicole Scherzinger as Norma Desmond, Tom Francis as Joe, David Thaxton as Max, Grace Hodgett Young as Betty), creative team (Andrew Lloyd Webber, Don Black, Christopher Hampton, Jamie Lloyd), and venue (St. James Theatre)."
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "showTitle": "The Hills of California",
+      "file": "telegraph--dominic-cavendish.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Jez Butterworth and Sam Mendes, who are the writer and director of \"The Hills of California.\" It also mentions the setting of the play as Blackpool in 1976, which aligns with the show's details. The review also mentions cast members Helena Wilson, Laura Donnelly and Lara McDonnel"
+    },
+    {
+      "showId": "the-merchant-of-venice-2010",
+      "showTitle": "The Merchant of Venice",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Al Pacino as Shylock, Lily Rabe as Portia, Daniel Sullivan as the director, and the plot of the play, all of which align with the 2010 production of \"The Merchant of Venice.\""
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "showTitle": "The Lehman Trilogy",
+      "file": "thestage--nicole-serratore.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Adrian Lester, Simon Russell Beale, Adam Godley), and creative team (Sam Mendes, Es Devlin) of \"The Lehman Trilogy.\""
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "showTitle": "The Playboy of the Western World",
+      "file": "guardian--arifa-akbar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Christy Mahon, Pegeen, Widow Quin), and the playwright (John Millington Synge) of \"The Playboy of the Western World.\""
+    },
+    {
+      "showId": "the-peewee-herman-show-2010",
+      "showTitle": "The Pee-wee Herman Show",
+      "file": "ap--david-rooney.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The text indicates that the page is unavailable and provides navigation options, suggesting it's not a review of the specified show. It also mentions opt-out preferences and privacy choices, further confirming it's not a review."
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "showTitle": "The Lion King",
+      "file": "cititour--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Simba, Scar, Mufasa, Rafiki, Pumbaa, Timon, Nala), and creative team (Elton John, Julie Taymor) of The Lion King. It also mentions the Minskoff Theatre, where the show has been playing."
+    },
+    {
+      "showId": "the-velocity-of-autumn-2014",
+      "showTitle": "The Velocity of Autumn",
+      "file": "huffpost--steven-suskin.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, character, playwright (Eric Coble), director (Molly Smith), and actress (Estelle Parsons) of 'The Velocity of Autumn'."
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "showTitle": "Water for Elephants",
+      "file": "thestage--lane-williamson.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions plot points, characters (Jacob, Marlena, August), and creative team members (Jessica Stone) associated with 'Water for Elephants,' indicating it is about the correct show."
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "showTitle": "What We Did Before Our Moth Days",
+      "file": "theatermania--unknown.json",
+      "verdict": "UNCERTAIN",
+      "confidence": "medium",
+      "reasoning": "The review mentions Wallace Shawn and Andre Gregory, but it's unclear if this is the correct show. The plot description is too generic to confirm the show."
+    },
+    {
+      "showId": "the-testament-of-mary-2013",
+      "showTitle": "The Testament of Mary",
+      "file": "bloomberg--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Fiona Shaw, who starred in 'The Testament of Mary', and refers to Colm Toibin's lamentation, which is the source material for the play. The review also mentions the play's length, which matches the show's runtime."
+    }
+  ]
+}

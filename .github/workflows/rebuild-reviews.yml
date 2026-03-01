@@ -108,6 +108,13 @@ jobs:
         run: node scripts/classify-wrong-production.js --apply --resume --limit=200
         continue-on-error: true
 
+      - name: Classify wrong-show flags (LLM)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-wrong-show.js --apply --resume --limit=100
+        continue-on-error: true
+        timeout-minutes: 5
+
       - name: Backfill unknown outlets (local, free)
         run: node scripts/backfill-unknown-critics.js --outlets-only
         continue-on-error: true

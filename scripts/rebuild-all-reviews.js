@@ -1986,25 +1986,18 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Title-mention guard: dateless SERP/aggregator reviews must mention the show title
-      // Only for multi-word titles (single-word/generic titles have too many false positives)
-      // LOG-ONLY on first run — review flagged list before enabling writes
-      if (!data.publishDate && !data.wrongShow && !data.wrongProduction
+      // Title-mention guard: monitor dateless reviews where text doesn't mention show title.
+      // Actual classification handled by classify-wrong-show.js (LLM) in rebuild workflow.
+      if (!data.publishDate && !data.wrongShow && !data.wrongProduction && !data.wsClassified
           && ['serp-discovery', 'bww-roundup', 'dtli', 'playbill-verdict'].includes(data.source)) {
         const showTitle = showTitleMap[showId];
         if (showTitle) {
           const titleWords = showTitle.toLowerCase().split(/[\s,]+/)
             .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
-          if (titleWords.length >= 2) {  // Skip single-word/generic titles
+          if (titleWords.length >= 2) {
             const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '');
             if (text.length > 500 && !titleWordsMatch(showTitle, text)) {
-              console.log(`  [TITLE-MENTION] ${showId}/${file}: text (${text.length} chars) does not mention "${showTitle}"`);
               stats.titleMentionFlagged = (stats.titleMentionFlagged || 0) + 1;
-              // LOG ONLY — enable writes after manual review of flagged list
-              // data.wrongShow = true;
-              // data.wrongShowReason = `Title-mention guard: text does not mention show title`;
-              // fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
-              // return;
             }
           }
         }
