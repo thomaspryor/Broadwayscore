@@ -270,7 +270,10 @@
     "pen-pals-2025/theatermania--dan-rubins.json",
     "punch-2025/timeout--unknown.json",
     "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
-    "she-loves-me-2016/theatermania--hayley-levitt.json"
+    "she-loves-me-2016/theatermania--hayley-levitt.json",
+    "stereophonic-2024/theatermania--david-gordon.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "sunset-boulevard-1994/timeout--adam-feldman.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -721,7 +724,14 @@
     "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
     "romeo-and-juliet-2013/theatermania--adam-feldman.json",
     "saint-joan-2018/broadwaynews--charles-isherwood.json",
-    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json"
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+    "side-show-2014/theatermania--david-gordon.json",
+    "sister-act-2011/timeout--david-cote.json",
+    "sondheim-on-sondheim-2010/timeout--adam-feldman.json",
+    "south-pacific-2008/timeout--adam-feldman.json",
+    "stick-fly-2011/timeout--david-cote.json",
+    "straight-white-men-2018/broadwaynews--charles-isherwood.json",
+    "sunset-boulevard-2017/theatermania--jesse-oxfeld.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -915,7 +925,10 @@
       "pen-pals-2025/theatermania--dan-rubins.json",
       "punch-2025/timeout--unknown.json",
       "rodgers-hammersteins-cinderella-2013/theatermania--hayley-levitt.json",
-      "she-loves-me-2016/theatermania--hayley-levitt.json"
+      "she-loves-me-2016/theatermania--hayley-levitt.json",
+      "stereophonic-2024/theatermania--david-gordon.json",
+      "stereophonic-2024/timeout--adam-feldman.json",
+      "sunset-boulevard-1994/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -1272,7 +1285,9 @@
       "data/review-texts/once-2012/timeout--adam-feldman.json",
       "data/review-texts/pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
       "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
-      "data/review-texts/saint-joan-2018/broadwaynews--charles-isherwood.json"
+      "data/review-texts/saint-joan-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/side-show-2014/theatermania--david-gordon.json",
+      "data/review-texts/straight-white-men-2018/broadwaynews--charles-isherwood.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -1331,7 +1346,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/theatermania--jesse-green.json",
+  "lastProcessed": "sunset-boulevard-2017/theatermania--jesse-oxfeld.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -1815,6 +1830,17 @@
     },
     {
       "t": "2026-03-02T11:48:56.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T11:51:28.186Z",
+      "event": "bb-session",
+      "session": "9550d4c9",
+      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
+    },
+    {
+      "t": "2026-03-02T11:51:29.670Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
