@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-01T22:08:52.964Z",
+  "runDate": "2026-03-01T22:24:14.518Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 150,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 84,
-    "failed": 66,
+    "processed": 95,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "56.0%"
+    "successRate": "59.4%"
   },
   "tierBreakdown": {
-    "playwright": 57,
-    "amp": 39,
+    "playwright": 56,
+    "amp": 43,
     "browserbase": 13,
-    "directCookies": 9,
-    "scrapingbee": 7,
+    "directCookies": 8,
+    "scrapingbee": 9,
     "brightdata": 3,
-    "archiveToday": 19,
-    "archive": 15
+    "archiveToday": 14,
+    "archive": 27
   },
   "statistics": {
-    "tier1Attempts": 138,
-    "tier1Success": 62,
-    "ampAttempts": 45,
-    "ampSuccess": 23,
-    "tier1_5Attempts": 20,
-    "tier1_5Success": 8,
-    "tier2Attempts": 31,
-    "tier2Success": 8,
-    "tier3Attempts": 24,
-    "tier3Success": 6,
-    "tier3_6Attempts": 20,
-    "tier3_6Success": 19,
-    "tier4Attempts": 42,
-    "tier4Success": 9,
-    "totalFailed": 34,
-    "scrapingBeeCreditsUsed": 130,
-    "browserbaseSessionsUsed": 20,
-    "browserbaseMinutesUsed": 5.6,
-    "urlDiscoveryAttempts": 10,
-    "urlDiscoverySuccess": 4,
+    "tier1Attempts": 37,
+    "tier1Success": 21,
+    "ampAttempts": 4,
+    "ampSuccess": 3,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 12,
+    "tier2Success": 7,
+    "tier3Attempts": 5,
+    "tier3Success": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 23,
+    "tier4Success": 7,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 92,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -109,15 +109,16 @@
     "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
     "the-lion-king-west-end-2021/timeout--andrzej-lukowski.json",
     "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json",
+    "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
+    "sweetmeats-west-end-2026/timeout-london--nina-culley.json",
     "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+    "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json",
+    "the-play-that-goes-wrong-west-end-2021/newsday--linda-winer.json",
     "the-play-that-goes-wrong-west-end-2021/nydailynews--joe-dziemianowicz.json",
-    "wicked-2003/theatermania--barbara-siegel.json",
     "wicked-west-end-2021/nydailynews--joe-neumaier.json",
-    "you-got-older-off-broadway-2026/timeout--unknown.json",
     "buena-vista-social-club-2025/theatrely--juan-a-ramirez.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/forward--pj-grisar.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/theatrely--kobi-kassal.json",
-    "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json",
     "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
     "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
     "into-the-woods-west-end-2025/theatrely--joey-sims.json",
@@ -130,10 +131,20 @@
     "operation-mincemeat-west-end-2024/theatrely--andrew-martini.json",
     "stranger-things-the-first-shadow-west-end-2023/theatrely--kobi-kassal.json",
     "titanique-west-end-2024/cititour--brian-scott-lipton.json",
-    "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
     "beautiful-little-fool-west-end-2026/liam-odellcom--liam-odell.json",
-    "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
-    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
+    "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+    "buena-vista-social-club-2025/washpost--naveen-kumar.json",
+    "bug-2026/chicago-sun-times--mike-davis-wbez.json",
+    "bug-2026/curtainup--logan-culwell.json",
+    "bug-2026/ny1--roma-torre.json",
+    "bug-2026/playbill--logan-culwell-block.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/dailybeast--tim-teeman.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/queerty--matthew-wexler.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/village-voice--michael-musto.json",
+    "chess-2025/people--unknown.json",
+    "chess-2025/playbill--logan-culwell-block.json",
+    "chess-2025/thestage--unknown.json"
   ],
   "failed": [
     "all-my-sons-west-end-2025/hollywood-reporter--frank-scheck.json",
@@ -187,21 +198,20 @@
     "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
     "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
     "sweetmeats-west-end-2026/timeout-london--unknown.json",
+    "mj-2022/thewrap--steve-pond.json",
     "the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
-    "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json",
-    "the-play-that-goes-wrong-west-end-2021/newsday--linda-winer.json",
-    "the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
     "titanique-west-end-2024/thewrap--robert-hofler.json",
-    "titanique-west-end-2024/wsj--charles-isherwood.json",
-    "11-to-midnight-off-broadway-2026/billboard--unknown.json",
-    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
-    "and-juliet-2022/ap--unknown.json",
     "arcadia-west-end-2026/ap--mark-kennedy.json",
     "arcadia-west-end-2026/backstage--erik-haagensen.json",
     "arcadia-west-end-2026/ny1--david-cote.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
     "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json",
-    "book-of-mormon-2011/dailybeast--john-anderson.json"
+    "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
+    "bug-2026/billboard--aramide-tinubu.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/broadwayworld--marianka-swain.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/daily-mail--patrick-marmion.json",
+    "chess-2025/ap--mark-kennedy.json",
+    "chess-2025/daily-mail--milly-veitch.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -242,26 +252,25 @@
       "stranger-things-the-first-shadow-west-end-2023/ew--emlyn-travis.json",
       "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
-      "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
-      "the-play-that-goes-wrong-west-end-2021/nydailynews--joe-dziemianowicz.json",
-      "wicked-2003/theatermania--barbara-siegel.json",
+      "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
       "wicked-west-end-2021/nydailynews--joe-neumaier.json",
-      "you-got-older-off-broadway-2026/timeout--unknown.json",
       "buena-vista-social-club-2025/theatrely--juan-a-ramirez.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/forward--pj-grisar.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/theatrely--kobi-kassal.json",
-      "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
-      "into-the-woods-west-end-2025/theatrely--joey-sims.json",
       "marcel-on-the-train-off-broadway-2026/forward--pj-grisar.json",
-      "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
-      "oh-mary-west-end-2025/theatrely--nolan-boggess.json",
       "operation-mincemeat-west-end-2024/forward--pj-grisar.json",
-      "operation-mincemeat-west-end-2024/theatrely--andrew-martini.json",
-      "stranger-things-the-first-shadow-west-end-2023/theatrely--kobi-kassal.json",
-      "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
       "beautiful-little-fool-west-end-2026/liam-odellcom--liam-odell.json",
-      "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
-      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json"
+      "buena-vista-social-club-2025/latimes--nicholas-ducassi.json",
+      "bug-2026/chicago-sun-times--mike-davis-wbez.json",
+      "bug-2026/curtainup--logan-culwell.json",
+      "bug-2026/ny1--roma-torre.json",
+      "bug-2026/playbill--logan-culwell-block.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/queerty--matthew-wexler.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/village-voice--michael-musto.json",
+      "chess-2025/people--unknown.json",
+      "chess-2025/playbill--logan-culwell-block.json",
+      "chess-2025/thestage--unknown.json"
     ],
     "amp": [
       "data/review-texts/arcadia-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -302,7 +311,11 @@
       "data/review-texts/operation-mincemeat-west-end-2024/thewrap--robert-hofler.json",
       "operation-mincemeat-west-end-2024/thewrap--robert-hofler.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
-      "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json"
+      "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
+      "the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
+      "data/review-texts/titanique-west-end-2024/thewrap--robert-hofler.json",
+      "titanique-west-end-2024/thewrap--robert-hofler.json"
     ],
     "browserbase": [
       "data/review-texts/chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -327,22 +340,23 @@
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
       "mamma-mia-west-end-2021/timeout--adam-feldman.json",
       "the-lion-king-west-end-2021/timeout--andrzej-lukowski.json",
-      "the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
-      "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json"
+      "sweetmeats-west-end-2026/timeout-london--nina-culley.json"
     ],
     "scrapingbee": [
       "bug-2026/cbsnews--shania-russell.json",
       "man-and-boy-west-end-2026/guardian--arifa-akbar.json",
-      "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json",
       "heathers-the-musical-off-broadway-2025/cititour--brian-scott-lipton.json",
       "mamma-mia-west-end-2021/cititour--brian-scott-lipton.json",
       "operation-mincemeat-west-end-2024/cititour--brian-scott-lipton.json",
-      "titanique-west-end-2024/cititour--brian-scott-lipton.json"
+      "titanique-west-end-2024/cititour--brian-scott-lipton.json",
+      "beautiful-little-fool-west-end-2026/everything-theatre--mike-carter.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/dailybeast--tim-teeman.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/daily-mail--patrick-marmion.json"
     ],
     "brightdata": [
-      "and-juliet-2022/ap--unknown.json",
+      "arcadia-west-end-2026/backstage--erik-haagensen.json",
       "beautiful-little-fool-west-end-2026/broadwayworld--aliya-al-hassan.json",
-      "arcadia-west-end-2026/backstage--erik-haagensen.json"
+      "chess-2025/daily-mail--milly-veitch.json"
     ],
     "archiveToday": [
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -357,13 +371,8 @@
       "data/review-texts/man-and-boy-west-end-2026/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
-      "data/review-texts/the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json",
-      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
       "data/review-texts/arcadia-west-end-2026/ap--mark-kennedy.json",
-      "data/review-texts/arcadia-west-end-2026/ny1--david-cote.json",
-      "data/review-texts/beautiful-little-fool-west-end-2026/one-minute-critic--paul-lewis.json",
-      "data/review-texts/book-of-mormon-2011/dailybeast--john-anderson.json"
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/broadwayworld--marianka-swain.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/vulture--sara-holdren.json",
@@ -380,73 +389,21 @@
       "hadestown-west-end-2024/theater-reviews-from-my-seat--joe-lombardi.json",
       "man-and-boy-west-end-2026/wsj--terry-teachout.json",
       "operation-mincemeat-west-end-2024/wsj--charles-isherwood.json",
-      "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json"
+      "the-play-that-goes-wrong-off-broadway-2019/newsday--linda-winer.json",
+      "the-play-that-goes-wrong-off-broadway-2019/nydailynews--joe-dziemianowicz.json",
+      "the-play-that-goes-wrong-off-broadway-2019/timeout--adam-feldman.json",
+      "the-play-that-goes-wrong-west-end-2021/newsday--linda-winer.json",
+      "the-play-that-goes-wrong-west-end-2021/nydailynews--joe-dziemianowicz.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
+      "into-the-woods-west-end-2025/theatrely--joey-sims.json",
+      "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
+      "oh-mary-west-end-2025/theatrely--nolan-boggess.json",
+      "operation-mincemeat-west-end-2024/theatrely--andrew-martini.json",
+      "stranger-things-the-first-shadow-west-end-2023/theatrely--kobi-kassal.json",
+      "arcadia-west-end-2026/ny1--david-cote.json",
+      "buena-vista-social-club-2025/washpost--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "The Reviews Hub": {
-      "count": 1,
-      "domain": "thereviewshub.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 4,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Time Out London": {
-      "count": 1,
-      "domain": "timeout.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-outsiders-2024/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1235874615/",
-      "newUrl": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-merrily-we-roll-along-the-outsiders-stereophonic-tonys-1235932050/"
-    },
-    {
-      "reviewId": "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/",
-      "newUrl": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-merrily-we-roll-along-the-outsiders-stereophonic-tonys-1235932050/"
-    },
-    {
-      "reviewId": "arcadia-west-end-2026/newsday--linda-winer.json",
-      "oldUrl": "http://www.newsday.com/entertainment/theater/tom-stoppard-s-thrilling-arcadia-1.2763597",
-      "newUrl": "https://www.newsday.com/news/new-york/theater-review-arcadia-3-5-stars-t20271"
-    },
-    {
-      "reviewId": "book-of-mormon-2011/ew--thom-geier.json",
-      "oldUrl": "https://ew.com/article/2011/03/25/book-mormon-review",
-      "newUrl": "https://ew.com/article/2011/11/29/book-of-mormon-broadway-south-park/?srsltid=AfmBOoo276zcZ3ljM2D9knTjqrzP4f-CFNuPX3zbXJbePNuc39VCMsS6"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
