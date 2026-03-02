@@ -1,44 +1,47 @@
 {
   "processed": [
-    "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
-    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
-    "the-book-of-mormon-west-end-2024/financialtimes--ian-shuttleworth.json",
-    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
-    "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
-    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
-    "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json"
+    "wicked-west-end-2021/timeout-london--honour-bayes.json",
+    "wicked-west-end-2021/financialtimes--unknown.json",
+    "wicked-west-end-2021/independent--paul-taylor.json",
+    "wicked-west-end-2021/standard--jessie-thompson.json",
+    "wicked-west-end-2021/telegraph--charles-spencer.json",
+    "wicked-west-end-2021/telegraph--marianka-swain.json",
+    "wicked-west-end-2021/thestage--paul-vale.json",
+    "wicked-west-end-2021/whatsonstage--editorial-staff.json"
   ],
   "failed": [
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
+    "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+    "wicked-west-end-2021/variety--david-benedict.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
-      "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
-      "the-book-of-mormon-west-end-2024/financialtimes--ian-shuttleworth.json",
-      "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
-      "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json"
+      "wicked-west-end-2021/financialtimes--unknown.json",
+      "wicked-west-end-2021/standard--jessie-thompson.json",
+      "wicked-west-end-2021/telegraph--charles-spencer.json",
+      "wicked-west-end-2021/whatsonstage--editorial-staff.json"
     ],
     "amp": [
-      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
+      "data/review-texts/wicked-west-end-2021/variety--david-benedict.json",
+      "wicked-west-end-2021/variety--david-benedict.json"
     ],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "wicked-west-end-2021/timeout-london--honour-bayes.json"
+    ],
     "scrapingbee": [
-      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-      "the-book-of-mormon-west-end-2024/independent--peter-marks.json"
+      "wicked-west-end-2021/independent--paul-taylor.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json"
+    ],
     "archive": [
-      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
+      "wicked-west-end-2021/telegraph--marianka-swain.json",
+      "wicked-west-end-2021/thestage--paul-vale.json"
     ]
   },
-  "startTime": "2026-03-02T21:25:39.069Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json",
+  "startTime": "2026-03-02T21:27:09.420Z",
+  "lastProcessed": "wicked-west-end-2021/whatsonstage--editorial-staff.json",
   "log": []
 }
