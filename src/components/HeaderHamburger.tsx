@@ -1,28 +1,24 @@
 'use client';
 
 import { featureFlags } from '@/config/feature-flags';
+import { useAuth } from '@/contexts/AuthContext';
 import HamburgerMenu from '@/components/HamburgerMenu';
 
 /**
  * Header hamburger menu button — client component for server layout.
  * Only renders when userAccounts feature flag is enabled.
- * Auth state wired in Sprint 2 via useAuth().
  */
 export default function HeaderHamburger() {
-  if (!featureFlags.userAccounts) return null;
+  const { isAuthenticated, profile, showSignIn, signOut } = useAuth();
 
-  // Sprint 2: const { isAuthenticated, profile, showSignIn, signOut } = useAuth();
+  if (!featureFlags.userAccounts) return null;
 
   return (
     <HamburgerMenu
-      isAuthenticated={false}
-      profile={null}
-      onSignIn={() => {
-        // Sprint 2: showSignIn('generic')
-      }}
-      onSignOut={() => {
-        // Sprint 2: signOut()
-      }}
+      isAuthenticated={isAuthenticated}
+      profile={profile}
+      onSignIn={() => showSignIn('generic')}
+      onSignOut={signOut}
     />
   );
 }

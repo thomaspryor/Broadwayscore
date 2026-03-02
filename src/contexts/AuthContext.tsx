@@ -1,6 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { getSupabaseClient } from '@/lib/supabase';
+import { saveReturnUrl, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 
@@ -20,29 +22,100 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 /**
  * AuthProvider — wraps the app to provide auth state.
  *
- * Sprint 1: Stub implementation (no Supabase client).
- * Sprint 2: Wire to real Supabase auth.
- *
  * CRITICAL: Renders children normally when Supabase client is null
  * (feature flag OFF or during SSG build). This is NOT optional —
  * breaking this will crash the static export.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Sprint 2: Replace these stubs with real Supabase auth
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContext, setModalContext] = useState<'rating' | 'watchlist' | 'generic'>('generic');
   const [signInLoading, setSignInLoading] = useState(false);
 
-  const signIn = useCallback((provider: 'google') => {
-    // Sprint 2: supabase.auth.signInWithOAuth({ provider })
-    console.log('[AuthProvider] signIn called with provider:', provider);
+  // Initialize auth state on mount
+  useEffect(() => {
+    const client = getSupabaseClient();
+    if (!client) {
+      setLoading(false);
+      return;
+    }
+
+    // Get existing session
+    client.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser({ id: session.user.id, email: session.user.email || '' });
+        loadProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth state changes
+    const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        setUser({ id: session.user.id, email: session.user.email || '' });
+        await loadProfile(session.user.id);
+        setModalOpen(false);
+        setSignInLoading(false);
+
+        // Execute pending action (deferred auth)
+        const pending = getPendingAction();
+        if (pending) {
+          // Clear AFTER confirming auth success, not before
+          clearPendingAction();
+          // Pending action execution handled by consuming components
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setProfile(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const signOut = useCallback(() => {
-    // Sprint 2: supabase.auth.signOut()
+  const loadProfile = async (userId: string) => {
+    const client = getSupabaseClient();
+    if (!client) return;
+
+    try {
+      const { data } = await client
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (data) {
+        setProfile(data as UserProfile);
+      }
+    } catch {
+      // Profile will be auto-created by DB trigger
+    }
+  };
+
+  const signIn = useCallback((provider: 'google') => {
+    const client = getSupabaseClient();
+    if (!client) return;
+
+    // Save return URL before redirect
+    saveReturnUrl();
+
+    client.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  }, []);
+
+  const signOut = useCallback(async () => {
+    const client = getSupabaseClient();
+    if (!client) return;
+
+    await client.auth.signOut();
     setUser(null);
     setProfile(null);
   }, []);
@@ -55,8 +128,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleModalSignIn = useCallback((provider: 'google') => {
     setSignInLoading(true);
     signIn(provider);
-    // Sprint 2: modal closes on auth state change
-    setTimeout(() => setSignInLoading(false), 1000);
   }, [signIn]);
 
   return (
@@ -83,10 +154,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAuth() {
+const DEFAULT_AUTH: AuthContextValue = {
+  user: null,
+  profile: null,
+  loading: false,
+  isAuthenticated: false,
+  signIn: () => {},
+  signOut: () => {},
+  showSignIn: () => {},
+};
+
+export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  // During SSG prerender, context may be null — return safe defaults
+  return context || DEFAULT_AUTH;
 }

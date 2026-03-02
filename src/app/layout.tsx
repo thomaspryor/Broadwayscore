@@ -123,24 +123,24 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
-          <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 relative">
-              <MarketNav stats={marketStats} />
-              <div className="flex items-center gap-3">
-                <Link href="/off-broadway" className="hidden lg:block text-sm text-gray-400 hover:text-white transition-colors font-medium">
-                  Off-Broadway
-                </Link>
-                <div className="hidden sm:block">
-                  <HeaderSubscribeButton />
-                </div>
-                <HeaderSearch />
-                <HeaderHamburger />
-              </div>
-            </div>
-          </nav>
-        </header>
         <UserProviders>
+          <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
+            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16 relative">
+                <MarketNav stats={marketStats} />
+                <div className="flex items-center gap-3">
+                  <Link href="/off-broadway" className="hidden lg:block text-sm text-gray-400 hover:text-white transition-colors font-medium">
+                    Off-Broadway
+                  </Link>
+                  <div className="hidden sm:block">
+                    <HeaderSubscribeButton />
+                  </div>
+                  <HeaderSearch />
+                  <HeaderHamburger />
+                </div>
+              </div>
+            </nav>
+          </header>
           <ProGateProvider>
             <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
           </ProGateProvider>
