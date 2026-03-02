@@ -4319,16 +4319,28 @@ function extractPublishDateFromHtml(html) {
 }
 
 // Normalize extracted date string to YYYY-MM-DD format
+// Extracts date components directly from string to avoid timezone shift issues
+// (e.g., "2024-03-15T23:30:00-05:00" → "2024-03-15", not "2024-03-16")
 function normalizeExtractedDate(dateStr) {
   if (!dateStr || typeof dateStr !== 'string') return null;
   try {
-    // Handle ISO timestamps, date-only strings, etc.
+    // Extract YYYY-MM-DD directly from the string before any timezone conversion
+    const dateMatch = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (dateMatch) {
+      const year = parseInt(dateMatch[1]);
+      const month = parseInt(dateMatch[2]);
+      const day = parseInt(dateMatch[3]);
+      if (year < 1970 || year > 2030) return null;
+      if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+    // Fallback: try Date parsing for non-ISO formats (e.g., "March 15, 2024")
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
-    const year = d.getUTCFullYear();
-    if (year < 1990 || year > 2030) return null; // sanity check
-    const month = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(d.getUTCDate()).padStart(2, '0');
+    const year = d.getFullYear();
+    if (year < 1970 || year > 2030) return null;
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   } catch (e) {
     return null;

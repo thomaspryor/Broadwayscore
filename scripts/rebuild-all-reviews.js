@@ -2052,13 +2052,13 @@ showDirs.forEach(showId => {
       // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
       // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
       const CONTAMINATION_AUDIT_CUTOFF = process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z';
-      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy && !data.allowTourSignal) {
+      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
         const introText = data.fullText.slice(0, 600);
 
         // Tour detection (skip tour-stop shows where touring is expected)
         // Auto-exclude: flagged reviews are excluded from reviews.json, not just audited.
         // Override: add "allowTourSignal": true to the review-text JSON to force inclusion.
-        if (showStatusMap[showId] !== 'tour-stop') {
+        if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop') {
           const tourCheck = isTourReviewExcerpt(introText);
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
@@ -2069,13 +2069,16 @@ showDirs.forEach(showId => {
         }
 
         // Film/TV detection (2+ film/streaming keywords, 0 theater keywords)
-        // Auto-exclude: same as tour detection above.
-        const filmCheck = isFilmTvReview(introText);
-        if (filmCheck.isFilmTv) {
-          flagForHumanReview(data, 'possible-film-tv-fulltext',
-            `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
-          stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
-          return;
+        // Auto-exclude: separate from tour detection — allowTourSignal does NOT bypass this.
+        // Override: add "allowFilmSignal": true to the review-text JSON to force inclusion.
+        if (!data.allowFilmSignal) {
+          const filmCheck = isFilmTvReview(introText);
+          if (filmCheck.isFilmTv) {
+            flagForHumanReview(data, 'possible-film-tv-fulltext',
+              `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
+            stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
+            return;
+          }
         }
       }
 

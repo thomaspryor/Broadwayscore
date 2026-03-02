@@ -118,7 +118,8 @@ for (const show of shows) {
       const extractedYear = parseInt(extractedDate.split('-')[0]);
 
       // Validate: extracted year should be within ±2 of show year for WE/OB (wider tolerance)
-      const tolerance = (market === 'west-end' || market === 'off-broadway') ? 2 : 1;
+      const showCat = showCategoryMap[show] || 'broadway';
+      const tolerance = (showCat === 'west-end' || showCat === 'off-broadway') ? 2 : 1;
       if (showYear && Math.abs(extractedYear - showYear) > tolerance) {
         yearMismatch++;
         continue;
