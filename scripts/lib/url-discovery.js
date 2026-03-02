@@ -265,10 +265,9 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
 
   const axios = require('axios');
   const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
-  let googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en`;
-  if (dateRange) {
-    googleUrl += `&tbs=${encodeURIComponent(buildDateTbs(dateRange))}`;
-  }
+  const fmtD = d => d.toISOString().split('T')[0];
+  const dateQuery = dateRange ? ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}` : '';
+  let googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query + dateQuery)}&num=10&hl=en`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
