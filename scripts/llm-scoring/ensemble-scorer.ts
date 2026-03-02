@@ -358,7 +358,14 @@ export class EnsembleReviewScorer {
         inputTokens: 0,
         outputTokens: 0,
         previousScore: reviewFile.assignedScore,
-        previousVersion: (reviewFile as any).llmMetadata?.promptVersion
+        previousVersion: (reviewFile as any).llmMetadata?.promptVersion,
+        textSource: {
+          type: scoringInput.textQuality === 'excerpt-only' ? 'excerpt' as const : 'fullText' as const,
+          status: scoringInput.textQuality,
+          field: scoringInput.textQuality === 'excerpt-only' ? 'excerpt' : 'fullText',
+          confidence: scoringInput.confidence,
+          reasoning: scoringInput.reasoning
+        }
       },
       ensembleData: {
         claudeScore: ensembleResult.modelResults.claude?.score ?? null,
