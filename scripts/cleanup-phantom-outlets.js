@@ -24,7 +24,6 @@ const {
   mergeReviews,
   getOutletTier,
   loadOutletRegistry,
-  LEGACY_OUTLET_ALIASES,
 } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -32,9 +31,7 @@ const apply = process.argv.includes('--apply');
 
 function isCanonicalOutlet(outletId) {
   const registry = loadOutletRegistry();
-  if (registry && registry[outletId]) return true;
-  if (LEGACY_OUTLET_ALIASES[outletId]) return true;
-  return false;
+  return !!(registry && registry.outlets && registry.outlets[outletId]);
 }
 
 function run() {
