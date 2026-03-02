@@ -41,7 +41,7 @@ Broadway Scorecard™ aggregates reviews from professional theater critics (New 
 We use a tier-weighted system:
 - **Tier 1** (weight 1.0): Major outlets like New York Times, Vulture, Variety
 - **Tier 2** (weight 0.75): Regional/specialty outlets like TheaterMania, NY Post
-- **Tier 3** (weight 0.45): Blogs and smaller publications
+- **Tier 3** (weight 0.35): Blogs and smaller publications
 
 Each review is normalized to a 0-100 scale. The final score is a weighted average.
 
