@@ -100,7 +100,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Pipeline:** Find recently opened shows → check already broadcast → sync subscribers (Formspree) → discover reviews (ScrapingBee SERP, per Tier 1+2 outlet) → gather reviews (aggregators) → rebuild reviews.json → **LLM ensemble scoring** → rebuild after scoring → generate consensus → send broadcast → commit
 - **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
 - **Readiness gate:** 8+ scored reviews required before sending (lowered from 12 on Feb 20, 2026)
-- **Scoring:** Tier-weighted composite (matches website: T1=1.0, T2=0.75, T3=0.45) via outlet-registry.json lookup
+- **Scoring:** Tier-weighted composite (matches website: T1=1.0, T2=0.75, T3=0.35) via outlet-registry.json lookup
 - **Budget gate:** Cap at 95 sends per run (Resend 100/day limit, leaves headroom for per-show follows)
 - **Multi-show coalescing:** If 2+ shows open same night, sends single email with multiple score cards
 - **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored but `git add --force` in commit step). If interrupted, next cron run picks up where it left off.

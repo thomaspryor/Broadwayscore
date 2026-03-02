@@ -44,7 +44,7 @@ const DEFAULT_BUDGET_CAP = 95; // Leave headroom for per-show follow emails (Res
 const BUDGET_CAP = BUDGET_ARG ? parseInt(BUDGET_ARG.split('=')[1], 10) : DEFAULT_BUDGET_CAP;
 
 // Tier weights — must match src/config/scoring.ts
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
 
 function loadJSON(filePath) {
   try {
@@ -204,7 +204,7 @@ async function main() {
       let weightedSum = 0, totalWeight = 0;
       for (const r of showReviews) {
         const tier = getOutletTier(r.outletId);
-        const weight = TIER_WEIGHTS[tier] || 0.45;
+        const weight = TIER_WEIGHTS[tier] || 0.35;
         weightedSum += r.assignedScore * weight;
         totalWeight += weight;
       }

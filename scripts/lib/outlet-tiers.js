@@ -13,7 +13,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
 const DEFAULT_TIER = 3;
 
 // Build lookup map lazily on first use

@@ -112,7 +112,7 @@ When wrapping up a task, recommend the best next task or follow-up. Don't just s
 **Scale:** 727+ shows, 14,000+ scored reviews, 420+ outlets, 870+ critics. Critics-only scoring (V1).
 
 ### Scoring
-Composite = tier-weighted average. **T1** (NYT, Vulture, Variety): 1.0 | **T2** (TheaterMania, NY Post): 0.75 | **T3** (blogs): 0.45
+Composite = tier-weighted average. **T1** (NYT, Vulture, Variety): 1.0 | **T2** (TheaterMania, NY Post): 0.75 | **T3** (blogs): 0.35
 Hierarchy: P0→P0.5→P0b→P1(LLM)→P2(aggregator)→P3(LLM low). Config: `src/config/scoring.ts`.
 **Score display rule:** `compositeScore` = critic-only (use on browse, best-of, homepage). `blendedScore` = 50/50 critic + audience (use on Tony predictions and anywhere the page says "blended"). Always use `blendedScore ?? compositeScore` as fallback.
 

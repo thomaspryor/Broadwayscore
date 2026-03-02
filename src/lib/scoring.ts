@@ -100,7 +100,7 @@ export function normalizeRating(rating: string): { score: number; isInferred: bo
 const TIER_WEIGHTS: Record<OutletTier, number> = {
   1: 1.0,
   2: 0.75,
-  3: 0.45,
+  3: 0.35,
 };
 
 /**

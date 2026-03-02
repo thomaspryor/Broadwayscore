@@ -27,7 +27,7 @@ const SCHEMA_VERSION = 1;
 // SCORING CONSTANTS (from src/config/scoring.ts)
 // Keep in sync! Validation step catches drift.
 // ===========================================
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.45 };
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
 const DEFAULT_TIER = 3;
 
 const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };

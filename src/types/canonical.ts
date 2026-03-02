@@ -156,7 +156,7 @@ export interface Outlet {
   id: string;                     // e.g., "NYT", "VULT"
   name: string;                   // e.g., "The New York Times"
   tier: OutletTier;
-  weight: number;                 // Derived from tier: 1.0, 0.75, 0.45
+  weight: number;                 // Derived from tier: 1.0, 0.75, 0.35
   url?: string;                   // Publication homepage
   aliases?: string[];             // Alternative names used by aggregators
   scoreFormat: ScoreFormat;
