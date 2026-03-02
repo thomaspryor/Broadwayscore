@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-02T11:46:43.095Z",
-  "processed": 267,
-  "failed": 433,
-  "successRate": "38.1%",
+  "updatedAt": "2026-03-02T11:49:37.158Z",
+  "processed": 268,
+  "failed": 442,
+  "successRate": "37.7%",
   "tierBreakdown": {
-    "playwright": 186,
+    "playwright": 187,
     "amp": 91,
     "browserbase": 10,
     "directCookies": 24,
     "scrapingbee": 34,
     "brightdata": 2,
-    "archiveToday": 179,
+    "archiveToday": 183,
     "archive": 53
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-02T08:34:23.348Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-02T08:35:20.838Z",
-      "event": "bb-session",
-      "session": "693127ff",
-      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
-    },
     {
       "t": "2026-03-02T08:35:21.848Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-02T11:24:35.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T11:48:54.660Z",
+      "event": "bb-session",
+      "session": "26612d44",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-03-02T11:48:56.044Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
