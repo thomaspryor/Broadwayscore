@@ -1,20 +1,53 @@
 {
-  "updatedAt": "2026-03-02T20:12:18.276Z",
-  "processed": 485,
-  "failed": 1340,
-  "successRate": "26.6%",
+  "updatedAt": "2026-03-02T19:55:05.535Z",
+  "processed": 466,
+  "failed": 1639,
+  "successRate": "22.1%",
   "tierBreakdown": {
-    "playwright": 303,
-    "amp": 150,
-    "browserbase": 78,
-    "directCookies": 49,
-    "scrapingbee": 53,
+    "playwright": 289,
+    "amp": 148,
+    "browserbase": 72,
+    "directCookies": 46,
+    "scrapingbee": 61,
     "brightdata": 2,
-    "archiveToday": 499,
-    "archive": 130
+    "archiveToday": 532,
+    "archive": 112
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 40,
   "recentActivity": [
+    {
+      "t": "2026-03-02T16:17:06.837Z",
+      "event": "bb-session",
+      "session": "bbc85cc7",
+      "url": "https://www.hollywoodreporter.com/news/general-news/king-and-i-tour-957142/"
+    },
+    {
+      "t": "2026-03-02T16:17:08.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-02T16:21:52.443Z",
+      "event": "bb-session",
+      "session": "f821b302",
+      "url": "https://www.hollywoodreporter.com/news/general-news/mystery-edwin-drood-theater-"
+    },
+    {
+      "t": "2026-03-02T16:21:54.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-02T16:23:23.397Z",
+      "event": "bb-session",
+      "session": "c75befcf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/samuel-l-jackson-john-david-was"
+    },
+    {
+      "t": "2026-03-02T16:23:25.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
     {
       "t": "2026-03-02T16:24:57.647Z",
       "event": "bb-session",
@@ -91,39 +124,6 @@
       "t": "2026-03-02T16:43:11.103Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
-    },
-    {
-      "t": "2026-03-02T19:50:01.782Z",
-      "event": "bb-session",
-      "session": "66b3aec0",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-internet-fame-broad"
-    },
-    {
-      "t": "2026-03-02T19:50:02.789Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T20:09:08.489Z",
-      "event": "bb-session",
-      "session": "51d20e6c",
-      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/"
-    },
-    {
-      "t": "2026-03-02T20:09:09.704Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-03-02T20:11:01.755Z",
-      "event": "bb-session",
-      "session": "267f6e94",
-      "url": "https://www.nytimes.com/2014/11/08/theater/clare-barrons-you-got-older-at-here-a"
-    },
-    {
-      "t": "2026-03-02T20:11:02.899Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
