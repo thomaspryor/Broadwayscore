@@ -569,14 +569,13 @@ async function fetchAllTodayTixShows() {
   };
 
   const lookup = {};
+  const byId = {}; // TodayTix ID → image data (avoids title collisions between NYC/London)
   for (const show of allShows) {
     const name = show.displayName || show.name;
     if (!name) continue;
 
     const images = show.images?.productMedia || {};
-    const key = normalizeTitle(name);
-
-    lookup[key] = {
+    const entry = {
       id: show.id,
       displayName: name,
       square: extractUrl(images.posterImageSquare),
@@ -585,14 +584,23 @@ async function fetchAllTodayTixShows() {
       imageForAds: extractUrl(images.imageForAds),
       headerImage: extractUrl(images.headerImage),
     };
+    const key = normalizeTitle(name);
+    lookup[key] = entry;
+    byId[show.id] = entry;
   }
 
+  lookup._byId = byId;
   return lookup;
 }
 
 // Match our show title against the TodayTix API lookup map
-function matchTodayTixShow(showTitle, apiLookup) {
+function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
   if (!apiLookup || Object.keys(apiLookup).length === 0) return null;
+
+  // 0. Direct ID match (most reliable — handles cross-market title collisions like "Hamilton")
+  if (todaytixId && apiLookup._byId && apiLookup._byId[todaytixId]) {
+    return apiLookup._byId[todaytixId];
+  }
 
   const normalized = normalizeTitle(showTitle);
 
@@ -1695,7 +1703,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   }
 
   // Try matching against TodayTix API data (instant, no HTTP call)
-  const apiData = matchTodayTixShow(show.title, apiLookup);
+  const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
 
   // Cache API-discovered TodayTix ID
   if (apiData && apiData.id) {
@@ -1734,7 +1742,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   const apiShows = [];
   const scrapeShows = [];
   for (const show of shows) {
-    const apiData = matchTodayTixShow(show.title, apiLookup);
+    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
     if (apiData) {
       apiShows.push(show);
     } else {
