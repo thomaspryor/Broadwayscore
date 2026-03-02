@@ -90,7 +90,7 @@ function sleep(ms) {
 }
 
 // SERP via ScrapingBee Google Search API (same endpoint as url-discovery.js)
-async function serpSearch(query, numResults = 10, tbs = '') {
+async function serpSearch(query, numResults = 10) {
   if (!SCRAPINGBEE_KEY) {
     console.error('  ✗ SCRAPINGBEE_API_KEY required');
     return [];
@@ -99,7 +99,6 @@ async function serpSearch(query, numResults = 10, tbs = '') {
   const axios = require('axios');
   try {
     const params = { api_key: SCRAPINGBEE_KEY, search: query };
-    if (tbs) params.tbs = tbs;
     const resp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
       params,
       timeout: 30000,

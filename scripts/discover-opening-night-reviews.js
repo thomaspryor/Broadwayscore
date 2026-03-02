@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { buildDateTbs, OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -98,11 +98,9 @@ function slugifyHostname(str) {
 
 /**
  * Search Google via ScrapingBee SERP API.
- * @param {string} tbs - Optional Google tbs param for date filtering
  */
-async function searchGoogle(query, apiKey, nbResults = 5, tbs = '') {
+async function searchGoogle(query, apiKey, nbResults = 5) {
   let url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}&nb_results=${nbResults}`;
-  if (tbs) url += `&tbs=${encodeURIComponent(tbs)}`;
 
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
@@ -229,17 +227,18 @@ async function main() {
   // Calculate tight opening-night date range for SERP filtering
   const DAY = 86400000;
   const opening = show.openingDate ? new Date(show.openingDate) : null;
-  let dateTbs = '';
+  let dateFilter = '';
   if (opening) {
     const dateMin = new Date(opening.getTime() - 7 * DAY);
     const dateMax = new Date(opening.getTime() + 14 * DAY);
-    dateTbs = buildDateTbs({ dateMin, dateMax });
+    const fmtD = d => d.toISOString().split('T')[0];
+    dateFilter = ` after:${fmtD(dateMin)} before:${fmtD(dateMax)}`;
   }
 
   console.log(`Show: ${showTitle} (${showId})`);
   console.log(`Market: ${marketLabel}`);
   console.log(`Year: ${year}`);
-  console.log(`Date filter: ${dateTbs ? `opening ±7/+14 days` : 'none (no opening date)'}`);
+  console.log(`Date filter: ${dateFilter ? `opening ±7/+14 days` : 'none (no opening date)'}`);
   console.log(`Tiers: ${TIERS.join(', ')}\n`);
 
   // Get existing URLs to dedup
@@ -273,10 +272,10 @@ async function main() {
     if (!domain || searchedDomains.has(domain)) continue;
     searchedDomains.add(domain);
 
-    const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}`;
+    const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
     try {
-      const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3, dateTbs);
+      const results = await searchGoogle(query, SCRAPINGBEE_KEY, 3);
       searched++;
 
       for (const result of results) {
@@ -359,11 +358,10 @@ async function main() {
   // === Strategy 2: Google News SERP ===
   console.log(`\nStrategy 2: Google News search...`);
 
-  const newsQuery = `"${showTitle}" ${reviewKeyword}`;
+  const newsQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
   try {
-    // Use date range filtering if available, otherwise fall back to recent news
+    // Use date range filtering via after:/before: operators in query
     let newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
-    if (dateTbs) newsUrl += `&tbs=${encodeURIComponent(dateTbs)}`;
 
     let results = [];
     for (let attempt = 0; attempt < 3; attempt++) {
