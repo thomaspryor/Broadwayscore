@@ -60,7 +60,7 @@ export interface RawShow {
   closingDate: string | null;
   status: string;
   type: string;
-  category?: string;  // 'broadway' (default) or 'off-broadway'
+  category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
   runtime: string;
   intermissions: number;
   images?: ShowImages;
@@ -207,7 +207,7 @@ export interface ComputedShow {
   closingDate: string | null;
   status: string;
   type: string;
-  category?: string;  // 'broadway' (default) or 'off-broadway'
+  category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
   runtime: string;
   intermissions?: number;
   images?: ShowImages;
