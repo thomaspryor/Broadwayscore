@@ -1,20 +1,53 @@
 {
-  "updatedAt": "2026-03-02T20:58:17.424Z",
-  "processed": 516,
-  "failed": 1709,
-  "successRate": "23.2%",
+  "updatedAt": "2026-03-02T21:05:36.721Z",
+  "processed": 592,
+  "failed": 1293,
+  "successRate": "31.4%",
   "tierBreakdown": {
-    "playwright": 332,
-    "amp": 162,
-    "browserbase": 78,
-    "directCookies": 49,
-    "scrapingbee": 53,
+    "playwright": 387,
+    "amp": 145,
+    "browserbase": 72,
+    "directCookies": 53,
+    "scrapingbee": 68,
     "brightdata": 2,
-    "archiveToday": 506,
-    "archive": 130
+    "archiveToday": 527,
+    "archive": 141
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-03-02T16:17:06.837Z",
+      "event": "bb-session",
+      "session": "bbc85cc7",
+      "url": "https://www.hollywoodreporter.com/news/general-news/king-and-i-tour-957142/"
+    },
+    {
+      "t": "2026-03-02T16:17:08.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-02T16:21:52.443Z",
+      "event": "bb-session",
+      "session": "f821b302",
+      "url": "https://www.hollywoodreporter.com/news/general-news/mystery-edwin-drood-theater-"
+    },
+    {
+      "t": "2026-03-02T16:21:54.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-02T16:23:23.397Z",
+      "event": "bb-session",
+      "session": "c75befcf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/samuel-l-jackson-john-david-was"
+    },
+    {
+      "t": "2026-03-02T16:23:25.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
     {
       "t": "2026-03-02T16:24:57.647Z",
       "event": "bb-session",
@@ -91,39 +124,6 @@
       "t": "2026-03-02T16:43:11.103Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
-    },
-    {
-      "t": "2026-03-02T20:34:35.950Z",
-      "event": "bb-session",
-      "session": "977c857b",
-      "url": "https://deadline.com/2019/04/adam-driver-broadway-burn-this-interview-star-wars-"
-    },
-    {
-      "t": "2026-03-02T20:34:37.364Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-02T20:38:32.182Z",
-      "event": "bb-session",
-      "session": "6a64f27a",
-      "url": "https://deadline.com/2022/03/aaron-sorkin-bartlett-sher-broadway-camelot-revival"
-    },
-    {
-      "t": "2026-03-02T20:38:33.500Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-03-02T20:55:33.890Z",
-      "event": "bb-session",
-      "session": "0dfa1d30",
-      "url": "https://deadline.com/2023/06/tyne-daly-liev-schreiber-broadway-doubt-revival-123"
-    },
-    {
-      "t": "2026-03-02T20:55:35.460Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
     }
   ]
 }
