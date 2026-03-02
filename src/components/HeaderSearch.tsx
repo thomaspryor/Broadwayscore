@@ -98,11 +98,10 @@ export default function HeaderSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Handle keyboard navigation
+  // Handle keyboard navigation — guard Enter against stale deferred results
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (!isOpen || filteredShows.length === 0) {
-      if (e.key === 'Enter' && query.length > 0) {
-        // Navigate to first result on Enter
+      if (e.key === 'Enter' && query.length > 0 && query === deferredQuery) {
         if (filteredShows.length > 0) {
           router.push(`/show/${filteredShows[0].slug}`);
           setIsOpen(false);
@@ -125,6 +124,7 @@ export default function HeaderSearch() {
         break;
       case 'Enter':
         e.preventDefault();
+        if (query !== deferredQuery) break; // wait for results to catch up
         if (selectedIndex >= 0 && selectedIndex < filteredShows.length) {
           router.push(`/show/${filteredShows[selectedIndex].slug}`);
           setIsOpen(false);
@@ -141,7 +141,7 @@ export default function HeaderSearch() {
         setSelectedIndex(-1);
         break;
     }
-  }, [isOpen, filteredShows, selectedIndex, router, query]);
+  }, [isOpen, filteredShows, selectedIndex, router, query, deferredQuery]);
 
   // selectedIndex is reset inline in onChange handlers to avoid a second render per keystroke
 
@@ -176,7 +176,7 @@ export default function HeaderSearch() {
                        transition-all duration-200"
             aria-label="Search Broadway shows"
             role="combobox"
-            aria-expanded={isOpen}
+            aria-expanded={isOpen && filteredShows.length > 0}
             aria-haspopup="listbox"
             aria-controls="search-results"
             aria-autocomplete="list"
