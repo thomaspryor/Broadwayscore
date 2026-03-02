@@ -7,7 +7,10 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
-    "bigfoot-off-broadway-2026/playbill--unknown.json"
+    "bigfoot-off-broadway-2026/playbill--unknown.json",
+    "into-the-woods-2022/nyt-theater--jonathan-mandell.json",
+    "la-cage-aux-folles-2004/new-york--scott-brown.json",
+    "la-cage-aux-folles-2010/nytheatre--julie-congress.json"
   ],
   "failed": [
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
@@ -39,17 +42,31 @@
     "everyday-rapture-2010/nytimes--ben-brantley.json",
     "falsettos-2016/nytg--david-roberts.json",
     "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+    "gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+    "golden-boy-2012/nytimes--ben-brantley.json",
+    "heisenberg-2016/act-three-the-reviews--doug-marino.json",
+    "hello-dolly-2017/vulture--jesse-green.json",
+    "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
+    "it-shoulda-been-you-2015/variety--steven-suskin.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "bigfoot-off-broadway-2026/playbill--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/it-shoulda-been-you-2015/variety--steven-suskin.json",
+      "it-shoulda-been-you-2015/variety--steven-suskin.json",
+      "data/review-texts/la-cage-aux-folles-2004/new-york--scott-brown.json",
+      "la-cage-aux-folles-2004/new-york--scott-brown.json"
+    ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "la-cage-aux-folles-2010/nytheatre--julie-congress.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
@@ -65,7 +82,11 @@
       "data/review-texts/everyday-rapture-2010/nytimes--ben-brantley.json",
       "data/review-texts/falsettos-2016/nytg--david-roberts.json",
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
-      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json"
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/vulture--jesse-green.json",
+      "data/review-texts/golden-boy-2012/nytimes--ben-brantley.json",
+      "data/review-texts/heisenberg-2016/act-three-the-reviews--doug-marino.json",
+      "data/review-texts/hello-dolly-2017/vulture--jesse-green.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
@@ -74,10 +95,11 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+      "into-the-woods-2022/nyt-theater--jonathan-mandell.json"
     ]
   },
   "startTime": "2026-03-02T22:36:11.675Z",
-  "lastProcessed": "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+  "lastProcessed": "la-cage-aux-folles-2010/nytheatre--julie-congress.json",
   "log": []
 }
