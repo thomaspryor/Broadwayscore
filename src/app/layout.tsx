@@ -12,6 +12,8 @@ import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
+import UserProviders from '@/components/UserProviders';
+import HeaderHamburger from '@/components/HeaderHamburger';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -133,13 +135,16 @@ export default function RootLayout({
                   <HeaderSubscribeButton />
                 </div>
                 <HeaderSearch />
+                <HeaderHamburger />
               </div>
             </div>
           </nav>
         </header>
-        <ProGateProvider>
-          <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
-        </ProGateProvider>
+        <UserProviders>
+          <ProGateProvider>
+            <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
+          </ProGateProvider>
+        </UserProviders>
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             {/* Explore More Theatre — promoted market cards */}
