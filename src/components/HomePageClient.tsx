@@ -401,10 +401,10 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
     });
   }, []);
 
-  // Merge Broadway + OB shows when toggle is active
+  // When OB toggle is active, show ONLY OB shows (not mixed with Broadway)
   const allShows = useMemo(() => {
-    if (!includeOB || offBroadwayShows.length === 0) return shows;
-    return [...shows, ...offBroadwayShows];
+    if (includeOB && offBroadwayShows.length > 0) return offBroadwayShows;
+    return shows;
   }, [shows, offBroadwayShows, includeOB]);
 
   // Separate synchronous state for search input to avoid startTransition dropping keystrokes
@@ -757,7 +757,7 @@ function HomePageInner({ shows, upcomingShows, offBroadwayShows = [], totalShows
                     : 'bg-white/[0.04] border-white/[0.08] text-gray-500 hover:text-gray-300'
                 }`}
                 aria-pressed={includeOB}
-                title={includeOB ? 'Hide Off-Broadway shows' : 'Include Off-Broadway shows'}
+                title={includeOB ? 'Back to Broadway' : 'Show Off-Broadway shows'}
               >
                 <span className={`w-1.5 h-1.5 rounded-full ${
                   includeOB ? 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.5)]' : 'bg-gray-600'
