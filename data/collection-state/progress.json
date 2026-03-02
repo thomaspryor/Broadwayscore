@@ -334,7 +334,8 @@
     "operation-mincemeat-2025/timeout-london--holly-williams.json",
     "stranger-things-2024/guardian--arifa-akbar.json",
     "the-book-of-mormon-west-end-2024/timeout--david-cote.json",
-    "hadestown-west-end-2024/washpost--peter-marks.json"
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "chicago-1996/variety--matt-wolf.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -1111,7 +1112,16 @@
     "an-ark-off-broadway-2026/variety--marilyn-stasio.json",
     "anonymous-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
     "anonymous-off-broadway-2026/variety--jessica-kiang.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--jackson-mchenry.json"
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--jackson-mchenry.json",
+    "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--thr-staff.json",
+    "bigfoot-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "bigfoot-off-broadway-2026/hollywood-reporter--jordan-mintzer.json",
+    "bloodlove-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "bug-2026/hollywood-reporter--caitlin-huston.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json",
+    "cats-the-jellicle-ball-2026/hollywood-reporter--frank-scheck.json",
+    "chess-2025/hollywood-reporter--angie-han.json",
+    "data-off-broadway-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1384,7 +1394,9 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
       "data/review-texts/wicked-west-end-2021/variety--david-benedict.json",
-      "wicked-west-end-2021/variety--david-benedict.json"
+      "wicked-west-end-2021/variety--david-benedict.json",
+      "data/review-texts/chess-2025/hollywood-reporter--angie-han.json",
+      "chess-2025/hollywood-reporter--angie-han.json"
     ],
     "browserbase": [
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
@@ -1394,7 +1406,8 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
       "stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
       "data/review-texts/the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-tragedy-of-coriolanus-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/bug-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
@@ -2032,11 +2045,12 @@
       "man-and-boy-west-end-2026/timeout--david-cote.json",
       "operation-mincemeat-2025/timeout-london--holly-williams.json",
       "the-book-of-mormon-west-end-2024/timeout--david-cote.json",
-      "hadestown-west-end-2024/washpost--peter-marks.json"
+      "hadestown-west-end-2024/washpost--peter-marks.json",
+      "chicago-1996/variety--matt-wolf.json"
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "antigone-this-play-i-read-in-high-school-off-broadway-2026/vulture--jackson-mchenry.json",
+  "lastProcessed": "data-off-broadway-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -2599,6 +2613,17 @@
       "t": "2026-03-02T14:44:46.275Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T14:51:09.813Z",
+      "event": "bb-session",
+      "session": "93cb5f12",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-tracy-letts-bug-bro"
+    },
+    {
+      "t": "2026-03-02T14:51:10.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

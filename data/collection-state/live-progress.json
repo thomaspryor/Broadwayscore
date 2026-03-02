@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-02T14:47:43.091Z",
-  "processed": 335,
-  "failed": 775,
-  "successRate": "30.2%",
+  "updatedAt": "2026-03-02T14:54:17.748Z",
+  "processed": 336,
+  "failed": 784,
+  "successRate": "30.0%",
   "tierBreakdown": {
     "playwright": 204,
-    "amp": 63,
-    "browserbase": 8,
+    "amp": 65,
+    "browserbase": 9,
     "directCookies": 28,
     "scrapingbee": 43,
     "brightdata": 2,
     "archiveToday": 462,
-    "archive": 93
+    "archive": 94
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-02T10:05:38.286Z",
-      "event": "bb-session",
-      "session": "3b9249dc",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-03-02T10:05:39.497Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-03-02T10:20:14.738Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-02T14:44:46.275Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T14:51:09.813Z",
+      "event": "bb-session",
+      "session": "93cb5f12",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-tracy-letts-bug-bro"
+    },
+    {
+      "t": "2026-03-02T14:51:10.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
