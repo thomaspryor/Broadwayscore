@@ -563,6 +563,31 @@ function extractGenericLetterGrade(html, text) {
 }
 
 /**
+ * One Minute Critic (1minutecritic.com) - star ratings as "X out of 5 stars"
+ * Also appears as img alt text "1 minute critic N-star rating"
+ */
+function extractOneMinuteCriticScore(html, text) {
+  // 1. Alt text in star rating images (most reliable when HTML available)
+  const altMatch = html.match(/1\s*minute\s*critic\s*(\d(?:\.\d)?)\s*-?\s*star/i);
+  if (altMatch) {
+    const rating = parseFloat(altMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-alt-text' };
+    }
+  }
+  // 2. Text pattern: "N out of 5 stars" (appears at end of review)
+  const textMatch = text.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i)
+                 || html.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
+  if (textMatch) {
+    const rating = parseFloat(textMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-star-rating' };
+    }
+  }
+  return null;
+}
+
+/**
  * Return special marker for outlets that DON'T publish explicit scores
  * This prevents generic extractors from finding false positives
  */
@@ -640,6 +665,12 @@ const OUTLET_EXTRACTORS = {
   'rolling-stone': extractUKStarRating,
   'theater-life': extractUKStarRating,
   'jks-theatre-scene': extractGenericLetterGrade,
+
+  // One Minute Critic — star ratings ("X out of 5 stars")
+  'one-minute-critic': extractOneMinuteCriticScore,
+  '1-minute-critic': extractOneMinuteCriticScore,
+  'oneminutecritic': extractOneMinuteCriticScore,
+  '1minutecritic': extractOneMinuteCriticScore,
 
   // Outlets WITHOUT explicit scores - return null to prevent false positives
   'variety': noScoreExtractor,
