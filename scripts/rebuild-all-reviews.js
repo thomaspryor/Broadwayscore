@@ -1847,7 +1847,9 @@ showDirs.forEach(showId => {
       }
 
       // Skip roundup articles (multi-show reviews that aren't about this specific show)
-      if (data.isRoundupArticle === true) {
+      // Also catch BWW roundup URLs that weren't flagged at collection time
+      if (data.isRoundupArticle === true ||
+          (data.url && /broadwayworld\.com\/article\/.*review-roundup/i.test(data.url))) {
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
       }
