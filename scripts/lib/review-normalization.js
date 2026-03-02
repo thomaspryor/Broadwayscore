@@ -130,7 +130,8 @@ const LEGACY_OUTLET_ALIASES = {
   'vulture': [
     'vulture', 'new york magazine / vulture', 'new york magazine/vulture',
     'ny mag', 'nymag', 'new york magazine', 'vult', 'vu', 'vulturecom',
-    'newyorkmagazine', 'ny magazine', 'new-york-magazine'
+    'newyorkmagazine', 'ny magazine', 'new-york-magazine',
+    'new york', 'new-york'
   ],
   'variety': [
     'variety', 'variety magazine', 'varietycom', 'vartiey'
@@ -214,7 +215,8 @@ const LEGACY_OUTLET_ALIASES = {
   ],
   'nyt-theater': [
     'nyt-theater', 'new york theater', 'newyorktheater', 'ny theater',
-    'new-york-theater'
+    'new-york-theater', 'mandell, new york theater', 'mandell new york theater',
+    'mandell-new-york-theater'
   ],
   'cititour': [
     'cititour', 'citi tour', 'city tour', 'cititourcom', 'citiour'
@@ -372,10 +374,7 @@ const LEGACY_OUTLET_ALIASES = {
     'theater-news-online', 'theater news online', 'theatre news online',
     'theater new online', 'theatre-news-online', 'theater-new-online'
   ],
-  'bergen-record': [
-    'bergen-record', 'bergen record', 'the record (bergen)', 'the record bergen',
-    'the-record-bergen', 'the-record', 'record bergen'
-  ],
+  // bergen-record merged into northjerseycom (same outlet — Bergen Record became NorthJersey.com)
   'new-jersey-newsroom': [
     'new-jersey-newsroom', 'new jersey newsroom', 'new jersey news room',
     'nj newsroom', 'nj-newsroom', 'newjerseynewsroom.com', 'newjerseynewsroomcom',
@@ -432,9 +431,11 @@ const LEGACY_OUTLET_ALIASES = {
   'queerty': ['queerty'],
   'medium': ['medium'],
   'exeunt-magazine': ['exeunt-magazine', 'exeunt', 'exeunt magazine', 'exeunt nyc', 'exeunt-nyc'],
-  'northjerseycom': ['northjerseycom', 'northjereycom', 'northjersycom', 'north-jerseycom', 'north jersey', 'northjersey.com', 'north jersey.com', 'northjersy.com'],
+  'northjerseycom': ['northjerseycom', 'northjereycom', 'northjersycom', 'north-jerseycom', 'north jersey', 'northjersey.com', 'north jersey.com', 'northjersy.com',
+    'bergen-record', 'bergen record', 'the record (bergen)', 'the record bergen',
+    'the-record-bergen', 'record bergen'],
   'chicago-sun-times': ['chicago-sun-times', 'chicagosuntimes', 'chicago sun-times', 'chicago sun times'],
-  'new-york-sun': ['new-york-sun', 'newyorksun', 'new york sun', 'the new york sun'],
+  'new-york-sun': ['new-york-sun', 'newyorksun', 'new york sun', 'the new york sun', 'the-sun', 'the sun'],
 };
 
 /**
@@ -566,6 +567,22 @@ try {
     }
   }
 } catch (e) { /* auto-critic-aliases.json not found or invalid — skip */ }
+
+/**
+ * Check if an outlet name resolves to a known/registered outlet.
+ * Returns true if the name matches a canonical outlet in the registry or alias map,
+ * false if it would just be slugified into a new phantom outlet ID.
+ */
+function isRegisteredOutlet(outletName) {
+  if (!outletName) return false;
+  const normalized = normalizeOutlet(outletName);
+  // Check registry
+  const registry = loadOutletRegistry();
+  if (registry && registry[normalized]) return true;
+  // Check legacy aliases (as keys)
+  if (LEGACY_OUTLET_ALIASES[normalized]) return true;
+  return false;
+}
 
 /**
  * Normalize an outlet name to its canonical ID.
@@ -1326,6 +1343,7 @@ function isProfileUrl(url) {
 module.exports = {
   normalizeOutlet,
   normalizeOutletFull,
+  isRegisteredOutlet,
   isJunkOutlet,
   normalizeCritic,
   normalizePublishDate,
