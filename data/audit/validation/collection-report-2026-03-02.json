@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-02T03:00:19.258Z",
+  "runDate": "2026-03-02T03:34:59.253Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 150,
+    "maxReviews": 50,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 82,
+    "processed": 73,
+    "failed": 107,
     "skipped": 0,
-    "successRate": "45.3%"
+    "successRate": "40.6%"
   },
   "tierBreakdown": {
     "playwright": 49,
-    "amp": 20,
+    "amp": 32,
     "browserbase": 0,
-    "directCookies": 5,
-    "scrapingbee": 11,
+    "directCookies": 4,
+    "scrapingbee": 14,
     "brightdata": 2,
-    "archiveToday": 40,
-    "archive": 13
+    "archiveToday": 46,
+    "archive": 17
   },
   "statistics": {
-    "tier1Attempts": 135,
-    "tier1Success": 53,
-    "ampAttempts": 24,
-    "ampSuccess": 14,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 1,
-    "tier2Attempts": 59,
-    "tier2Success": 13,
-    "tier3Attempts": 48,
-    "tier3Success": 4,
-    "tier3_6Attempts": 40,
-    "tier3_6Success": 40,
-    "tier4Attempts": 34,
-    "tier4Success": 7,
-    "totalFailed": 58,
-    "scrapingBeeCreditsUsed": 258,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 4.7,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 0,
+    "tier1Attempts": 39,
+    "tier1Success": 9,
+    "ampAttempts": 13,
+    "ampSuccess": 8,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 17,
+    "tier2Success": 5,
+    "tier3Attempts": 12,
+    "tier3Success": 0,
+    "tier3_6Attempts": 11,
+    "tier3_6Success": 11,
+    "tier4Attempts": 19,
+    "tier4Success": 2,
+    "totalFailed": 25,
+    "scrapingBeeCreditsUsed": 83,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 13,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -109,15 +109,20 @@
     "the-dinosaurs-off-broadway-2026/playwrightshorizonsorg--unknown.json",
     "the-lion-king-west-end-2021/theupcoming--connor-campbell.json",
     "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
-    "the-play-that-goes-wrong-off-broadway-2019/amny--matt-windman.json",
+    "hadestown-2019/latimes--unknown.json",
+    "hadestown-2019/washpost--unknown.json",
+    "hamilton-2015/latimes--unknown.json",
+    "harry-potter-2021/latimes--unknown.json",
+    "moulin-rouge-2019/washpost--unknown.json",
+    "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json",
     "the-play-that-goes-wrong-off-broadway-2019/nbcny--robert-kahn.json",
     "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json",
     "the-play-that-goes-wrong-west-end-2021/nbcny--robert-kahn.json",
     "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
-    "the-rat-trap-west-end-2026/nysr--david-finkle.json",
-    "titanique-west-end-2024/london-theatre--olivia-rook.json",
-    "you-got-older-off-broadway-2026/playbill--unknown.json",
-    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+    "wicked-west-end-2021/rollingstone--peter-travers.json",
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "big-river-2003/nytimes--ben-brantley.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -191,17 +196,42 @@
     "the-lion-king-west-end-2021/standard--nick-curtis.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "the-lion-king-west-end-2021/times-uk--clive-davis.json",
-    "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
-    "the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagebiz--jeff-myhre.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-    "the-play-that-goes-wrong-west-end-2021/huffpost--steven-suskin.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
-    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/financialtimes--financial-times.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+    "hadestown-2019/hollywood-reporter--unknown.json",
+    "hamilton-2015/nytimes--unknown.json",
+    "mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+    "man-and-boy-west-end-2026/nytimes--ben-brantley.json",
+    "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
+    "into-the-woods-west-end-2025/timeout--adam-feldman.json",
+    "maggots-west-end-2026/ew--chris-nashawaty.json",
+    "maggots-west-end-2026/newsday--neil-best.json",
+    "man-and-boy-west-end-2026/newsday--linda-winer.json",
+    "man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
+    "man-and-boy-west-end-2026/timeout--david-cote.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "arcadia-west-end-2026/ap--mark-kennedy.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
+    "bug-2026/billboard--aramide-tinubu.json",
+    "chess-2025/ap--mark-kennedy.json",
+    "chicago-1996/ap--mark-kennedy.json",
+    "hamilton-2015/daily-mail--unknown.json",
+    "moulin-rouge-2019/broadwayworld--michael-dale.json",
+    "paddington-the-musical-west-end-2025/standard--nick-curtis.json",
+    "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
     "wicked-west-end-2021/huffpost--marshall-fine.json",
-    "wicked-west-end-2021/rollingstone--peter-travers.json",
-    "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json"
+    "chicago-1996/time--richard-zoglin.json",
+    "700-sundays-2013/variety--marilyn-stasio.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-streetcar-named-desire-1973/hollywood-reporter--david-rooney.json",
+    "a-streetcar-named-desire-2005/hollywood-reporter--david-rooney.json",
+    "a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "annie-1977/hollywood-reporter--david-rooney.json",
+    "anything-goes-1987/hollywood-reporter--david-rooney.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/variety--frank-rizzo.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "boeingboeing-2008/variety--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -247,13 +277,13 @@
       "the-lion-king-west-end-2021/i-paper--rachel-halliburton.json",
       "the-lion-king-west-end-2021/theupcoming--connor-campbell.json",
       "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
-      "the-play-that-goes-wrong-off-broadway-2019/amny--matt-windman.json",
+      "moulin-rouge-2019/washpost--unknown.json",
+      "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json",
       "the-play-that-goes-wrong-off-broadway-2019/nbcny--robert-kahn.json",
       "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json",
-      "the-rat-trap-west-end-2026/nysr--david-finkle.json",
-      "titanique-west-end-2024/london-theatre--olivia-rook.json",
-      "you-got-older-off-broadway-2026/playbill--unknown.json",
-      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
+      "the-play-that-goes-wrong-west-end-2021/nbcny--robert-kahn.json",
+      "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+      "archduke-west-end-2026/nytg--amelia-merrill.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -272,18 +302,29 @@
       "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
       "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
-      "the-play-that-goes-wrong-off-broadway-2019/huffpost--steven-suskin.json",
-      "data/review-texts/the-play-that-goes-wrong-west-end-2021/huffpost--steven-suskin.json",
-      "the-play-that-goes-wrong-west-end-2021/huffpost--steven-suskin.json"
+      "data/review-texts/hadestown-2019/hollywood-reporter--unknown.json",
+      "hadestown-2019/hollywood-reporter--unknown.json",
+      "data/review-texts/wicked-west-end-2021/huffpost--marshall-fine.json",
+      "wicked-west-end-2021/huffpost--marshall-fine.json",
+      "data/review-texts/700-sundays-2013/variety--marilyn-stasio.json",
+      "700-sundays-2013/variety--marilyn-stasio.json",
+      "data/review-texts/a-streetcar-named-desire-1973/hollywood-reporter--david-rooney.json",
+      "a-streetcar-named-desire-1973/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-streetcar-named-desire-2005/hollywood-reporter--david-rooney.json",
+      "a-streetcar-named-desire-2005/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
+      "a-streetcar-named-desire-2005/variety--marilyn-stasio.json",
+      "data/review-texts/annie-1977/hollywood-reporter--david-rooney.json",
+      "annie-1977/hollywood-reporter--david-rooney.json",
+      "data/review-texts/anything-goes-1987/hollywood-reporter--david-rooney.json",
+      "anything-goes-1987/hollywood-reporter--david-rooney.json"
     ],
     "browserbase": [],
     "directCookies": [
       "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
       "heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json",
       "ragtime-2025/bergen-record--unknown.json",
-      "spare-parts-off-broadway-2026/usatoday--kerry-lengel.json",
-      "the-play-that-goes-wrong-west-end-2021/nbcny--robert-kahn.json"
+      "spare-parts-off-broadway-2026/usatoday--kerry-lengel.json"
     ],
     "scrapingbee": [
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -295,8 +336,11 @@
       "man-and-boy-west-end-2026/backstage--david-sheward.json",
       "mj-2022/daily-mail--unknown.json",
       "the-lion-king-west-end-2021/daily-mail--patrick-marmion.json",
+      "hamilton-2015/nytimes--unknown.json",
       "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
-      "wicked-west-end-2021/rollingstone--peter-travers.json"
+      "wicked-west-end-2021/rollingstone--peter-travers.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "big-river-2003/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "and-juliet-2022/ap--unknown.json",
@@ -338,11 +382,17 @@
       "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json",
       "data/review-texts/the-lion-king-west-end-2021/standard--nick-curtis.json",
       "data/review-texts/the-lion-king-west-end-2021/times-uk--clive-davis.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagebiz--jeff-myhre.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
-      "data/review-texts/you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json"
+      "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
+      "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json",
+      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
+      "data/review-texts/man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/arcadia-west-end-2026/ap--mark-kennedy.json",
+      "data/review-texts/chicago-1996/ap--mark-kennedy.json",
+      "data/review-texts/hamilton-2015/daily-mail--unknown.json",
+      "data/review-texts/moulin-rouge-2019/broadwayworld--michael-dale.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/variety--frank-rizzo.json",
+      "data/review-texts/boeingboeing-2008/variety--david-rooney.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -357,17 +407,14 @@
       "ragtime-2025/billboard--joe-lynch.json",
       "six-2021/telegraph--unknown.json",
       "stranger-things-2024/ap--mark-kennedy.json",
-      "wicked-west-end-2021/huffpost--marshall-fine.json"
+      "hadestown-2019/latimes--unknown.json",
+      "hadestown-2019/washpost--unknown.json",
+      "chess-2025/ap--mark-kennedy.json",
+      "hamilton-2015/latimes--unknown.json",
+      "harry-potter-2021/latimes--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "NJ Newsroom": {
-      "count": 1,
-      "domain": "newjerseynewsroom.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "Entertainment Weekly": {
       "count": 2,
       "domain": "ew.com",
@@ -381,35 +428,18 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "dailyjournal.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "unknown": {
-      "count": 1,
-      "domain": "jasonraize.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph (UK)": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json",
+      "oldUrl": "https://www.londontheatrereviews.co.uk/post.cfm?p=26429",
+      "newUrl": "https://www.londontheatrereviews.co.uk/post.cfm?p=24798"
+    },
+    {
+      "reviewId": "700-sundays-2013/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/",
+      "newUrl": "https://variety.com/2013/legit/news/broadway-box-office-700-sundays-is-worth-its-weight-in-crystal-1200937579/"
+    }
+  ]
 }
