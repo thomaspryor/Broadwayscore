@@ -101,6 +101,11 @@ function matchShow(ttShow, shows, category) {
     return true;
   });
 
+  // 0. Direct todaytixId match (most reliable — handles name mismatches)
+  for (const s of candidates) {
+    if (s.todaytixId === ttShow.id) return s;
+  }
+
   // 1. Exact slug match
   for (const s of candidates) {
     if (slugify(s.title) === ttSlug) return s;

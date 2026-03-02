@@ -112,9 +112,14 @@ jobs:
         run: node scripts/enrich-ticket-platform-links.js
         continue-on-error: true
 
-      - name: Enrich shows with Wikipedia synopses
+      - name: Enrich shows with Wikipedia synopses (Broadway/OB)
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/enrich-wikipedia-synopsis.js --limit=20
+        continue-on-error: true
+
+      - name: Enrich shows with Wikipedia synopses (West End)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/enrich-wikipedia-synopsis.js --category=west-end --limit=10
         continue-on-error: true
 
       - name: Enrich shows with Wikipedia runtimes

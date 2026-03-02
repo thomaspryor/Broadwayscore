@@ -28,7 +28,9 @@ const includeShowScore = process.argv.includes('--include-showscore');
 
 // Grace period in days - don't auto-close until this many days after closing date
 // This gives time for the check-closing-dates script to catch extensions
-const CLOSING_GRACE_PERIOD_DAYS = 7;
+// Override with --grace-period=N for launch prep (e.g., --grace-period=0)
+const gracePeriodArg = process.argv.find(a => a.startsWith('--grace-period='));
+const CLOSING_GRACE_PERIOD_DAYS = gracePeriodArg ? parseInt(gracePeriodArg.split('=')[1], 10) : 7;
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -577,6 +579,19 @@ async function updateShowStatuses() {
       changes.status = { from: 'previews', to: 'open' };
       if (!dryRun) {
         show.status = 'open';
+      }
+    }
+
+    // Check 2b: Move upcoming shows to open/previews based on dates
+    if (show.status === 'upcoming' && show.openingDate && isDateReached(show.openingDate)) {
+      changes.status = { from: 'upcoming', to: 'open' };
+      if (!dryRun) {
+        show.status = 'open';
+      }
+    } else if (show.status === 'upcoming' && show.previewsStartDate && isDateReached(show.previewsStartDate)) {
+      changes.status = { from: 'upcoming', to: 'previews' };
+      if (!dryRun) {
+        show.status = 'previews';
       }
     }
 

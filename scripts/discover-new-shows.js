@@ -778,7 +778,24 @@ async function discoverShows() {
   const existingSlugs = new Set(data.shows.map(s => s.slug));
   const existingIds = new Set(data.shows.map(s => s.id));
 
+  // Build todaytixId index for fast dedup
+  const existingTodaytixIds = new Map();
+  for (const s of data.shows) {
+    if (s.todaytixId) existingTodaytixIds.set(s.todaytixId, s);
+  }
+
   for (const show of discoveredShows) {
+    // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
+    if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
+      const existing = existingTodaytixIds.get(show.todaytixId);
+      skippedDuplicates.push({
+        title: show.title,
+        reason: `Same TodayTix ID (${show.todaytixId}) as existing show`,
+        existingId: existing.id
+      });
+      continue;
+    }
+
     // Use the new comprehensive duplicate check
     const duplicateCheck = checkForDuplicate(show, data.shows);
 
