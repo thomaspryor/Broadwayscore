@@ -1,17 +1,17 @@
 {
-  "runDate": "2026-03-02T08:37:15.946Z",
+  "runDate": "2026-03-02T08:39:46.111Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "spread-off-broadway-2026",
+    "showFilter": "pied-a-terre-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 2,
     "failed": 0,
     "skipped": 0,
     "successRate": "100.0%"
@@ -24,7 +24,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -39,7 +39,7 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 1,
     "totalFailed": 0,
     "scrapingBeeCreditsUsed": 0,
@@ -50,7 +50,8 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "spread-off-broadway-2026/theatermania--unknown.json"
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "pied-a-terre-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [],
   "tierDetails": {
@@ -62,7 +63,8 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "spread-off-broadway-2026/theatermania--unknown.json"
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "pied-a-terre-off-broadway-2026/theatermania--unknown.json"
     ]
   },
   "failuresByOutlet": {},
