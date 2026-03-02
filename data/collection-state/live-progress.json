@@ -1,48 +1,20 @@
 {
-  "updatedAt": "2026-03-02T03:34:58.194Z",
-  "processed": 73,
-  "failed": 107,
-  "successRate": "40.6%",
+  "updatedAt": "2026-03-02T03:55:50.296Z",
+  "processed": 92,
+  "failed": 108,
+  "successRate": "46.0%",
   "tierBreakdown": {
-    "playwright": 49,
-    "amp": 32,
+    "playwright": 53,
+    "amp": 30,
     "browserbase": 0,
-    "directCookies": 4,
-    "scrapingbee": 14,
+    "directCookies": 5,
+    "scrapingbee": 11,
     "brightdata": 2,
     "archiveToday": 46,
-    "archive": 17
+    "archive": 35
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-02T00:31:34.176Z",
-      "event": "bb-session",
-      "session": "fd49b714",
-      "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.h"
-    },
-    {
-      "t": "2026-03-02T00:31:35.762Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-02T00:43:07.522Z",
-      "event": "bb-session",
-      "session": "a58f6c41",
-      "url": "https://www.vulture.com/article/theater-review-stranger-things-first-shadow-grie"
-    },
-    {
-      "t": "2026-03-02T00:43:08.927Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-03-02T00:48:34.406Z",
-      "event": "bb-session",
-      "session": "a3a3070b",
-      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
-    },
     {
       "t": "2026-03-02T00:48:35.798Z",
       "event": "bb-cookie-inject",
@@ -119,6 +91,39 @@
       "event": "bb-session",
       "session": "aea77492",
       "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-"
+    },
+    {
+      "t": "2026-03-02T03:30:18.319Z",
+      "event": "bb-session",
+      "session": "06131ac0",
+      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
+    },
+    {
+      "t": "2026-03-02T03:30:19.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T03:32:03.080Z",
+      "event": "bb-session",
+      "session": "efbbc17f",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+    },
+    {
+      "t": "2026-03-02T03:32:04.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T03:41:56.744Z",
+      "event": "bb-session",
+      "session": "e8e44106",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time#:~:text=In%20the%20l"
+    },
+    {
+      "t": "2026-03-02T03:41:57.775Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
