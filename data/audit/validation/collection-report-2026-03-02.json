@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-03-02T21:26:26.411Z",
+  "runDate": "2026-03-02T21:28:30.512Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "showstopper-the-improvised-musical-west-end-2023",
+    "showFilter": "the-producers-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 7,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "87.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
@@ -50,36 +50,36 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
-    "showstopper-the-improvised-musical-west-end-2023/london-theatre--sophie-thomas.json",
-    "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json"
+    "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+    "the-producers-west-end-2025/artsdesk--gary-naylor.json",
+    "the-producers-west-end-2025/independent--louis-chilton.json",
+    "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+    "the-producers-west-end-2025/standard--nick-curtis.json",
+    "the-producers-west-end-2025/telegraph--dominic-cavendish.json",
+    "the-producers-west-end-2025/times-uk--dominic-maxwell.json"
   ],
   "failed": [
-    "showstopper-the-improvised-musical-west-end-2023/thestage--paul-vale.json",
-    "showstopper-the-improvised-musical-west-end-2023/telegraph--dominic-cavendish.json"
+    "the-producers-west-end-2025/thestage--paul-vale.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
+      "the-producers-west-end-2025/artsdesk--gary-naylor.json",
+      "the-producers-west-end-2025/london-theatre--anya-ryan.json",
+      "the-producers-west-end-2025/standard--nick-curtis.json",
+      "the-producers-west-end-2025/telegraph--dominic-cavendish.json",
+      "the-producers-west-end-2025/times-uk--dominic-maxwell.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-producers-west-end-2025/independent--louis-chilton.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "showstopper-the-improvised-musical-west-end-2023/independent--gillian-orr.json",
-      "showstopper-the-improvised-musical-west-end-2023/london-theatre--sophie-thomas.json",
-      "showstopper-the-improvised-musical-west-end-2023/whatsonstage--alex-wood.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Telegraph (UK)": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
