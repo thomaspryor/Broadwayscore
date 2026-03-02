@@ -581,7 +581,17 @@
     "hadestown-2019/vulture--sara-holdren.json",
     "hamilton-2015/hollywood-reporter--frank-scheck.json",
     "kinky-boots-off-broadway-2026/nytimes--ben-brantley.json",
-    "mamma-mia-west-end-2021/variety--matt-wolf.json"
+    "mamma-mia-west-end-2021/variety--matt-wolf.json",
+    "an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+    "ragtime-2025/usatoday--samantha-gholar.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json",
+    "a-behanding-in-spokane-2010/observer--jesse-oxfeld.json",
+    "a-little-night-music-2009/observer--jesse-oxfeld.json",
+    "a-view-from-the-bridge-2015/observer--rex-reed.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "airline-highway-2015/observer--rex-reed.json",
+    "all-the-way-2014/observer--rex-reed.json",
+    "american-buffalo-2022/observer--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1030,7 +1040,10 @@
       "data/review-texts/the-outsiders-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json"
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json",
+      "data/review-texts/the-lion-king-1997/washpost--lloyd-rose.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -1088,7 +1101,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "mamma-mia-west-end-2021/variety--matt-wolf.json",
+  "lastProcessed": "american-buffalo-2022/observer--jesse-green.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -1519,6 +1532,39 @@
       "t": "2026-03-02T08:55:10.876Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-02T10:03:35.190Z",
+      "event": "bb-session",
+      "session": "93006dab",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-03-02T10:03:36.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T10:04:36.493Z",
+      "event": "bb-session",
+      "session": "de09e1c2",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
+    },
+    {
+      "t": "2026-03-02T10:04:37.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T10:05:38.286Z",
+      "event": "bb-session",
+      "session": "3b9249dc",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-03-02T10:05:39.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
