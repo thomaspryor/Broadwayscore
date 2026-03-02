@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-03-02T03:12:43.734Z",
+  "runDate": "2026-03-02T03:00:19.258Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 5,
+    "batchSize": 10,
+    "maxReviews": 150,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
-    "scrapingBeeEnabled": false,
-    "brightDataEnabled": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 84,
+    "processed": 68,
+    "failed": 82,
     "skipped": 0,
-    "successRate": "44.0%"
+    "successRate": "45.3%"
   },
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 49,
     "amp": 20,
     "browserbase": 0,
     "directCookies": 5,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 2,
-    "archiveToday": 39,
-    "archive": 15
+    "archiveToday": 40,
+    "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "tier1Attempts": 135,
+    "tier1Success": 53,
+    "ampAttempts": 24,
+    "ampSuccess": 14,
+    "tier1_5Attempts": 10,
+    "tier1_5Success": 1,
+    "tier2Attempts": 59,
+    "tier2Success": 13,
+    "tier3Attempts": 48,
+    "tier3Success": 4,
+    "tier3_6Attempts": 40,
+    "tier3_6Success": 40,
+    "tier4Attempts": 34,
+    "tier4Success": 7,
+    "totalFailed": 58,
+    "scrapingBeeCreditsUsed": 258,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 4.7,
+    "urlDiscoveryAttempts": 8,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -113,9 +113,11 @@
     "the-play-that-goes-wrong-off-broadway-2019/nbcny--robert-kahn.json",
     "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json",
     "the-play-that-goes-wrong-west-end-2021/nbcny--robert-kahn.json",
-    "hamilton-2015/latimes--unknown.json",
-    "harry-potter-2021/latimes--unknown.json",
-    "moulin-rouge-2019/washpost--unknown.json"
+    "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
+    "the-rat-trap-west-end-2026/nysr--david-finkle.json",
+    "titanique-west-end-2024/london-theatre--olivia-rook.json",
+    "you-got-older-off-broadway-2026/playbill--unknown.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -195,13 +197,11 @@
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "the-play-that-goes-wrong-west-end-2021/huffpost--steven-suskin.json",
     "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
-    "mj-2022/thewrap--steve-pond.json",
-    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
-    "hamilton-2015/daily-mail--unknown.json",
-    "moulin-rouge-2019/broadwayworld--michael-dale.json",
-    "paddington-the-musical-west-end-2025/standard--nick-curtis.json",
-    "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
-    "paranormal-activity-west-end-2025/london-theatre--the-anonymous-critic.json"
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/financialtimes--financial-times.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+    "wicked-west-end-2021/huffpost--marshall-fine.json",
+    "wicked-west-end-2021/rollingstone--peter-travers.json",
+    "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -249,7 +249,11 @@
       "the-lion-king-west-end-2021/whatsonstage--alex-wood.json",
       "the-play-that-goes-wrong-off-broadway-2019/amny--matt-windman.json",
       "the-play-that-goes-wrong-off-broadway-2019/nbcny--robert-kahn.json",
-      "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json"
+      "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json",
+      "the-rat-trap-west-end-2026/nysr--david-finkle.json",
+      "titanique-west-end-2024/london-theatre--olivia-rook.json",
+      "you-got-older-off-broadway-2026/playbill--unknown.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -290,7 +294,9 @@
       "mamma-mia-west-end-2021/dailybeast--tim-teeman.json",
       "man-and-boy-west-end-2026/backstage--david-sheward.json",
       "mj-2022/daily-mail--unknown.json",
-      "the-lion-king-west-end-2021/daily-mail--patrick-marmion.json"
+      "the-lion-king-west-end-2021/daily-mail--patrick-marmion.json",
+      "the-playboy-of-the-western-world-west-end-2025/independent--alice-saville.json",
+      "wicked-west-end-2021/rollingstone--peter-travers.json"
     ],
     "brightdata": [
       "and-juliet-2022/ap--unknown.json",
@@ -335,7 +341,8 @@
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagebiz--jeff-myhre.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-      "data/review-texts/hamilton-2015/daily-mail--unknown.json"
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+      "data/review-texts/you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -350,11 +357,59 @@
       "ragtime-2025/billboard--joe-lynch.json",
       "six-2021/telegraph--unknown.json",
       "stranger-things-2024/ap--mark-kennedy.json",
-      "hamilton-2015/latimes--unknown.json",
-      "harry-potter-2021/latimes--unknown.json",
-      "moulin-rouge-2019/washpost--unknown.json"
+      "wicked-west-end-2021/huffpost--marshall-fine.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "NJ Newsroom": {
+      "count": 1,
+      "domain": "newjerseynewsroom.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Entertainment Weekly": {
+      "count": 2,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Associated Press": {
+      "count": 1,
+      "domain": "dailyjournal.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "unknown": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph (UK)": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
