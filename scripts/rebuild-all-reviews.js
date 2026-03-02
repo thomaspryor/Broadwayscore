@@ -1396,7 +1396,7 @@ showDirs.forEach(showId => {
         const tierResult = classifyContentTier(data);
         const oldTier = data.contentTier;
         data.contentTier = tierResult.contentTier;
-        if (oldTier && oldTier !== tierResult.contentTier) {
+        if (!oldTier || oldTier !== tierResult.contentTier) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             sourceData.contentTier = tierResult.contentTier;
