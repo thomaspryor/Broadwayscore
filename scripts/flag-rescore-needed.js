@@ -4,14 +4,36 @@
  *
  * Identifies reviews that:
  * - Have fullText (>500 chars)
- * - Have llmScore
+ * - Have llmScore (old format, not ensemble)
  * - LLM score was likely based on excerpt (keyPhrases are short snippets)
+ * - Haven't already been rescored (no rescoreCompletedAt)
  *
- * Sets needsRescore=true for these reviews
+ * Usage:
+ *   node scripts/flag-rescore-needed.js [--dry-run] [--tier=1,2]
+ *
+ *   --dry-run   Show what would be flagged without writing files
+ *   --tier=N,M  Only flag outlets in specified tiers (e.g., --tier=1,2)
  */
 
 const fs = require('fs');
 const path = require('path');
+
+// Parse args
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const tierArg = args.find(a => a.startsWith('--tier='));
+const tierFilter = tierArg ? tierArg.split('=')[1].split(',').map(Number) : null;
+
+// Load outlet registry for tier filtering
+let outletRegistry = null;
+if (tierFilter) {
+  try {
+    outletRegistry = JSON.parse(fs.readFileSync('data/outlet-registry.json', 'utf8'));
+    console.log(`Tier filter active: T${tierFilter.join(', T')}`);
+  } catch (e) {
+    console.error('Warning: Could not load outlet-registry.json for tier filtering');
+  }
+}
 
 const reviewDir = 'data/review-texts';
 const shows = fs.readdirSync(reviewDir).filter(f => {
@@ -24,14 +46,18 @@ const shows = fs.readdirSync(reviewDir).filter(f => {
 let flagged = 0;
 let skipped = 0;
 let alreadyFlagged = 0;
+let alreadyRescored = 0;
+let modernEnsemble = 0;
 let noFullText = 0;
 let noLlmScore = 0;
+let tierFiltered = 0;
 
 const flaggedReviews = [];
 
 console.log('='.repeat(70));
 console.log('FLAGGING REVIEWS THAT NEED RESCORING');
 console.log('='.repeat(70));
+if (dryRun) console.log('\n*** DRY RUN — no files will be modified ***');
 console.log('\nLooking for reviews scored on excerpts that now have fullText...\n');
 
 for (const show of shows) {
@@ -45,9 +71,21 @@ for (const show of shows) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-      // Skip if already flagged
+      // Skip if already flagged for rescore
       if (data.needsRescore) {
         alreadyFlagged++;
+        continue;
+      }
+
+      // Skip if already rescored (flag was cleared after successful rescore)
+      if (data.rescoreCompletedAt) {
+        alreadyRescored++;
+        continue;
+      }
+
+      // Skip if scored by modern ensemble (v5+ uses best available text)
+      if (data.ensembleData) {
+        modernEnsemble++;
         continue;
       }
 
@@ -63,8 +101,18 @@ for (const show of shows) {
         continue;
       }
 
+      // Tier filtering: look up outlet tier from registry
+      if (tierFilter && outletRegistry) {
+        const outletId = data.outletId || file.replace('.json', '').split('--')[0];
+        const outlet = outletRegistry.outlets[outletId];
+        const tier = outlet ? outlet.tier : 3;
+        if (!tierFilter.includes(tier)) {
+          tierFiltered++;
+          continue;
+        }
+      }
+
       // Check if score was based on excerpt by looking at keyPhrases
-      // If keyPhrases are very short or reasoning mentions "brief excerpt", it's excerpt-based
       const keyPhrases = data.llmScore.keyPhrases || [];
       const reasoning = data.llmScore.reasoning || '';
 
@@ -89,14 +137,15 @@ for (const show of shows) {
       const fullTextMuchLonger = data.fullText.length > excerptLength * 3 && excerptLength > 0;
 
       if (isExcerptBased || fullTextMuchLonger) {
-        // Flag for rescore
-        data.needsRescore = true;
-        data.rescoreReason = isExcerptBased
-          ? 'scored on brief excerpt, now has fullText'
-          : 'fullText significantly longer than excerpt used for scoring';
-        data.previousLlmScore = data.llmScore.score;
+        if (!dryRun) {
+          // Flag for rescore
+          data.needsRescore = true;
+          data.rescoreReason = isExcerptBased
+            ? 'scored on brief excerpt, now has fullText'
+            : 'fullText significantly longer than excerpt used for scoring';
 
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        }
         flagged++;
         flaggedReviews.push({
           show,
@@ -104,7 +153,9 @@ for (const show of shows) {
           score: data.llmScore.score,
           fullTextLength: data.fullText.length,
           excerptLength,
-          reason: data.rescoreReason
+          reason: isExcerptBased
+            ? 'scored on brief excerpt, now has fullText'
+            : 'fullText significantly longer than excerpt used for scoring'
         });
       } else {
         skipped++;
@@ -118,29 +169,53 @@ for (const show of shows) {
 console.log('='.repeat(70));
 console.log('SUMMARY');
 console.log('='.repeat(70));
-console.log(`\nTotal reviews flagged for rescore: ${flagged}`);
+if (dryRun) console.log('\n*** DRY RUN — no files were modified ***');
+console.log(`\nTotal reviews ${dryRun ? 'would be' : ''} flagged for rescore: ${flagged}`);
 console.log(`Already flagged: ${alreadyFlagged}`);
+console.log(`Already rescored (completed): ${alreadyRescored}`);
+console.log(`Modern ensemble (skip): ${modernEnsemble}`);
 console.log(`Skipped (score appears fullText-based): ${skipped}`);
 console.log(`No fullText: ${noFullText}`);
 console.log(`No llmScore: ${noLlmScore}`);
+if (tierFilter) console.log(`Tier-filtered out: ${tierFiltered}`);
 
 if (flaggedReviews.length > 0) {
-  console.log('\n--- Flagged Reviews (sample) ---\n');
-  for (const r of flaggedReviews.slice(0, 20)) {
+  // Group by outlet for summary
+  const byOutlet = {};
+  for (const r of flaggedReviews) {
+    const outlet = r.file.split('--')[0];
+    byOutlet[outlet] = (byOutlet[outlet] || 0) + 1;
+  }
+  const sortedOutlets = Object.entries(byOutlet).sort((a, b) => b[1] - a[1]);
+
+  console.log('\n--- By outlet (top 20) ---\n');
+  for (const [outlet, count] of sortedOutlets.slice(0, 20)) {
+    console.log(`  ${String(count).padStart(5)} | ${outlet}`);
+  }
+  if (sortedOutlets.length > 20) console.log(`  ... and ${sortedOutlets.length - 20} more outlets`);
+
+  console.log('\n--- Sample flagged reviews ---\n');
+  for (const r of flaggedReviews.slice(0, 10)) {
     console.log(`${r.show}/${r.file}:`);
     console.log(`  score: ${r.score}, fullText: ${r.fullTextLength} chars, excerpt: ${r.excerptLength} chars`);
     console.log(`  reason: ${r.reason}`);
   }
-  if (flaggedReviews.length > 20) {
-    console.log(`\n... and ${flaggedReviews.length - 20} more`);
+  if (flaggedReviews.length > 10) {
+    console.log(`\n... and ${flaggedReviews.length - 10} more`);
   }
 }
 
 // Save full list to audit file
-const auditPath = 'data/audit/rescore-needed.json';
-fs.writeFileSync(auditPath, JSON.stringify({
-  flaggedAt: new Date().toISOString(),
-  totalFlagged: flagged,
-  reviews: flaggedReviews
-}, null, 2));
-console.log(`\nFull list saved to: ${auditPath}`);
+if (!dryRun) {
+  const auditDir = 'data/audit';
+  if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+  const auditPath = path.join(auditDir, 'rescore-needed.json');
+  fs.writeFileSync(auditPath, JSON.stringify({
+    flaggedAt: new Date().toISOString(),
+    totalFlagged: flagged,
+    reviews: flaggedReviews
+  }, null, 2));
+  console.log(`\nFull list saved to: ${auditPath}`);
+} else {
+  console.log('\nDry run — no audit file written. Remove --dry-run to flag files.');
+}
