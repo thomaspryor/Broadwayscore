@@ -326,15 +326,25 @@ const CONFIG = {
   },
 };
 
-// Uncollectable outlets: no online content available (print-only, defunct, video-only).
-// Skip SERP discovery and collection — these waste API credits.
-// Scored files with ShowScore-extracted text are preserved; only pipeline discovery is skipped.
-const UNCOLLECTABLE_OUTLETS = new Set([
-  'lighting-and-sound-america',  // Print-only trade publication
-  'wolf-entertainment-guide',    // Critic (William Wolf) died 2020, SSL cert expired
-  'as-her-world-turns',          // Personal travel blog, rare theater posts
-  'hot-pepper-theater',          // Defunct video-based review project
-]);
+// Uncollectable outlets: built from outlet-registry.json accessModel field.
+// Outlets marked 'print-only' or 'defunct' have no online content — skip SERP discovery.
+// Single source of truth: outlet-registry.json (shared with collect-outlet-reviews.js).
+const UNCOLLECTABLE_OUTLETS = (() => {
+  const set = new Set();
+  try {
+    const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    for (const [id, info] of Object.entries(registry.outlets || {})) {
+      if (info.accessModel === 'print-only' || info.accessModel === 'defunct') {
+        set.add(id);
+      }
+    }
+    console.log(`Loaded ${set.size} uncollectable outlets from registry (print-only + defunct)`);
+  } catch (e) {
+    console.warn('Warning: Could not load outlet-registry.json for uncollectable outlets:', e.message);
+  }
+  return set;
+})();
 
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected } = require('./lib/scraper');
