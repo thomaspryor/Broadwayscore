@@ -1,55 +1,5 @@
 [
   {
-    "startedAt": "2026-02-26T00:25:37.871Z",
-    "completedAt": "2026-02-26T00:25:42.346Z",
-    "totalReviews": 30281,
-    "processed": 0,
-    "skipped": 30239,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-devil-wears-prada-west-end-2024",
-        "outletId": "artsdesk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "oh-mary-west-end-2025",
-        "outletId": "stage-uk",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-02-26T00:27:59.623Z",
-    "completedAt": "2026-02-26T00:28:04.090Z",
-    "totalReviews": 30281,
-    "processed": 0,
-    "skipped": 30239,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-devil-wears-prada-west-end-2024",
-        "outletId": "artsdesk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "oh-mary-west-end-2025",
-        "outletId": "stage-uk",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-02-26T00:30:27.412Z",
     "completedAt": "2026-02-26T00:30:42.073Z",
     "totalReviews": 30281,
@@ -608222,6 +608172,80 @@
       "input": 0,
       "output": 0,
       "total": 0
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-03-02T03:02:05.356Z",
+    "completedAt": "2026-03-02T03:04:02.288Z",
+    "totalReviews": 30964,
+    "processed": 9,
+    "skipped": 30944,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 106332,
+      "output": 6437,
+      "total": 112769
+    },
+    "errorDetails": [
+      {
+        "showId": "the-dinosaurs-off-broadway-2026",
+        "outletId": "playwrightshorizonsorg",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "ragtime-2025",
+        "outletId": "ap",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "ragtime-2025",
+        "outletId": "playbill",
+        "error": "Failed to parse response JSON"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-02T03:04:22.489Z",
+    "completedAt": "2026-03-02T03:05:56.098Z",
+    "totalReviews": 30963,
+    "processed": 6,
+    "skipped": 30946,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 88396,
+      "output": 5347,
+      "total": 93743
+    },
+    "errorDetails": [
+      {
+        "showId": "you-got-older-off-broadway-2026",
+        "outletId": "playbill",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "chess-2025",
+        "outletId": "ap",
+        "error": "Failed to parse response JSON"
+      },
+      {
+        "showId": "ragtime-2025",
+        "outletId": "playbill",
+        "error": "Failed to parse response JSON"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-02T03:06:07.657Z",
+    "completedAt": "2026-03-02T03:06:12.861Z",
+    "totalReviews": 30963,
+    "processed": 1,
+    "skipped": 30954,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4455,
+      "output": 352,
+      "total": 4807
     },
     "errorDetails": []
   }
