@@ -15,7 +15,9 @@
     "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
     "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json",
     "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
-    "mother-russia-off-broadway-2026/theatrely--joey-sims.json"
+    "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "chess-2025/whatsonstage--david-gordon.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -41,7 +43,15 @@
     "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
     "the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
     "titanique-west-end-2024/wsj--charles-isherwood.json",
-    "11-to-midnight-off-broadway-2026/billboard--unknown.json"
+    "11-to-midnight-off-broadway-2026/billboard--unknown.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+    "and-juliet-2022/ap--unknown.json",
+    "arcadia-west-end-2026/ap--mark-kennedy.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+    "bug-2026/billboard--aramide-tinubu.json",
+    "chess-2025/ap--mark-kennedy.json",
+    "chicago-1996/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -53,7 +63,8 @@
       "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
       "you-got-older-off-broadway-2026/timeout--unknown.json",
       "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
-      "mother-russia-off-broadway-2026/theatrely--joey-sims.json"
+      "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
+      "chess-2025/whatsonstage--david-gordon.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -69,7 +80,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
       "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
       "data/review-texts/zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
-      "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
+      "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+      "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -79,7 +92,9 @@
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
       "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "and-juliet-2022/ap--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json",
@@ -92,16 +107,21 @@
       "data/review-texts/six-2021/wsj--unknown.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
       "data/review-texts/the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json"
+      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/arcadia-west-end-2026/ap--mark-kennedy.json",
+      "data/review-texts/chicago-1996/ap--mark-kennedy.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
       "the-reservoir-off-broadway-2026/vulture--jackson-mchenry.json",
-      "kinky-boots-off-broadway-2026/newsday--linda-winer.json"
+      "kinky-boots-off-broadway-2026/newsday--linda-winer.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "11-to-midnight-off-broadway-2026/billboard--unknown.json",
+  "lastProcessed": "chicago-1996/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -190,6 +210,17 @@
       "t": "2026-03-02T01:08:27.953Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T01:13:38.632Z",
+      "event": "bb-session",
+      "session": "a46a1dfd",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-03-02T01:13:39.976Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
