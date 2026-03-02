@@ -14,6 +14,7 @@
  *   --needs-rescore       Only score reviews flagged with needsRescore=true (excerpt→fullText upgrades)
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
  *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
+ *   --stale-scores        Score reviews with stale excerpt-based scores that now have fullText
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --score-range=MIN-MAX Only process reviews with existing LLM score in this range (e.g. 78-82)
  *   --dry-run             Don't save results, just print what would happen
@@ -485,6 +486,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensemble: boolean;
   groundTruth: boolean;
   needsRescore: boolean;
+  staleScores: boolean;
   outdated: boolean;
   forceFullRun: boolean;
   ensembleSource?: string;
@@ -534,7 +536,7 @@ function parseArgs(): ScoringPipelineOptions & {
 
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource,
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores'),
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -548,6 +550,7 @@ function parseArgs(): ScoringPipelineOptions & {
     ensemble: args.includes('--ensemble'),
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
+    staleScores: args.includes('--stale-scores'),
     outdated,
     forceFullRun: args.includes('--force-full-run'),
     ensembleSource,
@@ -771,6 +774,19 @@ async function main(): Promise<void> {
       return source === options.ensembleSource;
     });
     console.log(`Filtering to reviews with ensembleSource="${options.ensembleSource}": ${filesToProcess.length} reviews\n`);
+  } else if (options.staleScores) {
+    // Filter to reviews with fullText + old score that was likely based on excerpt
+    filesToProcess = allFiles.filter(f => {
+      const d = f.data as any;
+      if (!d.fullText || d.fullText.length < 1000) return false;
+      if (!d.llmScore?.score) return false;
+      if (d.needsRescore || d.ensembleData || d.rescoreCompletedAt) return false;
+      // Modern scores with textSource provenance: only rescore if scored on excerpt
+      if (d.llmMetadata?.textSource?.type === 'fullText') return false;
+      // Old scores without provenance: require excerpt field as indicator
+      return !!(d.bwwExcerpt || d.dtliExcerpt || d.showScoreExcerpt);
+    });
+    console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);

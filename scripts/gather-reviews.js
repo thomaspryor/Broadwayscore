@@ -1542,6 +1542,20 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
               // Neither is a known outlet — treat whole string as outlet (existing behavior)
               outletRaw = authorName;
             }
+          } else if (authorName && authorName.includes(': ')) {
+            // BWW colon format: "Outlet: Critic" (e.g., "NY Post: Johnny Oleksinski")
+            const colonIdx = authorName.indexOf(': ');
+            const part0 = authorName.substring(0, colonIdx).trim();
+            const part1 = authorName.substring(colonIdx + 2).trim();
+            if (isRegisteredOutlet(part0)) {
+              outletRaw = part0;
+              criticName = part1;
+            } else if (isRegisteredOutlet(part1)) {
+              outletRaw = part1;
+              criticName = part0;
+            } else {
+              outletRaw = authorName;
+            }
           } else if (authorName) {
             outletRaw = authorName;
           }

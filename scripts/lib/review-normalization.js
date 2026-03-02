@@ -945,6 +945,7 @@ const JUNK_OUTLETS = new Set([
   'advertisement', 'sponsor', 'sponsored', 'promo', 'promotion',
   'unknown', 'null', 'undefined', 'n/a', 'na', 'none',
   'ad', 'ads', 'banner', 'pixel', 'tracking',
+  'garth-drabinsky', 'paradise-square',
 ]);
 
 function isJunkOutlet(outletName) {
@@ -952,9 +953,21 @@ function isJunkOutlet(outletName) {
   const normalized = outletName.toLowerCase().trim();
   if (normalized.length < 2) return true;
   if (JUNK_OUTLETS.has(normalized)) return true;
-  // Structural: reject suspiciously long names or URL-slug-style fragments (6+ hyphenated segments)
-  if (normalized.length > 50) return true;
-  if (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(normalized)) return true;
+  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // Structural: reject suspiciously long names (45+ chars catches BWW sentence fragments)
+  if (slug.length > 45) return true;
+  // Too many hyphens — sentence fragments (6+ segments)
+  if ((slug.match(/-/g) || []).length > 5) return true;
+  // Known garbage patterns from BWW extraction
+  if (/photo-credit|average-rating|read-the-reviews|reviewed-its|the-unthinkable/.test(slug)) return true;
+  // Starts with conjunctions/verbs that indicate a sentence fragment
+  if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|lets-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
+  // Contains verb phrases never found in outlet names
+  if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
+  // Ends with "-review" — show title fragment
+  if (/-review$/.test(slug)) return true;
+  // Contains year numbers (19XX/20XX) but not date-formatted — sentence fragments
+  if (/(?:19|20)\d{2}/.test(slug) && !/\d{2}-\d{2}/.test(slug)) return true;
   return false;
 }
 

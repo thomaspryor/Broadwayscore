@@ -60,6 +60,14 @@ on:
         options:
           - 'false'
           - 'true'
+      stale_scores:
+        description: 'Score reviews with stale excerpt-based scores that now have fullText'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       rescore:
         description: 'Re-score all reviews (even already scored ones)'
         required: false
@@ -208,6 +216,11 @@ jobs:
           # Outdated (rescore reviews with old prompt versions)
           if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
             ARGS="$ARGS --outdated"
+          fi
+
+          # Stale scores (fullText + old excerpt-based score)
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ]; then
+            ARGS="$ARGS --stale-scores"
           fi
 
           # Rescore all (even already scored)
@@ -454,7 +467,7 @@ jobs:
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'true'
-          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true')
+          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.stale_scores == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -487,6 +500,10 @@ jobs:
           if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
           fi
+          # Pass through stale_scores flag so stale-score chains continue
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f stale_scores=true"
+          fi
 
           gh workflow run "LLM Ensemble Score Reviews" $CHAIN_ARGS
           echo "Next batch dispatched."
@@ -496,7 +513,8 @@ jobs:
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0'
-              || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
+              || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
+              || (github.event.inputs.stale_scores == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
