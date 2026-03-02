@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-03-02T22:38:13.579Z",
+  "runDate": "2026-03-02T22:37:19.515Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "witness-for-the-prosecution-west-end-2022",
+    "showFilter": "the-play-that-goes-wrong-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 1,
+    "processed": 9,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "87.5%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 3,
@@ -24,11 +24,11 @@
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 5
   },
   "statistics": {
     "tier1Attempts": 4,
-    "tier1Success": 3,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,10 +39,10 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 2,
+    "tier4Attempts": 7,
+    "tier4Success": 5,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 2,
@@ -50,20 +50,23 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
-    "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
-    "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
-    "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
+    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
+    "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
+    "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+    "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json"
   ],
-  "failed": [
-    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
-  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
-      "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
-      "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
+      "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
+      "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
+      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
+      "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -74,8 +77,11 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
-      "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
+      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
+      "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json"
     ]
   },
   "failuresByOutlet": {},
