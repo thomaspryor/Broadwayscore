@@ -74,6 +74,9 @@ ga-service-account*.json
 data/archives/
 
 
+# Generated show lookup for My Shows page (regenerated at build time)
+public/data/show-lookup.json
+
 # LLM classification checkpoint (ephemeral, crash-recovery only)
 .classify-wp-checkpoint.json
 
