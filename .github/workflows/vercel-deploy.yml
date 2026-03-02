@@ -66,6 +66,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Pre-deploy data integrity check
+        run: node scripts/pre-deploy-check.js
+
       - name: Cache Vercel CLI
         id: vercel-cli-cache
         uses: actions/cache@v4
