@@ -626,11 +626,6 @@ export function computeShowData(
     normalizedStatus = 'open';
   } else if (normalizedStatus === 'open' && show.closingDate && show.closingDate < today) {
     normalizedStatus = 'closed';
-  } else if (normalizedStatus === 'closed' && show.openingDate && show.openingDate <= today
-    && show.closingDate && show.closingDate >= today) {
-    // Reverse correction: a "closed" show whose closing date hasn't passed yet is actually open.
-    // Covers race conditions where concurrent sessions set status to "closed" prematurely.
-    normalizedStatus = 'open';
   }
 
   const confidence = assessConfidence(criticScore, null, normalizedStatus);
