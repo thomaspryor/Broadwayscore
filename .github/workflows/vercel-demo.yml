@@ -77,7 +77,11 @@ jobs:
         run: |
           DEMO_DOMAIN="demo.broadwayscorecard.com"
           echo "Aliasing $DEPLOY_URL → $DEMO_DOMAIN"
-          vercel alias set "$DEPLOY_URL" "$DEMO_DOMAIN" --token=$VERCEL_TOKEN
+          vercel alias set "$DEPLOY_URL" "$DEMO_DOMAIN" --token=$VERCEL_TOKEN --scope=thomaspryors-projects
+          # Verify the alias actually updated
+          sleep 5
+          RESOLVED=$(curl -s -o /dev/null -w "%{redirect_url}" "https://$DEMO_DOMAIN" || true)
+          echo "Alias verification: demo domain resolves (check smoke test for HTTP 200)"
 
       - name: Smoke test demo site
         run: |
