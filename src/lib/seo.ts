@@ -136,9 +136,10 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string) {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   };
 
-  // Add aggregate rating if we have scores and sufficient reviews (3+)
+  // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
-  if (show.criticScore?.score && show.criticScore?.reviewCount >= 3) {
+  const minReviewsForSchema = (isWestEnd || show.category === 'off-broadway') ? 3 : 5;
+  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),
@@ -315,7 +316,8 @@ export function generateShowFAQSchema(show: ComputedShow) {
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What is the score?
-  if (score && reviewCount >= 5) {
+  const minReviewsForFAQ = (isWestEnd || isOffBroadway) ? 3 : 5;
+  if (score && reviewCount >= minReviewsForFAQ) {
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
       answer: `${show.title} has a CriticScore of ${score}/100 based on ${reviewCount} professional reviews. ${
@@ -415,8 +417,9 @@ export function generateBrowseFAQSchema(
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What are the best shows in this category?
+  const minReviewsForBrowse = (isWestEnd || isOffBroadway) ? 3 : 5;
   const topShows = shows
-    .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= 5)
+    .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= minReviewsForBrowse)
     .slice(0, 5);
 
   if (topShows.length >= 2) {
