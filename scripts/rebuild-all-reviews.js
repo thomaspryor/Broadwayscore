@@ -2588,6 +2588,33 @@ const output = {
   reviews: allReviews
 };
 
+// REVIEW COUNT REGRESSION GUARD: abort if rebuild would lose >2% of reviews.
+// This prevents CI rebuilds with stale/incomplete data from silently dropping reviews.
+// Override with --force-write to bypass (e.g., after intentional bulk cleanup).
+{
+  let existingCount = 0;
+  try {
+    const existing = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
+    existingCount = (existing.reviews || []).length;
+  } catch (e) { /* first run, no existing file */ }
+
+  if (existingCount > 0) {
+    const newCount = allReviews.length;
+    const lost = existingCount - newCount;
+    const pctLost = (lost / existingCount * 100).toFixed(1);
+    if (lost > 0 && parseFloat(pctLost) > 2.0 && !process.argv.includes('--force-write')) {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild would DROP ${lost} reviews (${pctLost}% loss)`);
+      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+      console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
+      console.error(`   To override, run with --force-write`);
+      process.exit(1);
+    }
+    if (lost > 0) {
+      console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within 2% threshold, proceeding.`);
+    }
+  }
+}
+
 // Write output
 fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
 
