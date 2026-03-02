@@ -1560,15 +1560,15 @@ showDirs.forEach(showId => {
       }
 
       // Cross-market guard: skip reviews where outlet market doesn't match show market
-      // e.g., US-only outlets (Fayetteville Flyer) should not score West End shows
+      // Only isDualMarket outlets (NYT, Variety, Guardian, FT, etc.) and London-region
+      // outlets can score West End shows. T1/T2 exemption was removed because US T1/T2
+      // outlets (WSJ, Vulture, EW, etc.) don't review WE — their reviews in WE dirs are
+      // Broadway leaks from aggregator scrapers. See March 2026 contamination audit.
       const showCategory = showCategoryMap[showId] || 'broadway';
       const rawOutlet = (data.outletId || data.outlet || '').toLowerCase();
       const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
       if (showCategory === 'west-end'
-          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)
-          && !TIER_1_2_OUTLET_IDS.has(canonicalOutlet) && !TIER_1_2_OUTLET_IDS.has(rawOutlet)) {
-        // Only block Tier 3 / untiered outlets without London region
-        // Tier 1/2 outlets (NYT, WashPost, AP, etc.) legitimately review WE shows
+          && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
