@@ -7,14 +7,12 @@ import { getReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
 /**
  * OAuth callback handler.
  *
- * CRITICAL: Do NOT manually parse URL params.
- * Supabase PKCE flow returns tokens in URL hash fragments (#access_token=...).
- * supabase.auth.onAuthStateChange() handles this automatically.
+ * Implicit flow: Supabase returns tokens in URL hash (#access_token=...).
+ * detectSessionInUrl in the Supabase client handles parsing automatically.
  *
- * Flow:
- * 1. User signs in with Google → redirected here with hash fragment
- * 2. onAuthStateChange fires SIGNED_IN event
- * 3. Redirect to stored return URL
+ * Race condition fix: The AuthProvider's onAuthStateChange may fire SIGNED_IN
+ * before this page registers its own listener. So we also poll getSession()
+ * to catch the case where auth already completed.
  */
 export default function AuthCallbackPage() {
   const [error, setError] = useState(false);
@@ -42,27 +40,49 @@ export default function AuthCallbackPage() {
       return;
     }
 
-    // Set up timeout — if auth doesn't complete in 8s, show error
-    const timeout = setTimeout(() => {
-      setErrorDetail('Timed out waiting for auth callback. Hash: ' + (hash ? hash.substring(0, 80) : '(empty)'));
-      setError(true);
-    }, 8000);
+    let redirected = false;
 
-    // Listen for auth state change (handles hash fragment automatically)
+    const doRedirect = () => {
+      if (redirected) return;
+      redirected = true;
+      const returnUrl = getReturnUrl();
+      clearReturnUrl();
+      setTimeout(() => {
+        window.location.href = returnUrl;
+      }, 100);
+    };
+
+    // Strategy 1: Listen for auth state change event
     const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
-        clearTimeout(timeout);
-        const returnUrl = getReturnUrl();
-        clearReturnUrl();
-        // Small delay to ensure session is persisted
-        setTimeout(() => {
-          window.location.href = returnUrl;
-        }, 100);
+        doRedirect();
       }
     });
 
+    // Strategy 2: Poll getSession() to catch already-completed auth
+    // (handles race condition where AuthProvider caught the event first)
+    const pollInterval = setInterval(async () => {
+      try {
+        const { data: { session } } = await client.auth.getSession();
+        if (session?.user) {
+          clearInterval(pollInterval);
+          doRedirect();
+        }
+      } catch {
+        // ignore polling errors
+      }
+    }, 500);
+
+    // Timeout after 10s
+    const timeout = setTimeout(() => {
+      clearInterval(pollInterval);
+      setErrorDetail('Timed out waiting for auth. Hash present: ' + (hash.length > 1 ? 'yes (' + hash.substring(0, 60) + '...)' : 'no'));
+      setError(true);
+    }, 10000);
+
     return () => {
       clearTimeout(timeout);
+      clearInterval(pollInterval);
       subscription.unsubscribe();
     };
   }, []);
