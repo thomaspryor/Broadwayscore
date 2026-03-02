@@ -838,6 +838,24 @@ function validateReviewsJson() {
   const reviews = data.reviews || [];
   ok(`Loaded ${reviews.length} reviews from reviews.json`);
 
+  // Orphan review check: every showId in reviews.json must exist in shows.json
+  const showsFile = path.join(DATA_DIR, 'shows.json');
+  if (fs.existsSync(showsFile)) {
+    try {
+      const showsJson = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+      const allShowIds = new Set((showsJson.shows || []).map(s => s.id));
+      const reviewShowIds = new Set(reviews.map(r => r.showId));
+      const orphanIds = [...reviewShowIds].filter(id => !allShowIds.has(id));
+      if (orphanIds.length > 0) {
+        error(`${orphanIds.length} orphan showIds in reviews.json (no matching show): ${orphanIds.slice(0, 10).join(', ')}${orphanIds.length > 10 ? '...' : ''}`);
+      } else {
+        ok('No orphan showIds in reviews.json');
+      }
+    } catch (e) {
+      warn(`Could not check orphan reviews: ${e.message}`);
+    }
+  }
+
   // Review count delta check against baseline
   if (baseline && baseline.totalReviews) {
     const minReviews = Math.floor(baseline.totalReviews * (1 - MAX_REVIEW_DECLINE_PCT));
