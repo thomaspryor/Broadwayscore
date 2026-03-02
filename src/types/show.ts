@@ -18,7 +18,7 @@ export interface ShowMetadata {
   closingDate?: string; // ISO date, if announced/known
   status: ShowStatus;
   type: 'musical' | 'play' | 'special';
-  category?: ShowCategory; // 'broadway' (default) or 'off-broadway'
+  category?: ShowCategory; // 'broadway' (default), 'off-broadway', or 'west-end'
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
 }
