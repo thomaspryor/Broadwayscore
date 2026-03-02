@@ -1,24 +1,24 @@
 {
-  "runDate": "2026-03-02T21:28:30.512Z",
+  "runDate": "2026-03-02T21:30:11.434Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-producers-west-end-2025",
+    "showFilter": "man-and-boy-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 1,
+    "processed": 4,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "87.5%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 6,
-    "amp": 0,
+    "playwright": 3,
+    "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
@@ -27,10 +27,10 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 7,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
@@ -39,8 +39,8 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
@@ -50,36 +50,42 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
-    "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-    "the-producers-west-end-2025/independent--louis-chilton.json",
-    "the-producers-west-end-2025/london-theatre--anya-ryan.json",
-    "the-producers-west-end-2025/standard--nick-curtis.json",
-    "the-producers-west-end-2025/telegraph--dominic-cavendish.json",
-    "the-producers-west-end-2025/times-uk--dominic-maxwell.json"
+    "man-and-boy-west-end-2026/guardian--arifa-akbar.json",
+    "man-and-boy-west-end-2026/financialtimes--unknown.json",
+    "man-and-boy-west-end-2026/independent--alice-saville.json",
+    "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
-    "the-producers-west-end-2025/thestage--paul-vale.json"
+    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
+    "man-and-boy-west-end-2026/variety--marilyn-stasio.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-producers-west-end-2025/all-that-dazzles-uk--daz-gale.json",
-      "the-producers-west-end-2025/artsdesk--gary-naylor.json",
-      "the-producers-west-end-2025/london-theatre--anya-ryan.json",
-      "the-producers-west-end-2025/standard--nick-curtis.json",
-      "the-producers-west-end-2025/telegraph--dominic-cavendish.json",
-      "the-producers-west-end-2025/times-uk--dominic-maxwell.json"
+      "man-and-boy-west-end-2026/guardian--arifa-akbar.json",
+      "man-and-boy-west-end-2026/financialtimes--unknown.json",
+      "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-and-boy-west-end-2026/variety--marilyn-stasio.json",
+      "man-and-boy-west-end-2026/variety--marilyn-stasio.json"
+    ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "the-producers-west-end-2025/independent--louis-chilton.json"
+      "man-and-boy-west-end-2026/independent--alice-saville.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
