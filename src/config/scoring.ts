@@ -88,7 +88,7 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'huffpost': { tier: 2, name: 'HuffPost', scoreFormat: 'text_bucket' },
   'backstage': { tier: 2, name: 'Backstage', scoreFormat: 'text_bucket' },
   'village-voice': { tier: 2, name: 'The Village Voice', scoreFormat: 'text_bucket' },
-  'financialtimes': { tier: 2, name: 'Financial Times', scoreFormat: 'text_bucket' },
+  'financialtimes': { tier: 1, name: 'Financial Times', scoreFormat: 'text_bucket' },
   'philadelphia-inquirer': { tier: 2, name: 'The Philadelphia Inquirer', scoreFormat: 'text_bucket' },
   'chicago-sun-times': { tier: 2, name: 'Chicago Sun-Times', scoreFormat: 'text_bucket' },
   'new-york-sun': { tier: 2, name: 'The New York Sun', scoreFormat: 'text_bucket' },
@@ -105,21 +105,22 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'wnyc': { tier: 2, name: 'WNYC', scoreFormat: 'text_bucket' },
 
   // === LONDON / WEST END OUTLETS ===
-  // Tier 1 — Major UK nationals
+  // Tier 1 — Major UK nationals + industry trade
   'times-uk': { tier: 1, name: 'The Times (UK)', scoreFormat: 'stars', maxScale: 5 },
   'telegraph': { tier: 1, name: 'The Telegraph', scoreFormat: 'stars', maxScale: 5 },
   'standard': { tier: 1, name: 'Evening Standard', scoreFormat: 'stars', maxScale: 5 },
-  'daily-mail': { tier: 1, name: 'Daily Mail', scoreFormat: 'stars', maxScale: 5 },
+  'thestage': { tier: 1, name: 'The Stage', scoreFormat: 'stars', maxScale: 5 },
+  'timeout-london': { tier: 1, name: 'Time Out London', scoreFormat: 'stars', maxScale: 5 },
   // Note: guardian already listed in US Tier 1 — covers both Broadway and West End
+  // Note: financialtimes listed in US section as Tier 1 — covers both Broadway and West End
 
-  // Tier 2 — UK trade/specialist
-  'thestage': { tier: 2, name: 'The Stage', scoreFormat: 'stars', maxScale: 5 },
+  // Tier 2 — UK specialist/consumer
+  'daily-mail': { tier: 2, name: 'Daily Mail', scoreFormat: 'stars', maxScale: 5 },
   'whatsonstage': { tier: 2, name: 'WhatsOnStage', scoreFormat: 'stars', maxScale: 5 },
-  'timeout-london': { tier: 2, name: 'Time Out London', scoreFormat: 'stars', maxScale: 5 },
   'independent': { tier: 2, name: 'The Independent', scoreFormat: 'stars', maxScale: 5 },
   'london-theatre': { tier: 2, name: 'London Theatre', scoreFormat: 'stars', maxScale: 5 },
   'i-paper': { tier: 2, name: 'The i', scoreFormat: 'stars', maxScale: 5 },
-  // Note: financialtimes already listed in US Tier 2 — covers both Broadway and West End
+  'artsdesk': { tier: 2, name: 'The Arts Desk', scoreFormat: 'stars', maxScale: 5 },
 
   // Tier 3: Smaller outlets, blogs, niche sites
   'cititour': { tier: 3, name: 'Cititour', scoreFormat: 'text_bucket' },
