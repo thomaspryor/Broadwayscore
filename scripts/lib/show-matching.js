@@ -436,8 +436,25 @@ function titleToSlug(title) {
  * If a target year is provided, picks the production with closest opening year.
  * Otherwise, picks the most recent production.
  */
-function pickBestProduction(matches, targetYear) {
+function pickBestProduction(matches, targetYear, preferredMarket) {
   if (matches.length === 1) return matches[0];
+
+  // Market-aware filtering: if a preferred market is specified (e.g., 'broadway',
+  // 'west-end', 'off-broadway'), filter to only matching productions first.
+  // This prevents cross-market contamination when the same title exists in multiple
+  // markets (e.g., hamilton-2015 vs hamilton-west-end-2021).
+  if (preferredMarket && matches.length > 1) {
+    const marketMatches = matches.filter(m => {
+      const cat = (m.category || '').toLowerCase();
+      if (preferredMarket === 'broadway') return !cat || cat === 'broadway';
+      return cat === preferredMarket;
+    });
+    if (marketMatches.length > 0) {
+      matches = marketMatches;
+      if (matches.length === 1) return matches[0];
+    }
+  }
+
   if (!targetYear) {
     // No date hint — prefer most recent production, but warn about ambiguity
     const ids = matches.map(m => m.id).join(', ');
@@ -465,12 +482,14 @@ function pickBestProduction(matches, targetYear) {
  * @param {Object[]} shows - Array of show objects from shows.json
  * @param {Object} [options] - Optional settings
  * @param {number} [options.year] - Publication year for multi-production disambiguation
+ * @param {string} [options.market] - Preferred market ('broadway'|'west-end'|'off-broadway') for cross-market disambiguation
  * @returns {{ show: Object, confidence: 'high'|'medium' } | null}
  */
 function matchTitleToShow(externalTitle, shows, options) {
   if (!externalTitle || !shows || shows.length === 0) return null;
 
   const targetYear = options?.year || null;
+  const preferredMarket = options?.market || null;
   const cleaned = cleanExternalTitle(externalTitle);
   const lowerCleaned = cleaned.toLowerCase().trim();
   if (!lowerCleaned) return null;
@@ -503,7 +522,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (exactMatches.length > 0) {
-      return { show: pickBestProduction(exactMatches, targetYear), confidence: 'high' };
+      return { show: pickBestProduction(exactMatches, targetYear, preferredMarket), confidence: 'high' };
     }
 
     // 2. Known aliases → slug → show (collect all for multi-production disambiguation)
@@ -521,7 +540,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (aliasMatches.length > 0) {
-        return { show: pickBestProduction(aliasMatches, targetYear), confidence: 'high' };
+        return { show: pickBestProduction(aliasMatches, targetYear, preferredMarket), confidence: 'high' };
       }
     }
 
@@ -553,7 +572,7 @@ function matchTitleToShow(externalTitle, shows, options) {
       }
     }
     if (normalizedMatches.length > 0) {
-      return { show: pickBestProduction(normalizedMatches, targetYear), confidence: 'high' };
+      return { show: pickBestProduction(normalizedMatches, targetYear, preferredMarket), confidence: 'high' };
     }
   }
 
@@ -569,7 +588,7 @@ function matchTitleToShow(externalTitle, shows, options) {
         }
       }
       if (wordMatches.length > 0) {
-        return { show: pickBestProduction(wordMatches, targetYear), confidence: 'medium' };
+        return { show: pickBestProduction(wordMatches, targetYear, preferredMarket), confidence: 'medium' };
       }
     }
   }
