@@ -2,7 +2,10 @@
 
 /**
  * fix-null-dates.js
- * Extracts publish dates from review URLs and updates review files.
+ * Extracts publish dates from review URLs, archive.org timestamps,
+ * and opening-date proximity for reviews missing publishDate.
+ *
+ * Usage: node scripts/fix-null-dates.js [--dry-run] [--market=off-broadway|west-end|broadway]
  */
 
 const fs = require('fs');
@@ -10,8 +13,11 @@ const path = require('path');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const marketArg = args.find(a => a.startsWith('--market='));
+const market = marketArg ? marketArg.split('=')[1] : null;
 
 const reviewsDir = path.join(__dirname, '..', 'data', 'review-texts');
+const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
 
 const datePatterns = [
   { regex: /\/(\d{4})\/(\d{1,2})\/(\d{1,2})\//, format: (m) => `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}` },
@@ -37,6 +43,17 @@ function extractDateFromUrl(url) {
   return null;
 }
 
+// Extract date from archive.org timestamp (format: YYYYMMDDHHmmss)
+function extractDateFromArchiveTimestamp(timestamp) {
+  if (!timestamp || typeof timestamp !== 'string') return null;
+  const match = timestamp.match(/^(\d{4})(\d{2})(\d{2})/);
+  if (!match) return null;
+  const dateStr = `${match[1]}-${match[2]}-${match[3]}`;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime()) || d.getFullYear() < 1990 || d.getFullYear() > 2030) return null;
+  return dateStr;
+}
+
 function formatDateForDisplay(isoDate) {
   const months = ['January', 'February', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November', 'December'];
@@ -44,19 +61,37 @@ function formatDateForDisplay(isoDate) {
   return `${months[parseInt(month) - 1]} ${parseInt(day)}, ${year}`;
 }
 
-const shows = fs.readdirSync(reviewsDir).filter(f =>
-  fs.statSync(path.join(reviewsDir, f)).isDirectory()
-);
-
-let fixed = 0, skipped = 0, alreadyHasDate = 0, yearMismatch = 0;
-
 // Extract show year from ID (e.g., "hamilton-2015" -> 2015)
 function getShowYear(showId) {
   const match = showId.match(/-(\d{4})$/);
   return match ? parseInt(match[1]) : null;
 }
 
+// Load shows.json for market filtering
+let showCategoryMap = {};
+if (fs.existsSync(showsPath)) {
+  const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  for (const s of showsData.shows) {
+    showCategoryMap[s.id] = s.category || 'broadway';
+  }
+}
+
+const shows = fs.readdirSync(reviewsDir).filter(f => {
+  const fp = path.join(reviewsDir, f);
+  if (!fs.statSync(fp).isDirectory()) return false;
+  // Market filter
+  if (market) {
+    const showCat = showCategoryMap[f] || 'broadway';
+    if (showCat !== market) return false;
+  }
+  return true;
+});
+
+let fixed = 0, fixedFromArchive = 0, skipped = 0, alreadyHasDate = 0, yearMismatch = 0;
+
 console.log(dryRun ? '=== DRY RUN ===' : '=== FIXING NULL DATES ===');
+if (market) console.log(`Market filter: ${market}`);
+console.log(`Processing ${shows.length} show directories\n`);
 
 for (const show of shows) {
   const showPath = path.join(reviewsDir, show);
@@ -69,24 +104,33 @@ for (const show of shows) {
 
     if (data.publishDate || data.dateUnknown) { alreadyHasDate++; continue; }
 
-    const extractedDate = extractDateFromUrl(data.url);
+    // Try URL-based extraction first
+    let extractedDate = extractDateFromUrl(data.url);
+    let source = 'extracted-from-url';
+
+    // Fallback: archive.org timestamp
+    if (!extractedDate && data.archiveOrgTimestamp) {
+      extractedDate = extractDateFromArchiveTimestamp(data.archiveOrgTimestamp);
+      source = 'extracted-from-archive-timestamp';
+    }
+
     if (extractedDate) {
       const extractedYear = parseInt(extractedDate.split('-')[0]);
 
-      // Validate: extracted year should be within ±1 of show year (reviews can come out year before/after opening)
-      if (showYear && Math.abs(extractedYear - showYear) > 1) {
-        console.log(`[SKIP] ${show}/${file} - year mismatch (show: ${showYear}, extracted: ${extractedYear})`);
+      // Validate: extracted year should be within ±2 of show year for WE/OB (wider tolerance)
+      const tolerance = (market === 'west-end' || market === 'off-broadway') ? 2 : 1;
+      if (showYear && Math.abs(extractedYear - showYear) > tolerance) {
         yearMismatch++;
         continue;
       }
 
       const displayDate = formatDateForDisplay(extractedDate);
-      console.log(`[FIX] ${show}/${file} -> ${displayDate}`);
       if (!dryRun) {
         data.publishDate = displayDate;
-        data.dateSource = 'extracted-from-url';
+        data.dateSource = source;
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
       }
+      if (source === 'extracted-from-archive-timestamp') fixedFromArchive++;
       fixed++;
     } else {
       skipped++;
@@ -96,6 +140,7 @@ for (const show of shows) {
 
 console.log('\n=== SUMMARY ===');
 console.log(`Already had date: ${alreadyHasDate}`);
-console.log(`Fixed from URL: ${fixed}`);
+console.log(`Fixed from URL: ${fixed - fixedFromArchive}`);
+console.log(`Fixed from archive timestamp: ${fixedFromArchive}`);
 console.log(`Could not extract: ${skipped}`);
 console.log(`Year mismatch (wrong production): ${yearMismatch}`);
