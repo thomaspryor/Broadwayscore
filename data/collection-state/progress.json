@@ -10,7 +10,11 @@
     "bigfoot-off-broadway-2026/playbill--unknown.json",
     "into-the-woods-2022/nyt-theater--jonathan-mandell.json",
     "la-cage-aux-folles-2004/new-york--scott-brown.json",
-    "la-cage-aux-folles-2010/nytheatre--julie-congress.json"
+    "la-cage-aux-folles-2010/nytheatre--julie-congress.json",
+    "liberation-2025/new-york--sandy-macdonald.json",
+    "liberation-2025/nyt-theater--unknown.json",
+    "liberation-2025/nytg--unknown.json",
+    "little-bear-ridge-road-2025/nyt-theater--unknown.json"
   ],
   "failed": [
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
@@ -50,32 +54,37 @@
     "how-to-dance-in-ohio-2023/hollywood-reporter--angie-han.json",
     "it-shoulda-been-you-2015/variety--steven-suskin.json",
     "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "chess-2025/wsj--unknown.json",
-    "chicago-1996/nypost--elisabeth-vincentelli.json",
-    "just-in-time-2025/wsj--unknown.json",
-    "mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
-    "mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "ragtime-2025/wsj--unknown.json",
-    "six-2021/wsj--unknown.json",
-    "the-play-that-goes-wrong-off-broadway-2019/deadline--jeremy-gerard.json"
+    "lackawanna-blues-2021/variety--unknown.json",
+    "lend-me-a-tenor-1989/nytheatre--michael-criscuolo.json",
+    "les-liaisons-dangereuses-2008/variety--matt-trueman.json",
+    "les-miserables-1987/nytg--tulis-mccall.json",
+    "linda-vista-2019/variety--aramide-tinubu.json",
+    "linda-vista-2019/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "bigfoot-off-broadway-2026/playbill--unknown.json"
+      "bigfoot-off-broadway-2026/playbill--unknown.json",
+      "liberation-2025/nyt-theater--unknown.json",
+      "liberation-2025/nytg--unknown.json",
+      "little-bear-ridge-road-2025/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/it-shoulda-been-you-2015/variety--steven-suskin.json",
       "it-shoulda-been-you-2015/variety--steven-suskin.json",
       "data/review-texts/la-cage-aux-folles-2004/new-york--scott-brown.json",
-      "la-cage-aux-folles-2004/new-york--scott-brown.json"
+      "la-cage-aux-folles-2004/new-york--scott-brown.json",
+      "data/review-texts/lackawanna-blues-2021/variety--unknown.json",
+      "lackawanna-blues-2021/variety--unknown.json",
+      "data/review-texts/les-liaisons-dangereuses-2008/variety--matt-trueman.json",
+      "les-liaisons-dangereuses-2008/variety--matt-trueman.json"
     ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "la-cage-aux-folles-2010/nytheatre--julie-congress.json"
+      "la-cage-aux-folles-2010/nytheatre--julie-congress.json",
+      "lend-me-a-tenor-1989/nytheatre--michael-criscuolo.json",
+      "liberation-2025/new-york--sandy-macdonald.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -97,15 +106,7 @@
       "data/review-texts/golden-boy-2012/nytimes--ben-brantley.json",
       "data/review-texts/heisenberg-2016/act-three-the-reviews--doug-marino.json",
       "data/review-texts/hello-dolly-2017/vulture--jesse-green.json",
-      "data/review-texts/book-of-mormon-2011/wsj--terry-teachout.json",
-      "data/review-texts/chess-2025/wsj--unknown.json",
-      "data/review-texts/just-in-time-2025/wsj--unknown.json",
-      "data/review-texts/mexodus-off-broadway-2026/theatermania--zachary-stewart.json",
-      "data/review-texts/mexodus-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
-      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
-      "data/review-texts/ragtime-2025/wsj--unknown.json",
-      "data/review-texts/six-2021/wsj--unknown.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/deadline--jeremy-gerard.json"
+      "data/review-texts/les-miserables-1987/nytg--tulis-mccall.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
@@ -119,6 +120,6 @@
     ]
   },
   "startTime": "2026-03-02T22:36:11.675Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/deadline--jeremy-gerard.json",
+  "lastProcessed": "little-bear-ridge-road-2025/nyt-theater--unknown.json",
   "log": []
 }
