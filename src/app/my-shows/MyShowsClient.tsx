@@ -146,6 +146,28 @@ export default function MyShowsClient() {
     );
   }
 
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
+        <div className="text-center py-16">
+          <div className="text-5xl mb-4">🎭</div>
+          <h3 className="text-lg font-bold text-white mb-2">Track your Broadway journey</h3>
+          <p className="text-sm text-gray-400 mb-6 max-w-xs mx-auto">
+            Sign in to rate shows, keep a diary of what you&apos;ve seen, and build your watchlist.
+          </p>
+          <button
+            type="button"
+            onClick={() => showSignIn('rating')}
+            className="inline-block px-6 py-3 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+          >
+            Sign In to Get Started
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
