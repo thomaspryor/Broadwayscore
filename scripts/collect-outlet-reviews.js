@@ -425,9 +425,9 @@ async function main() {
         continue;
       }
 
-      // Skip print-only outlets — no online content to discover via SERP
-      if (outletInfo && outletInfo.accessModel === 'print-only') {
-        console.log(`  [${outlet.id}] SKIP — print-only outlet`);
+      // Skip uncollectable outlets — no online content to discover via SERP
+      if (outletInfo && (outletInfo.accessModel === 'print-only' || outletInfo.accessModel === 'defunct')) {
+        console.log(`  [${outlet.id}] SKIP — ${outletInfo.accessModel} outlet`);
         totalSkipped++;
         continue;
       }
