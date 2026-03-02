@@ -35,8 +35,38 @@ const showFilter = showArg ? showArg.split('=')[1] : null;
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
-const { extractAuthorFromHtml } = require('./lib/content-quality');
+const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
+
+// --- Names that are NOT theater critics (outlet names, wire service labels, etc.) ---
+const REJECT_NAMES = new Set([
+  'condé nast', 'conde nast', 'the associated press', 'associated press',
+  'ap', 'reuters', 'staff', 'staff writer', 'editorial', 'editor',
+  'admin', 'administrator', 'contributor', 'guest', 'anonymous',
+  'broadway world', 'broadwayworld', 'broadway.com', 'playbill',
+  'the new yorker', 'the guardian', 'variety', 'the wrap',
+  'the hollywood reporter', 'the daily beast', 'entertainment weekly',
+  'ny1', 'time out', 'timeout', 'new york times', 'the new york times',
+  'bww news desk', 'broadway news desk', 'news desk',
+  'financial times', 'the stage', 'the playlist', 'the reviews hub',
+]);
+
+function isRejectName(name) {
+  if (!name || name.length < 4) return true;
+  if (REJECT_NAMES.has(name.toLowerCase())) return true;
+  if (/^(the |a |an )/i.test(name) && !name.includes(' ')) return true;
+  if (name.includes(',') && name.split(',').length > 2) return true;
+  if (/\band\b/i.test(name) && name.split(/\band\b/i).length > 2) return true;
+  if (name.includes('http') || name.includes('.com')) return true;
+  if (name === name.toUpperCase() && name.length > 5) return true;
+  if (name === name.toLowerCase()) return true;
+  if (/^(reviewed by|written by|by |photo |image |credit)/i.test(name)) return true;
+  if (/^(staff|desk|team|wire|bureau|press|agency|service)/i.test(name)) return true;
+  if (/^(updated|originally|published|posted|modified|created)\s/i.test(name)) return true;
+  if (/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\s/i.test(name)) return true;
+  if (!name.includes(' ')) return true;
+  return false;
+}
 
 // --- Scan all review files ---
 function scanReviewFiles() {
@@ -218,7 +248,7 @@ async function phaseB(unknownCritics) {
     let method = '';
 
     // Strategy 1: Use existing extractedByline from source file
-    if (u.data.extractedByline && u.data.extractedByline !== 'Unknown') {
+    if (u.data.extractedByline && u.data.extractedByline !== 'Unknown' && !isRejectName(u.data.extractedByline)) {
       critic = u.data.extractedByline;
       method = 'extractedByline';
       bylineResolved++;
@@ -238,6 +268,9 @@ async function phaseB(unknownCritics) {
 
       if (result.html) {
         critic = extractAuthorFromHtml(result.html);
+        if (critic && isRejectName(critic)) {
+          critic = null; // Reject outlet names, metadata artifacts, etc.
+        }
         if (critic) {
           method = 'http-fetch';
           httpResolved++;
