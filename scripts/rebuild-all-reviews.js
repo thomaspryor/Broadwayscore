@@ -1261,13 +1261,21 @@ const multiProdDirectorGuard = {};
   }
 }
 
-// Get all show directories
+// Get all show directories (filter out orphan dirs that don't match any show in shows.json)
+const validShowIds = new Set(showsData.shows.map(s => s.id));
 const showDirs = fs.readdirSync(reviewTextsDir)
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice
     if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
-    return fs.statSync(fullPath).isDirectory();
+    if (!fs.statSync(fullPath).isDirectory()) return false;
+    // Skip orphaned review directories (show was renamed/merged/deleted)
+    if (!validShowIds.has(f)) {
+      console.warn(`  Skipping orphaned review directory: ${f}`);
+      stats.skippedOrphanDirs = (stats.skippedOrphanDirs || 0) + 1;
+      return false;
+    }
+    return true;
   });
 
 console.log(`Found ${showDirs.length} show directories\n`);
@@ -1334,6 +1342,12 @@ showDirs.forEach(showId => {
   const showCat = showCategoryMap[showId] || 'broadway';
   if (showStatusMap[showId] === 'previews' && showCat === 'broadway') {
     stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
+    return;
+  }
+
+  // Skip shows in "upcoming" status across all markets — no valid reviews can exist yet
+  if (showStatusMap[showId] === 'upcoming') {
+    stats.skippedUpcomingShows = (stats.skippedUpcomingShows || 0) + 1;
     return;
   }
 
@@ -2038,23 +2052,30 @@ showDirs.forEach(showId => {
       // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
       // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
       const CONTAMINATION_AUDIT_CUTOFF = process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z';
-      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
+      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy && !data.allowTourSignal) {
         const introText = data.fullText.slice(0, 600);
 
         // Tour detection (skip tour-stop shows where touring is expected)
+        // Auto-exclude: flagged reviews are excluded from reviews.json, not just audited.
+        // Override: add "allowTourSignal": true to the review-text JSON to force inclusion.
         if (showStatusMap[showId] !== 'tour-stop') {
           const tourCheck = isTourReviewExcerpt(introText);
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
               `Tour signal in fullText intro: ${tourCheck.signal}`);
+            stats.skippedTourContamination = (stats.skippedTourContamination || 0) + 1;
+            return;
           }
         }
 
         // Film/TV detection (2+ film/streaming keywords, 0 theater keywords)
+        // Auto-exclude: same as tour detection above.
         const filmCheck = isFilmTvReview(introText);
         if (filmCheck.isFilmTv) {
           flagForHumanReview(data, 'possible-film-tv-fulltext',
             `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
+          stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
+          return;
         }
       }
 
@@ -2691,6 +2712,10 @@ console.log(`  Skipped (non-review): ${stats.skippedNonReview || 0}`);
 console.log(`  Skipped (syndicated duplicate): ${stats.skippedSyndicated || 0}`);
 console.log(`  Skipped (cross-outlet duplicate): ${stats.skippedCrossOutletDupe || 0}`);
 console.log(`  Skipped (previews shows): ${stats.skippedPreviewsShows || 0}`);
+console.log(`  Skipped (upcoming shows): ${stats.skippedUpcomingShows || 0}`);
+console.log(`  Skipped (orphan directories): ${stats.skippedOrphanDirs || 0}`);
+console.log(`  Skipped (tour contamination): ${stats.skippedTourContamination || 0}`);
+console.log(`  Skipped (film/TV contamination): ${stats.skippedFilmTvContamination || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
