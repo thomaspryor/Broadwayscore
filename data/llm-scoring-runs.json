@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-02-26T21:02:39.280Z",
-    "completedAt": "2026-02-26T21:04:16.995Z",
-    "totalReviews": 32025,
-    "processed": 18,
-    "skipped": 14816,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 67302,
-      "output": 6379,
-      "total": 73681
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-02-27T03:06:15.755Z",
     "completedAt": "2026-02-27T03:28:38.722Z",
     "totalReviews": 32127,
@@ -755326,6 +755312,26 @@
           "total": 3
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-02T21:31:33.817Z",
+    "completedAt": "2026-03-02T21:31:42.976Z",
+    "totalReviews": 30761,
+    "processed": 2,
+    "skipped": 30752,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 21383,
+      "output": 613,
+      "total": 32916
+    },
+    "errorDetails": [
+      {
+        "showId": "stereophonic-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
       }
     ]
   }
