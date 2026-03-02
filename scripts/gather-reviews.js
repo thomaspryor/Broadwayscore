@@ -2097,6 +2097,12 @@ function createReviewFile(showId, reviewData, options = {}) {
     review.isRoundupArticle = true;
   }
 
+  // Auto-tag BWW Review Roundup pages by URL pattern — these are aggregator pages,
+  // not individual reviews. They list excerpts from multiple outlets.
+  if (review.url && /broadwayworld\.com\/article\/.*review-roundup/i.test(review.url)) {
+    review.isRoundupArticle = true;
+  }
+
   // Classify content quality so downstream scoring knows what it's working with
   const tier = classifyContentTier(review);
   review.contentTier = tier.contentTier;
