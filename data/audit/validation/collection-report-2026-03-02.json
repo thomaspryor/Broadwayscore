@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-03-02T22:37:19.515Z",
+  "runDate": "2026-03-02T22:38:45.324Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-play-that-goes-wrong-west-end-2021",
+    "showFilter": "moulin-rouge-the-musical-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -24,11 +24,11 @@
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -40,9 +40,9 @@
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 7,
-    "tier4Success": 5,
-    "totalFailed": 0,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Success": 4,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 1,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 2,
@@ -50,23 +50,23 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
-    "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
-    "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
-    "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json",
-    "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
-    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
-    "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json"
+    "moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
+    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+    "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+    "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json"
+  ],
+  "failed": [
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "the-play-that-goes-wrong-west-end-2021/financialtimes--sarah-hemming.json",
-      "the-play-that-goes-wrong-west-end-2021/standard--fiona-mountford.json",
-      "the-play-that-goes-wrong-west-end-2021/telegraph--tim-walker.json",
-      "the-play-that-goes-wrong-west-end-2021/telegraph--unknown.json"
+      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
+      "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
+      "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -77,11 +77,10 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
-      "the-play-that-goes-wrong-west-end-2021/london-theatre--dom-ohanlon.json",
-      "the-play-that-goes-wrong-west-end-2021/thestage--unknown.json",
-      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
-      "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json"
+      "moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
+      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
+      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
+      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json"
     ]
   },
   "failuresByOutlet": {},
