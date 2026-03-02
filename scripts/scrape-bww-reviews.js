@@ -30,7 +30,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 
@@ -70,27 +70,7 @@ function sleep(ms) {
  * These are sentence fragments, photo credits, or other non-outlet text
  * that the regex extractors sometimes match.
  */
-function isGarbageOutlet(outletName) {
-  if (!outletName) return true;
-  const slug = outletName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  // Too long for a real outlet name
-  if (slug.length > 45) return true;
-  // Too many hyphens — sentence fragments
-  if ((slug.match(/-/g) || []).length > 5) return true;
-  // Matches known garbage patterns from BWW extraction
-  if (/photo-credit|average-rating|read-the-reviews|reviewed-its|the-unthinkable/.test(slug)) return true;
-  // Starts with conjunctions/articles that indicate a sentence fragment
-  if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|lets-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
-  // Contains verb phrases never found in outlet names
-  if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
-  // Ends with "-review" — show title fragment (e.g., "oscar-review", "new-york-review")
-  if (/-review$/.test(slug)) return true;
-  // Contains year numbers — sentence fragments like "saturday night live in 1985"
-  if (/(?:19|20)\d{2}/.test(slug) && !/\d{2}-\d{2}/.test(slug)) return true;
-  // Show title or person name used as outlet (critic name in outlet field)
-  if (/^(garth-drabinsky|paradise-square)$/.test(slug)) return true;
-  return false;
-}
+// isGarbageOutlet removed — now using centralized isJunkOutlet from review-normalization.js
 
 // ---------------------------------------------------------------------------
 // HTTP helpers
@@ -606,7 +586,7 @@ function extractBwwRoundupData(html, showId) {
 
       if (!outlet && !critic) return;
       // Reject garbage outlet names at extraction time
-      if (isGarbageOutlet(outlet)) return;
+      if (isJunkOutlet(outlet)) return;
 
       reviews.push({
         showId,
@@ -657,7 +637,7 @@ function extractBwwRoundupData(html, showId) {
 
           if (outlet.length < 2 || outlet.length > 60) continue;
           // Filter garbage outlet names
-          if (isGarbageOutlet(outlet)) continue;
+          if (isJunkOutlet(outlet)) continue;
           // Filter false positives
           const outletLower = outlet.toLowerCase();
           if (['in', 'the', 'and', 'but', 'for', 'not', 'all', 'this', 'that', 'with'].includes(outletLower)) continue;
@@ -744,7 +724,7 @@ function saveReview(showId, reviewData, options = {}) {
   const criticName = reviewData.critic || '';
 
   // Reject garbage outlet names before writing
-  if (isGarbageOutlet(outletName)) {
+  if (isJunkOutlet(outletName)) {
     stats.skippedGuards++;
     return 'skipped';
   }
