@@ -1,20 +1,64 @@
 {
-  "updatedAt": "2026-03-02T15:04:58.770Z",
-  "processed": 340,
-  "failed": 800,
-  "successRate": "29.8%",
+  "updatedAt": "2026-03-02T15:08:29.180Z",
+  "processed": 310,
+  "failed": 774,
+  "successRate": "28.6%",
   "tierBreakdown": {
-    "playwright": 204,
-    "amp": 69,
-    "browserbase": 9,
-    "directCookies": 28,
-    "scrapingbee": 43,
+    "playwright": 187,
+    "amp": 63,
+    "browserbase": 8,
+    "directCookies": 26,
+    "scrapingbee": 41,
     "brightdata": 2,
-    "archiveToday": 462,
-    "archive": 98
+    "archiveToday": 458,
+    "archive": 88
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-03-02T10:03:35.190Z",
+      "event": "bb-session",
+      "session": "93006dab",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
+    },
+    {
+      "t": "2026-03-02T10:03:36.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T10:04:36.493Z",
+      "event": "bb-session",
+      "session": "de09e1c2",
+      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
+    },
+    {
+      "t": "2026-03-02T10:04:37.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T10:05:38.286Z",
+      "event": "bb-session",
+      "session": "3b9249dc",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
+    },
+    {
+      "t": "2026-03-02T10:05:39.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-02T10:20:14.738Z",
+      "event": "bb-session",
+      "session": "58034b02",
+      "url": "https://www.usatoday.com/story/life/theater/2009/03/10/33-variations-review/2870"
+    },
+    {
+      "t": "2026-03-02T10:20:15.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
     {
       "t": "2026-03-02T10:21:05.256Z",
       "event": "bb-session",
@@ -80,50 +124,6 @@
       "t": "2026-03-02T10:25:02.318Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-03-02T14:39:50.157Z",
-      "event": "bb-session",
-      "session": "2e7c5eb9",
-      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
-    },
-    {
-      "t": "2026-03-02T14:39:51.400Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-02T14:44:44.795Z",
-      "event": "bb-session",
-      "session": "b883382e",
-      "url": "https://www.vulture.com/2023/11/hadestown-ali-difranco-broadway-debut-anais-mitc"
-    },
-    {
-      "t": "2026-03-02T14:44:46.275Z",
-      "event": "bb-cookie-inject",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-03-02T14:51:09.813Z",
-      "event": "bb-session",
-      "session": "93cb5f12",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/carrie-coon-tracy-letts-bug-bro"
-    },
-    {
-      "t": "2026-03-02T14:51:10.972Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T15:04:51.821Z",
-      "event": "bb-session",
-      "session": "c9adc172",
-      "url": "https://www.hollywoodreporter.com/news/general-news/kinky-boots-theater-review-4"
-    },
-    {
-      "t": "2026-03-02T15:04:53.050Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
     }
   ]
 }
