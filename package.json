@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/validate-shows-prebuild.js && node scripts/generate-search-shows.js && node scripts/compute-gold-lists.js && node scripts/generate-blog-reviews-for-scoring.js && node scripts/generate-review-og-images.js && node scripts/generate-show-lookup.js && node scripts/generate-mobile-data.js",
+    "prebuild": "node scripts/validate-shows-prebuild.js && node scripts/generate-search-shows.js && node scripts/compute-gold-lists.js && node scripts/generate-blog-reviews-for-scoring.js && node scripts/generate-review-og-images.js && node scripts/generate-show-lookup.js && node scripts/generate-mobile-data.js && node scripts/generate-mobile-show-details.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
