@@ -11,6 +11,7 @@
  *   unflag: clear wrongProduction (false positive)
  *   clearDuplicate: clear duplicateTextOf field
  *   fixIbdb: fix ibdbUrl field
+ *   move: move file from one show directory to another (cross-revival recovery)
  */
 
 const fs = require('fs');
@@ -101,11 +102,27 @@ const manifest = [
   // === TOTORO WE: Fix circular duplicate exclusion ===
   { showId: 'my-neighbour-totoro-west-end-2025', file: 'timeout-london--andrzej-lukowski.json', action: 'clearDuplicate', reason: 'This 2025 copy is the correct one; the timeout copy has 2022 date and is wrongProduction' },
   { showId: 'my-neighbour-totoro-west-end-2025', file: 'timeout--andrzej-lukowski.json', action: 'flagWrongProd', reason: '2022 date — this is the Barbican production, not 2025 WE' },
+
+  // ============ PHASE 2: Cross-revival moves (March 2026) ============
+
+  // === BETRAYAL: 2013 review (Craig/Weisz/Nichols) filed under 2019 (Hiddleston/Lloyd) ===
+  { showId: 'betrayal-2019', file: 'financialtimes--financial-times.json', action: 'move', targetShowId: 'betrayal-2013',
+    reason: 'Text mentions Mike Nichols directing, Daniel Craig and Rachel Weisz — 2013 production at Ethel Barrymore' },
+
+  // === OH MARY: Off-Broadway run (Feb 2024) reviews filed under Broadway (July 2024) ===
+  { showId: 'oh-mary-2024', file: 'front-row-center--david-walters.json', action: 'move', targetShowId: 'oh-mary-off-broadway-2024',
+    reason: 'Published 2024-02-08, URL path /2024/02/ — Lucille Lortel off-Broadway run, not Broadway' },
+  { showId: 'oh-mary-2024', file: 'theater-life--barry-gordin.json', action: 'move', targetShowId: 'oh-mary-off-broadway-2024',
+    reason: 'Published 2024-02-11, text says "February 11, 2024" — Lucille Lortel off-Broadway run' },
+
+  // === MOTOWN: 2013 original review filed under 2016 return ===
+  { showId: 'motown-the-musical-2016', file: 'backstage--unknown.json', action: 'move', targetShowId: 'motown-the-musical-2013',
+    reason: 'Backstage review of original production (Berry Gordy, Lunt-Fontanne), filed under 2016 return' },
 ];
 
 // ============ EXECUTION ============
 
-let flagged = 0, unflagged = 0, outletFixed = 0, errors = 0;
+let flagged = 0, unflagged = 0, outletFixed = 0, moved = 0, errors = 0;
 
 for (const entry of manifest) {
   const dir = path.join(BASE, entry.showId);
@@ -129,6 +146,43 @@ for (const entry of manifest) {
       }
     }
     console.log(`✓ flagAll ${entry.showId}: ${files.length} files | ${entry.reason}`);
+    continue;
+  }
+
+  if (entry.action === 'move') {
+    // Move a review file from one show directory to another
+    const filePath = path.join(dir, entry.file);
+    if (!fs.existsSync(filePath)) {
+      console.error(`❌ File not found: ${entry.showId}/${entry.file}`);
+      errors++;
+      continue;
+    }
+    const targetDir = path.join(BASE, entry.targetShowId);
+    if (!fs.existsSync(targetDir)) {
+      console.error(`❌ Target directory not found: ${entry.targetShowId}`);
+      errors++;
+      continue;
+    }
+    const targetPath = path.join(targetDir, entry.file);
+    if (fs.existsSync(targetPath)) {
+      console.error(`❌ Target file already exists: ${entry.targetShowId}/${entry.file} — skipping to avoid collision`);
+      errors++;
+      continue;
+    }
+
+    // Read, update, move
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    delete data.wrongProduction;
+    delete data.wrongProductionNote;
+    data.showId = entry.targetShowId; // Update internal showId to match new directory
+    data.movedFrom = entry.showId;
+    data.movedReason = entry.reason;
+    data.movedAt = new Date().toISOString().split('T')[0];
+
+    fs.writeFileSync(targetPath, JSON.stringify(data, null, 2) + '\n');
+    fs.unlinkSync(filePath);
+    moved++;
+    console.log(`✓ move ${entry.showId}/${entry.file} → ${entry.targetShowId}/${entry.file} | ${entry.reason}`);
     continue;
   }
 
@@ -194,4 +248,4 @@ for (const entry of manifest) {
 }
 
 console.log(`\n=== SUMMARY ===`);
-console.log(`Flagged: ${flagged} | Unflagged: ${unflagged} | Outlet fixes: ${outletFixed} | Errors: ${errors}`);
+console.log(`Flagged: ${flagged} | Unflagged: ${unflagged} | Moved: ${moved} | Outlet fixes: ${outletFixed} | Errors: ${errors}`);
