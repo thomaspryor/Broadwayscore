@@ -376,7 +376,8 @@
     "hadestown-2019/washpost--peter-marks.json",
     "moulin-rouge-2019/washpost--peter-marks.json",
     "a-bronx-tale-2007/vulture--jesse-green.json",
-    "a-christmas-carol-1994/nytimes--alexis-soloski.json"
+    "a-christmas-carol-1994/nytimes--alexis-soloski.json",
+    "a-christmas-carol-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -1251,7 +1252,16 @@
     "a-christmas-carol-1991/hollywood-reporter--david-rooney.json",
     "a-christmas-carol-1991/nytimes--alexis-soloski.json",
     "a-christmas-carol-1991/vulture--jackson-mchenry.json",
-    "a-christmas-carol-2001/hollywood-reporter--david-rooney.json"
+    "a-christmas-carol-2001/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-2001/nytimes--alexis-soloski.json",
+    "a-christmas-carol-2001/vulture--jackson-mchenry.json",
+    "a-raisin-in-the-sun-2004/nytimes--ben-brantley.json",
+    "a-raisin-in-the-sun-2004/vulture--jesse-green.json",
+    "a-streetcar-named-desire-1973/nytimes--jesse-green.json",
+    "a-streetcar-named-desire-1973/variety--marilyn-stasio.json",
+    "a-streetcar-named-desire-1988/hollywood-reporter--david-rooney.json",
+    "a-streetcar-named-desire-1988/variety--marilyn-stasio.json",
+    "a-streetcar-named-desire-1992/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1654,7 +1664,8 @@
       "operation-mincemeat-2025/guardian--kate-wyver.json",
       "operation-mincemeat-west-end-2024/guardian--emma-john.json",
       "the-play-that-goes-wrong-off-broadway-2019/guardian--lyn-gardner.json",
-      "wicked-2003/guardian--peter-bradshaw.json"
+      "wicked-2003/guardian--peter-bradshaw.json",
+      "a-christmas-carol-2022/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "and-juliet-2022/ap--unknown.json",
@@ -2248,7 +2259,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "a-christmas-carol-2001/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "a-streetcar-named-desire-1992/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -2930,6 +2941,17 @@
     },
     {
       "t": "2026-03-02T15:45:02.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T16:01:45.356Z",
+      "event": "bb-session",
+      "session": "61328d42",
+      "url": "https://www.nytimes.com/2022/12/01/movies/scrooge-a-christmas-carol-review.html"
+    },
+    {
+      "t": "2026-03-02T16:01:46.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
