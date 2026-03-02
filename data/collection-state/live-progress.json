@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-02T16:00:27.878Z",
-  "processed": 377,
-  "failed": 873,
-  "successRate": "30.2%",
+  "updatedAt": "2026-03-02T16:02:37.613Z",
+  "processed": 378,
+  "failed": 882,
+  "successRate": "30.0%",
   "tierBreakdown": {
     "playwright": 210,
     "amp": 77,
     "browserbase": 21,
     "directCookies": 32,
-    "scrapingbee": 51,
+    "scrapingbee": 52,
     "brightdata": 2,
     "archiveToday": 463,
     "archive": 119
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-03-02T15:04:51.821Z",
-      "event": "bb-session",
-      "session": "c9adc172",
-      "url": "https://www.hollywoodreporter.com/news/general-news/kinky-boots-theater-review-4"
-    },
-    {
-      "t": "2026-03-02T15:04:53.050Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-02T15:16:04.720Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-02T15:45:02.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T16:01:45.356Z",
+      "event": "bb-session",
+      "session": "61328d42",
+      "url": "https://www.nytimes.com/2022/12/01/movies/scrooge-a-christmas-carol-review.html"
+    },
+    {
+      "t": "2026-03-02T16:01:46.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
