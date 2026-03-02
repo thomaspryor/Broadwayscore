@@ -1342,7 +1342,6 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
     data.rescoreReason = 'fullText recovered from Wayback Machine';
-    data.previousLlmScore = data.llmScore.score;
   }
 
   // Write updated file

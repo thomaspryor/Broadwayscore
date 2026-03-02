@@ -372,7 +372,6 @@ function processRecoveredText(candidate, text) {
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
     data.rescoreReason = 'fullText recovered via WSJ subscriber session';
-    data.previousLlmScore = data.llmScore.score;
   }
 
   // Write updated file
