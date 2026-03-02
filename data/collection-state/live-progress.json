@@ -1,20 +1,53 @@
 {
-  "updatedAt": "2026-03-02T10:19:14.132Z",
-  "processed": 238,
-  "failed": 412,
-  "successRate": "36.6%",
+  "updatedAt": "2026-03-02T10:24:50.897Z",
+  "processed": 241,
+  "failed": 369,
+  "successRate": "39.5%",
   "tierBreakdown": {
-    "playwright": 162,
+    "playwright": 165,
     "amp": 51,
     "browserbase": 8,
     "directCookies": 22,
     "scrapingbee": 34,
     "brightdata": 2,
-    "archiveToday": 159,
-    "archive": 52
+    "archiveToday": 163,
+    "archive": 53
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-03-02T04:48:01.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T08:24:38.553Z",
+      "event": "bb-session",
+      "session": "d4b424f7",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-03-02T08:24:39.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:31:05.808Z",
+      "event": "bb-session",
+      "session": "052d5a55",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-02T08:31:06.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:31:54.561Z",
+      "event": "bb-session",
+      "session": "998d3812",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9?ga"
+    },
     {
       "t": "2026-03-02T08:31:55.566Z",
       "event": "bb-cookie-inject",
@@ -91,39 +124,6 @@
       "t": "2026-03-02T08:55:10.876Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-02T10:03:35.190Z",
-      "event": "bb-session",
-      "session": "93006dab",
-      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
-    },
-    {
-      "t": "2026-03-02T10:03:36.696Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-03-02T10:04:36.493Z",
-      "event": "bb-session",
-      "session": "de09e1c2",
-      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
-    },
-    {
-      "t": "2026-03-02T10:04:37.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-03-02T10:05:38.286Z",
-      "event": "bb-session",
-      "session": "3b9249dc",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-03-02T10:05:39.497Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
     }
   ]
 }
