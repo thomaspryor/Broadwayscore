@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-02T00:53:02.633Z",
-  "processed": 8,
-  "failed": 12,
-  "successRate": "40.0%",
+  "updatedAt": "2026-03-02T01:03:14.270Z",
+  "processed": 10,
+  "failed": 20,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 3,
-    "amp": 8,
+    "playwright": 4,
+    "amp": 10,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 2
+    "archiveToday": 9,
+    "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -45,6 +45,28 @@
     },
     {
       "t": "2026-03-02T00:48:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T00:56:21.352Z",
+      "event": "bb-session",
+      "session": "80e75b2e",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-02T00:56:22.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T00:59:31.359Z",
+      "event": "bb-session",
+      "session": "8b920387",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-02T00:59:32.616Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
