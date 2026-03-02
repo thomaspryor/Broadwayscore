@@ -1492,8 +1492,9 @@ showDirs.forEach(showId => {
 
       // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
+      // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
-          && (showCategory === 'west-end' || showCategory === 'off-broadway')) {
+          && (showCat === 'west-end' || showCat === 'off-broadway')) {
         data.wrongProduction = false;
         data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
         data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -1570,6 +1571,12 @@ showDirs.forEach(showId => {
         // Tier 1/2 outlets (NYT, WashPost, AP, etc.) legitimately review WE shows
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         if (outletRegion !== 'london') {
+          // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
+          if (!data.wrongProduction) {
+            data.wrongProduction = true;
+            data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing west-end show`;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          }
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
           if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
           stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
@@ -1593,6 +1600,12 @@ showDirs.forEach(showId => {
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion === 'london' || urlIsUK) {
+          // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
+          if (!data.wrongProduction) {
+            data.wrongProduction = true;
+            data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
+            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          }
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
           if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
           stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
