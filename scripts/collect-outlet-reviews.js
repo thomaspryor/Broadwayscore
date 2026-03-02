@@ -23,6 +23,7 @@
  *   --max-shows N                            Limit to N shows (for testing)
  *   --max-searches N                         Limit total SERP searches (for cost control)
  *   --max-outlets N                           Max outlets per show (default: 60, T1/T2 first)
+ *   --outlets id1,id2,...                    Only search these specific outlet IDs
  *   --open-only                              Only search open/previews shows (for weekly cron)
  */
 
@@ -78,6 +79,7 @@ function parseArgs() {
     maxSearches: Infinity,
     maxOutlets: 60,       // Cap outlets per show (T1/T2 first, T3 fills remainder)
     openOnly: false,
+    outlets: null,        // --outlets id1,id2,... — only search these specific outlets
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -93,6 +95,7 @@ function parseArgs() {
       case '--max-searches': opts.maxSearches = parseInt(args[++i]); break;
       case '--max-outlets': opts.maxOutlets = parseInt(args[++i]); break;
       case '--open-only': opts.openOnly = true; break;
+      case '--outlets': opts.outlets = new Set(args[++i].split(',').map(s => s.trim().toLowerCase()).filter(Boolean)); break;
     }
   }
 
@@ -356,7 +359,9 @@ async function main() {
   console.log(`Mode: ${opts.showIds ? `specific shows (${opts.showIds.length})` : `market: ${opts.market}`}`);
   console.log(`Shows: ${targetShows.length}`);
   console.log(`Tiers: ${opts.minTier}-${opts.maxTier}`);
-  console.log(`Outlets per show: ${sampleOutlets.length} (${Object.entries(tierCounts).map(([k, v]) => `${k}:${v}`).join(', ')})`);
+  const filteredSample = opts.outlets ? sampleOutlets.filter(o => opts.outlets.has(o.id)) : sampleOutlets;
+  console.log(`Outlets per show: ${filteredSample.length} (${Object.entries(tierCounts).map(([k, v]) => `${k}:${v}`).join(', ')})`);
+  if (opts.outlets) console.log(`Outlet filter: ${[...opts.outlets].join(', ')}`);
   console.log(`Max outlets: ${opts.maxOutlets}`);
   console.log(`Date filtering: enabled`);
   console.log(`Dry run: ${opts.dryRun}`);
@@ -371,7 +376,8 @@ async function main() {
   for (const show of targetShows) {
     // Determine market for this show (auto-detect from category)
     const market = show.category || opts.market || 'broadway';
-    const targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
+    let targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
+    if (opts.outlets) targetOutlets = targetOutlets.filter(o => opts.outlets.has(o.id));
 
     if (targetOutlets.length === 0) {
       console.log(`SKIP (no outlets for market ${market}): ${show.id}`);
