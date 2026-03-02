@@ -211,8 +211,9 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
     try {
       const params = { api_key: apiKey, search: query };
       if (dateRange) {
-        // Append Google date filter to the search query via extra_params
-        params.search += ` &tbs=${buildDateTbs(dateRange)}`;
+        // Use Google's after:/before: operators (ScrapingBee doesn't support tbs param)
+        const fmtD = d => d.toISOString().split('T')[0];
+        params.search += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
       }
       const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
         params,
@@ -379,6 +380,13 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
     : 'Broadway review';
 
+  // Strip venue/subtitle suffix for alternate search (e.g., "The Tempest - Globe" → "The Tempest")
+  // Reviewers omit these suffixes, so SERP with the full title returns 0 results.
+  // Also handles "Dog Man - The Musical" → "Dog Man", "Midnight - A New Original..." → "Midnight"
+  const primaryTitle = showInfo.title.includes(' - ')
+    ? showInfo.title.split(' - ')[0].trim()
+    : null;
+
   let query;
   if (domain) {
     query = `site:${domain} "${showInfo.title}" ${marketTerm}${yearClause}${criticClause}`;
@@ -415,7 +423,36 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   } catch (e) {}
 
   if (!results.length) {
-    // Fallback: broader search without site: restriction, using outlet + critic name
+    // Fallback 1: retry with stripped title (e.g., "The Tempest" instead of "The Tempest - Globe")
+    // Reviewers omit venue/subtitle suffixes, causing 0 SERP hits for the full title
+    if (primaryTitle && primaryTitle.length >= 3) {
+      let strippedQuery;
+      if (domain) {
+        strippedQuery = `site:${domain} "${primaryTitle}" ${marketTerm}${yearClause}${criticClause}`;
+      } else {
+        strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
+      }
+      log(`    Retry with stripped title: ${strippedQuery}`);
+      results = await _serpViaScrapingBee(strippedQuery, scrapingBeeKey, log, dateRange);
+      provider = 'scrapingbee-stripped';
+      if (!results || results.length === 0) {
+        const bdResults = await _serpViaBrightData(strippedQuery, brightDataKey, log, dateRange);
+        if (bdResults && bdResults.length > 0) {
+          results = bdResults;
+          provider = 'brightdata-stripped';
+        } else if (!results && !bdResults) {
+          results = null;
+        }
+      }
+      if (results === null) {
+        log('    ✗ All SERP providers unavailable');
+        return '__SERP_UNAVAILABLE__';
+      }
+    }
+  }
+
+  if (!results.length) {
+    // Fallback 2: broader search without site: restriction, using outlet + critic name
     // This catches articles Google didn't index under the domain (URL changes, redirects)
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${showInfo.title}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
@@ -443,6 +480,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   // Filter and match results
   const targetDomain = domain || oldDomain;
   const showTitleLower = showInfo.title.toLowerCase();
+  const primaryTitleLower = primaryTitle ? primaryTitle.toLowerCase() : null;
   const shortTitle = (review.showId || '')
     .replace(/-\d{4}$/, '')
     .replace(/-/g, ' ')
@@ -472,9 +510,12 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
     const title = (result.title || '').toLowerCase();
     const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
+    const primarySlugCheck = primaryTitleLower ? primaryTitleLower.replace(/\s+/g, '-') : null;
 
-    const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
-    const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
+    const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle)
+      || (primaryTitleLower && title.includes(primaryTitleLower));
+    const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug)
+      || (primarySlugCheck && urlLower.includes(primarySlugCheck));
     const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end'];
     const titleHasReview = reviewTerms.some(t => title.includes(t));
     const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
