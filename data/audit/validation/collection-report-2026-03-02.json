@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-03-02T12:37:15.934Z",
+  "runDate": "2026-03-02T13:17:42.643Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 50,
     "priority": "all",
     "showFilter": "the-hunger-games-on-stage-west-end-2025",
     "aggressive": false,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 332,
-    "failed": 448,
+    "processed": 335,
+    "failed": 495,
     "skipped": 0,
-    "successRate": "42.6%"
+    "successRate": "40.4%"
   },
   "tierBreakdown": {
-    "playwright": 216,
-    "amp": 67,
+    "playwright": 218,
+    "amp": 69,
     "browserbase": 16,
-    "directCookies": 29,
+    "directCookies": 30,
     "scrapingbee": 47,
     "brightdata": 2,
-    "archiveToday": 219,
+    "archiveToday": 239,
     "archive": 80
   },
   "statistics": {
-    "tier1Attempts": 127,
-    "tier1Success": 59,
-    "ampAttempts": 15,
-    "ampSuccess": 11,
-    "tier1_5Attempts": 12,
-    "tier1_5Success": 3,
-    "tier2Attempts": 56,
-    "tier2Success": 9,
-    "tier3Attempts": 47,
+    "tier1Attempts": 43,
+    "tier1Success": 5,
+    "ampAttempts": 2,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 20,
+    "tier2Success": 0,
+    "tier3Attempts": 20,
     "tier3Success": 0,
-    "tier3_6Attempts": 43,
-    "tier3_6Success": 43,
-    "tier4Attempts": 49,
-    "tier4Success": 9,
-    "totalFailed": 47,
-    "scrapingBeeCreditsUsed": 125,
-    "browserbaseSessionsUsed": 12,
-    "browserbaseMinutesUsed": 5.3,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 3,
+    "tier3_6Attempts": 20,
+    "tier3_6Success": 20,
+    "tier4Attempts": 25,
+    "tier4Success": 0,
+    "totalFailed": 46,
+    "scrapingBeeCreditsUsed": 82,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 23,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -381,7 +381,10 @@
     "dracula-west-end-2025/guardian--arifa-akbar.json",
     "drunk-romeo-and-juliet-off-broadway-2025/theatermania--unknown.json",
     "eva-luna-off-broadway-2022/theatermania--unknown.json",
-    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
+    "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+    "11-to-midnight-2026/nytg--austin-fimmano.json",
+    "a-bronx-tale-2007/nytg--jeff-myhre.json",
+    "a-christmas-carol-2019/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -831,7 +834,54 @@
     "bughouse-off-broadway-2026/broadwaynews--aa-cristi.json",
     "chinese-republicans-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
     "chinese-republicans-off-broadway-2026/nbcnews--unknown.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json"
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "11-to-midnight-off-broadway-2026/billboard--unknown.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
+    "bug-2026/billboard--aramide-tinubu.json",
+    "chicago-1996/ap--mark-kennedy.json",
+    "death-becomes-her-2024/broadwayworld--misha-davenport.json",
+    "little-shop-of-horrors-off-broadway-2019/curtainup--dan-rubins.json",
+    "oliver-west-end-2024/telegraph--charles-spencer.json",
+    "oliver-west-end-2024/whatsonstage--michael-coveney.json",
+    "paddington-the-musical-west-end-2025/standard--nick-curtis.json",
+    "paranormal-activity-west-end-2025/financialtimes--paul-raven.json",
+    "ragtime-2025/ny1--unknown.json",
+    "six-2021/ap--unknown.json",
+    "the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
+    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
+    "the-lion-king-1997/kitchener-ontario-record--harry-currie.json",
+    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/post-and-courier--dottie-ashley.json",
+    "the-lion-king-1997/press-enterprise--te-foreman.json",
+    "the-lion-king-1997/sarasota-herald-tribune--jay-handelman.json",
+    "the-lion-king-1997/seattle-post-intelligencer--jeffrey-eric-jenkins.json",
+    "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
+    "the-lion-king-1997/unknown--frank-scheck.json",
+    "the-lion-king-1997/unknown--unknown.json",
+    "the-lion-king-1997/virginian-pilot--mal-vincent.json",
+    "the-lion-king-west-end-2021/londonist--hari-mountford.json",
+    "the-lion-king-west-end-2021/standard--nick-curtis.json",
+    "the-lion-king-west-end-2021/times-uk--clive-davis.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+    "the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
+    "the-play-that-goes-wrong-off-broadway-2019/paste-magazine--stuart-miller.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagebiz--jeff-myhre.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+    "wicked-2003/njcom--michael-sommers.json",
+    "wicked-2003/ny1--roma-torre.json",
+    "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+    "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json",
+    "chicago-1996/time--richard-zoglin.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-bronx-tale-2007/variety--marilyn-stasio.json",
+    "a-christmas-story-the-musical-2012/vulture--scott-brown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1050,7 +1100,9 @@
       "deep-azure-globe-west-end-2026/timeout-london--andrzej-lukowski.json",
       "dirty-books-off-broadway-2025/theatermania--zachary-stewart.json",
       "dracula-west-end-2025/guardian--arifa-akbar.json",
-      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json"
+      "friends-the-musical-parody-off-broadway-2022/theatermania--hayley-levitt.json",
+      "11-to-midnight-2026/nytg--austin-fimmano.json",
+      "a-bronx-tale-2007/nytg--jeff-myhre.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -1119,7 +1171,9 @@
       "data/review-texts/wicked-west-end-2021/variety--david-benedict.json",
       "wicked-west-end-2021/variety--david-benedict.json",
       "data/review-texts/and-juliet-2022/thewrap--robert-hofler.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "data/review-texts/a-bronx-tale-2007/variety--marilyn-stasio.json",
+      "a-bronx-tale-2007/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
@@ -1168,7 +1222,8 @@
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/timeout--unknown.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "calf-scramble-off-broadway-2026/theatermania--unknown.json"
+      "calf-scramble-off-broadway-2026/theatermania--unknown.json",
+      "a-christmas-carol-2019/vulture--jackson-mchenry.json"
     ],
     "scrapingbee": [
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -1447,7 +1502,27 @@
       "data/review-texts/aladdin-2014/wsj--terry-teachout.json",
       "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/bigfoot-off-broadway-2026/broadwaynews--chloe-rabinowitz.json",
-      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json"
+      "data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/chicago-1996/ap--mark-kennedy.json",
+      "data/review-texts/death-becomes-her-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/little-shop-of-horrors-off-broadway-2019/curtainup--dan-rubins.json",
+      "data/review-texts/oliver-west-end-2024/telegraph--charles-spencer.json",
+      "data/review-texts/oliver-west-end-2024/whatsonstage--michael-coveney.json",
+      "data/review-texts/ragtime-2025/ny1--unknown.json",
+      "data/review-texts/the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/the-lion-king-1997/unknown--unknown.json",
+      "data/review-texts/the-lion-king-west-end-2021/standard--nick-curtis.json",
+      "data/review-texts/the-lion-king-west-end-2021/times-uk--clive-davis.json",
+      "data/review-texts/the-outsiders-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagebiz--jeff-myhre.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/times-uk--unknown.json",
+      "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+      "data/review-texts/you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json",
+      "data/review-texts/a-christmas-story-the-musical-2012/vulture--scott-brown.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -1533,16 +1608,107 @@
     ]
   },
   "failuresByOutlet": {
-    "The Telegraph": {
+    "Columbus Dispatch": {
       "count": 1,
-      "domain": "telegraph.co.uk",
+      "domain": "jasonraize.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Newsday": {
+    "Associated Press": {
       "count": 1,
-      "domain": "newsday.com",
+      "domain": "apnews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Denver Post": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Kitchener-Ontario Record": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Milwaukee Journal Sentinel": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NJ.com": {
+      "count": 2,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Post and Courier": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Press-Enterprise": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Sarasota Herald-Tribune": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Seattle Post-Intelligencer": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Syracuse Herald Journal": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "unknown": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Virginian-Pilot": {
+      "count": 1,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Paste Magazine": {
+      "count": 1,
+      "domain": "pastemagazine.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
