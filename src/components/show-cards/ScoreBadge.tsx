@@ -76,16 +76,16 @@ export function getScoreTextColorClass(score: number): string {
 }
 
 function MustSeeCrown({ size }: { size: 'sm' | 'md' | 'lg' | 'mini' }) {
-  const dims = { mini: { w: 9, h: 6, top: -5 }, sm: { w: 10, h: 7, top: -6 }, md: { w: 13, h: 8, top: -7 }, lg: { w: 15, h: 9, top: -8 } }[size];
+  // Simple 3-point crown matching native app style — top-right, no outline, no base band
+  const dims = { mini: { w: 10, h: 8, top: -6, right: -3 }, sm: { w: 11, h: 9, top: -7, right: -3 }, md: { w: 13, h: 10, top: -7, right: -4 }, lg: { w: 15, h: 12, top: -9, right: -4 } }[size];
   return (
     <svg
-      className="absolute left-1/2 -translate-x-1/2 z-10 pointer-events-none"
-      style={{ top: dims.top, filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }}
-      width={dims.w} height={dims.h} viewBox="0 0 20 12"
+      className="absolute z-10 pointer-events-none"
+      style={{ top: dims.top, right: dims.right, filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.4))' }}
+      width={dims.w} height={dims.h} viewBox="0 0 24 18"
       aria-hidden="true"
     >
-      <polygon points="1,11 3.5,3.5 7,7 10,1 13,7 16.5,3.5 19,11" fill="#FFD700" stroke="#B8860B" strokeWidth="0.8"/>
-      <rect x="1" y="10" width="18" height="1.5" rx="0.5" fill="#DAA520"/>
+      <path d="M2,16 L5,6 L9,10 L12,2 L15,10 L19,6 L22,16 Z" fill="#FFD700" opacity="0.9"/>
     </svg>
   );
 }
