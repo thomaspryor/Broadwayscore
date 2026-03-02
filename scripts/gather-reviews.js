@@ -49,6 +49,7 @@ const {
   isJunkOutlet,
   isProfileUrl,
   normalizeUrl,
+  isRegisteredOutlet,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
@@ -1525,6 +1526,22 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
             const parts = authorName.split(' - ');
             outletRaw = parts[0].trim();
             criticName = parts[1]?.trim() || null;
+          } else if (authorName && authorName.includes(', ')) {
+            // BWW comma format: "Critic, Outlet" (e.g., "Mandell, New York Theater")
+            const commaIdx = authorName.indexOf(', ');
+            const part0 = authorName.substring(0, commaIdx).trim();
+            const part1 = authorName.substring(commaIdx + 2).trim();
+            // Check which part is a known outlet
+            if (isRegisteredOutlet(part1)) {
+              outletRaw = part1;
+              criticName = part0;
+            } else if (isRegisteredOutlet(part0)) {
+              outletRaw = part0;
+              criticName = part1;
+            } else {
+              // Neither is a known outlet — treat whole string as outlet (existing behavior)
+              outletRaw = authorName;
+            }
           } else if (authorName) {
             outletRaw = authorName;
           }
@@ -2034,6 +2051,17 @@ function createReviewFile(showId, reviewData, options = {}) {
       } catch (e) {
         // Skip files that can't be parsed
       }
+    }
+  }
+
+  // Same-show URL dedup via global URL index — catches phantom outlet duplicates
+  // where the same URL exists under a different outlet name in the same show
+  if (reviewData.url) {
+    const globalIdx = getGlobalUrlIndex();
+    const existing = globalIdx.get(normalizeUrl(reviewData.url));
+    if (existing && existing.showId === showId) {
+      console.log(`    Skipping ${filename} (URL already indexed in ${existing.file} for same show)`);
+      return 'duplicate';
     }
   }
 

@@ -216,7 +216,7 @@ export default function HeaderSearch() {
           <div
             id="search-results"
             role="listbox"
-            className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-50"
+            className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80]"
           >
             {filteredShows.map((show, index) => (
               <button
@@ -264,7 +264,7 @@ export default function HeaderSearch() {
 
         {/* No results message */}
         {isOpen && deferredQuery.length >= 1 && filteredShows.length === 0 && (
-          <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-50">
+          <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-[80]">
             <p className="text-sm text-gray-400 text-center">
               {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
             </p>

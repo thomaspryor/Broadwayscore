@@ -38,9 +38,13 @@ jobs:
 
       - name: Override feature flags for demo (all enabled)
         run: |
-          # vercel pull downloads project env vars which override shell env.
-          # We must rewrite the pulled file to enable ALL features for demo.
+          # vercel build ignores shell env vars and .vercel/.env.*.local overrides
+          # for NEXT_PUBLIC_* — it re-fetches from Vercel project settings.
+          # Fix: write .env.local in project root, which Next.js reads natively
+          # and takes highest precedence over all other env sources.
           ALL_FEATURES="discountTickets,criticPages,creativePages,castChanges,boxOffice,goldLists,commercial,awards,tonyPredictions,castPages,westEnd,offBroadway,tonyPeople,sectionJumpLinks,userAccounts"
+          echo "NEXT_PUBLIC_FEATURES=$ALL_FEATURES" > .env.local
+          # Also override Vercel env files as belt-and-suspenders
           for f in .vercel/.env.*.local; do
             [ -f "$f" ] || continue
             grep -v '^NEXT_PUBLIC_FEATURES=' "$f" > "$f.tmp"
@@ -48,6 +52,8 @@ jobs:
             mv "$f.tmp" "$f"
           done
           echo "Feature flags overridden to: $ALL_FEATURES"
+          echo "Wrote .env.local with NEXT_PUBLIC_FEATURES"
+          cat .env.local
 
       - name: Build (all features enabled)
         env:
