@@ -7,7 +7,9 @@
     "an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
     "and-juliet-2022/guardian--unknown.json",
     "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
-    "deep-azure-globe-west-end-2026/thereviewshub--unknown.json"
+    "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
+    "kinky-boots-off-broadway-2026/newsday--linda-winer.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -21,14 +23,23 @@
     "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
     "hamilton-west-end-2021/deadline--jeremy-gerard.json",
-    "into-the-woods-west-end-2025/timeout--adam-feldman.json"
+    "into-the-woods-west-end-2025/timeout--adam-feldman.json",
+    "just-in-time-2025/wsj--unknown.json",
+    "maggots-west-end-2026/ew--chris-nashawaty.json",
+    "maggots-west-end-2026/newsday--neil-best.json",
+    "man-and-boy-west-end-2026/newsday--linda-winer.json",
+    "man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
+    "man-and-boy-west-end-2026/timeout--david-cote.json",
+    "six-2021/wsj--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
       "and-juliet-2022/guardian--unknown.json",
-      "deep-azure-globe-west-end-2026/thereviewshub--unknown.json"
+      "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
+      "oh-mary-west-end-2025/ew--christian-holub.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -38,7 +49,9 @@
       "data/review-texts/an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
       "an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
       "data/review-texts/data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
-      "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
+      "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/hamilton-west-end-2021/deadline--jeremy-gerard.json",
+      "hamilton-west-end-2021/deadline--jeremy-gerard.json"
     ],
     "browserbase": [],
     "directCookies": [
@@ -54,15 +67,19 @@
       "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
       "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
-      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json"
+      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
+      "data/review-texts/just-in-time-2025/wsj--unknown.json",
+      "data/review-texts/man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/six-2021/wsj--unknown.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
-      "the-reservoir-off-broadway-2026/vulture--jackson-mchenry.json"
+      "the-reservoir-off-broadway-2026/vulture--jackson-mchenry.json",
+      "kinky-boots-off-broadway-2026/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "into-the-woods-west-end-2025/timeout--adam-feldman.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -94,6 +111,28 @@
     },
     {
       "t": "2026-03-02T00:48:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T00:56:21.352Z",
+      "event": "bb-session",
+      "session": "80e75b2e",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-02T00:56:22.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T00:59:31.359Z",
+      "event": "bb-session",
+      "session": "8b920387",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-02T00:59:32.616Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
