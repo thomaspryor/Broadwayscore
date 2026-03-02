@@ -1,93 +1,87 @@
 {
-  "runDate": "2026-03-02T21:34:36.149Z",
+  "runDate": "2026-03-02T21:38:28.336Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "wicked-west-end-2021",
+    "showFilter": "matilda-the-musical-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 2,
+    "processed": 9,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
-    "amp": 2,
+    "playwright": 3,
+    "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 1,
+    "directCookies": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 2
+    "archiveToday": 0,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 5,
-    "ampAttempts": 2,
-    "ampSuccess": 2,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 2,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 21,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 9,
+    "tier4Success": 6,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-west-end-2021/timeout-london--honour-bayes.json",
-    "wicked-west-end-2021/financialtimes--unknown.json",
-    "wicked-west-end-2021/independent--paul-taylor.json",
-    "wicked-west-end-2021/standard--jessie-thompson.json",
-    "wicked-west-end-2021/telegraph--charles-spencer.json",
-    "wicked-west-end-2021/telegraph--marianka-swain.json",
-    "wicked-west-end-2021/thestage--paul-vale.json",
-    "wicked-west-end-2021/whatsonstage--editorial-staff.json"
+    "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+    "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
+    "matilda-the-musical-west-end-2021/london-theatre--peter-brown.json",
+    "matilda-the-musical-west-end-2021/standard--henry-hitchings.json",
+    "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "matilda-the-musical-west-end-2021/thestage--mark-shenton.json"
   ],
-  "failed": [
-    "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
-    "wicked-west-end-2021/variety--david-benedict.json"
-  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
-      "wicked-west-end-2021/financialtimes--unknown.json",
-      "wicked-west-end-2021/standard--jessie-thompson.json",
-      "wicked-west-end-2021/telegraph--charles-spencer.json",
-      "wicked-west-end-2021/whatsonstage--editorial-staff.json"
+      "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+      "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+      "matilda-the-musical-west-end-2021/standard--henry-hitchings.json"
     ],
-    "amp": [
-      "data/review-texts/wicked-west-end-2021/variety--david-benedict.json",
-      "wicked-west-end-2021/variety--david-benedict.json"
-    ],
+    "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "wicked-west-end-2021/timeout-london--honour-bayes.json"
-    ],
-    "scrapingbee": [
-      "wicked-west-end-2021/independent--paul-taylor.json"
-    ],
+    "directCookies": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json"
     ],
     "archive": [
-      "wicked-west-end-2021/telegraph--marianka-swain.json",
-      "wicked-west-end-2021/thestage--paul-vale.json"
+      "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+      "matilda-the-musical-west-end-2021/artsdesk--carole-woddis.json",
+      "matilda-the-musical-west-end-2021/london-theatre--peter-brown.json",
+      "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+      "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json"
     ]
   },
   "failuresByOutlet": {},
