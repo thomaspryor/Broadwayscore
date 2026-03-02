@@ -297,6 +297,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }}
 
+      - name: Scrape BWW Review Roundups for target shows
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${{ inputs.shows }}
 
       - name: Push review-texts to private repo
         if: always()
@@ -315,7 +319,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "data: Add Playbill Verdict + NYC Theatre data for ${{ inputs.shows }}"
+          git commit -m "data: Add aggregator data (PV + NYC Theatre + BWW Roundups) for ${{ inputs.shows }}"
 
           bash scripts/lib/push-with-retry.sh 8 main
 
