@@ -266,7 +266,8 @@
     "little-bear-ridge-road-2025/theatermania--unknown.json",
     "macbeth-2013/timeout--adam-feldman.json",
     "masquerade-2025/theatermania--meg-masseron.json",
-    "masquerade-2025/timeout--adam-feldman.json"
+    "masquerade-2025/timeout--adam-feldman.json",
+    "pen-pals-2025/theatermania--dan-rubins.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -701,7 +702,16 @@
     "martin-short-fame-becomes-me-2006/timeout--david-cote.json",
     "mean-girls-2018/broadwaynews--charles-isherwood.json",
     "million-dollar-quartet-2010/timeout--adam-feldman.json",
-    "natasha-pierre-and-the-great-comet-of-1812-2016/theatermania--charles-isherwood.json"
+    "natasha-pierre-and-the-great-comet-of-1812-2016/theatermania--charles-isherwood.json",
+    "next-fall-2010/timeout--adam-feldman.json",
+    "next-to-normal-2009/timeout--adam-feldman.json",
+    "oklahoma-2019/broadwaynews--charles-isherwood.json",
+    "once-2012/timeout--adam-feldman.json",
+    "once-upon-a-mattress-2024/timeout--adam-feldman.json",
+    "pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
+    "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
+    "private-lives-2025/timeout--david-cote.json",
+    "promises-promises-2010/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -891,7 +901,8 @@
       "little-bear-ridge-road-2025/theatermania--unknown.json",
       "macbeth-2013/timeout--adam-feldman.json",
       "masquerade-2025/theatermania--meg-masseron.json",
-      "masquerade-2025/timeout--adam-feldman.json"
+      "masquerade-2025/timeout--adam-feldman.json",
+      "pen-pals-2025/theatermania--dan-rubins.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -1243,7 +1254,11 @@
       "data/review-texts/latin-history-for-morons-2017/broadwaynews--elizabeth-bradley.json",
       "data/review-texts/lobby-hero-2018/broadwaynews--elizabeth-bradley.json",
       "data/review-texts/m-butterfly-2017/broadwaynews--charles-isherwood.json",
-      "data/review-texts/mean-girls-2018/broadwaynews--charles-isherwood.json"
+      "data/review-texts/mean-girls-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/oklahoma-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/once-2012/timeout--adam-feldman.json",
+      "data/review-texts/pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -1302,7 +1317,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "natasha-pierre-and-the-great-comet-of-1812-2016/theatermania--charles-isherwood.json",
+  "lastProcessed": "promises-promises-2010/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -1775,6 +1790,17 @@
     },
     {
       "t": "2026-03-02T11:24:35.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T11:48:54.660Z",
+      "event": "bb-session",
+      "session": "26612d44",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-03-02T11:48:56.044Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
     }
