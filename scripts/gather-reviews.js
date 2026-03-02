@@ -1544,7 +1544,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
             }
           } else if (authorName && authorName.includes(': ')) {
             // BWW colon format: "Outlet: Critic" (e.g., "NY Post: Johnny Oleksinski")
-            const colonIdx = authorName.indexOf(': ');
+            // Use lastIndexOf to handle multiple colons (e.g., "Re: Review: NY Post")
+            const colonIdx = authorName.lastIndexOf(': ');
             const part0 = authorName.substring(0, colonIdx).trim();
             const part1 = authorName.substring(colonIdx + 2).trim();
             if (isRegisteredOutlet(part0)) {
