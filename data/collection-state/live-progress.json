@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-02T20:48:15.985Z",
-  "processed": 606,
-  "failed": 1269,
-  "successRate": "32.3%",
+  "updatedAt": "2026-03-02T20:50:39.952Z",
+  "processed": 512,
+  "failed": 1453,
+  "successRate": "26.1%",
   "tierBreakdown": {
-    "playwright": 396,
-    "amp": 145,
-    "browserbase": 72,
-    "directCookies": 53,
-    "scrapingbee": 70,
+    "playwright": 329,
+    "amp": 160,
+    "browserbase": 76,
+    "directCookies": 49,
+    "scrapingbee": 53,
     "brightdata": 2,
-    "archiveToday": 503,
-    "archive": 144
+    "archiveToday": 506,
+    "archive": 130
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-02T16:17:06.837Z",
-      "event": "bb-session",
-      "session": "bbc85cc7",
-      "url": "https://www.hollywoodreporter.com/news/general-news/king-and-i-tour-957142/"
-    },
-    {
-      "t": "2026-03-02T16:17:08.298Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T16:21:52.443Z",
-      "event": "bb-session",
-      "session": "f821b302",
-      "url": "https://www.hollywoodreporter.com/news/general-news/mystery-edwin-drood-theater-"
-    },
-    {
-      "t": "2026-03-02T16:21:54.063Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-02T16:23:23.397Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-02T16:43:11.103Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-03-02T20:34:35.950Z",
+      "event": "bb-session",
+      "session": "977c857b",
+      "url": "https://deadline.com/2019/04/adam-driver-broadway-burn-this-interview-star-wars-"
+    },
+    {
+      "t": "2026-03-02T20:34:37.364Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-02T20:38:32.182Z",
+      "event": "bb-session",
+      "session": "6a64f27a",
+      "url": "https://deadline.com/2022/03/aaron-sorkin-bartlett-sher-broadway-camelot-revival"
+    },
+    {
+      "t": "2026-03-02T20:38:33.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
