@@ -4383,7 +4383,6 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Review was scored on excerpt, now has fullText - flag for rescoring
     data.needsRescore = true;
     data.rescoreReason = 'fullText added after excerpt-based scoring';
-    data.previousLlmScore = data.llmScore.score;
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
 
