@@ -99,34 +99,41 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             onClick={e => handleClick(e, starIndex)}
             aria-label={`${starIndex} star${starIndex !== 1 ? 's' : ''}`}
           >
-            {/* Empty star (background) */}
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              className="absolute inset-0 w-full h-full text-gray-600"
-            >
-              <path
-                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                fill="currentColor"
-              />
-            </svg>
-            {/* Filled star (clipped) */}
-            <div
-              className="absolute inset-0 overflow-hidden transition-all duration-75"
-              style={{ width: getFillWidth(starIndex) }}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-full h-full"
-                style={{ width: starSize, height: starSize }}
-              >
+            {getFillWidth(starIndex) === '100%' ? (
+              /* Fully filled — single gold star, no overlap artifacts */
+              <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
                 <path
                   d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                   fill="#FFD700"
                 />
               </svg>
-            </div>
+            ) : getFillWidth(starIndex) === '0%' ? (
+              /* Empty — single gray star */
+              <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  fill="#4B5563"
+                />
+              </svg>
+            ) : (
+              /* Half-filled — need two layers for clip effect */
+              <>
+                <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                    fill="#4B5563"
+                  />
+                </svg>
+                <div className="absolute inset-0 overflow-hidden" style={{ width: '50%' }}>
+                  <svg viewBox="0 0 24 24" fill="none" style={{ width: starSize, height: starSize }}>
+                    <path
+                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                      fill="#FFD700"
+                    />
+                  </svg>
+                </div>
+              </>
+            )}
           </button>
         ))}
 
