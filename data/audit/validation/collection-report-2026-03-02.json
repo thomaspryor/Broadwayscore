@@ -1,82 +1,91 @@
 {
-  "runDate": "2026-03-02T21:30:11.434Z",
+  "runDate": "2026-03-02T21:33:00.886Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "man-and-boy-west-end-2026",
+    "showFilter": "the-book-of-mormon-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 8,
     "failed": 2,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 3,
+    "tier1Attempts": 8,
+    "tier1Success": 5,
     "ampAttempts": 1,
     "ampSuccess": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 6,
     "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 10,
+    "scrapingBeeCreditsUsed": 21,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "man-and-boy-west-end-2026/guardian--arifa-akbar.json",
-    "man-and-boy-west-end-2026/financialtimes--unknown.json",
-    "man-and-boy-west-end-2026/independent--alice-saville.json",
-    "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json"
+    "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
+    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+    "the-book-of-mormon-west-end-2024/financialtimes--ian-shuttleworth.json",
+    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+    "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
+    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
-    "man-and-boy-west-end-2026/telegraph--dominic-cavendish.json",
-    "man-and-boy-west-end-2026/variety--marilyn-stasio.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
   ],
   "tierDetails": {
     "playwright": [
-      "man-and-boy-west-end-2026/guardian--arifa-akbar.json",
-      "man-and-boy-west-end-2026/financialtimes--unknown.json",
-      "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json"
+      "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
+      "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+      "the-book-of-mormon-west-end-2024/financialtimes--ian-shuttleworth.json",
+      "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
+      "the-book-of-mormon-west-end-2024/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [
-      "data/review-texts/man-and-boy-west-end-2026/variety--marilyn-stasio.json",
-      "man-and-boy-west-end-2026/variety--marilyn-stasio.json"
+      "data/review-texts/the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json"
     ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "man-and-boy-west-end-2026/independent--alice-saville.json"
+      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+      "the-book-of-mormon-west-end-2024/independent--peter-marks.json"
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
+    ]
   },
   "failuresByOutlet": {
     "The Telegraph": {
