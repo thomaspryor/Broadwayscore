@@ -72,6 +72,7 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
+const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 
 // Show Score URL map (curated from listings discovery)
 let _showScoreUrlMap = null;
@@ -178,6 +179,42 @@ function loadOutlets() {
     ...config.tier2.map(o => ({ ...o, tier: 2 })),
     ...config.tier3.map(o => ({ ...o, tier: 3 }))
   ];
+}
+
+/**
+ * Build domain→market map from outlet-registry.json for SERP market filtering.
+ * Handles domain collisions (e.g. timeout.com shared by US + London outlets)
+ * by marking shared domains as effectively dual-market.
+ * Cached at module level — only loaded once.
+ */
+let _domainMarketMap = null;
+function getDomainMarketMap() {
+  if (_domainMarketMap) return _domainMarketMap;
+  try {
+    const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+    const map = new Map();
+    for (const [id, info] of Object.entries(registry.outlets || {})) {
+      const region = info.region || null;
+      const isDualMarket = !!info.isDualMarket;
+      const entry = { region, isDualMarket };
+      const domains = [info.domain, ...(info.domainAliases || [])].filter(Boolean);
+      for (const d of domains) {
+        const key = d.toLowerCase();
+        const existing = map.get(key);
+        if (existing && existing.region !== region) {
+          // Domain shared across markets (e.g. timeout.com) → treat as dual-market
+          existing.isDualMarket = true;
+        } else {
+          map.set(key, { ...entry });
+        }
+      }
+    }
+    _domainMarketMap = map;
+  } catch (e) {
+    console.log('  ⚠ Could not load outlet-registry for market filtering');
+    _domainMarketMap = new Map();
+  }
+  return _domainMarketMap;
 }
 
 /**
@@ -2351,8 +2388,24 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         foundReviews.map(r => (r.outletId || '').toLowerCase())
       );
 
-      // Tier 1 first, then Tier 2, then Tier 3
-      const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
+      // Tier 1 first, then Tier 2, then Tier 3 — filtered by market
+      const domainMarketMap = getDomainMarketMap();
+      const allOutlets = outlets
+        .filter(outlet => {
+          if (domainMarketMap.size === 0) return true; // no registry = no filter
+          const domain = (outlet.domain || '').toLowerCase();
+          const marketInfo = domainMarketMap.get(domain);
+          if (!marketInfo) return true;            // unknown outlet → keep (safe default)
+          if (marketInfo.isDualMarket) return true; // dual-market → always search
+          if (isWestEnd) return marketInfo.region === 'london';
+          return marketInfo.region !== 'london';    // BW/OB: exclude london-only
+        })
+        .sort((a, b) => a.tier - b.tier);
+
+      if (isWestEnd || isOffBroadway) {
+        console.log(`  Market filter: ${outlets.length} total → ${allOutlets.length} outlets for ${show.category}`);
+      }
+
       const SERP_BUDGET = 150;
       let serpCallCount = 0;
 
