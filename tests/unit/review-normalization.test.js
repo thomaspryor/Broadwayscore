@@ -629,11 +629,11 @@ describe('Integration: Cross-aggregator normalization', () => {
   });
 
   test('The Stage outlet normalizes from all variations', () => {
-    // From normalization-diff.json: "stage" and "the stage" should both work
-    assert.strictEqual(normalizeOutlet('the stage'), 'stage-uk');
-    assert.strictEqual(normalizeOutlet('The Stage'), 'stage-uk');
-    // Bare "stage" falls back to OUTLET_ALIASES → 'thestage' (registry lacks this alias)
+    // Registry: thestage is canonical, with aliases: stage-uk, the stage, the-stage, stage
+    assert.strictEqual(normalizeOutlet('the stage'), 'thestage');
+    assert.strictEqual(normalizeOutlet('The Stage'), 'thestage');
     assert.strictEqual(normalizeOutlet('stage'), 'thestage');
+    assert.strictEqual(normalizeOutlet('stage-uk'), 'thestage');
   });
 
   test('NY Stage Review normalizes from all variations', () => {
