@@ -95,7 +95,11 @@
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
     "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytimes--unknown.json",
     "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json"
+    "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
+    "perfect-crime-off-broadway-1987/nyt-theater--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "ragtime-2025/newyorker--unknown.json",
+    "six-2021/newyorker--naomi-fry.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -211,7 +215,13 @@
     "moulin-rouge-2019/nytimes--ben-brantley.json",
     "moulin-rouge-2019/vulture--sara-holdren.json",
     "moulin-rouge-the-musical-west-end-2021/nyt-theater--unknown.json",
-    "not-nobody-off-broadway-2026/nytg--unknown.json"
+    "not-nobody-off-broadway-2026/nytg--unknown.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--erik-piepenburg.json",
+    "paddington-the-musical-west-end-2025/variety--david-benedict.json",
+    "starlight-express-west-end-2024/variety--david-benedict.json",
+    "stranger-things-2024/nytimes--houman-barekat.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -270,7 +280,8 @@
       "hamilton-west-end-2021/nyt-theater--unknown.json",
       "marcel-on-the-train-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "mother-russia-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json"
+      "my-joy-is-heavy-off-broadway-2025/nyt-theater--unknown.json",
+      "perfect-crime-off-broadway-1987/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -306,9 +317,14 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/mj-2022/vulture--helen-shaw.json",
-      "mj-2022/vulture--helen-shaw.json"
+      "mj-2022/vulture--helen-shaw.json",
+      "data/review-texts/oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/paddington-the-musical-west-end-2025/variety--david-benedict.json",
+      "paddington-the-musical-west-end-2025/variety--david-benedict.json"
+    ],
     "directCookies": [
       "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
       "heathers-the-musical-off-broadway-2025/usatoday--elysa-gardner.json",
@@ -317,7 +333,9 @@
       "just-in-time-2025/newyorker--unknown.json",
       "masquerade-off-broadway-2025/vulture--sara-holdrenjackson-mchenry.json",
       "maybe-happy-ending-2024/newyorker--naomi-fry.json",
-      "moulin-rouge-2019/vulture--sara-holdren.json"
+      "moulin-rouge-2019/vulture--sara-holdren.json",
+      "ragtime-2025/newyorker--unknown.json",
+      "six-2021/newyorker--naomi-fry.json"
     ],
     "scrapingbee": [
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
@@ -422,11 +440,13 @@
       "la-ternura-off-broadway-2025/nytg--unknown.json",
       "los-soles-truncos-off-broadway-2025/nytg--unknown.json",
       "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
-      "maybe-happy-ending-2024/vulture--sara-holdren.json"
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "oh-mary-2024/nytimes--erik-piepenburg.json"
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "not-nobody-off-broadway-2026/nytg--unknown.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/variety--david-benedict.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -620,6 +640,50 @@
       "t": "2026-03-02T04:09:49.323Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T04:19:44.108Z",
+      "event": "bb-session",
+      "session": "14ef753e",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-02T04:19:44.134Z",
+      "event": "bb-session",
+      "session": "4442374d",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-02T04:19:45.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T04:19:45.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-02T04:20:53.328Z",
+      "event": "bb-session",
+      "session": "46b3712d",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-02T04:20:54.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-02T04:22:38.490Z",
+      "event": "bb-session",
+      "session": "29bf2db8",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-03-02T04:22:39.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

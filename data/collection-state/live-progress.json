@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-03-02T04:10:38.124Z",
-  "processed": 96,
-  "failed": 114,
-  "successRate": "45.7%",
+  "updatedAt": "2026-03-02T04:31:55.205Z",
+  "processed": 100,
+  "failed": 120,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 55,
-    "amp": 34,
-    "browserbase": 0,
-    "directCookies": 8,
+    "playwright": 56,
+    "amp": 36,
+    "browserbase": 2,
+    "directCookies": 10,
     "scrapingbee": 12,
     "brightdata": 2,
     "archiveToday": 47,
-    "archive": 36
+    "archive": 38
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-03-02T01:08:27.953Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-02T01:13:38.632Z",
-      "event": "bb-session",
-      "session": "a46a1dfd",
-      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
-    },
-    {
-      "t": "2026-03-02T01:13:39.976Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-03-02T01:36:35.426Z",
-      "event": "bb-session",
-      "session": "aea77492",
-      "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-"
-    },
-    {
-      "t": "2026-03-02T03:30:18.319Z",
-      "event": "bb-session",
-      "session": "06131ac0",
-      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
-    },
-    {
-      "t": "2026-03-02T03:30:19.379Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-02T03:32:03.080Z",
-      "event": "bb-session",
-      "session": "efbbc17f",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
-    },
-    {
-      "t": "2026-03-02T03:32:04.297Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-02T03:41:56.744Z",
       "event": "bb-session",
@@ -124,6 +80,50 @@
       "t": "2026-03-02T04:09:49.323Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T04:19:44.108Z",
+      "event": "bb-session",
+      "session": "14ef753e",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+    },
+    {
+      "t": "2026-03-02T04:19:44.134Z",
+      "event": "bb-session",
+      "session": "4442374d",
+      "url": "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/"
+    },
+    {
+      "t": "2026-03-02T04:19:45.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T04:19:45.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-02T04:20:53.328Z",
+      "event": "bb-session",
+      "session": "46b3712d",
+      "url": "https://www.newyorker.com/magazine/2026/02/02/ragtime-cases-the-landmark-it-almo"
+    },
+    {
+      "t": "2026-03-02T04:20:54.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-02T04:22:38.490Z",
+      "event": "bb-session",
+      "session": "29bf2db8",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
+    },
+    {
+      "t": "2026-03-02T04:22:39.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
