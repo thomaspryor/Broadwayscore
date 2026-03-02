@@ -14,7 +14,7 @@ const BASE = path.join(__dirname, '..', 'data', 'review-texts');
 
 const manifest = [
   // Content confirms 2008 production (Cedric the Entertainer, Leguizamo, Osment, dir. Falls). Preview-period review.
-  { showId: 'american-buffalo-2008', file: 'variety--david-rooney.json', action: 'unflag' },
+  { showId: 'american-buffalo-2008', file: 'variety--david-rooney.json', action: 'unflag', allowEarlyDate: true },
 
   // Content IS the OB production at PAC NYC. LLM verifier confused OB venue with wrong-production.
   { showId: 'cats-the-jellicle-ball-off-broadway-2024', file: 'nypost--johnny-oleksinski.json', action: 'unflagRestore' },
@@ -54,6 +54,18 @@ for (const entry of manifest) {
   delete data.wrongProduction;
   delete data.wrongShow;
   delete data.wrongProductionNote;
+
+  // Set date bypass flags to prevent rebuild guards from re-flagging
+  if (entry.allowEarlyDate) data.allowEarlyDate = true;
+  if (entry.allowLateDate) data.allowLateDate = true;
+
+  if (entry.action === 'unflag' || entry.action === 'unflagRestore') {
+    // Fix contentTier if it was set to invalid due to wrongProduction
+    if (data.contentTier === 'invalid' && data.incompleteReason === 'wrong_content') {
+      data.contentTier = data.fullText ? 'complete' : (data.showScoreExcerpt || data.bwwExcerpt || data.dtliExcerpt ? 'excerpt' : 'stub');
+      delete data.incompleteReason;
+    }
+  }
 
   if (entry.action === 'unflagRestore') {
     // Restore wrongFullText → fullText
