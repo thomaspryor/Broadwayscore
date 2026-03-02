@@ -124,6 +124,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 15
 
+      - name: Cleanup phantom outlet duplicates
+        run: node scripts/cleanup-phantom-outlets.js --apply
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
