@@ -326,11 +326,14 @@ const CONFIG = {
   },
 };
 
-// Print-only outlets: no online content available, skip SERP discovery and collection
-const PRINT_ONLY_OUTLETS = new Set([
-  'lighting-and-sound-america',
-  'lighting and sound america',
-  'lsa',
+// Uncollectable outlets: no online content available (print-only, defunct, video-only).
+// Skip SERP discovery and collection — these waste API credits.
+// Scored files with ShowScore-extracted text are preserved; only pipeline discovery is skipped.
+const UNCOLLECTABLE_OUTLETS = new Set([
+  'lighting-and-sound-america',  // Print-only trade publication
+  'wolf-entertainment-guide',    // Critic (William Wolf) died 2020, SSL cert expired
+  'as-her-world-turns',          // Personal travel blog, rare theater posts
+  'hot-pepper-theater',          // Defunct video-based review project
 ]);
 
 // Domain alias matching — imported from shared lib (scraper.js)
@@ -2963,7 +2966,7 @@ async function discoverCorrectUrl(review) {
   // Need at least one SERP provider
   if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) return null;
   // Skip print-only outlets — no online content to discover
-  if (PRINT_ONLY_OUTLETS.has((review.outletId || '').toLowerCase())) return null;
+  if (UNCOLLECTABLE_OUTLETS.has((review.outletId || '').toLowerCase())) return null;
 
   // Per-run cap to prevent runaway SERP API costs
   if (stats.urlDiscoveryAttempts >= URL_DISCOVERY_MAX_PER_RUN) {
@@ -5067,7 +5070,7 @@ function findReviewsToProcess() {
         if (!data.url && !CONFIG.incompleteReasonFilter.includes('no_url')) continue;
 
         // Skip print-only outlets — no online content exists, SERP discovery wastes API credits
-        if (PRINT_ONLY_OUTLETS.has((data.outletId || '').toLowerCase())) continue;
+        if (UNCOLLECTABLE_OUTLETS.has((data.outletId || '').toLowerCase())) continue;
 
         // Determine outlet tier
         const outletId = (data.outletId || '').toLowerCase();
