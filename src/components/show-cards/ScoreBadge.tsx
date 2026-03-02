@@ -76,16 +76,16 @@ export function getScoreTextColorClass(score: number): string {
 }
 
 function MustSeeCrown({ size }: { size: 'sm' | 'md' | 'lg' | 'mini' }) {
-  // Simple 3-point crown matching native app style — top-right, no outline, no base band
-  const dims = { mini: { w: 10, h: 8, top: -6, right: -3 }, sm: { w: 11, h: 9, top: -7, right: -3 }, md: { w: 13, h: 10, top: -7, right: -4 }, lg: { w: 15, h: 12, top: -9, right: -4 } }[size];
+  // Simple flat crown matching native app — centered on top, no outline/base band
+  const dims = { mini: { w: 9, h: 5, top: -4 }, sm: { w: 10, h: 5, top: -4 }, md: { w: 13, h: 6, top: -5 }, lg: { w: 15, h: 7, top: -6 } }[size];
   return (
     <svg
-      className="absolute z-10 pointer-events-none"
-      style={{ top: dims.top, right: dims.right, filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.4))' }}
-      width={dims.w} height={dims.h} viewBox="0 0 24 18"
+      className="absolute left-1/2 -translate-x-1/2 z-10 pointer-events-none"
+      style={{ top: dims.top }}
+      width={dims.w} height={dims.h} viewBox="0 0 24 14"
       aria-hidden="true"
     >
-      <path d="M2,16 L5,6 L9,10 L12,2 L15,10 L19,6 L22,16 Z" fill="#FFD700" opacity="0.9"/>
+      <path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/>
     </svg>
   );
 }
