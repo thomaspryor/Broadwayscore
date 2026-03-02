@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-02T15:16:53.484Z",
-  "processed": 357,
-  "failed": 813,
-  "successRate": "30.5%",
+  "updatedAt": "2026-03-02T15:21:02.611Z",
+  "processed": 362,
+  "failed": 818,
+  "successRate": "30.7%",
   "tierBreakdown": {
-    "playwright": 228,
+    "playwright": 233,
     "amp": 72,
     "browserbase": 10,
     "directCookies": 30,
@@ -13,19 +13,8 @@
     "archiveToday": 461,
     "archive": 90
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-03-02T10:21:05.256Z",
-      "event": "bb-session",
-      "session": "c06548a8",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/231859841_Theater_review_"
-    },
-    {
-      "t": "2026-03-02T10:21:06.501Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-03-02T10:21:53.175Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-02T15:16:23.913Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T15:21:00.585Z",
+      "event": "bb-session",
+      "session": "a2dd5bb7",
+      "url": "https://deadline.com/2025/11/paddington-the-musical-first-images-west-end-123660"
+    },
+    {
+      "t": "2026-03-02T15:21:02.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
