@@ -349,6 +349,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
     q: initialSearchParams.get('q') || '',
   }));
 
+  // Separate synchronous state for search input — startTransition drops keystrokes on controlled inputs
+  const [searchInput, setSearchInput] = useState(() => initialSearchParams.get('q') || '');
+
   const status = filters.status;
   const sort = filters.sort;
   const type = filters.type;
@@ -386,6 +389,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   }, []);
 
   const clearAllFilters = useCallback(() => {
+    setSearchInput('');
     setFilters({
       status: DEFAULT_STATUS,
       sort: DEFAULT_SORT,
@@ -541,8 +545,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           id="we-show-search"
           type="search"
           placeholder="Search shows, venues, directors..."
-          value={searchQuery}
-          onChange={(e) => updateParams({ q: e.target.value })}
+          value={searchInput}
+          onChange={(e) => {
+            const val = e.target.value;
+            setSearchInput(val);
+            updateParams({ q: val });
+          }}
           className="search-input pl-12 focus-visible:outline-none"
           autoComplete="off"
         />
@@ -612,8 +620,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           </div>
           <h3 className="text-lg font-semibold text-white mb-2">No shows found</h3>
           <p className="text-gray-400 mb-6 max-w-sm mx-auto">
-            {searchQuery
-              ? `No shows match "${searchQuery}". Try adjusting your search or filters.`
+            {searchInput
+              ? `No shows match "${searchInput}". Try adjusting your search or filters.`
               : 'No shows match your current filters.'}
           </p>
           <button
