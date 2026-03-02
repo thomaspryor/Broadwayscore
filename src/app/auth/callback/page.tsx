@@ -18,16 +18,35 @@ import { getReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
  */
 export default function AuthCallbackPage() {
   const [error, setError] = useState(false);
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   useEffect(() => {
-    const client = getSupabaseClient();
-    if (!client) {
+    // Check for error in URL hash or query params
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(hash.replace('#', ''));
+
+    const urlError = params.get('error') || hashParams.get('error');
+    const urlErrorDesc = params.get('error_description') || hashParams.get('error_description');
+
+    if (urlError) {
+      setErrorDetail(`${urlError}: ${urlErrorDesc || 'Unknown error'}`);
       setError(true);
       return;
     }
 
-    // Set up timeout — if auth doesn't complete in 5s, show error
-    const timeout = setTimeout(() => setError(true), 5000);
+    const client = getSupabaseClient();
+    if (!client) {
+      setErrorDetail('Supabase client not available — env vars may be missing');
+      setError(true);
+      return;
+    }
+
+    // Set up timeout — if auth doesn't complete in 8s, show error
+    const timeout = setTimeout(() => {
+      setErrorDetail('Timed out waiting for auth callback. Hash: ' + (hash ? hash.substring(0, 80) : '(empty)'));
+      setError(true);
+    }, 8000);
 
     // Listen for auth state change (handles hash fragment automatically)
     const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
@@ -56,6 +75,11 @@ export default function AuthCallbackPage() {
         <p className="text-sm text-gray-400 mb-6">
           Something went wrong during sign-in. Please try again.
         </p>
+        {errorDetail && (
+          <p className="text-xs text-gray-600 mb-4 font-mono break-all bg-white/5 rounded p-2">
+            {errorDetail}
+          </p>
+        )}
         <a
           href="/"
           className="inline-block px-5 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
