@@ -635,8 +635,8 @@ function extractBwwRoundupData(html, showId) {
           const outlet = match[2].trim();
           const excerpt = match[3].trim().slice(0, 500);
 
-          if (outlet.length < 2 || outlet.length > 60) continue;
-          // Filter garbage outlet names
+          if (outlet.length < 2) continue;
+          // Filter garbage outlet names (isJunkOutlet handles length > 45)
           if (isJunkOutlet(outlet)) continue;
           // Filter false positives
           const outletLower = outlet.toLowerCase();
