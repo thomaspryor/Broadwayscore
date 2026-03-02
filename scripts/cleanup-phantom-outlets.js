@@ -14,6 +14,7 @@
  * Usage:
  *   node scripts/cleanup-phantom-outlets.js          # Dry run (default)
  *   node scripts/cleanup-phantom-outlets.js --apply   # Actually merge and delete
+ *   node scripts/cleanup-phantom-outlets.js --audit-phantoms  # Audit all non-registry outlets
  */
 
 const fs = require('fs');
@@ -24,10 +25,13 @@ const {
   mergeReviews,
   getOutletTier,
   loadOutletRegistry,
+  levenshteinDistance,
 } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const apply = process.argv.includes('--apply');
+const auditPhantoms = process.argv.includes('--audit-phantoms');
 
 function isCanonicalOutlet(outletId) {
   const registry = loadOutletRegistry();
@@ -183,4 +187,123 @@ function run() {
   }
 }
 
-run();
+function auditPhantomOutlets() {
+  console.log('\n=== Phantom Outlet Audit ===\n');
+
+  const registry = loadOutletRegistry();
+  if (!registry || !registry.outlets) {
+    console.error('ERROR: outlet-registry.json not found');
+    process.exit(1);
+  }
+
+  const registryNames = new Map(); // lowercase displayName → outletId
+  for (const [id, data] of Object.entries(registry.outlets)) {
+    registryNames.set((data.displayName || id).toLowerCase(), id);
+  }
+
+  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
+  });
+
+  // Scan all files, build outlet map
+  const outletMap = new Map(); // outletId → { count, showIds, hasFullText }
+  for (const showId of showDirs) {
+    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    for (const file of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+        const outletId = data.outletId;
+        if (!outletId) continue;
+        if (!outletMap.has(outletId)) {
+          outletMap.set(outletId, { count: 0, showIds: new Set(), hasFullText: false });
+        }
+        const entry = outletMap.get(outletId);
+        entry.count++;
+        entry.showIds.add(showId);
+        if (data.fullText) entry.hasFullText = true;
+      } catch { /* skip */ }
+    }
+  }
+
+  // Classify each outlet
+  const classifications = { registered: [], staleAlias: [], probablePhantom: [], legitimateSmall: [] };
+  for (const [outletId, info] of outletMap) {
+    if (registry.outlets[outletId]) {
+      classifications.registered.push({ outletId, ...info });
+    } else if (normalizeOutlet(outletId) !== outletId) {
+      classifications.staleAlias.push({ outletId, canonicalId: normalizeOutlet(outletId), ...info });
+    } else if (info.count <= 2) {
+      // Try fuzzy match
+      let bestMatch = null;
+      let bestDist = Infinity;
+      for (const [name, id] of registryNames) {
+        const dist = levenshteinDistance(outletId, name);
+        if (dist < bestDist && dist <= 3) {
+          bestDist = dist;
+          bestMatch = { id, name, dist };
+        }
+      }
+      classifications.probablePhantom.push({ outletId, ...info, fuzzyMatch: bestMatch });
+    } else {
+      classifications.legitimateSmall.push({ outletId, ...info });
+    }
+  }
+
+  // Output summary
+  console.log(`Total unique outlet IDs: ${outletMap.size}`);
+  console.log(`  Registered: ${classifications.registered.length}`);
+  console.log(`  Stale aliases (re-aliasable): ${classifications.staleAlias.length}`);
+  console.log(`  Probable phantoms (≤2 reviews): ${classifications.probablePhantom.length}`);
+  console.log(`  Legitimate small (3+ reviews, not in registry): ${classifications.legitimateSmall.length}`);
+
+  if (classifications.staleAlias.length > 0) {
+    console.log('\n--- Stale Aliases (fixable by existing cleanup) ---');
+    for (const e of classifications.staleAlias.slice(0, 20)) {
+      console.log(`  ${e.outletId} → ${e.canonicalId} (${e.count} files, ${e.showIds.size} shows)`);
+    }
+    if (classifications.staleAlias.length > 20) console.log(`  ... and ${classifications.staleAlias.length - 20} more`);
+  }
+
+  if (classifications.probablePhantom.length > 0) {
+    console.log('\n--- Probable Phantoms (≤2 reviews) ---');
+    const sorted = classifications.probablePhantom.sort((a, b) => b.count - a.count);
+    for (const e of sorted.slice(0, 30)) {
+      const match = e.fuzzyMatch ? ` ~> ${e.fuzzyMatch.id} (dist=${e.fuzzyMatch.dist})` : '';
+      console.log(`  ${e.outletId}: ${e.count} files, ${e.showIds.size} shows${match}`);
+    }
+    if (sorted.length > 30) console.log(`  ... and ${sorted.length - 30} more`);
+  }
+
+  if (classifications.legitimateSmall.length > 0) {
+    console.log('\n--- Legitimate Small (3+ reviews, consider adding to registry) ---');
+    const sorted = classifications.legitimateSmall.sort((a, b) => b.count - a.count);
+    for (const e of sorted.slice(0, 20)) {
+      console.log(`  ${e.outletId}: ${e.count} files, ${e.showIds.size} shows${e.hasFullText ? ' [has fullText]' : ''}`);
+    }
+    if (sorted.length > 20) console.log(`  ... and ${sorted.length - 20} more`);
+  }
+
+  // Save report
+  const report = {
+    _meta: { generatedAt: new Date().toISOString(), totalOutlets: outletMap.size },
+    registered: classifications.registered.length,
+    staleAliases: classifications.staleAlias.map(e => ({ outletId: e.outletId, canonicalId: e.canonicalId, count: e.count })),
+    probablePhantoms: classifications.probablePhantom.map(e => ({
+      outletId: e.outletId, count: e.count, shows: e.showIds.size,
+      fuzzyMatch: e.fuzzyMatch ? e.fuzzyMatch.id : null,
+    })),
+    legitimateSmall: classifications.legitimateSmall.map(e => ({
+      outletId: e.outletId, count: e.count, shows: e.showIds.size, hasFullText: e.hasFullText,
+    })),
+  };
+  if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
+  fs.writeFileSync(path.join(AUDIT_DIR, 'phantom-outlets-report.json'), JSON.stringify(report, null, 2) + '\n');
+  console.log(`\nReport saved to data/audit/phantom-outlets-report.json`);
+}
+
+if (auditPhantoms) {
+  auditPhantomOutlets();
+} else {
+  run();
+}
