@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-03-02T22:37:52.104Z",
+  "runDate": "2026-03-02T22:38:13.579Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-book-of-mormon-west-end-2024",
+    "showFilter": "witness-for-the-prosecution-west-end-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,7 +17,7 @@
     "successRate": "87.5%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,31 +42,28 @@
     "tier4Attempts": 4,
     "tier4Success": 2,
     "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 11,
+    "scrapingBeeCreditsUsed": 2,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-    "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
-    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
-    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
-    "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
-    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
+    "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
+    "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json",
+    "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
+    "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
+    "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/times-uk--clive-davis.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
-      "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
-      "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
-      "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json"
+      "witness-for-the-prosecution-west-end-2022/thestage--david-benedict.json",
+      "witness-for-the-prosecution-west-end-2022/times-uk--unknown.json",
+      "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -77,10 +74,16 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
-      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
+      "witness-for-the-prosecution-west-end-2022/artsdesk--heather-neill.json",
+      "witness-for-the-prosecution-west-end-2022/lost-in-theatreland--amy-rye.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
+      "oldUrl": "https://www.whatsonstage.com/london-theatre/reviews/witness-for-the-prosecution-at-london-county-hall_55027.html",
+      "newUrl": "https://www.whatsonstage.com/news/agatha-christies-witness-for-the-prosecution-extends-london-run-into-2023_56482/"
+    }
+  ]
 }
