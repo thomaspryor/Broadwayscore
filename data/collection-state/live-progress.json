@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-02T11:01:51.179Z",
-  "processed": 257,
-  "failed": 418,
-  "successRate": "38.1%",
+  "updatedAt": "2026-03-02T11:11:05.928Z",
+  "processed": 260,
+  "failed": 400,
+  "successRate": "39.4%",
   "tierBreakdown": {
-    "playwright": 167,
-    "amp": 57,
-    "browserbase": 10,
+    "playwright": 169,
+    "amp": 55,
+    "browserbase": 12,
     "directCookies": 24,
-    "scrapingbee": 41,
+    "scrapingbee": 39,
     "brightdata": 2,
-    "archiveToday": 178,
-    "archive": 58
+    "archiveToday": 187,
+    "archive": 63
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-02T10:04:47.887Z",
-      "event": "bb-session",
-      "session": "198d2a5a",
-      "url": "https://www.nytimes.com/2025/12/19/theater/oh-mary-trafalgar-theater-london.html"
-    },
-    {
-      "t": "2026-03-02T10:04:49.278Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-02T10:06:14.102Z",
-      "event": "bb-session",
-      "session": "59b045d9",
-      "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
-    },
-    {
-      "t": "2026-03-02T10:06:15.764Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-03-02T10:07:42.630Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-02T10:18:47.996Z",
       "event": "bb-cookie-inject",
       "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T10:50:45.731Z",
+      "event": "bb-session",
+      "session": "e8cb5166",
+      "url": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-p"
+    },
+    {
+      "t": "2026-03-02T10:50:47.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T11:07:34.358Z",
+      "event": "bb-session",
+      "session": "0a811c0b",
+      "url": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-"
+    },
+    {
+      "t": "2026-03-02T11:07:35.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
