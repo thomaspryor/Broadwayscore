@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-03-02T22:38:45.324Z",
+  "runDate": "2026-03-02T22:41:05.732Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "moulin-rouge-the-musical-west-end-2021",
+    "showFilter": "the-mousetrap-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 0,
+    "processed": 3,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 3,
@@ -23,50 +23,48 @@
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 4
+    "archiveToday": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
-    "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
-    "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
-    "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json",
-    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
-    "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
-    "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json"
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/telegraph--unknown.json",
+    "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json"
   ],
   "failed": [
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
+    "the-mousetrap-west-end-2021/thestage--john-thaxter.json",
+    "the-mousetrap-west-end-2021/times-uk--jo-4252.json",
+    "the-mousetrap-west-end-2021/times-uk--quentin-letts.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json",
-      "moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
-      "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json"
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/telegraph--unknown.json",
+      "the-mousetrap-west-end-2021/whatsonstage--whatsonstage-reviewer.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -75,20 +73,19 @@
       "the-book-of-mormon-west-end-2024/independent--peter-marks.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": [
-      "moulin-rouge-the-musical-west-end-2021/variety--marilyn-stasio.json",
-      "moulin-rouge-the-musical-west-end-2021/artsdesk--marianka-swain.json",
-      "moulin-rouge-the-musical-west-end-2021/independent--ava-wong-davies.json",
-      "moulin-rouge-the-musical-west-end-2021/london-theatre--suzy-evans.json"
-    ]
+    "archiveToday": [
+      "data/review-texts/the-mousetrap-west-end-2021/thestage--john-thaxter.json"
+    ],
+    "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "witness-for-the-prosecution-west-end-2022/whatsonstage--theo-bosanquet.json",
-      "oldUrl": "https://www.whatsonstage.com/london-theatre/reviews/witness-for-the-prosecution-at-london-county-hall_55027.html",
-      "newUrl": "https://www.whatsonstage.com/news/agatha-christies-witness-for-the-prosecution-extends-london-run-into-2023_56482/"
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
