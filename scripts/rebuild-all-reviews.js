@@ -1877,11 +1877,11 @@ showDirs.forEach(showId => {
         if (textToCheck) {
           // Use real show title from shows.json if available (ID-derived titles miss hyphenated names like "Boeing-Boeing")
           const realTitle = showTitleMap && showTitleMap[data.showId || showId];
-          const idTitle = (data.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+          const idTitle = (data.showId || showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
           const showTitle = realTitle ? realTitle.toLowerCase() : idTitle;
           const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
           const textLower = textToCheck.substring(0, 5000).toLowerCase();
-          if (textLower.includes(showTitle) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
+          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
@@ -1891,7 +1891,7 @@ showDirs.forEach(showId => {
             }
             stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
             // Write fix back to source file
-            try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) { console.warn('  Failed to write back showNotMentioned fix:', filePath, e.message); }
           }
         }
 
