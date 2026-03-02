@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-02-26T19:06:14.862Z",
-    "completedAt": "2026-02-26T19:06:14.942Z",
-    "totalReviews": 7,
-    "processed": 0,
-    "skipped": 6,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-02-26T18:46:25.071Z",
     "completedAt": "2026-02-26T19:14:21.663Z",
     "totalReviews": 32027,
@@ -737030,6 +737016,26 @@
       "input": 67397,
       "output": 1970,
       "total": 103643
+    },
+    "errorDetails": [
+      {
+        "showId": "stereophonic-2024",
+        "outletId": "nytg",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-03-02T18:52:13.901Z",
+    "completedAt": "2026-03-02T18:52:14.121Z",
+    "totalReviews": 30762,
+    "processed": 0,
+    "skipped": 30754,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
     "errorDetails": [
       {
