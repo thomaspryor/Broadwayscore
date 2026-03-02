@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, useDeferredValue } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
@@ -26,6 +26,7 @@ export default function HeaderSearch() {
   const fuseRef = useRef<Fuse<Show> | null>(null);
   const [dataReady, setDataReady] = useState(false);
   const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -64,15 +65,15 @@ export default function HeaderSearch() {
     }
   }, []);
 
-  // Filter shows based on query — Fuse.js fuzzy search + substring match fallback
+  // Filter shows based on deferred query — keeps typing responsive while search catches up
   const filteredShows = useMemo(() => {
-    if (query.length < 1 || !fuseRef.current) return [];
-    const fuseResults = fuseRef.current.search(query, { limit: 8 }).map(result => result.item);
+    if (deferredQuery.length < 1 || !fuseRef.current) return [];
+    const fuseResults = fuseRef.current.search(deferredQuery, { limit: 8 }).map(result => result.item);
 
     // Ensure exact substring matches in title always appear (Fuse can miss multi-word partials)
     // Only apply for 2+ char queries to match Fuse's minMatchCharLength
-    const q = query.toLowerCase();
-    const substringMatches = query.length >= 2
+    const q = deferredQuery.toLowerCase();
+    const substringMatches = deferredQuery.length >= 2
       ? shows.filter(show =>
           show.title.toLowerCase().includes(q) &&
           !fuseResults.some(r => r.id === show.id)
@@ -83,7 +84,7 @@ export default function HeaderSearch() {
     // Note: unscored closed shows are already excluded from search-shows.json at build time
     const merged = [...fuseResults, ...substringMatches];
     return merged.slice(0, 8);
-  }, [query, dataReady, shows]);
+  }, [deferredQuery, dataReady, shows]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -142,10 +143,7 @@ export default function HeaderSearch() {
     }
   }, [isOpen, filteredShows, selectedIndex, router, query]);
 
-  // Reset selection when query changes
-  useEffect(() => {
-    setSelectedIndex(-1);
-  }, [query]);
+  // selectedIndex is reset inline in onChange handlers to avoid a second render per keystroke
 
   const handleResultClick = (slug: string) => {
     router.push(`/show/${slug}`);
@@ -166,6 +164,7 @@ export default function HeaderSearch() {
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
+              setSelectedIndex(-1);
               setIsOpen(e.target.value.length >= 1);
             }}
             onFocus={() => { ensureData(); query.length >= 1 && setIsOpen(true); }}
@@ -264,7 +263,7 @@ export default function HeaderSearch() {
         )}
 
         {/* No results message */}
-        {isOpen && query.length >= 1 && filteredShows.length === 0 && (
+        {isOpen && deferredQuery.length >= 1 && filteredShows.length === 0 && (
           <div className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl p-4 z-50">
             <p className="text-sm text-gray-400 text-center">
               {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
@@ -305,7 +304,7 @@ export default function HeaderSearch() {
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => { setQuery(e.target.value); setSelectedIndex(-1); }}
                   onKeyDown={handleKeyDown}
                   placeholder="Search Broadway shows..."
                   className="w-full px-4 py-2 pl-10 text-base bg-white/5 border border-white/10 rounded-lg
@@ -370,7 +369,7 @@ export default function HeaderSearch() {
                     </button>
                   ))}
                 </div>
-              ) : query.length >= 1 ? (
+              ) : deferredQuery.length >= 1 ? (
                 <div className="p-8 text-center">
                   <p className="text-gray-400">
                     {isLoading ? 'Loading...' : <>No scored shows found for &ldquo;{query}&rdquo;</>}
