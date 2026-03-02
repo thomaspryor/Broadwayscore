@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-03-02T14:46:27.851Z",
-  "processed": 336,
-  "failed": 774,
-  "successRate": "30.3%",
+  "updatedAt": "2026-03-02T14:47:43.091Z",
+  "processed": 335,
+  "failed": 775,
+  "successRate": "30.2%",
   "tierBreakdown": {
-    "playwright": 208,
-    "amp": 65,
+    "playwright": 204,
+    "amp": 63,
     "browserbase": 8,
-    "directCookies": 27,
+    "directCookies": 28,
     "scrapingbee": 43,
     "brightdata": 2,
-    "archiveToday": 461,
-    "archive": 90
+    "archiveToday": 462,
+    "archive": 93
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-02T10:03:35.190Z",
-      "event": "bb-session",
-      "session": "93006dab",
-      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-29-angels29_ST_N.htm%20%20"
-    },
-    {
-      "t": "2026-03-02T10:03:36.696Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-03-02T10:04:36.493Z",
-      "event": "bb-session",
-      "session": "de09e1c2",
-      "url": "https://www.usatoday.com/story/entertainment/arts/2025/10/10/sarasotas-fst-bring"
-    },
-    {
-      "t": "2026-03-02T10:04:37.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
     {
       "t": "2026-03-02T10:05:38.286Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-03-02T10:25:02.318Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T14:39:50.157Z",
+      "event": "bb-session",
+      "session": "2e7c5eb9",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-03-02T14:39:51.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T14:44:44.795Z",
+      "event": "bb-session",
+      "session": "b883382e",
+      "url": "https://www.vulture.com/2023/11/hadestown-ali-difranco-broadway-debut-anais-mitc"
+    },
+    {
+      "t": "2026-03-02T14:44:46.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
     }
   ]
 }
