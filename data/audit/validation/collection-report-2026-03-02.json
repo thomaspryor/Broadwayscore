@@ -1,79 +1,84 @@
 {
-  "runDate": "2026-03-02T22:37:17.673Z",
+  "runDate": "2026-03-02T22:37:52.104Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "les-miserables-west-end-2021",
+    "showFilter": "the-book-of-mormon-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
+    "processed": 7,
     "failed": 1,
     "skipped": 0,
-    "successRate": "83.3%"
+    "successRate": "87.5%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 4,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
     "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 0,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
-    "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
-    "les-miserables-west-end-2021/times-uk--clive-davis.json",
-    "les-miserables-west-end-2021/times-uk--unknown.json",
-    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+    "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+    "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
+    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+    "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+    "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json",
+    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
   ],
   "failed": [
-    "les-miserables-west-end-2021/standard--nick-curtis.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "les-miserables-west-end-2021/times-uk--unknown.json",
-      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+      "the-book-of-mormon-west-end-2024/variety--steven-suskin.json",
+      "the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
+      "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+      "the-book-of-mormon-west-end-2024/times-uk--jeanpierre-4251.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-book-of-mormon-west-end-2024/independent--peter-marks.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
-      "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
-      "les-miserables-west-end-2021/times-uk--clive-davis.json"
+      "the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
+      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
     ]
   },
   "failuresByOutlet": {},
