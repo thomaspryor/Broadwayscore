@@ -356,7 +356,12 @@
     "kinky-boots-off-broadway-2026/ew--maureen-lee-lenker.json",
     "mamma-mia-west-end-2021/ew--leah-greenblatt.json",
     "man-and-boy-west-end-2026/theatermania--unknown.json",
-    "mj-2022/theatermania--jesse-green.json"
+    "mj-2022/theatermania--jesse-green.json",
+    "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
+    "moulin-rouge-the-musical-west-end-2021/theatermania--zachary-stewart.json",
+    "oh-mary-2024/theatermania--jesse-green.json",
+    "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
+    "paranormal-activity-west-end-2025/theatermania--jonas-schwartz.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -1171,7 +1176,12 @@
     "man-and-boy-west-end-2026/ew--keith-staskiewicz.json",
     "marcel-on-the-train-off-broadway-2026/thewrap--robert-hofler.json",
     "matilda-the-musical-west-end-2021/nydailynews--joe-dziemianowicz.json",
-    "mexodus-off-broadway-2026/thewrap--robert-hofler.json"
+    "mexodus-off-broadway-2026/thewrap--robert-hofler.json",
+    "night-side-songs-off-broadway-2026/theatermania--unknown.json",
+    "oliver-west-end-2024/theatermania--david-gordon.json",
+    "operation-mincemeat-west-end-2024/thewrap--robert-hofler.json",
+    "paddington-the-musical-west-end-2025/deadline--baz-bamigboye.json",
+    "paranormal-activity-west-end-2025/thewrap--william-bibbiani.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1403,7 +1413,12 @@
       "hells-kitchen-2024/theatermania--jesse-green.json",
       "kinky-boots-off-broadway-2026/ew--maureen-lee-lenker.json",
       "mamma-mia-west-end-2021/ew--leah-greenblatt.json",
-      "mj-2022/theatermania--jesse-green.json"
+      "mj-2022/theatermania--jesse-green.json",
+      "mother-russia-off-broadway-2026/theatermania--linda-buchwald.json",
+      "moulin-rouge-the-musical-west-end-2021/theatermania--zachary-stewart.json",
+      "oh-mary-2024/theatermania--jesse-green.json",
+      "paddington-the-musical-west-end-2025/theatermania--alex-wood.json",
+      "paranormal-activity-west-end-2025/theatermania--jonas-schwartz.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -2129,7 +2144,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "mj-2022/theatermania--jesse-green.json",
+  "lastProcessed": "paranormal-activity-west-end-2025/thewrap--william-bibbiani.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -2714,6 +2729,17 @@
       "t": "2026-03-02T15:16:23.913Z",
       "event": "bb-cookie-inject",
       "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T15:21:00.585Z",
+      "event": "bb-session",
+      "session": "a2dd5bb7",
+      "url": "https://deadline.com/2025/11/paddington-the-musical-first-images-west-end-123660"
+    },
+    {
+      "t": "2026-03-02T15:21:02.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
