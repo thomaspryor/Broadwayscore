@@ -302,6 +302,9 @@ jobs:
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: node scripts/convert-show-score-to-review-texts.js
 
+      - name: Cleanup phantom outlet duplicates
+        run: node scripts/cleanup-phantom-outlets.js --apply
+
       - name: Rebuild reviews.json from review-texts
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: |
