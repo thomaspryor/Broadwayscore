@@ -9,7 +9,13 @@
     "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
     "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
     "kinky-boots-off-broadway-2026/newsday--linda-winer.json",
-    "oh-mary-west-end-2025/ew--christian-holub.json"
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
+    "you-got-older-off-broadway-2026/timeout--unknown.json",
+    "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+    "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
+    "mother-russia-off-broadway-2026/theatrely--joey-sims.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -31,7 +37,11 @@
     "man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
     "man-and-boy-west-end-2026/timeout--david-cote.json",
     "six-2021/wsj--unknown.json",
-    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json"
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
+    "titanique-west-end-2024/wsj--charles-isherwood.json",
+    "11-to-midnight-off-broadway-2026/billboard--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,7 +49,11 @@
       "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
       "and-juliet-2022/guardian--unknown.json",
       "deep-azure-globe-west-end-2026/thereviewshub--unknown.json",
-      "oh-mary-west-end-2025/ew--christian-holub.json"
+      "oh-mary-west-end-2025/ew--christian-holub.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
+      "you-got-older-off-broadway-2026/timeout--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
+      "mother-russia-off-broadway-2026/theatrely--joey-sims.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -51,14 +65,19 @@
       "data/review-texts/data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
       "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
       "data/review-texts/hamilton-west-end-2021/deadline--jeremy-gerard.json",
-      "hamilton-west-end-2021/deadline--jeremy-gerard.json"
+      "hamilton-west-end-2021/deadline--jeremy-gerard.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+      "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+      "data/review-texts/zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "zack-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "browserbase": [],
     "directCookies": [
       "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json"
     ],
     "scrapingbee": [
-      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
+      "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
+      "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -70,7 +89,10 @@
       "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
       "data/review-texts/just-in-time-2025/wsj--unknown.json",
       "data/review-texts/man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
-      "data/review-texts/six-2021/wsj--unknown.json"
+      "data/review-texts/six-2021/wsj--unknown.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+      "data/review-texts/the-porch-on-windy-hill-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -79,7 +101,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+  "lastProcessed": "11-to-midnight-off-broadway-2026/billboard--unknown.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -133,6 +155,39 @@
     },
     {
       "t": "2026-03-02T00:59:32.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T01:05:03.364Z",
+      "event": "bb-session",
+      "session": "2794ee77",
+      "url": "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming"
+    },
+    {
+      "t": "2026-03-02T01:05:04.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T01:06:48.323Z",
+      "event": "bb-session",
+      "session": "e8cfd3c0",
+      "url": "https://www.wsj.com/articles/the-porch-on-windy-hill-review-folk-songs-and-burie"
+    },
+    {
+      "t": "2026-03-02T01:06:49.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T01:08:26.566Z",
+      "event": "bb-session",
+      "session": "ea52a4f6",
+      "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadw"
+    },
+    {
+      "t": "2026-03-02T01:08:27.953Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
