@@ -96,3 +96,11 @@ export function useToast() {
   }
   return context;
 }
+
+const NOOP_TOAST = { showToast: () => {} };
+
+/** Safe version that returns a no-op when outside ToastProvider */
+export function useToastSafe() {
+  const context = useContext(ToastContext);
+  return context || NOOP_TOAST;
+}

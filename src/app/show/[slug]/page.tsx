@@ -41,7 +41,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
-import ShowPageRating from '@/components/user/ShowPageRating';
+import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -492,7 +492,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           )}
 
           {/* User Rating — feature-flagged */}
-          <ShowPageRating
+          <ShowPageRatingConnected
             showId={show.id}
             showTitle={show.title}
             previewDate={show.previewsStartDate}
