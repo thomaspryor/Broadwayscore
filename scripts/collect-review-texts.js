@@ -4270,6 +4270,71 @@ function classifyTextQuality(text, showId, wordCount, excerptLength = 0) {
   return { quality: 'partial', truncationSignals: signals, cleanedText };
 }
 
+// Extract publishDate from raw HTML using JSON-LD, meta tags, and time elements
+function extractPublishDateFromHtml(html) {
+  if (!html || html.length < 100) return null;
+
+  // 1. JSON-LD datePublished (most reliable)
+  const jsonLdRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = jsonLdRegex.exec(html)) !== null) {
+    try {
+      const jsonStr = match[1].trim();
+      const data = JSON.parse(jsonStr);
+      const items = Array.isArray(data) ? data : (data['@graph'] || [data]);
+      for (const item of items) {
+        const date = item.datePublished || item.dateCreated;
+        if (date) {
+          const normalized = normalizeExtractedDate(date);
+          if (normalized) return normalized;
+        }
+      }
+    } catch (e) { /* invalid JSON-LD, skip */ }
+  }
+
+  // 2. HTML meta tags
+  const metaSelectors = [
+    /meta[^>]*property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i,
+    /meta[^>]*content=["']([^"']+)["'][^>]*property=["']article:published_time["']/i,
+    /meta[^>]*property=["']og:article:published_time["'][^>]*content=["']([^"']+)["']/i,
+    /meta[^>]*name=["']date["'][^>]*content=["']([^"']+)["']/i,
+    /meta[^>]*name=["']DC\.date\.issued["'][^>]*content=["']([^"']+)["']/i,
+  ];
+  for (const regex of metaSelectors) {
+    const m = html.match(regex);
+    if (m && m[1]) {
+      const normalized = normalizeExtractedDate(m[1]);
+      if (normalized) return normalized;
+    }
+  }
+
+  // 3. <time datetime="..."> in article context
+  const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
+  if (timeMatch && timeMatch[1]) {
+    const normalized = normalizeExtractedDate(timeMatch[1]);
+    if (normalized) return normalized;
+  }
+
+  return null;
+}
+
+// Normalize extracted date string to YYYY-MM-DD format
+function normalizeExtractedDate(dateStr) {
+  if (!dateStr || typeof dateStr !== 'string') return null;
+  try {
+    // Handle ISO timestamps, date-only strings, etc.
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    const year = d.getUTCFullYear();
+    if (year < 1990 || year > 2030) return null; // sanity check
+    const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(d.getUTCDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  } catch (e) {
+    return null;
+  }
+}
+
 // Map fetch method to standardized sourceMethod
 function mapSourceMethod(method) {
   const map = {
@@ -4323,6 +4388,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
+
+  // Extract publishDate from HTML if not already set
+  if (!data.publishDate && html) {
+    const extractedDate = extractPublishDateFromHtml(html);
+    if (extractedDate) {
+      data.publishDate = extractedDate;
+      console.log(`    → Extracted publishDate from HTML: ${extractedDate}`);
+    }
+  }
 
   // Clear previous LLM scoring rejection so re-scraped reviews can be scored again.
   // The scoring pipeline skips files with rejectionReason set.
