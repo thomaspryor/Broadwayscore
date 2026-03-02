@@ -617,11 +617,22 @@ export function computeShowData(
   // V1: composite score = critic score (audience/buzz coming later)
   const compositeScore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
 
-  const confidence = assessConfidence(criticScore, null, show.status);
+  // Build-time status correction: safety net for stale data from concurrent pushes.
+  // The source script (update-show-status.js) runs daily, but race conditions between
+  // CI runs and local sessions can overwrite status changes.
+  const today = new Date().toISOString().slice(0, 10);
+  let normalizedStatus = show.status;
+  if (normalizedStatus === 'previews' && show.openingDate && show.openingDate <= today) {
+    normalizedStatus = 'open';
+  } else if (normalizedStatus === 'open' && show.closingDate && show.closingDate < today) {
+    normalizedStatus = 'closed';
+  }
+
+  const confidence = assessConfidence(criticScore, null, normalizedStatus);
 
   // Compute review age note for shows where reviews are from a past year (open shows only)
   let reviewYearNote: string | null = null;
-  if (show.status !== 'closed' && show.openingDate && showReviews.length >= 3) {
+  if (normalizedStatus !== 'closed' && show.openingDate && showReviews.length >= 3) {
     const openYear = new Date(show.openingDate).getFullYear();
     const currentYear = new Date().getFullYear();
     if (currentYear - openYear >= 10) {
@@ -636,7 +647,7 @@ export function computeShowData(
     venue: show.venue,
     openingDate: show.openingDate,
     closingDate: show.closingDate,
-    status: show.status === 'previews' && show.previewsStartDate && show.previewsStartDate > new Date().toISOString().slice(0, 10) ? 'upcoming' : show.status,
+    status: normalizedStatus === 'previews' && show.previewsStartDate && show.previewsStartDate > today ? 'upcoming' : normalizedStatus,
     type: show.type,
     category: show.category,
     runtime: show.runtime,
