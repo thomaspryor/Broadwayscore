@@ -1,34 +1,34 @@
 {
-  "runDate": "2026-03-02T22:36:46.749Z",
+  "runDate": "2026-03-02T22:37:17.673Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "cabaret-at-the-kit-kat-club-west-end-2021",
+    "showFilter": "les-miserables-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
+    "processed": 5,
     "failed": 1,
     "skipped": 0,
-    "successRate": "87.5%"
+    "successRate": "83.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,30 +39,31 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 7,
+    "tier4Attempts": 5,
+    "tier4Success": 4,
     "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 1,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/independent--alexandra-pollard.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json"
+    "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+    "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "les-miserables-west-end-2021/times-uk--unknown.json",
+    "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
+    "les-miserables-west-end-2021/standard--nick-curtis.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "les-miserables-west-end-2021/times-uk--unknown.json",
+      "les-miserables-west-end-2021/whatsonstage--sarah-crompton.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -70,13 +71,9 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/independent--alexandra-pollard.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json"
+      "les-miserables-west-end-2021/artsdesk--aleks-sierz.json",
+      "les-miserables-west-end-2021/london-theatre--mark-shenton.json",
+      "les-miserables-west-end-2021/times-uk--clive-davis.json"
     ]
   },
   "failuresByOutlet": {},
