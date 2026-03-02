@@ -17,7 +17,13 @@
     "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
     "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-    "chess-2025/whatsonstage--david-gordon.json"
+    "chess-2025/whatsonstage--david-gordon.json",
+    "death-becomes-her-2024/washpost--naveen-kumar.json",
+    "drunk-shakespeare-off-broadway-2022/washpost--sophia-solano.json",
+    "heathers-the-musical-off-broadway-2025/dailybeast--tim-teeman.json",
+    "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+    "heathers-the-musical-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+    "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -51,7 +57,11 @@
     "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
     "bug-2026/billboard--aramide-tinubu.json",
     "chess-2025/ap--mark-kennedy.json",
-    "chicago-1996/ap--mark-kennedy.json"
+    "chicago-1996/ap--mark-kennedy.json",
+    "death-becomes-her-2024/broadwayworld--misha-davenport.json",
+    "death-becomes-her-2024/daily-mail--ashleigh-gray.json",
+    "death-becomes-her-2024/latimes--mark-kennedy.json",
+    "hadestown-west-end-2024/curtainup--elyse-sommer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -64,7 +74,13 @@
       "you-got-older-off-broadway-2026/timeout--unknown.json",
       "heathers-the-musical-off-broadway-2025/theatrely--kobi-kassal.json",
       "mother-russia-off-broadway-2026/theatrely--joey-sims.json",
-      "chess-2025/whatsonstage--david-gordon.json"
+      "chess-2025/whatsonstage--david-gordon.json",
+      "death-becomes-her-2024/latimes--mark-kennedy.json",
+      "death-becomes-her-2024/washpost--naveen-kumar.json",
+      "drunk-shakespeare-off-broadway-2022/washpost--sophia-solano.json",
+      "heathers-the-musical-off-broadway-2025/digital-journal--mark-papadatos.json",
+      "heathers-the-musical-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+      "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
@@ -90,10 +106,12 @@
     ],
     "scrapingbee": [
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
-      "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "chinese-republicans-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "heathers-the-musical-off-broadway-2025/dailybeast--tim-teeman.json"
     ],
     "brightdata": [
-      "and-juliet-2022/ap--unknown.json"
+      "and-juliet-2022/ap--unknown.json",
+      "death-becomes-her-2024/daily-mail--ashleigh-gray.json"
     ],
     "archiveToday": [
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -111,7 +129,9 @@
       "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
       "data/review-texts/an-ark-off-broadway-2026/usatoday--elysa-gardner.json",
       "data/review-texts/arcadia-west-end-2026/ap--mark-kennedy.json",
-      "data/review-texts/chicago-1996/ap--mark-kennedy.json"
+      "data/review-texts/chicago-1996/ap--mark-kennedy.json",
+      "data/review-texts/death-becomes-her-2024/broadwayworld--misha-davenport.json",
+      "data/review-texts/hadestown-west-end-2024/curtainup--elyse-sommer.json"
     ],
     "archive": [
       "oh-mary-west-end-2025/vulture--sara-holdren.json",
@@ -121,7 +141,7 @@
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "chicago-1996/ap--mark-kennedy.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/frontmezzjunkies--ross.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -221,6 +241,12 @@
       "t": "2026-03-02T01:13:39.976Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-03-02T01:36:35.426Z",
+      "event": "bb-session",
+      "session": "aea77492",
+      "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-"
     }
   ]
 }
