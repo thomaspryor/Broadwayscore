@@ -68,14 +68,6 @@ export default function MyShowsClient() {
     setLoading(false);
   }, []);
 
-  if (!featureFlags.userAccounts) {
-    return (
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
-        <p className="text-gray-400">This feature is not yet available.</p>
-      </div>
-    );
-  }
-
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
   const upcomingCount = reviews.filter(r => {
@@ -140,6 +132,14 @@ export default function MyShowsClient() {
         return sorted;
     }
   }, [watchlist, watchlistSort, showMap]);
+
+  if (!featureFlags.userAccounts) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
+        <p className="text-gray-400">This feature is not yet available.</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

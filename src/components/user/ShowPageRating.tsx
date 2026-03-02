@@ -35,8 +35,6 @@ export default function ShowPageRating({
   onAuthRequired,
   isAuthenticated = false,
 }: ShowPageRatingProps) {
-  if (!featureFlags.userAccounts) return null;
-
   const [currentRating, setCurrentRating] = useState<number | null>(null);
   const [showPanel, setShowPanel] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
@@ -104,6 +102,8 @@ export default function ShowPageRating({
       setWatchlistLoading(false);
     }
   }, [isAuthenticated, onAuthRequired, onToggleWatchlist]);
+
+  if (!featureFlags.userAccounts) return null;
 
   return (
     <div className="mt-5 pt-5 border-t border-white/[0.06]">

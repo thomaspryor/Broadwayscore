@@ -98,7 +98,6 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             onMouseMove={e => handleMouseMove(e, starIndex)}
             onClick={e => handleClick(e, starIndex)}
             aria-label={`${starIndex} star${starIndex !== 1 ? 's' : ''}`}
-            aria-checked={rating === starIndex}
           >
             {/* Empty star (background) */}
             <svg
