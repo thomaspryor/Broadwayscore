@@ -6,20 +6,37 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--suzy-evans.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+    "bigfoot-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+    "mj-2022/thewrap--steve-pond.json",
+    "11-to-midnight-off-broadway-2026/billboard--unknown.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/times-uk--unknown.json",
+    "bigfoot-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "moulin-rouge-2019/broadwayworld--michael-dale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "bigfoot-off-broadway-2026/playbill--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/marcel-on-the-train-off-broadway-2026/vulture--sara-holdren.json",
+      "data/review-texts/11-to-midnight-off-broadway-2026/billboard--unknown.json",
+      "data/review-texts/hells-kitchen-2024/usatoday--david-rooney.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
+    ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json",
@@ -31,6 +48,6 @@
     ]
   },
   "startTime": "2026-03-02T22:36:11.675Z",
-  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "moulin-rouge-2019/broadwayworld--michael-dale.json",
   "log": []
 }
