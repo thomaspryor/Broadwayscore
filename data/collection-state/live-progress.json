@@ -1,20 +1,86 @@
 {
-  "updatedAt": "2026-03-02T12:21:47.389Z",
-  "processed": 299,
-  "failed": 515,
-  "successRate": "36.7%",
+  "updatedAt": "2026-03-02T12:28:06.327Z",
+  "processed": 412,
+  "failed": 388,
+  "successRate": "51.5%",
   "tierBreakdown": {
-    "playwright": 215,
-    "amp": 91,
-    "browserbase": 10,
-    "directCookies": 26,
-    "scrapingbee": 34,
+    "playwright": 282,
+    "amp": 71,
+    "browserbase": 8,
+    "directCookies": 42,
+    "scrapingbee": 52,
     "brightdata": 2,
-    "archiveToday": 201,
-    "archive": 54
+    "archiveToday": 175,
+    "archive": 78
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 10,
   "recentActivity": [
+    {
+      "t": "2026-03-02T04:48:01.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T08:24:38.553Z",
+      "event": "bb-session",
+      "session": "d4b424f7",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-03-02T08:24:39.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:31:05.808Z",
+      "event": "bb-session",
+      "session": "052d5a55",
+      "url": "https://www.wsj.com/articles/BL-SEB-64425?gaa_at=eafs&gaa_n=AWEtsqe6v3RNd2sTz6ua"
+    },
+    {
+      "t": "2026-03-02T08:31:06.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:31:54.561Z",
+      "event": "bb-session",
+      "session": "998d3812",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9?ga"
+    },
+    {
+      "t": "2026-03-02T08:31:55.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:34:22.153Z",
+      "event": "bb-session",
+      "session": "40d0f03c",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-03-02T08:34:23.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-02T08:35:20.838Z",
+      "event": "bb-session",
+      "session": "693127ff",
+      "url": "https://www.theatermania.com/shows/washington-dc-theater/my-joy-is-heavy-coming-"
+    },
+    {
+      "t": "2026-03-02T08:35:21.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
+    },
+    {
+      "t": "2026-03-02T08:37:04.986Z",
+      "event": "bb-session",
+      "session": "b32bae18",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
     {
       "t": "2026-03-02T08:37:06.196Z",
       "event": "bb-cookie-inject",
@@ -58,72 +124,6 @@
       "t": "2026-03-02T08:55:10.876Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-03-02T10:56:16.924Z",
-      "event": "bb-session",
-      "session": "bb4a838e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
-    },
-    {
-      "t": "2026-03-02T10:56:18.405Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T11:09:14.681Z",
-      "event": "bb-session",
-      "session": "76e01980",
-      "url": "http://www.hollywoodreporter.com/review/sunday-in-the-park-with-george-theater-9"
-    },
-    {
-      "t": "2026-03-02T11:09:16.951Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T11:15:49.484Z",
-      "event": "bb-session",
-      "session": "46ca282a",
-      "url": "https://www.hollywoodreporter.com/news/general-news/motherfucker-hat-theater-rev"
-    },
-    {
-      "t": "2026-03-02T11:15:53.169Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-02T11:24:34.112Z",
-      "event": "bb-session",
-      "session": "bc998daf",
-      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.h"
-    },
-    {
-      "t": "2026-03-02T11:24:35.547Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-03-02T11:48:54.660Z",
-      "event": "bb-session",
-      "session": "26612d44",
-      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
-    },
-    {
-      "t": "2026-03-02T11:48:56.044Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
-    },
-    {
-      "t": "2026-03-02T11:51:28.186Z",
-      "event": "bb-session",
-      "session": "9550d4c9",
-      "url": "https://www.theatermania.com/broadway/reviews/side-show_70742.html"
-    },
-    {
-      "t": "2026-03-02T11:51:29.670Z",
-      "event": "bb-cookie-inject",
-      "domain": "theatermania.com"
     }
   ]
 }
