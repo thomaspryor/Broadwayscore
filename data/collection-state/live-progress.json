@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-02T00:42:55.920Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-03-02T00:53:02.633Z",
+  "processed": 8,
+  "failed": 12,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 2,
+    "playwright": 3,
+    "amp": 8,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 1
+    "archiveToday": 6,
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -25,6 +25,28 @@
       "t": "2026-03-02T00:31:35.762Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T00:43:07.522Z",
+      "event": "bb-session",
+      "session": "a58f6c41",
+      "url": "https://www.vulture.com/article/theater-review-stranger-things-first-shadow-grie"
+    },
+    {
+      "t": "2026-03-02T00:43:08.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T00:48:34.406Z",
+      "event": "bb-session",
+      "session": "a3a3070b",
+      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
+    },
+    {
+      "t": "2026-03-02T00:48:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -2,7 +2,12 @@
   "processed": [
     "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json",
     "oh-mary-west-end-2025/vulture--sara-holdren.json",
-    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json"
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "the-reservoir-off-broadway-2026/vulture--jackson-mchenry.json",
+    "an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+    "and-juliet-2022/guardian--unknown.json",
+    "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+    "deep-azure-globe-west-end-2026/thereviewshub--unknown.json"
   ],
   "failed": [
     "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
@@ -11,19 +16,34 @@
     "man-and-boy-west-end-2026/nytimes--ben-brantley.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
     "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
-    "the-producers-west-end-2025/variety--bob-verini.json"
+    "the-producers-west-end-2025/variety--bob-verini.json",
+    "an-ark-off-broadway-2026/new-jersey-newsroom--micheal-sommers.json",
+    "arcadia-west-end-2026/ew--melissa-rose-bernardo.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
+    "hamilton-west-end-2021/deadline--jeremy-gerard.json",
+    "into-the-woods-west-end-2025/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json"
+      "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+      "and-juliet-2022/guardian--unknown.json",
+      "deep-azure-globe-west-end-2026/thereviewshub--unknown.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
+      "the-producers-west-end-2025/variety--bob-verini.json",
+      "data/review-texts/an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "an-ark-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/data-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+      "data-off-broadway-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json"
+    ],
     "scrapingbee": [
       "chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json"
     ],
@@ -32,14 +52,17 @@
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
       "data/review-texts/im-sorry-prime-minister-west-end-2026/nytimes--jesse-green.json",
       "data/review-texts/mamma-mia-west-end-2021/variety--owen-gleiberman.json",
-      "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json"
+      "data/review-texts/man-and-boy-west-end-2026/nytimes--ben-brantley.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/wsj--charles-isherwood.json",
+      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json"
     ],
     "archive": [
-      "oh-mary-west-end-2025/vulture--sara-holdren.json"
+      "oh-mary-west-end-2025/vulture--sara-holdren.json",
+      "the-reservoir-off-broadway-2026/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-03-02T00:30:01.423Z",
-  "lastProcessed": "the-producers-west-end-2025/variety--bob-verini.json",
+  "lastProcessed": "into-the-woods-west-end-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-02T00:31:34.176Z",
@@ -51,6 +74,28 @@
       "t": "2026-03-02T00:31:35.762Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-02T00:43:07.522Z",
+      "event": "bb-session",
+      "session": "a58f6c41",
+      "url": "https://www.vulture.com/article/theater-review-stranger-things-first-shadow-grie"
+    },
+    {
+      "t": "2026-03-02T00:43:08.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-03-02T00:48:34.406Z",
+      "event": "bb-session",
+      "session": "a3a3070b",
+      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
+    },
+    {
+      "t": "2026-03-02T00:48:35.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
