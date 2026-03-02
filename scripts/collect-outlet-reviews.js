@@ -18,7 +18,6 @@
  *   --show SHOW_ID                           Single show ID (legacy alias for --shows)
  *   --tier 1                                 Only search tier 1 outlets
  *   --max-tier 3                             Include up to tier 3 (default: 2)
- *   --broad-search                           Also do a non-site-scoped T3 search (default: off)
  *   --dry-run                                Show what would be searched, don't write files
  *   --no-skip-existing                       Search even if outlet already has a review
  *   --max-shows N                            Limit to N shows (for testing)
@@ -73,7 +72,6 @@ function parseArgs() {
     showIds: null,        // --shows or --show
     minTier: 1,
     maxTier: 2,
-    broadSearch: false,
     dryRun: false,
     skipExisting: true,
     maxShows: Infinity,
@@ -89,7 +87,6 @@ function parseArgs() {
       case '--shows': opts.showIds = args[++i].split(',').map(s => s.trim()).filter(Boolean); break;
       case '--tier': opts.minTier = parseInt(args[++i]); opts.maxTier = opts.minTier; break;
       case '--max-tier': opts.maxTier = parseInt(args[++i]); break;
-      case '--broad-search': opts.broadSearch = true; break;
       case '--dry-run': opts.dryRun = true; break;
       case '--no-skip-existing': opts.skipExisting = false; break;
       case '--max-shows': opts.maxShows = parseInt(args[++i]); break;
@@ -341,9 +338,10 @@ async function main() {
       .filter(s => !opts.showIds || opts.showIds.includes(s.id));
   }
 
-  // --open-only: filter to open/previews shows (for weekly cron targeting current shows)
+  // --open-only: filter to open shows (for weekly cron targeting current shows)
+  // Note: previews already excluded on line 337 for --market mode
   if (opts.openOnly) {
-    targetShows = targetShows.filter(s => s.status === 'open' || s.status === 'previews');
+    targetShows = targetShows.filter(s => s.status === 'open');
   }
 
   targetShows = targetShows.slice(0, opts.maxShows);
@@ -360,7 +358,6 @@ async function main() {
   console.log(`Tiers: ${opts.minTier}-${opts.maxTier}`);
   console.log(`Outlets per show: ${sampleOutlets.length} (${Object.entries(tierCounts).map(([k, v]) => `${k}:${v}`).join(', ')})`);
   console.log(`Max outlets: ${opts.maxOutlets}`);
-  console.log(`Broad T3 search: ${opts.broadSearch}`);
   console.log(`Date filtering: enabled`);
   console.log(`Dry run: ${opts.dryRun}`);
   console.log(`Max searches: ${opts.maxSearches === Infinity ? 'unlimited' : opts.maxSearches}`);
@@ -393,7 +390,7 @@ async function main() {
       return true;
     });
 
-    if (missing.length === 0 && !opts.broadSearch) {
+    if (missing.length === 0) {
       continue;
     }
 
@@ -503,45 +500,6 @@ async function main() {
     }
 
     if (totalSearches >= opts.maxSearches) break;
-
-    // --- Broad T3 search (non-site-scoped, catches unknown outlets) ---
-    if (opts.broadSearch && totalSearches < opts.maxSearches) {
-      const marketKeyword = market === 'west-end' ? 'West End'
-        : market === 'off-broadway' ? 'Off-Broadway'
-        : 'Broadway';
-      const broadQuery = `"${show.title}" ${marketKeyword} review`;
-
-      console.log(`  [BROAD] "${show.title}" ${marketKeyword} review...`);
-      totalSearches++;
-
-      try {
-        // Use ScrapingBee directly for broad search (not discoverCorrectUrl which needs outletId)
-        const { _serpViaScrapingBee, _serpViaBrightData } = (() => {
-          // We need the raw SERP functions — use discoverCorrectUrl with a dummy outlet
-          // and capture the results. Instead, just do a simple search.
-          // For broad search, we'll construct a fake review and use the query building
-          // but the matching won't work well. Better to search directly.
-          return {};
-        })();
-
-        // Use discoverCorrectUrl with no outlet domain — it'll do a non-site-scoped search
-        const fakeReview = {
-          showId: show.id,
-          outletId: '',
-          outlet: '',
-          criticName: null,
-          url: null,
-        };
-
-        // discoverCorrectUrl without domain falls back to outlet-name-based search
-        // For broad T3, we just want any results. Skip for now — the site-scoped
-        // searches cover the most important outlets. Broad search can be added
-        // when we expose the raw SERP functions.
-        console.log(`    (Broad search not yet wired — site-scoped T1/T2 covers primary outlets)`);
-      } catch (e) {
-        console.log(`    ERROR: ${e.message}`);
-      }
-    }
   }
 
   console.log('\n=== Summary ===');
