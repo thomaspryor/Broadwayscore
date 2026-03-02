@@ -3,6 +3,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserReviews } from '@/hooks/useUserReviews';
+import { useWatchlist } from '@/hooks/useWatchlist';
 import StarRating from '@/components/user/StarRating';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 
@@ -39,11 +42,10 @@ export default function MyShowsClient() {
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
-  // Data — wired to Supabase hooks in Sprint 2
-  const [reviews, setReviews] = useState<UserReview[]>([]);
-  const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
+  const { reviews, getAllReviews, loading: reviewsLoading } = useUserReviews(user?.id || null);
+  const { watchlist, getWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const loading = authLoading || reviewsLoading || watchlistLoading;
 
   // Load show lookup data
   useEffect(() => {
@@ -59,14 +61,17 @@ export default function MyShowsClient() {
         setShowMapLoaded(true);
       })
       .catch(() => {
-        setShowMapLoaded(true); // Still render even if lookup fails
+        setShowMapLoaded(true);
       });
   }, []);
 
-  // Simulate loading complete (Sprint 2: replace with real auth check)
+  // Load user data when authenticated
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    if (isAuthenticated && user) {
+      getAllReviews();
+      getWatchlist();
+    }
+  }, [isAuthenticated, user, getAllReviews, getWatchlist]);
 
   // Stats
   const showsSeen = new Set(reviews.map(r => r.show_id)).size;
