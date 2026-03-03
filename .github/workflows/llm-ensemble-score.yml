@@ -168,10 +168,11 @@ jobs:
           echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
           if [ "$UNSCORED" -ge 5 ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
+            echo "run_rescore=false" >> $GITHUB_OUTPUT
             echo "run_stale=false" >> $GITHUB_OUTPUT
           else
-            # No unscored reviews — check for stale excerpt-based scores
-            STALE=$(node -e "
+            # No unscored reviews — check for reviews flagged needsRescore (highest priority fallback)
+            RESCORE=$(node -e "
               const fs = require('fs'), path = require('path');
               const base = 'data/review-texts';
               const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
@@ -180,25 +181,51 @@ jobs:
                 fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
                   try {
                     const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
-                    if (!r.fullText || r.fullText.length < 1000) return;
-                    if (!r.llmScore || !r.llmScore.score) return;
-                    if (r.needsRescore || r.ensembleData || r.rescoreCompletedAt) return;
-                    if (r.llmMetadata && r.llmMetadata.textSource && r.llmMetadata.textSource.type === 'fullText') return;
-                    if (r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt) n++;
+                    if (r.needsRescore && !r.rescoreCompletedAt) n++;
                   } catch(e) {}
                 });
               });
               console.log(n);
             ")
-            echo "Stale excerpt-based scores: $STALE"
-            if [ "$STALE" -gt 0 ]; then
-              echo "Found stale scores to sweep."
+            echo "Reviews flagged needsRescore: $RESCORE"
+            if [ "$RESCORE" -gt 0 ]; then
+              echo "Found $RESCORE reviews needing rescore."
               echo "skip=false" >> $GITHUB_OUTPUT
-              echo "run_stale=true" >> $GITHUB_OUTPUT
-            else
-              echo "Below threshold (5 unscored) and no stale scores. Skipping."
-              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "run_rescore=true" >> $GITHUB_OUTPUT
               echo "run_stale=false" >> $GITHUB_OUTPUT
+            else
+              # No rescore needed — check for stale excerpt-based scores (lowest priority)
+              STALE=$(node -e "
+                const fs = require('fs'), path = require('path');
+                const base = 'data/review-texts';
+                const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
+                let n = 0;
+                dirs.forEach(d => {
+                  fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                    try {
+                      const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
+                      if (!r.fullText || r.fullText.length < 1000) return;
+                      if (!r.llmScore || !r.llmScore.score) return;
+                      if (r.needsRescore || r.ensembleData || r.rescoreCompletedAt) return;
+                      if (r.llmMetadata && r.llmMetadata.textSource && r.llmMetadata.textSource.type === 'fullText') return;
+                      if (r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt) n++;
+                    } catch(e) {}
+                  });
+                });
+                console.log(n);
+              ")
+              echo "Stale excerpt-based scores: $STALE"
+              if [ "$STALE" -gt 0 ]; then
+                echo "Found stale scores to sweep."
+                echo "skip=false" >> $GITHUB_OUTPUT
+                echo "run_rescore=false" >> $GITHUB_OUTPUT
+                echo "run_stale=true" >> $GITHUB_OUTPUT
+              else
+                echo "No unscored, no rescore, no stale. Skipping."
+                echo "skip=true" >> $GITHUB_OUTPUT
+                echo "run_rescore=false" >> $GITHUB_OUTPUT
+                echo "run_stale=false" >> $GITHUB_OUTPUT
+              fi
             fi
           fi
 
@@ -238,7 +265,8 @@ jobs:
           fi
 
           # Needs rescore (only reviews flagged for rescoring)
-          if [ "${{ github.event.inputs.needs_rescore }}" == "true" ]; then
+          # Also auto-triggered when scheduled run detects needsRescore backlog
+          if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
             ARGS="$ARGS --needs-rescore"
           fi
 
@@ -496,7 +524,7 @@ jobs:
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'true'
-          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.stale_scores == 'true')
+          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -529,6 +557,11 @@ jobs:
           if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
           fi
+          # Pass through needs_rescore flag so rescore chains continue
+          # Also pass through when scheduled run detected needsRescore backlog
+          if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f needs_rescore=true"
+          fi
           # Pass through stale_scores flag so stale-score chains continue
           # Also pass through when scheduled run detected stale scores
           if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
@@ -544,6 +577,7 @@ jobs:
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0'
               || (github.event.inputs.outdated == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
+              || (github.event.inputs.needs_rescore == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')
               || (github.event.inputs.stale_scores == 'true' && steps.check-changes.outputs.has_scored_reviews == 'false')) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
