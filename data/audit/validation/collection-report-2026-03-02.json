@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-03-02T21:31:43.404Z",
+  "runDate": "2026-03-02T22:41:31.599Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lion-king-west-end-2021",
+    "showFilter": "hadestown-west-end-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 5,
+    "processed": 4,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "61.5%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 4,
-    "amp": 2,
-    "browserbase": 0,
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -27,57 +27,47 @@
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 4,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 9,
-    "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 2,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-lion-king-west-end-2021/guardian--michael-billington.json",
-    "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
-    "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
-    "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-    "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
-    "the-lion-king-west-end-2021/telegraph--david-gritten.json",
-    "the-lion-king-west-end-2021/telegraph--unknown.json",
-    "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json"
+    "hadestown-west-end-2024/theatermania--zachary-stewart.json",
+    "hadestown-west-end-2024/artsdesk--mert-dilek.json",
+    "hadestown-west-end-2024/theatre-weekly--greg-stewart.json",
+    "hadestown-west-end-2024/times-uk--anna-pokh.json"
   ],
   "failed": [
-    "the-lion-king-west-end-2021/londonist--hari-mountford.json",
-    "the-lion-king-west-end-2021/standard--nick-curtis.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json",
-    "the-lion-king-west-end-2021/times-uk--clive-davis.json",
-    "the-lion-king-west-end-2021/variety--matt-wolf.json"
+    "hadestown-west-end-2024/variety--matt-trueman.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-lion-king-west-end-2021/guardian--michael-billington.json",
-      "the-lion-king-west-end-2021/standard--nicholas-de-jongh.json",
-      "the-lion-king-west-end-2021/telegraph--unknown.json",
-      "the-lion-king-west-end-2021/whatsonstage--daisy-bowie.json"
+      "hadestown-west-end-2024/times-uk--anna-pokh.json"
     ],
-    "amp": [
-      "data/review-texts/the-lion-king-west-end-2021/variety--matt-wolf.json",
-      "the-lion-king-west-end-2021/variety--matt-wolf.json"
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/hadestown-west-end-2024/variety--matt-trueman.json",
+      "hadestown-west-end-2024/variety--matt-trueman.json"
     ],
-    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -86,12 +76,17 @@
       "data/review-texts/the-lion-king-west-end-2021/times-uk--clive-davis.json"
     ],
     "archive": [
-      "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
-      "the-lion-king-west-end-2021/london-theatre--dom-ohanlon.json",
-      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-      "the-lion-king-west-end-2021/telegraph--david-gritten.json"
+      "hadestown-west-end-2024/theatermania--zachary-stewart.json",
+      "hadestown-west-end-2024/artsdesk--mert-dilek.json",
+      "hadestown-west-end-2024/theatre-weekly--greg-stewart.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hadestown-west-end-2024/variety--matt-trueman.json",
+      "oldUrl": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/",
+      "newUrl": "https://variety.com/2018/legit/reviews/hadestown-review-london-musical-1203028703/"
+    }
+  ]
 }
