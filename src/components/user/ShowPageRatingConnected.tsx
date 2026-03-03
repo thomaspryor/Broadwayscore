@@ -7,6 +7,7 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction } from '@/lib/deferred-auth';
+import { getSupabaseClient } from '@/lib/supabase';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageRatingConnectedProps {
@@ -47,6 +48,27 @@ export default function ShowPageRatingConnected({
     dateSeen: string | null;
   }) => {
     try {
+      // Ensure profile exists before saving (foreign key requirement)
+      if (user) {
+        const client = getSupabaseClient();
+        if (client) {
+          const { data: profileData } = await client
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .single();
+          if (!profileData) {
+            const { data: { user: authUser } } = await client.auth.getUser();
+            const meta = authUser?.user_metadata || {};
+            await client.from('profiles').upsert({
+              id: user.id,
+              display_name: meta.full_name || meta.name || '',
+              avatar_url: meta.avatar_url || meta.picture || null,
+            }, { onConflict: 'id' });
+          }
+        }
+      }
+
       await saveReview({
         showId,
         rating: data.rating,
@@ -54,13 +76,14 @@ export default function ShowPageRatingConnected({
         dateSeen: data.dateSeen,
       });
       showToast?.('Rating saved!', 'success');
-      // Refresh reviews
       await getReviewsForShow(showId);
-    } catch {
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[Rating] handleSaveReview failed:', e);
       showToast?.('Failed to save rating. Please try again.', 'error');
       throw new Error('Save failed');
     }
-  }, [showId, saveReview, getReviewsForShow, showToast]);
+  }, [showId, user, saveReview, getReviewsForShow, showToast]);
 
   const handleToggleWatchlist = useCallback(async () => {
     try {
