@@ -793,9 +793,14 @@ async function main(): Promise<void> {
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
     // Filter to reviews with old single-model llmScore but no ensemble scoring
+    // Exclude quality-flagged reviews (same pre-filter as scoring pipeline)
     filesToProcess = allFiles.filter(f => {
       const d = f.data as any;
-      return d.llmScore && !d.ensembleData;
+      if (!d.llmScore || d.ensembleData) return false;
+      if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') return false;
+      if (d.isMultiShowReview || d.isRoundupArticle) return false;
+      if (d.rejectionReason) return false;
+      return true;
     });
     console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
