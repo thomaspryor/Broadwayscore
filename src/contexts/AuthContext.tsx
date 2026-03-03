@@ -90,9 +90,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data) {
         setProfile(data as UserProfile);
+      } else {
+        // Profile doesn't exist yet — create it client-side
+        // (handles case where DB trigger is missing or failed)
+        await ensureProfile(userId);
       }
     } catch {
-      // Profile will be auto-created by DB trigger
+      // Profile not found — create it
+      await ensureProfile(userId);
+    }
+  };
+
+  const ensureProfile = async (userId: string) => {
+    const client = getSupabaseClient();
+    if (!client) return;
+
+    try {
+      const { data: { user: authUser } } = await client.auth.getUser();
+      const meta = authUser?.user_metadata || {};
+      const { data } = await client
+        .from('profiles')
+        .upsert({
+          id: userId,
+          display_name: meta.full_name || meta.name || '',
+          avatar_url: meta.avatar_url || meta.picture || null,
+        }, { onConflict: 'id' })
+        .select()
+        .single();
+
+      if (data) {
+        setProfile(data as UserProfile);
+      }
+    } catch {
+      // Non-fatal — profile will be created on next sign-in
     }
   };
 
