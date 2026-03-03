@@ -1005,7 +1005,8 @@ async function main(): Promise<void> {
   // ========================================
   // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
   // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
-  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource);
+  // upgradeEnsemble = first-time ensemble scores (not a rescore), skip A/B check
+  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble);
   if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
     const abResult = await runABDistributionCheck(
       finalFiles,
