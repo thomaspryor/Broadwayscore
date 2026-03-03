@@ -1,0 +1,126 @@
+name: Backfill Cast Data (Web Search)
+
+on:
+  workflow_dispatch:
+    inputs:
+      category:
+        description: 'Category to process'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - off-broadway
+          - west-end
+      show_filter:
+        description: 'Optional: specific show ID to process'
+        required: false
+        type: string
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+      force:
+        description: 'Re-process shows with existing cast files'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backfill-cast-web
+  cancel-in-progress: false
+
+jobs:
+  backfill-cast-web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run web cast backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          FLAGS=""
+          if [ -n "${{ inputs.category }}" ]; then
+            FLAGS="$FLAGS --category=${{ inputs.category }}"
+          fi
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            FLAGS="$FLAGS --show-filter=${{ inputs.show_filter }}"
+          fi
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+          echo "Running: node scripts/backfill-cast-web.js $FLAGS"
+          node scripts/backfill-cast-web.js $FLAGS
+
+      - name: Check for changes
+        if: always()
+        id: git-check
+        run: |
+          CAST_FILES=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          echo "Changed cast files: $CAST_FILES"
+          if [ "$CAST_FILES" -gt "0" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Enrich shows.json cast from cast files
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          node scripts/enrich-cast-from-files.js --force
+          node scripts/generate-mobile-show-details.js
+
+      - name: Commit and push
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/cast/ public/data/shows/
+
+          CAT_MSG=""
+          if [ -n "${{ inputs.category }}" ]; then
+            CAT_MSG=" (${{ inputs.category }})"
+          fi
+
+          CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          git commit -m "data: Backfill cast via web search${CAT_MSG} [${CAST_COUNT} files]"
+          bash scripts/lib/push-with-retry.sh 5
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-cast-web'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Cast Web Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
