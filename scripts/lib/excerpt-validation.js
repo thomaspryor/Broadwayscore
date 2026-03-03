@@ -125,7 +125,7 @@ const TOUR_EXCERPT_PATTERNS = [
   /\broad company\b/i,
   /\bbus and truck\b/i,
   /\btouring company\b/i,
-  /\bon tour\b/i,
+  /\bon tour(?! with)\b/i,
 ];
 
 // Known touring venue names that appear in review excerpts
