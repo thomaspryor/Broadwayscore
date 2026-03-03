@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-03-03T23:08:51.722Z",
+  "runDate": "2026-03-03T23:12:57.020Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
@@ -17,34 +17,34 @@
     "successRate": "65.7%"
   },
   "tierBreakdown": {
-    "playwright": 467,
+    "playwright": 466,
     "amp": 84,
     "browserbase": 0,
     "directCookies": 80,
     "scrapingbee": 90,
     "brightdata": 0,
-    "archiveToday": 110,
-    "archive": 125
+    "archiveToday": 113,
+    "archive": 126
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 4,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
     "tier4Attempts": 5,
-    "tier4Success": 0,
+    "tier4Success": 1,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 2.3,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -737,7 +737,7 @@
     "wicked-2003/broadwayworld--marriage-matinee.json",
     "wicked-2003/broadwayworld--nicole-ackman.json",
     "wicked-2003/broadwayworld--tyler-hinton.json",
-    "a-christmas-carol-2019/theatermania--pete-hempstead.json"
+    "art-1998/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1095,10 +1095,10 @@
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
     "wicked-2003/village-voice--michael-feingold.json",
-    "american-buffalo-2008/theatermania--andy-propst.json",
-    "equus-2008/theatermania--brian-scott-lipton.json",
-    "fat-ham-2023/theatermania--adam-feldman.json",
-    "fully-committed-2016/theatermania--adam-feldman.json"
+    "avenue-q-2003/nytimes--ben-brantley.json",
+    "latinologues-2005/nytimes--jason-zinoman.json",
+    "les-miserables-1987/nytimes--frank-rich.json",
+    "les-miserables-2006/nytimes--ben-brantley.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1567,8 +1567,7 @@
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--marriage-matinee.json",
       "wicked-2003/broadwayworld--nicole-ackman.json",
-      "wicked-2003/broadwayworld--tyler-hinton.json",
-      "a-christmas-carol-2019/theatermania--pete-hempstead.json"
+      "wicked-2003/broadwayworld--tyler-hinton.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -1942,7 +1941,10 @@
       "data/review-texts/the-tempest-globe-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
       "data/review-texts/ulysses-off-broadway-2026/talkinbroadway--howard-miller.json",
-      "data/review-texts/american-buffalo-2008/theatermania--andy-propst.json"
+      "data/review-texts/avenue-q-2003/nytimes--ben-brantley.json",
+      "data/review-texts/latinologues-2005/nytimes--jason-zinoman.json",
+      "data/review-texts/les-miserables-1987/nytimes--frank-rich.json",
+      "data/review-texts/les-miserables-2006/nytimes--ben-brantley.json"
     ],
     "archive": [
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
@@ -2069,7 +2071,8 @@
       "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
       "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
       "ulysses-off-broadway-2026/1-minute-critic--matthew-wexler.json",
-      "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "art-1998/nytimes--elisabeth-vincentelli.json"
     ]
   },
   "failuresByOutlet": {},
