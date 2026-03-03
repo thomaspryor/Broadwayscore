@@ -45,11 +45,93 @@ on:
         type: boolean
 
 concurrency:
-  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market || 'weekly-cron' }}
+  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market || 'weekly' }}
   cancel-in-progress: false
 
 jobs:
-  collect:
+  # Cron: run each market in parallel so no market starves the others
+  collect-market:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        market: [broadway, west-end, off-broadway]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run outlet-based SERP collector (${{ matrix.market }})
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          echo "=== Market: ${{ matrix.market }} ==="
+          node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Collect outlet reviews via SERP (${{ matrix.market }})"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Outlet Reviews Failed (${{ matrix.market }})'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # After all markets finish, trigger a single rebuild
+  rebuild:
+    needs: collect-market
+    if: github.event_name == 'schedule' && !cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger rebuild
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post weekly outlet SERP collection"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Discord summary
+        if: always()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          STATUS="${{ needs.collect-market.result }}"
+          if [ "$STATUS" = "success" ]; then
+            COLOR=3066993
+            EMOJI="✅"
+          else
+            COLOR=15158332
+            EMOJI="⚠️"
+          fi
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"embeds\":[{\"title\":\"${EMOJI} Weekly Outlet SERP Collection\",\"description\":\"Status: ${STATUS}\\n[View logs](${RUN_URL})\",\"color\":${COLOR}}]}"
+
+  # Manual dispatch: single job for targeted runs
+  collect-manual:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -75,61 +157,33 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Weekly cron: search open shows across all markets
-            echo "=== Weekly cron: searching open shows across all markets ==="
-            for MARKET in broadway west-end off-broadway; do
-              echo "--- Market: $MARKET ---"
-              node scripts/collect-outlet-reviews.js --market "$MARKET" --open-only --max-tier 2 --max-searches 150
-            done
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.shows }}"
+          elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.show_filter }}"
           else
-            # Manual dispatch: use provided inputs
-            if [ -n "${{ github.event.inputs.shows }}" ]; then
-              ARGS="--shows ${{ github.event.inputs.shows }}"
-            elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
-              ARGS="--shows ${{ github.event.inputs.show_filter }}"
-            else
-              ARGS="--market ${{ github.event.inputs.market }}"
-            fi
-            ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
-            if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-              ARGS="$ARGS --dry-run"
-            fi
-            echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
-            node scripts/collect-outlet-reviews.js $ARGS
+            ARGS="--market ${{ github.event.inputs.market }}"
           fi
+          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
+          node scripts/collect-outlet-reviews.js $ARGS
 
       - name: Push review texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "feat: Collect outlet reviews via SERP (${{ github.event_name }})"
+          message: "feat: Collect outlet reviews via SERP (manual)"
 
       - name: Trigger rebuild
         if: success() && github.event.inputs.dry_run != 'true'
         run: |
-          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection (${{ github.event_name }})"
+          gh workflow run "Rebuild Reviews Data" -f reason="Post outlet SERP collection (manual)"
         env:
           GH_TOKEN: ${{ github.token }}
-
-      - name: Discord summary (cron runs)
-        if: always() && github.event_name == 'schedule'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-        run: |
-          STATUS="${{ job.status }}"
-          if [ "$STATUS" = "success" ]; then
-            COLOR=3066993
-            EMOJI="✅"
-          else
-            COLOR=15158332
-            EMOJI="❌"
-          fi
-          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "{\"embeds\":[{\"title\":\"${EMOJI} Weekly Outlet SERP Collection\",\"description\":\"Status: ${STATUS}\\n[View logs](${RUN_URL})\",\"color\":${COLOR}}]}"
 
       - name: Notify on failure
         if: failure()
