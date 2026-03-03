@@ -119,21 +119,25 @@ function extractTimeOutScore(html, text) {
  * Format: Letter grades (A+, A, A-, B+, etc.)
  */
 function extractEWScore(html, text) {
-  // Look for grade pattern in various formats
+  // EW puts "Grade: B+" (or "Grade: B–" with em-dash) at the end of reviews.
+  // Search text first (more reliable), then HTML. Handle em/en-dash as minus.
   const patterns = [
-    /(?:grade|rating)\s*:?\s*([A-F][+-]?)/i,
-    /\bgrade\s*([A-F][+-]?)\b/i,
-    /\b([A-F][+-]?)\s*(?:rating|grade)\b/i,
+    // Highest confidence: "Grade: X" in review text
+    /(?:grade|rating)\s*:?\s*([A-F][+\-–—]?)/i,
+    /\bgrade\s*([A-F][+\-–—]?)\b/i,
+    /\b([A-F][+\-–—]?)\s*(?:rating|grade)\b/i,
     // EW often has grade in a specific div
-    /class="[^"]*grade[^"]*"[^>]*>\s*([A-F][+-]?)\s*</i,
+    /class="[^"]*grade[^"]*"[^>]*>\s*([A-F][+\-–—]?)\s*</i,
     // Common pattern: "EW Grade: B+"
-    /EW\s+Grade:?\s*([A-F][+-]?)/i
+    /EW\s+Grade:?\s*([A-F][+\-–—]?)/i
   ];
 
   for (const pattern of patterns) {
-    const match = html.match(pattern) || text.match(pattern);
+    // Search text first (grade at end of review), then HTML
+    const match = text.match(pattern) || html.match(pattern);
     if (match) {
-      const grade = match[1].toUpperCase();
+      // Normalize em-dash/en-dash to ASCII minus
+      const grade = match[1].toUpperCase().replace(/[–—]/g, '-');
       if (LETTER_GRADES[grade] !== undefined) {
         // Reject bare "D" and "D-" — overwhelmingly false positives from page templates.
         // Distribution: D=58, D+=2, D-=1. D+ kept (specific enough to be real).
