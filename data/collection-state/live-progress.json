@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-03T05:02:12.830Z",
-  "processed": 257,
-  "failed": 231,
-  "successRate": "52.7%",
+  "updatedAt": "2026-03-03T05:08:32.802Z",
+  "processed": 265,
+  "failed": 233,
+  "successRate": "53.2%",
   "tierBreakdown": {
-    "playwright": 144,
-    "amp": 56,
+    "playwright": 147,
+    "amp": 58,
     "browserbase": 2,
-    "directCookies": 27,
+    "directCookies": 30,
     "scrapingbee": 38,
     "brightdata": 0,
-    "archiveToday": 106,
-    "archive": 68
+    "archiveToday": 108,
+    "archive": 71
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-03T04:18:00.121Z",
@@ -58,6 +58,17 @@
       "t": "2026-03-03T04:26:16.635Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T05:06:20.793Z",
+      "event": "bb-session",
+      "session": "e0d3dfc5",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-03-03T05:06:22.284Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -256,7 +256,15 @@
     "the-little-mermaid-the-musical-off-broadway-2026/theatermania--unknown.json",
     "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
-    "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json"
+    "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
+    "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json",
+    "the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
+    "the-play-that-goes-wrong-off-broadway-2019/nydailynews--maria-4251.json",
+    "the-play-that-goes-wrong-off-broadway-2019/theatermania--linda-buchwald.json",
+    "the-play-that-goes-wrong-off-broadway-2019/theatermania--zachary-stewart.json",
+    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+    "the-rat-trap-west-end-2026/guardian--david-jays.json",
+    "the-rat-trap-west-end-2026/timeout-london--unknown.json"
   ],
   "failed": [
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
@@ -489,7 +497,9 @@
     "six-2021/timeout--adam-feldman.json",
     "sweetmeats-west-end-2026/guardian--anya-ryan.json",
     "the-office-a-musical-parody-off-broadway-2018/broadwaynews--aa-cristi.json",
-    "the-outsiders-2024/deadline--greg-evans.json"
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -637,7 +647,10 @@
       "the-hunger-games-on-stage-west-end-2025/timeout-london--andrzej-lukowski.json",
       "the-little-mermaid-the-musical-off-broadway-2026/theatermania--unknown.json",
       "the-monsters-off-broadway-2026/new-york-sun--elysa-gardner.json",
-      "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json"
+      "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
+      "the-phantom-of-the-opera-west-end-1986/guardian--michael-billington.json",
+      "the-play-that-goes-wrong-off-broadway-2019/nydailynews--maria-4251.json",
+      "the-rat-trap-west-end-2026/guardian--david-jays.json"
     ],
     "amp": [
       "data/review-texts/it-shoulda-been-you-2015/variety--steven-suskin.json",
@@ -695,7 +708,9 @@
       "data/review-texts/ragtime-2025/nypost--unknown.json",
       "ragtime-2025/nypost--unknown.json",
       "data/review-texts/ragtime-2025/thewrap--unknown.json",
-      "ragtime-2025/thewrap--unknown.json"
+      "ragtime-2025/thewrap--unknown.json",
+      "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
+      "the-outsiders-2024/deadline--greg-evans.json"
     ],
     "browserbase": [
       "data/review-texts/bigfoot-off-broadway-2026/nytimes--ben-brantley.json",
@@ -728,7 +743,10 @@
       "little-shop-of-horrors-off-broadway-2019/deadline--greg-evans.json",
       "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
       "maybe-happy-ending-2024/theatermania--adam-feldman.json",
-      "the-lion-king-west-end-2021/timeout-london--ben-walters.json"
+      "the-lion-king-west-end-2021/timeout-london--ben-walters.json",
+      "the-outsiders-2024/timeout--adam-feldman.json",
+      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+      "the-rat-trap-west-end-2026/timeout-london--unknown.json"
     ],
     "scrapingbee": [
       "la-cage-aux-folles-2010/nytheatre--julie-congress.json",
@@ -877,7 +895,9 @@
       "data/review-texts/spongebob-squarepants-2017/vulture--jesse-green.json",
       "data/review-texts/titanique-2026/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/pen-pals-off-broadway-2025/broadwaynews--chloe-rabinowitz.json",
-      "data/review-texts/silver-manhattan-off-broadway-2026/broadwaynews--stephi-wild.json"
+      "data/review-texts/silver-manhattan-off-broadway-2026/broadwaynews--stephi-wild.json",
+      "data/review-texts/the-office-a-musical-parody-off-broadway-2018/broadwaynews--aa-cristi.json",
+      "data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "cabaret-at-the-kit-kat-club-west-end-2021/artsdesk--david-nice.json",
@@ -947,11 +967,14 @@
       "spare-parts-off-broadway-2026/theatermania--unknown.json",
       "spread-off-broadway-2026/theatermania--unknown.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json"
+      "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
+      "the-play-that-goes-wrong-off-broadway-2019/broadwaynews--julie-musbach.json",
+      "the-play-that-goes-wrong-off-broadway-2019/theatermania--linda-buchwald.json",
+      "the-play-that-goes-wrong-off-broadway-2019/theatermania--zachary-stewart.json"
     ]
   },
   "startTime": "2026-03-02T22:36:11.675Z",
-  "lastProcessed": "the-outsiders-2024/deadline--greg-evans.json",
+  "lastProcessed": "the-rat-trap-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-03-03T04:18:00.121Z",
@@ -996,6 +1019,17 @@
       "t": "2026-03-03T04:26:16.635Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T05:06:20.793Z",
+      "event": "bb-session",
+      "session": "e0d3dfc5",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-03-03T05:06:22.284Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
