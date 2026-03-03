@@ -101,7 +101,7 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'curtainup': { tier: 2, name: 'CurtainUp', scoreFormat: 'text_bucket' },
   'northjerseycom': { tier: 2, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
   'njcom': { tier: 2, name: 'NJ.com', scoreFormat: 'text_bucket' },
-  'bergen-record': { tier: 2, name: 'The Bergen Record', scoreFormat: 'text_bucket' },
+  // bergen-record merged into northjerseycom (same outlet, renamed)
   'wnyc': { tier: 2, name: 'WNYC', scoreFormat: 'text_bucket' },
 
   // === LONDON / WEST END OUTLETS ===
