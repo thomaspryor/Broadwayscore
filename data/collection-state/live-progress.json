@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-03-03T09:11:04.596Z",
-  "processed": 8,
-  "failed": 24,
-  "successRate": "25.0%",
+  "updatedAt": "2026-03-03T09:31:53.234Z",
+  "processed": 10,
+  "failed": 32,
+  "successRate": "23.8%",
   "tierBreakdown": {
-    "playwright": 3,
-    "amp": 5,
+    "playwright": 5,
+    "amp": 7,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 7,
     "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-03-03T09:19:13.595Z",
+      "event": "bb-session",
+      "session": "aa252214",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-an-ogre-who-just-wants"
+    },
+    {
+      "t": "2026-03-03T09:19:15.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T09:27:57.261Z",
+      "event": "bb-session",
+      "session": "55fcd4dc",
+      "url": "https://www.wsj.com/articles/just-in-time-review-jonathan-groff-bobby-darin-broa"
+    },
+    {
+      "t": "2026-03-03T09:27:58.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:29:32.440Z",
+      "event": "bb-session",
+      "session": "1cd83842",
+      "url": "https://www.wsj.com/articles/mother-russia-review-a-comedy-of-soviet-collapse-52"
+    },
+    {
+      "t": "2026-03-03T09:29:33.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-03T09:31:14.135Z",
+      "event": "bb-session",
+      "session": "7113b567",
+      "url": "https://www.wsj.com/arts-culture/film/what-to-watch-six-movies-and-series-to-str"
+    },
+    {
+      "t": "2026-03-03T09:31:15.415Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
