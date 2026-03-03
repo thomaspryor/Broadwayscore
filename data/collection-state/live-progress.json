@@ -1,30 +1,74 @@
 {
-  "updatedAt": "2026-03-03T05:13:47.167Z",
-  "processed": 9,
-  "failed": 4,
-  "successRate": "69.2%",
+  "updatedAt": "2026-03-03T05:17:59.541Z",
+  "processed": 282,
+  "failed": 236,
+  "successRate": "54.4%",
   "tierBreakdown": {
-    "playwright": 8,
-    "amp": 2,
-    "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 1,
+    "playwright": 159,
+    "amp": 60,
+    "browserbase": 2,
+    "directCookies": 32,
+    "scrapingbee": 38,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 108,
+    "archive": 75
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-03-03T04:58:15.755Z",
+      "t": "2026-03-03T04:18:00.121Z",
       "event": "bb-session",
-      "session": "87eef5ce",
-      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-an-ogre-who-just-wants"
+      "session": "c548fd6e",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-amber-ruffin.html"
     },
     {
-      "t": "2026-03-03T04:58:17.228Z",
+      "t": "2026-03-03T04:18:01.581Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:19:20.604Z",
+      "event": "bb-session",
+      "session": "f8f30c5f",
+      "url": "https://www.nytimes.com/2025/12/01/theater/death-of-a-salesman-broadway-lane-met"
+    },
+    {
+      "t": "2026-03-03T04:19:21.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:24:24.660Z",
+      "event": "bb-session",
+      "session": "5cbc5ad2",
+      "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
+    },
+    {
+      "t": "2026-03-03T04:24:26.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T04:26:14.919Z",
+      "event": "bb-session",
+      "session": "a937610f",
+      "url": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html"
+    },
+    {
+      "t": "2026-03-03T04:26:16.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T05:06:20.793Z",
+      "event": "bb-session",
+      "session": "e0d3dfc5",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-03-03T05:06:22.284Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
