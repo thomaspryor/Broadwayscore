@@ -1,77 +1,34 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-25T14:09:08.171Z",
-    "totalScanned": 25462,
-    "flagged": 30,
-    "quarantined": 23,
-    "falsePositives": 7,
-    "falsePositiveFiles": [
-      "art-1998/amny--matt-windman.json (review mentioning Tony-winning cast)",
-      "diana-the-musical-2021/theater-life--barry-gordin.json (actual review by David Sheward)",
-      "the-father-2016/times-square-chronicles--suzanna-bowling.json (review excerpt mentioning Tony noms)",
-      "the-gin-game-1977/njcom--christopher-kelly.json (review mentioning actor ages)",
-      "the-gin-game-1997/njcom--christopher-kelly.json (review of revival production)",
-      "the-hills-of-california-2024/cititour--brian-scott-lipton.json (actual review, remembering is family context)",
-      "the-humans-2016/theatre-is-easy--ben-coleman.json (review behind browser warning preamble)"
-    ],
+    "generatedAt": "2026-03-03T05:49:53.435Z",
+    "totalScanned": 26579,
+    "flagged": 21,
     "byType": {
-      "news_article": 3,
-      "garbage_scrape": 6,
-      "awards_coverage": 5,
-      "obituary": 9,
-      "preview_article": 1,
-      "interview": 5,
-      "press_release": 1
+      "garbage_scrape": 4,
+      "awards_coverage": 3,
+      "preview_article": 2,
+      "obituary": 1,
+      "news_article": 6,
+      "cast_announcement": 1,
+      "press_release": 1,
+      "interview": 3
     }
   },
   "flagged": [
-    {
-      "showId": "aint-no-mo-2022",
-      "file": "stagebuddy--elyse-trevers.json",
-      "type": "news_article",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. The text focuses more on the show's closing notice, potential reasons for its lack of ti",
-      "outlet": "Stage Buddy",
-      "critic": "Elyse Trevers",
-      "score": 67
-    },
     {
       "showId": "allegiance-2015",
       "file": "womens-voices-for-change--alexandra-macaaron.json",
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily provides background information about George Takei's personal experie",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily describes the background of George Takei and the premise of the music",
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
     },
     {
-      "showId": "art-1998",
-      "file": "amny--matt-windman.json",
-      "type": "awards_coverage",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Award winners",
-      "outlet": "amNY",
-      "critic": "Matt Windman",
-      "score": 56
-    },
-    {
-      "showId": "brighton-beach-memoirs-2009",
-      "file": "ap--.json",
-      "type": "obituary",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "age 15 | LLM: NOT_REVIEW: This text is a plot summary with a brief character description, lacking any evaluation o",
-      "outlet": "Associated Press",
-      "critic": null,
-      "score": 72
-    },
-    {
       "showId": "bring-it-on-the-musical-2012",
-      "file": "the-faster-times--jonathan-mandell.json",
+      "file": "faster-times--jonathan-mandell.json",
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
@@ -92,15 +49,15 @@
       "score": 42
     },
     {
-      "showId": "eclipsed-2016",
-      "file": "wnbc--robert-kahn.json",
-      "type": "obituary",
+      "showId": "doubt-2024",
+      "file": "theatermania--andy-propst.json",
+      "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "remembering | LLM: NOT_REVIEW. The text focuses on the background of the play, its playwright, and the star actress, ra",
-      "outlet": "WNBC",
-      "critic": "Robert Kahn",
-      "score": 88
+      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not a critical",
+      "outlet": "TheaterMania",
+      "critic": "Andy Propst",
+      "score": 82
     },
     {
       "showId": "eclipsed-2016",
@@ -108,58 +65,25 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. While the text mentions \"Eclipsed\" and its author, it primarily focuses on Danai Gurira'",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and its author, but it doesn't offer a",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
     },
     {
-      "showId": "exit-the-king-2009",
-      "file": "the-times-david-jays--david-jays.json",
-      "type": "interview",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Q:  | LLM: NOT_REVIEW. The text is a commentary on the current state of affairs and how it relates to absurd dr",
-      "outlet": "The Times (David Jays)",
-      "critic": "David Jays",
-      "score": 55
-    },
-    {
-      "showId": "farinelli-and-the-king-2017",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "type": "obituary",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "age 10 | LLM: NOT_REVIEW: The text primarily describes the plot of the play without offering critical evaluation o",
-      "outlet": "New York Daily News",
-      "critic": "Joe Dziemianowicz",
-      "score": 64
-    },
-    {
-      "showId": "good-night-and-good-luck-2025",
-      "file": "the-times--susie-goldsbrough.json",
-      "type": "interview",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Q:  | LLM: NOT_REVIEW. The text is more of a commentary or opinion piece that references the play \"Good Night, ",
-      "outlet": "The Times",
-      "critic": "Susie Goldsbrough",
-      "score": 48
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "culturesauce--unknown.json",
-      "type": "obituary",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "age 47 | LLM: NOT_REVIEW. This text describes the premise of the show and the style of the music, but it doesn't e",
-      "outlet": "Culture Sauce",
-      "critic": "Unknown",
-      "score": 90
+      "showId": "fun-home-2015",
+      "file": "ew--leah-greenblatt.json",
+      "type": "preview_article",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "First look at",
+      "outlet": "Entertainment Weekly",
+      "critic": "Leah Greenblatt",
+      "score": 83
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "file": "broad-street-review--steve-cohen.json",
+      "file": "broadstreetreview--steve-cohen.json",
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
@@ -167,6 +91,17 @@
       "outlet": "broad-street-review",
       "critic": "Steve Cohen",
       "score": 77
+    },
+    {
+      "showId": "home-2024",
+      "file": "thewrap--robert-hofler.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic",
+      "evidence": "passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78",
+      "outlet": "The Wrap",
+      "critic": "Robert Hofler",
+      "score": 76
     },
     {
       "showId": "indecent-2017",
@@ -180,15 +115,15 @@
       "score": 82
     },
     {
-      "showId": "jitney-2017",
-      "file": "vulture--jesse-green.json",
-      "type": "obituary",
+      "showId": "la-bete-2010",
+      "file": "nytimes--ben-brantley.json",
+      "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "age 34 | LLM: NOT_REVIEW. The text primarily discusses the play's context within August Wilson's larger body of wo",
-      "outlet": "Vulture",
-      "critic": "Jesse Green",
-      "score": 66
+      "evidence": "close on | LLM: NOT_REVIEW. This text is a news article about the closing of the play, discussing its performance an",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
+      "score": 61
     },
     {
       "showId": "marvins-room-2017",
@@ -203,7 +138,7 @@
     },
     {
       "showId": "motown-the-musical-2016",
-      "file": "wnbc--robert-kahn.json",
+      "file": "nbcny--robert-kahn.json",
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
@@ -213,34 +148,56 @@
       "score": 77
     },
     {
-      "showId": "paddington-the-musical-west-end-2025",
-      "file": "the-times--clive-davis.json",
-      "type": "interview",
+      "showId": "network-2018",
+      "file": "guardian--jesse-green.json",
+      "type": "cast_announcement",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Q:  | LLM: NOT_REVIEW. The text focuses on the secrecy surrounding the musical's debut and the lack of advance ",
-      "outlet": "The Times",
-      "critic": "Clive Davis",
+      "evidence": "will star in | LLM: NOT_REVIEW: This text is a news announcement about an upcoming production, not a review of a perform",
+      "outlet": "The Guardian",
+      "critic": "Jesse Green",
       "score": 80
     },
     {
-      "showId": "suffs-2024",
-      "file": "the-times--nancy-durrant.json",
-      "type": "interview",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Q: ",
-      "outlet": "The Times",
-      "critic": "Nancy Durrant",
-      "score": 73
+      "showId": "new-york-new-york-2023",
+      "file": "amny--matt-windman.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" it primarily discusses \"Chicago\" and the works o",
+      "outlet": "amNY",
+      "critic": "Matt Windman",
+      "score": 60
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "file": "hollywood-reporter--angie-han.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
+      "outlet": "The Hollywood Reporter",
+      "critic": "Angie Han",
+      "score": 77
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "file": "hollywood-reporter--anita-gates.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and parallels with the theater industry's struggl",
+      "outlet": "The Hollywood Reporter",
+      "critic": "Anita Gates",
+      "score": 76
     },
     {
       "showId": "sunset-boulevard-2017",
       "file": "wsj--terry-teachout.json",
       "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a collection of article titles and snippets from The Wall Street Jo",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 75
@@ -257,70 +214,15 @@
       "score": 63
     },
     {
-      "showId": "the-father-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "type": "awards_coverage",
+      "showId": "sweat-2017",
+      "file": "theater-life--barry-gordin.json",
+      "type": "interview",
       "confidence": "medium",
       "method": "heuristic-only",
-      "evidence": "Tony nominations",
-      "outlet": "Times Square Chronicles",
-      "critic": "Suzanna Bowling",
-      "score": 88
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "file": "njcom--christopher-kelly.json",
-      "type": "obituary",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "age 84",
-      "outlet": "NJ.com",
-      "critic": "Christopher Kelly",
-      "score": 63
-    },
-    {
-      "showId": "the-gin-game-1997",
-      "file": "njcom--christopher-kelly.json",
-      "type": "obituary",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "age 84",
-      "outlet": "NJ.com",
-      "critic": "Christopher Kelly",
-      "score": 63
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "file": "cititour--brian-scott-lipton.json",
-      "type": "obituary",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "remembering",
-      "outlet": "Cititour",
-      "critic": "Brian Scott Lipton",
-      "score": 67
-    },
-    {
-      "showId": "the-humans-2016",
-      "file": "theatre-is-easy--ben-coleman.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Please upgrade your browser",
-      "outlet": "Theatre is Easy",
-      "critic": "Ben Coleman",
-      "score": 93
-    },
-    {
-      "showId": "the-lifespan-of-a-fact-2018",
-      "file": "wsj--terry-teachout.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
-      "outlet": "Wall Street Journal",
-      "critic": "Terry Teachout",
-      "score": 82
+      "evidence": "in an interview",
+      "outlet": "Theater Life",
+      "critic": "Barry Gordin",
+      "score": 84
     },
     {
       "showId": "the-mountaintop-2011",
@@ -334,26 +236,15 @@
       "score": 47
     },
     {
-      "showId": "the-wiz-2024",
-      "file": "new-york-sun--elysa-gardner.json",
-      "type": "awards_coverage",
+      "showId": "waiting-for-godot-2013",
+      "file": "guardian--jesse-green.json",
+      "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award nominations | LLM: NOT_REVIEW. The text primarily discusses the context of the revival within the current Broadway seas",
-      "outlet": "The New York Sun",
-      "critic": "Elysa Gardner",
-      "score": 79
-    },
-    {
-      "showId": "you-cant-take-it-with-you-2014",
-      "file": "deadline--jeremy-gerard.json",
-      "type": "obituary",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "remembering | LLM: NOT_REVIEW. The text starts by discussing \"The Odd Couple\" and Kaufman and Hart's general writing st",
-      "outlet": "Deadline",
-      "critic": "Jeremy Gerard",
-      "score": 61
+      "evidence": "in an interview | LLM: NOT_REVIEW. While it mentions reviews and quotes from them, the primary focus is on Ian McKellen's p",
+      "outlet": "The Guardian",
+      "critic": "Jesse Green",
+      "score": 63
     }
   ]
 }
