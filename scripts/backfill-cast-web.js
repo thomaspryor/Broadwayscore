@@ -185,7 +185,15 @@ async function extractCastWithLLM(pageText, showTitle) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
 
-  const prompt = `Extract the cast members from this web page about the show "${showTitle}". Return ONLY a JSON array of objects with "name" and "role" fields. Only include named principal roles — exclude ensemble, chorus, swings, standbys, understudies, and unnamed roles. If you cannot find cast information, return an empty array [].
+  const prompt = `Extract the cast members from this web page about the show "${showTitle}".
+
+RULES:
+- Return ONLY a JSON array of objects with "name" and "role" fields.
+- ALWAYS include the role/character name for each actor. If roles are listed, use them.
+- Only include named PRINCIPAL roles — exclude ensemble, chorus, swings, standbys, understudies, and unnamed roles.
+- If multiple actors play the SAME role (alternates), include only the FIRST actor listed for that role.
+- Each person should appear only ONCE in the output.
+- If you cannot find cast information, return an empty array [].
 
 Example output:
 [{"name": "John Smith", "role": "Hamlet"}, {"name": "Jane Doe", "role": "Ophelia"}]

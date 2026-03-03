@@ -97,8 +97,17 @@ function extractCast(castData, showStatus) {
   const principals = source.filter(isPrincipalCast);
   if (principals.length === 0) return null;
 
+  // Deduplicate by name (alternates/replacements may share a role)
+  const seen = new Set();
+  const deduped = principals.filter(m => {
+    const key = m.name.toLowerCase().trim();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   // Cap at maxMembers
-  const capped = principals.slice(0, maxMembers);
+  const capped = deduped.slice(0, maxMembers);
 
   // Map to simple {name, role} format
   return capped.map(m => {
