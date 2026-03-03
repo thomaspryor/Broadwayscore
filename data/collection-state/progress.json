@@ -11,7 +11,15 @@
     "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
     "night-side-songs-off-broadway-2026/nytg--unknown.json",
     "mother-russia-off-broadway-2026/playbill--unknown.json",
-    "night-side-songs-off-broadway-2026/nysr--unknown.json"
+    "night-side-songs-off-broadway-2026/nysr--unknown.json",
+    "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+    "back-to-the-future-west-end-2021/nytimes--unknown.json",
+    "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+    "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json",
+    "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -93,7 +101,9 @@
     "the-producers-west-end-2025/thestage--paul-vale.json",
     "wicked-2003/njcom--michael-sommers.json",
     "wicked-2003/ny1--roma-torre.json",
-    "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json"
+    "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json",
+    "back-to-the-future-west-end-2021/variety--david-benedict.json",
+    "bughouse-off-broadway-2026/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -104,7 +114,11 @@
       "night-side-songs-off-broadway-2026/nyt-theater--unknown.json",
       "night-side-songs-off-broadway-2026/nytg--unknown.json",
       "mother-russia-off-broadway-2026/playbill--unknown.json",
-      "night-side-songs-off-broadway-2026/nysr--unknown.json"
+      "night-side-songs-off-broadway-2026/nysr--unknown.json",
+      "11-to-midnight-off-broadway-2026/nytg--austin-fimmano.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "bigfoot-off-broadway-2026/nytg--caroline-cao.json",
+      "burnout-paradise-off-broadway-2026/nytg--amelia-merrill.json"
     ],
     "amp": [
       "data/review-texts/bigfoot-off-broadway-2026/vulture--unknown.json",
@@ -113,13 +127,17 @@
       "broken-glass-west-end-2026/variety--unknown.json",
       "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json",
       "data/review-texts/night-side-songs-off-broadway-2026/vulture--unknown.json",
-      "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json"
+      "data/review-texts/the-holy-rosenbergs-west-end-2026/variety--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/variety--david-benedict.json",
+      "back-to-the-future-west-end-2021/variety--david-benedict.json"
     ],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/guardian--unknown.json",
-      "moulin-rouge-2019/broadwayworld--michael-dale.json"
+      "moulin-rouge-2019/broadwayworld--michael-dale.json",
+      "back-to-the-future-west-end-2021/nytimes--unknown.json",
+      "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -156,11 +174,13 @@
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "pied-a-terre-off-broadway-2026/theatermania--unknown.json",
       "broken-glass-west-end-2026/nytimes--unknown.json",
-      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/nytimes--unknown.json"
+      "midnight-a-new-original-musical-by-todrick-hall-west-end-2026/nytimes--unknown.json",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nyt-theater--anna-ziegler.json",
+      "buena-vista-social-club-2025/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-03-03T08:34:29.131Z",
-  "lastProcessed": "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-03-03T09:19:13.595Z",
@@ -238,6 +258,28 @@
       "t": "2026-03-03T09:51:55.603Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-03T09:57:32.400Z",
+      "event": "bb-session",
+      "session": "9e15d846",
+      "url": "https://www.nytimes.com/2021/09/02/theater/back-to-the-future-musical.html"
+    },
+    {
+      "t": "2026-03-03T09:57:34.161Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-03T10:02:14.776Z",
+      "event": "bb-session",
+      "session": "b42a801f",
+      "url": "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html?se"
+    },
+    {
+      "t": "2026-03-03T10:02:16.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
